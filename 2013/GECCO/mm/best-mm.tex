@@ -1,0 +1,497 @@
+\documentclass{sig-alternate}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}        % standard LaTeX graphics tool
+\usepackage{url}
+
+%Sacado del paper de Fergu
+
+\begin{document}
+%
+% --- Author Metadata here ---
+\conferenceinfo{GECCO'13,} {July 6-10, 2013, Amsterdam, The Netherlands.}
+    \CopyrightYear{2013}
+    \crdata{TBA}
+    \clubpenalty=10000
+    \widowpenalty = 10000
+
+\title{Improving evolutionary solutions to the game of MasterMind
+  using an entropy-based scoring method}
+
+%\subtitle{[Extended Abstract]
+%\titlenote{A full version of this paper is available as
+%\textit{Author's Guide to Preparing ACM SIG Proceedings Using
+%\LaTeX$2_\epsilon$\ and BibTeX} at
+%\texttt{www.acm.org/eaddress.htm}}}
+%
+% You need the command \numberofauthors to handle the 'placement
+% and alignment' of the authors beneath the title.
+%
+% For aesthetic reasons, we recommend 'three authors at a time'
+% i.e. three 'name/affiliation blocks' be placed beneath the title.
+%
+% NOTE: You are NOT restricted in how many 'rows' of
+% "name/affiliations" may appear. We just ask that you restrict
+% the number of 'columns' to three.
+%
+% Because of the available 'opening page real-estate'
+% we ask you to refrain from putting more than six authors
+% (two rows with three columns) beneath the article title.
+% More than six makes the first-page appear very cluttered indeed.
+%
+% Use the \alignauthor commands to handle the names
+% and affiliations for an 'aesthetic maximum' of six authors.
+% Add names, affiliations, addresses for
+% the seventh etc. author(s) as the argument for the
+% \additionalauthors command.
+% These 'additional authors' will be output/set for you
+% without further effort on your part as the last section in
+% the body of your article BEFORE References or any Appendices.
+
+
+\numberofauthors{2}
+ \author{
+ \alignauthor
+ Kuthrapalli, Wollowitz, Hofstadter\\
+        \affaddr{Caltech}\\
+        \affaddr{Pasadena}\\
+        \email{k,w,h@geekysit.com}
+ \alignauthor
+ Farrah-Fawler\\
+ \affaddr{Neurobiology Institute}\\
+ \affaddr{Los Angeles}\\
+ \email{amy@almostcompletelylost.it}
+ }
+
+%\numberofauthors{2}
+% \author{
+% \alignauthor
+% J.J. Merelo, Pedro Castillo, Antonio Mora\\
+%        \affaddr{University of Granada}\\
+%        \affaddr{Department of Computer Architecture and Technology, ETSIIT}\\
+%        \affaddr{18071 - Granada}\\
+%        \email{jmerelo,amorag,cfernandes@geneura.ugr.es}
+% \alignauthor
+% Anna I. Esparcia-Alcázar\\
+% \affaddr{S2 Grupo}\\
+% \email{aesparcia@s2grupo.es}
+% }
+
+
+%\numberofauthors{4} %  in this sample file, there are a *total*
+% of EIGHT authors. SIX appear on the 'first-page' (for formatting
+% reasons) and the remaining two appear in the \additionalauthors section.
+%
+
+%\author{
+% You can go ahead and credit any number of authors here,
+% e.g. one 'row of three' or two rows (consisting of one row of three
+% and a second row of one, two or three).
+%
+% The command \alignauthor (no curly braces needed) should
+% precede each author name, affiliation/snail-mail address and
+% e-mail address. Additionally, tag each line of
+% affiliation/address with \affaddr, and tag the
+% e-mail address with \email.
+%
+% 1st. author
+%\alignauthor
+%Jack\\
+%       \affaddr{Lost island}\\
+%       \affaddr{unknow}\\
+%       \affaddr{Pacific Ocean}\\
+%       \email{jack_the_doctor@lost.com}
+% 2nd. author
+%\alignauthor
+%Sawyer\\
+%       \affaddr{Lost island}\\
+%       \affaddr{unknow}\\
+%       \affaddr{Pacific Ocean}\\
+%       \email{sawyer_tom@lost.com}
+% 3rd. author
+%\alignauthor 
+%Lock\\
+%       \affaddr{Lost island}\\
+%       \affaddr{unknow}\\
+%       \affaddr{Pacific Ocean}\\
+%       \email{lock@lost.com}
+% 4rd. author
+%\alignauthor 
+%Hurley\\
+%       \affaddr{Lost island}\\
+%       \affaddr{unknow}\\
+%       \affaddr{Pacific Ocean}\\
+%       \email{hugo@lost.com}
+%}
+
+%\and  % use '\and' if you need 'another row' of author names
+% 4th. author
+%\alignauthor Lawrence P. Leipuner\\
+%       \affaddr{Brookhaven Laboratories}\\
+%       \affaddr{Brookhaven National Lab}\\
+%       \affaddr{P.O. Box 5000}\\
+%       \email{lleipuner@researchlabs.org}
+% 5th. author
+%\alignauthor Sean Fogarty\\
+%       \affaddr{NASA Ames Research Center}\\
+%       \affaddr{Moffett Field}\\
+%       \affaddr{California 94035}\\
+%       \email{fogartys@amesres.org}
+% 6th. author
+%\alignauthor Charles Palmer\\
+%       \affaddr{Palmer Research Laboratories}\\
+%       \affaddr{8600 Datapoint Drive}\\
+%       \affaddr{San Antonio, Texas 78229}\\
+%       \email{cpalmer@prl.com}
+%}
+% There's nothing stopping you putting the seventh, eighth, etc.
+% author on the opening page (as the 'third row') but we ask,
+% for aesthetic reasons that you place these 'additional authors'
+% in the \additional authors block, viz.
+%\additionalauthors{Additional authors: John Smith (The Th{\o}rv{\"a}ld Group,
+%email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
+%(The Kumquat Consortium, email: {\texttt{jpkumquat@consortium.net}}).}
+%\date{30 July 1999}
+% Just remember to make sure that the TOTAL number of authors
+% is the number that will appear on the first page PLUS the
+% number that will appear in the \additionalauthors section.
+
+\maketitle
+
+\begin{abstract}
+Solving the MasterMind puzzle, that is, finding out a hidden
+combination by using hints that tell you how close some strings are to
+that one is a combinatorial optimization problem that becomes
+increasingly difficult with string size and the number of symbols used
+in it. Since it does not have an exact solution, heuristic methods
+have been traditionally used to solve it; these methods scored each
+combination using a heuristic function that depends on comparing all
+possible solutions with each other. In this paper we first optimize
+the implementation of previous evolutionary methods used for the game
+of mastermind, obtaining up to a 40\% speed improvement over
+them. Then we study the behavior of an entropy-based score, which has
+previously been used but not checked exhaustively and compared with
+previous solutions. The combination of these two strategies obtain
+solutions to the game of Mastermind that are competitive, and in some
+cases beat, the best solutions obtained so far. All data and programs
+have also been published under an open source license. 
+\end{abstract}
+
+% A category with the (minimum) three required fields
+\category{H.4}{Information Systems Applications}{Miscellaneous}
+%A category including the fourth, optional field follows...
+\category{G.1.6}{Mathematics of Computing}{NUMERICAL ANALYSIS}[Optimization]
+
+
+%sures, performance measures
+\terms{Algorithms}
+
+\keywords{games, evolutionary algorithms, optimization}
+
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   INTRODUCTION   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Introduction and State of the Art}
+\label{sec:intro}
+%
+
+Mastermind \cite{wiki:mm,Knuth,Widenius,Montgomery} is a puzzle in which one player $A$ hides a combination of
+$\kappa$ symbols and length $\ell$, that the other player $B$ has to
+discover by playing combinations coded in the same alphabet and with the same
+length.  The answers from player $A$ to every combination include the number of
+symbols in the combination that are in the correct position and the
+number of symbols that have been guessed correctly. Player $B$ then
+makes a new guess and obtains an answer; this process continues until
+the hidden one is played by $B$; $B$ then scores the number of guesses
+made. $A$ and $B$ then interchange their positions. Eventually,
+the scores are tallied and the one with the smallest number of guesses
+made wins.  In the actual board game, symbols in the alphabet take the
+shape of colored pins; that is why we usually talk about {\em colors}
+instead of symbols. The initial game which is actually played by humans uses
+$\kappa=6$ symbols (or colors) and length $\ell=4$, with {\em Super Mastermind} versions with up
+to $\ell=5$ pegs and $\kappa=8$ different colors. 
+
+Solving this kind of puzzle is an interesting endeavor.  It is a game in which almost any
+computer strategy can beat a human, which use a very different
+strategy \cite{laughlin1982selection} to play it. But the interesting
+part is that solutions to
+Mastermind can be applied easily to other games such as MineSweeper
+\cite{legendre2012minesweeper} or Hangman since the structure is the
+same: probing a part of the search space by making a guess and getting a response from
+whoever holds the secret. But its applications are not reduced to
+other puzzles or games; solutions to Mastermind have also been used in
+the following applications:\begin{itemize}
+\item Focardi  \cite{focardi2011guessing} describes a method  to break
+  ATMs guessing PINs via making requests to the application
+  programming interface of the so-called HSM (hardware security
+  modules) which are in charge of encryption in several phases of ATM transactions.
+\item Gagneur and coauthors \cite{gagneur2011selective} describe its application
+in a procedure called {\em selective phenotyping}. Since it's
+impossible to find out the phenotype of a single gene, the only way of
+doing it is via phenotyping of several groups of genes that include
+the one we are interested in. The procedure  used to find this groups
+of combinations of genes is in fact identical to the solution of the
+game of Mastermind
+\item Mastermind can be used as a testbed for search algorithms, as
+  claims the title of a paper by O\'Geran et
+  al. \cite{o1991mastermind}. Strategies developed for Mastermind can
+  be applied to other search algorithms as well.
+\item Querying player $B$ for how close is the played combination to
+  the hidden one and getting an answer is an example of {\em
+    information leakage} \cite{chen2011auditing}, since $A$ reveals some info about its
+  structure which can be eventually used to find it when enough
+  information is available. This technique has been used to find out
+  information about particular DNA codes belonging to a particular
+  person, in what has been named {\em Mastermind} attack on genomic
+  data \cite{goodrich2009mastermind}.
+ \end{itemize}
+
+Being able to come up with an effective solution that can be applied
+to all these problems is exciting enough, but the generalized
+Mastermind problem is also interesting from a theoretical point of
+view, with several studies pointing to the fact that is NP-Hard
+\cite{DBLP:journals/corr/abs-1111-6922}. The issue of finding bounds to
+the number of guesses needed is still open
+\cite{doerr2012playing}. Heuristic solutions such as the one studied
+in this paper are, for the time being, the best approaches to solve
+this problem; they are also the ones that present a better scalability
+and are able to solve the problem to the largest problem size. 
+
+These solutions fall mainly into two different types: exhaustive
+(which can only solve small versions of the game) and
+approximate, which do not use the whole search space. Any of them 
+\cite{o1991mastermind,francisstrategies:moo,Berghman20091880,nicso}
+try first to find combinations that match the answers made to $B$, and
+thus could possible be the hidden code. These combinations are called {\em
+    eligible}, {\em possible} or {\em
+  consistent} combinations. Those solutions are guaranteed to reduce the search space at
+least by one, but obviously every one will yield a different
+response. The problem is that knowing which one is the best is, a
+priori, impossible, and in fact how well any eligible combination will
+do can only be guessed. 
+
+How would any method use these eligible solutions? Exhaustive methods
+\cite{Knuth,DBLP:journals/corr/abs-1207-1315} would eliminate all
+non-consistent 
+solutions and play a consistent one, while approximate methods
+would sample the set of consistent solutions and play one of
+them, but every eligible combination will receive a {\em score} which
+reflects usually how well it will be able to reduce the search space
+once played, with the rationale that a scoring method that reduces
+quickly the search space will eventually yield a single eligible
+combination, which in the case of exhaustive search will be the hidden
+code and in approximate methods will be at least a good candidate.
+
+To compute these scores, every combination is
+compared in turn with the rest of the combinations in the set; the
+number of combinations that get every response (there is a limited
+amount of possible responses) is noted. Eventually this results in a
+series of {\em partitions} in which the set of consistent combinations
+is divided by its {\em distance} (in terms of common positions and
+colors) to every other.  This results in a set of combinations with
+the best score; one of the combinations of this set is chosen
+deterministically (using lexicographical order, for instance) or
+randomly. 
+
+Please note that these are heuristic methods based on expected
+outcome. On average, they will work as expected, but even combinations
+with the same score will obtain a different result depending, of
+course, on which is the actual secret combination. Finding the best
+one for a particular size, or even a particular set of combinations,
+is an open issue which leaves room for research such as the one
+performed in this paper. 
+
+These partitions are used to assign a score to every combination;
+several scores have been proposed:\begin{itemize}
+\item {\em Worst case} was proposed by Knuth \cite{Knuth} as the first rigorous
+  strategy to play Mastermind; combinations are scored according to
+  the size of the biggest partition; the bigger, the worse. The
+  combination to play is extracted from the set of those with the
+  smallest biggest combination. Ties are broken by using the first in
+  lexicographical order. 
+\item {\em Most parts}, proposed in \cite{Kooi200513}, takes into account only the
+  number of non-zero partitions.
+\item {\em Entropy}  which has been used in works such as \cite{Neuwirth,bestavros,mm:ppsn:2010}, computes
+  the entropy of partitions, and tries to maximize it.
+\item {\em Expected size} used by \cite{Berghman20091880,irving} tries to
+  minimize the expected size.
+\end{itemize}
+
+However, scores are heuristic, so, for the time being and there is no rigorous way of
+scoring combinations. Experiments so far show that the best strategies are Most parts and
+Entropy, with no distinct advantage, for all problem sizes, of any one
+of them
+over the others \cite{nicso}. In fact,
+combinations of them are possible, according to
+\cite{DBLP:journals/corr/abs-1207-1315}, but have not, so far, been
+proved in problems where a sample of the consistent set is used. Most
+strategies, however, concentrate on finding the right size for
+minimization of the number of turns. The complexity of the solving
+algorithm, however, increases quadratically with the set size, since
+it involves comparing every combination with the rest, which
+implies that the time needed to find the solution and also number of
+evaluations increase too fast with the search space size, resulting in a bad
+scaling behavior.
+
+Currently, the state of the art was established by Berghman et al. in
+\cite{Berghman20091880}. They obtained a system that is able to
+find the solution in an average number of moves that is, for all sizes
+tested, better than previously published. The number of evaluations
+was not published, but time was. In both cases, their solutions were
+quite good. However, there were many parameters that had to be set for
+each size, starting with the first guess and the size of the
+consistent set, as well as population size and other evolutionary
+algorithm parameters. In this paper we will try to adapt our
+previously published Evo method by reducing the number of parameters
+without compromising too much on algorithm performance. However, some
+researchers have tried to break the barrier of spaces with a high
+dimension by searching for fast solutions: Khalifa and Yampolsky
+\cite{khalifa2011ga} were able to solve the length 8, 12 colors
+($\ell=8,\kappa=12$) problem in just 8 seconds, but with an average
+number of guesses equal to 25 (vs 20.571 seconds and 8.366 average
+number of guesses. 
+
+However, as the old saying goes, ``Do you want it fast or do you want
+it good?''. Getting a solution fast by playing many combinations and
+then reducing, by brute force, the search space or just make easier to
+find eligible solutions goes against the nature of the puzzle, which
+must be solved in a minimum number of guesses. So in this paper we
+will try first to improve speed without changing the algorithm (or
+changing it as little as possible) by examining the implementation and
+then making changes to increase speed. Then, using this faster
+implementation, we will use a scoring method, Entropy, that has
+resulted in good results for the smaller sizes
+\cite{DBLP:journals/corr/abs-1207-1315} and \cite{mm:evostar13} but
+needs a certain amount of parameter seeking to obtain good results. We
+will show that our results are competitive and in some cases better
+than those considered state of the art and published by Berghman et
+al. \cite{Berghman20091880}. This is a small improvement, but
+significant, and since we cannot be sure in advance of what is the
+optimal value, it is in fact enough to prove this improvement even if
+it is a few percentage points.
+
+The rest of the paper is organized as follows: next we outline the
+evolutionary method used to play MasterMind in Section
+\ref{sec:evo}. The experimental setup is shown in Section
+\ref{sec:experiments} followd by the results in Section
+\ref{sec:results}. Finally, we draw some conclusions in the final
+Section \ref{sec:conc}.
+
+
+\section{An evolutionary method for playing MasterMind}
+\label{sec:evo}
+
+This paper uses the
+method called, simply, {\em Evo}
+\cite{evostar,mm:ppsn:2010,mm:cig,DBLP:conf/evoW/GuervosCM11,DBLP:conf/cec/GuervosMC11}. This
+method, which was been released from the beginning as open
+source code at CPAN (the Comprehensive Perl Archive Network, available
+at a mirror near you)
+(\url{http://search.cpan.org/dist/Algorithm-Mastermind/}), is an
+evolutionary algorithm that has been optimized for speed and number of evaluations.
+Evolutionary algorithms \cite{Zen,Michalewicz,eiben03} are a Nature-inspired search and
+optimization method that, modeling natural evolution and its molecular
+base, uses a  population of solutions encoded into a data structure
+(usually a string, but currently any data structure is used) to find the 
+optimal one. Candidate solutions are scored according to its closeness to the optimal
+solution (called {\em fitness}) and the whole population evolved by
+discarding solutions with the lowest fitness and making those with the
+highest fitness reproduce via combination (crossover) and random
+change (mutation). It is proved that these algorithms are able, given
+enough time and resources, to find {\em good enough} and even
+optimal solutions to several problems in engineering
+\cite{gecco08:pgarcia} and other fields such as economic forecasting \cite{wcci:bankruptcy}. 
+
+Evo, which is explained extensively in
+\cite{DBLP:conf/cec/GuervosMC11}, iterates the evolutionary algorithm
+until a prefixed amount of consistent combinations has been found; in
+this paper and following \cite{merelo12:gameon} that number has been
+fixed to ten.  It uses Most Parts \cite{Kooi200513} to
+score consistent combinations, and the {\em distance to consistency}
+for non-consistent ones, so that the fitness directs search towards
+finding consistent solutions and then towards higher-scoring
+solutions. If the number of consistent solutions is below the
+threshold, different from and stays so for several generations (fixed
+to three), the best combination is played; if no feasible combination
+is found for a fixed amount of generations (fixed to 50) the
+population resets. This is a last-ditch solution which leads to a high
+number of evaluations and, in some cases, to an endless loop or resets
+which shows that, for that particular configuration, the evolutionary
+algorithm is unable to find a solution. These problems are in part
+overcome via endgames \cite{goddard2003computer,DBLP:conf/cec/GuervosMC11}, which
+streamline the search for solution via different techniques. 
+
+If we keep the consistent set size fixed we still have some parameters
+to set, mainly two related ones: population and tournament size; this
+size indicates how many combinations will be compared with each other
+before selecting a single one to go to the reproduction pool and
+selective pressure increases with its value; with a value such as
+eight the probability of a low-fitness combination to be selected is
+very low, while with a value equal to 2 (the minimum) there is a
+certain probability that those combinations with low rankings will be
+selected if they {\em joust} in the tournament with each other. The
+relationship among both quantities has been well established by B\"ack
+and coworkers in \cite{Back94selectivepressure}.
+
+\begin{table}[t!]
+\centering 
+\caption{Values for the Evo parameters that obtain the best
+  result. Permutation, crossover and mutation are {\em priorities};
+  they are normalized to one to convert them to application rates. In
+  practice, crossover will be applied to 80\% and mutation and
+  permutation to 10\% of the newly generated combinations each. \label{tab:params}}
+\begin{tabular}{lc}
+\hline
+Parameter & Value \\
+\hline \\
+Crossover  & 8 \\
+Mutation  & 1 \\
+Permutation  & 1 \\
+Replacement rate  & 0.75 \\ 
+\hline
+\end{tabular}
+\end{table}
+
+In this paper we have made several improvements over the published
+algorithm. We have profiled the application to improve speed, which
+has resulted also in a change of the operators used in the
+experiments. Second, we have studied several parameter configurations
+to improve at the same time the number of evaluations (which results
+also in a speed improvement) and the number of games played. And,
+finally, we have used a different scoring method over previous papers
+in a attempt to beat, or at least equal, the already published
+results. 
+
+%%%%%%%%%%%%%%%%%%  Experiments  %%%%%%%%%%%%%%%%%%%
+
+\section{Experimental setup}
+\label{sec:experiments}
+
+%%%%%%%%%%%%%%%%%%  Results  %%%%%%%%%%%%%%%%%%%
+
+\section{Results}
+\label{sec:results}
+
+\section{Conclusions}
+\label{sec:conc}
+
+Very beautiful work
+
+
+%ACKNOWLEDGMENTS are optional
+\section{Acknowledgments}
+
+Hidden for double-blind revision.
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+
+
+%\bibliographystyle{abbrv}
+\bibliographystyle{plain}
+\bibliography{GA-general,geneura,mastermind}  % sigproc.bib is the name of the Bibliography in this case
+
+
+\end{document}
