@@ -185,7 +185,7 @@ have also been published under an open source license.
 %sures, performance measures
 \terms{Algorithms}
 
-\keywords{games, evolutionary algorithms, optimization}
+\keywords{games, evolutionary algorithms, optimization, puzzles}
 
 
 %
@@ -196,27 +196,30 @@ have also been published under an open source license.
 %
 
 Mastermind \cite{wiki:mm,Knuth,Widenius,Montgomery} is a puzzle in which one player $A$ hides a combination of
-$\kappa$ symbols and length $\ell$, that the other player $B$ has to
+$\kappa$ symbols and length $\ell$ that the other player $B$ has to
 discover by playing combinations coded in the same alphabet and with the same
 length.  The answers from player $A$ to every combination include the number of
-symbols in the combination that are in the correct position and the
-number of symbols that have been guessed correctly. Player $B$ then
-makes a new guess and obtains an answer; this process continues until
-the hidden one is played by $B$; $B$ then scores the number of guesses
-made. $A$ and $B$ then interchange their positions. Eventually,
-the scores are tallied and the one with the smallest number of guesses
+symbols in the combination that are in the correct position (usually
+represented in the actual board game as {\em black} pins) and the
+number of symbols that have been guessed correctly but are in a
+different position ({\em white} pins). Player $B$ then
+makes a new guess and obtains another answer; this process continues until
+the hidden one is played by $B$; $B$ then receives as score the number of guesses
+made; obviously, higher {\em score} is worse. $A$ and $B$ then interchange their positions. Eventually,
+the scores are tallied and the one with the smaller number of guesses
 made wins.  In the actual board game, symbols in the alphabet take the
 shape of colored pins; that is why we usually talk about {\em colors}
-instead of symbols. The initial game which is actually played by humans uses
+instead of symbols. Historically, the  game which is actually played
+by humans \cite{wiki:mm} uses
 $\kappa=6$ symbols (or colors) and length $\ell=4$, with {\em Super Mastermind} versions with up
 to $\ell=5$ pegs and $\kappa=8$ different colors. 
 
-Solving this kind of puzzle is an interesting endeavor.  It is a game in which almost any
+Solving this kind of puzzle is an exciting endeavor, because  it is a game in which almost any
 computer strategy can beat a human, which use a very different
-strategy \cite{laughlin1982selection} to play it. But the interesting
+strategy \cite{laughlin1982selection,hubalovsky2012modeling} to play it. But the interesting
 part is that solutions to
 Mastermind can be applied easily to other games such as MineSweeper
-\cite{legendre2012minesweeper} or Hangman since the structure is the
+\cite{legendre2012minesweeper} or Hangman since the structure of the game is the
 same: probing a part of the search space by making a guess and getting a response from
 whoever holds the secret. But its applications are not reduced to
 other puzzles or games; solutions to Mastermind have also been used in
@@ -231,7 +234,7 @@ impossible to find out the phenotype of a single gene, the only way of
 doing it is via phenotyping of several groups of genes that include
 the one we are interested in. The procedure  used to find this groups
 of combinations of genes is in fact identical to the solution of the
-game of Mastermind
+game of Mastermind.
 \item Mastermind can be used as a testbed for search algorithms, as
   claims the title of a paper by O\'Geran et
   al. \cite{o1991mastermind}. Strategies developed for Mastermind can
@@ -243,55 +246,82 @@ game of Mastermind
   information is available. This technique has been used to find out
   information about particular DNA codes belonging to a particular
   person, in what has been named {\em Mastermind} attack on genomic
-  data \cite{goodrich2009mastermind}.
+  data \cite{goodrich2009mastermind,goodrich2012mtdna}.
  \end{itemize}
 
 Being able to come up with an effective solution that can be applied
-to all these problems is exciting enough, but the generalized
+to all these problems is a good enough reason, but the generalized
 Mastermind problem is also interesting from a theoretical point of
-view, with several studies pointing to the fact that is NP-Hard
+view, with several studies pointing to the fact that it is NP-Hard problem
 \cite{DBLP:journals/corr/abs-1111-6922}. The issue of finding bounds to
-the number of guesses needed is still open
-\cite{doerr2012playing}. Heuristic solutions such as the one studied
+the number of guesses needed is still open, although Doerr and Winzen
+have lately improved in previously found (and rather loose, \cite{Chvatal}) bounds
+\cite{doerr2012playing,doerr2012bb}. However, experimental methods are
+very far from those bounds, obtaining the solution in a much lower
+number of guesses; they are valuable, however, to give a hint on the
+scaling of the solution complexity with the number of symbols and the
+length. 
+
+In the absence of exact methods, heuristic solutions such as the one studied
 in this paper are, for the time being, the best approaches to solve
 this problem; they are also the ones that present a better scalability
 and are able to solve the problem to the largest problem size. 
-
 These solutions fall mainly into two different types: exhaustive
-(which can only solve small versions of the game) and
-approximate, which do not use the whole search space. Any of them 
+(which can only solve versions of the game with a small number of
+symbols and length due to memory limitations) and
+approximate, which do not use (or at least try not to do it in the
+general case) the whole search space. Any of them 
 \cite{o1991mastermind,francisstrategies:moo,Berghman20091880,nicso}
-try first to find combinations that match the answers made to $B$, and
+seek first  combinations that match the answers made to $B$, and
 thus could possible be the hidden code. These combinations are called {\em
     eligible}, {\em possible} or {\em
-  consistent} combinations. Those solutions are guaranteed to reduce the search space at
+  consistent}. Those solutions are guaranteed to reduce the search space at
 least by one, but obviously every one will yield a different
-response. The problem is that knowing which one is the best is, a
+response from $A$, with one being possible optimal (since the set is
+bound to include the hidden combination). The problem is that knowing which one is the best is, a
 priori, impossible, and in fact how well any eligible combination will
 do can only be guessed. 
 
-How would any method use these eligible solutions? Exhaustive methods
-\cite{Knuth,DBLP:journals/corr/abs-1207-1315} would eliminate all
-non-consistent 
-solutions and play a consistent one, while approximate methods
-would sample the set of consistent solutions and play one of
-them, but every eligible combination will receive a {\em score} which
+How do we measure, them, how well a certain combination is going to
+behave? 
+% Exhaustive methods
+% \cite{Knuth,DBLP:journals/corr/abs-1207-1315} would eliminate all
+% non-consistent 
+% solutions and play a consistent one, while approximate methods
+% would sample the set of consistent solutions and play one of
+% them, 
+By assigning a {\em score} to every eligible combination (or every
+combination the method knows of) which
 reflects usually how well it will be able to reduce the search space
 once played, with the rationale that a scoring method that reduces
 quickly the search space will eventually yield a single eligible
 combination, which in the case of exhaustive search will be the hidden
-code and in approximate methods will be at least a good candidate.
+code and in approximate methods will be at least a good
+candidate. This score will have to be computed using the only
+information available to the method: the (possibly partial) set of all
+eligible combinations. This set, besides possibly (surely, in case of
+exhaustive search) including the hidden combination, has all the
+information available to the method on the hidden combination.
 
-To compute these scores, every combination is
+So, to compute these scores, every combination is
 compared in turn with the rest of the combinations in the set; the
 number of combinations that get every response (there is a limited
-amount of possible responses) is noted. Eventually this results in a
+amount of possible responses, from no blacks/no whites to $\ell -1$
+blacks through all combinations of $\ell-p$ blacks and $p$ whites) is noted. Eventually this results in a
 series of {\em partitions} in which the set of consistent combinations
 is divided by its {\em distance} (in terms of common positions and
-colors) to every other.  This results in a set of combinations with
+colors) to every other.  So, a {\em partition} is a subset of the set
+of eligible combinations. All combinations in the eliglble set are
+then defined by a list of the number of combinations that would obtain
+every possible answer, and are scored according to this list. However,
+there will be combinations that will have exactly the same list of
+values (and thus be in the same {\em partition}), they will obviously
+have the same score since they {\em partition} the set of eligible
+combinations in the same way. Whatever scoring function we choose,
+there will be a non-empty set of combinations with
 the best score; one of the combinations of this set is chosen
 deterministically (using lexicographical order, for instance) or
-randomly. 
+randomly to be played. 
 
 Please note that these are heuristic methods based on expected
 outcome. On average, they will work as expected, but even combinations
@@ -310,56 +340,81 @@ several scores have been proposed:\begin{itemize}
   smallest biggest combination. Ties are broken by using the first in
   lexicographical order. 
 \item {\em Most parts}, proposed in \cite{Kooi200513}, takes into account only the
-  number of non-zero partitions.
+  number of non-zero partitions. This was the option used by authors
+  such as Merelo et al. \cite{mm:cig} in the area of evolutionary
+  algorithms. It is fast to compute but it is not clear what is the
+  rationale behind it, other than the fact that unlikely combinations
+  (such as those with a single symbol) usually have low scores,
+  besides, this score is a first approximation of 
 \item {\em Entropy}  which has been used in works such as \cite{Neuwirth,bestavros,mm:ppsn:2010}, computes
-  the entropy of partitions, and tries to maximize it.
+  the entropy of partitions, and tries to maximize it. Combinations
+  with a high entropy also have a high amount of information, which is
+  related to the fact that a guess must try and extract the maximum
+  information from the hidden guess. 
 \item {\em Expected size} used by \cite{Berghman20091880,irving} tries to
-  minimize the expected size.
+  minimize the expected size; this one is related to the Worst Case
+  mentioned in the first item and follows the same rationale: by
+  playing the combinations that minimize the expected (as opposed to
+  worst, in the case of Knut) size, the set of eligible combinations
+  will be cut down eventually to one. 
 \end{itemize}
 
 However, scores are heuristic, so, for the time being and there is no rigorous way of
-scoring combinations. Experiments so far show that the best strategies are Most parts and
+choosing the best score. Experiments so far show that the best strategies are Most parts and
 Entropy, with no distinct advantage, for all problem sizes, of any one
 of them
-over the others \cite{nicso}. In fact,
+over the others \cite{nicso}; and even so, the best results published
+so far use a the Expected Size strategy \cite{Berghman20091880}. In fact,
 combinations of them are possible, according to
 \cite{DBLP:journals/corr/abs-1207-1315}, but have not, so far, been
-proved in problems where a sample of the consistent set is used. Most
+proved in problems where a sample of the consistent set is used (as
+opposed to the whole set); besides, combining the above mentioned
+scores is, in fact, a score, and nothing bars somebody with coming up
+with a score different from the set mentioned above with the
+constraint that it will still use the same information contained in
+the consistent set (or a subset thereof).. Most
 strategies, however, concentrate on finding the right size for
 minimization of the number of turns. The complexity of the solving
 algorithm, however, increases quadratically with the set size, since
 it involves comparing every combination with the rest, which
 implies that the time needed to find the solution and also number of
 evaluations increase too fast with the search space size, resulting in a bad
-scaling behavior.
+scaling behavior, so using bounds on the set size has a big impact on
+the behavior of the algorithm. 
 
-Currently, the state of the art was established by Berghman et al. in
+If any method wants to improve over the state of the art, it has got
+to be compared with teh paper by Berghman et al. in
 \cite{Berghman20091880}. They obtained a system that is able to
 find the solution in an average number of moves that is, for all sizes
-tested, better than previously published. The number of evaluations
-was not published, but time was. In both cases, their solutions were
-quite good. However, there were many parameters that had to be set for
-each size, starting with the first guess and the size of the
-consistent set, as well as population size and other evolutionary
-algorithm parameters. In this paper we will try to adapt our
-previously published Evo method by reducing the number of parameters
-without compromising too much on algorithm performance. However, some
-researchers have tried to break the barrier of spaces with a high
-dimension by searching for fast solutions: Khalifa and Yampolsky
+tested, better than any solution previously published; the number of evaluations
+was not published, but time was; this last is difficult to compare
+(since software and hardware environment is different) but it will
+give at least an order of magnitude (sub-second, seconds, minutes)
+with which to compare new methods. Besides being the best solutions
+found so far, they were very fast. As a point of fact,  some
+researchers have tried to break the  search space with a high
+dimension barrier by searching for fast solutions: Khalifa and Yampolsky
 \cite{khalifa2011ga} were able to solve the length 8, 12 colors
 ($\ell=8,\kappa=12$) problem in just 8 seconds, but with an average
 number of guesses equal to 25 (vs 20.571 seconds and 8.366 average
-number of guesses. 
+number of guesses). This probes than there are other ways to solve the
+problem if you are not looking for the best solution, but it is not
+the venue we will be pursuing in this paper, where we will try to
+beat, at least from the point of view of guesses played.  
 
-However, as the old saying goes, ``Do you want it fast or do you want
-it good?''. Getting a solution fast by playing many combinations and
-then reducing, by brute force, the search space or just make easier to
-find eligible solutions goes against the nature of the puzzle, which
-must be solved in a minimum number of guesses. So in this paper we
-will try first to improve speed without changing the algorithm (or
-changing it as little as possible) by examining the implementation and
-then making changes to increase speed. Then, using this faster
-implementation, we will use a scoring method, Entropy, that has
+We will do so by looking at the problems with this approach: there were many parameters that had to be set for
+each size, starting with the first guess and the size of the
+consistent set, as well as population size and other evolutionary
+algorithm parameters; some parameters are studied, but mainly for the
+smallest size, while others, like the size of the sample of the
+eligible set or the initial combination, are just mentioned for sizes
+bigger than baseline. Changing the eligible set size might lead to
+better (and possibly slower) solutions. Besides, as mentioned above,
+Expected Size does not obtain good values in exhaustive search
+methods, so we will use Entropy to score solutions. And finally, we
+will try to optimize our method by profiling the application to
+identify bottlenecks and iron them out of the implementation.
+The Entropy scoring method has
 resulted in good results for the smaller sizes
 \cite{DBLP:journals/corr/abs-1207-1315} and \cite{mm:evostar13} but
 needs a certain amount of parameter seeking to obtain good results. We
@@ -372,9 +427,10 @@ it is a few percentage points.
 
 The rest of the paper is organized as follows: next we outline the
 evolutionary method used to play MasterMind in Section
-\ref{sec:evo}. The experimental setup is shown in Section
-\ref{sec:experiments} followd by the results in Section
-\ref{sec:results}. Finally, we draw some conclusions in the final
+\ref{sec:evo}. Improvements obtained via profiling are shown in
+Section \ref{sec:prof} followed by the results of using Entropy as
+scoring method in Section
+\ref{sec:entropy}. Finally, we draw some conclusions in the final
 Section \ref{sec:conc}.
 
 
@@ -383,8 +439,9 @@ Section \ref{sec:conc}.
 
 This paper uses the
 method called, simply, {\em Evo}
-\cite{evostar,mm:ppsn:2010,mm:cig,DBLP:conf/evoW/GuervosCM11,DBLP:conf/cec/GuervosMC11}. This
-method, which was been released from the beginning as open
+\cite{evostar,mm:ppsn:2010,mm:cig,DBLP:conf/evoW/GuervosCM11,DBLP:conf/cec/GuervosMC11}
+(as in EvoMastermind). This
+method, which was  released  as open
 source code at CPAN (the Comprehensive Perl Archive Network, available
 at a mirror near you)
 (\url{http://search.cpan.org/dist/Algorithm-Mastermind/}), is an
@@ -461,16 +518,56 @@ also in a speed improvement) and the number of games played. And,
 finally, we have used a different scoring method over previous papers
 in a attempt to beat, or at least equal, the already published
 results. 
-
 %%%%%%%%%%%%%%%%%%  Experiments  %%%%%%%%%%%%%%%%%%%
+\section{Profiling for performance enhancement}
+\label{sec:prof}
 
-\section{Experimental setup}
-\label{sec:experiments}
+\section{Using Entropy for combination scoring in evolutionary MasterMind}
+\label{sec:entropy}
 
-%%%%%%%%%%%%%%%%%%  Results  %%%%%%%%%%%%%%%%%%%
 
-\section{Results}
-\label{sec:results}
+% \begin{table*}[t!]
+% \centering
+% \caption{Comparison among approaches in this paper: BS, Evo
+%   and Berghman et al. \cite{Berghman09}. \label{tab:comparison-guesses}}
+% \subfigure[Mean number of guesses with standard deviation;
+% the quantities in parentheses indicate population and consistent set
+% size (in the case of Evo++). The horizontal line
+% indicates significant differences using Wilcoxon paired test. There
+% is also significant difference for  $P=6,N=9$ between the two
+% versions of Evo++, but not in the other case.\label{tab:moves}]{
+% % Era 80 el tamaño de conjunto consistente que se usaba? Siempre es el
+% % mismo? No se dice en ningún lado - JJ
+% \begin{tabular}{lcc}
+
+%                     &$P=5, N=8$ & $P=6,N=9$ \\
+% \hline
+% Berghman et al. &                                           & 6.475  \\
+% \textsc{Evo++ (EN) }   & (1000,200) $ 5.555 \pm 0.011$ & (2000,200)
+% $6.373 \pm 0.011$ \\
+% \textsc{BS}  & $5.518 \pm  0.009$ &  $6.382 \pm 0.011 $ \\
+% \hline
+% \textsc{Evo++ (MP) }   & (1000,80) $ 5.602 \pm 0.012$ & (2000,200)
+% $6.436 \pm 0.012$ \\
+
+% \hline
+% \end{tabular}
+% }
+
+% \subfigure[Mean number of evaluations with standard deviation;
+% differences are always significant.\label{tab:evals}]{
+% \begin{tabular}{lcc}
+
+%                     &$P=5, N=8$ & $P=6,N=9$ \\
+% \hline
+% \textsc{Evo++ (EN) }   &  $ 26098 \pm 144$ & $67521 \pm 384$ \\
+% \textsc{BS}  & $40619 \pm  115 $ &  $45478 \pm 168 $ \\
+% \textsc{Evo++ (MP) }   & $20120 \pm 114$ & $68860 \pm 406$ \\
+
+% \hline
+% \end{tabular}
+% }
+% \end{table*}
 
 \section{Conclusions}
 \label{sec:conc}
