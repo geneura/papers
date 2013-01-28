@@ -48,13 +48,13 @@
 \numberofauthors{2}
  \author{
  \alignauthor
- Jaimito, Jorgito, Juanito\\
+ Fergu, JJ, Pedro, Jesús, Maribel, Antonio\\
         \affaddr{Lost island}\\
         \affaddr{Unknown}\\
         \affaddr{Pacific Ocean}\\
         \email{jack,sawyer,hurley@lost.com}
  \alignauthor
- Otro\\
+ Carlos\\
  \affaddr{Lost island}\\
  \affaddr{Unknown}\\
  \affaddr{Pacific Ocean}\\
@@ -157,7 +157,7 @@
 \maketitle
 
 \begin{abstract}
-This paper shows the population size adaptationt taking into account the... Two problmes have been tested. Results show that adapting this parameter decreases the time to obtain the optimum.
+This paper shows a preliminary study about population size adaptation in an distributed genetic algorithm. This adaptation is done taking into account the computational power of an heterogeneous cluster. Two problems have been tested: MMDP and OneMax. Results show that setting this parameter decreases the time to obtain the optimum in both problems in heterogeneous clusters.
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -170,7 +170,7 @@ This paper shows the population size adaptationt taking into account the... Two 
 \terms{Algorithms}
 
 
-\keywords{distributed algorithms, island model, migration rate, migration policies}
+\keywords{parameter setting, distributed algorithms, island model}
 
 
 %
@@ -179,7 +179,21 @@ This paper shows the population size adaptationt taking into account the... Two 
 \section{Introduction}
 \label{sec:intro}
 %
+New trends such as Cloud Computing \cite{CLOUD}, GRID \cite{GRID} or Service Oriented Science are leading to heterogeneous computational devices working at the same time. Evolutionary Algorithms are ...
 
+
+
+In this work, a proof-of-concept system has been developed to solve the next research questions:
+\begin{itemize}
+ \item Has the BLA?
+ \item Has the proposed adaptation of the population size any effect?
+ \item Is there any difference in homogeneous and heterogeneous clusters?
+\end{itemize}
+
+
+The rest of the work is structured as follows: after the state of
+the art, we present the developed algorithms and experimental setting. 
+Then, the results of the experiments are shown (Section \ref{sec:results}), followed by conclusions and suggestions for future work.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  SOA  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -188,26 +202,28 @@ This paper shows the population size adaptationt taking into account the... Two 
 \label{sec:soa}
 %
 
-In past blabla... heterogeneous parameters... \cite{HETEROGENEOUS}
+Parameter setting and parameter control in Evolutionary Algorithms (EAs) refer to...
+
+In \cite{HETEROGENEOUS}, a random blablabla... In \cite{HETEROGENEOUSHARD} authors compare a distributed GA in homogeneous and heterogeneous clusters. Super-linear performance is obtained in the heterogeneous clusters, being more efficient that the same algorithm in homogeneous clusters. Some authors have expanded this idea adapting the algorithm to be executed: in \cite{HYDROCM} a distributed meta-heuristic executes simpler algorithms in simpler nodes. In \cite{HETEROTOPOLOGY} different configurations of heterogeneous machines for a tree topoly are studied. However, the heterogeneity is simulated in an homogeneous clusters. For our knowledge, there are not works that modify parameters of the GA depending of the node where the island is being executed.
 
 %%%%%%%%%%%%%%%%%%  Experiments  %%%%%%%%%%%%%%%%%%%
 
-\subsection{Experimental setup}
+\section{Experimental setup}
 \label{subsec:experiments}
+This section presents the parameters and systems to conduce the experiments.
 
-The algorithm to improve is a steady-state genetic algorithm. Parameters are described in Table \ref{table:parameters}. A ring topology has been used with the order N N N N . Because the operating system heterogeneity the ANONYMOUS framework, based in Java, has been used. To avoid bottlenecks, asynchronous migration is performed (sending the best individual after certain number of generations).
+The algorithm to improve is a steady-state genetic algorithm. Parameters are described in Table \ref{table:parameters}. A ring topology has been used. Because the operating system heterogeneity the OSGiLiath framework \cite{OSGILIATH}, based in Java, has been used. Also, to avoid bottlenecks in distributed executions, asynchronous communication must be provided to avoid idle time. This kind of communication offers excellent performance when working with different nodes and operating systems, as demonstrated by \cite{HETEROGENEOUSHARD}. In our case the best individual is sent after a fixed number of generations. The transmission mechanism is based in ECF Generic server (over TCP). Two different parameters configurations have been used: 64 individuals per node (homogeneous size) and a different number of individuals proportional to the number of generations attained in this first homogeneous execution.
 
 
 \begin{table}
 \centering
-\caption{Parameters used}
 \begin{tabular}{|c|c|} \hline
 Name & Value\\ \hline
 Total individuals & 256\\ \hline
 Population size in HoSi & 64 \\ \hline
-Population size in HeSi & 12 12 12 12\\
+Population size in HeSi & 12 12 12 12\\ \hline
 Crossover rate & 0.5\\ \hline
-Mutation rate & 1/l\\ \hline
+Mutation rate & 1/genome size\\ \hline
 Selection & 2-tournament \\ \hline
 Generations to migrate & 64 \\
 \hline\end{tabular}
@@ -215,69 +231,148 @@ Generations to migrate & 64 \\
 \caption{Parameters used}
 \end{table}
 
-The problems to evaluate are the MMDP and OneMax. 
+The problems to evaluate are the Massively Multimodal Deceptive Problem (MMDP) and OneMax. The MMDP
+\cite{goldberg92massive} is designed to be difficult for an EA, due to
+its multimodality and deceptiveness. It is composed of $k$ subproblems of 6 bits each one ($s_i$). Depending of
+the number of ones (unitation) $s_i$ takes the values shown in Table \ref{table:mmdp}.  
+
+\begin{table}[h]
+
+\centering
+{\scriptsize
+\begin{tabular}{|c|c|}
+\hline
+\texttt{Unitation}&\texttt{Subfunction value}\\
+\hline
+0 & 1.000000 \\
+\hline
+1 & 0.000000 \\
+\hline
+2 & 0.360384 \\
+\hline
+3 & 0.640576\\
+\hline
+4 & 0.360384\\
+\hline
+5 & 0.000000\\
+\hline
+6 & 1.000000\\
+\hline
+
+\end{tabular}
+}
+\caption{ Basic deceptive bipolar function ($s_i$) for MMDP
+\label{table:mmdp}}
+\end{table}
+%%%%%%%%%%%%%%%%%%
 
 
 
-To test the algorithm two different computational systems have been used: an {\em heterogeneous cluster} and an {\em homogeneous cluster}. The first one is formed by 4 different computers with different processors, operating systems and memory. The latter is a cluster formed by WHATEVER. Table {\ref:computers} shows the CARACTERISTICAS of each system.
+The fitness value is defined as the sum of the $s_i$ subproblems with an optimum of $k$ (equation \ref{eq:mmdp}).
+The search space is composed of $2^{6k}$ combinations from which there
+are only $2^k$ global solutions with $22^k$ deceptive
+attractors. Hence, a search method will have to find a global solution
+out of $2^{5k}$ additionally to deceptiveness. In this work $k=25$
 
-Each different configuration has been tested 30 times.
+\begin{equation}\label{eq:mmdp}
+\scriptsize
+f_{MMDP}(\vec s)= \sum_{i=1}^{k} fitness_{s_i}
+\end{equation}\\
 
 
+
+To test the algorithm two different computational systems have been used: an {\em heterogeneous cluster} and an {\em homogeneous cluster}. The first one is formed by 4 different computers with different processors, operating systems and memory. The latter is a cluster formed by WHATEVER. Table \ref{tab:computers} shows the CARACTERISTICAS of each system.
+
+\begin{table}
+\centering
+\caption{Results for the MMDP problem.}
+\begin{tabular}{|c|c|c|c|c|} \hline
+Name 		 & Processor 	& Memory 	& Operating System  & Network  \\ \hline
+\multicolumn{5}{c}{Homogeneous cluster} \\ \hline
+Cluster node &			    &			&					&		  	\\ \hline
+\hline
+\multicolumn{5}{c}{Heterogeneous cluster} \\ \hline
+N1	&			    &			&					&		  	\\ \hline
+N2 	&			    &			&					&		  	\\ \hline
+N3 	&			    &			&					&		  	\\ \hline
+N4 	&			    &			&					&		  	\\ \hline
+\end{tabular}
+\label{tab:computers}
+\end{table}
+
+Each different configuration has been tested 30 times. Acronyms for each configuration are HoSi (homogeneous population size), HeSi (heterogeneous population size), HoHa (homogeneous hardware) and HeHa (heterogeneous hardware).
 %%%%%%%%%%%%%%%%%%  Results  %%%%%%%%%%%%%%%%%%%
 
-\subsection{Results}
-\label{subsec:results}
+\section{Results}
+\label{sec:results}
 
-Leyenda: HoSi = Homogeneous size. HeSi = Heterogeneous size. HoHa = Homogeneous hardware. HeHa = Heterogeneous hardware.
+As claimed by \cite{PARALLELEVALUATION} the number of evaluations can be misleading in the parallel algorithms area. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, and the real algorithm speed could not be reflected correctly. Also, the main interest in parallel programming is reduce time POR LO TANTO. However, the number of evaluations has been added for comparison between the results of the HoHa system. It is difficult to compare between the HoHa and HeHa for the same reasons. COMO LO COMPARAMOS.
 
-Table \ref{tab:resultsMMDP} shows...
+Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. In the HeHa system, adapting the population to the computational power of each nodes makes the algorithm to end faster. The number of evaluations in this case is also lower. On the other hand, in the HoHa system, setting the same population sizes makes the system slower (although the number of evaluations is also decreased). ESTO ES DEBIDO A... These results are also show in the boxplots of the Figure \ref{fig:evalsMMDP} (evaluations) and Figure \ref{fig:timeMMDP} (time).
 
 \begin{table*}
 \centering
 \caption{Results for the MMDP problem.}
 \begin{tabular}{|c|c|c|c|c|} \hline
-Configuration	& Max. generations	& TOTAL GENS	& 	Total evaluations	& Time (ms) \\ \hline
-HoSi/HoHa		& 107334,46			& 393119,86		& 25273201,06 			& 237759,43 \\ \hline
-HoSi/HeHa		& 146401,48			& 380967,25		& 24382416,51			& 136914,03 \\ \hline
-HeSi/HoHa		& 149732,6			& 438171,16		& 24430043,46			& 245776,93 \\ \hline
-HeSi/HeHa		& 96051,5			& 289282,3		& 21784528,66			& 109875,76 \\ \hline
+Configuration	& Max. generations			& Total generations			& 	Total evaluations			& Time (ms) \\ \hline
+HoSi/HeHa		& 146401,48	$\pm$ 65699,69	& 380967,25	$\pm$ 168568,84	& 24382416,51 $\pm$	10788405,87	& 136914,03 $\pm$ 60028,48\\ \hline
+HeSi/HeHa		& 96051,5	$\pm$ 45110,90	& 289282,3	$\pm$ 135038,10	& 21784528,66 $\pm$	10161989,38	& 109875,76 $\pm$ 49185,51\\ \hline \hline
+HoSi/HoHa		& 107334,46 $\pm$ 78167,19  & 393119,86 $\pm$ 241835,27	& 25273201,06 $\pm$ 15386663,12	& 237759,43 $\pm$ 178709,86\\ \hline
+HeSi/HoHa		& 149732,6 $\pm$ 81983,74	& 438171,16	$\pm$ 240169,19	& 24430043,46 $\pm$ 13395037,34	& 245776,93 $\pm$ 134715,52\\ \hline
+
 \end{tabular}
 \end{table*}
 %%%%CAMBIAR EL ORDEN!!!
 
 
-\subsubsection{MMDP Problem}
+
+
+\subsection{MMDP Problem}
 
 \begin{figure}
 \centering
 \epsfig{file=images/evalsMMDP.eps, width = 9cm}
 \caption{Number of evaluations for MMDP problem.}
+\label{fig:evalsMMDP}
 \end{figure}
 
 \begin{figure}
 \centering
 \epsfig{file=images/timeMMDP.eps, width = 9cm}
 \caption{Time to obtain the optimum in the MMDP problem (millis).}
+\label{fig:timeMMDP}
 \end{figure}
 
-Figure tal shows...
+To see the difference of how the evolution is being performed, the average fitness in each node of HeHa is shown in Figures TAL. As can be seen...
 
-\begin{figure*}
+\begin{figure}
 \centering
-\epsfig{file=images/homosize_heterohard_avg.eps, width = 9cm}
+\epsfig{file=images/homosize_heterohard_avg.eps, angle=-90, width = 9cm}
 \caption{First 1000 millis of execution of the four nodes of the heterogeneous system with the same population sizes.}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}
+\begin{figure}
 \centering
-\epsfig{file=images/heterosize_heterohard_avg.eps, width = 9cm}
+\epsfig{file=images/heterosize_heterohard_avg.eps, angle=-90, width = 9cm}
 \caption{First 1000 millis of execution of the four nodes of the heterogeneous system with different population sizes.}
-\end{figure*}
+\end{figure}
 
-\subsubsection{OneMax Problem}
+\subsection{OneMax Problem}
 
-The differences with the previous problem is... In this case results show...
+Results for this problem are shown in Table \ref{tab:onemaxresults}. As before, in this problem, also changing the population sizes decreases the time in the heterogeneous cluster. However, in this case the number of evaluations is larger. ESTO SE DEBE A... In the homogeneous system, the effect of changing this sizes is more evident, and this time the evaluations (and therefore, the time) are reduced. OneMax is PATATIN
+
+\begin{table*}
+\centering
+\caption{Results for the OneMax problem.}
+\begin{tabular}{|c|c|c|c|c|} \hline
+Configuration	& Max. generations			& Total generations			& 	Total evaluations			& Time (ms) \\ \hline
+HoSi/HeHa		& 4739,41$\pm$	305,32 		&	12081,51$\pm$	776,35 	&	773729,03$\pm$	49686,72 	&	72152,32$\pm$	4994,71 \\ \hline
+HeSi/HeHa		&	3438,03 $\pm$	149,47 &	11277,33$\pm$	471,77 &	794157,73$\pm$	31843,10 	&	61870,2	$\pm$ 2518,74 \\ \hline
+HoSi/HoHa		&	3133,36$\pm$	101,70 	&	12347,83$\pm$	394,99 	&	790773,33$\pm$	25279,52 	&	62105,03$\pm$	1964,75 \\ \hline
+HeSi/HoHa		& 13897,86$\pm$	625,27 		&	20725,63$\pm$	929,43 	&	651952,8 $\pm$	29114,54	&	56120,53$\pm$	2491,92 \\ \hline
+\end{tabular}
+\label{tab:onemaxresults}
+\end{table*}
 
 \begin{figure}
 \centering
@@ -327,7 +422,9 @@ The differences with the previous problem is... In this case results show...
 
 
 \section{Conclusions}
-Very beautiful work
+New trends, such as Cloud Computing or Service Oriented Architecture are... This work shows a preliminary study about adapting the population size of an EA to computational power of different nodes in an heterogeneous cluster. Results show that... This is a promising start for adapting EAs to the computational power of each machines.
+
+In future work a scalability study will be performed, with more computational nodes and larger problem instances. Also, other parameters such as migration rate or crossover probability will be adapted to the computational nodes. This studies will lead to automatic adaptation during runtime, whith different nodes entering or exiting in the topology during the algorithm execution.
 
 
 %ACKNOWLEDGMENTS are optional
@@ -340,7 +437,7 @@ Thanks to everybody
 % produce the bibliography for the citations in your paper.
 
 
-%\bibliographystyle{abbrv}
+%\bibliographystyle{abbrv} CAMBIAR!!!!!!
 \bibliographystyle{plain}
 \bibliography{heterogeneous}  % sigproc.bib is the name of the Bibliography in this case
 
