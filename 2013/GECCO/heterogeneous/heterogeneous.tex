@@ -179,14 +179,14 @@ This paper shows a preliminary study about population size adaptation in an dist
 \section{Introduction}
 \label{sec:intro}
 %
-New trends such as Cloud Computing \cite{CLOUD}, GRID \cite{GRID} or Service Oriented Science are leading to heterogeneous computational devices working at the same time. Evolutionary Algorithms are ...
+New trends such as Cloud Computing \cite{CLOUD}, GRID \cite{GRID} or Service Oriented Science are leading to heterogeneous computational devices working at the same time. Distributed Evolutionary Algorithms (dEAs) have been proved in these systems with SUCCES?. A heterogeneous dEA can be seen as two points of view: a dEA where the parameters are different in each island (heterogeneous parameters) or the same algorithm in heterogeneous hardware. It also have been proved that this kind of algorithms even are more efficient in heterogeneous hardware configurations than in homogeneous devices \cite{HETEROGENEOUSHARD}. This can be explained by different reasons, such as different memory access times, caché, or even implementation languages or compilers in each machine, leading to different explotation rate of the search space. The heterogeneous parameters configuration also have been proved as more efficient that a fixed set of parameters for different problems \cite{HETEROGENEOUS}. The idea of this work is combine both systems adapting the population size of the islands to the heterogeneous hardware. Two different problems (MMDP and OneMax) have been used as a benchmark.
 
 
 
 In this work, a proof-of-concept system has been developed to solve the next research questions:
 \begin{itemize}
- \item Has the BLA?
- \item Has the proposed adaptation of the population size any effect?
+ \item QUE?
+ \item Has the proposed adaptation of the population size to the computational power any effect in both systems?
  \item Is there any difference in homogeneous and heterogeneous clusters?
 \end{itemize}
 
@@ -202,9 +202,9 @@ Then, the results of the experiments are shown (Section \ref{sec:results}), foll
 \label{sec:soa}
 %
 
-Parameter setting and parameter control in Evolutionary Algorithms (EAs) refer to...
+Parameter setting and parameter control in Evolutionary Algorithms (EAs) refer to set the initial 
 
-In \cite{HETEROGENEOUS}, a random blablabla... In \cite{HETEROGENEOUSHARD} authors compare a distributed GA in homogeneous and heterogeneous clusters. Super-linear performance is obtained in the heterogeneous clusters, being more efficient that the same algorithm in homogeneous clusters. Some authors have expanded this idea adapting the algorithm to be executed: in \cite{HYDROCM} a distributed meta-heuristic executes simpler algorithms in simpler nodes. In \cite{HETEROTOPOLOGY} different configurations of heterogeneous machines for a tree topoly are studied. However, the heterogeneity is simulated in an homogeneous clusters. For our knowledge, there are not works that modify parameters of the GA depending of the node where the island is being executed.
+ In \cite{HETEROGENEOUSHARD} authors compare a distributed GA in homogeneous and heterogeneous clusters. Super-linear performance is obtained in the heterogeneous clusters, being more efficient that the same algorithm in homogeneous clusters. Some authors have expanded this idea adapting the algorithm to be executed: in \cite{HYDROCM} a distributed meta-heuristic executes simpler algorithms in simpler nodes. In \cite{HETEROTOPOLOGY} different configurations of heterogeneous machines for a tree topoly are studied. However, the heterogeneity is simulated in an homogeneous clusters. In the area of heterogeneous parameters, but homogeneous hardware, setting each island a random set of parameters can also increase the performance of a distributed Genetic Algorithm (dGA), as explained in \cite{RANDOMPARAMETERS}. That model outperformed a tuned canonical dGA with the same parameters in all islands. For our knowledge, there are not works that modify parameters of the GA depending of the node where the island is being executed.
 
 %%%%%%%%%%%%%%%%%%  Experiments  %%%%%%%%%%%%%%%%%%%
 
@@ -212,7 +212,7 @@ In \cite{HETEROGENEOUS}, a random blablabla... In \cite{HETEROGENEOUSHARD} autho
 \label{subsec:experiments}
 This section presents the parameters and systems to conduce the experiments.
 
-The algorithm to improve is a steady-state genetic algorithm. Parameters are described in Table \ref{table:parameters}. A ring topology has been used. Because the operating system heterogeneity the OSGiLiath framework \cite{OSGILIATH}, based in Java, has been used. Also, to avoid bottlenecks in distributed executions, asynchronous communication must be provided to avoid idle time. This kind of communication offers excellent performance when working with different nodes and operating systems, as demonstrated by \cite{HETEROGENEOUSHARD}. In our case the best individual is sent after a fixed number of generations. The transmission mechanism is based in ECF Generic server (over TCP). Two different parameters configurations have been used: 64 individuals per node (homogeneous size) and a different number of individuals proportional to the number of generations attained in this first homogeneous execution.
+The algorithm to improve is a steady-state distributed Genetic Algorithm (dGA). Parameters are described in Table \ref{table:parameters}. A ring topology has been used. Because the operating system heterogeneity the OSGiLiath framework \cite{OSGILIATH}, based in Java, has been used. Also, to avoid bottlenecks in distributed executions, asynchronous communication must be provided to avoid idle time. This kind of communication offers excellent performance when working with different nodes and operating systems, as demonstrated by \cite{HETEROGENEOUSHARD}. In our case the best individual is sent after a fixed number of generations. The transmission mechanism is based in ECF Generic server (over TCP). Two different parameters configurations have been used: 64 individuals per node (homogeneous size) and a different number of individuals proportional to the number of generations attained in this first homogeneous execution.
 
 
 \begin{table}
@@ -221,7 +221,7 @@ The algorithm to improve is a steady-state genetic algorithm. Parameters are des
 Name & Value\\ \hline
 Total individuals & 256\\ \hline
 Population size in HoSi & 64 \\ \hline
-Population size in HeSi & 12 12 12 12\\ \hline
+Population size in HeSi & 98 84 66 8\\ \hline
 Crossover rate & 0.5\\ \hline
 Mutation rate & 1/genome size\\ \hline
 Selection & 2-tournament \\ \hline
@@ -283,22 +283,22 @@ f_{MMDP}(\vec s)= \sum_{i=1}^{k} fitness_{s_i}
 
 To test the algorithm two different computational systems have been used: an {\em heterogeneous cluster} and an {\em homogeneous cluster}. The first one is formed by 4 different computers with different processors, operating systems and memory. The latter is a cluster formed by WHATEVER. Table \ref{tab:computers} shows the CARACTERISTICAS of each system.
 
-\begin{table}
+\begin{table*}
 \centering
-\caption{Results for the MMDP problem.}
+\caption{Details of the clusters used.}
 \begin{tabular}{|c|c|c|c|c|} \hline
 Name 		 & Processor 	& Memory 	& Operating System  & Network  \\ \hline
-\multicolumn{5}{c}{Homogeneous cluster} \\ \hline
+\multicolumn{5}{|c|}{Homogeneous cluster} \\ \hline
 Cluster node &			    &			&					&		  	\\ \hline
 \hline
-\multicolumn{5}{c}{Heterogeneous cluster} \\ \hline
+\multicolumn{5}{|c|}{Heterogeneous cluster} \\ \hline
 N1	&			    &			&					&		  	\\ \hline
 N2 	&			    &			&					&		  	\\ \hline
 N3 	&			    &			&					&		  	\\ \hline
 N4 	&			    &			&					&		  	\\ \hline
 \end{tabular}
 \label{tab:computers}
-\end{table}
+\end{table*}
 
 Each different configuration has been tested 30 times. Acronyms for each configuration are HoSi (homogeneous population size), HeSi (heterogeneous population size), HoHa (homogeneous hardware) and HeHa (heterogeneous hardware).
 %%%%%%%%%%%%%%%%%%  Results  %%%%%%%%%%%%%%%%%%%
@@ -306,9 +306,11 @@ Each different configuration has been tested 30 times. Acronyms for each configu
 \section{Results}
 \label{sec:results}
 
-As claimed by \cite{PARALLELEVALUATION} the number of evaluations can be misleading in the parallel algorithms area. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, and the real algorithm speed could not be reflected correctly. Also, the main interest in parallel programming is reduce time POR LO TANTO. However, the number of evaluations has been added for comparison between the results of the HoHa system. It is difficult to compare between the HoHa and HeHa for the same reasons. COMO LO COMPARAMOS.
+As claimed by \cite{PARALLELEVALUATION} the number of evaluations can be misleading in the parallel algorithms area. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, and the real algorithm speed could not be reflected correctly. Also, the main interest in parallel programming is to reduce time. However, the number of evaluations has been added for comparison between the results of the HoHa system. It is difficult to compare between the HoHa and HeHa for the same reasons: the evaluation time is different in each system (and machine).
 
-Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. In the HeHa system, adapting the population to the computational power of each nodes makes the algorithm to end faster. The number of evaluations in this case is also lower. On the other hand, in the HoHa system, setting the same population sizes makes the system slower (although the number of evaluations is also decreased). ESTO ES DEBIDO A... These results are also show in the boxplots of the Figure \ref{fig:evalsMMDP} (evaluations) and Figure \ref{fig:timeMMDP} (time).
+\subsection{MMDP Problem}
+
+Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. In the HeHa system, adapting the population to the computational power of each nodes makes the algorithm to end faster. The number of evaluations in this case is also lower. On the other hand, in the HoHa system, setting the same population sizes makes the system slower (although the number of evaluations is also decreased). ESTO ES DEBIDO A... These results are also show in the boxplots of the Figure \ref{fig:evalsMMDP} (evaluations) and Figure \ref{fig:timeMMDP} (time). Table \ref{tab:kruskal} shows the statistical significance of the results. First, a Kolmogorov-Smirnoff test is performed to asset the normality of the distributions. If the results are normal, then a Student's T-Test is performed. Otherwise, the non-parametric test Wilcoxon signed rank is applied. PONER CITAS GUAPAS.
 
 \begin{table*}
 \centering
@@ -324,10 +326,15 @@ HeSi/HoHa		& 149732,6 $\pm$ 81983,74	& 438171,16	$\pm$ 240169,19	& 24430043,46 $
 \end{table*}
 %%%%CAMBIAR EL ORDEN!!!
 
+%MMDP EVALS
+%HomoSizeHomoHard-HomoSizeHeteroHard 22.83333     23.69541      FALSE
+%HomoSizeHomoHard-HeteroSizeHomoHard  4.90000     23.69541      FALSE
+%HomoSizeHomoHard-HeteroSizeHeteroHard 37.53333     23.69541       TRUE
+%HomoSizeHeteroHard-HeteroSizeHomoHard 27.73333     23.69541       TRUE
+%HomoSizeHeteroHard-HeteroSizeHeteroHard 14.70000     23.69541      FALSE
+%HeteroSizeHomoHard-HeteroSizeHeteroHard 42.43333     23.69541       TRUE
 
 
-
-\subsection{MMDP Problem}
 
 \begin{figure}
 \centering
@@ -387,6 +394,28 @@ HeSi/HoHa		& 13897,86$\pm$	625,27 		&	20725,63$\pm$	929,43 	&	651952,8 $\pm$	291
 \end{figure}
 
 
+\begin{table*}
+\centering
+\caption{Statistical significance of the results.}
+\begin{tabular}{|c|c|c|c|c|} \hline
+
+Configuration			&Normal	&Test applied			&P-value & Significant difference?\\ \hline
+\multicolumn{5}{|c|}{Time for MMDP} \\ \hline
+HoSi/HeHa vs HeSi/HeHa	&Yes	&T-Test					&0,032 	 & Yes \\ \hline
+HoSi/HoHa vs HeSi/HoHa	&No		&Wilcoxon signed test	&0,567 	 & No \\ \hline
+\multicolumn{5}{|c|}{Evaluations for MMDP}	\\ \hline
+HoSi/HeHa vs HeSi/HeHa	&Yes	&T-Test					&0,231  & No \\ \hline
+HoSi/HoHa vs HeSi/HoHa	&No		&Wilcoxon signed test	&0,958  & No \\ \hline
+\multicolumn{5}{|c|}{Time for OneMax} \\ \hline
+HoSi/HeHa vs HeSi/HeHa	&		&						& 	& ? \\ \hline
+HoSi/HoHa vs HeSi/HoHa	&		&						& 	& ? \\ \hline
+\multicolumn{5}{|c|}{Evaluations for OneMax}	\\ \hline
+HoSi/HeHa vs HeSi/HeHa	&		& 						&		& \\ \hline
+HoSi/HoHa vs HeSi/HoHa	&		&						&		& \\ \hline
+\end{tabular}
+\label{tab:significance}
+\end{table*}
+
 %\begin{table}
 %\centering
 %\caption{Frequency of Special Characters}
@@ -422,14 +451,14 @@ HeSi/HoHa		& 13897,86$\pm$	625,27 		&	20725,63$\pm$	929,43 	&	651952,8 $\pm$	291
 
 
 \section{Conclusions}
-New trends, such as Cloud Computing or Service Oriented Architecture are... This work shows a preliminary study about adapting the population size of an EA to computational power of different nodes in an heterogeneous cluster. Results show that... This is a promising start for adapting EAs to the computational power of each machines.
+New trends, such as Cloud Computing or Service Oriented Architecture are providing  This work shows a preliminary study about adapting the population size of an EA to computational power of different nodes in an heterogeneous cluster. Results show that... This is a promising start for adapting EAs to the computational power of each machines.
 
-In future work a scalability study will be performed, with more computational nodes and larger problem instances. Also, other parameters such as migration rate or crossover probability will be adapted to the computational nodes. This studies will lead to automatic adaptation during runtime, whith different nodes entering or exiting in the topology during the algorithm execution.
+In future work a scalability study will be performed, with more computational nodes and larger problem instances. Also, other parameters such as migration rate or crossover probability will be adapted to the computational nodes. This studies will lead to automatic adaptation during runtime, whith different nodes entering or exiting in the topology during the algorithm execution or adapting to system load.
 
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
-Thanks to everybody
+This work has been supported in part by FPU research grant AP2009-2942 and projects AmIVital (CENIT2007-1010), EvOrq (P08-TIC-03903), UGR PR-PP2011-5 and TIN2011-28627-C04-02.
 
 %
 % The following two commands are all you need in the
