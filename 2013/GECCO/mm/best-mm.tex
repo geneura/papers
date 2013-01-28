@@ -1,6 +1,6 @@
 \documentclass{sig-alternate}
 \usepackage[latin1]{inputenc}
-\usepackage{graphicx}        % standard LaTeX graphics tool
+\usepackage[caption=false]{subfig}
 \usepackage{url}
 
 %Sacado del paper de Fergu
@@ -56,10 +56,10 @@
         \affaddr{Pasadena}\\
         \email{k,w,h@geekysit.com}
  \alignauthor
- Farrah-Fawler\\
+ Amy Martin\\
  \affaddr{Neurobiology Institute}\\
  \affaddr{Los Angeles}\\
- \email{amy@almostcompletelylost.it}
+ \email{amy@globalsolutio.ns}
  }
 
 %\numberofauthors{2}
@@ -522,52 +522,162 @@ results.
 \section{Profiling for performance enhancement}
 \label{sec:prof}
 
+One of the first questions one always has to ask about any new
+algorithm or method proposed is whether its implementation is, in
+fact, the most efficient possible. Implementation matters, as the
+authors of
+\cite{DBLP:conf/iwann/MereloRACML11,durlak2008implementation} have
+proved. Implementation affects not only same-method speed, but also
+gives some insight on what is important and what is not in the method,
+allowing a more deep understanding of it. 
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.375]{pre-profile.png}
+\caption{Output of {\tt Devel::NYTProf} before profiling. Please note
+  the place where the algorithm spends most of the time, {\tt
+    check\_combination} and, in fact, the top ten functions taking most
+  of the time. \label{fig:profile:pre}} 
+\end{figure} 
+%
+
+Since the code for the methods presented here is written in Perl, we
+have used {\tt Devel::NYTProf} a source profiler originally developed
+for the New York times. We tested it over 10 runs of the algorithm
+with different hidden combinations. Please take into account that,
+since evolutionary algorithms are stochastic, there is a certain
+amount of randomness in the result. This profiler outputs a file
+\footnote{All result files are available under request} that
+can be analyzed and output to a set of web pages. The first page of
+the report has been captured and is shown in Figure
+\ref{fig:profile:pre}. 
+
+This report shows the usual output in profilers, including the number
+of calls to a function, exclusive (time spent exclusively in that
+function) and inclusive (which includes calls to functions from the
+one listed). We usually have to look at the first item, which a
+function called {\tt check\_combination}. This is the function that
+compares two combinatios, be it the hidden combination with the one
+played, or obviously more frequently, the combinations in the eligible
+set among them or the combinations in the population with the already
+played ones to compute fitness. Even as this function had been
+optimized in previous versions of the algorithm, it eventually results
+that it takes 12$\mu$s per call, which is a lot considering that it is
+the core of the algorithm. This makes this function a target for
+optimization; however, it is almost imposible to go further using
+Perl. It gets worse, however, since this function is called mainly
+from the 4th in the list, {\tt check\_rule}, which compares a string
+with already played guesses. That adds a few seconds to
+the total tally and it gets even worse since this one is called mainly
+from {\tt distance\_taxicab}, 9th in the list, where the program spends
+almost 70$\mu$s per call, being called almost a hundred thousand times
+during the 10 games. 
+
+That is good news, also, since we have a clear target for
+optimization, string comparison. This is the first and most important
+optimization performed: {\tt check\_combination} was programmed in C,
+and the several levels of indirection used for comparing strings were
+reduced when possible. The substitute for {\tt distance\_taxicab} is
+called {\tt distance\_xs} (XS is the method for including compiled C
+functions inside Perl programs) and is shown at the top of the new
+version in Figure \ref{fig:profile:post}.  This new funtion takes
+19$\mu$s per call, less than 1/3 what it did before. Taking into
+account that previously it took around 1/3 of the total time, the
+total improvement in performance will amount to around 10\%. That is
+not dramatic, but since usual experiments take up to several hours, it
+might mean a much better turnaround for performing them.
+
+Besides, the optimization does not stop here. The second function is
+also an importan target for optimization, because it takes a lot of
+time and is only called 100 times, one for each generation (around 10
+generations per game), and a whooping 29 ms. per call. Since this
+function uses lots of complicated data structures it is not such an
+easy target for optimization, but still some improvements can be
+made. Since most of the time is spent comparing fitnesses, it is just
+a matter of substituting a function call ({\tt Fitness()}) by reading
+a value ({\tt ->{'\_fitness'}}). It is not a good practice
+(implementation might vary), but we trade that for a good increment in
+speed (to 5.73 ms. per call); that is basically achieved since that
+particular line is called almost a million times during the run. That
+can also be seen in the third function in the list, which is
+Fitness. By suppressing most calls to that function we inmediately
+eliminate its 1.91s from the running time (or at least most of them,
+since you actually have to retrieve the fitness). 
+
+Finally, as it happens with most evolutionary algorithms, we find a
+sorting function in the sixth place, which is called from many
+places. That is specific from the evolutionary algorithm (not
+MasterMind) but can be eliminated anyways by using {\tt Sort::Key},
+the fastest sort function available in the Perl module respository
+(called CPAN). 
+
+%
+\begin{figure*}[!htb]
+\centering
+\includegraphics[scale=0.5]{post-profile.png}
+\caption{Output of {\tt Devel::NYTProf} after the last optiization
+    profiling. The first one now is the new function created, and all
+    previously time-hogging functions have
+    disappeared. \label{fig:profile:post}} 
+\end{figure*} 
+%
+
+As we proceed further down the list we could find more convenient
+optimizations. However, the effort needed will not result in a big
+improvement in speed. Final result for the algorithms eventually used
+in this paper are shown in Figure \ref{fig:profile:post}, which now
+needs 22.5s to run instead of the previous 37.5, a better than 40\%
+improvement in speed. Please note than, even so, the speed of
+interpreted languages can be slower than compiled languages. However,
+we have proved that big speed improvements can be made by using a
+systematic procedure; these speeds can be in many cases much bigger
+than those possibly obtained by tweaking or improvement of the
+algorithm itself.
+
 \section{Using Entropy for combination scoring in evolutionary MasterMind}
 \label{sec:entropy}
 
 
-% \begin{table*}[t!]
-% \centering
-% \caption{Comparison among approaches in this paper: BS, Evo
-%   and Berghman et al. \cite{Berghman09}. \label{tab:comparison-guesses}}
-% \subfigure[Mean number of guesses with standard deviation;
-% the quantities in parentheses indicate population and consistent set
-% size (in the case of Evo++). The horizontal line
-% indicates significant differences using Wilcoxon paired test. There
-% is also significant difference for  $P=6,N=9$ between the two
-% versions of Evo++, but not in the other case.\label{tab:moves}]{
-% % Era 80 el tamaño de conjunto consistente que se usaba? Siempre es el
-% % mismo? No se dice en ningún lado - JJ
-% \begin{tabular}{lcc}
+\begin{table*}[t!]
+\centering
+\caption{Comparison among approaches in this paper:  Evo
+  and Berghman et al. \cite{Berghman09}. Previously obtained results
+  published in \cite{mm:evostar13} are also included for the sake of
+  comparison. Those labeled EN used Entropy as scoring method, while
+  MP use Most Parts. \label{tab:comparison-guesses}}
+\subfloat[Mean number of guesses with standard deviation;
+the quantities in parentheses indicate population and consistent set
+size (in the case of Evo++). The horizontal line
+indicates significant differences using Wilcoxon paired test. There
+is also significant difference for  $P=6,N=9$ between the two
+versions of Evo++, but not in the other case.]{\label{tab:moves}
+\begin{tabular}{lcc}
 
-%                     &$P=5, N=8$ & $P=6,N=9$ \\
-% \hline
-% Berghman et al. &                                           & 6.475  \\
-% \textsc{Evo++ (EN) }   & (1000,200) $ 5.555 \pm 0.011$ & (2000,200)
-% $6.373 \pm 0.011$ \\
-% \textsc{BS}  & $5.518 \pm  0.009$ &  $6.382 \pm 0.011 $ \\
-% \hline
-% \textsc{Evo++ (MP) }   & (1000,80) $ 5.602 \pm 0.012$ & (2000,200)
-% $6.436 \pm 0.012$ \\
+                    &$P=5, N=8$ & $P=6,N=9$ \\
+\hline
+Berghman et al. &             5.618                          & 6.475  \\
+\textsc{Evo++ (EN) }   & (1000,200) $ 5.555 \pm 0.011$ & (2000,200)
+$6.373 \pm 0.011$ \\
+\textsc{Evo++ (MP) }   & (1000,80) $ 5.602 \pm 0.012$ & (2000,200)
+$6.436 \pm 0.012$ \\
 
-% \hline
-% \end{tabular}
-% }
+\hline
+\end{tabular}
+}
 
-% \subfigure[Mean number of evaluations with standard deviation;
-% differences are always significant.\label{tab:evals}]{
-% \begin{tabular}{lcc}
+\subfloat[Mean number of evaluations with standard deviation;
+differences are always significant.]{\label{tab:evals}
+\begin{tabular}{lcc}
 
-%                     &$P=5, N=8$ & $P=6,N=9$ \\
-% \hline
-% \textsc{Evo++ (EN) }   &  $ 26098 \pm 144$ & $67521 \pm 384$ \\
-% \textsc{BS}  & $40619 \pm  115 $ &  $45478 \pm 168 $ \\
-% \textsc{Evo++ (MP) }   & $20120 \pm 114$ & $68860 \pm 406$ \\
+                    &$P=5, N=8$ & $P=6,N=9$ \\
+\hline
+\textsc{Evo++ (EN) }   &  $ 26098 \pm 144$ & $67521 \pm 384$ \\
+\textsc{Evo++ (MP) }   & $20120 \pm 114$ & $68860 \pm 406$ \\
 
-% \hline
-% \end{tabular}
-% }
-% \end{table*}
+\hline
+\end{tabular}
+}
+\end{table*}
 
 \section{Conclusions}
 \label{sec:conc}
