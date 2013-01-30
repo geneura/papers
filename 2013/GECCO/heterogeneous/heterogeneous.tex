@@ -55,7 +55,7 @@
         \affaddr{Pacific Ocean}\\
         \email{jack,sawyer,hurley@lost.com}
  \alignauthor
- Carlos\\
+ Anonymous\\
  \affaddr{Lost island}\\
  \affaddr{Unknown}\\
  \affaddr{Pacific Ocean}\\
@@ -158,7 +158,7 @@
 \maketitle
 
 \begin{abstract}
-This paper shows a preliminary study about population size tuning in an distributed genetic algorithm. This adaptation is done taking into account the computational power of an heterogeneous cluster. Two problems with distinct characteristics have been tested: the linearly-solvable OneMax problem and the deceptive and multimodal MMDP functions. Results show that setting this parameter decreases the time to obtain the optimum in both problems in heterogeneous clusters.
+This paper shows a preliminary study about population size tuning in an distributed genetic algorithm. This adaptation is done taking into account the computational power of each node of an heterogeneous cluster. Two problems with distinct characteristics have been tested: the linearly-solvable OneMax problem and the deceptive and multimodal MMDP functions. Same parameters are also tested in an homogeneous scientific cluster. Results show that setting this parameter according computational power decreases the time to obtain the optimum in both problems in heterogeneous clusters.
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -180,20 +180,15 @@ This paper shows a preliminary study about population size tuning in an distribu
 \section{Introduction}
 \label{sec:intro}
 %
-New trends such as Cloud Computing \cite{CLOUD}, GRID \cite{OPENSCIENCEGRID} or Service Oriented Science are leading to heterogeneous computational devices working at the same time.  Moreover, many laboratories do not count with classic clusters, but the usual workstations used by scientist can behave in group as a heterogeneous cluster. Distributed Evolutionary Algorithms (dEAs) have been tested in these systems with SUCCES?. These systems can take advantage of heterogeneous dEAs. 
+New trends such as Cloud Computing \cite{CLOUD}, GRID \cite{OPENSCIENCEGRID} or Service Oriented Science \cite{GLOBUS} are leading to heterogeneous computational devices working at the same time.  Moreover, many laboratories do not count with classic clusters, but the usual workstations used by scientists can behave in group as a heterogeneous cluster. Distributed Evolutionary Algorithms (dEAs) have been tested in these systems with SUCCES?. These systems can take advantage of heterogeneous dEAs. 
 
 Heterogeneous dEAs can be divided in two categories: a dEA where the parameters are different in each island (heterogeneous parameters) or the same algorithm in heterogeneous hardware. It also have been proved that this kind of algorithms are even more efficient in heterogeneous hardware configurations, than in homogeneous devices \cite{HETEROGENEOUSHARD}. This can be explained by different reasons, such as different memory access times, cache, or even implementation languages or compilers in each machine, leading to different explotation rate of the search space. The heterogeneous parameters configuration also have been proved as more efficient than a fixed set of parameters for different problems \cite{HETEROGENEOUSPARAMETERS}. Our motivation in this work is to combine both ideas adapting the population size of the islands to the heterogeneous hardware. To calculate the computational power, the algorithm is executed in each machine and distribute a total size of individuals according the number of generations attained in each node during the same time. Two different problems (MMDP and OneMax) have been used as a benchmark.
-
-TERMINAR:
-- RED UGR y EREBO y MEMORIA EREBO
--
-
 
 
 In this work, a distributed system has been developed to solve the following questions:
 \begin{itemize}
- \item Can a distributed EA be adapted for more adequate performance of a heterogeneous cluster? Ver si se puede adaptar un sistema distribuido para el aprovechamiento más adecuado de un cluster heterogéneo !!!!!!!!!!
- \item Does the proposed population size adaptation scheme to the computational power any effect in both systems?
+ \item Can a distributed EA be adapted to take the most of the performance of a heterogeneous cluster?
+ \item Does the proposed population size adaptation to the computational power scheme any effect in both systems?
  \item Is there any difference in homogeneous and heterogeneous clusters?
 \end{itemize}
 
@@ -211,7 +206,7 @@ Then, the results of the experiments are shown (Section \ref{sec:results}), foll
 
 In the field of the Evolutionary Computing there are two different approaches about the algorithm parameter setting: parameter control and parameter tuning \cite{PARAMETERTUNING}. The first one refers to set a number of parameters of an EA and change these parameter while the algorithm is running. The parameter tuning consist in establish a good set of parameters before the run (and do not change them during runtime).
 
- In \cite{HETEROGENEOUSHARD} authors compare a distributed GA in homogeneous and heterogeneous clusters. Super-linear performance is obtained in the heterogeneous clusters, being more efficient that the same algorithm in homogeneous clusters. Some authors have expanded this idea adapting the algorithm to be executed: in \cite{HYDROCM} a distributed meta-heuristic executes simpler algorithms in simpler nodes. In \cite{HETEROGENEOUSTOPOLOGY} different configurations of heterogeneous machines for a tree topoly are studied. However, the heterogeneity is simulated in an homogeneous clusters. In the area of heterogeneous parameters, but homogeneous hardware, setting each island a random set of parameters can also increase the performance of a distributed Genetic Algorithm (dGA), as explained in \cite{HETEROGENEOUSPARAMETERS}. That model outperformed a tuned canonical dGA with the same parameters in all islands. 
+ In \cite{HETEROGENEOUSHARD} authors compare a distributed GA in homogeneous and heterogeneous clusters. Super-linear performance is obtained in the heterogeneous clusters, being more efficient that the same algorithm in homogeneous clusters. Some authors have expanded this idea adapting the algorithm to be executed: in \cite{HYDROCM} a distributed meta-heuristic executes simpler algorithms in simpler nodes. In \cite{HETEROGENEOUSTOPOLOGY} different configurations of heterogeneous machines for a tree topology are studied. However, the heterogeneity is simulated in an homogeneous clusters. Load-balancing is also applied taking into account the computational load of the nodes in \cite{PARALLELIMPLEMENTATION}: a small benchmark is executed in all nodes at the start of the algorithm to distribute individuals of an Evolutionary Strategy (ES). However, there is not communication between the nodes. In the area of heterogeneous parameters, but homogeneous hardware, setting each island a random set of parameters can also increase the performance of a distributed Genetic Algorithm (dGA), as explained in \cite{HETEROGENEOUSPARAMETERS}. That model outperformed a tuned canonical dGA with the same parameters in all islands. Finally, adapting the migration period have been produced better results than homogeneous periods in homogeneous cluster, as claimed by \cite{HETEROGENEOUSMIGRATION}.
 
  Our work presents a combination of previous ideas, where a parameter tuning given by the computational cost of the machines is performed. For our knowledge, there are not works that modify parameters of the GA depending of the node where the island is being executed.
 
@@ -221,28 +216,28 @@ In the field of the Evolutionary Computing there are two different approaches ab
 \label{subsec:experiments}
 This section presents the parameters and systems to conduce the experiments.
 
-The algorithm to improve is a distributed Genetic Algorithm (dGA). Parameters are described in Table \ref{table:parameters}. The algorithm is steady-state: the offspring is mixed with the parents and the worst individuals are removed. A ring topology has been used. In our case the best individual is sent after a fixed number of generations.  Two different parameters configurations have been used: 64 individuals per node (homogeneous size) and a different number of individuals proportional to the number of generations attained in this first homogeneous size execution (heterogeneous size).
+The algorithm to improve is a distributed Genetic Algorithm (dGA). Parameters are described in Table \ref{table:parameters}. The algorithm is steady-state: the offspring is mixed with the parents and the worst individuals are removed. A ring topology has been used, and the best individual is sent after a fixed number of generations.  Two different parameter configurations have been used: 64 individuals per node (homogeneous size) and a different number of individuals proportional to the number of generations attained in this first homogeneous size execution (heterogeneous size).
 
 
 \begin{table}
 \centering
+\caption{Parameters used.}
 \begin{tabular}{|c|c|} \hline
 Name & Value\\ \hline
 Total individuals & 256\\ \hline
 Population size in HoSi & 64 \\ \hline
 Population size in HeSi & 98, 84, 66, and 8\\ \hline
-Crossover type & Uniform crossover \\
+Crossover type & Uniform crossover \\ \hline
 Crossover rate & 0.5\\ \hline
 Mutation rate & 1/genome size\\ \hline
 Selection & 2-tournament \\ \hline
-Replacement & Steady-state\\
-Generations to migrate & 64 \\
-Genome size for MMDP & 150 \\
-Genome size for OneMax & 5000 \\
+Replacement & Steady-state\\ \hline
+Generations to migrate & 64 \\ \hline
+Genome size for MMDP & 150 \\ \hline
+Genome size for OneMax & 5000 \\ 
 
 \hline\end{tabular}
 \label{table:parameters}
-\caption{Parameters used.}
 \end{table}
 
 The problems to evaluate are the Massively Multimodal Deceptive Problem (MMDP) \cite{goldberg92massive} and the OneMax problem \cite{ONEMAX}. Each one requires different actions/abilities by the GA at the level of population sizing, individual selection and building-blocks mixing. The MMDP
@@ -253,7 +248,8 @@ the number of ones (unitation) $s_i$ takes the values shown in Table \ref{table:
 \begin{table}[h]
 
 \centering
-{\scriptsize
+{%\scriptsize
+\caption{ Basic deceptive bipolar function ($s_i$) for MMDP.}
 \begin{tabular}{|c|c|}
 \hline
 \texttt{Unitation}&\texttt{Subfunction value}\\
@@ -275,8 +271,8 @@ the number of ones (unitation) $s_i$ takes the values shown in Table \ref{table:
 
 \end{tabular}
 }
-\caption{ Basic deceptive bipolar function ($s_i$) for MMDP
-\label{table:mmdp}}
+
+\label{table:mmdp}
 \end{table}
 %%%%%%%%%%%%%%%%%%
 
@@ -299,10 +295,10 @@ f_{OneMax}(\vec{x}) = \sum_{i=1}^{N}{x_{i}}
 \end{equation}
 
 
-To test the algorithm two different computational systems have been used: an {\em heterogeneous cluster} and an {\em homogeneous cluster}. The first one is formed by 4 different computers with different processors, operating systems and memory. The latter is a scienfitic cluster formed by homogeneous nodes. Table \ref{tab:computers} shows the features of each system.
+To test the algorithm two different computational systems have been used: an {\em heterogeneous cluster} and an {\em homogeneous cluster}. The first one is formed by 4 different computers of our lab with different processors, operating systems and memory. The latter is a dedicated scientific cluster formed by homogeneous nodes. Table \ref{tab:computers} shows the features of each system.
 
 \begin{table*}
-\centering
+\centering{\scriptsize
 \caption{Details of the clusters used.}
 \begin{tabular}{|c|c|c|c|c|} \hline
 Name 		 & Processor 	& Memory 	& Operating System  & Network  \\ \hline
@@ -315,12 +311,13 @@ N2 	&	 Intel(R) Core(TM)2 Quad CPU    Q6600  @ 2.40GHz		& 4GB		&	Ubuntu 11.04 (6
 N3 	&	 AMD Phenom(tm) 9950 Quad-Core Processor @ 1.30Ghz		& 3GB		&	Ubuntu 10.10 (32 bits)	&	?? Ethernet	  	\\ \hline
 N4 	&	 Intel (R) Pentium 3 @ 800MHz		    				& 768 MB	&	Ubuntu 10.10 (32 bits)	& 		  	\\ \hline
 \end{tabular}
+}
 \label{tab:computers}
 \end{table*}
 
-Because the operating system and architecture heterogeneity the ANONYMOUS framework \cite{OSGILIATH}, based in Java, has been used. This is a service-oriented evolutionary framework that automatically configures services to use and be used in a local network. In this case, each node offers a migration buffer to accept foreign individuals. Also, to avoid bottlenecks in distributed executions, asynchronous communication has been provided to avoid idle time. This kind of communication offers excellent performance when working with different nodes and operating systems, as demonstrated by \cite{HETEROGENEOUSHARD}. The transmission mechanism is based in ECF Generic server (over TCP) \footnote{\url{http://www.eclipse.org/ecf/}}. The source code of the algorithms used in this work is available in \url{http://anonymous} under a GPL V3 License.
+Because the operating system and architecture heterogeneity the ANONYMOUS framework \cite{OSGILIATH}, based in Java, has been used. This is a service-oriented evolutionary framework that automatically configures services to use and be used in a local network. In this case, each node offers a migration buffer to accept foreign individuals. Also, to avoid bottlenecks in distributed executions, asynchronous communication has been provided to avoid idle time using reception buffers (that is, the algorithm does not wait until new individuals arrive). This kind of communication offers excellent performance when working with different nodes and operating systems, as demonstrated by \cite{HETEROGENEOUSHARD}. The transmission mechanism is based in ECF Generic server (over TCP) \footnote{\url{http://www.eclipse.org/ecf/}}. The source code of the algorithms used in this work is available in \url{http://anonymous} under a GPL V3 License.
 
-Each different configuration has been tested 30 times. Acronyms for each configuration are HoSi (homogeneous population size), HeSi (heterogeneous population size), HoHa (homogeneous hardware) and HeHa (heterogeneous hardware). The population sizes are obtained after the execution of the HoSi/HeHa version of the MMDP and divide the total number of individuals (256) proportional to the average number of generations attained in each node. Thus, the HeSi configuration uses 98, 84, 66, and 8 individuals (from N1 to N4).
+Each different configuration has been tested 30 times. Acronyms for each configuration are HoSi (homogeneous population size), HeSi (heterogeneous population size), HoHa (homogeneous hardware) and HeHa (heterogeneous hardware). The population sizes are obtained after the execution of the HoSi/HeHa version of the MMDP and divide the total number of individuals (256) proportional to the average number of generations attained in each node. Thus, the HeSi configuration uses 98, 84, 66, and 8 individuals (from N1 to N4). Note that, having two nodes with the same processors and memory (N1 and N2), they have different computational power.
 %%%%%%%%%%%%%%%%%%  Results  %%%%%%%%%%%%%%%%%%%
 
 \section{Results}
@@ -330,7 +327,9 @@ As claimed by \cite{EVALUATIONPARALLEL} the number of evaluations can be mislead
 
 \subsection{MMDP Problem}
 
-Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. In the HeHa system, adapting the population to the computational power of each nodes makes the algorithm to end faster. The number of evaluations in this case is also lower. On the other hand, in the HoHa system, setting the same population sizes makes the system slower (although the number of evaluations is also decreased). ESTO ES DEBIDO A... These results are also show in the boxplots of the Figure \ref{fig:evalsMMDP} (evaluations) and Figure \ref{fig:timeMMDP} (time). Table \ref{tab:significance} shows the statistical significance of the results. First, a Kolmogorov-Smirnov test is performed to asset the normality of the distributions. If the results are normal, then a Student's T-Test is performed. Otherwise, the non-parametric test Wilcoxon signed rank is applied (see \cite{TUTORIAL} for a tutorial for comparing EAs).
+Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. These results are also show in the boxplots of the Figure \ref{fig:evalsMMDP} (evaluations) and Figure \ref{fig:timeMMDP} (time). Table \ref{tab:significance} shows the statistical significance of the results. First, a Kolmogorov-Smirnov test is performed to asset the normality of the distributions. If the results are normal, then a Student's T-Test is run. Otherwise, the non-parametric test Wilcoxon signed rank is applied (see \cite{TUTORIAL} for a tutorial for comparing EAs).
+
+ In the HeHa system, adapting the population to the computational power of each nodes makes the algorithm to end faster, but with the same number of evaluations (no statistical significance). This can be explained because the evaluation time is different in all nodes. On the other hand, in the HoHa system, setting the same population sizes makes no difference in time and evaluations. EXPLICAR.
 
 \begin{table*}
 \centering
@@ -357,12 +356,7 @@ HeSi/HoHa		& 149732,6 $\pm$ 81983,74	& 438171,16	$\pm$ 240169,19	& 24430043,46 $
 
 
 
-\begin{figure}
-\centering
-\epsfig{file=images/evalsMMDP.eps, width = 9cm}
-\caption{Number of evaluations for MMDP problem. White is the heterogeneous cluster and gray the homogeneous one.}
-\label{fig:evalsMMDP}
-\end{figure}
+
 
 \begin{figure}
 \centering
@@ -371,14 +365,16 @@ HeSi/HoHa		& 149732,6 $\pm$ 81983,74	& 438171,16	$\pm$ 240169,19	& 24430043,46 $
 \label{fig:timeMMDP}
 \end{figure}
 
-To see the difference of how the evolution is being performed, the average fitness in each node of HeHa is shown in Figures \ref{fig:hosiheha} and \ref{fig:hesiheha}. As can be seen...
-
 \begin{figure}
 \centering
-\epsfig{file=images/homosize_heterohard_avg.eps, angle=-90, width = 9cm}
-\caption{Average fitness in the first 1000 milliseconds of execution of the four nodes of the heterogeneous cluster with the same population sizes (MMDP problem).}
-\label{fig:hosiheha}
+\epsfig{file=images/evalsMMDP.eps, width = 9cm}
+\caption{Number of evaluations for MMDP problem. White is the heterogeneous cluster and gray the homogeneous one.}
+\label{fig:evalsMMDP}
 \end{figure}
+
+To see the difference of how the evolution is being performed, the average fitness in each node of HeHa is shown in Figures \ref{fig:hosiheha} and \ref{fig:hesiheha}. As can be seen, with the HeSi (Figure \ref{fig:hesiheha}), the local optima are overtaken in less time than HoSi (Figure \ref{fig:hosiheha}). This can be explained because in HeSi, the migration from N4 to N1 is performed faster, adding more heterogeneity to the whole system. In the HoHa systems, the populations are evolved at the same time, being the average fitness similar in all nodes during all run. % The natural migration period variation from a processor to another is also giving more diversity to the populations that migrating at the same time of the homogeneous
+
+
 
 \begin{figure}
 \centering
@@ -387,9 +383,18 @@ To see the difference of how the evolution is being performed, the average fitne
 \label{fig:hesiheha}
 \end{figure}
 
+\begin{figure}
+\centering
+\epsfig{file=images/homosize_heterohard_avg.eps, angle=-90, width = 9cm}
+\caption{Average fitness in the first 1000 milliseconds of execution of the four nodes of the heterogeneous cluster with the same population sizes (MMDP problem).}
+\label{fig:hosiheha}
+\end{figure}
+
 \subsection{OneMax Problem}
 
-Results for this problem are shown in Table \ref{tab:onemaxresults} and Figures \ref{fig:evalsOneMax} and \ref{fig:timeOneMax}. As before, in this problem, also changing the population sizes decreases the time in the heterogeneous cluster. However, in this case the number of evaluations remains the same (see statistical significance in Table \ref{tab:significance}).  In the homogeneous system, the effect of changing this sizes is more evident, and this time the evaluations (and therefore, the time) are reduced (both significally). The efficiency on OneMax problems depends more on the ability to mix the building-blocs, and less on the genetic diversity and size of the population (as with MMDP). No genetic diversity is particularly required. When properly tuned, a simple Genetic Algorithm is able to solve OneMax in linear time. Sometimes, problems like OneMax are used as control functions, in order to check if very efficient algorithms on hard functions fail on easier functions. As can be seen in Figure \ref{fig:gensonemaxhomosize}, the HoSi/HeHa, the average fitness of all populations are increasing in linear way. However, the lower processor evaluates extremely less times.  On the other side, Figure \ref{fig:gensonemaxheterosize}, the adaptation of the population size mades that lower processors increase the number of evaluations, but the average fitness is also maintained in linear way. However, the other processors are still spending more number of evaluations. That is the reason why the number of evaluation is higher in HeHa, and lower in HoHa, but the average fitness in slower processor increases than HoHa. Also, because the larger size of the individuals in the OneMax problem, the transmission time is larger (white gaps in the figures), and also the fitness cost.
+Results for this problem are shown in Table \ref{tab:onemaxresults} and Figures \ref{fig:evalsOneMax} and \ref{fig:timeOneMax}. As before, in this problem, changing the population sizes decreases significantly the time  in the heterogeneous cluster, and also the number of evaluations remains the same (see statistical significance in Table \ref{tab:significance}). In the homogeneous system, the effect of changing this sizes is more evident, and this time the evaluations (and therefore, the time) are reduced (both significally). 
+
+The efficiency on OneMax problems depends more on the ability to mix the building-blocs, and less on the genetic diversity and size of the population (as with MMDP). No genetic diversity is particularly required. When properly tuned, a simple Genetic Algorithm is able to solve OneMax in linear time. Sometimes, problems like OneMax are used as control functions, in order to check if very efficient algorithms on hard functions fail on easier functions. As can be seen in Figure \ref{fig:gensonemaxhomosize}, the HoSi/HeHa, the average fitness of all populations are increasing in linear way. However, the lower processor evaluates extremely less times.  On the other side, in Figure \ref{fig:gensonemaxheterosize}, the adaptation of the population size makes that lower processors increase the number of evaluations, but the average fitness is also maintained in linear way (and in smaller increase rate). However, the other processors are still spending more number of evaluations. That is the reason why the number of evaluations is higher in HeHa, and lower in HoHa. Computational time is more efficiently used in faster processor, having more chance to mix the individuals. Also, because the larger size of the individuals in the OneMax problem (5000 bits vs. 150), the transmission time is larger (white gaps in the figures). That also implies for N4 send their best individual to N1 in a extremely large time when using HoSi (each 64 generations).
 
 \begin{table*}
 \centering
@@ -439,14 +444,14 @@ HeSi/HoHa		& 13897,86$\pm$	625,27 		&	20725,63$\pm$	929,43 	&	651952,8 $\pm$	291
 
 Configuration			&Normal	&Test applied			&P-value & Significant difference?\\ \hline
 \multicolumn{5}{|c|}{Time for MMDP} \\ \hline
-HoSi/HeHa vs HeSi/HeHa	&Yes	&T-Test			&0.032 	 & Yes \\ \hline
+HoSi/HeHa vs HeSi/HeHa	&Yes	&T-Test			& \textbf{0.032} 	 & Yes \\ \hline
 HoSi/HoHa vs HeSi/HoHa	&No		&Wilcoxon		&0.567 	 & No \\ \hline
 \multicolumn{5}{|c|}{Evaluations for MMDP}	\\ \hline
 HoSi/HeHa vs HeSi/HeHa	&Yes	&T-Test			&0.231  & No \\ \hline
 HoSi/HoHa vs HeSi/HoHa	&No		&Wilcoxon		&0.958  & No \\ \hline
 \multicolumn{5}{|c|}{Time for OneMax} \\ \hline
-HoSi/HeHa vs HeSi/HeHa	& Yes	& T-Test		&  9\e{-15} & Yes \\ \hline
-HoSi/HoHa vs HeSi/HoHa	& No	& Wilcoxon		& 	1\e{-6}		& Yes \\ \hline
+HoSi/HeHa vs HeSi/HeHa	& Yes	& T-Test		&  \textbf{9\e{-15}} & Yes \\ \hline
+HoSi/HoHa vs HeSi/HoHa	& No	& Wilcoxon		& 	1\e{-6} & Yes \\ \hline
 \multicolumn{5}{|c|}{Evaluations for OneMax}	\\ \hline
 HoSi/HeHa vs HeSi/HeHa	& No	& Wilcoxon 		&	0.14 		& No\\ \hline
 HoSi/HoHa vs HeSi/HoHa	& Yes	& T-Test		&	2*\e{-27}	& Yes \\ \hline
@@ -489,7 +494,7 @@ HoSi/HoHa vs HeSi/HoHa	& Yes	& T-Test		&	2*\e{-27}	& Yes \\ \hline
 
 
 \section{Conclusions}
-New trends, such as Cloud Computing or Service Oriented Architecture are providing a massively amount of heterogeneous computational devices. BLABLABLA This work shows a preliminary study about adapting the population size of an EA to computational power of different nodes in an heterogeneous cluster. Results show that adapting the population size decrease the execution time significally in heterogeneous clusters, while changing this parameter in homogeneous clusters not always performs better. This is a promising start for adapting EAs to the computational power of each machine.
+New trends, such as Cloud Computing or Service Oriented Architecture are providing a massively amount of heterogeneous computational devices. BLABLABLA This work shows a preliminary study about adapting the population size of an EA to computational power of different nodes in an heterogeneous cluster. Results show that adapting the population size decrease the execution time significantly in heterogeneous clusters, while changing this parameter in homogeneous clusters not always performs better. This is a promising start for adapting EAs to the computational power of each machine.
 
 In future work a scalability study will be performed, with more computational nodes and larger problem instances. Also, other parameters such as migration rate or crossover probability will be adapted to the computational nodes. This studies will lead to automatic adaptation during runtime, whith different nodes entering or exiting in the topology during the algorithm execution or adapting to system load.
 
