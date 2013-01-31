@@ -311,7 +311,7 @@ blacks through all combinations of $\ell-p$ blacks and $p$ whites) is noted. Eve
 series of {\em partitions} in which the set of consistent combinations
 is divided by its {\em distance} (in terms of common positions and
 colors) to every other.  So, a {\em partition} is a subset of the set
-of eligible combinations. All combinations in the eliglble set are
+of eligible combinations. All combinations in the eligible set are
 then defined by a list of the number of combinations that would obtain
 every possible answer, and are scored according to this list. However,
 there will be combinations that will have exactly the same list of
@@ -355,7 +355,7 @@ several scores have been proposed:\begin{itemize}
   minimize the expected size; this one is related to the Worst Case
   mentioned in the first item and follows the same rationale: by
   playing the combinations that minimize the expected (as opposed to
-  worst, in the case of Knut) size, the set of eligible combinations
+  worst, in the case of Knuth) size, the set of eligible combinations
   will be cut down eventually to one. 
 \end{itemize}
 
@@ -383,7 +383,7 @@ scaling behavior, so using bounds on the set size has a big impact on
 the behavior of the algorithm. 
 
 If any method wants to improve over the state of the art, it has got
-to be compared with teh paper by Berghman et al. in
+to be compared with the paper by Berghman et al. in
 \cite{Berghman20091880}. They obtained a system that is able to
 find the solution in an average number of moves that is, for all sizes
 tested, better than any solution previously published; the number of evaluations
@@ -533,7 +533,7 @@ can be analyzed and output to a set of web pages. The first page of
 the report has been captured and is shown in Figure
 \ref{fig:profile:pre}.  Prior to this profiling another analysis was
 made, it showed that the {\em permutation} operator that converted a
-combination in a permutation was extermely slow (since it had to
+combination in a permutation was extremely slow (since it had to
 generate a representation of the combination and proceed to the next
 permutation until it reached a random number). That is why it this
 operator was eliminated altogether; however, since it is a major
@@ -545,14 +545,14 @@ of calls to a function, exclusive (time spent exclusively in that
 function) and inclusive (which includes calls to functions from the
 one listed). We usually have to look at the first item, which a
 function called {\tt check\_combination}. This is the function that
-compares two combinatios, be it the hidden combination with the one
+compares two combinations, be it the hidden combination with the one
 played, or obviously more frequently, the combinations in the eligible
 set among them or the combinations in the population with the already
 played ones to compute fitness. Even as this function had been
 optimized in previous versions of the algorithm, it eventually results
 that it takes 12$\mu$s per call, which is a lot considering that it is
 the core of the algorithm. This makes this function a target for
-optimization; however, it is almost imposible to go further using
+optimization; however, it is almost impossible to go further using
 Perl. It gets worse, however, since this function is called mainly
 from the 4th in the list, {\tt check\_rule}, which compares a string
 with already played guesses. That adds a few seconds to
@@ -568,7 +568,7 @@ and the several levels of indirection used for comparing strings were
 reduced when possible. The substitute for {\tt distance\_taxicab} is
 called {\tt distance\_xs} (XS is the method for including compiled C
 functions inside Perl programs) and is shown at the top of the new
-version in Figure \ref{fig:profile:post}.  This new funtion takes
+version in Figure \ref{fig:profile:post}.  This new function takes
 19$\mu$s per call, less than 1/3 what it did before. Taking into
 account that previously it took around 1/3 of the total time, the
 total improvement in performance will amount to around 10\%. That is
@@ -576,7 +576,7 @@ not dramatic, but since usual experiments take up to several hours, it
 might mean a much better turnaround for performing them.
 
 Besides, the optimization does not stop here. The second function is
-also an importan target for optimization, because it takes a lot of
+also an important target for optimization, because it takes a lot of
 time and is only called 100 times, one for each generation (around 10
 generations per game), and a whooping 29 ms. per call. Since this
 function uses lots of complicated data structures it is not such an
@@ -596,14 +596,14 @@ Finally, as it happens with most evolutionary algorithms, we find a
 sorting function in the sixth place, which is called from many
 places. That is specific from the evolutionary algorithm (not
 MasterMind) but can be eliminated anyways by using {\tt Sort::Key},
-the fastest sort function available in the Perl module respository
+the fastest sort function available in the Perl module repository
 (called CPAN). 
 
 %
 \begin{figure*}[!htb]
 \centering
 \includegraphics[scale=0.5]{post-profile.png}
-\caption{Output of {\tt Devel::NYTProf} after the last optiization
+\caption{Output of {\tt Devel::NYTProf} after the last optimization
     profiling. The first one now is the new function created, and all
     previously time-hogging functions have
     disappeared. \label{fig:profile:post}} 
@@ -653,7 +653,7 @@ FastEvoEntropy since its scoring method is Entropy and it is faster
 than previously published versions. Two versions of this last method
 have been tested: one includes a new permutation operator with a
 different implementation that chooses randomly a random number of
-characters in the string tha shuffles it; the second one substitutes
+characters in the string that shuffles it; the second one substitutes
 permutation by two different operators, Shift and Swap; this last one
 has been traditionally used by other methods. The first one shifts
 with carry a string left or right with the eliminated character being
@@ -748,17 +748,17 @@ implementation of the permutation, albeit slow, is better than the new
 one, results for Evo++ (EN) are (significantly using Wilcox T-Test)
 better than any result published in this paper; this consistently for
 the two sizes studied. This issue will have to be pursued further, but
-it was not the main objettive of this paper, which was to establish a
+it was not the main objective of this paper, which was to establish a
 new state of the art in MasterMind results. 
 
 The results shown in Table \ref{tab:moves} show that, effectively,
 this new algorithm is better at solving the game than Berghman's
 (incidentally, \cite{mm:evostar13} too). The difference is small but
-significative using Wilcoxon t-test, and that is so for all methods
+significant using Wilcoxon t-test, and that is so for all methods
 that use 256 as consistent set limit size; for $\ell=6,\kappa=9$, even
 when the smaller size (consistent set size CS=32) is used. This new
-version of the method, as is isual, achieves the best results with a
-sizeable population and CS=256. However, increasing more the
+version of the method, as is usual, achieves the best results with a
+sizable population and CS=256. However, increasing more the
 population (to 2048) does not result in a noticeable (in fact, not
 significantly better) decrease in the number of games needed to win.
 We can also notice in the results that the new permutation operator is
@@ -832,7 +832,7 @@ so simply have been found, so other speedup methods (including
 complete factorization) should be sought.
 
 An interesting option that would be worth exploring is using
-multithreaded applications to simulate parallel execution within a
+multi-threaded applications to simulate parallel execution within a
 single computer. This will speed up the application, but it will have
 an important impact on the algorithm so it will have to be examined
 carefully looking at different alternatives and ways of interaction of
