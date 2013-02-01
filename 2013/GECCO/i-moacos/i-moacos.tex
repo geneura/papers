@@ -61,7 +61,7 @@
     \clubpenalty=10000
     \widowpenalty = 10000
 
-\title{Migration study on a Pareto-based island model for multi-colony MOACOs}
+\title{Migration study on a Pareto-based island model for MOACOs}
 
 %\subtitle{[Extended Abstract]
 %\titlenote{A full version of this paper is available as
@@ -103,11 +103,11 @@
         \affaddr{Pacific Ocean}\\
         \email{jack,sawyer,hurley@lost.com}
  \alignauthor
- Lock\\
+ Locke\\
  \affaddr{Lost island}\\
  \affaddr{Unknown}\\
  \affaddr{Pacific Ocean}\\
- \email{lock@lost.com}
+ \email{locke@lost.com}
  }
 
 %\numberofauthors{2}
@@ -206,10 +206,10 @@
 \maketitle
 
 \begin{abstract}
-Pareto-based island model is a multi-colony distribution scheme recently presented for the resolution via ant colony optimization algorithms of bi-criteria problems. In the work which introduces this approach, it was compared with classical multi-colony and multi-start schemes for three different MOACOs of the literature, yielding very promising results. However, since it was a preliminary presentation article, the model was implemented considering a unique Pareto-front-shaped unidirectional neighborhood migration topology, and a constant migration rate, whose value was chosen after a light systematic experimentation process.
-In the present work two additional neighborhood topology schemes, and four different migration rates have been tested, considering the algorithm which obtained the best results in average in the model presentation article, MOACS (Multi-Objective Ant Colony System).
+Pareto-based island model is a multi-colony distribution scheme recently presented for the resolution, by means of ant colony optimization algorithms, of bi-criteria problems. It yielded very promising results, but the model was implemented considering a unique Pareto-front-shaped unidirectional neighborhood migration topology, and a constant migration rate.
+In the present work two additional neighborhood topology schemes, and four different migration rates have been tested, considering the algorithm which obtained the best results in average in the model presentation article: MOACS (Multi-Objective Ant Colony System).
 Several experiments have been conducted, including statistical tests for better support the study. 
-Some conclusions have been reached, such as *** COMPLETAR ***
+High values for the migration rate and the use of a bidirectional neighborhood migration topology yields the best results.
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -236,32 +236,32 @@ Some conclusions have been reached, such as *** COMPLETAR ***
 Island model is one of the most extended distribution paradigms, since it arose in the Evolutionary Algorithms (EA) scope \cite{GA_Island_Model}. It proposed the division of the whole population into different subpopulations called islands. They evolve independently a number of generations and then, some individuals (normally the best) migrate between them. Thus, the optimization process is improved due to the parallel exploration of different areas of the search space that every island is focused on, and in addition, thanks to the inclusion of different promising individuals in a population, which guides the search and probably avoids local optima stagnation. Moreover, the distribution means an inherent running time improvement.
 There are several factors to consider in an island model, such as the migration rate (number of times the individuals are moved between islands), the neighborhood topology (island connections) or the replacement policy (which individuals are removed of the receiver population to include the migrants).
 
-This model was initially proposed for the resolution of problems with just one objective, but it was later adapted to solve multi-objective problems ***[cita?].
-Multi-objective optimization problems (MOPs) are those where more than one independent function must be optimized at once, every function is an objective and the improvement of one does not mean an improvement in the rest. There is a set of the so-called non-dominated solutions (those which better satisfy each of the functions) rather than just one, which constitute the Pareto set (PS). The graphical representation of this Pareto-optimal set of solutions is named the Pareto front (PF).
+This model was initially proposed for the resolution of problems with just one objective, but it was later adapted to solve multi-objective problems \cite{Osyczka1985}.
+Multi-objective optimization problems (MOPs) are those where more than one independent function must be optimized at once, every function is an objective and the improvement of one does not mean an improvement in the rest. There is a set of the so-called non-dominated solutions (those which better satisfy each of the functions) rather than just one, which constitutes the Pareto set (PS). The graphical representation of this Pareto-optimal set of solutions is named the Pareto front (PF).
 Thus, the main issue of a good multi-objective (MO) algorithm
 \cite{Coello2002} is to obtain the maximum number of non-dominated solutions, having a high diversity and spread, and being as closer to the optimal set as possible.
 
-In addition to EAs, Ant colony optimization (ACO) is another metaheuristic well-suited for distribution. ACO \cite{ACO_99,ACO_2003} algorithms are based in the behaviour of natural ants when searching for food, and the way they build shortest paths between their nest and any interesting point. This behaviour has been explained through the concept of \textit{stigmergy}, that is, communication using the environment, so every ant, while walking, deposits on the ground a chemical substance called \textit{pheromone} which the others can smell (and which is evaporated after some time). One ant tends to follow strong concentrations of pheromone caused by repeated passes of ants; a pheromone trail is then formed from nest to food source, so in intersections between several trails an ant moves with high probability following the highest pheromone level.
+In addition to EAs, Ant colony optimization (ACO) is another metaheuristic well-suited for distribution. ACO \cite{ACO_2003} algorithms are based in the behaviour of natural ants when searching for food, and the way they build shortest paths between their nest and any interesting point. This behaviour has been explained through the concept of \textit{stigmergy}, that is, communication using the environment, so every ant, while walking, deposits on the ground a chemical substance called \textit{pheromone} which the others can smell (and which is evaporated after some time). One ant tends to follow strong concentrations of pheromone caused by repeated passes of ants; a pheromone trail is then formed from nest to food source, so in intersections between several trails an ant moves with high probability following the highest pheromone level.
 
 Ants are modelled as a set of artificial agents which search in a weighted graph for the optimal paths. These agents cooperate to explore the search space and to build the solution for a problem.
-The ACOs adapted to the resolution of problems with several objectives are known as multi-objective ant colony optimization algorithms or MOACOs (see \cite{MOACOs_taxonomy} for a survey). 
+The ACOs adapted to the resolution of problems with several objectives are known as multi-objective ant colony optimization algorithms or MOACOs. 
 
-As stated, ACO algorithms can be directly parallelized due to the inherent independent work of the ants. Thus, several parallel ACO approaches have been presented since the metaheuristic was presented \cite{Survey_par_ACOs}, most of them devoted to address specific problems \cite{ParallelACO_TSP,ParallelAS_CVRP,ParallelACO_MTTP}.
+As stated, ACO algorithms can be directly parallelized due to the inherent independent work of the ants. Thus, several parallel ACO approaches have been proposed since the metaheuristic was presented \cite{Survey_par_ACOs}, most of them devoted to address specific problems. %\cite{ParallelACO_TSP,ParallelAS_CVRP,ParallelACO_MTTP}.
 
-There are two main distribution levels: coarse-grained (parallelization at colony level) \cite{ParallelAnts_Janson,ParallelACO_MultiColony}, and fine-grained (parallelization at ant level) \cite{ParallelACO_FineGrained}. The first approach is the most extended and is known as multi-colony model, since the ants are divided in subcolonies which can operate independently from the rest \cite{ParallelACO_CoarseGrained_T} or can share any information (pheromone trails for instance) \cite{ParallelACO_CoarseGrained_B}.
+There are two main distribution levels: coarse-grained (parallelization at colony level) \cite{ParallelACO_MultiColony}, and fine-grained (parallelization at ant level) \cite{ParallelACO_FineGrained}. The first approach is the most extended and is known as multi-colony model, since the ants are divided in sub-colonies which can operate independently from the rest \cite{ParallelACO_CoarseGrained_T} or can share any information (pheromone trails for instance) \cite{ParallelACO_CoarseGrained_B}.
 
 In this line, there was proposed in a recent paper a multi-colony distribution model named \textit{Pareto-based island model} \cite{iMOACOS_SOCO}, which spread the ants, grouped in colonies, into several computational nodes (processors in clusters) or islands. Everyone focuses on a different area of the search space, promoting the exploration and finally yielding a better set of results than a mono-colony standard approach. Thus, a bigger amount of non-dominated solutions, with higher quality (closer to the optimal values), and with a better spread or distribution over the ideal set of solutions were obtained. To this end, some migrations were performed between the colonies (moving ants/solutions), increasing the explorative component which turns on getting a better performance. This model defined a neighborhood topology based on the
 Pareto front form and was compared with two other methods based in independent \textit{multi-colony} structures.
-The proposed island model, based in the Pareto front, obtained excellent results in the comparison with the other models (multi-start and independent multi-colonies). All of them were implemented as substrates for three different MOACOs from the literature: Iredi's et al. \textit{BIANT} \cite{BiANT-Iredi}, Barán's et al. \textit{MOACS} \cite{MOACS-Baran}; and an own algorithm named \textit{CHAC} \cite{CHAC_COR}. MOACS and CHAC yielded the best results, very similar between them. But since it was an initial proof of concept, the island model just implemented a neighborhood topology (unidirectional) and was tested with just a migration rate value (every 50 iterations).
+The proposed island model, based in the Pareto front, obtained excellent results in the comparison with the other models (multi-start and independent multi-colonies). All of them were implemented as substrates for three different MOACOs from the literature: Iredi's et al. \textit{BIANT} \cite{BiANT-Iredi}, Barán's et al. \textit{MOACS} \cite{MOACS-Baran}; and an algorithm named \textit{CHAC} \cite{CHAC_COR}. MOACS and CHAC yielded the best results, very similar between them. But since it was an initial proof of concept, the island model just implemented a neighborhood topology (unidirectional) and was tested with just a migration rate value (every 50 iterations).
 
-There are just a few papers studying island models in ACOs scope \cite{ParallelACO_Island,ParallelACO_Island_Topologies}, but to our best knowledge, just the works \cite{iMOACOS_IWANN,iMOACOS_SOCO} involve the distribution of MOACOs following an island-model shape.
+There are just a few papers studying island models in ACOs scope \cite{ParallelACO_Island,ParallelACO_Island_Topologies}, but to our best knowledge, just the works \cite{iMOACOs_IWANN,iMOACOS_SOCO} involve the distribution of MOACOs following an island-model shape.
 
 Thus in the present work a deeper analysis of the Pareto-based island model is proposed. Three different neighborhood topologies will be tested: \textit{unidirectional}, \textit{bidirectional} and \textit{broadcast}; along with four different migration rates: every 25, 50, 75 and 100 iterations. Due to space limitations, just MOACS algorithm will be considered, according to the good performance it presented in previous papers.
 The results, including different metrics, obtained with every configuration solving the \textit{Symmetric Bi-criteria Travelling Salesman Problem} (bTSP), will be analyzed by means of statistical tools, such as the Analysis of variance (ANOVA) \cite{ANOVA_Fisher} and post-hoc Tukey's Honestly Significant Difference tests (Tukey HSD) \cite{Tukey_HSD}.
 
-The rest of the paper is structured as follows: next section briefly introduces multi-objective optimization concepts which are dealt in the work.
-The algorithm to analyse, MOACS, is described in Section \ref{sec:moacs}. Then, Section \ref{sec:PB_island_model} introduces the distributed Pareto-based island model to study and presents the different neighborhood topologies to test. 
-The conducted experiments are presented in Section \ref{sec:experiments}, along with the analysis of the results. Finally, conclusions and future lines of work are commented in Section \ref{sec:conclusions}.
+%The rest of the paper is structured as follows: the next section briefly introduces multi-objective optimization concepts which are dealt in the work.
+%The algorithm to analyse, MOACS, is described in Section \ref{sec:moacs}. Then, Section \ref{sec:PB_island_model} introduces the distributed Pareto-based island model to study and presents the different neighborhood topologies to test. 
+%The conducted experiments are presented in Section \ref{sec:experiments}, along with the analysis of the results. Finally, conclusions and future lines of work are commented in Section \ref{sec:conclusions}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%  MO Optimization  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -276,7 +276,7 @@ Multi-Criteria or Multi-Objective Optimization Problems\\ (MOP)
  respect to every objective. In fact, frequently improving the
  solution for one objective implies a worsening for another. 
 %
-Thus in a MOP there is a set of solutions that are better than the rest considering all the objectives; this set is known as the \textit{Pareto set} (PS) \cite{Pareto1896}. They try to approach the ideal set of solutions
+Thus in a MOP there is a set of solutions that are better than the rest considering all the objectives; this set is known as the \textit{Pareto set} (PS). They try to approach the ideal set of solutions
 which is usually represented graphically as the \textit{Pareto front} (PF). These are related to an important concept, the \textit{dominance}, defined as follows (\textit{a} dominates \textit{b}):
 %
 \begin{small}
@@ -312,7 +312,7 @@ acceptable as regards the satisfaction of all the objectives. These concepts can
 \section{MOACS algorithm}
 \label{sec:moacs}
 
-The algorithm to study is {\em MOACS} (Multi-Objective Ant Colony System)\footnote{We have chosen this acronym instead of the extended MACS in order to distinguish the algorithm of the preceding MACS by Gambardella et al. \cite{MACS-Gambardella}}, which was proposed by Barán et al.~\cite{MOACS-Baran}, to solve the Vehicle Routing Problem with Time Windows (VRPTW), a bi-objective problem. This is a very well-known algorithm of the literature, and has been previously used in other works for dealing with different MOPs \cite{COR-CHAC,iMOACOS_SOCO}. The good results it yielded in the latter article, where the Pareto-based island model was presented and tested, is the reason why it has been chosen as the algorithm to study in the present work.
+The algorithm to study is the well-known {\em MOACS} (Multi-Objective Ant Colony System), which was proposed by Barán et al.~\cite{MOACS-Baran}, to solve the Vehicle Routing Problem with Time Windows (VRPTW), a bi-objective problem. The good results it yielded in the article \cite{iMOACOS_SOCO}, where the Pareto-based island model was presented and tested, is the reason why it has been chosen as the algorithm to study in the present work.
 
 As main features it considers a single pheromone matrix for both objectives, and follows a State Transition Rule (STR), for building the solutions, described as:\\
 \\
@@ -425,11 +425,11 @@ There are some components to be set in the island model.
 \begin{itemize}
     \item \textit{Migration policy} (which ants are migrated?): following the conclusions reached by several authors \cite{Multi-colony_exchange,Communication_multi-colonyACO} the circulation of the \textit{locally best solutions} to the neighbor island yields better results than other possibilities, so this is the policy we have considered. But since we are dealing with a multi-objective problem, there is not an absolutely best solution, but a set of non-dominated ones. Thus the migrant will be \textit{the best solution with respect to the objective with higher priority in the island}. This policy along with the neighboring topology tries to guide the search in the neighbors to the same area than the island which sends the migrants (explore new areas in the receiver).
 
-    \item \textit{Migrants influence} (what effect have the migrants in the receiver island?): The ant/solution firstly performs a pheromone contribution (in the matrix of the receiver colony) to those edges of the solution according the correspondent equation depending on the algorithm, i.e. Equation \ref{eq:moacs-gfu} in MOACS. This contribution tries to guide (in part) the search in the following iterations. Moreover, the changes in the PS (if the immigrant solution is included) will also globally update the pheromone matrix in the future steps of the process.
+    \item \textit{Influence of Migrants} (what effect have the migrants in the receiver island?): The ant/solution firstly performs a pheromone contribution (in the matrix of the receiver colony) to those edges of the solution according the correspondent equation depending on the algorithm, i.e. Equation \ref{eq:moacs-gfu} in MOACS. This contribution tries to guide (in part) the search in the following iterations. Moreover, the changes in the PS (if the immigrant solution is included) will also globally update the pheromone matrix in the future steps of the process.
 
     \item \textit{Replacement policy} (which ants/solutions are replaced in the receiver island?): Considering the multi-objective scope, the immigrant ant/solution is compared with those in the current PS, removing from it those dominated by the new one.
 
-    \item \textit{Migration rate} (how often are the migrants sent?): According to previous researches \cite{Multi-colony_exchange,Communication_multi-colonyACO}, it is important to set a balance between the communication costs that the migrations imply and the profit these migrations give. In this work four different values have been set, from 25 to 100 (from 2.5\% to 10\% of the total number of iterations). Thus 40 to 10 migration processes will be performed during the execution, so the colonies have enough time to increase the exploration factor being influenced by the new solutions, and the costs in communications are not critically increased for maintaining a good computational performance.
+    \item \textit{Migration rate} (how often are the migrants sent?): According to previous researches \cite{Multi-colony_exchange,Communication_multi-colonyACO}, it is important to set a balance between the communication costs that the migrations imply and the profit these migrations give. In this work four different values have been set, from 25 to 100 (from 2.5\% to 10\% of the total number of iterations). Thus 40 to 10 migration events will be performed during the execution, so the colonies have enough time to increase the exploration factor being influenced by the new solutions, and the costs in communications are not critically increased for maintaining a good computational performance.
 
 \end{itemize}
 
@@ -453,24 +453,34 @@ Then \textit{neighborhood topology} is defined in order to cover the inter-colon
 \begin{itemize}
 \item \textit{Unidirectional topology}:
 Every island migrates ants (solutions) just to the closer neighbor and just in one direction (aimed to the optimal). This direction depends on the objective which has higher priority in the island optimization process, so the islands devoted to mainly optimize objective function 1 ($\lambda > 0.5$), migrate the ants to the immediate left neighbors. On the other hand, the islands optimizing objective function 2 ($\lambda < 0.5$) share the solutions with the immediate right neighbors. The two central islands (on the left and right sides of $\lambda = 0.5$ value) interchange ants between them.
-If there is an island with $\lambda = 0.5$, it receives ants from two sides neighbors and shares its owns with them. In addition, the bounding islands just send solutions and do not receive at all, since the gaps to cover appear between the colonies.
+If there is an island with $\lambda = 0.5$, it receives ants from two sides neighbors and shares its own solutions with them. In addition, the bounding islands just send solutions and do not receive at all, since the gaps to cover appear between the colonies.
 
 \item  \textit{Bidirectional topology}:
-Every island migrates ants to its two closest neighbors, one on the right and one on the left, and receives migrants from them. This model tries to improve the exploration in the gaps between islands, i.e. the ants in one island lightly move to search in areas closer to the neighbors rather than their own colony zone. The objective is getting a better spread in the inter-island areas. As a disadvantage this will increase the communication costs in the algorithm run.
+Every island migrates ants to its two closest neighbors, one on the right and one on the left, and receives migrants from them. This model tries to improve the exploration in the gaps between islands, i.e. the ants in one island lightly move to search in areas closer to the neighbors rather than their own colony zone. The objective is getting a better spread in the inter-island areas. As a disadvantage this will increase the communication costs (in time) in the algorithm run.
 
 \item  \textit{Broadcast topology}:
 Every island sends migrants to the rest. This would increase the exploration along the whole PF and thus, the global spread of solutions. On the other hand, this will mean a decrease in the exploitation factor of the colonies.
-*** decir algo de las comunicaciones ***
+The communication cost is higher than in the other models, since all the colonies send and receive ants in every migration event.
 
 \end{itemize}
 
 The ideal scheme of these proposals, when minimizing the objectives, can be seen in Figure \ref{fig:pareto_island_topologies}. 
 %
+%\begin{figure}[htp!]
+%\begin{center}
+%\subfigure[Unidirectional topology scheme]{\includegraphics[scale=0.35]{figures/pareto-island-lambda-unidir.eps}}
+%\subfigure[Bidirectional topology scheme]{\includegraphics[scale=0.35]{figures/pareto-island-lambda-bidir.eps}}
+%\subfigure[Broadcast topology scheme]{\includegraphics[scale=0.35]{figures/pareto-island-lambda-broadcast.eps}}
+%\caption{Pareto-based island model schemes examples for six islands. Each neighborhood migration topology aims to explore the whole Pareto front. The arrows show the migration flows between islands, in order to cover the gaps between colonies/islands. For the sake of clarity broadcast scheme just presents the migrations from one of the islands (to the others), but the model migrates individuals from every island to the rest. The dashed line represents the value $\lambda=0.5$. 
+%\label{fig:pareto_island_topologies}}
+%\end{center}
+%\end{figure}
+%
+%
+%
 \begin{figure}[htp!]
 \begin{center}
-\subfigure[Unidirectional topology scheme]{\includegraphics[scale=0.35]{figures/pareto-island-lambda-unidir.eps}}
-\subfigure[Bidirectional topology scheme]{\includegraphics[scale=0.35]{figures/pareto-island-lambda-bidir.eps}}
-\subfigure[Broadcast topology scheme]{\includegraphics[scale=0.35]{figures/pareto-island-lambda-broadcast.eps}}
+\includegraphics[scale=0.35]{figures/todojunto.eps}
 \caption{Pareto-based island model schemes examples for six islands. Each neighborhood migration topology aims to explore the whole Pareto front. The arrows show the migration flows between islands, in order to cover the gaps between colonies/islands. For the sake of clarity broadcast scheme just presents the migrations from one of the islands (to the others), but the model migrates individuals from every island to the rest. The dashed line represents the value $\lambda=0.5$. 
 \label{fig:pareto_island_topologies}}
 \end{center}
@@ -498,12 +508,12 @@ The ideal scheme of these proposals, when minimizing the objectives, can be seen
 \label{sec:experiments}
 %
 
-In order to test the proposed model, with the different neighborhood migration topologies and migration rates, several experiments have been conducted using three different instances of the symmetric TSP\footnote{available from \url{http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/}}, in sizes 100, 150 and 200 cities. $kroA$ and $kroB$ instances have been taken in every case, considering each of them as one independent objective of a bi-criteria TSP (bTSP). These problems, named respectively \textit{kroAB100}, \textit{kroAB150} and \textit{kroAB200}, have been widely used in the literature. %\cite{MOACOs_taxonomy,MOACOs_parameters,MOACO_decomposition_bTSP}.
+In order to test the proposed model, with the different neighborhood migration topologies and migration rates, several experiments have been conducted using three different instances of the symmetric TSP\footnote{Available from \url{http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/}}, in sizes 100, 150 and 200 cities. $kroA$ and $kroB$ instances have been taken in every case, considering each of them as one independent objective of a bi-criteria TSP (bTSP). These problems, named respectively \textit{kroAB100}, \textit{kroAB150} and \textit{kroAB200}, have been widely used in the literature. %\cite{MOACOs_taxonomy,MOACOs_parameters,MOACO_decomposition_bTSP}.
 In this case, due to the huge amount of data and figures generated, and considering the space limitations, we will analyze just the results for the hardest one, kroAB200, being the others equivalent, so the conclusions reached for this instance can be extended to the others.
 
 The twelve approaches (MOACS, topology + migration rate) have been run in a cluster platform using 16 processors, being each of them a 2.6 GHz AMD Opteron (AMD64e) with 2GB of memory running Linux.
 The cluster has a shared-memory architecture which allows running large threaded jobs (e.g. OpenMP) as well as message-passing jobs. 
-The parallelization has been implemented using the Message Passing Interface, MPI \cite{MPI-1996}, not using the shared memory but the own memory of every processor.
+The parallelization has been implemented using the Message Passing Interface (MPI), not using the shared memory but the own memory of every processor.
 
 Table \ref{tab:moacs-params} shows the parameter setting for MOACS algorithm and the variations in neighborhood topology and migration rate.
 They have been set starting from standard values and performing a systematic experimentation process for fine-tuning them. 
@@ -538,31 +548,32 @@ They have been set starting from standard values and performing a systematic exp
 
 The number of iterations and ants per island are the same considered in the previous work. It should be noticed that the value for $q_0$ is smaller than
 usual in ACSs (normally very close to 1), in order to choose in the STR paths which are not the most promising (in principle) more than usual. Moreover, the
-global evaporation rate ($\rho$) takes a value doubled considering most works, in order to get a faster evaporation of the ant's trails. The reason in both cases is the aim of having a higher exploration component. *** ACLARAR MEJOR ESTO ***
+global evaporation rate ($\rho$) takes a value doubled considering most works, in order to get a faster evaporation of the ant's trails. The reason in both cases is the aim of having a higher exploration component. 
+%*** ACLARAR MEJOR ESTO ***
 
 The first study makes a comparison between the different PSs obtained by each configuration. To this end the \textit{median attainment surfaces}\cite{Attainment_Funcs} have been obtained for every approach, considering the solutions of 20 runs (PSs) for every approach.
-Every attainment surface graphically shows the distribution of the solutions, summarizing in a graph the outcomes of several runs, by dividing the space of solutions in two parts: the attained solutions (in a percentage) and those not attained. A median attainment surface plots the graph which limits a region in the space attained by the 50\% of the runs.
-We have used the software implemented by Knowles\footnote{available from: \url{http://dbkgroup.org/knowles/plot_attainments/}} considering resolution 100.
+Each attainment surface graphically shows the distribution of the solutions, summarizing in a graph the outcomes of several runs, by dividing the space of solutions in two parts: the attained solutions (in a percentage) and those not attained. A median attainment surface plots the graph which limits a region in the space attained by the 50\% of the runs.
+We have used the software implemented by Knowles\footnote{Available from: \url{http://dbkgroup.org/knowles/plot_attainments/}} considering resolution 100.
 
-The graphs\footnote{Better quality graphs can be found at: \url{ http://geneura.ugr.es/~amorag/papers/i-moacos\_gecco}} for each neighborhood migration topology, using every migration rate are plotted in Figure \ref{fig:att_func_topologies}.
+The graphs\footnote{Better quality graphs can be found at: \url{ http://my\_url/papers/i-moacos\_gecco}} for each neighborhood migration topology, using every migration rate are plotted in Figure \ref{fig:att_func_topologies}.
 %
-\begin{figure}[htp]
+\begin{figure*}[htp]
 \begin{center}
-\subfigure[Unidirectional topology]{\includegraphics[scale=0.33,angle=-90]{figures/attainment_unidirectional.eps}}
-\subfigure[Bidirectional topology]{\includegraphics[scale=0.33,angle=-90]{figures/attainment_bidirectional.eps}}
-\subfigure[Broadcast topology]{\includegraphics[scale=0.33,angle=-90]{figures/attainment_broadcast.eps}}
+\subfigure[Unidirectional topology]{\includegraphics[scale=0.2,angle=-90]{figures/attainment_unidirectional.eps}}
+\subfigure[Bidirectional topology]{\includegraphics[scale=0.2,angle=-90]{figures/attainment_bidirectional.eps}}
+\subfigure[Broadcast topology]{\includegraphics[scale=0.2,angle=-90]{figures/attainment_broadcast.eps}}
 \caption{Attainment Surfaces of each topology approach for MOACS in kroAB200 problem. Each graph shows the results for every migration rate.
 \label{fig:att_func_topologies}}
 \end{center}
-\end{figure}
+\end{figure*}
 %
-In it, it can be seen that all the attainment functions are similar (very close). Thus we cannot extract relevant conclusions from this graphs so, in principle, almost all the migration rates could be a good option. Maybe it could be considered as the best those yielded for the migration rate 100 in every migration topology model (as we will probe in the metrics results). 
+In it, it can be seen that all the attainment functions are similar (very close). Thus we cannot extract relevant conclusions from these graphs so, in principle, almost all the migration rates could be a good option. Maybe it could be considered as the best those yielded for the migration rate 100 in every migration topology model (as we will probe in the metrics results). 
 Having this in mind, a comparison between the best attainment function graphs is shown in Figure \ref{fig:att_func_best}.
 %
 \begin{figure}[htp]
 \begin{center}
-\includegraphics[scale=0.33,angle=-90]{figures/attainment_best.eps}
-\caption{Attainment Surfaces of the best results on each topology approach for MOACS in kroAB200 problem. Each graph shows the results for every migration rate.}\label{fig:att_func_best}
+\includegraphics[scale=0.3,angle=-90]{figures/attainment_best.eps}
+\caption{Attainment Surfaces of the best results on each topology approach for MOACS in kroAB200 problem.}\label{fig:att_func_best}
 \end{center}
 \end{figure}
 
@@ -578,72 +589,88 @@ In order to do a fair comparison, some multi-objective metrics and indicators ha
     \item \textit{Cardinality of the Pareto set} ($|PS|$): number of non-dominated solutions in the obtained PS.
 \end{itemize}
 
-We have used $jMetal$ software \footnote{available from \url{http://jmetal.sourceforge.net/}} to compute them. As a clarification point, a pseudo-optimal Pareto set has been created per each problem, since some of the applied metrics and indicators require an optimal Pareto set to be computed. This, named $PS_G$, has been built by combining all the solutions yielded by all the approaches in the 20 runs; then the dominated solutions have been removed. 
+We have used $jMetal$ software \cite{jMetal_CEC10} \footnote{Available from \url{http://jmetal.sourceforge.net/}} to compute them. As a clarification point, a pseudo-optimal Pareto set has been created per each problem, since some of the applied metrics and indicators require an optimal Pareto set to be computed. This, named $PS_G$, has been built by combining all the solutions yielded by all the approaches in the 20 runs; then the dominated solutions have been removed. 
 
-The results are presented in the boxplots in Figures \ref{fig:box_hypervolumes} to \ref{fig:box_num_sols}.
-
+The results are presented in the boxplots in Figure \ref{fig:box_metrics}.
+%
 \begin{figure}[htp]
 \begin{center}
-\includegraphics[scale=0.2]{figures/boxplot_hypervolume_gray.eps}
-\caption{Boxplots showing the $hypervolume\; metric\; (HV)$ values of the 20 PSs (one per run) for the kroAB200 instance of the problem. The topology models are plotted in different shades of gray. Each one of the approaches (topology + migration rate) is labelled with its two initial letters and the migration rate value, from unidirectional-25 to broadcast-100.
-\label{fig:box_hypervolumes}}
+\subfigure[$HV$]{\includegraphics[scale=0.17]{figures/boxplot_hypervolume_gray.eps}}
+\subfigure[$Spr$]{\includegraphics[scale=0.17]{figures/boxplot_spread_gray.eps}}
+\subfigure[$\epsilon$]{\includegraphics[scale=0.17]{figures/boxplot_epsilon_gray.eps}}
+\subfigure[$|PS|$]{\includegraphics[scale=0.17]{figures/boxplot_num_solutions_gray.eps}}
+%\subfigure[$Time$]{\includegraphics[scale=0.17]{figures/boxplot_time_gray.eps}}
+\caption{Boxplots showing the metrics and indicators values of the 20 PSs (one per run) for the kroAB200 instance of the problem. The topology models are plotted in different shades of gray. Each one of the approaches (topology + migration rate) is labelled with its two initial letters and the migration rate value, from unidirectional-25 to broadcast-100.
+\label{fig:box_metrics}}
 \end{center}
 \end{figure}
 %
-The $HV$ results in Figure \ref{fig:box_hypervolumes} show that \textit{unidirectional} solutions have better quality than the solutions obtained by the other topologies, due to its higher exploitation component which means more optimal solutions are yielded. \textit{bidirectional} results are similar but worse, because it has a higher exploration factor, and \textit{broadcast} has obtained the worst, since it is the most explorative method. With respect to the \textit{migration rates}, 100 seems to yield the best results. It is not surprising considering that a higher migration rate means less migration processes are performed and thus, less ants migrate and influence in the search of the other islands, i.e., the exploration factor is decreased. So the higher the migration rate is, the higher the exploitation component is in every island, and the better the solutions are.
-
-\begin{figure}[htp]
-\begin{center}
-\includegraphics[scale=0.2]{figures/boxplot_spread_gray.eps}
-\caption{Boxplots showing the $spread\; indicator\; (Spr)$ values of the 20 PSs (one per run) for the kroAB200 instance of the problem. The topology models are plotted in different shades of gray. Each one of the approaches (topology + migration rate) is labelled with its two initial letters and the migration rate value, from unidirectional-25 to broadcast-100.
-\label{fig:box_spread}}
-\end{center}
-\end{figure}
+%\begin{figure}[ht]
+%\begin{center}
+%\includegraphics[scale=0.17]{figures/boxplot_hypervolume_gray.eps}
+%\caption{Boxplots showing the $hypervolume\; metric\; (HV)$ values of the 20 PSs (one per run) for the kroAB200 instance of the problem. The topology models are plotted in different shades of gray. Each one of the approaches (topology + migration rate) is labelled with its two initial letters and the migration rate value, from unidirectional-25 to broadcast-100.
+%\label{fig:box_hypervolumes}}
+%\end{center}
+%\end{figure}
 %
-Figure \ref{fig:box_spread} shows this time the contrary situation, being \textit{broadcast} the best option with regard to the spread/distribution of solutions, i.e. to the wide of the Pareto set. The reason is the same as before but on the contrary sense. Thus the higher the exploration component is, the wider the PS is.
-As expected, the lower value for the \textit{migration rate} yields the best results for this indicator (closer to 0).
+The $HV$ results in Figure \ref{fig:box_metrics}.(a) show that \textit{unidirectional} solutions have better quality than the solutions obtained by the other topologies, due to its higher exploitation component which means more optimal solutions are yielded. \textit{Bidirectional} results are similar but worse, because it has a higher exploration factor, and \textit{broadcast} has obtained the worst, since it is the most explorative method. With respect to the \textit{migration rates}, 100 seems to yield the best results. It is not surprising considering that a higher migration rate means less migration events are performed and thus, less ants migrate and influence in the search of the other islands, i.e., the exploration factor is decreased. So the higher the migration rate is, the higher the exploitation component is in every island, and the better the solutions are achieved.
 
-\begin{figure}[htp]
-\begin{center}
-\includegraphics[scale=0.2]{figures/boxplot_epsilon_gray.eps}
-\caption{Boxplots showing the $epsilon\; metric\; (\epsilon)$ values of the 20 PSs (one per run) for the kroAB200 instance of the problem. The topology models are plotted in different shades of gray. Each one of the approaches (topology + migration rate) is labelled with its two initial letters and the migration rate value, from unidirectional-25 to broadcast-100.
-\label{fig:box_epsilon}}
-\end{center}
-\end{figure}
+%\begin{figure}[htp]
+%\begin{center}
+%\includegraphics[scale=0.17]{figures/boxplot_spread_gray.eps}
+%\caption{Boxplots showing the $spread\; indicator\; (Spr)$ values of the 20 PSs (one per run) for the kroAB200 instance of the problem. The colors and labels are the same as in previous figure.
+%The topology models are plotted in different shades of gray. Each one of the approaches (topology + migration rate) is labelled with its two initial letters and the migration rate value, from unidirectional-25 to broadcast-100.
+%\label{fig:box_spread}}
+%\end{center}
+%\end{figure}
 %
-$\epsilon$ metric results (in Figure \ref{fig:box_epsilon}) shows that the best convergence is reached by the \textit{bidirectional} approach, and for high values of the \textit{migration rates} (75 and 100).
-*** EXPLICACIÓN? ***
+Figure \ref{fig:box_metrics}.(b) shows this time the contrary situation, being \textit{broadcast} the best option with regard to the spread/distribution ($Spr$) of solutions, i.e. to the wide of the Pareto set. The reason is the same as before but on the contrary sense. Thus the higher the exploration component is, the wider the PS is.
+As expected, the lowest value for the \textit{migration rate} yields the best results for this indicator (closer to 0).
 
-
-\begin{figure}[htp]
-\begin{center}
-\includegraphics[scale=0.2]{figures/boxplot_num_solutions_gray.eps}
-\caption{Boxplots showing the number of solutions (cardinality, $|PS|$) of the 20 PSs (one per run) for the kroAB200 instance of the problem. The topology models are plotted in different shades of gray. Each one of the approaches (topology + migration rate) is labelled with its two initial letters and the migration rate value, from unidirectional-25 to broadcast-100.
-\label{fig:box_num_sols}}
-\end{center}
-\end{figure}
+%\begin{figure}[htp]
+%\begin{center}
+%\includegraphics[scale=0.17]{figures/boxplot_epsilon_gray.eps}
+%\caption{Boxplots showing the $epsilon\; metric\; (\epsilon)$ values of the 20 PSs (one per run) for the kroAB200 instance of the problem. 
+%The colors and labels are the same as in previous figure.
+%The topology models are plotted in different shades of gray. Each one of the approaches (topology + migration rate) is labelled with its two initial letters and the migration rate value, from unidirectional-25 to broadcast-100.
+%\label{fig:box_epsilon}}
+%\end{center}
+%\end{figure}
 %
-With respect to $|PS|$ (cardinality), high values for \textit{migration rate} correspond to higher number of solutions in the PS. \textit{unidirectional} model seems to show the best performance in this sense. Thus, the exploitation is more desirable in this problem, because more non-dominated solutions are obtained in the specific search area of every island, than close to the neighbors (when more migrants arrive to an island).
+$\epsilon$ metric results (in Figure \ref{fig:box_metrics}.(c)) show that the best convergence factor is reached by the \textit{bidirectional} approach, and for high values of the \textit{migration rates} (75 and 100). The reason lies in the higher exploitation performed in this model in every island, since the migrants are solutions from close search areas. High values of the \textit{migration rate} lead to less migration events, so the algorithm can perform more iterations to improve the solutions in an area, i.e. the exploitation grows and the obtained solutions are closer to the optimal ones.
 
-Next experiment considers the distributed nature of the model, and plots the running time results in Figure \ref{fig:box_time}. The worst time among all the processors in one execution has been chosen as the running time of that execution.
-*** Time es logarítmico??? ***
+%\begin{figure}[htp]
+%\begin{center}
+%\includegraphics[scale=0.17]{figures/boxplot_num_solutions_gray.eps}
+%\caption{Boxplots showing the number of solutions (cardinality, $|PS|$) of the 20 PSs (one per run) for the kroAB200 instance of the problem. 
+%The colors and labels are the same as in previous figure.
+%The topology models are plotted in different shades of gray. Each one of the approaches (topology + migration rate) is labelled with its two initial letters and the migration rate value, from unidirectional-25 to broadcast-100.
+%\label{fig:box_num_sols}}
+%\end{center}
+%\end{figure}
+%
+With respect to $|PS|$ (cardinality), plotted in Figure \ref{fig:box_metrics}.(d), high values for \textit{migration rate} correspond to higher number of solutions in the PS. \textit{unidirectional} model seems to show the best performance in this sense. Thus, the exploitation is more desirable in this problem, because more non-dominated solutions are obtained in the specific search area of every island, than close to the neighbors (when more migrants arrive to an island).
+
+The final boxplot (Figure \ref{fig:box_time}) considers the distributed nature of the model, and shows the running time results. The worst time among all the processors in one execution has been chosen as the running time of that execution.
 
 \begin{figure}[htp]
 \begin{center}
-\includegraphics[scale=0.2]{figures/boxplot_time_gray.eps}
-\caption{Boxplots showing the running time (in milliseconds) of the 20 runs for the kroAB200 instance of the problem. The topology models are plotted in different shades of gray. Each one of the approaches (topology + migration rate) is labelled with its two initial letters and the migration rate value, from unidirectional-25 to broadcast-100.
+\includegraphics[scale=0.17]{figures/boxplot_time_gray.eps}
+\caption{Boxplots showing the running time (in milliseconds) of the 20 runs for the kroAB200 instance of the problem. 
+The colors and labels are the same as in previous figure.
+%The topology models are plotted in different shades of gray. Each one of the approaches (topology + migration rate) is labelled with its two initial letters and the migration rate value, from unidirectional-25 to broadcast-100.
 \label{fig:box_time}}
 \end{center}
 \end{figure}
 %
-Looking at this figure, it can be noticed that \textit{bidirectional} model consumes the highest computational time.
-*** DEBIDO AL MAYOR NÚMERO DE COMUNICACIONES?? *** POR QUÉ NO ES BROADCAST EL PEOR??? ***
+Looking at this figure, it can be noticed that \textit{bidirectional} model consumes the highest computational time. These results may seem not expected, since, in principle, there should be more communication costs in the broadcast model. The main reason lies in the algorithm implementation, since the PS updating is quite expensive. Thus in \textit{bidirectional} model there are several updates due to found solutions in the inter-colony gaps, because of the exploitation factor increasing that the migrations in this model provide (close solutions in the same area are received). This along with a higher communication cost than \textit{unidirectional} model leads to these results. In the \textit{broadcast} case, the communication costs are higher, but there are many fewer updates in the PS, since it finds less non-dominated solutions than the other models. This conclusion is supported by the similar results obtained for the different \textit{migration rates}, which should increase the running time consumption when these rates decrease, however it does not happen. Thus communication cost is not the main factor in these results.
+Anyway the differences are around 3 seconds, so they are not significative from the user point of view.
 
-Finally, and in order to support the conclusions reached, an ANOVA statistical test have been applied. This test allows us to determine whether a change in the results of every metric is due to a change in a factor or to a random effect. In this case, the factors to consider are the possible approaches (topology + migration rate). *** ES ASÍ??? ***
-After applying ANOVA, if the test has shown significative differences, post-hoc Tukey's Honestly Significant Difference (HSD) test\cite{Tukey_HSD} has been applied to find which factors are causing these differences. 
+Finally, ANOVA statistical tests \cite{ANOVA_Fisher} have been applied to complete this analysis. These tests allow us to determine whether a change in the results of every metric is due to a change in a factor or to a random effect. In this case, the factors to consider are the possible approaches (topology + migration rate). 
+After applying ANOVA, if the test has shown significative differences, post-hoc Tukey's Honestly Significant Difference (HSD) test \cite{Tukey_HSD} has been applied to find which factors are causing these differences. 
 
-The ANOVA results can be seen in Table \ref{tab:anova}. It can be noticed that the approaches (topologies + migration rates) have significative influence on the values of every metric and indicator, since the \textit{P-value (Sig. Level)} is always much smaller than 0.05 (is the standard minimum value 2.2e-16). Moreover, they have significative influence at a confidence level greater than $99\%$, as indicated by the asterisks.
-*** comentar el caso del tiempo ***
+The ANOVA results are shown in Table \ref{tab:anova}. It can be noticed that the approaches (topologies + migration rates) have significative influence on the values of every metric or indicator, since the \textit{P-value (Sig. Level)} is always much smaller than 0.05 (is the standard minimum value 2.2e-16). Moreover, they have significative influence at a confidence level of $99\%$.
+However in the case of $Time$ no influence has been found for \textit{migration rate} factor.
 
 \begin{table}[htp]
 
@@ -653,11 +680,12 @@ The ANOVA results can be seen in Table \ref{tab:anova}. It can be noticed that t
 
 \begin{tabular}{lr}
 
-HV &
+$HV$ &
 
 \begin{tabular}{|c|c|c|c|}
 \hline
-\scriptsize{Param.}		&\scriptsize{Df} &  \scriptsize{F}     & \scriptsize{P (Sig. Level)} \\ 
+\scriptsize{Param.}		&\scriptsize{Df} &  \scriptsize{F}     & \scriptsize{P (Sig. Level)} \\
+\hline
 \hline
 \scriptsize{\textit{topology}}     &\scriptsize{2}  & \scriptsize{327.219} & \textbf{\scriptsize{$<$ 2.20e-16 ***}} \\
 \hline
@@ -667,13 +695,13 @@ HV &
 \hline
 \end{tabular} \\
 
-Epsilon &
+$\epsilon$ &
 
 \begin{tabular}{|c|c|c|c|}
 \hline
-\scriptsize{Param.}		&\scriptsize{Df} &  \scriptsize{F}     & \scriptsize{P (Sig. Level)} \\ 
-\hline
-\scriptsize{\textit{topology}}     &\scriptsize{2}  & \scriptsize{51.1573} & \textbf{\scriptsize{$<$ 2.20e-16 ***}} \\
+%\scriptsize{Param.}		&\scriptsize{Df} &  \scriptsize{F}     & \scriptsize{P (Sig. Level)} \\ 
+%\hline
+\scriptsize{\textit{topology}}     &\scriptsize{$\;$2$\;$}  & \scriptsize{51.1573} & \textbf{\scriptsize{$<$ 2.20e-16 ***}} \\
 \hline
 \scriptsize{\textit{mig. rate}}         &\scriptsize{1}  & \scriptsize{32.4955} & \textbf{\scriptsize{ 3.58e-08 ***}} \\
 \hline
@@ -681,13 +709,13 @@ Epsilon &
 \hline
 \end{tabular} \\
 
-Spread &
+$Spr$ &
 
 \begin{tabular}{|c|c|c|c|}
 \hline
-\scriptsize{Param.}		&\scriptsize{Df} &  \scriptsize{F}     & \scriptsize{P (Sig. Level)} \\ 
-\hline
-\scriptsize{\textit{topology}}     &\scriptsize{2}  & \scriptsize{104.750} & \textbf{\scriptsize{$<$ 2.20e-16 ***}} \\
+%\scriptsize{Param.}		&\scriptsize{Df} &  \scriptsize{F}     & \scriptsize{P (Sig. Level)} \\ 
+%\hline
+\scriptsize{\textit{topology}}     &\scriptsize{$\;$2$\;$}  & \scriptsize{104.750} & \textbf{\scriptsize{$<$ 2.20e-16 ***}} \\
 \hline
 \scriptsize{\textit{mig. rate}}         &\scriptsize{1}  & \scriptsize{57.4511} & \textbf{\scriptsize{ 8.06e-13 ***}} \\
 \hline
@@ -695,13 +723,13 @@ Spread &
 \hline
 \end{tabular} \\
 
-Cardinality & 
+$|PS|$ & 
 
 \begin{tabular}{|c|c|c|c|}
 \hline
-\scriptsize{Param.}		&\scriptsize{Df} &  \scriptsize{F}     & \scriptsize{P (Sig. Level)} \\ 
-\hline
-\scriptsize{\textit{topology}}     &\scriptsize{2}  & \scriptsize{77.3939} & \textbf{\scriptsize{$<$ 2.20e-16 ***}} \\
+%\scriptsize{Param.}		&\scriptsize{Df} &  \scriptsize{F}     & \scriptsize{P (Sig. Level)} \\ 
+%\hline
+\scriptsize{\textit{topology}}     &\scriptsize{$\;$2$\;$}  & \scriptsize{77.3939} & \textbf{\scriptsize{$<$ 2.20e-16 ***}} \\
 \hline
 \scriptsize{\textit{mig. rate}}         &\scriptsize{1}  & \scriptsize{28.1965} & \textbf{\scriptsize{ 2.54e-07 ***}} \\
 \hline
@@ -710,13 +738,13 @@ Cardinality &
 \end{tabular} \\
 
 
-Time &
+$Time$ &
 
 \begin{tabular}{|c|c|c|c|}
 \hline
-\scriptsize{Param.}		&\scriptsize{Df} &  \scriptsize{F}     & \scriptsize{P (Sig. Level)} \\ 
-\hline
-\scriptsize{\textit{topology}}     &\scriptsize{2}  & \scriptsize{873.522} & \textbf{\scriptsize{$<$ 2.00e-16 ***}} \\
+%\scriptsize{Param.}		&\scriptsize{Df} &  \scriptsize{F}     & \scriptsize{P (Sig. Level)} \\ 
+%\hline
+\scriptsize{\textit{topology}}     &\scriptsize{$\;$2$\;$}  & \scriptsize{873.522} & \textbf{\scriptsize{$<$ 2.20e-16 ***}} \\
 \hline
 \scriptsize{\textit{mig. rate}}         &\scriptsize{1}  & \scriptsize{0.1675} & \textbf{\scriptsize{ 0.6828 }} \\
 \hline
@@ -735,23 +763,29 @@ Tukey's HSD results can be seen in Figure \ref{fig:tukeyHSD}.
 
 \begin{figure}[htp]
 \begin{center}
-\subfigure[Hypervolume]{\includegraphics[scale=0.22]{figures/tukey_hypervolume_topology.eps}
-		\includegraphics[scale=0.22]{figures/tukey_hypervolume_mig_rate.eps}}
-\subfigure[Epsilon]{\includegraphics[scale=0.22]{figures/tukey_epsilon_topology.eps}
-		\includegraphics[scale=0.22]{figures/tukey_epsilon_mig_rate.eps}}
-\subfigure[Spread]{\includegraphics[scale=0.22]{figures/tukey_spread_topology.eps}
-		\includegraphics[scale=0.22]{figures/tukey_spread_mig_rate.eps}}
-\subfigure[Num. Solutions]{\includegraphics[scale=0.22]{figures/tukey_num_solutions_topology.eps}
-		\includegraphics[scale=0.22]{figures/tukey_num_solutions_mig_rate.eps}}
-\subfigure[Time]{\includegraphics[scale=0.22]{figures/tukey_time_topology.eps}
-		\includegraphics[scale=0.22]{figures/tukey_time_mig_rate.eps}}
+\subfigure[$HV$]{\includegraphics[scale=0.2]{figures/tukey_hypervolume_topology.eps}
+		\includegraphics[scale=0.2]{figures/tukey_hypervolume_mig_rate.eps}}
+\subfigure[$\epsilon$]{\includegraphics[scale=0.2]{figures/tukey_epsilon_topology.eps}
+		\includegraphics[scale=0.2]{figures/tukey_epsilon_mig_rate.eps}}
+\subfigure[$Spr$]{\includegraphics[scale=0.2]{figures/tukey_spread_topology.eps}
+		\includegraphics[scale=0.2]{figures/tukey_spread_mig_rate.eps}}
+\subfigure[$|PS|$]{\includegraphics[scale=0.2]{figures/tukey_num_solutions_topology.eps}
+		\includegraphics[scale=0.2]{figures/tukey_num_solutions_mig_rate.eps}}
+\subfigure[$Time$]{\includegraphics[scale=0.2]{figures/tukey_time_topology.eps}
+		\includegraphics[scale=0.2]{figures/tukey_time_mig_rate.eps}}
 \caption{Tukey's HSD graphs for topology (left) and migration rate (right)}\label{fig:tukeyHSD}
 \end{center}
 \end{figure}
+% 
+The first conclusion that can be extracted from these graphs is that, in most of cases, there are no significative differences between the results when using close \textit{migration rates}, and just when the difference in rate is more than 50, the differences arise.
+With respect the \textit{migration topology}, the differences are always significatives, but in the comparison between \textit{unidirectional} and \textit{bidirectional} in $HV$ metric, between \textit{broadcast} and \textit{bidirectional} in $Spr$ metric, and between \textit{unidirectional} and \textit{broadcast} in $Time$ measure. These facts could be also inferred looking respectively at Figures \ref{fig:box_metrics}.(a), \ref{fig:box_metrics}.(b) and \ref{fig:box_time}.
 
-*** decir que se muestra lo que decía ANOVA. que en el caso de la tasa de migración los resultados son poco significativos en valores cercanos de TM... algo más ***
-
-*** The unidirectional (but directed to the optimal) topology could improve the search in the gaps between colonies, meanwhile the exploitation factor is maintained. *** DECIR ALGO ASÍ ***
+A set of conclusions can be extracted from the experiments presented in this section:
+\begin{itemize}
+\item High values for the \textit{migration rate} are recommended for any \textit{migration topology} considered. The balance between the quality of the solutions and their spread obtained for 100 leads us to choose this value as the best.
+\item \textit{bidirectional} migration topology can be considered as the best with regard most of the indicators. It gets a good balance between quality, spread and convergence, with the only handicap of requiring higher computational time than the other approaches, and yielding less non-dominated solutions in average, but getting a number close to \textit{unidirectional}.
+\item However, if having the smaller running time as possible is considered as a requirement, \textit{unidirectional} turns in the best option when searching for quality in the solutions, and \textit{broadcast} when the aim if get a well distributed PS (good spread).
+\end{itemize}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CONCLUSIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -759,8 +793,21 @@ Tukey's HSD results can be seen in Figure \ref{fig:tukeyHSD}.
 \section{Conclusions}
 \label{sec:conclusions}
 
-Very beautiful work
+This work presents an analysis of the Pareto-based island model introduced in the recent article \cite{iMOACOS_SOCO}. It is a distribution scheme inspired in the island model widely used in evolutionary algorithms. But this is applied in the scope of multi-objective problems and is aimed to distribute a set of sub-colonies in an ant colony optimization algorithm. Thus it is a shape of multi-colony (or coarse-grained) model.
 
+A neighborhood migration topology named \textit{unidirectional} was initially proposed. It is focused on the Pareto front (representation of the ideal set of solutions) shape, so it establish the communication links in order to `cover' the whole Pareto front, i.e. trying that the sub-colonies/islands search in all the possible areas of the space of solutions.
+In this paper two additional topologies are presented: \textit{bidirectional}, which completes the communications between islands in both directions, and \textit{broadcast}, which migrates individuals from every island to the rest.
+
+In addition, four different values for the \textit{migration rate} parameter have been tested. The aim is to decide the best combination in these two factors of the proposed island model.
+In order to do this, MOACS algorithm \cite{MOACS-Baran} has been implemented using the proposed topologies. It has been adapted to solve the symmetric bi-criteria TSP in three different instances (100, 150 and 200 cities).
+
+Several experiments have been conducted, computing classical metrics and indicators (hypervolume, spread, epsilon), along with graphs (attainment functions). Then a deep analysis of the results has been done in order to determine the approach with the best performance. In addition, statistical tests ANOVA and post-hoc Tukey's HSD have been applied to support this analysis.
+
+The conclusions reached say that high values for the \textit{migration rate} (around 100) yield better results. In the comparison between the \textit{migration topologies}, the \textit{bidirectional} approach has been chosen as the best option due to its good balance between the quality of the obtained solutions and the diversity and convergence level which it gets.
+
+Following this line of work it could be interesting to perform another analysis with regard other factors of the island model, such as the migration or replacement policies. The comparison with others MOACO multi-colony models is another interesting line of research. There are several models proposed in the
+literature such as the one by Iredi at al. \cite{BiANT-Iredi}. 
+It would be also interesting to conduct a comparison with state-of-the-art multi-objective evolutionary algorithms implementing the island model.
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
