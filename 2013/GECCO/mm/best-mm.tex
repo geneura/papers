@@ -311,7 +311,7 @@ blacks through all combinations of $\ell-p$ blacks and $p$ whites) is noted. Eve
 series of {\em partitions} in which the set of consistent combinations
 is divided by its {\em distance} (in terms of common positions and
 colors) to every other.  So, a {\em partition} is a subset of the set
-of eligible combinations. All combinations in the eliglble set are
+of eligible combinations. All combinations in the eligible set are
 then defined by a list of the number of combinations that would obtain
 every possible answer, and are scored according to this list. However,
 there will be combinations that will have exactly the same list of
@@ -355,7 +355,7 @@ several scores have been proposed:\begin{itemize}
   minimize the expected size; this one is related to the Worst Case
   mentioned in the first item and follows the same rationale: by
   playing the combinations that minimize the expected (as opposed to
-  worst, in the case of Knut) size, the set of eligible combinations
+  worst, in the case of Knuth) size, the set of eligible combinations
   will be cut down eventually to one. 
 \end{itemize}
 
@@ -383,7 +383,7 @@ scaling behavior, so using bounds on the set size has a big impact on
 the behavior of the algorithm. 
 
 If any method wants to improve over the state of the art, it has got
-to be compared with teh paper by Berghman et al. in
+to be compared with the paper by Berghman et al. in
 \cite{Berghman20091880}. They obtained a system that is able to
 find the solution in an average number of moves that is, for all sizes
 tested, better than any solution previously published; the number of evaluations
@@ -490,25 +490,6 @@ selected if they {\em joust} in the tournament with each other. The
 relationship among both quantities has been well established by B\"ack
 and coworkers in \cite{Back94selectivepressure}.
 
-\begin{table}[t!]
-\centering 
-\caption{Values for the Evo parameters that obtain the best
-  result. Permutation, crossover and mutation are {\em priorities};
-  they are normalized to one to convert them to application rates. In
-  practice, crossover will be applied to 80\% and mutation and
-  permutation to 10\% of the newly generated combinations each. \label{tab:params}}
-\begin{tabular}{lc}
-\hline
-Parameter & Value \\
-\hline \\
-Crossover  & 8 \\
-Mutation  & 1 \\
-Permutation  & 1 \\
-Replacement rate  & 0.75 \\ 
-\hline
-\end{tabular}
-\end{table}
-
 In this paper we have made several improvements over the published
 algorithm. We have profiled the application to improve speed, which
 has resulted also in a change of the operators used in the
@@ -550,21 +531,28 @@ amount of randomness in the result. This profiler outputs a file
 \footnote{All result files are available under request} that
 can be analyzed and output to a set of web pages. The first page of
 the report has been captured and is shown in Figure
-\ref{fig:profile:pre}. 
+\ref{fig:profile:pre}.  Prior to this profiling another analysis was
+made, it showed that the {\em permutation} operator that converted a
+combination in a permutation was extremely slow (since it had to
+generate a representation of the combination and proceed to the next
+permutation until it reached a random number). That is why it this
+operator was eliminated altogether; however, since it is a major
+component of the algorithm its effect on performance will be examined
+in the next Section. 
 
 This report shows the usual output in profilers, including the number
 of calls to a function, exclusive (time spent exclusively in that
 function) and inclusive (which includes calls to functions from the
 one listed). We usually have to look at the first item, which a
 function called {\tt check\_combination}. This is the function that
-compares two combinatios, be it the hidden combination with the one
+compares two combinations, be it the hidden combination with the one
 played, or obviously more frequently, the combinations in the eligible
 set among them or the combinations in the population with the already
 played ones to compute fitness. Even as this function had been
 optimized in previous versions of the algorithm, it eventually results
 that it takes 12$\mu$s per call, which is a lot considering that it is
 the core of the algorithm. This makes this function a target for
-optimization; however, it is almost imposible to go further using
+optimization; however, it is almost impossible to go further using
 Perl. It gets worse, however, since this function is called mainly
 from the 4th in the list, {\tt check\_rule}, which compares a string
 with already played guesses. That adds a few seconds to
@@ -581,7 +569,7 @@ and the several levels of indirection used for comparing strings were
 reduced when possible. The substitute for {\tt distance\_taxicab} is
 called {\tt distance\_xs} (XS is the method for including compiled C
 functions inside Perl programs) and is shown at the top of the new
-version in Figure \ref{fig:profile:post}.  This new funtion takes
+version in Figure \ref{fig:profile:post}.  This new function takes
 19$\mu$s per call, less than 1/3 what it did before. Taking into
 account that previously it took around 1/3 of the total time, the
 total improvement in performance will amount to around 10\%. That is
@@ -589,7 +577,7 @@ not dramatic, but since usual experiments take up to several hours, it
 might mean a much better turnaround for performing them.
 
 Besides, the optimization does not stop here. The second function is
-also an importan target for optimization, because it takes a lot of
+also an important target for optimization, because it takes a lot of
 time and is only called 100 times, one for each generation (around 10
 generations per game), and a whooping 29 ms. per call. Since this
 function uses lots of complicated data structures it is not such an
@@ -609,14 +597,14 @@ Finally, as it happens with most evolutionary algorithms, we find a
 sorting function in the sixth place, which is called from many
 places. That is specific from the evolutionary algorithm (not
 MasterMind) but can be eliminated anyways by using {\tt Sort::Key},
-the fastest sort function available in the Perl module respository
+the fastest sort function available in the Perl module repository
 (called CPAN). 
 
 %
 \begin{figure*}[!htb]
 \centering
 \includegraphics[scale=0.5]{post-profile.png}
-\caption{Output of {\tt Devel::NYTProf} after the last optiization
+\caption{Output of {\tt Devel::NYTProf} after the last optimization
     profiling. The first one now is the new function created, and all
     previously time-hogging functions have
     disappeared. \label{fig:profile:post}} 
@@ -635,9 +623,64 @@ systematic procedure; these speeds can be in many cases much bigger
 than those possibly obtained by tweaking or improvement of the
 algorithm itself.
 
+
 \section{Using Entropy for combination scoring in evolutionary MasterMind}
 \label{sec:entropy}
 
+\begin{table}[t!]
+\centering 
+\caption{Values for the Evo parameters that obtain the best
+  result. Permutation, crossover and mutation are {\em priorities};
+  they are normalized to one to convert them to application rates. In
+  practice, crossover will be applied to 80\% and mutation and
+  permutation to 10\% of the newly generated combinations each. \label{tab:params}}
+\begin{tabular}{lc}
+\hline
+Parameter & Value \\
+\hline \\
+Crossover  & 8 \\
+Mutation  & 1 \\
+Permutation  & 1 \\
+Replacement rate  & 0.75 \\ 
+\hline
+\end{tabular}
+\end{table}
+%
+In this Section we will perform experiments pursuing the two
+objectives of this paper: obtain a running time that is competitive
+with the state of the art and obtaining better results than those
+published in \cite{Berghman20091880}. The new version is called
+FastEvoEntropy since its scoring method is Entropy and it is faster
+than previously published versions. Two versions of this last method
+have been tested: one includes a new permutation operator with a
+different implementation that chooses randomly a random number of
+characters in the string that shuffles it; the second one substitutes
+permutation by two different operators, Shift and Swap; this last one
+has been traditionally used by other methods. The first one shifts
+with carry a string left or right with the eliminated character being
+inserted at the other side; swap is a simple permutation that swaps
+the place of two characters (previously checking that they are
+different). 
+
+Results for number of guesses (Table \ref{tab:moves}), evaluations
+(Table \ref{tab:evals}) and time (Table \ref{tab:time}) are shown. All results
+indicate the population and consistent set limit size in parenthesis,
+average and error of the mean. Evo++ results are included for the sake
+of comparison and were published in \cite{mm:evostar13}; Berghman's
+results were published in  \cite{Berghman20091880} when shown (number
+of evaluations and, in one case, average time to solution were not
+published. In all cases 5000 different games were played; Berghman et
+al. cites 500 games in their paper. 
+
+Just two sizes were used for this comparison; they pose a difficult
+enough problem for being challenging and, besides, these are the sizes
+for which results have been published and can thus be compared against
+this new method. The common parameters for all runs are shown in Table
+\ref{tab:params}. The rows in each table is correlative, that is, they
+correspond to the same experiment. Time measures were not taken
+previously so this new Evo version cannot be compared with the
+previous one (but the previous Section has sufficiently proved the
+former was slower).
 
 \begin{table*}[t!]
 \centering
@@ -648,66 +691,158 @@ algorithm itself.
   MP use Most Parts. \label{tab:comparison-guesses}}
 \subfloat[Mean number of guesses with standard deviation;
 the quantities in parentheses indicate population and consistent set
-size (in the case of Evo++). The horizontal line
-indicates significant differences using Wilcoxon paired test. There
-is also significant difference for  $P=6,N=9$ between the two
-versions of Evo++, but not in the other case.]{\label{tab:moves}
+size (in the case of Evo++).]{\label{tab:moves}
 \begin{tabular}{lcc}
 
-                    &$P=5, N=8$ & $P=6,N=9$ \\
+                    &$\ell=5, \kappa=8$ & $\ell=6,\kappa=9$ \\
 \hline
 Berghman et al. &             5.618                          & 6.475  \\
 \textsc{Evo++ (EN) }   & (1000,200) $ 5.555 \pm 0.011$ & (2000,200) $6.373 \pm 0.011$ \\
 \textsc{Evo++ (MP) }   & (1000,80) $ 5.602 \pm 0.012$ & (2000,200) $6.436 \pm 0.012$ \\
-\textsc{FastEvoEntropy}   &  (768,32) $ 5.6148 \pm 0.011$ &  \\
-                                               &  (768,256) $ 5.59 \pm 0.012$ &  \\
-                                               & (1024,256) $5.577 \pm $ & (2048,256) $6.42\pm 0.011$\\
-\textsc{FastEvoEntropy} S+SH & (800, 256) $5.5762 \pm $ & (1024,256) $6.43 \pm 0.12$\\
+\textsc{FastEvoEntropy}   &  (768,32) $ 5.6148 \pm 0.011$ & (1024,32) $6.433 \pm 0.012$ \\
+                                               &  (768,256) $ 5.59 \pm 0.012$ &  (1024,256) $6.44 \pm 0.012$ \\
+                                               & (1024,256) $5.577 \pm 0.011$ & (2048,256) $6.42\pm 0.012$\\
+\textsc{FastEvoEntropy} S+SH & (800, 256) $5.5762 \pm 0.012$ & (1024,256) $6.43 \pm 0.12$\\
 
 \hline
 \end{tabular}
 }
 
-\subfloat[Mean number of evaluations with standard deviation;
-differences are always significant.]{\label{tab:evals}
+\subfloat[Mean time to solution with error of the mean;
+differences are always significant.]{\label{tab:time}
 \begin{tabular}{lcc}
 
-                    &$P=5, N=8$ & $P=6,N=9$ \\
-\hline
-\textsc{Evo++ (EN) }   &  $ 26098 \pm 144$ & $67521 \pm 384$ \\
-\textsc{Evo++ (MP) }   & $20120 \pm 114$ & $68860 \pm 406$ \\
-\textsc{FastEvoEntropy}    &  (768,32) $ 12679 \pm 73$ &  \\
-                                                &  (768,256) $ 25167 \pm 141$ &  \\
-                                                & (1024,256) $29279 \pm 161$ & \\
-\textsc{FastEvoEntropy} S+SH & (800, 256) $25488 \pm 144 $ & \\
-\hline
-\end{tabular}
-}
-
-\subfloat[Mean number of evaluations with standard deviation;
-differences are always significant.]{\label{tab:evals}
-\begin{tabular}{lcc}
-
-                    &$P=5, N=8$ & $P=6,N=9$ \\
+                    &$\ell=5, \kappa=8$ & $\ell=6,\kappa=9$ \\
 \hline
 Berghman et al. &                                      & 1.284  \\
 %\textsc{Evo++ (EN) }   &  $ 26098 \pm 144$ & $67521 \pm 384$ \\
 %\textsc{Evo++ (MP) }   & $20120 \pm 114$ & $68860 \pm 406$ \\
-\textsc{FastEvoEntropy}   &  (768,32) $ 0.709 \pm 0.004$ &  \\ 
-                                               &  (768,256) $ 3.03 \pm 0.02$ &  \\
-                                                & (1024,256) $ 3.26 \pm 0.02$ & \\
-\textsc{FastEvoEntropy} S+SH & (800, 256) $2.93 \pm 0.02 $ & \\
+\textsc{FastEvoEntropy}   &  (768,32) $ 0.709 \pm 0.004$ & (1024,32) $2.31 \pm 0.93$ \\ 
+                                               &  (768,256) $ 3.03 \pm 0.02$ &  (1024,256)  $5.42 \pm 0.034$\\
+                                                & (1024,256) $ 3.26 \pm 0.02$ & (2048,256) $6.88 \pm 0.04$ \\
+\textsc{FastEvoEntropy} S+SH & (800, 256) $2.93 \pm 0.02 $ &(1024,256)  $5.41 \pm 0.06$ \\
 \hline
 \end{tabular}
 }
 
+\subfloat[Mean number of evaluations with error of the mean;
+differences are always significant.]{\label{tab:evals}
+\begin{tabular}{lcc}
+
+                    &$\ell=5, \kappa=8$ & $\ell=6,\kappa=9$ \\
+\hline
+\textsc{Evo++ (EN) }   &  $ 26098 \pm 144$ & $67521 \pm 384$ \\
+\textsc{Evo++ (MP) }   & $20120 \pm 114$ & $68860 \pm 406$ \\
+\textsc{FastEvoEntropy}    &  (768,32) $ 12679 \pm 73$ &  (1024,32) $38306 \pm 14098$\\
+                                                &  (768,256) $ 25167 \pm 141$ & (1024,256) $49492 \pm 288$\\
+                                                & (1024,256) $29279 \pm 161$ & (2048,256) $76277 \pm 443$\\
+\textsc{FastEvoEntropy} S+SH & (800, 256) $25488 \pm 144 $ & (1024,256) $49663 \pm 779$\\
+\hline
+\end{tabular}
+}
+
+
 \end{table*}
+
+The tables above show several results. First, the canonical
+implementation of the permutation, albeit slow, is better than the new
+one, results for Evo++ (EN) are (significantly using Wilcox T-Test)
+better than any result published in this paper; this consistently for
+the two sizes studied. This issue will have to be pursued further, but
+it was not the main objective of this paper, which was to establish a
+new state of the art in MasterMind results. 
+
+The results shown in Table \ref{tab:moves} show that, effectively,
+this new algorithm is better at solving the game than Berghman's
+(incidentally, \cite{mm:evostar13} too). The difference is small but
+significant using Wilcoxon t-test, and that is so for all methods
+that use 256 as consistent set limit size; for $\ell=6,\kappa=9$, even
+when the smaller size (consistent set size CS=32) is used. This new
+version of the method, as is usual, achieves the best results with a
+sizable population and CS=256. However, increasing more the
+population (to 2048) does not result in a noticeable (in fact, not
+significantly better) decrease in the number of games needed to win.
+We can also notice in the results that the new permutation operator is
+not significantly different from the new swap+shift (S+SH) operators;
+as already pointed out, both are worse than the canonical permutation
+operator. On the other hand, the main conclusion drawn from the
+time-to-solution table (\ref{tab:time} is that, in fact, it is
+difficult to obtain a solution faster than Berghman's et al. did. You
+can obtain a better solution, but not a faster solution. We should
+have to improve the faster solution around 50\% to obtain it as fast
+as Berghman's. However even if it is a bit slower, it is better. By
+reducing even further the CS size and population it it's not
+impossible to achieve that target. That, for the moment, is left as
+future work. 
+
+The third table with the average number of evaluations show that these
+new methods, even achieving worse results, do so using a comparable
+number of evaluations (for $\ell=5$) or considerably less (for
+$\ell=6$). This is due to the change in the operators used, and also
+shows that it is possible that exploration of search space changes
+considerably with them and they are unable to find the best solutions
+so efficiently. There is also a rough correlation between the number
+of evaluations and the time needed to find the solution and some hope
+in the fact that, despite the search space for $\ell=6,\kappa=9$
+being roughly 30 times larger than $\ell=5, \kappa=8$, since we will
+be able to pursue bigger problem spaces with a probably logarithmic
+increase in the time. 
+
+Finally using S+SH is a bit faster than using (the new) permutation
+operator, as shown in the last row of results. In any case, results
+are good enough so the new operators introduced in this work have
+proved its worth as alternatives to permutation.
 
 \section{Conclusions}
 \label{sec:conc}
 
-Very beautiful work
+In this paper we have tried to establish a new state of the art with a
+method that is able to obtain better solutions to the game of
+MasterMind than those published and do it in less time. However, we
+have not managed to achieve both objectives: our results are better
+than those published but considerably slower. There is some room for
+improvement in both aspects, but that is left as future work. The
+achieved results, however, show a big improvement in the number of
+evaluations needed and the time needed to do them, thanks to the
+optimization done after profiling the method. This profiling has led
+to a change in the algorithm by eliminating a slow operator which,
+however, has resulted in worse results than previously obtained. As
+indicated above, this is a result that will have to be pursued
+further.
 
+The main result, thus, in this paper, which is obtaining a better
+player at Mastermind than the state of the art, has been achieved
+mainly by using Entropy as a scoring method. Previously
+\cite{mm:evostar13} it proved to be better than most parts and both
+are known to be better than Worst Case  \cite{Knuth}. However, so far
+Expected Case (used by Berghman) obtained the best results. This is no
+longer so, and it will have to be explored whether entropy effectively
+continues being a good scoring method for eligible combinations when
+the size of the search space increases. 
+
+It should be noted also that all results, configuration files and data
+are available under an open source licence (address hidden for double
+blind revision). 
+
+Several possible lines of work have been pointed out above. Profiling
+is a methodology that is obviously valid for a particular problem
+size. When size increases new functions may start to be the
+bottleneck, so size-specific optimizations are also possible. Another
+option is to code in C other critical parts of the program, but none
+so simply have been found, so other speedup methods (including
+complete factorization) should be sought.
+
+An interesting option that would be worth exploring is using
+multi-threaded applications to simulate parallel execution within a
+single computer. This will speed up the application, but it will have
+an important impact on the algorithm so it will have to be examined
+carefully looking at different alternatives and ways of interaction of
+the different threads. We think that it is going to be difficult to
+obtain much improvement over the average number of games obtained here
+(or, for that matter, in other papers pursuing this research issue), even using exhaustive
+search when a sufficiently powerful machine is found, so any
+improvement on the algorithm will have to be done on the number of
+evaluations needed or the time needed to reach them. 
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
