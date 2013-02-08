@@ -1,0 +1,309 @@
+\documentclass[runningheads]{llncs}
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx,epsfig}
+% \usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{rotating}
+\usepackage{subfigure}
+
+%%%%
+
+\usepackage{color}
+\usepackage{alltt}
+\usepackage{verbatim}
+\usepackage{url}
+%\usepackage[latin1]{inputenc}
+%\usepackage[spanish]{babel}
+
+\definecolor{red}{rgb}{1,0,0}
+%%
+\pagestyle{empty}
+\usepackage{url}
+%\urldef{\mailsa}\path|pgarcia@atc.ugr.es|
+
+\urldef{\mailsa}\path|jose.carpio@dti.uhu.es|
+
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\lstset{
+basicstyle=\ttfamily \scriptsize,
+language=c++,
+frame=single,
+stringstyle=\ttfamily,
+showstringspaces=false
+}
+
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+\renewcommand{\floatpagefraction}{0.9}
+
+\begin{document}
+
+\mainmatter  % start of an individual contribution
+
+
+
+% first the title is needed
+\title{Evolving ANTS game agents' strategies} 
+
+% Antonio - Es BLIND!!! :D
+
+%\thanks{This work was supported in part by Spanish Projects...}}
+
+%\title{Testing diversity-enhancing migration policies for hybrid on-line evolution of robot controllers \thanks{This work was supported in part by projects... }}
+% What migration policies? Testing? Evaluating? Proposing? - JJ
+%My proposal: Testing diversity-enhancing ... - JJ
+%Pablo: Sounds good (also is better for search), changed!
+
+% a short form should be given in case it is too long for the running head
+\titlerunning{Evolving ANTS game agents's strategies\footnote{This work has been funded in part by PROJECTS}}
+%
+\author{J. Carpio\inst{1}, P. Garc\'ia-S\'anchez\inst{2}, A.M. Mora\inst{2}, J.J. Merelo\inst{2}, C. Cotta\inst{3}}
+%
+%
+\authorrunning{J. Carpio et al.}
+%
+% (feature abused for this document to repeat the title also on left hand pages)
+% the affiliations are given next; don't give your e-mail address
+% unless you accept that it will be published
+%
+\institute{Dept. of Computer Science, University of Huelva, Spain\and Dept. of Computer Architecture and Technology, University of Granada, Spain  \and Dept. of Computer Languages and Computer Sciences, M\'alaga, Spain
+\mailsa}
+%\institute{No institute given
+%\mailsa}
+
+
+
+\maketitle
+
+% Antonio - meto un abstract preliminar
+\begin{abstract}
+This work studies the performance and the results of the application of Evolutionary Algorithms (EAs) for evolving the decision engine of a program, called in this context \textit{agent}. This game was chosen for the Google Artificial Intelligence Challenge in 2011, and simulates battles between teams of ants in diffrent types of maps without saving information between games. This restriction makes unable to implement an Evolutionary Algorithm inside the agent.  
+% Antonio - esto me lo he inventao, corregidlo
+% The agent's decision engine was created as a set of states and rules (quite simple), defined after an empirical study, and finished in rank 2076 
+% Antonio - poner el exacto 
+% in the competition.
+In this paper, this engine has been evolved off-line by means of an extra Genetic Algorithm (GA), used for tuning a set of constants, weights and probabilities which directs the rules. 
+To conduct the evolution (in the evaluation step), every candidate agent in the population has combated against three different enemies (in two different approaches): a deterministic agent who finished in rank 993, % Antonio - poner el exacto
+and two very competitive agents which got position 1 and 165. % Antonio - poner el exacto
+The results show that, although the best agents are difficult to win, an very simple agent tuned with the GA is possible to beat the agent that finished 1000 positions above it.
+% Antonio - completar con lo que se haya obtenido
+
+\end{abstract}
+
+\section{Introduction}
+% \noindent RTS games are... \textcolor{red}{Hablar de lo que son los RTS. Decir que para promover la IA Google ha creado el concurso AI Challenge. Decir que estrategia se ha propuesto y como se ha mejorado los dos algoritmos y en que posicion hemos quedado}
+
+% Antonio - Meto un texto de RTSs. ;)
+Real-Time Strategy (RTS) games are a sub-genre of strategy-based videogames in which the contenders control a set of units and structures that are distributed in a playing arena. The game objective is normally eliminating all the enemy units. It is usually possible to create additional units and structures during the course of the game, at a cost in resources. Another usual feature is their real time nature, so the player is not required to wait for the results of other players' moves as in turn-based games. Starcraft\texttrademark, Warcraft\texttrademark~ and Age of Empires\texttrademark~ are some examples of RTS games.   
+
+The 2011 edition of the Google AI Challenge \cite{webGAIC} was conducted with an RTS named ANTS, in which the players control a set of ants that must `fight' against the colonies of the rest of players in a grid with labyrinthine paths. The ants must gather food for generating new individuals and get an advance over the rivals. The fighting between ants is solved following some rules, but as a thumb rule, the higher number of ants are grouped, the easier will be to win a fight.
+
+Thus, this is a RTS where the AI must be implemented at both commented levels: on the one hand, the ants must be grouped and specialized (explorers, fighters, gatherers), on the other hand each individual should have a particular behaviour to get a global emergent behaviour.
+
+As a first approximation, a behavioural engine (for both levels) was designed by defining a set of states and rules guided by several parameters. This agent participated in the contest and finished in position 2076. % Antonio - completar brevemente (en una frase)
+Then, in this paper, the initial engine has been improved by means of EAs \cite{INTROEIBEN}, as some other authors have previously done in other RTSs 
+%\cite{hongchoCIG2005,Su-EAs_StrategySel09,keaveney_cig2009}
+. 
+The agent is compared to other participants, and a good improvement has been attained.
+
+
+
+
+The rest of the work is structured as follows: after the state of
+the art, we present the developed algorithms and experimental setting. 
+Then, the results of the experiments are shown (Section \ref{sec:results}), followed by conclusions and suggestions for future work.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%SEC SOA
+\section{State of the art}
+\label{sec:soa}
+
+
+
+AI in games has become the most interesting element in actual games from the player's point of view, once the technical components (graphics and sound) have reached almost an upper bound. They mostly request opponents exhibiting intelligent behaviour, or just better human-like behaviours \cite{artifical-stupidity-game-wisdom2-2004}.
+
+Researchers have also found it an interesting area from the early nineties, so this scope has presented an exponential grown in several videogames and fields, mainly starting with the improvement of FPS Bot's AI, the most prolific type of game \cite{laird2001using,cooperativebots_CIG2010}, and following with several games such as Super Mario \cite{Togelius_SuperMario}, Pac-Man \cite{Pac-MAnt_CIG2010} or Car Racing Games \cite{CarRacing_Pelta09}, to cite a few.
+
+The RTS games research area presents an emergent component \cite{emergence_in_games2008} as a consequence of the commented two level AIs (units and global controllers). RTS games usually correspond to vast search spaces that traditional artificial intelligence techniques fail to play at a human level. As a mean to address it, authors in \cite{ontanon2007} proposed to extract behavioural knowledge from expert demonstrations which could be used to achieve specific goals. 
+There are many research problems involving the AI for RTSs, including: planning with uncertainty or incomplete information, learning, opponent modelling, or spatial and temporal reasoning \cite{AIRTS2004}. 
+
+However, most of the RTS games in industry are basically controlled by a fixed script (i.e. a pre-established behaviour independent of inputs) that has been previously programmed, so they are predictable for the player some combats later. Falke et al. \cite{falke2003} tried to improve the user's gaming experience by means of a learning classifier system that can provide dynamically-changing strategies that respond to the user's strategies.  
+
+
+%Other approaches are based in multi-agent methods such as \cite{HagelbackJ09}. 
+
+%but they are not frequently used in on-line games due to high computational cost. In fact, the most successful proposals for using EAs in games corresponds to off-line applications \cite{offline-evolutionary-learning}. In \cite{GENEBOTEVOSTAR12} an agent trained with an EA to play in the previous Google AI Challenge is presented. However, the behaviour of this agent depends of many factors, and the strategy this agent follows is a bit unclear. Also, the evolved agent is not tested with the winner of the competition.
+
+Evolutionary Algorithms (EAs), have been widely used in this field \cite{Ponsen_EvLearn_RTS,Su-EAs_StrategySel09}, 
+but they are not frequently used on-line (in real-time) due to the high computational cost they require. In fact, the most successful proposals for using EAs in games corresponds to off-line applications \cite{offline-evolutionary-learning}, that is, the EA works previously the game is executed (played), and the results or improvements can be used later during  the real-time game. Through off-line evolutionary learning, the quality of bots' intelligence in commercial games can be improved, and this has been proven to be more effective than opponent-based scripts.
+For instance, in \cite{GENEBOTEVOSTAR12} an agent trained with an EA to play in the previous Google AI Challenge is presented. %However, the behaviour of this agent depends of many factors and was widely affected by the noisy fitness function it defined.
+
+%Another approach with EAs is the co-evolution \cite{co-evol-rts2006,keaveney_cig2009}, since there are many benefits attempting to build adaptive learning AI systems which may exist at multiple levels of the game hierarchy, and which co-evolve over time.
+
+In the present work, EAs are also used, and an off-line Genetic Algorithm (GA) is applied to improve a parametrised behaviour model (set of rules), inside a RTS named ANTS.
+
+
+
+\section{The Google AI Challenge}
+% \textcolor{red}{Explicar el juego ANTS y las restricciones que tiene. De media a 3/4 de pagina creo yo.}
+
+This section describes the game scenario where the bots will play. The ANTS game was used as base for the Google AI Challenge 2011
+ (GAIC)\footnote{http://ants.aichallenge.org/} \cite{holdum2011google}. An ANTS match takes place on a map (see Figure 1) %\ref{fig:figmaps}) 
+that contains several anthills. The game involves managing the ant community in order to attack the maximum number of enemy hills. Initially, game players have one or more hills and each hill releases the first ant. Then, the bot has to control it in order to reach food and generate another ant. Game is based on a turn system (1000 turns in official games). For each turn, participants have a limited time to develop a strategy with the ant community. Before turn time-over, bot should return a witness indicating that tasks have been finished. If the witness is not sent before time-over, the player receives the `timeout' signal. Receiving a timeout' signal carries penalty points and the inability to make more movements until game finish. However, this does not entail game disqualification. If player has accumulated enough points before ‘timeout’, she could win. For each captured hill, the player receives two points and if one of our hills is captured, he lose a point.
+
+% Aquí deberíais de describir a grandes rasgos los mapas y como
+% influyen en la estrategia a seguir - JJ 
+
+% The objective of the game is to defeat the enemy by \textcolor{red}{COMO SE VENCE??}. Although ANTS is a RTS game, this implementation has transformed it into a turn-based game, in which each player has a maximum number of turns to accomplish the objective. At the end of the match (after \textcolor{red}{CUANTOS TURNOS? 150?} actions), the winner is the player owning more anthills. 
+
+There are two strong constraints (set by the competition rules) which determine the possible methods to apply to design a bot: a simulated turn takes \textit{just one second}, and the bot is \textit{not allowed to store any kind of information} between games about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map). In order to achive evolution has been added an extra layer that allows us to store best individuals parameters and let to evolve the population in future generations. During the competition, evolution take place offline localy in our computers and after obtaining the best individual, a new bot agent is generated and uploaded to the official online platform.
+Therefore, the goal in this paper is to design a bot agent using that extra GA layer that, according to the state of the map in each simulated turn (input) returns a set of actions to perform in order to fight the enemy, conquer its anthills, and, ultimately, win the game. 
+\section{Algorithms and Experimental Setup}
+
+In this section the strategy to evolve is presented. A Genetic Algorithm (GA) is used to improve parameters of a basic agent.  In order to improve the agent two different type of fitness and six different maps have been used. %Section 4.1 describes the group of parameters to evolve. Fitness are described in Section 4.2 and the different maps in section 4.3. Finally, section 4.4 describes experimental setup.
+
+% blablaba. \textcolor{red}{(un parrafo en total de introduccion.)}
+\subsection{Strategy parameters}
+The basic strategy to our agent is based in a Greedy strategy to prioritize multiple tasks entrusted to the ants:
+\begin{itemize}
+ \item If enemy hill in sight, attack the hill, else
+ \item If food in sight, pick up the food, else
+ \item If enemy ants in sight, attack the ants, else
+ \item If unknow zone in sight, explore the area, using the Lefty strategy, which is based on exploring the same straight line, and walking along the edge of land areas delimited by the water, and along the entire area which holds the water.
+
+\end{itemize}
+
+%For the case without having to perform any of these tasks, the ant will explore the map using the Lefty strategy, which is based on exploring the same straight line, and walking along the edge of land areas delimited by the water, and along the entire area which holds the water.
+ 
+%To make a parameter optimization using genetic algorithms, we have defined a number of them in the above specified Bot. 
+The parameters to optimize are:
+\begin{itemize}
+  \item {\em food\_distance}: Maximum distance to go get food, i.e. ants ignores food that is at a distance greater than this value.
+  \item {\em time\_remaining}: Margin time we have for one turn to finish without a `timeout penalty'. Higher values indicate that more actions are performed, but as previously explained, the player receives a penalty.
+  \item {\em distance\_my\_ant\_attack} and {\em distance\_hill\_attack}: These parameters are used to determine the attack priority.  Distance\_my\_ant\_attack means that we have one ant partner close enough to take advantage when attacking enemy ants. In this situation, the distance\_hill\_attack is taking into account in order to change ant objective. If another enemy ant is close to our hill, our ant give priority to this more dangerous situation for our interest. In this case an ant is sacrified to keep alive our anthill.
+  \item {\em turns\_lefty}: Maximum number of consecutive turns in which an ant Lefty strategy can be used. When you run the number of shifts, the ant goes on to explore the map in a straight line.
+
+\end{itemize}
+
+\subsection{Genetic algorithms}
+A Genetic Algorithm is used to evolve the previously presented parameters. The {\bf Fitness function}, which determines the individual's adaptation to the environment is based on launching a game against several opponents, in a certain number of turns and a specific map.
+The score for the agent after that game will determine the degree of kindness and individual adaptation to the problem we want to solve, know the individual that maximizes the score. Two different fitness functions have been studied:
+
+% \textcolor{red}{IMPORTANTE! completa esto!}
+\begin{itemize}
+\item Basic fitness: Only takes into account the score obtained by our agent in the battle.
+\item Hierarchical fitness: The fitness is a tuple of the following elements in order: My score, enemy score (negative), number of my own ants and number of enemy ants (negative). A lexicographical order is applied to compare two individuals.
+
+\end{itemize}
+
+%{\bf Selection}: simulating natural selection. The procedure we have followed is to choose individuals who obtain the highest scores in the games, not giving any chance of survival and less fit individuals who have earned fewer points in order to get the genetic algorithm converges more quickly to the optimal solution. Thus, given a population of N individuals, after evaluating each of them with a single match, we choose the N / 2 individuals with the highest score.
+
+%{\bf Crossover}: simulate genetic evolution of species. After staying with the fittest M (we call M the previous value of N / 2), the population is reduced by half. With that half we make the crossing of individuals, classifying the population into pairs and each pair crossing, taking the role of father and mother of the new individual obtained across. Crossing the operation described later, this is because we performed two different implementations of the genetic algorithm, and each crossing performs a certain way. Mutation: simulates adaptive changes of species. For the present case, the mutation probability is always 100\%, because we want to have the greatest possible diversity in the population not to limit the search to a small solution space. With that reduce the likelihood of the genetic algorithm in a local optimum finish and is more likely to reach the global optimum. Like the crossing, mutation is performed on each of different implementations, so that the detail later.
+ 
+%As for the common to both implementations, including various aspects that we considered when advancing the genetic algorithm to the solution: {\bf Reducing the size of the population at each iteration}: For every time we treat the entire population, we have selected the most promising half, so that in each iteration of the algorithm we have a generation of people that is becoming smaller in number. By the time we finish iterating, the population of individuals will be of a size of 4 individuals (or less), and between them evaluate each solution and choose as the genetic algorithm that obtains the highest score. If several individuals have the highest score, choose any of them. Therefore, given that the population was reduced by half, we provide a number of individuals to the initial population that is a power of 2, and always keep accurate results in regard to the size of the population.
+%Replacing individuals obtained by crossing and mutate by others: Half selected, now we have taken the approach of choice to half thereof to cross, so that if the population better cut in half (after selection) is of size N, we crossed N / 2 individuals (with the we form N / 4 pairs), and we obtain N / 4 resulting new individuals across the top. Now the mutation is performed on these N / 4 individuals obtained by crossing, and since the only mutate modify attributes of each subject, we do not alter the number of individuals. After then, have a population of size N and N / 4 individuals by adding thereto. Since what we want is always the population size is a power of 2, we must keep the population of N individuals, so we replaced the N / 4 individuals of the target population with the worst score for the new individuals obtained by performing the crossover and mutation.
+%Election maps, opponents and number of turns of headings: One of the main disadvantages with genetic algorithms is the high CPU time consuming because they have to evaluate large populations of individuals and perform many iterations to reach a mutually acceptable solution to the problem to be solved. In our case, the population size is not a big problem such as the evaluation of each individual of the same, although they are closely related (the larger the population, the greater number of games to be played for determine the degree of goodness of all individuals). What we have in mind is that the algorithm is effective within a reasonable period of time (a few hours at most), we choose a map, number of opponents and shifts very specific items for the duration of each evaluation does not involve a great loss of time in our lives, and even more so at exam time!
+
+
+To represent each individual in the population, we chose to use a tuple of integers, where each number indicates the value of one of the parameters previously explained.
+
+
+%FERGU: Comento todo esto, que no se ha usado.
+
+
+%Now start the algorithm, first have to create the initial population of individuals to define this initial size first, and then for each individual create their corresponding genetic material, choosing 5 random numbers, one for each parameter existing. Here we have taken into account that the parameter values are reasonable according to the problem that we model, ie, it would be illogical to give such distancia\_comida parameter a value of 50, since the maximum range of vision of the ant is several steps (about 15), so it will ignore the food that is not visible in this range.
+%So we have limited the values of each parameter in the range we consider logical, and so we avoid the generation of individuals who do not work efficiently, or at least not as much as those with fair values and precise in their attributes. 
+ 
+%As for the crossover and mutation operations have been performed as follows: {\bf Crossover}: Given a list of N individuals, and in consecutive order containing pairs of individuals (eg the first pair would be formed by the first 2 individuals from the list), form N / 2 couples to obtain N / 2 new individuals . Each new individual is generated by the couple for the crossover operator as follows: The first guy (father) inherits the parameters number 1, 3 and 5. The second individual (mother) inherits the other 2, parameters 2 and 4.
+ 
+%{\bf Mutation}: For each individual, we vary the value of each parameter in a very small range, eg $\pm 1$ for distancia\_comida, and then delimit.
+
+
+%\subsubsection{ALGORITMO DOS: Standard genetic algorithm (SGA)}
+%An implementation based on the basic algorithm the genetic material represented by a string of bits, where a certain number of them corresponds to a particular parameter, obviously binary coded.
+%Thus, if in use by the optimized algorithm for parameter distancia\_comida example an integer between 3 and 10, we will need 4 bits for encoding parameter such as a minimum.
+%The problem with this is that the basic algorithm uses all possible codable values, which in this case would be numbers between 0 and 15. For this reason, primarily, implementation thus be less accurate and will not converge to the solution as fast as the optimized algorithm just described.
+
+%After choosing the number of bits assigned to each parameter, we have a total of 23 bits for each individual in the population.
+ 
+%We describe the crossover and mutation operations employed:
+ 
+%{\bf Crossover}: Given a list of N individuals, couples containing as the optimized algorithm, we generate a new individual for each of the partners as follows:
+ 
+%The first guy (father) inherits the bits in even positions.
+%The second individual (mother) inherits the remaining bits in odd positions.
+%If we think of the process, the way we passed did not logical as the optimized algorithm, so that is a drawback for the convergence of this implementation.
+ 
+%{\bf Mutation}: in this case, only what we do is invest a bit random individual's genetic material. Again, this process is not as reasonable as that used by the algorithm optimized, so that the solution converges more slowly to generate individuals with sometimes too different parameters. For example, let us state that we have changed the first bit of \emph{food\_distance} parameter, it is encoded with 4 bits, imagine having the value of 8 (which corresponds to binary 1000), if we invest this particular bit worth 0, proved somewhat uneven (not chasing food ever!) while the previous value pretty sparse.
+
+
+
+\subsection{Maps to use}
+Six maps have been used to evolve the bot. All of them are provided by the competition organizers in tools package. Three maps are mazes with different grade of difficult and the other three have open walking areas. Figure 1 %\ref{fig:figmaps}
+ shows two different kind of maps. The circles mark hills positions with one color for each team. The blue areas represent water and ants cannot walk on it, small points represent food and the rest are land where ants can walk. Other relevant information about maps are detailed in Table \ref{tab:maps}. 
+
+\input{tables/mapas}
+
+%\bf{Future work} section  purpouse a real time approach for map detection. 
+
+% \textcolor{red}{describir los mapas!!!}
+
+%Map multi-swarm of 4 players, of medium size, with 6 mounds per player.
+%Having many ant is crucial to obtain high scores for each player, so we can get evaluate efficiently (greater granularity), and also because the map is not great and there are several participants, more conquests and wars between ant mounds , which determines the starting few turns.
+%After making numerous test items, the score is set before the 150 first winnings, so we have set the limit in 150 winnings.
+%Maps  example  tutorial1.map
+%Map AI Challenge tutorial, is cramped and with 2 players, with one nest for each.
+%Although the highest score obtained was 3 (low granularity, in the range of 0-3), is stabilized in a short time (about 150 turns too).
+
+\begin{figure}[ht]
+\centering
+
+\subfigure[Map 1: open map]{
+   \includegraphics[scale =0.4] {images/map1.eps}
+   \label{fig:subfig1}
+ }
+\subfigure[Map 3: labyrinth type]{
+   \includegraphics[scale =0.4] {images/map3.eps}
+   \label{fig:subfig2}
+ }
+\label{fig:figmaps}
+\caption{Two different maps used in the experiments. }
+\end{figure}
+
+\subsection{Experimental setup}
+
+Once completed the design and implementation of the various versions of the genetic algorithm, we will show the performance  of the two in each of the six previous maps, with an initial size of population of 64 individuals. Crossover rate is 0.3, mutation rate is 0.1 and the stop criterion is fixed to 20 generations. The agent is evolved in the six maps 10 times.
+
+\section{Results and Analysis}
+\label{sec:results}
+% Table \ref{tab:basicfitness993} shows the fitness attained by the agent fith basic fitess calculator. 
+
+% As can be seen...\textcolor{red}{ESTO TIENES QUE COMENTARLO. PON REFERENCIAS A LAS TABLAS}
+
+This section explains the obtained results. Selected competitors have higher final ranking than our bot. Table \ref{tab:all} shows that our robot can not beat robots that are in positions 165 and 1. However, the evolution of the agent makes higher the number of own ants and decreases the number of enemy ants in a few generations. Genetic evolution of our agent wins on all maps to the robot that ended in ranking 993, more than 1000 position above the version without optimization. The number of ants is the main difference between basic fitness and hierarchical fitness, and this feature allows to use more effective attack technics. In maps 5 and 6, the score is lower than the obtained with basic fitness in some cases . However, the number of ants own doubles to those obtained with a basic fitness. This invites us to improve strategies maps in such type of maps to achieve a better use of the large community of ants generated. A remarkable result is found in the standard deviation (SD) value. SD is zero in many cases because variables have vey few posible values (i.e. in maps with only two hills, max\_score will be 0, 1 or 3 points) and after 20 generations the system evolves always to reach max score. 
+%\input{tables/fitness_only_score_vs_rank993}
+%\input{tables/fitness_jerarquico_vs_rank993}
+%\input{tables/fitness_jerarquico_vs_rank165}
+%\input{tables/fitness_jerarquico_vs_rank1}
+
+\input{tables/global_tables}
+
+% \textcolor{red}{Ojo, explicar por qué los mapas 4,5 y 6 el fitness jerárquico se comporta peor que el no jerárquico! Y por qué el minTurns es mayor de 150 en la mayoría?? Si tienes mucho lío escríbelo de forma entendible en español y luego lo traduzco yo si quieres. }
+
+\section{Conclusions and future work}
+
+This paper presents the design of an agent that plays in the RTS ANTS game proposed by Google AI Challenge. Starting from two basic behaviours (Lefty and Greedy) an Evolutionary Algoritm is used to set the parameters that modify the agent behaviour. This agent is evolved in the 6 maps provided by Google fighting three different bots that participated in the contest: the ones that finished in position 993, 165 and the winner. Results show that, even as evolving the parameters of two simple tasks, a fixed strategy agent is capable to win harder opponents. By the contrary, the same strategy is not affective against a middle bot, so it is clear that the enemy behaviour affects to the offline training algorithms with an specific strategy. Two different fitness functions have been tested: a basic function that only takes into account the final score (the number of conquered anthills in a run), and a hierarchical fitness, where the number of player's ants, turns, and enemy ants are also used to compare individuals. Genetic optimization is enough to beat a competitor who is above about 1000 positions in the ranking but, evolving a basic robot is not enough to beat robots with good estrategies. We conclude that parameters optimization using GA significantly improves agent performance in RTS games and this technique obtains better results combined with good planning strategies.
+
+ % \textcolor{red}{Results show that TERMINAR ESTO BIEN}
+For future work, new combination of strategies will be studied and more different fitness will be analysed: for example, combining all maps in each fitness calculation. Because the stochastic behaviour of some robots also affects the fitness, an study of how this fitness is affected during the algorithm run will be performed. As demonstrated, the behaviour of the enemies is also a very important key to analyse for designing a all-terrain bot: an agent should adapt to these differents behaviours. lso, using a quick map analysis in each turn to set the parameters obtained in this work could be studied to adapt the agent accordingly. A map analysys could be performed, for example, counting the number of
+direction changes in a period of time. If many direction changes occurs by collisions with walls, means that bots are fighting in a map with maze pattern. Once map type has been detected, bot can choose suitable parameter group for the map. A The combination of the Greedy and Lefty actions also will be studied in other RTS games, as the previous Google AI Contest games.
+
+\bibliographystyle{plain}
+\bibliography{botants}
+
+\end{document}
+
