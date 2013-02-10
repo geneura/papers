@@ -79,7 +79,7 @@
 
 % \biboptions{}
 
-\journal{Nuclear Physics B}
+\journal{Transportation Research: Part C}
 
 \begin{document}
 
@@ -113,7 +113,15 @@
 %% \address[label1]{<address>}
 %% \address[label2]{<address>}
 
-\author{}
+\author[uja]{V.M. Rivas\corref{vrivas}}
+\ead{vrivas@ujaen.es}
+\ead[url]{http://geneura.wordpress.com}
+\author[ugr]{M.G. Arenas}
+\author[ugr]{P.A. Castillo-Valdivieso}
+\address[uja]{Department of Computer Sciences, University of Jaen (Spain)}
+\address[ugr]{Department of Architecture and Computer Technology. CITIC. University of Granada (Spain)}
+\cortext[vrivas]{Campus Las Lagunillas S/N; E23071, Jaen (Spain)}
+
 
 \address{}
 
@@ -135,8 +143,487 @@
 % \linenumbers
 
 %% main text
-\section{}
-\label{}
+\section{Introduction}
+\label{sec:introduction}
+Having a system of information on traffic conditions and the use of roads by vehicles seems a key point in the current context. 
+With a increasingly informed population, provided with ubiquitous communication devices, which are commonly used by about $ 90 \% $ of the population, obtaining information about the traffic in any of the nearly 20,000 kilometers of Spanish roads would mean to optimally manage a communications network vital for a high percentage of users.
+
+In this work, a system based on bluetooth (BT) device discovery is proposed, so that an information system on the traffic status is obtained, as well as a valuable set of data suitable to be used in a time-series forecasting process.
+
+Both, the data-collecting and the time-series forecasting processes are necessary steps to achieve our ultimate goal: to have information about traffic flows that occur or will occur in a certain area, allowing to optimally manage motion decisions by citizens.
+
+Therefore, from the viewpoint of the transport management various needs have been found:
+
+\begin{itemize}
+  \item A versatile and autonomous data collection and monitoring device is needed.
+  \item It is also necessary to collect traffic data in real time.
+  \item Once the data has been collected, it has to be properly processed.
+  \item And finally, a system that allows sharing data and information with those who make decisions about mobility is needed, both from the institutional and personal points of view.
+\end{itemize}
+
+In order to fulfill these requirements, the BT device discovery used for this work is able to catch waves emitted by different technological components. The components can be the ones embedded in vehicles (handsfree, gps), accessories that the users incorporate to their vehicles, as well as mobile phones, tablets or laptops.
+The main data being collected is the MAC address of the device BT card.
+This is an unique identifier for each device, so that passing vehicles can be identified.
+The intrusiveness is minimal since one-way encription algorithms are used to hide the real MAC addresses stored. And, it is also safe from the point of view of data privacy given that this piece of information can not be attached to any given person.
+
+The increasingly large amount of data collected, related to passing BT devices, is the starting point that allows to calculate statistics, to study several indicators about the use of vehicles, and to perform time-series forecasting by the monitored area population.
+
+The rest of the paper is organized as follows:
+??????????In Section \ref{soa} current technologies to monitor the traffic that passes through a certain area is summarized.
+Section \ref{obj} details the goals of this paper.
+In Section \ref{hw}, the Intelify device is presented.
+In Section \ref{analisis} several analysis and statistics are reported from the data obtained.
+Finally, we present some conclusions and future work (Section 5).
+
+
+\section{Current technologies}
+\label{sec:current}
+Traffic detection technologies can generally be classified into two groups: intrusive and nonintrusive.
+
+Intrusive detection technologies are installed on/within the roadway, requiring lane closures. Using this type of technology is inherently more hazardous and is generally more time consuming, especially for temporary traffic data collection. This technology has a number of drawbacks:
+\begin{itemize}
+  \item Installation requires pavement cut.
+  \item Improper installation decreases pavement life.
+  \item Installation and maintenance require lane closure.
+  \item Detection accuracy may decrease when design requires detection of a large variety of vehicle classes.
+  \item Poor pavement condition can dramatically shorten the life span of intrusive sensors.
+\end{itemize}
+
+Non-intrusive technologies are traffic detection sensors that cause minimal disruption to normal traffic operations during installation, operation and maintenance compared to conventional detection methods. They can also be deployed more safely than conventional detection methods, since they are located adjacent to the roadway and require minimal interaction with traffic flow. They can be classified in to big groups: active technologies (microwave radar, ultrasonic and laser radar), and passive technologies (infrared, acoustic and video image processing). 
+
+Figure \ref{tipossensores} shows a classification of information systems according to the intrusiveness of the technology.
+
+\begin{figure}[htpb] 
+\begin{center} 
+\includegraphics[scale=0.55]{intrusivos.jpeg}  %tipossensores.jpg}
+\end{center} 
+\caption{Information systems classification, according to the intrusiveness of the technology.} 
+\label{tipossensores} 
+\end{figure}
+
+Main technologies currently used in traffic monitoring include pneumatic tubes, loop detectors, floating vehicles, and automatic recognition systems, among others.
+
+
+\emph{Manual counts} is the most traditional method. In this case trained observers gather traffic data that cannot be efficiently obtained through automated counts e.g. vehicle occupancy rate, pedestrians and vehicle classifications. The most common equipments used are tally sheet, mechanical count boards and electronic count board systems.
+
+\emph{Passive and active infra-red} sensors are based on detecting the presence, speed and type of vehicles using the infrared energy radiating from the detection area. The main drawbacks are the performance during bad weather, and limited lane coverage.
+
+\emph{Microwave radar} can detect moving vehicles and speed (Doppler radar). It records count data, speed and simple vehicle classification and is not affected by weather conditions.
+\emph{Ultrasonic sensors} devices emit sound waves to detect vehicles by measuring the time for the signal to return to the device. They can be affected by temperature or bad weather. 
+
+\emph{Pneumatic road tubes} are placed across the road lanes to detect vehicles from pressure changes that are produced when a vehicle tyre passes over the tube. The pulse of air that is created is recorded and processes by a counter located on the side of the road. The main drawback of this technology is that it has limited lane coverage and its efficiency is subject to weather, temperature and traffic conditions. This system may also not be efficient in measuring low speed flows.
+\emph{Piezoelectric sensors} are very similar to pneumatic road tubes, although the principle is to convert mechanical energy into electrical energy. Indeed, mechanical deformation of the piezoelectric material modifies the surface charge density of the material so that a potential difference appears between the electrodes. The amplitude and frequency of the signal is directly proportional to the degree of deformation. This system can be used to measure weight and speed.
+
+\emph{Magnetic loops} (inductive, magnetic, or video processing based) may be used temporarily or permanently, the latter being the more usual. 
+It is the most conventional technology used to collect traffic data. The loops are embedded in roadways in a square formation that generates a magnetic field. The information is then transmitted to a counting device placed on the side of the road. This has a generally short life expectancy because it can be damaged by heavy vehicles, but is not affected by bad weather conditions. This technology has been widely deployed over the last decades. However, the implementation and maintenance costs can be expensive.
+
+The use of so-called \emph{floating vehicles} consists on a vehicle provided with sensors to collect information while driving on a predefined route.
+This active device data collection is one of the most popular among operators of roads, used especially for the collection of travel time and for loop detector calibration.
+Depending on the level of automation in the data collection, the cost can vary.
+
+In some areas, such as electronic toll or transit systems, \emph{automatic vehicle identification systems} (AVI) are also widely used. 
+These sensors are non-exhaustive data sources to identify tags located in vehicles, such as in payment-systems without stopping. 
+The system detects the pass, and the data is sent to the server where it is processed in order to carry out an event (pay toll, opening in the fence, etc).
+
+The main disadvantage of these systems is that they are unable to identify vehicles detected, in order to obtain origin/destination matrixes.
+Just the number of vehicles and their type can be calculated, but does not allow to obtain moves flow, nor to determine whether a certain vehicle passes repeatedly.
+In addition, its high cost makes it unprofitable covering secundary roads with them, so they are often located on major roads.
+
+Finally, the \emph{automatic recognition} technology has experienced an increase in recent years due to its ability to detect individual vehicles without relying on in-vehicle systems. 
+Video image detection is a good example: video cameras record vehicle numbers, type and speed by means of different video techniques, e.g. trip line and tracking. 
+Furthermore, they are used for automatic detection of incidents on the road. 
+That is the main advantage over previous information systems.
+However, system reliability might not be the best, as the system can be sensitive to meteorological conditions.
+Moreover, these systems are very costly compared to the previous ones.
+Finally, from a privacy point of view, the Spanish Data Protection Agency\footnote{Agencia de Protección de Datos} considers the car license plate as a personal data, so that it would require the user consent.
+
+
+
+
+\subsection{Commercial products}
+There are different companies working in the traffic information area using approaches similar to the presented in this work.
+
+\begin{itemize}
+
+\item \textbf{Bit Carrier} \cite{patenteBC} \cite{BitCarrier}: It offers a traffic management system based in BT to count people and commercial routes (pathsolver). Its technology was implanted in highways managed by Abertis for traffic control and monitoring. Actually it has a 150 devices network in Catalonia, so it allows count the traffic times of 200.000 persons each day.
+ 
+\item \textbf{Trafficnow} \cite{Trafficnow}: Another BT system product. A pilot experience has been implanted in Vigo.
+
+ \item \textbf{Traffax Inc} \cite{TraffaxInc}: It is a company that also has used BT for calculating origin-destination and transport time matrixes.
+
+ \item \textbf{Savari Networks} \cite{SavariNetworks}: It offers the commercial product StreetWAVE for traffic monitoring to know in real time the traffic status.
+
+
+ \item \textbf{TrafficCast} \cite{TrafficCast}: They have developed prediction models in different cities based on different technologies, such as cameras, BT and RFID included in the vehicles.
+
+\end{itemize}
+
+The proposal presented in this work have some common features with the previous approaches, offering similar functionalities but with reduced cost.
+
+
+??? SERIES TEMPORALES
+\section{Data-collecting}
+\label{sec:data}
+
+Identifying the MAC address of BT devices passing by the roads has being achieved using Intelify (see Figure \ref{intelify}), a hardware solution with a low power consumption and a high detection range.
+
+\begin{figure}[htpb] 
+\begin{center} 
+\includegraphics[scale=0.5]{intelifychisme1.png}
+\end{center} 
+\caption{Intelify device with a connected USB 3G dongle.} 
+\label{intelify} 
+\end{figure}
+
+Intelify is a small autonomous computer that can be installed in any area to be monitored. It is an autonomous unit, provided by several sensors so that it can discover what is happening in its sorroundings (like the flow of people and vehicles). At the same time the enviroment is been scanned, Intelify is able to send the information to a central server for further processing and interpretation. Table \ref{caracteristicas} shows main features of the device.
+
+\begin{table}[htpb]
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Dimensions & 113x163x30mm \\
+\hline
+     & Power             \\
+LEDs & 3G activity       \\
+     & Ethernet activity \\
+\hline
+           & Ethernet  \\
+Networking & Wireless  \\
+           & Bluetooth \\  
+           & 3G        \\
+\hline
+USB ports & City Analytics Antenna \\
+		  & 3G dongle              \\
+\hline
+Other ports & RS-232 \\
+			& VGA    \\
+\hline
+ 	  & 18v - 1200mA          \\
+Power & external jack - 5.5mm \\
+      & internal jack - 2.1mm \\
+\hline
+Network     & Ethernet RJ45 \\
+connections & 3G USB Modem  \\
+\hline
+Antennas & City Analytics USB antenna \\
+		 & wireless antenna \\
+\hline
+Microphone & noise sensor \\
+\hline
+Temperature & main board temperature sensor with extrapolation \\
+\hline
+Box & 1.5mm aluminum box \\
+    & external use possible  \\
+\hline
+Operating System & Debian 6.0 Squeeze  \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Main features of the Intelify device.}
+\label{caracteristicas}
+\end{table}
+
+This hardware device is based on technology developed by Ciudad 2020 \cite{cityanalytics,Blobject}, and the services it offers are based on a net of Intelify devices. Using such an structure, it has the capacity to discover information about the physical enviroment and help with decision making to any kind of organization based on people flow and behavior.
+
+Valuable information about tourism, trade and mobility can be gathered through the deployment of autonomous devices around a city. A specific example is the service offered in \cite{numerodepersonas}. It offers information about foot traffic through Cordoba city center.
+
+The cost of this solution is 1000 euros per device, including maintenance of remote computer, communications using a 3G telephony service and storage and data management.
+
+Data accuracy is very representative, compared against other technologies.
+In \cite{estudioprecision} it was obtained an a priori error estimation of $8.5\%$ of detections.
+%This study \cite{estudioprecision} shows that the average error found in the detection of people is 8.5\%.
+
+
+??????Descripción de los datos recopilados
+
+\section{Experiments and results}
+\label{sec:experiments}
+
+????? TODO ESTO HAY QUE CAMBIARLO PARA LOS DATOS REALES CON LSO QUE AL FINAL HEMOS TRABAJADO
+
+In this section the analysis of collected data during the monitoring period (November 8 to December 9) to obtain statistics and so study the use of vehicles is carried out.
+
+ % Concretamente, en las siguientes subsecciones, reportaremos información acerca del número total de vehículos detectados por cada nodo, en días laborables o festivos, sobre la densidad del tráfico por rango horario, acerca de los desplazamientos individuales, y de la velocidad media en un tramo delimitado por dos nodos consecutivos.
+Specifically, the following subsections report information about the total number of vehicles detected by each node, on weekdays or holidays, information on traffic density by time range on individual movements, and the average speed on a section delimited by two consecutive nodes.
+
+ % Por último, puesto que el día 14 de noviembre de 2012 se celebró la huelga general, estudiaremos cómo afectó la huelga al tráfico en el área metropolitana de Granada, comparando los totales de detección de dispositivos entre el día de la huelga (14 de noviembre), y el miércoles siguiente (21 de noviembre).
+Finally, since November 14 2012 a general strike was held, we will study how the strike affected traffic in the metropolitan area of Granada (Spain), by comparing total number of devices detected that day (November 14), and the following day (November 15).
+
+
+\subsection{Total number of vehicles detected (weekdays and holidays)}
+ % VehiculosTotales.txt tiene los vehículos totales detectados en cada nodo.
+
+% La primera parte del análisis ha consistido en calcular el número de dispositivos detectados por cada uno de los nodos instalados.
+The first analysis consisted in calculating the number of devices detected by each node.
+
+ \begin{table}
+ \begin{center}
+ \begin{tabular}{|c|c|}
+ \hline
+Node Id.  &  N. of devices detected  \\
+ \hline
+    1     &    31408  \\
+ \hline
+    2     &    45032  \\
+ \hline
+    3     &    33165  \\
+ \hline
+    4     &    358494  \\
+ \hline
+    5     &    297874  \\
+ \hline
+    6     &    7872  \\
+ \hline
+ \end{tabular}
+ \end{center}
+ \caption{Number of BT devices detected by each node.
+ \label{VehiculosTotales}}
+ \end{table}
+
+ % En total se han detectado 773845 dispositivos BT al paso por los seis nodos. 
+ % Como se observa en la Tabla \ref{VehiculosTotales}, los dos nodos situados en la autovía de Sierra Nevada (A44, Circunvalación de Granada, nodos 4 y 5) son los que más datos han recogido, mientras que el situado en una calle secundaria (nodo 6) ha sido el que menos dispositivos ha recogido.
+
+In total, 773,845 BT devices have been detected by the six nodes.
+As shown in Table \ref{VehiculosTotales}, nodes located in the Sierra Nevada Highway (A44, nodes 4 and 5) have collected a higher number of data, while the node located in a side street (node 6) has detected the smallest number of devices.
+
+
+\subsection{Total vehicles detected on non-working days}
+ % VehiculosFestivos.txt tiene los vehículos detectados en día festivo en cada nodo.
+
+ % A continuación, y para comparar la intensidad circulatoria entre días laborables y no laborables, se ha calculado el número de pasos en días festivos y no laborables.
+To compare the traffic intensity between working and non-working days, the number of pass on holidays and non-working days have been obtained.
+
+ \begin{table}
+ \begin{center}
+ \begin{tabular}{|c|c|}
+ \hline
+Node Id.  &  N. of devices detected  \\
+ \hline
+    1     &    2149  \\
+ \hline
+    2     &    2804  \\
+ \hline
+    3     &    2832  \\
+ \hline
+    4     &    32182  \\
+ \hline
+    5     &    24166  \\
+ \hline
+    6     &    1269  \\
+ \hline
+ \end{tabular}
+ \end{center}
+ \caption{Total number of BT devices detected by each node (only on non-working days).
+ \label{VehiculosFestivos}}
+ \end{table}
+
+ % La Tabla \ref{VehiculosFestivos} muestra un descenso en el número de dispositivos detectados por todos los nodos en días no laborables, frente al número de detecciones en días laborables. 
+ % Aún así, los nodos situados en la autovía de Sierra Nevada siguen recogiendo muchos más datos que el resto, debido al tráfico denso que soporta esta vía en días no laborables.
+
+Table \ref{VehiculosFestivos} shows how the number of detected devices lowers by all nodes on non-working days, compared to the number of detections on weekdays.
+Nodes located in the Sierra Nevada Highway still collected much more data than the remainder, due to the traffic this road supports on holidays.
+
+
+\subsection{Traffic density on the road by time range}
+ % VehiculosDiferentesPorHoras.txt contiene para cada uno de los nodos, los dispositivos diferentes detectados en cada rango horario (final de la línea)
+
+ % La densidad circulatoria por horas podemos calcularla a partir del total de dispositivos diferentes detectados en cada rango horario.
+Traffic density can be calculated taking into account the total number of detected devices by time range.
+
+ \begin{figure}[htb]
+ \begin{center}
+ \includegraphics[scale=0.4]{VehiculosDiferentesPorHoras.jpg}
+ \caption{For each node, the total number of different detected devices by time range is shown. Figure is shown in logarithmic scale.
+ % Para cada uno de los nodos se muestra el total de dispositivos diferentes detectados en cada rango horario. Para cada rango de horas se muestra el total detectado en cada uno de los seis nodos
+ \label{VehiculosDiferentesPorHoras}}
+ \end{center}
+ \end{figure}
+ % Gráfica (histograma) de la densidad de la vía por horas: desde las 00-7h, de 7-10h, de 10-13h, de 13-16h, de 16-20h, y de 20-24h.
+ 
+ % La Figura \ref{VehiculosDiferentesPorHoras} muestra mayor densidad, en todos los nodos, a las horas punta de entrada o salida del trabajo y colegios.
+Figure \ref{VehiculosDiferentesPorHoras} shows higher density on all nodes, at peak times or out of work and school.
+
+
+\subsection{Total detections by time range}
+ % VehiculosPorHoras.txt indica para cada nodo, el número de dispositivos detectados en el rango horario, sin diferenciar si el dispositivo es siempre el mismo o no. 
+
+ % Adicionalmente podemos calcular para cada nodo, el número de dispositivos detectados en cada rango de horas, sin diferenciar si el dispositivo es siempre el mismo o no. Así pues, se incluirán pasos repetidos del mismo vehículo.
+Additionally we can calculate for each node, the number of detected devices by time range, without differentiating whether the device is the same or not (repeated passes). Thus, repeated passes of the same vehicle are counted.
+
+ \begin{figure}[htb]
+ \begin{center}
+ \includegraphics[scale=0.4]{VehiculosPorHoras.jpg}
+ \caption{For each of the six nodes, the total number of detected devices by time range is shown. Figure is shown in logarithmic scale.
+ % Para cada uno de los nodos se muestra el total de dispositivos detectados en cada rango horario. Para cada rango de horas se muestra el total detectado en cada uno de los seis nodos
+ \label{VehiculosPorHoras}}
+ \end{center}
+ \end{figure}
+ 
+ % Al igual que en el caso anterior, observamos una mayor densidad circulatoria en todos los nodos, a las horas punta de entrada o salida del trabajo y colegios (ver la Figura \ref{VehiculosPorHoras}).
+As in the previous case, a greater traffic density can be observed on all nodes, at peak times or out of work and school. (see Figure \ref{VehiculosPorHoras}).
+
+
+\subsection{Number of individual vehicles detections}
+ % Intervalos.txt contine el número de vehículos detectados entre 0 y 5 veces, entre 5 y 10 veces y así sucesivamente hasta más de 25 veces detallado en cada nodo.
+
+ % A continuación podemos sacar partido de la capacidad del sistema propuesto para individualizar los dispositivos BT, pudiendo detectar si esos mismos vehículos repiten paso por diferentes nodos.
+We can take advantage of the proposed system's ability to identify BT devices. Thus, it can be detected whether vehicles pass by different nodes.
+
+ \begin{figure}[htb]
+ \begin{center}
+ \includegraphics[scale=0.4]{Intervalos.jpg}
+ \caption{For each of the six nodes, the total number of detected devices N times (repeated occurrences of the same device) are shown. Figure is shown in logarithmic scale.
+ % Para cada uno de los nodos se muestra el total de dispositivos detectados cierto número de veces (repetidas apariciones del mismo dispositivo)
+ \label{Intervalos}}
+ \end{center}
+ \end{figure} 
+ % Histograma que muestre cuántos coches se detectan entre una y 5 veces, entre 6 y 10, entre 10 y 20, y más de 20 veces.
+
+ % En la Figura \ref{Intervalos} podemos ver que hay una gran cantidad de vehículos que repiten su paso por ciertos nodos (principalmente los situados en la A44) hasta 10 veces. 
+ % Incluso se puede ver que en los nodos 4 y 5 hay alrededor de 1000 vehículos que repiten su paso más de 25 veces. En el resto de nodos, más de 25 repeticiones del mismo dispositivo se han detectado alrededor de 120 veces solamente.
+
+Figure \ref{Intervalos} shows a large number of vehicles that pass repeated times (up to 10 times) by some of the nodes (mainly those located in the A44).
+Even it can be seen that nodes 4 and 5 detect about 1,000 vehicles passing more than 25 times repeated. 
+On the other nodes, over 25 repetitions of the same device have been detected only around 120 times.
+
+
+\subsection{Complexity of displacement}
+ % NodosPorDondePasan.txt contiene el número de vehículos que han pasado por 2 nodos, por 3 nodos y así hasta por los 6 nodos y el número medio de veces que han pasado 2, 3, 4, 5 o 6 veces por cada nodo.
+
+ % En el estudio de la complejidad de los desplazamientos se han calculado el número de vehículos que han pasado por 2 nodos, por 3 nodos y hasta 6 nodos. En la Tabla \ref{tNodosPorDondePasan} se muestra además el número medio de veces que han pasado un vehículo por 2, 3, 4, 5 o 6 nodos.
+To study the complexity of displacements, the number of vehicles that have passed through two nodes, 3 nodes and up to 6 nodes  were calculated. 
+Table 4 also shows the average number of times that vehicles have passed through 2, 3, 4, 5 or 6 nodes.
+
+ \begin{table}
+ \begin{center}
+ \begin{tabular}{|c|c|c|c|}
+ \hline
+ No. of nodes & 	No. of devices & 	Total number of passes & 	Mean $\pm$ std. dev.  \\
+ \hline
+1 & 	72989 & 	 165033 & 	$2.26 \pm 31.16$  \\
+ \hline
+2 & 	53947 & 	 425667 & 	$7.89 \pm 11.48$  \\
+ \hline
+3 & 	8125 & 	 131570 & 	$16.19 \pm 24.71$  \\
+ \hline
+4 & 	1359 & 	 39241 & 	$28.88 \pm 140.82$  \\
+ \hline
+5 & 	254 & 	 8603 & 	$33.87 \pm 59.51$  \\
+ \hline
+6 & 	61 & 	 3731 & 	$61.16 \pm 94.78$  \\
+ \hline
+ \end{tabular}
+ \end{center}
+ \caption{Total number of vehicles that have passed through two nodes, 3 nodes and up to 6 nodes, and average number of times that vehicles have passed through 2, 3, 4, 5 or 6 nodes. In some cases the deviations are high because some devices have a very high number of occurrences for some nodes.
+ % Número de vehículos que han pasado por 2 nodos, por 3 nodos y hasta 6 nodos, y el número medio de veces que han pasado los vehículos por 2, 3, 4, 5 o 6 nodos. En algunos casos las desviaciones son altas debido a que algunos dispositivos tienen un número muy alto de apariciones por algunos de los nodos
+ \label{tNodosPorDondePasan}}
+ \end{table}
+
+ % La información anterior se complementa visualmente con la Figura \ref{fNodosPorDondePasan}, en la que se muestra (en escala logarítmica) cuántos coches pasan sólo por un nodo, por dos nodos, por tres nodos, etc.
+The above information is complemented with Figure \ref{fNodosPorDondePasan}, that shows how many cars pass by only one node, two nodes, three nodes, etc.
+
+ \begin{figure}[htb]
+ \begin{center}
+ \includegraphics[scale=0.4]{NodosPorDondePasan.jpg}
+ \caption{Figure shows how many cars pass by only one node, two nodes, three nodes, etc. Figure is shown in logarithmic scale.
+ % La figura muestra cuántos coches pasan sólo por un nodo, por dos nodos, por tres nodos, etc. Para mejorar la visualización se ha utilizado escala logarítmica
+ \label{fNodosPorDondePasan}}
+ \end{center}
+ \end{figure}
+ % Histograma que muestre cuántos coches pasan sólo por un nodo, por dos nodos, por tres nodos, etc.
+
+ % Como se esperaba, gran parte de los dispositivos BT pasan pocas veces por casi todos los nodos, mientras que la mayoría pasa sólo por uno o dos de ellos (sus desplazamientos se centran en una parte de la zona pequeña monitorizada).
+As expected, most of the BT devices rarely passed by all nodes, while most of devices pass only by one or two of nodes (their displacements are focused on a small part of the monitored area).
+
+
+\subsection{Effect of Nov-14 strike on zone traffic}
+ % Tabla en la que mostremos cómo afectó el día 14-N con la huelga.
+
+ % Justo en mitad del periodo de monitorización, en España se celebró un día de huelga general (14 de noviembre de 2012), lo que ha quedado reflejado en la cantidad de coches detectados en los nodos.
+
+ % Se ha analizado el efecto de la huelga general en el tráfico de la zona monitorizada, mostrando en la Tabla \ref{huelga} el número de pasos detectados el día 14 de noviembre y justo el día siguiente.
+
+Right in the middle of the monitoring period in Spain was held a day of general strike (November 14, 2012), which has been reflected in the number of detected devices (cars) on the nodes.
+
+The effect of the general strike in the traffic of the monitored area has been analyzed and shown in Table \ref{huelga} as the number of detected devices on November 14 and the very next day.
+
+ \begin{table}
+ \begin{center}
+ \begin{tabular}{|c|c|c|}
+ \hline
+ Node  &  Total number of passes (nov-14) & Total number of passes (nov-15) \\
+ \hline
+ 2	& 1841  & 2722  \\
+ \hline
+ 3	& 891   & 1169 \\
+ \hline
+ 4	& 10807	& 16942 \\
+ \hline
+ 5	& 831  	& 4017\\
+ \hline
+ 6	& 946   & 1419 \\
+ \hline
+ \end{tabular}
+ \end{center}
+ \caption{Comparison of the number of passes for each node between the general strike day (November 14) and the very next day. Node 1 results are not reported because the hardware device suffered a power supply problem for a couple of days at that time.
+ % Comparación del número de pasos por cada nodo entre el día de la huelga general (14 de noviembre) y el día siguiente. No aparece recogido el nodo 1 debido a que el dispositivo hardware sufrió un problema de alimentación durante un par de días en esas fechas
+ \label{huelga}}
+ \end{table}
+
+ % En la Tabla \ref{huelga} se aprecia un número de vehículos detectados menor el día de la huelga respecto al día siguiente (laborable en el que la actividad debió ser normal en la zona).
+Table 8 shows a lowest number of detected vehicles the day of the strike that on the following day (working day in which the activity should be normal in the area).
+
+
+\subsection{Analysis of vehicles speed between two consecutive nodes}
+ % tabla de la velocidad media de los vehículos en el tramo (en laborables y en fin de semana).
+ % El "Granada 5" está en el km 123,250 ; el "Granada 4" está en el km 119,550 ; hay 3700 metros entre ambos. 
+
+ % Por último, a partir de los dos nodos consecutivos localizados en la autovía A44, podemos calcular velocidades medias en el tramo delimitado por los nodos 4 (situado en el km 119,550) y 5 (situado en el km 123,250) de un total de 3700 metros. 
+ % En realidad podemos calcular la velocidad media en el tramo a nivel global, no la velocidad a la que ha ido cada vehículo en cada instante dentro del tramo.
+
+Finally, taking two consecutive nodes, located on the A44 highway, average speeds in the section bounded by nodes 4 (located at km 119.550) and 5 (located at km 123.250) can be calculated.
+This highway section where the study takes place is of 3700 meters long.
+Actually, we can calculate the average speed in the global section, not the speed at which each vehicle has at each instant within the section.
+
+ \begin{table}
+ \begin{center}
+ \begin{tabular}{|c|c|}
+ \hline
+Speed range (km/h) &  No. of passes  \\
+ \hline
+v$\leq$60.0	& 1495  \\
+ \hline
+60.0$\leq$v$\leq$70.0 & 2585  \\
+ \hline
+70.0$\leq$v$\leq$80.0 & 7421  \\
+ \hline
+80.0$\leq$v$\leq$90.0 & 16339  \\
+ \hline
+90.0$\leq$v$\leq$100.0 & 20144  \\
+ \hline
+100.0$\leq$v$\leq$120.0 & 14384  \\
+ \hline
+120.0$\leq$v$\leq$140.0 & 5434  \\
+ \hline
+v$\geq$140.0 & 1326  \\
+ \hline
+ \end{tabular}
+ \end{center}
+ \caption{Average speeds (globally) in the section bounded by nodes 4 and 5.
+  % Velocidades medias (a nivel global) en el tramo delimitado por los nodos 4 y 5
+ \label{velocidad}}
+ \end{table}
+
+
+ % En dicho tramo, la velocidad está limitada a 100 km/h. Sin embargo, y aunque la gran mayoría respetan el límite, vemos que una gran cantidad de coches superan dicha limitación.
+In that section, the speed is limited to 100 km/h. However, although most of the vehicles respect this limit, a lot of cars exceed this limitation.
+
+
+??? AQUI INCLUIMOS LO DE LAS ST
+
+\section{Conclusions}
+\label{sec:conclusions}
+
 
 %% The Appendices part is started with the command \appendix;
 %% appendix sections are then done as normal sections
