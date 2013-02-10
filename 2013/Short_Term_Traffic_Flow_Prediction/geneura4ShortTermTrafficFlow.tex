@@ -106,13 +106,13 @@
 %% \address{Address\fnref{label3}}
 %% \fntext[label3]{}
 
-\title{}
+\title{Articulo bonito que queremos que publiquen}
 
 %% use optional labels to link authors explicitly to addresses:
 %% \author[label1,label2]{<author name>}
 %% \address[label1]{<address>}
 %% \address[label2]{<address>}
-
+\author{Muchos y bonitos autores}
 \author[uja]{V.M. Rivas\corref{vrivas}}
 \ead{vrivas@ujaen.es}
 \ead[url]{http://geneura.wordpress.com}
@@ -127,7 +127,7 @@
 
 \begin{abstract}
 %% Text of abstract
-
+Blah, blah, blah...
 \end{abstract}
 
 \begin{keyword}
@@ -169,15 +169,20 @@ The intrusiveness is minimal since one-way encription algorithms are used to hid
 The increasingly large amount of data collected, related to passing BT devices, is the starting point that allows to calculate statistics, to study several indicators about the use of vehicles, and to perform time-series forecasting by the monitored area population.
 
 The rest of the paper is organized as follows:
-??????????In Section \ref{soa} current technologies to monitor the traffic that passes through a certain area is summarized.
+
+???????In Section \ref{soa} current technologies to monitor the traffic that passes through a certain area is summarized.
 Section \ref{obj} details the goals of this paper.
 In Section \ref{hw}, the Intelify device is presented.
 In Section \ref{analisis} several analysis and statistics are reported from the data obtained.
 Finally, we present some conclusions and future work (Section 5).
 
 
-\section{Current technologies}
-\label{sec:current}
+\section{Preliminaries}
+\label{sec:soa}
+
+\subsection{Traffic detection techonlogies}
+\label{subsec:traffic}
+
 Traffic detection technologies can generally be classified into two groups: intrusive and nonintrusive.
 
 Intrusive detection technologies are installed on/within the roadway, requiring lane closures. Using this type of technology is inherently more hazardous and is generally more time consuming, especially for temporary traffic data collection. This technology has a number of drawbacks:
@@ -240,7 +245,7 @@ Finally, from a privacy point of view, the Spanish Data Protection Agency\footno
 
 
 
-\subsection{Commercial products}
+\subsubsection{Commercial products}
 There are different companies working in the traffic information area using approaches similar to the presented in this work.
 
 \begin{itemize}
@@ -260,8 +265,49 @@ There are different companies working in the traffic information area using appr
 
 The proposal presented in this work have some common features with the previous approaches, offering similar functionalities but with reduced cost.
 
+\subsection{Time series forecasting}
+\label{subsec:time-series}
+Time series forecasting is a major field of research, mainly in the areas of statistics \cite{Gooijer25years} and operational research \cite{Fildes2008}. A wide variety of methods have emerged in order to forecast time series using both linear and nonlinear models. Linear methods include the exponential smoothing methods \cite{Brown1959,Winters1960}, simple exponential smoothing (SES), or State space models \cite{Snyder1985}, among many others. Nevertheless, the most used linear methods are the ARIMA ones \cite{BoxJenk}, that can be considered as the firsts of modern methods. ARIMA integrate autoregressive (AR) and moving average (MA) models in an iterative cycle in which the time series is identified, then the parameters of the model are estimated, in order to, finally, obtain some kind of verification of the model.
 
-??? SERIES TEMPORALES
+Linear models have shown no to be accurate for many real applications, and for this reason new and more complex nonlinear methods have been developed. Nonlinear models include regime-switching models, which comprise the wide variety of existing threshold autoregressive (TAR) models \cite{Tong1978}. Main drawbacks of nonlinear methods were pointed out by Clements \cite{Clements2004}: the complex beind developed are excesively complex (lackthey use to develop very complex models; they do not perform in a robust way; and, worst of all, they are difficult to use. De Gooijer \cite{Gooijer25years} also concludes that future research on nonlinear models should include, among others, the search for easy to use software.
+
+%\subsection{Soft computing methods for time series forecasting}
+
+On the other hand, time series forecasting has been faced with soft computing approaches, as the ones by Samanta \cite{Samanta2011} and Zhu \cite{Zhu2011}, who developed methods based on cooperative particle swarm optimization. Works like \cite{Qiu2011} and \cite{Wang2011} proposed fuzzy time series models for forecasting, and Yu and Huarng \cite{Yu2010} applied ANNs for training and forecasting in their fuzzy time series model. Models such as support vector regression \cite{Kavaklioglu2011} and fuzzy expert system \cite{Dash1995} were proposed for the electricity demand forecasting, among others.
+
+ANNs have been also successfully applied to time series and recognized as an important tool for forecasting. 
+
+The work by Tang \cite{Tang1991} concluded that neural networks not only could provide better long-term forecasting but also did a better job than ARIMA models with short series of input data. Furthermore, contrary to the traditional linear and nonlinear time series models, ANNs are nonlinear data-driven approaches with more flexibility and effectiveness in modeling for forecasting \cite{Zhang1998b}. Jain and Kumar determined in their work \cite{Jain2007} that the ANN models were able to produce more accurate forecasts than traditional models because they do not presuppose any functional form of the model to be developed and they do not depend on the assumptions of linearity.
+
+There exist numerous works of different application areas where ANNs are used to forecast time series. The work by Arizmendi \cite{Arizmendi1993} obtained accurate predictions of the airborne pollen concentrations using ANNs. Zhang and Hu \cite{Zhang1998b} employed ANNs, and Rivas et al. \cite{Rivas04} RBFNs, for forecasting British pound and US dollar exchange rates. Bezerianos et al. \cite{Bezerianos1999} employed RBFNs for the assessment and prediction of the heart rate variability. 
+
+%\subsection{Radial Basic Function Networks}
+
+Specifically inside the ANNs, the use of RBFs as activation functions for them and its application to time series forecasting were firstly considered by Broomhead and Lowe in 1988 \cite{Broomhead88}. Afterwards, new works by Carse and Fogarty \cite{Carse1996}, and Whitehead and Choate \cite{Whitehead96} focused on the prediction of time series.
+
+In later works, Harpham and Dawson \cite{Harpham06} studied the effect of different basis functions on an RBFN for time series prediction. Moreover, Du \cite{Du2008} used time series with an encoding scheme for training RBFNs by GAs. Both the architecture (numbers and selections of nodes and inputs) and the parameters (centers and widths) of the RBFNs were represented in one chromosome and evolved simultaneously by GAs so that the selection of nodes and inputs could be automatically achieved.
+
+Previous works found in literatur can also be classified according to the prediction horizon. Thus, forecasting can be divided into short-term, medium-term, and long-term. Generally, forecasting is trended to short-term prediction such as one-step ahead prediction, since longer period prediction (medium-term or long-term) is more difficult, and sometimes may not be reliant because of the error propagation \cite{Chatterjee06}. Thus, neural network models have been traditionally applied in short-term forecasting \cite{Hippert10,Lee09}. For instance, the work by Perez-Godoy \cite{PerezGodoy2010} applied a hybrid evolutionary cooperative-competitive algorithm for the design of RBFNs to the short-term and even medium-term forecasting of the extra-virgin olive oil price.
+
+%\subsubsection{Lags selection}
+
+As mentioned, another problem that emerges working with time series is the correct choice of the lags considered for representing the series. The relationship involving time series historical data defines a $d$-dimensional space where $d$ is the minimum dimension capable of representing such a relationship. Takens' theorem \cite{Takens1980} establishes that if $d$ is sufficiently large is possible to build a state space using the correct time lags and if this space is correctly rebuilt also guarantees that the dynamics of this space is topologically identical to the dynamics of the real systems state space. %Many methods can be found in the literature for the correct definition of the variable $d$, that is, the correct choice of the important time lags of the system dynamics, sometimes called as active dimension of the dynamics generating a time series from the observed series \cite{Tanaka2001}.
+
+In order to tackle the lags selection problem, an evolutionary method that performs a search for the minimum number of dimensions, Time-delay Added Evolutionary Forecasting (TAEF), is presented in \cite{Ferreira2008}. The methodology is inspired in Takens' theorem and consists of an iterative hybrid model composed of an ANN combined with a genetic algorithm (GA). In \cite{Luko2010} the evolutionary selection of lags is divided into two stages: first, the optimal dimension of the reconstructed phase space is determined by the false nearest neighbors algorithm and then a near-optimal set of time lags is found with a genetic algorithm for a fuzzy inference system.
+
+%In general, these proposals are based on the primary dependences among the variables, do not consider any possible induced dependences, and discard any possible correlation that can exist among the time series parameters, even higher order correlations.
+There are some methods that carry out an automatic search of the relevant lags. QIEHI algorithm \cite{Araujo2010a}, for instance, is an evolutionary hybrid intelligent method which is composed of an ANN and a modified evolutionary algorithm to search the minimum dimension to determine the characteristic phase for time series. %The model is built in two stages as in \cite{Ferreira2008}.
+Another hybrid methodology composed of a modular morphological ANN with an evolutionary algorithm that searches for the best time lags is described in \cite{Araujo2010b}. %With the same modular morphological neural network, the time lags are obtained by means of a particle swarm optimizer in \cite{Araujo2010c} and by means of a modified GA in \cite{Araujo2011}.
+In \cite{garcia2008} a study on the selection not only of the lags but also of the exogenous features with classical feature selection algorithms as pre-processing stage is performed. %The authors show the utility of a feature selection pre-processing stage for time series forecasting with different models.
+The lag selection is performed as a postprocessing stage in \cite{Maus2011} with a sensitivity computation of the output to each time lag. %The initial stage trains a single-layer, feed-forward ANN based on $d$ time lags, with $d$ chosen large enough to capture the relevant dynamics of the time series. %Another methodology which considers the lag selection as a post-processing stage is
+%TDSEP \cite{Sun2006} uses a GA for the optimal selection of time lags for a previously obtained and diagonalized second-order correlation matrices.
+
+As can be observed, the approaches in the literature consider the lags selection as a pre- or post-processing or as a part of the learning process but, instead of together, in hybrid processes with two or three stages. On the contrary, our goal is to address the selection of the lags which represent the series (with any type of correlation) jointly with the design process.
+
+%\subsection{Radial Basic Function Networks}
+
+
+
 \section{Data-collecting}
 \label{sec:data}
 
@@ -621,6 +667,44 @@ In that section, the speed is limited to 100 km/h. However, although most of the
 
 ??? AQUI INCLUIMOS LO DE LAS ST
 
+
+
+Finally, in order to determine the accuracy of the forecast method applied to time series data, many measures have been proposed. Most textbooks recommended the use of the Mean Absolute Percentage Error (MAPE) \cite{Bowerman2004} and it was the primary measure in the M-competition \cite{Makridakis1982}. Other works recommended other measures such as Geometric Mean Relative Absolute Error (GMRAE), Median Relative Absolute Error (MdRAE), and Median Absolute Percentage Error (MdAPE) \cite{Armstrong,Fildes1992}. Later, the MdRAE, sMAPE (Symmetric Mean Absolute Percentage Error), and sMdAPE (Symmetric Median Absolute Percentage Error) were proposed \cite{Makridakis2000}.
+
+Nevertheless, Hyndman and Koehler in their work \cite{Hyndman2006} determined that all measures mentioned before were not generally applicable since they can be infinite or undefined and can produce misleading results. Therefore, they proposed a new measure suitable for all situations: the Mean Absolute Scaled Error (MASE), which is less sensitive to outliers, less variable on small samples, and more easily interpreted.
+
+In \cite{Gooijer25years} and \cite{Hyndman2006}, it can be found a description of different error measures. Among all of them, in this work we use the followings:
+
+\begin{itemize}
+  \item Mean Absolute Error (MAE):
+        \begin{equation}\label{eq:MAE}
+            MAE = mean(\mid e_t\mid)
+        \end{equation}
+
+  \item Mean Absolute Percentage Error (MAPE):
+        \begin{equation}\label{eq:MAPE}
+            MAPE = mean(\mid p_t\mid)
+        \end{equation}
+
+        \bigskip
+  \item Median Absolute Percentage Error (MdAPE):
+        \begin{equation}\label{eq:MDAPE}
+            MdAPE = median(\mid p_t\mid)
+        \end{equation}
+
+  \item Symmetric Median Absolute Percentage Error (sMdAPE):
+        \begin{equation}\label{eq:SMDAPE}
+            sMdAPE = median(200\mid Y_t - F_t\mid (Y_t + F_t))
+        \end{equation}
+
+  \item Mean Absolute Scaled Error (MASE):
+        \begin{equation}\label{eq:MASE}
+            MASE = mean(\mid q_t\mid)
+        \end{equation}
+
+where $Y_t$ is the observation at time $t = {1,...,n}$; $F_t$ is the forecast of $Y_t$; $e_t$ is the forecast error (i.e. $e_t= Y_t - F_t$); $p_t = 100e_t/Y_t$ is the percentage error, and
+         $q_t = \displaystyle\frac{e_t}{\displaystyle\frac{1}{n-1} \sum_{i=2}^n \mid Y_i - Y_{i-1} \mid }$
+\end{itemize}
 \section{Conclusions}
 \label{sec:conclusions}
 
