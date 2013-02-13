@@ -172,16 +172,16 @@ Therefore, the goal in this paper is to design a bot agent using that extra GA l
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{Algorithms and Experimental Setup}
+\section{Algorithm and Experimental Setup}
 
-In this section the strategy to evolve is presented. A Genetic Algorithm (GA) is used to improve parameters of a basic agent.  In order to improve the agent two different type of fitness function and six different maps have been used. 
+In this section the strategy to evolve is presented. A Genetic Algorithm (GA) is used to improve parameters of a basic agent.  In order to improve the agent two different type of fitness functions and six different maps have been used. 
 
 %Section 4.1 describes the group of parameters to evolve. Fitness are described in Section 4.2 and the different maps in section 4.3. Finally, section 4.4 describes experimental setup.
 
 % blablaba. \textcolor{red}{(un parrafo en total de introduccion.)}
 \subsection{Behavioural parameters and rules}
 
-The basic behaviour of our agent is based in a Greedy strategy to prioritize multiple tasks entrusted to the ants:
+The basic behaviour of our bot is mainly based in a Greedy strategy to prioritize multiple tasks entrusted to the ants:
 \begin{verbatim}
 IF enemy hill in sight
    attack the hill 
@@ -197,25 +197,34 @@ The second part of the strategy, is a \textit{lefty movement}, i.e. follow a str
 
 %For the case without having to perform any of these tasks, the ant will explore the map using the Lefty strategy, which is based on exploring the same straight line, and walking along the edge of land areas delimited by the water, and along the entire area which holds the water.
  
-To make a parameter optimization using genetic algorithms, we have defined a number of them in the above specified Bot. 
-
+In order to perform a parameter optimization using genetic algorithms, we have defined a set in the above specified Bot. They are:
 \begin{itemize}
   \item {\em food\_distance}: Maximum distance to go get food, i.e. ants ignores food that is at a distance greater than this value.
   \item {\em time\_remaining}: Margin time we have for one turn to finish without a `timeout penalty'. Higher values indicate that more actions are performed, but as previously explained, the player receives a penalty.
   \item {\em distance\_my\_ant\_attack} and {\em distance\_hill\_attack}: These parameters are used to determine the attack priority.  Distance\_my\_ant\_attack means that we have one ant partner close enough to take advantage when attacking enemy ants. In this situation, the distance\_hill\_attack is taking into account in order to change ant objective. If another enemy ant is close to our hill, our ant give priority to this more dangerous situation for our interest. In this case an ant is sacrificed to keep alive our anthill.
-  \item {\em turns\_lefty}: Maximum number of consecutive turns in which an ant Lefty strategy can be used. After that number of turns, ants community change to Greedy strategy.
+  \item {\em turns\_lefty}: Maximum number of consecutive turns in which an ant lefty strategy can be used. After that number of turns, ants community change to Greedy strategy.
 
 \end{itemize}
 
 \subsection{Genetic algorithm}
-A GA is used to evolve the previously presented parameters. The \textit{fitness function}, which determines the individual's adaptation to the environment is based on launching a game against several opponents, in a certain number of turns and a specific map.
-The score for the agent after that game will determine the degree of kindness and individual adaptation to the problem we want to solve, know the individual that maximizes the score. Two different fitness functions have been studied:
+A GA has been used to evolve the previously presented parameters. 
+Thus each individual in the population is represented by a tuple of integers, where each number indicates the value of one of the parameters previously explained.
+
+The \textit{fitness function}, which determines the individual's adaptation to the environment, is based on launching a game against several opponents, in a certain number of turns and a specific map.
+The score for the agent after that game will determine the degree of kindness and individual adaptation to the problem we want to solve, knowing the individual that maximizes the score. Two different fitness functions have been studied:
 
 % \textcolor{red}{IMPORTANTE! completa esto!}
 \begin{itemize}
-\item Basic fitness: Only takes into account the score obtained by our agent in the battle.
-\item Hierarchical fitness: The fitness is a tuple of the following elements in order: My score, enemy score (negative), number of my own ants and number of enemy ants (negative). A lexicographical order is applied to compare two individuals.
+\item Basic fitness: t only considers the score obtained by our agent in the battle.
+\item Hierarchical fitness: the fitness is a tuple of the following elements in order: My score, enemy's score (negative), number of my own ants and number of enemy's ants (negative). A lexicographical order is applied to compare two individuals.
 
+\end{itemize}
+
+The considered operators have been:
+\begin{itemize}
+\item \textit{selection}: choose half of population with individuals who obtained the highest scores in the games for improving the convergence component.
+\item \textit{crossover}: multi-point crossover has been performed, mixing some parts of the parents to compose the offspring.
+\item \textit{mutation}: changes parameter values randomly with certain probability.
 \end{itemize}
 
 %{\bf Selection}: simulating natural selection. The procedure we have followed is to choose individuals who obtain the highest scores in the games, not giving any chance of survival and less fit individuals who have earned fewer points in order to get the genetic algorithm converges more quickly to the optimal solution. Thus, given a population of N individuals, after evaluating each of them with a single match, we choose the N / 2 individuals with the highest score.
@@ -226,8 +235,6 @@ The score for the agent after that game will determine the degree of kindness an
 %Replacing individuals obtained by crossing and mutate by others: Half selected, now we have taken the approach of choice to half thereof to cross, so that if the population better cut in half (after selection) is of size N, we crossed N / 2 individuals (with the we form N / 4 pairs), and we obtain N / 4 resulting new individuals across the top. Now the mutation is performed on these N / 4 individuals obtained by crossing, and since the only mutate modify attributes of each subject, we do not alter the number of individuals. After then, have a population of size N and N / 4 individuals by adding thereto. Since what we want is always the population size is a power of 2, we must keep the population of N individuals, so we replaced the N / 4 individuals of the target population with the worst score for the new individuals obtained by performing the crossover and mutation.
 %Election maps, opponents and number of turns of headings: One of the main disadvantages with genetic algorithms is the high CPU time consuming because they have to evaluate large populations of individuals and perform many iterations to reach a mutually acceptable solution to the problem to be solved. In our case, the population size is not a big problem such as the evaluation of each individual of the same, although they are closely related (the larger the population, the greater number of games to be played for determine the degree of goodness of all individuals). What we have in mind is that the algorithm is effective within a reasonable period of time (a few hours at most), we choose a map, number of opponents and shifts very specific items for the duration of each evaluation does not involve a great loss of time in our lives, and even more so at exam time!
 
-
-To represent each individual in the population, we chose to use a tuple of integers, where each number indicates the value of one of the parameters previously explained.
 
 
 %FERGU: Comento todo esto, que no se ha usado.
@@ -260,9 +267,8 @@ To represent each individual in the population, we chose to use a tuple of integ
 
 
 
-\subsection{Maps to use}
-Six maps have been used to evolve the bot. All of them are provided by the competition organizers in tools package. Three maps are mazes with different grade of difficult and the other three have open walking areas. Figure 1 %\ref{fig:figmaps}
- shows two different kind of maps. The circles mark hills positions with one colour for each team. The blue areas represent water and ants cannot walk on it, small points represent food and the rest are land where ants can walk. Other relevant information about maps are detailed in Table \ref{tab:maps}. 
+\subsection{Experimental setup}
+Six maps have been considered in order to perform the bot evolution. All of them are provided by the competition organizers in a tools package. Three maps are mazes with different level of difficulty and the rest are open walking areas. Figure 1 \ref{fig:figmaps} shows two examples of different type of maps. The circles mark hills positions with one colour for each team/player. The blue areas represent water that ants cannot cross, nor walk on it, small points represent food and the rest are land where ants can move. Some other relevant information about maps is detailed in Table \ref{tab:maps}. 
 
 \input{tables/mapas}
 
@@ -289,12 +295,12 @@ Six maps have been used to evolve the bot. All of them are provided by the compe
    \label{fig:subfig2}
  }
 \label{fig:figmaps}
-\caption{Two different maps used in the experiments. }
+\caption{Two different example maps considered in the experiments. }
 \end{figure}
 
-\subsection{Experimental setup}
+In the experiments conducted it will be shown the performance of the implemented approaches (GA + fitness function) in each of the six previous maps. Both have considered an initial size of population of 64 individuals, a Crossover rate equal to 0.3, a mutation rate of 0.1 and a stop criterion set to 20 generations. Every agent is evolved in the six maps 10 times in order to get a feasible fitness value, trying to avoid the `noisy nature' \cite{Mora_noisy_jcst} of game playing to value an individual when the opponent is non-deterministic. I.e. the same agent could be valued as very good or very bad depending on the combat result, which in turn depends on the enemy's actions.
 
-Once completed the design and implementation of the versions of the genetic algorithm, we will show the performance of both of them in each of the six previous maps, with an initial size of population of 64 individuals. Crossover rate is 0.3, mutation rate is 0.1 and the stop criterion is set to 20 generations. The agent is evolved in the six maps 10 times.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Results and Analysis}
 \label{sec:results}
