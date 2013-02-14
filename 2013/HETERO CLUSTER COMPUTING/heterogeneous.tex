@@ -58,6 +58,7 @@ grestore
 \usepackage{fix2col}
 \usepackage{natbib}
 \usepackage{epsfig}
+\usepackage[options]{algorithm2e}
 %\input{highlight.sty}
 
 \lstset{
@@ -136,7 +137,7 @@ Distributed computing}
 \section{Introduction}
 \label{sec:intro}
 
-New trends such as Cloud Computing \cite{CLOUD}, GRID \cite{OPENSCIENCEGRID} or Service Oriented Science \cite{GLOBUS} are leading to heterogeneous computational devices working at the same time.  Moreover, many laboratories do not count with classic clusters, but the usual workstations used by scientists can behave in group as a heterogeneous cluster. Distributed Evolutionary Algorithms (dEAs) have been tested successfully in these systems. These systems can take advantage of heterogeneous dEAs. 
+New trends such as Cloud Computing \cite{CLOUD}, GRID \cite{OPENSCIENCEGRID} or Service Oriented Science \cite{GLOBUS} are leading to heterogeneous computational devices working at the same time.  Moreover, many laboratories do not count with classic clusters, but the usual workstations used by scientists can behave in group as a heterogeneous cluster. Distributed Evolutionary Algorithms (dEAs) \cite{AQUIEN} have been tested successfully in these systems. 
 
 Heterogeneous dEAs can be divided in two categories: a dEA where the parameters are different in each island (heterogeneous parameters) or the same algorithm in heterogeneous hardware. It also have been proved that this kind of algorithms are even more efficient in heterogeneous hardware configurations, than in homogeneous devices \cite{HETEROGENEOUSHARD}. This can be explained by different reasons, such as different memory access times, cache, or even implementation languages or compilers in each machine, leading to different explotation rate of the search space. The heterogeneous parameters configuration also have been proved as more efficient than a fixed set of parameters for different problems \cite{HETEROGENEOUSPARAMETERS}. Our motivation in this work is to combine both ideas adapting the population size of the islands to the heterogeneous hardware. To calculate the computational power, the algorithm is executed in each machine, and then, the total size of individuals is distributed according the number of generations attained in each node during the same time. Two different problems (MMDP and OneMax) have been used as a benchmark.
 
@@ -166,15 +167,27 @@ In the field of the Evolutionary Computing there are two different approaches ab
 
  Our work presents a combination of previous ideas, where a parameter tuning given by the computational cost of the machines is performed. For our knowledge, there are not works that modify parameters of the GA depending of the node where the island is being executed.
 
-%%%%%%%%%%%%%%%%%%  Experiments  %%%%%%%%%%%%%%%%%%%
+
 \section{Service Oriented Evolutionary Algorithms}
 
-An EA is an algorithm where a population of possible solutions (called individuals) are evolved by means of selection and recombination/mutation to create a new set of candidates that competes using their fitness (quality of adaptation) with the rest of solutions, until a stop criterion (i.e. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function is usually the problem to solve. %%% CAMBIA ESTO UN POQUICO
+The EAs are a general technique for solving optimization and search problems based in the evolution of species and natural selection. These algorithms are formed by a population of possible solutions (called {\em individuals}) that competes using their {\em fitness} (quality of adaptation) with the rest of solutions. In each iteration of the algorithm (or {\em generation}) the individuals are evolved by means of selection and recombination/mutation to create a new set of candidates, until a {\em stop criterion} (i.e. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function is usually the problem to solve.
 
-Distributed EAs are... %BLABLABLABLA
+There are different ways to parallelize the EAs:
+
+\begin{itemize}
+\item {\em Farming model (centralized)}: A central node coordinate several slave nodes. The central node executes the EA in a sequential way, but distributes the individuals of the population to the slaves just for being evaluated.
+\item {\em Island model (distributed)}: A number of nodes executes simultaneously the EA, working with different sub-populations at the same time. Each certain number of generations is interchanged (migrated) between populations.
+\item {\em Cellular EAs (fine grain)}: Each node has one individual of the population, and selection and reproduction is limited with the individuals of the neighbourhood of the node. Usually a bi-dimensional grid is used for topology.
+\end{itemize}
+
+The distributed EAs are very popular because the implementation is not complicated and they explotate a coarse grain parallelism with sporadical communications, being appropiated to be executed in distributed architectures such as clusters or GRIDs \cite{}.
+
+As discussed in \cite{SOASOCO} the evolutionary algorithms research area is a propitious environment to migrate to SOA for several reasons: SOA fits with the genericity advantages in the development of software for EAs \citep{GENERICITY05} and adds new features, like language independence and  distribution mechanisms. Moreover, there are a large number of frameworks for EAs mostly imcompatible due to different programming languages, operating systems or communication protocols (see \cite{SURVEYMOFS} for a survey). Also, new research trends, like self-adaptation \citep{SELFSTAR}, require many changes and modifications in the algorithms behavior in real-time. And finally, the increase of technologies such as GRID and Cloud Computing \citep{CLOUD}, where the computation elements are distributed in different machines, with many operating systems and programming languages.
 
 
 
+
+%%%%%%%%%%%%%%%%%%  Experiments  %%%%%%%%%%%%%%%%%%%
 \section{Experimental setup}
 \label{subsec:experiments}
 This section presents the parameters and systems to conduce the experiments.
@@ -182,6 +195,26 @@ This section presents the parameters and systems to conduce the experiments.
 The algorithm to improve is a dGA. Parameters are described in Table \ref{table:parameters}. The algorithm is steady-state: the offspring is mixed with the parents and the worst individuals are removed. A ring topology is used, and the best individual is sent after a fixed number of generations of each node (64).  Two different parameter configurations have been used: 64 individuals per node (homogeneous size) and a different number of individuals proportional to the number of generations attained in this first homogeneous size execution (heterogeneous size).
 
 Figure \ref{fig:EA} shows the pseudo-code of the used algorithm.
+
+\begin{figure}
+
+\begin{algorithm}[H]
+ \SetAlgoLined
+ initialization\;
+ \While{not at end of this document}{
+  read current\;
+  \eIf{understand}{
+   go to next section\;
+   current section becomes this one\;
+   }{
+   go back to the beginning of current section\;
+  }
+ }
+ \caption{How to write algorithms}
+\end{algorithm}
+
+\end{figure}
+
 
 \begin{table}
 \centering
