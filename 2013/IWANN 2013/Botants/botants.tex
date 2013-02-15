@@ -54,7 +54,7 @@ showstringspaces=false
 
 
 % a short form should be given in case it is too long for the running head
-\titlerunning{Evolving strategies for ANTS game\footnote{This work has been funded in part by PROJECTS}}
+\titlerunning{Evolving strategies for ANTS game}
 %
 \author{J. Carpio\inst{1}, P. Garc\'ia-S\'anchez\inst{2}, A.M. Mora\inst{2}, J.J. Merelo\inst{2},\\ 
 J. Caraballo\inst{1}, F. Vaz\inst{1}, C. Cotta\inst{3}}
@@ -81,9 +81,8 @@ This work studies the performance and the results of the application of Evolutio
 According to the championship rules the agents cannot save information
 from one game to the next, which makes impossible to implement an EA
 `inside' the agent, i.e. on game time (or on-line), that is why in
-this paper we have evolved this engine off-line by means of a EA, % antes has usado EA, ahora GA. Comprueba todo el paper para que sea uniforme. - JJ - FERGU: Cambiados en el abstract. No es demasiado largo ahora?
-used
-for tuning a set of constants, weights and probabilities which direct
+this paper we have evolved this engine off-line by means of an EA, % antes has usado EA, ahora GA. Comprueba todo el paper para que sea uniforme. - JJ - FERGU: Cambiados en el abstract. No es demasiado largo ahora?
+used for tuning a set of constants, weights and probabilities which direct
 the rules. This evolved  agent has fought against other successful bots
 which finished in higher positions in the competition final rank. 
 The results show that, although the best agents are difficult to beat,
@@ -158,8 +157,6 @@ According to the results the agent has performed quite good, and has been able t
 
 \section{State of the art}
 \label{sec:soa}
-
-
 
 AI in games has become the most interesting element in actual games from the player's point of view, once the technical components (graphics and sound) have reached almost an upper bound. They mostly request opponents exhibiting intelligent behaviour, or just better human-like behaviours \cite{artifical-stupidity-game-wisdom2-2004}.
 
@@ -349,24 +346,39 @@ The experiments conducted try to analyze the performance of the implemented appr
 
 Firstly it is important to notice that all the selected competitors which have been considered as opponents in the evolution got higher final rankings than our bot, who finished in rank 2076. They are a deterministic agent who finished in rank 993, and two very competitive and non-deterministic agents which got position 165 and the winner of the competition.
 Table \ref{tab:all} shows the obtained results in ten combats performed once the evolution has been completed.
-*******************************************
-It can be seen that our bot can not beat those in positions 165 and 1, since they are much more sophisticated in its defined behavioural engine. However, the evolution of the agent makes higher the number of own ants and decreases the number of enemy ants in a few generations. Genetic evolution of our agent wins on all maps to the robot that ended in ranking 993, more than 1000 position above the version without optimization. The number of ants is the main difference between basic fitness and hierarchical fitness, and this feature allows to use more effective attack techniques. In maps 5 and 6, the score is lower than the obtained with basic fitness in some cases. However, the number of ants own doubles to those obtained with a basic fitness. This invites us to improve strategies maps in such type of maps to achieve a better use of the large community of ants generated. A remarkable result is found in the standard deviation (SD) value. SD is zero in many cases because variables have very few possible values (i.e. in maps with only two hills, max\_score will be 0, 1 or 3 points) and after 20 generations the system evolves always to reach max score. 
+
+\input{tables/global_tables}
+
+It could be noticed the small standard deviation present in most of the results, due to the small variations in the combat scores. It is zero in many cases because there are very few possible values (i.e. in maps with only two hills, max\_score will be 0, 1 or 3 points). In addition, when a bot is good, it wins most of times and the other way round.  Thus in the evolutionary process after 20 generations the system evolves always to reach max score.
+
+For the same reason it can be seen in the table that our bot can not beat those in positions 165 and 1, since they are much more sophisticated in its defined behavioural engine. However, the evolution of the agent gets higher number of own ants and decreases the number of enemy ants. 
+
+Moreover, our evolved agent wins on all maps to the robot that ended in ranking 993, more than 1000 positions above the initial version (without optimization). The number of ants is the main difference between basic fitness and hierarchical fitness, and this feature allows to use more effective attack techniques. In maps 5 and 6, the score is lower than the obtained with basic fitness in some cases. However, the number of own ants doubles those obtained with a basic fitness. This invites us to improve strategies in such type of maps to achieve a better use of the large community of generated ants. 
+
 %\input{tables/fitness_only_score_vs_rank993}
 %\input{tables/fitness_jerarquico_vs_rank993}
 %\input{tables/fitness_jerarquico_vs_rank165}
 %\input{tables/fitness_jerarquico_vs_rank1}
 
-\input{tables/global_tables}
-
 % \textcolor{red}{Ojo, explicar por qué los mapas 4,5 y 6 el fitness jerárquico se comporta peor que el no jerárquico! Y por qué el minTurns es mayor de 150 en la mayoría?? Si tienes mucho lío escríbelo de forma entendible en español y luego lo traduzco yo si quieres. }
 
 \section{Conclusions and future work}
 
-This paper presents the design of an agent that plays in the RTS ANTS game proposed by Google AI Challenge. Starting with a combination of two basic behaviours (Lefty and Greedy) an Evolutionary Algorithm is used to set the parameters that modify the agent behaviour. This agent is evolved in the 6 maps provided by Google fighting three different bots that participated in the contest: the ones that finished in position 993, 165 and the winner. Results show that, even as evolving the parameters of two simple tasks, a fixed strategy agent is capable to win harder opponents. By the contrary, the same strategy is not affective against a middle bot, so it is clear that the enemy behaviour affects to the off-line training algorithms with an specific strategy. Two different fitness functions have been tested: a basic function that only takes into account the final score (the number of conquered anthills in a run), and a hierarchical fitness, where the number of player's ants, turns, and enemy ants are also used to compare individuals. Genetic optimization is enough to beat a competitor who is above about 1000 positions in the ranking but, evolving a basic robot is not enough to beat robots with good strategies. We conclude that parameters optimization using GA significantly improves agent performance in RTS games and this technique obtains better results combined with good planning strategies.
+This paper presents the design of an agent (bot) that plays in the RTS ANTS game proposed for the Google AI Challenge 2011. Starting with a combination of two basic behaviours (Lefty and Greedy) and a set of parameters, an Evolutionary Algorithm (EA) is used to fine-tune them and thus modify the agent's behaviour. 
+
+This bot is evolved in six maps provided by Google, and fighting three different bots that participated in the contest: those who finished in positions 993, 165 and the winner. 
+Two different fitness functions have been tested: a basic function that only takes into account the final score (the number of conquered anthills in a run), and a hierarchical fitness, where the number of player's ants, turns, and enemy ants are also used to compare individuals.
+
+Results show that, even evolving the parameters of two simple strategies, the agent is capable to win harder opponents. On the other hand, the same strategy is not affective against a medium-ranked bot, so it is clear that the enemy behaviour affects to the off-line training algorithms with an specific strategy.  However genetic optimization is enough to beat a competitor who is above more than 1000 positions in the ranking. 
+
+We conclude that parameters optimization using EA significantly improves agent performance in RTS games and this technique would obtain better results combined with good planning strategies.
 
  % \textcolor{red}{Results show that TERMINAR ESTO BIEN}
-For future work, new combination of strategies will be studied and more different fitness will be analysed: for example, combining all maps in each fitness calculation. Because the stochastic behaviour of some robots also affects the fitness, an study of how this fitness is affected during the algorithm run will be performed. As demonstrated, the behaviour of the enemies is also a very important key to analyse for designing a all-terrain bot: an agent should adapt to these different behaviours. Also, using a quick map analysis in each turn to set the parameters obtained in this work could be studied to adapt the agent accordingly. A map analysis could be performed, for example, counting the number of
+For future work, new combination of strategies will be studied and more different fitness funtions will be analysed: for example, combining all maps in each fitness calculation. Because the stochastic behaviour of some robots also affects the fitness, an study of how this fitness is affected during the algorithm run will be performed. As demonstrated, the behaviour of the enemies is also a very important key to analyse for designing a all-terrain bot: an agent should adapt to these different behaviours. Also, using a quick map analysis in each turn to set the parameters obtained in this work could be studied to adapt the agent accordingly. A map analysis could be performed, for example, counting the number of
 direction changes in a period of time. If many direction changes occurs by collisions with walls, means that bots are fighting in a map with maze pattern. Once map type has been detected, bot can choose suitable parameter group for the map. The combination of the Greedy and Lefty actions also will be studied in other RTS games, as the previous Google AI Contest games.
+
+\section*{Acknowledgements}
+This work has been funded in part by projects P08-TIC-03903 (Andalusian Regional Government), and TIN2011-28627-C04-02 (Spanish Ministry of Science and Innovation), and by the FPU Grant 2009-2942.
 
 \bibliographystyle{plain}
 \bibliography{botants}
