@@ -145,26 +145,26 @@ Blah, blah, blah...
 %% main text
 \section{Introduction}
 \label{sec:introduction}
-Having a system of information on traffic conditions and the use of roads by vehicles seems a key point in the current context. 
-With a increasingly informed population, provided with ubiquitous communication devices, which are commonly used by about $ 90 \% $ of the population, obtaining information about the traffic in any of the nearly 20,000 kilometers of Spanish roads would mean to optimally manage a communications network vital for a high percentage of users.
+The development of new systems of information on traffic conditions and use of roads made by vehicles seems a key point in the current context. 
+With a increasingly informed population, provided with ubiquitous communication devices, which are commonly used by about $ 90 \% $ of the population, obtaining information about the traffic in any of the more than 165,000 kilometres of Spanish roads would mean to optimally manage a communications network vital for a high percentage of users.
 
 In this work, a system based on bluetooth (BT) device discovery is proposed, so that an information system on the traffic status is obtained, as well as a valuable set of data suitable to be used in a time-series forecasting process.
 
-Both, the data-collecting and the time-series forecasting processes are necessary steps to achieve our ultimate goal: to have information about traffic flows that occur or will occur in a certain area, allowing to optimally manage motion decisions by citizens.
+Both, the data-collecting and the time-series forecasting processes are necessary steps to achieve an ultimate goal: to have information about traffic flows that occur or will occur in a certain area, allowing to optimally manage motion decisions by citizens.
 
 Therefore, from the viewpoint of the transport management various needs have been found:
 
 \begin{itemize}
-  \item A versatile and autonomous data collection and monitoring device is needed.
-  \item It is also necessary to collect traffic data in real time.
-  \item Once the data has been collected, it has to be properly processed.
-  \item And finally, a system that allows sharing data and information with those who make decisions about mobility is needed, both from the institutional and personal points of view.
+  \item A versatile, autonomous data collector, and monitoring device
+  \item Traffic data-collecting in real time.
+  \item The adequate processing of the data being collected,
+  \item And finally, a system that allows sharing data and information with those who make decisions about mobility.
 \end{itemize}
 
-In order to fulfill these requirements, the BT device discovery used for this work is able to catch waves emitted by different technological components. The components can be the ones embedded in vehicles (handsfree, gps), accessories that the users incorporate to their vehicles, as well as mobile phones, tablets or laptops.
+In order to fulfil these requirements, the BT device discovery used for this work is able to catch waves emitted by different technological components. The components can be the ones embedded in vehicles (hands-free or GPS), accessories that the users incorporate to their vehicles, as well as mobile phones, tablets or laptops.
 The main data being collected is the MAC address of the device BT card.
 This is an unique identifier for each device, so that passing vehicles can be identified.
-The intrusiveness is minimal since one-way encription algorithms are used to hide the real MAC addresses stored. And, it is also safe from the point of view of data privacy given that this piece of information can not be attached to any given person.
+The intrusiveness is minimal since one-way encryption algorithms are used to hide the real MAC addresses stored. And, it is also safe from the point of view of data privacy given that this piece of information can not be attached to any given person.
 
 The increasingly large amount of data collected, related to passing BT devices, is the starting point that allows to calculate statistics, to study several indicators about the use of vehicles, and to perform time-series forecasting by the monitored area population.
 
@@ -179,13 +179,14 @@ Finally, we present some conclusions and future work (Section 5).
 
 \section{Preliminaries}
 \label{sec:soa}
+This section introduces the two techniques used in this work. In the one hand, the methods developed to detect traffic flows; in the other hand, algorithms and techniques suitable to be used for time-series prediction tasks.
 
-\subsection{Traffic detection techonlogies}
+\subsection{Traffic detection technologies}
 \label{subsec:traffic}
 
-Traffic detection technologies can generally be classified into two groups: intrusive and nonintrusive.
+Traffic detection technologies ca be generally classified into two groups: intrusive and nonintrusive.
 
-Intrusive detection technologies are installed on/within the roadway, requiring lane closures. Using this type of technology is inherently more hazardous and is generally more time consuming, especially for temporary traffic data collection. This technology has a number of drawbacks:
+Intrusive detection technologies are installed on or within the roadway, requiring lane closures. Using this type of technology is inherently more hazardous and is generally more time consuming, especially for temporary traffic data collection. This technology has a number of drawbacks:
 \begin{itemize}
   \item Installation requires pavement cut.
   \item Improper installation decreases pavement life.
@@ -194,7 +195,7 @@ Intrusive detection technologies are installed on/within the roadway, requiring 
   \item Poor pavement condition can dramatically shorten the life span of intrusive sensors.
 \end{itemize}
 
-Non-intrusive technologies are traffic detection sensors that cause minimal disruption to normal traffic operations during installation, operation and maintenance compared to conventional detection methods. They can also be deployed more safely than conventional detection methods, since they are located adjacent to the roadway and require minimal interaction with traffic flow. They can be classified in to big groups: active technologies (microwave radar, ultrasonic and laser radar), and passive technologies (infrared, acoustic and video image processing). 
+Non-intrusive technologies are traffic detection sensors that cause minimal disruption to normal traffic operations during installation, operation and maintenance compared to conventional detection methods. They can also be deployed more safely than conventional detection methods, since they are located adjacent to the roadway and require minimal interaction with traffic flow. Non-intrusive technologies can be classified in two big groups: active technologies (microwave radar, ultrasonic and laser radar), and passive technologies (infrared, acoustic and video image processing). 
 
 Figure \ref{tipossensores} shows a classification of information systems according to the intrusiveness of the technology.
 
@@ -206,18 +207,19 @@ Figure \ref{tipossensores} shows a classification of information systems accordi
 \label{tipossensores} 
 \end{figure}
 
-Main technologies currently used in traffic monitoring include pneumatic tubes, loop detectors, floating vehicles, and automatic recognition systems, among others.
+Current technologies most frequently used in traffic monitoring include pneumatic tubes, loop detectors, floating vehicles, and automatic recognition systems, among others.
 
 
-\emph{Manual counts} is the most traditional method. In this case trained observers gather traffic data that cannot be efficiently obtained through automated counts e.g. vehicle occupancy rate, pedestrians and vehicle classifications. The most common equipments used are tally sheet, mechanical count boards and electronic count board systems.
+\emph{Manual counts} is the most traditional method. In this case trained observers gather traffic data that cannot be efficiently obtained through automated counts; e.g., vehicle occupancy rate, pedestrians and vehicle classifications. The most common equipments used are tally sheet, mechanical count boards, and electronic count board systems.
 
-\emph{Passive and active infra-red} sensors are based on detecting the presence, speed and type of vehicles using the infrared energy radiating from the detection area. The main drawbacks are the performance during bad weather, and limited lane coverage.
+\emph{Passive and active infra-red} sensors are based on detecting the presence, speed, and type of vehicles using the infrared energy radiating from the detection area. The main drawbacks are the performance during bad weather, as well as limited lane coverage.
 
-\emph{Microwave radar} can detect moving vehicles and speed (Doppler radar). It records count data, speed and simple vehicle classification and is not affected by weather conditions.
+\emph{Microwave radar} can detect moving vehicles and their speed (Doppler radar). It records count data, speed, and simple vehicle classification. Its behaviour is not affected by weather conditions.
+
 \emph{Ultrasonic sensors} devices emit sound waves to detect vehicles by measuring the time for the signal to return to the device. They can be affected by temperature or bad weather. 
 
-\emph{Pneumatic road tubes} are placed across the road lanes to detect vehicles from pressure changes that are produced when a vehicle tyre passes over the tube. The pulse of air that is created is recorded and processes by a counter located on the side of the road. The main drawback of this technology is that it has limited lane coverage and its efficiency is subject to weather, temperature and traffic conditions. This system may also not be efficient in measuring low speed flows.
-\emph{Piezoelectric sensors} are very similar to pneumatic road tubes, although the principle is to convert mechanical energy into electrical energy. Indeed, mechanical deformation of the piezoelectric material modifies the surface charge density of the material so that a potential difference appears between the electrodes. The amplitude and frequency of the signal is directly proportional to the degree of deformation. This system can be used to measure weight and speed.
+\emph{Pneumatic road tubes} are placed across the road lanes to detect the pressure changes produced when a vehicle tyre passes over them. The pulse of air that is created is recorded and processed by a counter located on the side of the road. The main drawback of this technology is that it has limited lane coverage and its efficiency is subject to weather, temperature, and traffic conditions. This system may also not be efficient in measuring low speed flows.
+\emph{Piezoelectric sensors} are very similar to pneumatic road tubes, although the principle is to convert mechanical energy into electrical energy. Indeed, mechanical deformation of the piezoelectric material modifies its surface charge density leading to a potential difference that appears between the electrodes. The amplitude and frequency of the signal is directly proportional to the degree of deformation. This system can be used to measure weight and speed.
 
 \emph{Magnetic loops} (inductive, magnetic, or video processing based) may be used temporarily or permanently, the latter being the more usual. 
 It is the most conventional technology used to collect traffic data. The loops are embedded in roadways in a square formation that generates a magnetic field. The information is then transmitted to a counting device placed on the side of the road. This has a generally short life expectancy because it can be damaged by heavy vehicles, but is not affected by bad weather conditions. This technology has been widely deployed over the last decades. However, the implementation and maintenance costs can be expensive.
@@ -267,9 +269,12 @@ The proposal presented in this work have some common features with the previous 
 
 \subsection{Time series forecasting}
 \label{subsec:time-series}
-Time series forecasting is a major field of research, mainly in the areas of statistics \cite{Gooijer25years} and operational research \cite{Fildes2008}. A wide variety of methods have emerged in order to forecast time series using both linear and nonlinear models. Linear methods include the exponential smoothing methods \cite{Brown1959,Winters1960}, simple exponential smoothing (SES), or State space models \cite{Snyder1985}, among many others. Nevertheless, the most used linear methods are the ARIMA ones \cite{BoxJenk}, that can be considered as the firsts of modern methods. ARIMA integrate autoregressive (AR) and moving average (MA) models in an iterative cycle in which the time series is identified, then the parameters of the model are estimated, in order to, finally, obtain some kind of verification of the model.
+Briefly described, a time series is a set of chronologically collected data. Time series forecasting is the task of predicting values of a given series using its own past and present values, and, if available, values from exogenous variables.
+Time series forecasting is a major field of research, mainly in the areas of statistics \cite{Gooijer25years} and operational research \cite{Fildes2008}, as time series can be found in fields like Engineering, Biology, Economy, or Social Sciences, among many others.
 
-Linear models have shown no to be accurate for many real applications, and for this reason new and more complex nonlinear methods have been developed. Nonlinear models include regime-switching models, which comprise the wide variety of existing threshold autoregressive (TAR) models \cite{Tong1978}. Main drawbacks of nonlinear methods were pointed out by Clements \cite{Clements2004}: the complex beind developed are excesively complex (lackthey use to develop very complex models; they do not perform in a robust way; and, worst of all, they are difficult to use. De Gooijer \cite{Gooijer25years} also concludes that future research on nonlinear models should include, among others, the search for easy to use software.
+Time series forecasting is usually tackled trying to find out an underlying model that describes the series behaviour. For this reason, there exist a wide variety of methods to perform forecast using both linear and nonlinear models. The group of linear methods comprises the exponential smoothing methods \cite{Brown1959,Winters1960}, simple exponential smoothing (SES), or State space models \cite{Snyder1985}, among many others. Nevertheless, the most well-known, widely used linear methods are the ARIMA ones \cite{BoxJenk}. ARIMA methods can be summarized as iterative cycles in which: a) the time series is classified as belonging to a pre-stablished class; b) according to that model, a set of parameters is estimated; and c) the model is verified in other to accept it or search for another one returning to first step. The models provide by ARIMA integrate in their equations autoregressive (AR) and moving average (MA) components to have into account pass values as well as forecasting errors.
+
+Despite their ease of use, linear models have shown no to be accurate for many real applications, being this the main reason why new (but also more complex and difficult to be used) nonlinear methods have been developed. Nonlinear models include regime-switching models, which comprise the wide variety of existing threshold autoregressive (TAR) models \cite{Tong1978}. Clements \cite{Clements2004} exposed main drawbacks of nonlinear methods, mainly the excesively complex models they provide, the lack of robust performance, and, worst of all, the difficulty to use. De Gooijer \cite{Gooijer25years} also concludes that future research on nonlinear models should include, among others, the search for easy to use software.
 
 %\subsection{Soft computing methods for time series forecasting}
 
