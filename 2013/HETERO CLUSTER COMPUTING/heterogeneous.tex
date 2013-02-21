@@ -477,7 +477,21 @@ HoSi/HoHa vs HeSi/HoHa  & Yes & T-Test    & 2\e{-27}  & Yes \\ \hline
 
 \subsection{Analysis of the time}
 
-This sub-section analyses the time of each section of the EA in ... blablabla.
+This sub-section analyses the time of each section of the EA in each node of the clusters for each configuration. Tables \ref{tab:mmdptimes} and \ref{tab:onemaxtimes} show the average and standard deviation of the time spent in each section of the algorithm (He=Heterogeneous cluster, Ho=Homogeneous cluster). Figures \ref{fig:MMDPbars} and \ref{fig:ONEMAXbars} compares graphically these results. As can be seen, the migration is the most costly operation in all configurations, being the migration in HeHa more time consuming than HoHa. This is due because we are using the multi-purpose laboratory network, instead the specific one used in the HoHa system. Note that the std. deviation is larger in this cluster, being a more variable time. In the MMDP problem (Table \ref{tab:mmdp}) changing the population size does not affect the migration time, but only the rest of the sections of the algorith. However, with larger data communications (individuals of 5000 elements), the population size affect the migration time of all nodes. This could be due to synchronization of the migration buffers: if the slowest machine is sending/receiving, deadlocks can be propagated (as seen in Figure \ref{fig:gensonemaxhomosize}). Results also show how the sections of the algorithms depends of the node of execution (recombination needs more time than mutation in both problems only in the node HeN4). The reason of this could be that the creation of new objects (memory allocation) in Java in limited memory (and SWAP access) requires more time than iteration (mutation) of reserved memory. The adaptation of the time makes the slower node of HeHa behaves in simillar way than the other nodes (same time in each section). Also, the size of the individuals affect some parts of the EA (for example, in the OneMax the mutation requires more time than the replacement). However, must be taken into account that the duration of each part of the algorithm is not related with the time to attain the optimum, but how the diversity and search guidance is maintained. QUE MAS METO AQUI QUE MOLE?
+
+\begin{figure*}
+\centering
+\epsfig{file=images/MMDPbars.eps, width = 17cm}
+\caption{Average time in each section of the algorithm for the MMDP problem.}
+\label{fig:MMDPbars}
+\end{figure*}
+
+\begin{figure*}
+\centering
+\epsfig{file=images/ONEMAXbars.eps, width = 17cm}
+\caption{Average time in each section of the algorithm for the ONEMAX problem.}
+\label{fig:ONEMAXbars}
+\end{figure*}
 
 \begin{table*}
 \centering
@@ -516,7 +530,7 @@ Node	& Selection		& Recombination		& Mutation		& Replacement		& Migration	      
 HeN1	& 0,014	$\pm$ 0,016	& 4,063	$\pm$  3,290		& 7,826		$\pm$  	0,513	& 5,300 $\pm$ 62,474 &	328,262	$\pm$ 387,402 \\ \hline
 HeN2	& 0,015	$\pm$ 0,019	& 4,221	$\pm$ 3,251			& 	8,325	$\pm$  	1,348	& 6,390	$\pm$ 71,926 &	398,119	$\pm$ 428,012 \\ \hline
 HeN3	& 0,020	$\pm$ 0,022	& 8,896	$\pm$ 3,561			& 12,289	$\pm$  	0,393	& 6,505	$\pm$ 77,069 &	410,141	$\pm$ 480,055 \\ \hline
-HeN4	& 0,362	$\pm$ 0,920	& 341,888$\pm$ 381,390		& 97,075	$\pm$  	119,923	& 3,638	$\pm$ 14,627 &	112,680	$\pm$ 43,776 \\ \hline
+HeN4	& 0,362	$\pm$ 0,920	& 341,888$\pm$ 381,390		& 97,075	$\pm$  	119,923	& 3,638	$\pm$ 14,627 &	112,680	$\pm$ 43,776 \\ \hline \hline
 HoN1	& 0,021	$\pm$ 0,013	& 6,181	$\pm$ 2,386			& 11,545	$\pm$  	0,468	& 1,506	$\pm$ 3,642	& 28,355	$\pm$ 8,606 \\ \hline
 HoN2	& 0,021	$\pm$ 0,013	& 6,685	$\pm$ 1,927			& 11,779	$\pm$  	1,242	& 1,364	$\pm$ 2,437	& 18,034	$\pm$ 7,422 \\ \hline
 HoN3	& 0,022	$\pm$ 0,016	& 6,154	$\pm$ 2,238			& 11,585	$\pm$  	0,506	& 1,363	$\pm$ 2,437	& 18,948	$\pm$ 6,072 \\ \hline
@@ -526,13 +540,13 @@ Node	& Selection		& Recombination		& Mutation		& Replacement		& Migration	\\ \hl
 HeN1	& 0,017	$\pm$ 0,002	& 5,955	$\pm$ 3,569	    	& 11,761	$\pm$ 0,500		& 1,000	$\pm$ 11,748 & 50,470 $\pm$ 81,518 \\ \hline
 HeN2	& 0,015	$\pm$ 0,002	& 5,448	$\pm$ 3,102			& 10,879	$\pm$ 1,545		& 0,972	$\pm$ 11,253 & 48,942 $\pm$ 77,468 \\ \hline
 HeN3	& 0,016	$\pm$ 0,003	& 8,733	$\pm$ 2,180			& 11,672	$\pm$ 0,870		& 1,113	$\pm$ 7,352	& 59,133 $\pm$ 	8,825 \\ \hline
-HeN4	& 0,040	$\pm$ 0,035	& 17,943 $\pm$ 23,543		& 10,751	$\pm$ 1,683		& 2,144	$\pm$ 9,815	& 76,816 $\pm$ 15,500 \\ \hline
+HeN4	& 0,040	$\pm$ 0,035	& 17,943 $\pm$ 23,543		& 10,751	$\pm$ 1,683		& 2,144	$\pm$ 9,815	& 76,816 $\pm$ 15,500 \\ \hline \hline
 HoN1	& 0,032	$\pm$ 0,014	& 9,587 $\pm$ 	5,671		& 17,506	$\pm$ 1,083		& 1,482	$\pm$ 2,245	&17,121  $\pm$ 	6,302 \\ \hline
 HoN2	& 0,027	$\pm$ 0,015	& 8,826	$\pm$ 5,850			& 15,262	$\pm$ 1,091		& 1,422	$\pm$ 2,766	&17,831	 $\pm$ 14,158 \\ \hline
 HoN3	& 0,021	$\pm$ 0,013	& 6,108	$\pm$ 3,461			& 11,655	$\pm$ 0,534		& 1,365	$\pm$ 2,294  &17,440  $\pm$ 	6,578 \\ \hline
 HoN4	& 0,004	$\pm$ 0,002	& 0,807	$\pm$ 0,749			& 1,653		$\pm$ 0,051		& 0,922	$\pm$ 2,672	&17,411	 $\pm$ 12,177 \\ \hline
 \end{tabular}
-\label{tab:mmdptimes}
+\label{tab:onemaxtimes}
 \end{table*}
 
 \section{Conclusions}
