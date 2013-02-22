@@ -121,15 +121,17 @@ showstringspaces=false
 \maketitle
 
 \begin{abstract}
-This paper shows a preliminary study about population size tuning in an distributed Genetic Algorithm. This adaptation is done taking into account the computational power of each node of an heterogeneous cluster. Same parameters are also tested in an homogeneous scientific cluster. Two problems with distinct characteristics have been tested: the linearly-solvable OneMax problem and the deceptive and multimodal MMDP functions.  Results show that setting this parameter according computational power decreases the time to obtain the optimum in both problems in heterogeneous clusters.
+This paper presents a preliminary study on population size tuning in a distributed Genetic Algorithm. This adaptation is done taking into account the computational power of each node of an heterogeneous cluster. Same parameters are also tested in an homogeneous scientific cluster. Two problems with distinct characteristics have been tested: the linearly-solvable OneMax problem and the deceptive and multimodal MMDP function. Results show that setting this parameter according computational power decreases the time to obtain the optimum in both problems in heterogeneous clusters. Also, a study of the influence of the parameters in each section of the algorithm is presented.
 
 
 \keywords{
 Evolutionary Algorithms \and
+Genetic Algorithms \and
 Service Oriented Architecture \and
 Service Oriented Science \and
 Web Services \and
 Interoperability \and
+Heterogeneous computation \and
 Distributed computing}
 % \PACS{PACS code1 \and PACS code2 \and more}
 % \subclass{MSC code1 \and MSC code2 \and more}
@@ -138,22 +140,25 @@ Distributed computing}
 \section{Introduction}
 \label{sec:intro}
 
-New trends such as Cloud Computing \cite{CLOUD}, GRID \cite{OPENSCIENCEGRID} or Service Oriented Science \cite{GLOBUS} are leading to heterogeneous computational devices working at the same time.  Moreover, many laboratories do not count with classic clusters, but the usual workstations used by scientists can behave in group as a heterogeneous cluster. Distributed Evolutionary Algorithms (dEAs) \cite{AQUIEN} have been tested successfully in these systems. 
+New trends such as Cloud Computing \cite{CLOUD}, GRID \cite{OPENSCIENCEGRID} or Service Oriented Science \cite{GLOBUS} are leading to heterogeneous computational devices working at the same time. For instance laptops, tablets or desktop PCs. Thus, many laboratories, which do not count with classic clusters, but the usual workstations used by scientists can behave in group as an heterogeneous cluster. Distributed Evolutionary Algorithms (dEAs) \cite{AQUIEN} have been tested successfully in these systems. 
 
-Heterogeneous dEAs can be divided in two categories: a dEA where the parameters are different in each island (heterogeneous parameters) or the same algorithm in heterogeneous hardware. It also have been proved that this kind of algorithms are even more efficient in heterogeneous hardware configurations, than in homogeneous devices \cite{HETEROGENEOUSHARD}. This can be explained by different reasons, such as different memory access times, cache, or even implementation languages or compilers in each machine, leading to different explotation rate of the search space. The heterogeneous parameters configuration also have been proved as more efficient than a fixed set of parameters for different problems \cite{HETEROGENEOUSPARAMETERS}. Our motivation in this work is to combine both ideas adapting the population size of the islands to the heterogeneous hardware. To calculate the computational power, the algorithm is executed in each machine, and then, the total size of individuals is distributed according the number of generations attained in each node during the same time. Two different problems (MMDP and OneMax) have been used as a benchmark.
+Heterogeneous dEAs can be divided in two categories: a dEA where the parameters are different in each node (heterogeneous parameters), or the same algorithm in heterogeneous hardware (with the same parameters). It also have been proved \cite{HETEROGENEOUSHARD} that this type of algorithms are even more efficient in heterogeneous hardware configurations, than in homogeneous devices. This can be explained by different reasons, such as different memory access times, cache, or even implementation languages or compilers in each machine, leading to a different explotation rate of the search space. The heterogeneous parameters configuration also have been proved as more efficient than a fixed set of parameters for different problems \cite{HETEROGENEOUSPARAMETERS}. 
+
+Our motivation in this work is to combine both ideas adapting the population size of the islands to the heterogeneous hardware. To calculate the computational power, the algorithm is executed in each machine, and then, the total size of individuals is distributed according the number of generations attained in each node in the same time. Two different problems (MMDP \cite{goldberg92massive} and OneMax \cite{ONEMAX}) have been used as a benchmark.
 
 
 In this work, a distributed system has been developed to solve the following questions:
 \begin{itemize}
- \item Can a distributed EA be adapted to take the most of the capability of a heterogeneous cluster?
+ \item Can a distributed EA be adapted to take the most of the capability of an heterogeneous cluster?
  \item Does the proposed population size adaptation to the computational power scheme any effect in both systems?
- \item Is there any difference in homogeneous and heterogeneous cluster?
+ \item Is there any difference in using an homogeneous or heterogeneous cluster?
+ \item How does each section of the algorithm is affected by the different configurations?
 \end{itemize}
 
 
 The rest of the work is structured as follows: after the state of
-the art, we present the developed algorithms and experimental setting. 
-Then, the results of the experiments are shown (Section \ref{sec:results}), followed by conclusions and suggestions for future work.
+the art, we present the developed algorithms and experimental setting(Sections \ref{sec:soaea} and \ref{sec:experiments}). 
+Then, the results of the experiments are shown (Section \ref{sec:results}), followed by conclusions and suggestions for future work lines.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  SOA  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -162,30 +167,32 @@ Then, the results of the experiments are shown (Section \ref{sec:results}), foll
 \label{sec:soa}
 %
 
-In the field of the Evolutionary Computing there are two different approaches about the algorithm parameter setting: parameter control and parameter tuning \cite{PARAMETERTUNING}. The first one refers to set a number of parameters of an EA and to change these parameter while the algorithm is running. The parameter tuning consist in establish a good set of parameters before the run (and do not change them during runtime).
+In the field of  Evolutionary Computation (EC) there are two different approaches about the algorithm parameter setting: {\em parameter control} and {\em parameter tuning} \cite{PARAMETERTUNING}. The first one refers to set a number of parameters of an Evolutionary Algorithm (EA) and to change these parameters in running time. The parameter tuning consist in establish a good set of parameters before the run (and do not change them during runtime).
 
- Computational performance of nodes or network speeds can also be inherents parameter of an algorithm. In \cite{HETEROGENEOUSHARD} authors compared a distributed GA in homogeneous and heterogeneous clusters. Super-linear performance was obtained in the heterogeneous clusters, being more efficient that the same algorithm in homogeneous ones. Some authors have expanded this idea adapting the algorithm to be executed: in \cite{HYDROCM} authors presented a distributed hybrid meta-heuristic that combines GAs and Simulated Annealing (SA). Their system executes the costly algorithms (GAs) in faster nodes, and simpler meta-heuristics (SA) in slower nodes, obtaining better results than other configurations. In \cite{HETEROGENEOUSTOPOLOGY} different configurations of heterogeneous machines for a tree topology were studied. However, the heterogeneity was simulated in an homogeneous clusters with programs to add computational load. Load-balancing was also applied taking into account the computational load of the nodes in \cite{PARALLELIMPLEMENTATION}: a small benchmark was executed in all nodes at the beginning of the algorithm to distribute individuals of an Evolutionary Strategy (ES). However, there was not communication between the nodes. In the area of heterogeneous parameters, but homogeneous hardware, setting each island a random set of parameters can also increase the performance of a distributed Genetic Algorithm (dGA), as explained in \cite{HETEROGENEOUSPARAMETERS}. That model outperformed a tuned canonical dGA with the same parameters in all islands. Finally, adapting the migration period has produced better results than homogeneous periods in homogeneous clusters, as explained by \cite{HETEROGENEOUSMIGRATION}.
+ Computational performance of nodes or network speed can also be inherent parameters of an algorithm. In \cite{HETEROGENEOUSHARD} the authors compared a distributed Genetic Algorithm (dGA) in homogeneous and heterogeneous clusters. Super-linear performance was obtained in the heterogeneous ones, being more efficient that the same algorithm in homogeneous. Some authors have expanded this idea by adapting the algorithm to be executed: in \cite{HYDROCM} the authors presented a distributed hybrid meta-heuristic that combines GAs and Simulated Annealing (SA). Their system executes the heavy (in computational terms) algorithms (GAs) in faster nodes, and simpler meta-heuristics (SA) in slower nodes, obtaining better results than other configurations. In \cite{HETEROGENEOUSTOPOLOGY} different configurations of heterogeneous machines for a tree topology were studied. However, the heterogeneity was simulated in an homogeneous cluster with programs to add computational load. Load-balancing was also applied taking into account the computational load of the nodes in \cite{PARALLELIMPLEMENTATION}: a small benchmark was executed in all nodes at the beginning of the algorithm in order to distribute individuals of an Evolutionary Strategy (ES). However, there was no communication between the nodes. 
 
- Our work presents a combination of previous ideas, where a parameter tuning given by the computational cost of the machines is performed. For our knowledge, there are not works that modify parameters of the GA depending of the node where the island is being executed.
+In the area of heterogeneous parameters, but homogeneous hardware, setting in each node a random set of parameters can also increase the performance of a distributed Genetic Algorithm (dGA), as explained in \cite{HETEROGENEOUSPARAMETERS}. That model outperformed a tuned canonical dGA with the same parameter values in all islands. Finally, adapting the migration rate has produced better results than homogeneous periods in homogeneous clusters, as explained in \cite{HETEROGENEOUSMIGRATION}.
+
+ Our work presents a combination of some of the previous ideas, where an initial parameter tuning given by the computational cost of the machines is performed. To our knowledge, there are not works that modify parameters of the GA depending of the node where the island is being executed.
 
 
 \section{Service Oriented Evolutionary Algorithms}
-
-The EAs are a general technique for solving optimization and search problems based in the evolution of species and natural selection. These algorithms are formed by a population of possible solutions (called {\em individuals}) that competes using their {\em fitness} (quality of adaptation) with the rest of solutions. In each iteration of the algorithm (or {\em generation}) the individuals are evolved by means of selection and recombination/mutation to create a new set of candidates, until a {\em stop criterion} (i.e. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function is usually the problem to solve.
+\label{sec:soaea}
+EAs are a general technique for solving optimization and search problems based in the evolution of species and natural selection. These algorithms are formed by a population of possible solutions (called {\em individuals}) that competes using their {\em fitness} (quality of adaptation) with the rest of solutions. In each iteration of the algorithm (or {\em generation}) the individuals are evolved by means of selection and recombination/mutation to create a new set of candidates, until a {\em stop criterion} (i.e. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function is usually the problem to solve. 
 
 There are different ways to parallelize the EAs:
 
 \begin{itemize}
-\item {\em Farming model (centralized)}: A central node coordinate several slave nodes. The central node executes the EA in a sequential way, but distributes the individuals of the population to the slaves just for being evaluated.
-\item {\em Island model (distributed)}: A number of nodes executes simultaneously the EA, working with different sub-populations at the same time. Each certain number of generations is interchanged (migrated) between populations.
-\item {\em Cellular EAs (fine grain)}: Each node has one individual of the population, and selection and reproduction is limited with the individuals of the neighbourhood of the node. Usually a bi-dimensional grid is used for topology.
+\item {\em Farming model (centralized EAs)}: A central node coordinate several slave nodes. The central node executes the EA in a sequential way, but distributes the individuals of the population to the slaves just for being evaluated. An example can be seen in \cite{NUCLEAR}, where slave nodes evaluates fitness function for simullation of nuclear devices.
+\item {\em Island model (distributed EAs)}: A number of nodes executes simultaneously the EA, working with different sub-populations at the same time. Each certain number of generations is interchanged (migrated) between populations. Figure \ref{fig:islands} shows this model with a ring topology.
+\item {\em Cellular EAs (fine grain EAs)}: Each node has one individual of the population, and selection and reproduction is limited with the individuals of the neighbourhood of the node. Usually a bi-dimensional grid is used for topology.
 \end{itemize}
 
 \begin{figure}
 \centering
 \epsfig{file=images/islands.eps, width = 7cm}
 \caption{Island model using a ring topology.}
-\label{fig:timeMMDP}
+\label{fig:islands}
 \end{figure}
 
 
@@ -199,7 +206,7 @@ As discussed in \cite{SOASOCO} the evolutionary algorithms research area is a pr
 
 %%%%%%%%%%%%%%%%%%  Experiments  %%%%%%%%%%%%%%%%%%%
 \section{Experimental setup}
-\label{subsec:experiments}
+\label{sec:experiments}
 This section presents the parameters and systems to conduce the experiments.
 
 The algorithm to improve is a dGA. Parameters are described in Table \ref{table:parameters}. The algorithm is steady-state: the offspring is mixed with the parents and the worst individuals are removed. A ring topology is used, and the best individual is sent after a fixed number of generations of each node (64).  Two different parameter configurations have been used: 64 individuals per node (homogeneous size) and a different number of individuals proportional to the number of generations attained in this first homogeneous size execution (heterogeneous size).
@@ -219,7 +226,7 @@ Figure \ref{fig:EA} shows the pseudo-code of the used algorithm.
       \STATE migrants $\gets$ selectMigrants(population)
       \STATE remoteBuffer.send(migrants)
     \ENDIF
-    \IF {localBuffer.size DISTINTO zero}
+    \IF {localBuffer.size $\neq$ zero}
       \STATE population $\gets$ population + localBuffer.read()
     \ENDIF
     \STATE population $\gets$ removeWorst(population)
@@ -327,7 +334,7 @@ N4  &  Intel (R) Pentium 3 @ 800MHz               & 768 MB  & Ubuntu 10.10 (32 b
 \label{tab:computers}
 \end{table*}
 
-Because the operating system and architecture heterogeneity the ANONYMOUS framework \cite{OSGILIATH}, based in Java, has been used. This is a service-oriented evolutionary framework that automatically configures services to use and be used in a local network. In this case, each node offers a migration buffer to accept foreign individuals. Also, to avoid bottlenecks in distributed executions, asynchronous communication has been provided to avoid idle time using reception buffers (that is, the algorithm does not wait until new individuals arrive). This kind of communication offers excellent performance when working with different nodes and operating systems, as demonstrated by \cite{HETEROGENEOUSHARD}. The transmission mechanism is based in ECF Generic server (over TCP)\footnote{\url{http://www.eclipse.org/ecf/}}. The source code of the algorithms used in this work is available in \url{http://anonymous} under a GPL V3 License.
+Because the operating system and architecture heterogeneity the OSGiLiath framework \cite{OSGILIATH}, based in Java, has been used. This is a service-oriented evolutionary framework that automatically configures services to use and be used in a local network. In this case, each node offers a migration buffer to accept foreign individuals. Also, to avoid bottlenecks in distributed executions, asynchronous communication has been provided to avoid idle time using reception buffers (that is, the algorithm does not wait until new individuals arrive). This kind of communication offers excellent performance when working with different nodes and operating systems, as demonstrated by \cite{HETEROGENEOUSHARD}. The transmission mechanism is based in ECF Generic server (over TCP)\footnote{\url{http://www.eclipse.org/ecf/}}. The source code of the algorithms used in this work is available in \url{http://www.osgiliath.org} under a GPL V3 License.
 
 Each different configuration has been tested 30 times. Acronyms for each configuration are HoSi (homogeneous population size), HeSi (heterogeneous population size), HoHa (homogeneous hardware) and HeHa (heterogeneous hardware). 
 
@@ -560,7 +567,7 @@ In future work a scalability study will be performed, with more computational no
 This work has been supported in part by FPU research grant AP2009-2942 and projects AmIVital (CENIT2007-1010), EvOrq (TIC-3903), and TIN2011-28627-C04-02.
 \end{acknowledgements}
 
-\bibliographystyle{spbasic}
+\bibliographystyle{plain} %No spbasic
 \bibliography{heterogeneous} 
 
 
