@@ -671,11 +671,9 @@ In that section, the speed is limited to 100 km/h. However, although most of the
 \subsection{Flow traffic prediction by means of time-series forecasting}
 As far as data is chronologically collected, methods coming from the area of time-series forecasting can be used in order to predict future behaviour of traffic flow.
 
-From the big variety of existing mtethods, seven different ones have been selected in order to compare the validity of their predictions. The methods being used are the followings: 
-...
-In order to compare results, a statistical study is included allowing us to draw some conclusions.
+From the big variety of existing mtethods, 7 different ones have been selected in order to compare the validity of their predictions. The methods being used are the followings: ARIMA, Croston, Theta, Spline, the mean value, the random walk method, and, finally, L-Co-R. In order to compare results, a statistical study is included allowing us to draw some conclusions.
 
-The experimentation has been carried out using the data collected for nodes 1 to 5 over ??N??? days. $75\%$ of the data collected has been used to train the methods, and obtain their associated models, and the remaining $25\%$ has been used to test their generalization capabilities. 
+The experimentation has been carried out using the data collected for nodes 1 to 5 over 62 days. $75\%$ of the data collected has been used to train the methods, and obtain their associated models, and the remaining $25\%$ has been used to test their generalization capabilities. 
 
 For each method and each node, a set of measures have been computed in order to determine the accuracy of the prediction. As most textbooks recommend, one of the chosen measures is  the Mean Absolute Percentage Error (MAPE) \cite{Bowerman2004}, which was used in the first M-competition \cite{Makridakis1982}. Median Absolute Percentage Error (MdAPE) \cite{Armstrong,Fildes1992} is also used, as a normalized version of the previous one. More recently, description of many others measures can be found in  \cite{Gooijer25years} and \cite{Hyndman2006}. Among all of them, in this work we use the followings:
 
@@ -696,11 +694,6 @@ For each method and each node, a set of measures have been computed in order to 
             MdAPE = median(\mid p_t\mid)
         \end{equation}
 
-  \item Symmetric Median Absolute Percentage Error (sMdAPE):
-        \begin{equation}\label{eq:SMDAPE}
-            sMdAPE = median(200\mid Y_t - F_t\mid (Y_t + F_t))
-        \end{equation}
-
   \item Mean Absolute Scaled Error (MASE):
         \begin{equation}\label{eq:MASE}
             MASE = mean(\mid q_t\mid)
@@ -710,11 +703,13 @@ where $Y_t$ is the observation at time $t = {1,...,n}$; $F_t$ is the forecast of
          $q_t = \displaystyle\frac{e_t}{\displaystyle\frac{1}{n-1} \sum_{i=2}^n \mid Y_i - Y_{i-1} \mid }$
 \end{itemize}
 
-Methods ??? have been executed using the R software, including the "forecast" package (cita). In the other hand, L-co-R is a co-evolutionary algorithm based on radial basis function neural networks. The sthocastic nature of the later lead us to run it 30 times per every node, so that average errors be computed.
+Methods  ARIMA, Croston, Theta, Spline have been executed using the R software, using the Forecast package (cita). In the other hand, L-co-R is a co-evolutionary algorithm based on radial basis function neural networks. The sthocastic nature of the later lead us to run it 30 times per every node, so that average errors be computed.
 
-Table ??? shows the result of any of the methods over each of the nodes; bold faces outline the best results. As can be seen...
+The results yielded by every method have been compared using two non-parametric test: the Friedman test and the Iman-Davenport test. For both of them, only the Mean Absolute Percentage Error (MAPE) shows that there exist significant differents between the methods. Thus, the Friedman test yields a P-value of $0.04$ (according to a chi-square distribution with 6 degrees of freedom), and Iman-Davenport test yields $0.02$ (according to an F-distribution with 6 and 24 degrees of freedom).
 
-Testing whether there exist significant differences between the methods has been carried out using non-parametrical test.\section{Conclusions}
+The Friedman test also shows the signifficant methods among L-Co-R
+
+\section{Conclusions}
 \label{sec:conclusions}
 
 
