@@ -154,11 +154,12 @@ systems.  %Nos puedes citar a nosotros mismos: asynchronous,
 Evolutionary Algorithms (EAs) are a general technique for solving optimization and search problems based on the evolution of species and natural selection. These algorithms are formed by a population of possible solutions (called {\em individuals}) that competes using their {\em fitness} (quality of adaptation) with the rest of solutions. In each iteration of the algorithm (or {\em generation}) the individuals are evolved by means of selection and recombination/mutation to create a new set of candidates, until a {\em stop criterion} (i.e. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function is usually the problem to solve. 
 
 There are different ways to parallelize the EAs:
-
+% estas no son todas las maneras: se puede paralelizar basado en pool o en P2P. 
 \begin{itemize}
 \item {\em Farming model (centralized EAs)}: A central node coordinate several slave nodes. The central node executes the EA in a sequential way, but distributes the individuals of the population to the slaves just for being evaluated. An example can be seen in \cite{NUCLEAR}, where slave nodes evaluates fitness function for simullation of nuclear devices.
 \item {\em Island model (distributed EAs)}: A number of nodes executes simultaneously the EA, working with different sub-populations at the same time. Each certain number of generations is interchanged (migrated) between populations. Figure \ref{fig:islands} shows this model with a ring topology.
 \item {\em Cellular EAs (fine grain EAs)}: Each node has one individual of the population, and selection and reproduction is limited with the individuals of the neighbourhood of the node \cite{CELLULAR}. Usually a bi-dimensional grid is used for topology. 
+% Puedes añadir un cuarto item: "métodos no convencionales", por ejemplo - JJ
 \end{itemize}
 
 \begin{figure}
@@ -166,13 +167,21 @@ There are different ways to parallelize the EAs:
 \epsfig{file=images/islands.eps, width = 7cm}
 \caption{Island model using a ring topology.}
 \label{fig:islands}
+% Explica qué utilidad tiene en el artículo.
 \end{figure}
 
 
-The distributed EAs are very popular because the implementation is not complicated and they explotate a coarse grain parallelism with sporadical communications, being appropiated to be executed in distributed architectures such as clusters or GRIDs \cite{PLATO}.
+These distributed EAs are very popular because the implementation is
+not complicated  % ¿seguro? - JJ
+ and they exploit a coarse grain parallelism with sporadical % o
+                                % sporadic? -JJ
+ communications, being fit to be executed in distributed architectures
+ such as clusters or GRIDs \cite{PLATO}. % Revisa el inglés! - JJ
 
-The heterogeneous dEAs that can be used over these ad-hoc networks can
-be divided in two categories: dEAs with different parameter setting for each node
+% Metes muchos the al principio de plural, es incorrecto - JJ
+Heterogeneous dEAs that can be used over these ad-hoc networks can
+be divided into two categories: dEAs with different parameter settings
+in each node 
 (heterogeneous parameters), or dEAs running the same algorithm in heterogeneous nodes. It  has also been
 proved \cite{HETEROGENEOUSHARD} that this type of algorithms are even
 more efficient in heterogeneous hardware configurations than in
@@ -180,31 +189,51 @@ homogeneous devices. This can be explained by different reasons, such
 as different memory access times, cache sizes, % cache qué? - JJ - Fergu: sizes
 or even implementation
 languages or compilers in each machine, leading to a different
-explotation rate of the search space. %vaya salto de características
+exploitation rate of the search space. %vaya salto de características
                                 %físicas a algorítmicas. No sólo
                                 %explotación, también exploración,
                                 %¿no? - JJ
+% Insisto: esa explicación queda muy ramplona- JJ
  The heterogeneous parameters
-configuration  has also been proved as more efficient in time than a fixed
+configuration  has also been proved more  efficient time-wise than a fixed
 set % CUIDADO CON LA GRAMÁTICA!!! - JJ - Fergu:
 of parameters for different problems
 \cite{HETEROGENEOUSPARAMETERS}.   % efficiente en qué sentido? - JJ - Fergu: in time
 
-Our motivation in this work is to combine both ideas and adapt the population size of the islands according to the computational power of each node. 
-%To calculate the computational power, the algorithm is executed in each machine; then, the total size of individuals is distributed according to the number of generations attained in each node in the same time. Two different problems (MMDP \cite{goldberg92massive} and OneMax \cite{ONEMAX}) have been used as a benchmark.
+% enlázalo con párrafo anterior. Un artículo es una historia. Por
+% ejemplo: These proofs have motivated us to propose in this paper...
+Our motivation in this work is to combine both ideas % ¿cuáles ideas?
+                                % a estas altura no se sabe de qué
+                                % estás hablando. Si es usar
+                                % configuración heterogénea en
+                                % dispositivos heterogéneos, debes
+                                % dejar bien claro que nadie lo ha
+                                % hecho hasta ahora - JJ
+ and adapt the population size of the islands according to the computational power of each node. 
+%To calculate the computational power, the algorithm is executed in
+%each machine; then, the total size of individuals is distributed
+%according to the number of generations attained in each node per unit
+%time. Two different problems (MMDP \cite{goldberg92massive} and
+%OneMax \cite{ONEMAX}) have been used as a benchmark. 
+% Por qué has comentado esto? - JJ
 
 
 In this work, a distributed system has been developed to solve the following questions:
 \begin{itemize}
- \item Can a distributed EA be adapted to take the most of the capability of an heterogeneous cluster?
- \item Has the proposed population size adaptation to the computational power any effect?
- \item Is there any difference with the same populations in an homogeneous or heterogeneous cluster?
- \item How is each stage of the algorithm affected by the different configurations?
+ \item Can a distributed EA be adapted to leverage the capability of an heterogeneous cluster?
+ \item Has the proposed adaptation of population size to the
+   computational power any effect? % computational power ==
+                                % performance? - JJ
+ \item Is there any difference between the same populations in an homogeneous or heterogeneous cluster?
+ \item How is each stage of the algorithm affected by the different
+   configurations? % stage? - JJ
 \end{itemize}
 
 
-The rest of the work is structured as follows: after the state of
-the art, we present the developed algorithms and experimental setting (Sections \ref{sec:soaea} and \ref{sec:experiments}). 
+The rest of the work is structured as follows: after a presentation of
+the state of
+the art %en qué área? aquilátalo bien y que quede muy clarito - JJ
+, we present the developed algorithms and experimental setting (Sections \ref{sec:soaea} and \ref{sec:experiments}). 
 Then, the results of the experiments are shown (Section \ref{sec:results}), followed by conclusions and suggestions for future work lines.
 
 
@@ -220,7 +249,14 @@ In the field of  Evolutionary Computation (EC) there are two different approache
 
 In the area of heterogeneous parameters, but homogeneous hardware, setting a random set of parameters in each node can also increase the performance of a distributed Genetic Algorithm, as explained in \cite{HETEROGENEOUSPARAMETERS}. That model outperformed a tuned canonical dGA with the same parameter values in all islands. Finally, adapting the migration rate has produced better results than homogeneous periods in homogeneous clusters, as explained in \cite{HETEROGENEOUSMIGRATION}.
 
- Our work presents a combination of some of the previous ideas, where an initial parameter tuning given by the computational power of the machines is performed. %To our knowledge, there are not works that modify parameters of the GA depending of the node where the island is being executed.
+ Our work presents a combination of some of the previous ideas, where
+ an initial parameter tuning given by the computational power of the
+ machines is performed. %To our knowledge, there are not works that
+                        %modify parameters of the GA depending of the
+                        %node where the island is being executed. 
+% pero explica por qué esa combinación es interesante y puede
+% aprovechar mejor la capacidad computacional del sistema - JJ
+
 
 
 \section{Service Oriented Evolutionary Algorithms}
@@ -230,7 +266,25 @@ In the area of heterogeneous parameters, but homogeneous hardware, setting a ran
 
 As discussed in \cite{SOASOCO} the evolutionary algorithms research area is a propitious environment to migrate to SOA for several reasons: SOA fits with the genericity advantages in the development of software for EAs \citep{GENERICITY05} and adds new features, such as language independence and  distribution mechanisms. Moreover, there are a wide number of frameworks for EAs mostly imcompatible with others, due to different programming languages, operating systems or communication protocols (see \cite{SURVEYMOFS} for a survey). In addition, new research trends, like self-adaptation \citep{SELFSTAR}, require many changes and modifications in the algorithms behaviour in real-time. And finally, the increase of technologies such as GRID and Cloud Computing \citep{CLOUD}, where the computation elements are distributed in different machines, with many operating systems and programming languages.
 
-In order to deal with the operating system and architecture heterogeneity, the OSGiLiath framework \cite{SOASOCO}, based in Java, has been used in this work. This is a service-oriented evolutionary framework that automatically configures the services to be used in a local network. In this case, each node offers a migration buffer to accept foreign individuals. Also, in order to reduce bottlenecks in distributed executions, asynchronous communication has been provided to avoid idle time using reception buffers (that is, the algorithm does not wait until new individuals arrive, but the buffers cannot be used until again until the reception is done). This kind of communication offers an excellent performance when working with different nodes and operating systems, as demonstrated in \cite{HETEROGENEOUSHARD}. The transmission mechanism is based in ECF Generic server (over TCP)\footnote{\url{http://www.eclipse.org/ecf/}}. The source code of the algorithms used in this work is available in \url{http://www.osgiliath.org} under a GPL V3 License.
+In order to deal with the operating system and architecture
+heterogeneity, the OSGiLiath framework \cite{SOASOCO}, based in Java,
+has been used in this work. This is a service-oriented evolutionary
+framework that automatically configures the services to be used in a
+local network. In this case, each node offers a migration buffer to
+accept foreign individuals. Also, in order to reduce bottlenecks in
+distributed executions, asynchronous communication has been provided
+to avoid idle time using reception buffers (that is, the algorithm
+does not wait until new individuals arrive, but the buffers cannot be
+used until again until the reception is done). This kind of
+communication offers an excellent performance when working with
+different nodes and operating systems, as demonstrated in
+\cite{HETEROGENEOUSHARD}. The transmission mechanism is based in ECF
+Generic server (over
+TCP)\footnote{\url{http://www.eclipse.org/ecf/}}. 
+% ¿y qué? ¿eso es mejor o peor que un socket o un SOAP? - JJ
+The source code of
+the algorithms used in this work is available in
+\url{http://www.osgiliath.org} under a GPL V3 License. 
 
 
 %%%%%%%%%%%%%%%%%%  Experiments  %%%%%%%%%%%%%%%%%%%
@@ -389,9 +443,16 @@ As claimed by the authors in \cite{EVALUATIONPARALLEL}, assessing the performanc
 
 \subsection{MMDP results}
 
-Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. These results are also shown in the boxplots of Figure \ref{fig:timeMMDP} (time) and Figure \ref{fig:evalsMMDP} (evaluations). Table \ref{tab:significance} shows the statistical significance of the results. First, a Kolmogorov-Smirnov test is performed to asset the normality of the distributions. If the results fit a normal distribution, then a Student's T-Test is calculated. Otherwise, the non-parametric test Wilcoxon signed rank is applied (see \cite{TUTORIAL} for a tutorial for comparing EAs).
+Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. These results are also shown in the boxplots of Figure \ref{fig:timeMMDP} (time) and Figure \ref{fig:evalsMMDP} (evaluations). Table \ref{tab:significance} shows the statistical significance of the results. First, a Kolmogorov-Smirnov test is performed to assess the normality of the distributions. If the results fit a normal distribution, then a Student's T-Test is calculated. Otherwise, the non-parametric test Wilcoxon signed rank is applied (see \cite{TUTORIAL} for a tutorial for comparing EAs).
 
- In the HeHa system, adapting the population to the computational power of each node makes the algorithm finish significantly faster, but with the same number of evaluations (with no statistical significance). This can be explained because the evaluation time is different in all nodes. On the other side, in the HoHa system, setting the same population sizes makes no difference in time and evaluations, that is, changing this parameter has no influence in the algorithm's performance. 
+ In the HeHa system, adapting the population to the computational
+ power of each node makes the algorithm finish significantly earlier,
+ but with the same number of evaluations (with no statistical
+ significance). This can be explained because the evaluation time is
+ different in all nodes. On the other side, in the HoHa system,
+ setting the same population sizes makes no difference in time and
+ evaluations, that is, changing this parameter has no influence in the
+ algorithm's performance.  
 
 \begin{table*}
 \centering
@@ -457,7 +518,32 @@ To see the difference of how the evolution is being performed, the average fitne
 
 Results for this problem are shown in Table \ref{tab:onemaxresults} and Figures  \ref{fig:timeOneMax} and \ref{fig:evalsOneMax}. In this case, adapting the population sizes significantly decreases  the running time for solving in the heterogeneous cluster, and as before, the number of evaluations remains the same (see statistical significance in Table \ref{tab:significance}). In the homogeneous system, the effect of changing the population sizes is clearer, and this time the number of evaluations (and therefore, the time) are reduced (both significally). 
 
-The efficiency on OneMax problem depends mainly on the ability to mix the building-blocks, and less on the genetic diversity and size of the population (as with MMDP). No genetic diversity is particularly required. When properly tuned, a simple Genetic Algorithm is able to solve OneMax in linear time. Sometimes, problems like OneMax are used as control functions, in order to check if very efficient algorithms on hard functions fail on easier ones. As it can be seen in Figure \ref{fig:gensonemaxhomosize}, the average fitness of all populations are increasing in linear way in the HoSi/HeHa configuration. However, the lower processor evaluates extremely less times.  On the other side, in Figure \ref{fig:gensonemaxheterosize}, smaller population sizes makes that lower processors increase the number of evaluations, but the average fitness is also maintained in linear way (and in smaller increase rate) between migrations. However, the other processors  still perform a higher number of evaluations. That is the reason why the number of evaluations is higher in HeHa, and lower in HoHa. Computational time is more efficiently spent in faster nodes, having a higher chance to cross the individuals. In addition, due to the larger size of  individuals in the OneMax problem (5000 bits vs. 150), the transmission time is larger, (white gaps in the figures). That also implies that HeN4 sends their best individual to HeN1 in an extremely large amount of time when using HoSi (every 64 generations).
+The efficiency on OneMax problem depends mainly on the ability to mix
+the building-blocks, and less on the genetic diversity and size of the
+population (as with MMDP). No genetic diversity is particularly
+required. When properly tuned, a simple Genetic Algorithm is able to
+solve OneMax in linear time. Sometimes, problems like OneMax are used
+as control functions, in order to check if very efficient algorithms
+on hard functions fail on easier ones. As it can be seen in Figure
+\ref{fig:gensonemaxhomosize}, the average fitness of all populations
+are increasing in linear way in the HoSi/HeHa configuration. However,
+the lower processor evaluates extremely fewer times.  On the other
+% qué diablos es un lower processor? slower processor?
+% por favor revisa muy bien todo esto, que tienes muchos errores
+% gramaticales - JJ
+side, in Figure \ref{fig:gensonemaxheterosize}, smaller population
+sizes makes that lower processors increase the number of evaluations,
+but the average fitness is also maintained in linear way (and in
+smaller increase rate) between migrations. However, the other
+processors  still perform a higher number of evaluations. That is the
+reason why the number of evaluations is higher in HeHa, and lower in
+HoHa. Computational time is more efficiently spent in faster nodes,
+having a higher chance to cross the individuals. In addition, due to
+the larger size of  individuals in the OneMax problem (5000 bits
+vs. 150), the transmission time is larger, (white gaps in the
+figures). That also implies that HeN4 sends their best individual to
+HeN1 in an extremely large amount of time when using HoSi (every 64
+generations). 
 
 \begin{table*}
 \centering
@@ -528,7 +614,19 @@ HoSi/HoHa vs HeSi/HoHa  & Yes & T-Test    & 2\e{-27}  & Yes \\ \hline
 
 This sub-section analyses the time spent by each node of the clusters in every stage of the EA for each configuration. Tables \ref{tab:mmdptimes} and \ref{tab:onemaxtimes} show the average and standard deviation of the time spent in each stage of the algorithm (He=Heterogeneous cluster, Ho=Homogeneous cluster). Figures \ref{fig:MMDPbars} and \ref{fig:ONEMAXbars} graphically compare these results. As it can be seen, the migration is the most time consuming operation in all configurations, being the migration in HeHa more expensive than in HoHa. This happens because we are using the multi-purpose laboratory network to communicate the nodes, instead of the specific one used in the HoHa system. Note that the std. deviation of the migration is larger in the HeHa cluster. In the MMDP problem (Table \ref{tab:mmdptimes}) changing the population size does not affect the migration time, but it affects the rest of the algorithm's stages. However, with larger data communications (individuals of 5000 elements of the OneMax problem), the population size affects the migration time of all nodes. This might be due to the synchronization of migration buffers: if the slowest machine is sending/receiving, deadlocks can be propagated (as it can seen in Figure \ref{fig:gensonemaxhomosize}). 
 
-Results also show how the stages of the algorithms depends on the node of execution. For example, recombination needs more time than mutation in both problems only in the node HeN4. The reason might be the creation of new objects (memory allocation), which in Java and in limited memory (and SWAP access) requires more time than iteration of elements previously created (for example, in the mutation). Adapting the population size makes the slower node of HeHa behaves in simillar way than the other nodes (same time in each stage). Moreover, the size of the individuals affects some parts of the EA; for example, in the OneMax the mutation requires more time than the replacement. However, it must be taken into account that the duration of each part of the algorithm is not related with the time to attain the optimum, but how the diversity and search guidance is maintained. 
+Results also show how the stages of the algorithms depends on the node
+of execution. For example, recombination needs more time than mutation
+in both problems only in the node HeN4. The reason might be the
+creation of new objects (memory allocation), which in Java and in
+limited memory (and SWAP access) requires more time than iteration of
+elements previously created (for example, in the mutation). Adapting
+the population size makes the slower node of HeHa behaves in simillar
+way than the other nodes (same time in each stage). Moreover, the size
+of the individuals affects some parts of the EA; for example, in the
+OneMax the mutation requires more time than the replacement. However,
+it must be taken into account that the duration of each part of the
+algorithm is not related with the time to attain the optimum, but to
+how the diversity and search guidance is maintained.  
 
 \begin{figure*}
 \centering
@@ -601,9 +699,34 @@ HoN4	& 0,004	$\pm$ 0,002	& 0,807	$\pm$ 0,749			& 1,653		$\pm$ 0,051		& 0,922	$\p
 \end{table*}
 
 \section{Conclusions}
-New computing trends, such as Cloud Computing or Service Oriented Architecture are providing a massively amount of heterogeneous computational devices. This work shows a study about adapting the population size of an Evolutionary Algorithm to the computational power of different nodes in an heterogeneous cluster. In this work, this adapted size has been obtained proportionally to the attained average generations of each node in executions with the same number of individuals. Results show that adapting the population size decreases the execution time significantly in heterogeneous clusters, while changing this parameter in homogeneous clusters does not always performs better. Moreover, changing this parameter affects to stages of the algorithm that are independent of the population size, such as the migration. These results a promising start for adapting EAs to the computational power of each execution node.
+% no cuentes otra vez lo de los computing trends, hombre. Empieza
+% diciendo "in this paper we have introduced this o studied that" - JJ 
+New computing trends, such as Cloud Computing or Service Oriented
+Architecture are providing a massively amount of heterogeneous
+computational devices. This work shows a study about adapting the
+population size of an Evolutionary Algorithm to the computational
+power of different nodes in an heterogeneous cluster. In this work,
+this adapted size has been obtained proportionally to the attained
+average generations of each node in executions with the same number of
+individuals. Results show that adapting the population size decreases
+the execution time significantly in heterogeneous clusters, while
+changing this parameter in homogeneous clusters does not always
+performs better. Moreover, changing this parameter affects to stages
+of the algorithm that are independent of the population size, such as
+the migration. These results a promising start for adapting EAs to the
+performance of each execution node. 
+% Falta una discusión sobre si las mejoras se deben exclusivamente al
+% número de evaluaciones o hay algún otro factor ¿menos overhead?
+% ¿nodos más rápidos? - JJ
 
-In future work a scalability study will be performed, using more computational nodes and larger problem instances. In addition, other parameters such as migration rate or crossover probability could be adapted to the execution nodes. Different benchmarks will be also used to lead to automatic parameter adaptation in runtime, with different nodes entering or exiting in the topology, or adapting to the current load of the system.
+In the future it would be interesting to check the scalability of this
+approach, using more computational nodes and larger problem
+instances. In addition, other parameters such as migration rate or
+crossover probability could be adapted to the execution
+nodes. Different benchmarks will be also used to lead to automatic
+parameter adaptation in runtime, with different nodes entering or
+exiting in the topology, or adapting to the current load of the
+system. 
 
 
 
