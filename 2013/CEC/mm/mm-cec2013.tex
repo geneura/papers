@@ -68,15 +68,20 @@
 % author names and affiliations
 % use a multiple column layout for up to three different
 % affiliations
-\author{\IEEEauthorblockN{Juan-J. Merelo \\ and Antonio M. Mora}
+\author{\IEEEauthorblockN{Juan-J. Merelo,  Antonio M. Mora \\ and Pedro Castillo}
 \IEEEauthorblockA{Departamento de Arquitectura y Tecnolog\'ia de Computadores \\
 University of Granada\\
-Email: \{jmerelo,amorag\}@geneura.ugr.es}
+Email: \{jmerelo,amorag,pedro\}@geneura.ugr.es}
 \and
 \IEEEauthorblockN{Carlos Cotta}
 \IEEEauthorblockA{Departamento de Lenguajes y Ciencias de la Computaci\'on\\
 Universidad de M\'alaga\\
 Email: ccottap@lcc.uma.es}
+\and
+\IEEEauthorblockN{Mario Valdez}
+\IEEEauthorblockA{Instituto Tecnológico de Tijuana\\
+Tijuana, México\\
+Email: mario@tectijuana.edu.mx}
 }
 
 % make the title area
@@ -84,13 +89,13 @@ Email: ccottap@lcc.uma.es}
 
 \begin{abstract}
 %\boldmath
-There are two main research issues when in the solution to the game of
-Mastermind: one of them is finding solutions that are able to minimize
+There are two main research issues when looking for the solution to the game of
+MasterMind: one of them is finding solutions that are able to minimize
 the number of turns needed to find the solution, and another is
 finding methods that scale well when the size of the search space is
 increased. There is a trade-off between these two paths, and in this
 paper we will present a method that uses evolutionary algorithms to
-find fast and solutions to the game of Mastermind that scale better
+find fast and efficient solutions to the game of MasterMind that scale better
 with problem size than previously described methods. An added
 advantage of this method is that  it comes from simply fixing the
 value of one parameter, thus reducing the number of parameters needed
@@ -107,7 +112,7 @@ win.
 
 \section{Introduction and state of the art}
 
-Mastermind \cite{meirovitz1980board,Knuth,Widenius,Montgomery} is a puzzle in which one player $A$ hides a combination of
+MasterMind \cite{meirovitz1980board,Knuth,Widenius,Montgomery} is a puzzle in which one player $A$ hides a combination of
 $\kappa$ symbols and length $\ell$, while the other player $B$ tries to
 find it out by playing combinations coded in the same alphabet and
 length. The answers from player $A$ to every combination include the number of
@@ -121,11 +126,11 @@ Solving a game is a challenge by itself, even if it is a lowly board
 game such as this one. In fact, it is a game in which almost any
 computer strategy can beat a human, which use a very different
 strategy \cite{laughlin1982selection} to play it. But solutions to
-Mastermind can be applied easily to other games such as MineSweeper
+MasterMind can be applied easily to other games such as MineSweeper
 \cite{legendre2012minesweeper} or Hangman since the structure is the
 same: probing a part of the search space and getting a response from
-whoever holds the secret. We could stop at that and call Mastermind a
-worthwhile challenge, but it so happens that solving Mastermind can
+whoever holds the secret. We could stop at that and call MasterMind a
+worthwhile challenge, but it so happens that solving MasterMind can
 also be used to break ATMs guessing PINs \cite{focardi2011guessing}
 and even for an operation in biotechnology called {\em selective
   phenotyping} \cite{gagneur2011selective}. Not only that, but since
@@ -134,7 +139,7 @@ it is a problem which is NP-Hard
 the number of guesses needed is still open
 \cite{doerr2012playing}. Therefore, there is room for for making new
 venues into finding better or faster solutions to the game of
-Mastermind such as the heuristic solution we present in this paper. 
+MasterMind such as the heuristic solution we present in this paper. 
 
 Most solutions so far \cite{o1991mastermind,francisstrategies:moo,Berghman20091880,nicso} use the concept of {\em
     eligible}, {\em possible} or {\em
@@ -170,7 +175,7 @@ performed in this paper.
 These partitions are used to assign a score to every combination;
 several scores have been proposed:\begin{itemize}
 \item {\em Worst case} was proposed by Knuth \cite{Knuth} as the first rigorous
-  strategy to play Mastermind; combinations are scored according to
+  strategy to play MasterMind; combinations are scored according to
   the size of the biggest partition; the bigger, the worse. The
   combination to play is extracted from the set of those with the
   smallest biggest combination. Ties are broken by using the first in
@@ -231,7 +236,7 @@ reduces the search space size when played.
 However, in this
 paper we will prove that good solutions can be found by using a small
 sample size
-and, what is more, a common set size across all Mastermind problem
+and, what is more, a common set size across all MasterMind problem
 sizes. Using this common size means that we no longer need to worry
 about  setting this
 parameter to find an optimal result, as we had done in previous papers
@@ -492,10 +497,10 @@ with the conclusions that derive from them (commented in Section
 This paper uses the
 method called, simply, {\em Evo} \cite{evostar,mm:ppsn:2010,mm:cig,DBLP:conf/evoW/GuervosCM11,DBLP:conf/cec/GuervosMC11}. This method, which has been released as open
 source code at CPAN
-(\url{http://search.cpan.org/dist/Algorithm-Mastermind/}), is an
+(\url{http://search.cpan.org/dist/Algorithm-MasterMind/}), is an
 evolutionary algorithm that has been optimized for speed and to obtain
 the minimal number of evaluations possible. 
-An evolutionary algorithm [\cite{Zen,Michalewicz,eiben03}] is a Nature-inspired search and
+An evolutionary algorithm \cite{Zen,Michalewicz,eiben03} is a Nature-inspired search and
 optimization method that, modeling natural evolution and its molecular
 base, uses a (codified) population of solutions to find the 
 optimal one. Candidate solutions are scored according to its closeness to the optimal
@@ -544,9 +549,9 @@ combinations that the algorithm tries to find out before it plays one.
 \hline
 Parameter & Value \\
 \hline \\
-Crossover  & 8 \\
-Mutation  & 1 \\
-Permutation  & 1 \\
+Crossover priority & 8 \\
+Mutation  priority & 1 \\
+Permutation priority  & 1 \\
 Replacement rate  & 0.75 \\ 
 Tournament size & 7 \\
 \hline
@@ -570,8 +575,8 @@ In this paper we will set this size to a common for all sizes and minimal value:
 has been chosen to be small enough to be convenient, 
 but not so small that the scoring methods are rendered meaningless. This will reduce the parameters
 needed by one, leaving only the population size to be set, once, of
-course, the rest of the evolutionary algorithm parameter have been
-fixed by experimentation; these algorithms are shown 
+course, the rest of the evolutionary algorithm parameters have been
+fixed by experimentation; these parameters are shown 
 in Table \ref{tab:params} have been found to be the best in a previous
 study (to be published).  
 
@@ -659,8 +664,8 @@ Evo10 (10 as in the size of the consistent set).
 \centering
 \includegraphics[scale=0.50]{proportion.png}
 \caption{Average proportion of search space (that is, number of evaluations divided by search space size)
-  vs. search space size for the original Evo++ method (dashed, light
-  color) and the current Evo10 (solid, black). Please bear in mind
+  vs. search space size for the original Evo++ method (dotted, green or light
+  color) and the current Evo10 (dashed, red or intense). Please bear in mind
   that the $x$ axis is logarithmic.   \label{fig:prop}}
 \end{figure*} 
 %
@@ -772,7 +777,7 @@ consistent set size, that is why the relation between the time
 needed (1/4) is smaller than the relation between number of
 evaluations (roughly 1/3, see Table \ref{tab:evals67}) . This allows also to extend the range of
 feasible sizes, and yields a robust configuration that can be used
-throughout any Mastermind problem. 
+throughout any MasterMind problem. 
 
 %
 \begin{figure}[!h]
@@ -813,7 +818,7 @@ illustrated in Figure \ref{fig:csize}, which shows how the average
 (for all 5000 games) size of the consistent set evolves with the turn
 number. The actual size of the set depends on the bound; the larger
 the bound, the larger the size. In fact, the actual average size is for all
-turns, not only for those that are above the the limit, which reflects
+turns, not only for those that are above the limit, which reflects
 the fact that this is an {\em average} size and whenever the actual
 set size is below the bound the algorithm will work for a few
 generations trying to increase the size, until several generations
