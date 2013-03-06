@@ -841,39 +841,85 @@ The results yielded by every method have been compared using two non-parametric 
  \label{tb:friedman-iman-tests}}
  \end{table}
 
-Futhermore, Friedman test results also provide a mechanism to establish a ranking between the methods, determining which one can be considered the best. Once the method has been found out, it can be compared against the rest methods using the Bonferroni-Dunn procedure. This method computes the probability that two methods can be considered to have a similar behaviour, being this the null hypothesis. Thus, when the null hypothesis is rejected, methods can be considered to be significantly differents. Table ref{tb:bonferroni} shows the method that has been established as the best one for every error measure, and, with respect to this one, the methods for which the null hypothesis can not be rejected, and those that show meaningful differences.
-
-Error MAE
-Mejor L-Co-R
-Iguales ARIMA, MEAN
-Diferentes Theta, Croston, Spline
+Futhermore, Friedman test results also provide a mechanism to establish a ranking between the methods, determining which one can be considered the best. Once the method has been found out, it can be compared against the rest methods using the Holm's procedure (¿???CITA). This method computes the probability that two methods can be considered to have a similar behaviour, being this the null hypothesis. The null hypothesis is rejected when this probability is lower than $0.05$, so that methods can be considered to be significantly differents. For instance, table \ref{tb:holm-mae} shows the probabilities computed by the Holm's procedure for error MAE; L-Co-R does not appear in the table since it results to be the best method with respect to this error, and it is taken as control algorithm. According to the values shown, there are not signficant differences between L-Co-R and ARIMA, but there exist between L-Co-R and the rest of methods.
 
 
-MAPE
-L-Co-R
-ARIMA, MEAN, Theta
-Croston, Spline
+\begin{table}[!htp]\footnotesize
+\begin{center}
+\begin{tabular}{|cccc|}
+\hline
+$Ranking$&Method&$p$& Null Hypothesis\\
+\hline
+1&ARIMA&0.176&Accepted\\
+2&MEAN&0.028& Rejected \\
+3&THETA&0.007& Rejected \\
+4&CROSTON&0.007& Rejected \\
+5&SPLINE&2.003E-4& Rejected \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Results of the Holm's procedure applied to error MAE. L-co-R does not appear in the table as it is the best, and consequently, control algorithm. Values of $p$ under $0.05$ lead to reject the null hypothesis, i.e., the forecasting provided by L-Co-R and the corresponding algorithm can be considered significantly differents.
+\label{tb:holm-mae}}
 
-MASE
-L-Co-R
-ARIMA, MEAN, Theta, Croston
-Spline
+\end{table}
 
-MdAPE
-L-Co-R
-Arima, Mean,
-Theta, Spline, Croston
+Holm's procedure has been applied to any of the six error measure being considered. Table \ref{tb:holm-all} summarizes the rankings of methods, as well as the existence or absence of significant differences. Thus, this statistic study shows that L-Co-R is the best algorithm in four of six error measures; nevertheless, it can not be said to be better than ARIMA in any case but, for most measures, it overcomes the rest of methods.
 
-MSE
-ARIMA,
-L-Co-R, MEAN, Croston, Theta
-Spline
 
-SMAPE
-ARIMA,
-L-Co-R, MEAN, Croston, Theta
-Spline
 
+\begin{table} \footnotesize
+ \begin{center}
+ \begin{tabular}{|l|l|l|l|}
+\hline
+\emph{Error} & \emph{Best algorithm} & \emph{No significant differences} & \emph{Significant differences} \\
+\hline
+\emph{MAE} & (1) L-Co-R & (2) ARIMA, 
+
+(3) Mean & (4) Theta, (5) Croston, (6) Spline \\
+\emph{MAPE} & (1) L-Co-R& (2) ARIMA, (3) Mean, (4) Theta & (5) Croston, (6) Spline  \\
+\emph{MASE} & L-Co-R & Arima, Mean, Theta, Croston & Spline  \\
+\emph{MdAPE} & L-Co-R & Arima, Mean & theta, Spline, Croston  \\
+\emph{MSE} & (1) ARIMA & (2) L-Co-R, (3) MEAN, (4) Croston, (5) Theta & (6) Spline \\
+\emph{SMAPE} & (1) ARIMA & (2) L-Co-R, (3) MEAN, (4) Croston, (5) Theta & (6) Spline \\
+\hline
+
+ \end{tabular}
+ \end{center}
+ \caption{???COSAS.
+ \label{tb:bonferroni}}
+ \end{table}
+
+
+
+
+
+\begin{table} \footnotesize
+ \begin{center}
+ \begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} & \emph{SMAPE} \\
+\hline
+\textbf{L-Co-R} & \textbf{L-Co-R} & \textbf{L-Co-R}  & \textbf{L-Co-R}  & \textbf{ARIMA}  & \textbf{ARIMA}  \\
+\textbf{No diff.} & \textbf{L-Co-R} & \textbf{L-Co-R}  & \textbf{L-Co-R}  & \textbf{ARIMA}  & \textbf{ARIMA}  \\
+
+\textbf{ARIMA} & \textbf{ARIMA} & \textbf{ARIMA}  & \textbf{ARIMA}  & \textbf{L-Co-R}  & \textbf{L-Co-R}  \\
+\textbf{Mean} & \textbf{Mean} & \textbf{Mean} & \textbf{Mean} & \textbf{Mean} & \textbf{Mean} \\
+Theta & \textbf{Theta} & \textbf{Theta} & Theta & \textbf{Croston} & \textbf{Croston} \\
+Croston & Croston & \textbf{Croston} & Spline & \textbf{Theta} & \textbf{Theta} \\
+Spline &Spline &Spline &Spline &Croston &Spline \\
+%\emph{MAE} & (1) L-Co-R & (2) ARIMA, (3) Mean & (4) Theta, (5) Croston, (6) Spline \\
+%\emph{MAPE} & (1) L-Co-R& (2) ARIMA, (3) Mean, (4) Theta & (5) Croston, (6) Spline  \\
+%\emph{MASE} & L-Co-R & Arima, Mean, Theta, Croston & Spline  \\
+%\emph{MdAPE} & L-Co-R & Arima, Mean & theta, Spline, Croston  \\
+%\emph{MSE} & (1) ARIMA & (2) L-Co-R, (3) MEAN, (4) Croston, (5) Theta & (6) Spline \\
+%\emph{SMAPE} & (1) ARIMA & (2) L-Co-R, (3) MEAN, (4) Croston, (5) Theta & (6) Spline \\
+\hline
+
+ \end{tabular}
+ \end{center}
+ \caption{???COSAS.
+ \label{tb:bonferroni2}}
+ \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%% CONCLUSIONS AND FUTURE WORK %%%%%%%%%%%%%%%%%%%%%%%%%%
 
