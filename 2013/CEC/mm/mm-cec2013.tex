@@ -89,30 +89,45 @@ Email: mario@tectijuana.edu.mx}
 
 \begin{abstract}
 %Hay que cambiarlo para que no sea igual que el del LION... 
-There are two main research issues when looking for the solution to the game of
-MasterMind: one of them is finding solutions that are able to minimize
-the number of turns needed to find the solution, and another is
-finding methods that scale well when the size of the search space is
-increased. There is a trade-off between these two paths, and in this
-paper we will present a method that uses evolutionary algorithms to
-find fast and efficient solutions to the game of MasterMind that scale better
-with problem size than previously described methods. An added
-advantage of this method is that  it comes from simply fixing the
-value of one parameter, thus reducing the number of parameters needed
-to find  the solution to the problem. We
-will show the results for different problem sizes and compare them with
-published results, showing that there is not a big difference with the
-best solutions found so far but the number of evaluations needed to
-find them is considerably reduced.  It even scales much better than
-solutions tuned for minimization of the number of turns needed to
-win. 
+% There are two main research issues when looking for the solution to the game of
+% MasterMind: one of them is finding solutions that are able to minimize
+% the number of turns needed to find the solution, and another is
+% finding methods that scale well when the size of the search space is
+% increased. There is a trade-off between these two paths, and in this
+% paper we will present a method that uses evolutionary algorithms to
+% find fast and efficient solutions to the game of MasterMind that scale better
+% with problem size than previously described methods. An added
+% advantage of this method is that  it comes from simply fixing the
+% value of one parameter, thus reducing the number of parameters needed
+% to find  the solution to the problem. We
+% will show the results for different problem sizes and compare them with
+% published results, showing that there is not a big difference with the
+% best solutions found so far but the number of evaluations needed to
+% find them is considerably reduced.  It even scales much better than
+% solutions tuned for minimization of the number of turns needed to
+% win. 
+MasterMind is a puzzle in which a hidden string of symbols must be
+discovered by producing query strings which are compared with the
+hidden string; the result of this comparison (in terms of {\em number}
+of correct positions and colors) is fed back to the
+discoverer. Methods for solving this puzzle are compared in terms of
+the number of query strings (guesses) made and the total time needed
+to produce those strings. In this paper we focus on the latter, by
+trying to find a combination of parameters that is first uniform and
+independent of the problem size and second adequate to find a fast
+solution that is, at the same time, good enough. This parameter will
+be the {\em consistent set size}, that is, the maximum number of
+combinations that are sought before being scored and played as a
+guess. Having found in previous papers that the size has an influence
+on speed, we will concentrate on small sizes and test them through two
+different scoring methods: most parts and entropy. 
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
 
 \section{Introduction and state of the art}
 
-MasterMind \cite{meirovitz1980board,Knuth,Widenius,Montgomery} is a puzzle in which one player $A$ hides a combination of
+MasterMind \cite{Knuth,Widenius,Montgomery} is a puzzle in which one player $A$ hides a combination of
 $\kappa$ symbols and length $\ell$, while the other player $B$ tries to
 find it out by playing combinations coded in the same alphabet and
 length. The answers from player $A$ to every combination include the number of
