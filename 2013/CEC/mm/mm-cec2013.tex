@@ -18,12 +18,6 @@
 % manually specify the path to it like:
 % \documentclass[conference]{../sty/IEEEtran}
 
-\def\eGA{{\small \textsc{eGA}}}
-\def\eGACo{{\small \textsc{eGACo}}}
-\def\eGACm{{\small \textsc{eGACm}}}
-\def\codemaker{CM}
-\def\codebreaker{CB}
-
 % *** CITATION PACKAGES ***
 %
 \usepackage{cite}
@@ -88,24 +82,6 @@ Email: mario@tectijuana.edu.mx}
 \maketitle
 
 \begin{abstract}
-%Hay que cambiarlo para que no sea igual que el del LION... 
-% There are two main research issues when looking for the solution to the game of
-% MasterMind: one of them is finding solutions that are able to minimize
-% the number of turns needed to find the solution, and another is
-% finding methods that scale well when the size of the search space is
-% increased. There is a trade-off between these two paths, and in this
-% paper we will present a method that uses evolutionary algorithms to
-% find fast and efficient solutions to the game of MasterMind that scale better
-% with problem size than previously described methods. An added
-% advantage of this method is that  it comes from simply fixing the
-% value of one parameter, thus reducing the number of parameters needed
-% to find  the solution to the problem. We
-% will show the results for different problem sizes and compare them with
-% published results, showing that there is not a big difference with the
-% best solutions found so far but the number of evaluations needed to
-% find them is considerably reduced.  It even scales much better than
-% solutions tuned for minimization of the number of turns needed to
-% win. 
 MasterMind is a puzzle in which a hidden string of symbols must be
 discovered by producing query strings which are compared with the
 hidden string; the result of this comparison (in terms of {\em number}
@@ -129,18 +105,18 @@ different scoring methods: most parts and entropy.
 
 MasterMind \cite{Knuth,Widenius,Montgomery} is a puzzle in which one player $A$ hides a combination of
 $\kappa$ symbols and length $\ell$, while the other player $B$ tries to
-find it out by playing combinations coded in the same alphabet and
+uncover it  by playing combinations coded in the same alphabet and with the same
 length. The answers from player $A$ to every combination include the number of
 symbols in the combination that are in the correct position and the
 number of colors that have been guessed correctly. Player $B$ then
-plays a new combination, until the hidden one is found. The objective
+plays new combinations until the hidden one is found. The objective
 of the game is to play repeatedly minimizing the number of turns needed
 to find the solution. 
 
-Solving a game is a challenge by itself, even if it is a lowly board
+Solving a puzzle is a challenge by itself, even if it is a lowly board
 game such as this one. In fact, it is a game in which almost any
-computer strategy can beat a human, which use a very different
-strategy \cite{laughlin1982selection} to play it. But solutions to
+computer strategy can beat a human, which uses a very different
+strategy \cite{laughlin1982selection,hubalovsky2012modeling} to play it. But solutions to
 MasterMind can be applied easily to other games such as MineSweeper
 \cite{legendre2012minesweeper} or Hangman since the structure is the
 same: probing a part of the search space and getting a response from
@@ -152,7 +128,7 @@ and even for an operation in biotechnology called {\em selective
 it is a problem which is NP-Hard
 \cite{DBLP:journals/corr/abs-1111-6922} the issue of finding bounds to
 the number of guesses needed is still open
-\cite{doerr2012playing}. Therefore, there is room for for making new
+\cite{doerr2012playing}. Therefore, there is room for making new
 venues into finding better or faster solutions to the game of
 MasterMind such as the heuristic solution we present in this paper. 
 
@@ -229,7 +205,7 @@ amount of possible responses) is noted. Eventually this results in a
 series of {\em partitions} in which the set of consistent combinations
 is divided by its {\em distance} (in terms of common positions and
 colors) to every other.  Since the goal of the
-\codebreaker\ is to find the hidden combination in as few steps as
+{\em codebreaker} is to find the hidden combination in as few steps as
 possible, she is interested in obtaining as small a partition as
 possible. Therefore, it makes sense to focus on the size of these
 partitions (which one will be the remaining feasible partition is
@@ -275,10 +251,12 @@ several scores have been proposed:\begin{itemize}
 Experiments so far show that the best strategies are Most parts and
 Entropy, with no distinct advantage, for all problem sizes, of any one
 of them
-over the others \cite{nicso}. In fact,
+over the others \cite{nicso}, although Entropy seems to have a slight
+edge, at the cost of a slightly slower performance \cite{mm:evostar13}. In fact,
 combinations of them are possible, according to
 \cite{DBLP:journals/corr/abs-1207-1315}, but have not, so far, been
-proved in problems where a sample of the consistent set is used. Most
+proved in problems where a sample of the consistent set is used or,
+for that matter, in evolutionary algorithms. Most
 strategies, however, concentrate on finding the right size for
 minimization of the number of turns. The complexity of the solving
 algorithm, however, increases quadratically with the set size, since
@@ -302,8 +280,8 @@ researchers have tried to break the barrier of spaces with a high
 dimension by searching for fast solutions: Khalifa and Yampolsky
 \cite{khalifa2011ga} were able to solve the length 8, 12 colors
 ($\ell=8,\kappa=12$) problem in just 8 seconds, but with an average
-number of guesses equal to 25 (vs 20.571 seconds and 8.366 average
-number of guesses. Even if the result from the pure game-playing point
+number of guesses equal to 25 (vs. 20.571 seconds and 8.366 average
+number of guesses). Even if the result from the pure game-playing point
 of view is less than optimal, it open the venue for a new research
 path, setting the parameters of the algorithm so that faster solutions
 are found without sacrificing the quality of the guesses played.
@@ -314,9 +292,12 @@ sizes do have an influence on the outcome. When you reduce the
 size to the minimum it is bound to have an influence on the result, in
 terms of turns needed to win and number of evaluations needed to do
 it. The effect of the reduction of this sample size will decrease
-the probability of finding, and thus playing, the hidden combination,
-and also the probability of finding the the combination that maximally
-reduces the search space size when played. 
+the probability of finding, and thus playing, the hidden combination
+and also the probability of finding the combination that maximally
+reduces the search space size when played, not to mention the fact
+that scoring will be biased by the absence of some combinations
+(which, in fact, might lead to having non-optimal combinations with
+the best score). 
 However, in this
 paper we will prove that good solutions can be found by using a small
 sample size
@@ -328,12 +309,11 @@ parameter to find an optimal result, as we had done in previous papers
 the number of experiments needed to find an acceptable solution. 
 
 % Actualizar esto
-The rest of the paper is organized as follows: next section
-presents the state of the resolution of the MasterMind puzzle and its
-evolution, having special emphasis in its evolutionary solutions; we will
-explain then the general characteristics of the evolutionary algorithm
-used to solve MasterMind in this work. Results obtained with this setup will be
-presented in Section \ref{sec:results}, and we will finish the paper
+The rest of the paper is organized as follows: the next section
+(\ref{sec:evo}) 
+presents the state of the resolution of the MasterMind puzzle using
+evolutionary algorithms. Experiments performed and results obtained with this setup will be
+presented in Section \ref{sec:exp}, and we will finish the paper
 with the conclusions that derive from them (commented in Section
 \ref{sec:conclusions}). 
 
@@ -575,39 +555,39 @@ with the conclusions that derive from them (commented in Section
 % detail just next.
 
 
-\section{An evolutionary method for playing MasterMind}
+\section{Playing MasterMind using evolutionary algorithms}
 \label{sec:evo}
 
 This paper uses the
-method called, simply, {\em Evo} \cite{evostar,mm:ppsn:2010,mm:cig,DBLP:conf/evoW/GuervosCM11,DBLP:conf/cec/GuervosMC11}. This method, which has been released as open
+method called, simply, {\em Evo}\footnote{The full name would be,
+  following Perl naming conventions, {\tt Algorithm::MasterMind::Evo},
+  but in this context we will use just the suffix since its full
+  meaning is clear}
+\cite{evostar,mm:ppsn:2010,mm:cig,DBLP:conf/evoW/GuervosCM11,DBLP:conf/cec/GuervosMC11}
+to find the hidden combination. This
+method, which has been released as open  
 source code at CPAN
 (\url{http://search.cpan.org/dist/Algorithm-MasterMind/}), is an
 evolutionary algorithm that has been optimized for speed and to obtain
-the minimal number of evaluations possible. 
-An evolutionary algorithm \cite{Zen,Michalewicz,eiben03} is a Nature-inspired search and
-optimization method that, modeling natural evolution and its molecular
-base, uses a (codified) population of solutions to find the 
-optimal one. Candidate solutions are scored according to its closeness to the optimal
-solution (called {\em fitness}) and the whole population evolved by
-discarding solutions with the lowest fitness and making those with the
-highest fitness reproduce via combination (crossover) and random
-change (mutation). It is proved that these algorithms are able to find
-better solutions in time and, given enough time and resources,
-optimal solutions to several problems in engineering and even in games
-(such as the one presented by 
-\cite{DBLP:conf/iwann/Fernandez-AresMMGF11}). 
+a solution to the game in 
+the minimal number of evaluations possible. This evolutionary
+algorithm codifies possible solutions directly (as strings) and
+scores them according to its closeness to the optimal
+solution (called {\em fitness}).
 
 Evo, which is explained extensively in
-\cite{DBLP:conf/cec/GuervosMC11} searches consistent combinations
-until a prefixed amount of them has been found. It uses Most Parts to
+\cite{DBLP:conf/cec/GuervosMC11} looks for consistent combinations
+until a prefixed amount of them has been found; this parameter is
+called {\em consistent set size} or simply $cs$. It uses Most Parts to
 score consistent combinations, and the {\em distance to consistency}
 for non-consistent ones, so that the fitness directs search towards
 finding consistent solutions and to find solutions with better
-score. The algorithm continues until a pre-fixed number of consistent
-solutions have been found or until this number does not vary for a
-number of generations (set to three throughout all experiments). 
+score. When the algorithm finds $cs$ solutions  or when the number of
+solutions found does not vary for a number of generations (set to
+three throughout all experiments), the one with the best score is
+played. If several are tied for best score, a random one is played. 
 
-Evo incorporates a series of methods to decrease the amount of
+Evo++ incorporates a series of methods to decrease the amount of
 evaluations needed to find the solution, including {\em endgames}
 which makes the evolutionary algorithm revert to exhaustive search in
 the case the search space has been well characterized (for instance,
@@ -642,7 +622,21 @@ Tournament size & 7 \\
 \end{tabular}
 \end{table}
 
-What we do in this paper is test an {\em one size fits all} approach
+In this paper we also test another algorithm which we will call
+EFE. The main difference between EFE and Evo is that the former has
+been profiled (implementation {\em always} matters
+\cite{DBLP:conf/iwann/MereloRACML11}) substituting slow parts of the
+implementation for faster ones (paper submitted) and uses Entropy
+instead of Most Parts for scoring. In general, Entropy should offer
+better solutions \cite{mm:evostar13}. However, the sampling size of
+the consistent set will play differently in the two scoring methods,
+that is why we are interested in finding out which one of them yields
+the best solutions and for which $cs$. In fact, being this one a {\em
+  fast} algorithm, we have extended the test to a bigger search space
+size, $\kappa=12, \ell=8$. % Aunque lleva ya casi una semana el
+                           % algoritmo sin terminar.
+
+What we do in this paper is to test an {\em one size fits all} approach
 by making the size of the consistent set unchanged for any problem
 size. This reduces the algorithm parameter set by one, but since this
 parameter set has, a priori, a big influence on result and there is no
@@ -650,9 +644,10 @@ method to set it other than experimentation, it reduces greatly the
 amount of experiments needed to obtain a solution. 
 
 \section{Experiments and results}
+\label{sec:exp}
 
 The experiments presented in this paper extend those published
-previously, mainly by \cite{DBLP:conf/cec/GuervosMC11}.
+previously, mainly in \cite{DBLP:conf/cec/GuervosMC11} and \cite{merelo12:gameon}.
 
 In this paper we will set this size to a common for all sizes and minimal value:
 10, that is why we will denominate the method tested Evo10. This value
@@ -689,8 +684,10 @@ size (in the case of the previous results).\label{tab:moves45}]{
                     & $\kappa=8$ && $\kappa=8$ &~~~& $\kappa=9$ \\
 \hline
 Berghman et al. &                                           & & 5.618 && \\
-\textsc{Evo++}  &(400,30) $5.15 \pm 0.87$& & (600,40) $5.62 \pm 0.84$ && (800,80) $5.94 \pm 0.87$  \\
-\textsc{Evo10 }   &(200) $5.209 \pm 0.91$ & & (600) $5.652 \pm 0.818$  && (800) $6.013 \pm  0.875$ \\
+\textsc{Evo++}  &(400,30) $5.15 \pm 0.013$& & (600,40) $5.62 \pm 0.012$ && (800,80) $5.94 \pm 0.012$  \\
+\textsc{Evo10 }   &(200) $5.209 \pm 0.012$ & & (600) $5.652 \pm 0.011$ && (800) $6.013 \pm  0.012$ \\
+\textsc{EFE8 }   &(200) $5.247 \pm 0.013$ & & (600) $5.689 \pm 0.012$ && (800) $6.005 \pm  0.012$ \\
+\textsc{EFE16 }   &(200) $5.222 \pm 0.013$ & & (600) $5.624 \pm 0.012$  && (800) $5.9832 \pm  0.012$ \\
 \hline
 \end{tabular}
 }
@@ -706,8 +703,10 @@ size (in the case of the previous results).\label{tab:moves67}]{
                     & $\kappa=9$ & ~~~~& $\kappa=10$& ~~~~& $\kappa=10$\\
 \hline
 Berghman et al.   &  6.475                                      & & ~&&  ~\\
-\textsc{Evo++}  & (1000,100) $6.479 \pm 0.89$ & & ~ &  & ~ \\
-\textsc{Evo10 }  & (800) $6.504 \pm   0.871$      & & (1000) $6.877 \pm 0.013$  && (1500) $7.425 \pm0.013$ \\
+\textsc{Evo++}  & (1000,100) $6.479 \pm 0.012$ & & ~ &  & ~ \\
+\textsc{Evo10 }  & (800) $6.504 \pm   0.012$      & & (1000) $6.877 \pm 0.013$  && (1500) $7.425 \pm0.013$ \\
+\textsc{EFE8 }  & (800) $6.537 \pm   0.012$      & & (1000) $6.891 \pm 0.013$  && (1500) $7.422 \pm0.013$ \\
+\textsc{EFE16 }  & (800) $6.488 \pm   0.012$      & & (1000) $6.853 \pm 0.013$  && (1500) $7.372 \pm0.013$ \\
 \hline
 \end{tabular}
 }
@@ -719,9 +718,10 @@ Berghman et al.   &  6.475                                      & & ~&&  ~\\
                     \cline{2-2}\cline{4-6}
                     & $\kappa=8$ && $\kappa=8$ &~~~~& $\kappa=9$ \\
 \hline
-\textsc{Evo++}~~~~~~~~~ &$6412 \pm 3014$& & $14911 \pm 6120$  &
-&$25323 \pm 9972$  \\
-\textsc{Evo10}     &$2551 \pm 1367$ & & $7981 \pm 3511 $  & &$8953 \pm 3982$\\
+\textsc{Evo++}~~~~~~~~~ &$6949 \pm 48$& & $14911 \pm 6120$  & &$25323 \pm 9972$  \\
+\textsc{Evo10}     &$2551 \pm 20$ & & $7981 \pm 50 $  & &$8953 \pm 3982$\\
+\textsc{EFE8}     &$2475 \pm 56$ & & $7596 \pm 49 $  & &$10412 \pm 65$\\
+\textsc{EFE16}     &$2896 \pm 21$ & & $8947 \pm 72 $  & &$12261 \pm 74$\\
 \hline
 \end{tabular}
 }
@@ -734,7 +734,9 @@ Berghman et al.   &  6.475                                      & & ~&&  ~\\
                     & $\kappa=9$ & ~~~~& $\kappa=10$& ~~~~& $\kappa=10$\\
 \hline
 \textsc{Evo++}   &$46483 \pm 17031$ & & ~ &  & ~\\
-\textsc{Evo10}    & $17562 \pm 135367$ & &$21804 \pm 67227$& & $40205 \pm 65485$ \\
+\textsc{Evo10}    & $17562 \pm 1914$  & &$21804 \pm 960$& & $40205 \pm 926$ \\
+\textsc{EFE8}      & $28875 \pm 14155$& &$21256 \pm 1873$& &$315437 \pm 264054$   \\
+\textsc{EFE16}    & $16993 \pm 105$   & &$22819 \pm 206$& & $322319 \pm 278938$ \\
 \hline
 \end{tabular}
 }
@@ -742,14 +744,14 @@ Berghman et al.   &  6.475                                      & & ~&&  ~\\
 %
 
 These tables compare previous results (with its corresponding
-consistent set size) and the results presented in this paper, labeled
+consistent set size, published in \cite{DBLP:conf/cec/GuervosMC11}) and the results presented in this paper, labeled
 Evo10 (10 as in the size of the consistent set).
 \begin{figure*}[!htb]
 \centering
 \includegraphics[scale=0.50]{proportion.png}
 \caption{Average proportion of search space (that is, number of evaluations divided by search space size)
   vs. search space size for the original Evo++ method (dotted, green or light
-  color) and the current Evo10 (dashed, red or intense). Please bear in mind
+  color) and the current Evo10 (dashed, red or intense). Please note
   that the $x$ axis is logarithmic.   \label{fig:prop}}
 \end{figure*} 
 %
@@ -835,10 +837,31 @@ average number of guesses needed to find the solution. However, a more
 precise statistical characterization will need more systematic
 experimentation. For the time being, the results obtained show that,
 in general, Evo10 needs less or the same population than Evo++ to
-obtain results using less evaluations and a very similar number of
+obtain similar results using less evaluations and a very similar number of
 guesses (at least for the larger search space sizes). 
 
+The experiments performed with the EFE entropy-based method prove that
+using a small set size does, in fact, yield good results independently
+of the size. In general, it shows also that the smaller size tested
+($cs=8$) is never better than Evo10; at most, it is statistically
+indistinguishable. However, EFE16 is always better than Evo10, in some
+cases statistically so (using Wilcoxon test). This is interesting
+since, as indicated in the introduction, every method will need
+different $cs$ to obtain good results. In particular, computing
+entropy of a set with a small size might produce meaningless results
+(while Most Parts will always produce a meaningful result, number of
+non-zero partitions); when the size is increased, the reulsts will be
+increasingly accurate. In fact, these better results come at the cost
+of more evaluations (as should only be expected, since the
+evolutionary algorithm must run for a few generations before issuing a
+new solution) but, since this implementation is faster than Evo10, it
+is in fact noticeably faster: the $\ell=6$ take on average a
+second. As usual, raw data, processing scripts and computed results
+are available from our GitHub repository
+\url{http://github.com/JJ/algorithm-mastermind/experiments/CEC13}. 
+
 \section{Discussion, conclusions and future work}
+\label{sec:conslusions}
 
 This paper has shown that using a small and fixed consistent set size
 when playing mastermind using evolutionary algorithms does not imply a
