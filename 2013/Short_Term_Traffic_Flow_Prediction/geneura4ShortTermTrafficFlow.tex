@@ -694,7 +694,7 @@ In that section, the speed is limited to 100 km/h. However, although most of the
 \subsection{Flow traffic prediction by means of time-series forecasting}
 As far as data is chronologically collected, methods coming from the area of time-series forecasting can be used in order to predict future behaviour of traffic flow.
 
-From the big variety of existing mtethods, 6 different ones have been selected in order to compare the validity of their predictions. The methods being used are the followings: ARIMA, Croston, Theta, Spline,L-Co-R, and as control algorithm, the mean value. Methods  ARIMA, Croston, Theta, Spline and Mean have been executed using the R software, by means of the Forecast package (cita). In the other hand, L-co-R is a co-evolutionary algorithm of our own, based on radial basis function neural networks. In order to compare the methods, a statistical study is included allowing us to draw some conclusions.
+From the big variety of existing mtethods, 6 different ones have been selected in order to compare the validity of their predictions. The methods being used are the followings: ARIMA, Croston, Theta, Spline,L-Co-R, and as control algorithm, the mean value. Methods  ARIMA, Croston, Theta, Spline and Mean have been executed using the R software, by means of the Forecast package (cita). In the other hand, L-Co-R is a co-evolutionary algorithm of our own, based on radial basis function neural networks. In order to compare the methods, a statistical study is included allowing us to draw some conclusions.
 
 The experimentation has been carried out using the data collected for five nodes over 62 days. The first 55 days have been used to train the methods, and obtain their associated models, and the remaining 7 days have been used to test their generalization capabilities. The prediction has been for an horizon of 1, so that known data until day $n$ have been used to forecast day $n+1$. 
 
@@ -737,7 +737,7 @@ where $Y_t$ is the observation at time $t = {1,...,n}$; $F_t$ is the forecast of
          $q_t = \displaystyle\frac{e_t}{\displaystyle\frac{1}{n-1} \sum_{i=2}^n \mid Y_i - Y_{i-1} \mid }$
 \end{itemize}
 
-Given the stochastic nature of evolutionary algorithms, and in order to remove biases due to random generator, L-co-R has been running 30 times per node. Thus, the error attached to this algorithm correspond to the average error values of these 30 executions.
+Given the stochastic nature of evolutionary algorithms, and in order to remove biases due to random generator, L-Co-R has been running 30 times per node. Thus, the error attached to this algorithm correspond to the average error values of these 30 executions.
 
 Table \ref{tb:ts-results} show the different error values for every method and node. Boldfaces highlight  the lowest (best) values per algorithm, node and measure. As table shows, best algorithms tends to be L-Co-R and ARIMA, since L-Co-R obtains the lowest results for measures MAE, MAPE, MdAPE and MASE (except for node 2), but there is not a clear winner in MSE and SMAPE.
 
@@ -846,20 +846,51 @@ Futhermore, Friedman test results also provide a mechanism to establish a rankin
 
 \begin{table}[!htp]\footnotesize
 \begin{center}
-\begin{tabular}{|cccc|}
+\begin{tabular}{|cccccc|}
 \hline
-$Ranking$&Method&$p$& Null Hypothesis\\
+\emph{Error}&\emph{Control Method}&\emph{Ranking}&
+\emph{Method}&$p$& \emph{Null Hypothesis}\\
 \hline
-1&ARIMA&0.176&Accepted\\
-2&MEAN&0.028& Rejected \\
-3&THETA&0.007& Rejected \\
-4&CROSTON&0.007& Rejected \\
-5&SPLINE&2.003E-4& Rejected \\
+&&1&ARIMA&0.176&Accepted\\
+&&2&MEAN&0.028& \textbf{Rejected}\\
+MAE&L-Co-R&3&THETA&0.007& \textbf{Rejected}\\
+&&4&CROSTON&0.007& \textbf{Rejected}\\
+&&5&SPLINE&2.003E-4& \textbf{Rejected}\\
+\hline
+&&1&ARIMA&0.090& Accepted\\
+&&2&MEAN&0.0.063& Accepted \\
+MAPE&L-Co-R&3&THETA&0.011& \textbf{Rejected}\\
+&&4&CROSTON&0.002& \textbf{Rejected}\\
+&&5&SPLINE&3.857E-4& \textbf{Rejected}\\
+\hline
+&&1&ARIMA&0.398& Accepted\\
+&&2&MEAN&0.063& Accepted \\
+MASE&L-Co-R&3&THETA&0.028& \textbf{Rejected}\\
+&&4&CROSTON&0.018& \textbf{Rejected}\\
+&&5&SPLINE&7.232E-4& \textbf{Rejected}\\
+\hline
+&&1&ARIMA&0.176&Accepted\\
+&&2&MEAN&0.042& \textbf{Rejected}\\
+MdAPE&L-Co-R&3&THETA&0.004& \textbf{Rejected}\\
+&&4&SPLINE&0.002& \textbf{Rejected}\\
+&&5&CROSTON&7.232E-4& \textbf{Rejected}\\
+\hline
+&&1&L-Co-R&0.500&Accepted\\
+&&2&MEAN&0.398& Accepted \\
+MSE&ARIMA&3&CROSTON&0.176& Accepted \\
+&&4&THETA&0.176& Accepted \\
+&&5&SPLINE&7.232E-4& \textbf{Rejected}\\
+\hline
+&&1&L-Co-R&0.866& Accepted\\
+&&2&MEAN&0.310& Accepted \\
+SMAPE&ARIMA&3&CROSTON&0.091 & Accepted \\
+&&4&THETA&0.043& \textbf{Rejected}\\
+&&5&SPLINE&0.006& \textbf{Rejected}\\
 \hline
 \end{tabular}
 \end{center}
-\caption{Results of the Holm's procedure applied to error MAE. L-co-R does not appear in the table as it is the best, and consequently, control algorithm. Values of $p$ under $0.05$ lead to reject the null hypothesis, i.e., the forecasting provided by L-Co-R and the corresponding algorithm can be considered significantly differents.
-\label{tb:holm-mae}}
+\caption{Results of the Holm's procedure for every error. Values of $p$ under or equals to $0.05$ lead to reject the null hypothesis, i.e., the errors provided by the control algorithm and the corresponding compared algorithm can be considered significantly differents.
+\label{tb:holm-all}}
 
 \end{table}
 
@@ -867,59 +898,7 @@ Holm's procedure has been applied to any of the six error measure being consider
 
 
 
-\begin{table} \footnotesize
- \begin{center}
- \begin{tabular}{|l|l|l|l|}
-\hline
-\emph{Error} & \emph{Best algorithm} & \emph{No significant differences} & \emph{Significant differences} \\
-\hline
-\emph{MAE} & (1) L-Co-R & (2) ARIMA, 
 
-(3) Mean & (4) Theta, (5) Croston, (6) Spline \\
-\emph{MAPE} & (1) L-Co-R& (2) ARIMA, (3) Mean, (4) Theta & (5) Croston, (6) Spline  \\
-\emph{MASE} & L-Co-R & Arima, Mean, Theta, Croston & Spline  \\
-\emph{MdAPE} & L-Co-R & Arima, Mean & theta, Spline, Croston  \\
-\emph{MSE} & (1) ARIMA & (2) L-Co-R, (3) MEAN, (4) Croston, (5) Theta & (6) Spline \\
-\emph{SMAPE} & (1) ARIMA & (2) L-Co-R, (3) MEAN, (4) Croston, (5) Theta & (6) Spline \\
-\hline
-
- \end{tabular}
- \end{center}
- \caption{???COSAS.
- \label{tb:bonferroni}}
- \end{table}
-
-
-
-
-
-\begin{table} \footnotesize
- \begin{center}
- \begin{tabular}{|l|l|l|l|l|l|}
-\hline
-\emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} & \emph{SMAPE} \\
-\hline
-\textbf{L-Co-R} & \textbf{L-Co-R} & \textbf{L-Co-R}  & \textbf{L-Co-R}  & \textbf{ARIMA}  & \textbf{ARIMA}  \\
-\textbf{No diff.} & \textbf{L-Co-R} & \textbf{L-Co-R}  & \textbf{L-Co-R}  & \textbf{ARIMA}  & \textbf{ARIMA}  \\
-
-\textbf{ARIMA} & \textbf{ARIMA} & \textbf{ARIMA}  & \textbf{ARIMA}  & \textbf{L-Co-R}  & \textbf{L-Co-R}  \\
-\textbf{Mean} & \textbf{Mean} & \textbf{Mean} & \textbf{Mean} & \textbf{Mean} & \textbf{Mean} \\
-Theta & \textbf{Theta} & \textbf{Theta} & Theta & \textbf{Croston} & \textbf{Croston} \\
-Croston & Croston & \textbf{Croston} & Spline & \textbf{Theta} & \textbf{Theta} \\
-Spline &Spline &Spline &Spline &Croston &Spline \\
-%\emph{MAE} & (1) L-Co-R & (2) ARIMA, (3) Mean & (4) Theta, (5) Croston, (6) Spline \\
-%\emph{MAPE} & (1) L-Co-R& (2) ARIMA, (3) Mean, (4) Theta & (5) Croston, (6) Spline  \\
-%\emph{MASE} & L-Co-R & Arima, Mean, Theta, Croston & Spline  \\
-%\emph{MdAPE} & L-Co-R & Arima, Mean & theta, Spline, Croston  \\
-%\emph{MSE} & (1) ARIMA & (2) L-Co-R, (3) MEAN, (4) Croston, (5) Theta & (6) Spline \\
-%\emph{SMAPE} & (1) ARIMA & (2) L-Co-R, (3) MEAN, (4) Croston, (5) Theta & (6) Spline \\
-\hline
-
- \end{tabular}
- \end{center}
- \caption{???COSAS.
- \label{tb:bonferroni2}}
- \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%% CONCLUSIONS AND FUTURE WORK %%%%%%%%%%%%%%%%%%%%%%%%%%
 
