@@ -84,66 +84,73 @@ Email: mario@tectijuana.edu.mx}
 \begin{abstract}
 MasterMind is a puzzle in which a hidden string of symbols must be
 discovered by producing query strings which are compared with the
-hidden string; the result of this comparison (in terms of {\em number}
+hidden one; the result of this comparison (in terms of {\em number}
 of correct positions and colors) is fed back to the
-discoverer. Methods for solving this puzzle are compared in terms of
-the number of query strings (guesses) made and the total time needed
-to produce those strings. In this paper we focus on the latter, by
-trying to find a combination of parameters that is first uniform and
-independent of the problem size and second adequate to find a fast
-solution that is, at the same time, good enough. This parameter will
-be the {\em consistent set size}, that is, the maximum number of
+discoverer. 
+% Antonio - en lugar de discoverer -> enquirer o algo así?
+Methods for solving this puzzle 
+% Antonio - Dónde? En la literatura? Usually?
+are compared in terms of the number of query strings (guesses) made and the total time needed to produce those strings. In this paper we focus on the latter, by trying 
+% Antonio - by trying -> trying?
+to find a combination of parameters that is, first, uniform and
+independent of the problem size, and second, adequate to find a fast
+solution that is, at the same time, good enough. This parameter 
+% Antonio - acabas de decir que era una combinación de parámetros
+will be the {\em consistent set size}, that is, the maximum number of
 combinations that are sought before being scored and played as a
 guess. Having found in previous papers that the size has an influence
 on speed, we will concentrate on small sizes and test them through two
-different scoring methods: most parts and entropy. 
+different scoring methods from literature: most parts and entropy. 
+% Antonio - qué se quiere demostrar? qué se ha demostrado finalmente?
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
 
 \section{Introduction and state of the art}
 
-MasterMind \cite{Knuth,Widenius,Montgomery} is a puzzle in which one player $A$ hides a combination of
+MasterMind \cite{Knuth,Widenius,Montgomery} 
+% Antonio - con una o dos refs bastaría, no?
+is a puzzle in which one player $A$ hides a combination of
 $\kappa$ symbols and length $\ell$, while the other player $B$ tries to
-uncover it  by playing combinations coded in the same alphabet and with the same
+uncover it by playing combinations coded in the same alphabet and with the same
 length. The answers from player $A$ to every combination include the number of
-symbols in the combination that are in the correct position and the
-number of colors that have been guessed correctly. Player $B$ then
-plays new combinations until the hidden one is found. The objective
-of the game is to play repeatedly minimizing the number of turns needed
-to find the solution. 
+symbols in the combination that are in the correct position (usually white spots) and the number of colors that have been guessed correctly (black spots). 
+% Antonio - corrígeme si me he equivocado con los colores de las pistas. :D
+Player $B$ then plays new combinations until the hidden one is found. The objective of the game is to play repeatedly minimizing the number of turns needed to find the solution. 
 
 Solving a puzzle is a challenge by itself, even if it is a lowly board
 game such as this one. In fact, it is a game in which almost any
 computer strategy can beat a human, which uses a very different
-strategy \cite{laughlin1982selection,hubalovsky2012modeling} to play it. But solutions to
-MasterMind can be applied easily to other games such as MineSweeper
-\cite{legendre2012minesweeper} or Hangman since the structure is the
+strategy \cite{laughlin1982selection,hubalovsky2012modeling} to play it. 
+% Antonio - puedes comentar en una frase qué estrategias usamos los humanos
+But solutions to MasterMind can be applied easily to other games such as MineSweeper \cite{legendre2012minesweeper} or Hangman since the structure is the
 same: probing a part of the search space and getting a response from
 whoever holds the secret. We could stop at that and call MasterMind a
-worthwhile challenge, but it so happens that solving MasterMind can
-also be used to break ATMs guessing PINs \cite{focardi2011guessing}
-and even for an operation in biotechnology called {\em selective
-  phenotyping} \cite{gagneur2011selective}. Not only that, but since
-it is a problem which is NP-Hard
+worthwhile challenge, 
+% Antonio - esta expresión suena muy informal...
+but it so happens that solving MasterMind can also be used to break ATMs guessing PINs \cite{focardi2011guessing} and even for an operation in biotechnology called {\em selective phenotyping} \cite{gagneur2011selective}. Not only that, but since it is a problem which is NP-Hard
 \cite{DBLP:journals/corr/abs-1111-6922} the issue of finding bounds to
 the number of guesses needed is still open
 \cite{doerr2012playing}. Therefore, there is room for making new
 venues into finding better or faster solutions to the game of
+% Antonio - better es lo mismo que faster en este problema, ¿no?
 MasterMind such as the heuristic solution we present in this paper. 
 
 \begin{table*}[bht]
 % Idéntico a otro trabajo publicado, cambiar si se puede
+% Antonio - pos eso mismo. XD
 \caption{Table of partitions after two combinations have been played;
   this table is the result of comparing each combination against all
   the rest of the set, which is the set of consistent combinations in
-  a game after two combinations have already been played. In boldface,
-  the combinations which have the minimal worst set size (which happen to be in the 1b-1w column, but it could be any one); in this
-  case, equal to ten. A strategy that tries to minimize worst case
-  would play one of those combinations. The column 0b-1w with all values equal
-  to 0 has been suppressed; column for combination 3b-1w, being impossible, is
-  not shown either. Some rows have also been eliminated for lack of
+  a game after two combinations have already been played. 
+% Antonio - se repite esta misma frase al principio del caption, escríbelo de otra forma
+In boldface, the combinations which have the minimal worst set size (which 
+% Antonio - no has dicho lo que es el worst set size
+happen to be in the 1b-1w column, 
+% Antonio - no has dicho antes qué es black (b) y qué es white (w). Yo lo he aclarado en dos paréntesis, pero revísalo. ;)
+but it could be any one); in this case, equal to ten. A strategy that tries to minimize worst case would play one of those combinations. The column 0b-1w with all values equal to 0 has been suppressed; column for combination 3b-1w, being impossible, is not shown either. Some rows have also been eliminated for lack of
   space.  \label{tab:partitions}}
+% Antonio - ahora no hay lack of space, jeje
 \small
 \centering
 \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|}
@@ -185,6 +192,7 @@ FBAA &6 & 2 & 0 & 11 & 6 & 1 & 4 & 5 & 1 & 3 \\
 \hline
 \end{tabular}
 \end{table*}
+% Antonio - ¿por qué no pones esta tabla más cerca de donde la citas? Si se muestra antes en el artículo que el texto que explica algunas de las cosas que muestra no se entenderá...
 
 Most solutions so far \cite{o1991mastermind,francisstrategies:moo,Berghman20091880,nicso} use the concept of {\em
     eligible}, {\em possible} or {\em
@@ -205,115 +213,100 @@ amount of possible responses) is noted. Eventually this results in a
 series of {\em partitions} in which the set of consistent combinations
 is divided by its {\em distance} (in terms of common positions and
 colors) to every other.  Since the goal of the
-{\em codebreaker} is to find the hidden combination in as few steps as
+{\em codebreaker} 
+% Antonio - antes no has hablado de codebreaker, sino de jugador A y jugador B. De hecho, casi que mejor cambia lo de jugador A y B, ya que puede confundir con el ejemplo que pones después en el que usas 'AABB' como código. ;)
+is to find the hidden combination in as few steps as
 possible, she is interested in obtaining as small a partition as
+% Antonio - supongo que se pone 'she' por una cuestión de discriminación positiva, pero weno, yo pondría he/she en todo caso. :p
 possible. Therefore, it makes sense to focus on the size of these
 partitions (which one will be the remaining feasible partition is
 obviously not known in advance, so some heuristic reasoning is here
-required). As an example, let us consider the first combination in Table \ref{tab:mm}: if the hidden combination considered is AABB,
-% Antonio - poner entre paréntesis la combinación considerada. AABB es la combinación oculta/deseada, ¿no?, mejor poner hidden combination en ese caso, en la frase anterior
-there will be 256 combinations whose response will be 0b, 0w (those
-with other colors), 256 with 0b, 1w (those with either an A or a B),
-and so on. Some partitions may also be empty, or contain a single element
-(4b, 0w will contain just AABB, obviously).  For a more exhaustive
-explanation see \cite{Kooi200513}; the whole partition set for an
+required). As an example, let us consider the first combination in Table \ref{tab:mm}: 
+% Antonio - supongo que te refieres a la tabla tab:partitions, la otra está comentada
+if the hidden combination considered is AABB, there will be 256 combinations whose response will be 0b, 0w (those with other colors), 256 with 0b, 1w (those with either an A or a B), and so on. Some partitions may also be empty, or contain a single element (4b, 0w will contain just AABB, obviously).  For a more exhaustive explanation see \cite{Kooi200513}; the whole partition set for an
 advanced stage of the game is shown in Table \ref{tab:partitions}. Each combination is thus characterized by the features of these partitions: the number of non-empty ones, the average number of combinations in them, the
 maximum, and other characteristics related to the reduction of the size of the search space that might distinguish them. 
-% Antonio - la última frase queda un poco 'informal'
-% Corregida, aunque me gusta lo informal. - JJ
 For instance, in Table \ref{tab:partitions}, the combination ABDC (and others) would have a maximum of non-zero partitions (none of them has zero elements), while AACC (and others, shown in boldface) have a minimum worst-case
 partition size (equal to ten).
 
 Please note that these are heuristic methods based on expected
-outcome. On average, they will work as expected, but even combinations
-with the same score will obtain a different result depending, of
-course, on which is the actual secret combination. Finding the best
-one for a particular size, or even a particular set of combinations,
-is an open issue which leaves room for research such as the one
-performed in this paper. 
+% Antonio - the expected?
+outcome. On average, they will work as expected, 
+% Antonio - si puedes usa otro término que no sea 'expected' otra vez
+but even combinations with the same score will obtain a different result depending, of course, on which is the actual secret combination. Finding the best one for a particular size, 
+% Antonio - ¿'the best one' qué? parece que te refieres a la 'combination'
+or even a particular set of combinations,
+is an open issue which leaves room for the research performed in this paper. 
 
 These partitions are used to assign a score to every combination;
-several scores have been proposed:\begin{itemize}
-\item {\em Worst case} was proposed by Knuth \cite{Knuth} as the first rigorous
-  strategy to play MasterMind; combinations are scored according to
+several scores have been proposed:
+% Antonio - in the literature?
+\begin{itemize}
+\item {\em Worst case} was introduced by Knuth \cite{Knuth} as the first rigorous strategy to play MasterMind; combinations are scored according to
   the size of the biggest partition; the bigger, the worse. The
   combination to play is extracted from the set of those with the
   smallest biggest combination. Ties are broken by using the first in
   lexicographical order. 
-\item {\em Most parts}, proposed in \cite{Kooi200513}, takes into account only the
-  number of non-zero partitions.
+\item {\em Most parts}, proposed in \cite{Kooi200513}, takes into account only the number of non-zero partitions.
 \item {\em Entropy}  which has been used in \cite{Neuwirth,bestavros,mm:ppsn:2010}, computes
   the entropy of partitions, and tries to maximize it
 \item {\em Expected size} used by \cite{Berghman20091880,irving} tries to
   minimize the expected size.
 \end{itemize}
 
-Experiments so far show that the best strategies are Most parts and
-Entropy, with no distinct advantage, for all problem sizes, of any one
-of them
-over the others \cite{nicso}, although Entropy seems to have a slight
-edge, at the cost of a slightly slower performance \cite{mm:evostar13}. In fact,
-combinations of them are possible, according to
-\cite{DBLP:journals/corr/abs-1207-1315}, but have not, so far, been
-proved in problems where a sample of the consistent set is used or,
-for that matter, in evolutionary algorithms. Most
-strategies, however, concentrate on finding the right size for
-minimization of the number of turns. The complexity of the solving
-algorithm, however, increases quadratically with the set size, since
-it involves comparing every combination with the rest, which
+Experiments so far show 
+% Antonio - alguna REF o autoREF? ahm, que vienen después, jeje.
+that the best strategies are Most parts and Entropy, with no distinct advantage, for all problem sizes, of any one of them over the others \cite{nicso}, although Entropy seems to have a slight edge, at the cost of a slightly slower performance \cite{mm:evostar13}. In fact, combinations of them are possible, according to \cite{DBLP:journals/corr/abs-1207-1315}, but have not, so far, been
+proved in problems where a sample of the consistent set is used or, for that matter, in evolutionary algorithms. Most strategies, however, concentrate on finding the right size for minimization of the number of turns. The complexity of the solving algorithm, however, increases quadratically with the set size, since it involves comparing every combination with the rest, which
 implies that the time needed to find the solution and also number of
 evaluations increase too fast with the search space size, resulting in a bad
 scaling behavior.
 
-Currently, the state of the art was established by Berghman et al. in
-\cite{Berghman20091880}. They obtained a system that is able to
-find the solution in an average number of moves that is, for all sizes
-tested, better than previously published. The number of evaluations
-was not published, but time was. In both cases, their solutions were
+Currently, the state of the art 
+% Antonio - the state of the art es qué? no será a todos los niveles... :D
+was established by Berghman et al. in \cite{Berghman20091880}. They obtained a system that is able to find the solution in an average number of moves that is, for all sizes tested, better than previously published. The number of evaluations was not published, but time was. In both cases, their solutions were
 quite good. However, there were many parameters that had to be set for
 each size, starting with the first guess and the size of the
 consistent set, as well as population size and other evolutionary
 algorithm parameters. In this paper we will try to adapt our
-previously published Evo method by reducing the number of parameters
-without compromising too much on algorithm performance. However, some
-researchers have tried to break the barrier of spaces with a high
-dimension by searching for fast solutions: Khalifa and Yampolsky
+previously published Evo method 
+% Antonio - Cita que te crió
+by reducing the number of parameters without compromising too much on algorithm performance. However, some researchers have tried to break the barrier of spaces with a high dimension by searching for fast solutions: Khalifa and Yampolsky
 \cite{khalifa2011ga} were able to solve the length 8, 12 colors
 ($\ell=8,\kappa=12$) problem in just 8 seconds, but with an average
 number of guesses equal to 25 (vs. 20.571 seconds and 8.366 average
-number of guesses). Even if the result from the pure game-playing point
-of view is less than optimal, it open the venue for a new research
-path, setting the parameters of the algorithm so that faster solutions
-are found without sacrificing the quality of the guesses played.
+number of guesses). 
+% Antonio - vs quien?
+Even if the result from the pure game-playing point of view is less than optimal, it open the venue for a new research path, setting the parameters of the algorithm so that faster solutions are found without sacrificing the quality of the guesses played.
 
 However, even as you can find a good solution using only a sample of
-the consistent set size as proved in \cite{Berghman20091880,nicso}, different set
-sizes do have an influence on the outcome. When you reduce the
+the consistent set size as proved in \cite{Berghman20091880,nicso}, different set sizes do have an influence on the outcome. When you reduce the
 size to the minimum it is bound to have an influence on the result, in
 terms of turns needed to win and number of evaluations needed to do
-it. The effect of the reduction of this sample size will decrease
+it. 
+% Antonio - yo evitaría el 'you' en estas dos frases. ;)
+The effect of the reduction of this sample size will decrease
 the probability of finding, and thus playing, the hidden combination
 and also the probability of finding the combination that maximally
 reduces the search space size when played, not to mention the fact
 that scoring will be biased by the absence of some combinations
 (which, in fact, might lead to having non-optimal combinations with
 the best score). 
-However, in this
-paper we will prove that good solutions can be found by using a small
-sample size
-and, what is more, a common set size across all MasterMind problem
-sizes. Using this common size means that we no longer need to worry
-about  setting this
-parameter to find an optimal result, as we had done in previous papers
-\cite{DBLP:conf/cec/GuervosMC11} resulting in a great improvement on
-the number of experiments needed to find an acceptable solution. 
+However, in this paper we will prove that good solutions can be found by using a small sample size and, what is more, a common set size across all MasterMind 
+% Antonio - all??? set size de qué? n osé si queda claro.
+problem sizes. Using this common size means that we no longer need to worry
+about  setting this parameter to find an optimal result, as we had done in previous papers \cite{DBLP:conf/cec/GuervosMC11} resulting in a great improvement on the number of experiments needed to find an acceptable solution. 
+% Antonio - lo que pone aquí no cuadra con el título, fijar un parámetro no es explorar parameter space...
+
+% Antonio - dí qué se va a estudiar con ese parámetro fijo, qué experimentos se van a hacer y qué análisis se harán. Sólo has dicho que 'good solutions can be found'... pero qué son 'good solutions'? :D
 
 % Actualizar esto
 The rest of the paper is organized as follows: the next section
 (\ref{sec:evo}) 
 presents the state of the resolution of the MasterMind puzzle using
-evolutionary algorithms. Experiments performed and results obtained with this setup will be
-presented in Section \ref{sec:exp}, and we will finish the paper
+evolutionary algorithms. Experiments performed and results obtained with this setup
+% Antonio - qué setup?
+ will be presented in Section \ref{sec:exp}, and we will finish the paper
 with the conclusions that derive from them (commented in Section
 \ref{sec:conclusions}). 
 
@@ -569,11 +562,14 @@ method, which has been released as open
 source code at CPAN
 (\url{http://search.cpan.org/dist/Algorithm-MasterMind/}), is an
 evolutionary algorithm that has been optimized for speed and to obtain
-a solution to the game in 
-the minimal number of evaluations possible. This evolutionary
+% Antonio - cita a EAs o no hace falta?
+a solution to the game in the minimal 
+% Antonio - minimal -> minimum?
+number of evaluations possible. This evolutionary
 algorithm codifies possible solutions directly (as strings) and
 scores them according to its closeness to the optimal
 solution (called {\em fitness}).
+% Antonio - the optimal solution es el código, ¿no?
 
 Evo, which is explained extensively in
 \cite{DBLP:conf/cec/GuervosMC11} looks for consistent combinations
@@ -581,13 +577,16 @@ until a prefixed amount of them has been found; this parameter is
 called {\em consistent set size} or simply $cs$. It uses Most Parts to
 score consistent combinations, and the {\em distance to consistency}
 for non-consistent ones, so that the fitness directs search towards
+% Antonio - the search?
 finding consistent solutions and to find solutions with better
-score. When the algorithm finds $cs$ solutions  or when the number of
+score. When the algorithm finds $cs$ solutions or when the number of
 solutions found does not vary for a number of generations (set to
 three throughout all experiments), the one with the best score is
 played. If several are tied for best score, a random one is played. 
 
-Evo++ incorporates a series of methods to decrease the amount of
+Evo++ 
+% Antonio - cita?
+incorporates a series of methods to decrease the amount of
 evaluations needed to find the solution, including {\em endgames}
 which makes the evolutionary algorithm revert to exhaustive search in
 the case the search space has been well characterized (for instance,
@@ -595,12 +594,9 @@ when we know that the solution is a permutation of one of the
 combinations played or when we have discarded some colors, reverting
 to a problem of smaller size). 
 
-The solutions are quite promising, but the main problem is that the
-number of evaluations needed to find the solution increases rapidly 
-with problem size (fortunately, not as fast as the problem size itself
-or this solution would not be convenient) and a new parameter is introduced: the optimal size
-of the set of consistent combinations, that is, the number of
-combinations that the algorithm tries to find out before it plays one.  
+The solutions are quite promising,
+% Antonio - solutions -> results?
+ but the main problem is that the number of evaluations needed to find the solution increases rapidly with problem size (fortunately, not as fast as the problem size itself or this solution would not be convenient) and a new parameter is introduced: the optimal size of the set of consistent combinations, that is, the number of combinations that the algorithm tries to find out before it plays one.  
 
 \begin{table}[t!]
 \centering 
@@ -623,25 +619,30 @@ Tournament size & 7 \\
 \end{table}
 
 In this paper we also test another algorithm which we will call
-EFE. The main difference between EFE and Evo is that the former has
+EFE. 
+% Antonio - despliegue de las siglas?
+The main difference between EFE and Evo is that the former has
 been profiled (implementation {\em always} matters
 \cite{DBLP:conf/iwann/MereloRACML11}) substituting slow parts of the
-implementation for faster ones (paper submitted) and uses Entropy
-instead of Most Parts for scoring. In general, Entropy should offer
-better solutions \cite{mm:evostar13}. However, the sampling size of
+implementation for faster ones (paper submitted) 
+% Antonio - ¿qué es eso de 'paper submitted'?
+and uses Entropy instead of Most Parts for scoring. In general, Entropy should offer better solutions \cite{mm:evostar13}. However, the sampling size of
 the consistent set will play differently in the two scoring methods,
 that is why we are interested in finding out which one of them yields
 the best solutions and for which $cs$. In fact, being this one a {\em
   fast} algorithm, we have extended the test to a bigger search space
 size, $\kappa=12, \ell=8$. % Aunque lleva ya casi una semana el
                            % algoritmo sin terminar.
+% Antonio - esperemos que acabe a tiempo... :D
 
-What we do in this paper is to test an {\em one size fits all} approach
-by making the size of the consistent set unchanged for any problem
+What we do in this paper is to test an {\em one size fits all} 
+% Antonio - ¿este término no se pone enlazado con guiones?
+approach by making the size of the consistent set unchanged for any problem
 size. This reduces the algorithm parameter set by one, but since this
 parameter set has, a priori, a big influence on result and there is no
 method to set it other than experimentation, it reduces greatly the
 amount of experiments needed to obtain a solution. 
+% Antonio - ¿experiments o runs o generations?
 
 \section{Experiments and results}
 \label{sec:exp}
@@ -649,21 +650,24 @@ amount of experiments needed to obtain a solution.
 The experiments presented in this paper extend those published
 previously, mainly in \cite{DBLP:conf/cec/GuervosMC11} and \cite{merelo12:gameon}.
 
-In this paper we will set this size to a common for all sizes and minimal value:
-10, that is why we will denominate the method tested Evo10. This value
-has been chosen to be small enough to be convenient, 
-but not so small that the scoring methods are rendered meaningless. This will reduce the parameters
+In this paper we will set this size 
+% Antonio - this size -> decir lo que sea this. :D
+to a common for all sizes and minimal value: 10, that is why we will denominate the method tested {\em Evo10}.
+This value has been chosen to be small enough to be convenient, but not so small that the scoring methods are rendered meaningless. This will reduce the parameters
 needed by one, leaving only the population size to be set, once, of
 course, the rest of the evolutionary algorithm parameters have been
 fixed by experimentation; these parameters are shown 
-in Table \ref{tab:params} have been found to be the best in a previous
+in Table \ref{tab:params} 
+% Antonio - pon la tabla más cerquita, ¿no?
+have been found to be the best in a previous
 study (to be published).  
+% Antonio - yo no diría esto de to be published. Dí cómo se han obtenido y yastá. Así parece que este tiene algo más de chicha, porque lo estoy viendo algo 'light'. ;D
 
 For every problem size, a fixed set of 5000 combinations were
 generated randomly. There is at most a single repetition in the
 smallest size, and no repetition in the rest. The sets can be
-downloaded from  \url{http://goo.gl/6yu16}; these sets are the same
-that have been used in previous papers. A single game is played for every
+downloaded from  \url{http://goo.gl/6yu16}; these are the same
+that we have considered in previous papers. A single game is played for every
 combination. 
 
 The results for this fixed parameter setting are shown in Tables
@@ -746,6 +750,7 @@ Berghman et al.   &  6.475                                      & & ~&&  ~\\
 These tables compare previous results (with its corresponding
 consistent set size, published in \cite{DBLP:conf/cec/GuervosMC11}) and the results presented in this paper, labeled
 Evo10 (10 as in the size of the consistent set).
+% Antonio - lo del 10 ya lo has explicado hace poco. ;)
 \begin{figure*}[!htb]
 \centering
 \includegraphics[scale=0.50]{proportion.png}
@@ -770,7 +775,9 @@ which represent the average number of moves needed to find the
 solution, results are quite similar. The average for Evo10 is
 consistently higher (more games are needed to find the solution)
 but in half the cases the difference is not statistically
-significant using Wilcoxon paired test. There is a significant
+significant using Wilcoxon paired test. 
+% Antonio - ¿puedes poner alguna tablilla con los resultados de Wilcoxon? Le daría también más 'cuerpo' al trabajo. :D
+There is a significant
 difference for the two smaller sizes ($\ell=4,\kappa=8$ and
 $\ell=5,\kappa=8$), but not for the larger sizes  $\ell=5,\kappa=9$
 and $\ell=6,7$. This is probably due to the fact that, with increasing
@@ -797,10 +804,10 @@ made on a different set of combinations, it is not possible to
 compare, but at any rate it would be reasonable to think that this
 result is significant. 
 
- As it can be seen in Figure \ref{fig:prop} the number of evaluations needed to find the solution (which, admittedly, is a bit worse for Evo10) falls much faster than for Evo++ so that, in fact, we can approach larger sizes than could be
-done using the previous methods, as the Figure
-\ref{fig:size} shows. This figure plots the average number of evaluations needed to
-find the solution vs. solution size. The most interesting feature of
+ As it can be seen in Figure \ref{fig:prop} the number of evaluations needed to find the solution (which, admittedly, is a bit worse for Evo10) 
+% Antonio - yo quitaría el admittedly. Hace que el lector repare en que Evo10 es peor. Lo mismo si no lo pones, se pasa más por alto. :D
+falls much faster than for Evo++ so that, in fact, we can approach larger sizes than could be done using the previous methods, as the Figure
+\ref{fig:size} shows. This figure plots the average number of evaluations needed to find the solution vs. solution size. The most interesting feature of
 this plot is the observation that the $\kappa=9,\ell=5$ needs, on
 average, as many evaluations as the largest size evaluated here,
 $\kappa=10,\ell=7$; however, search space size is 20 times bigger for
@@ -850,7 +857,7 @@ since, as indicated in the introduction, every method will need
 different $cs$ to obtain good results. In particular, computing
 entropy of a set with a small size might produce meaningless results
 (while Most Parts will always produce a meaningful result, number of
-non-zero partitions); when the size is increased, the reulsts will be
+non-zero partitions); when the size is increased, the results will be
 increasingly accurate. In fact, these better results come at the cost
 of more evaluations (as should only be expected, since the
 evolutionary algorithm must run for a few generations before issuing a
@@ -861,7 +868,7 @@ are available from our GitHub repository
 \url{http://github.com/JJ/algorithm-mastermind/experiments/CEC13}. 
 
 \section{Discussion, conclusions and future work}
-\label{sec:conslusions}
+\label{sec:conclusions}
 
 This paper has shown that using a small and fixed consistent set size
 when playing mastermind using evolutionary algorithms does not imply a
@@ -921,7 +928,9 @@ evolutionary algorithm is really working will vary with the problem
 size, but it could be as low as one (even 0, in some cases). 
 
  This is
-illustrated in Figure \ref{fig:csize}, which shows how the average
+illustrated in Figure \ref{fig:csize}, 
+% Antonio - ¿por qué pones las figuras y tablas tan lejos de donde las citas? :D
+which shows how the average
 (for all 5000 games) size of the consistent set evolves with the turn
 number. The actual size of the set depends on the bound; the larger
 the bound, the larger the size. In fact, the actual average size is for all
