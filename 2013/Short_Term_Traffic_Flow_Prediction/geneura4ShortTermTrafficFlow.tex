@@ -148,19 +148,19 @@ Blah, blah, blah...
 The development of new systems of traffic conditions information and the affluence of vehicles on roads, seem to be a key point nowadays. 
 With an increasingly informed population, provided with ubiquitous communication devices, which are commonly used by more than $ 90 \% $ of the population, obtaining information about the traffic in any part of the above 165000 kilometres of Spanish roads would mean an optimal management of a communication network fundamental for a high percentage of users.
 
-In this work, a system based on bluetooth (BT) device discovery is proposed, proposing an information system of the traffic status, as well as a valuable dataset suitable to be used in a time-series forecasting process.
+In this work, an information system of the traffic status is proposed. This information system is based on data collected by means of bluetooth (BT) device discovery, and provides description of the current traffic conditions, as well as a valuable dataset suitable to be used in a time-series forecasting process.
 
 Both, the data-collecting and the time-series forecasting processes [REF] 
 % Antonio - poner una referencia y contar en una línea lo que son
 are necessary steps to achieve an ultimate goal: to have information about traffic flows that occur or will occur in a certain area, allowing or aiming to optimally manage motion decisions by citizens.
 
-Therefore, from the transport management viewpoint, various issues have been found:
+Therefore, from the transport management viewpoint, various needings have been found:
 
 \begin{itemize}
-  \item A versatile, autonomous data collector, and monitoring device.
-  \item Traffic information collecting in real time.
-  \item The adequate processing of the data being collected,
-  \item And finally, a system that allows sharing data and information with those who make decisions about mobility.
+  \item To have a versatile, autonomous data collector, and monitoring device.
+  \item To collect traffic information in real time.
+  \item To process in an adequate way the data being collected,
+  \item And finally, to build a system that allows sharing data and information with those who make decisions about mobility.
 % Antonio - ¿a quienes te refieres? :D
 \end{itemize}
 
@@ -395,8 +395,18 @@ In \cite{estudioprecision} it was obtained an a priori error estimation of $8.5\
 
 
 ??????DescripciÃ³n de los datos recopilados
+For this work, the data collected by 5 nodes during 60 days have been used. First day corresponds to November 24, 2011, while last day corresponds to January 22, 2013. Figure \ref{fig:collected-data} shows the ammount of BT devices detected by each node along this period. Nodes 4 and 5 are shown in a separate graphics since they were located in a highway, so that they registered a higher number of BT devices.
+\newpage
+\begin{figure}[htb]
+ \begin{center}
+\includegraphics[scale=0.6]{number-of-bt-devices-detected-1-2-3.jpg} 
+\includegraphics[scale=0.6]{number-of-bt-devices-detected-4-5.jpg}
+ \caption{For each node, the total number of different detected devices per day is shown. Due to the location of nodes 4 and 5, the values they registred are higher than those belonging to nodes 1, 2, and 3; for this reason, they are shown in different graphics.
+ \label{fig:collected-data}}
+ \end{center}
+ \end{figure}
 
-
+As figure \ref{fig:weekly} shows, the number of BT devices detected clearly varies from weekdays to weekends; although the figur shows the sum of the 5 nodes, this charasteristics is also observed in every single node.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% EXPERIMENTS AND RESULTS %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Experiments and results}
@@ -694,9 +704,9 @@ In that section, the speed is limited to 100 km/h. However, although most of the
 \subsection{Flow traffic prediction by means of time-series forecasting}
 As far as data is chronologically collected, methods coming from the area of time-series forecasting can be used in order to predict future behaviour of traffic flow.
 
-From the big variety of existing mtethods, 6 different ones have been selected in order to compare the validity of their predictions. The methods being used are the followings: ARIMA, Croston, Theta, Spline,L-Co-R, and as control algorithm, the mean value. Methods  ARIMA, Croston, Theta, Spline and Mean have been executed using the R software, by means of the Forecast package (cita). In the other hand, L-Co-R is a co-evolutionary algorithm of our own, based on radial basis function neural networks. In order to compare the methods, a statistical study is included allowing us to draw some conclusions.
+From the big variety of existing mtethods, 6 different ones have been selected in order to compare the validity of their predictions. The methods being used are: ARIMA, Croston, Theta, Spline,L-Co-R, and as control algorithm, the mean value. Methods  ARIMA, Croston, Theta, Spline and Mean have been executed using the R software, by means of the Forecast package (???cita). In the other hand, L-Co-R is a co-evolutionary algorithm of our own, based on radial basis function neural networks. In order to compare the methods, a statistical study is included allowing us to draw some conclusions.
 
-The experimentation has been carried out using the data collected for five nodes over 62 days. The first 55 days have been used to train the methods, and obtain their associated models, and the remaining 7 days have been used to test their generalization capabilities. The prediction has been for an horizon of 1, so that known data until day $n$ have been used to forecast day $n+1$. 
+The experimentation has been carried out using the data collected for five nodes over 60 days (from 24/November/2012 to 22/January/2013). The first 53 days have been used to train the methods, and obtain their associated models, and the remaining 7 days have been used to test their generalization capabilities. The prediction of these 7-days test has been made for an horizon of 1, so that known data until day $n$ have been used to forecast day $n+1$. 
 
 For each method and each node, a set of measures have been computed in order to determine the accuracy of the prediction. As most textbooks recommend, one of the chosen measures is  the Mean Absolute Percentage Error (MAPE) \cite{Bowerman2004}, which was used in the first M-competition \cite{Makridakis1982}. Median Absolute Percentage Error (MdAPE) \cite{Armstrong,Fildes1992} is also used, as a normalized version of the previous one. More recently, the description of many others measures can be found in  \cite{Gooijer25years} and \cite{Hyndman2006}. Among all of them, in this work we use the followings:
 
@@ -841,7 +851,7 @@ The results yielded by every method have been compared using two non-parametric 
  \label{tb:friedman-iman-tests}}
  \end{table}
 
-Futhermore, Friedman test results also provide a mechanism to establish a ranking between the methods, determining which one can be considered the best. Once the method has been found out, it can be compared against the rest methods using the Holm's procedure (¿???CITA). This method computes the probability that two methods can be considered to have a similar behaviour, being this the null hypothesis. The null hypothesis is rejected when this probability is lower than $0.05$, so that methods can be considered to be significantly differents. For instance, table \ref{tb:holm-mae} shows the probabilities computed by the Holm's procedure for error MAE; L-Co-R does not appear in the table since it results to be the best method with respect to this error, and it is taken as control algorithm. According to the values shown, there are not signficant differences between L-Co-R and ARIMA, but there exist between L-Co-R and the rest of methods.
+Futhermore, Friedman test results also provide a mechanism to establish a ranking between the methods, determining which one can be considered the best. Once the method has been found out, it can be compared against the rest methods using the Holm's procedure (¿???CITA). This method computes the probability that two methods can be considered to have a similar behaviour, being this the null hypothesis. The null hypothesis is rejected when this probability is lower than $0.05$, so that methods can be considered to be significantly differents. Holm's procedure has been applied to any of the six error measure being considered. Table \ref{tb:holm-all} summarizes the rankings of methods, as well as the existence or absence of significant differences. Thus, this statistic study shows that L-Co-R is the best algorithm in four of six error measures (MAE, MAPE, MASE, and MdAPE); nevertheless, it can not be said to be better than ARIMA in any case but, for most measures, it overcomes the rest of methods. 
 
 
 \begin{table}[!htp]\footnotesize
@@ -894,7 +904,8 @@ SMAPE&ARIMA&3&CROSTON&0.091 & Accepted \\
 
 \end{table}
 
-Holm's procedure has been applied to any of the six error measure being considered. Table \ref{tb:holm-all} summarizes the rankings of methods, as well as the existence or absence of significant differences. Thus, this statistic study shows that L-Co-R is the best algorithm in four of six error measures; nevertheless, it can not be said to be better than ARIMA in any case but, for most measures, it overcomes the rest of methods.
+
+
 
 
 
