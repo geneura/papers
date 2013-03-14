@@ -132,6 +132,9 @@ Blah, blah, blah...
 
 \begin{keyword}
 %% keywords here, in the form: keyword \sep keyword
+Traffic data gathering \sep Bluetooth \sep Traffic flow prediction \sep Times-Series Forecasting 
+% Antonio - ¿Sería 'Prediction' o 'Forecasting'?
+
 
 %% MSC codes here, in the form: \MSC code \sep code
 %% or \MSC[2008] code \sep code (2000 is the default)
@@ -145,16 +148,40 @@ Blah, blah, blah...
 %% main text
 \section{Introduction}
 \label{sec:introduction}
-The development of new systems of traffic conditions information and the affluence of vehicles on roads, seem to be a key point nowadays. 
-With an increasingly informed population, provided with ubiquitous communication devices, which are commonly used by more than $ 90 \% $ of the population, obtaining information about the traffic in any part of the above 165000 kilometres of Spanish roads would mean an optimal management of a communication network fundamental for a high percentage of users.
+The development of new systems that inform of traffic conditions and the affluence of vehicles on roads, seem to be a key point nowadays. 
+% muy débil esa afirmación ¿Lo parece o lo es? ¿A quien le parece?
+With an increasingly informed population, provided with ubiquitous
+communication devices, which are commonly used by more than $ 90 \% $
+% de dónde es ese dato? Tratad de haced afirmaciones siempre sober
+% algún dato publicado - JJ
+of the population,   obtaining information about the traffic in any
+part of the above 165000 kilometres of Spanish roads would mean an
+optimal management of a communication network fundamental for a high
+percentage of users. % ¿Y de dónde habéis sacado eso? Además, el
+                     % experimento está hecho sobre calles, no sólo
+                     % carreteras. - JJ
 
-In this work, an information system of the traffic status is proposed. This information system is based on data collected by means of bluetooth (BT) device discovery, and provides description of the current traffic conditions, as well as a valuable dataset suitable to be used in a time-series forecasting process.
+In this work, an information system of the traffic status is
+proposed. This information system is based on data collected by means
+of bluetooth (BT) device discovery and provides description of the
+current traffic conditions, as well as a valuable dataset suitable to
+be used in a time-series forecasting process. % Deberíais hacer aquí
+                                % algún "claim" sobre qué es lo que va
+                                % a hacer ese sistema, sus pros y sus
+                                % contras . Si os vais a concentrar en
+                                % la posibilidad de predicción,
+                                % decidlo así en el paper (y qué grado
+                                % de acierto o error sería aceptable)
+                                % - JJ
 
-Both, the data-collecting and the time-series forecasting processes [REF] 
+The data-collecting and the time-series forecasting processes [REF] 
 % Antonio - poner una referencia y contar en una línea lo que son
-are necessary steps to achieve an ultimate goal: to have information about traffic flows that occur or will occur in a certain area, allowing or aiming to optimally manage motion decisions by citizens.
+are necessary steps to achieve an ultimate goal: to have information
+about traffic flows that occur or will occur in a certain area,
+allowing or aiming to optimally manage motion decisions by citizens. 
 
-Therefore, from the transport management viewpoint, various needings have been found:
+% therefore de qué? - JJ
+Therefore, from the transport management viewpoint, various needs have been addressed:
 
 \begin{itemize}
   \item To have a versatile, autonomous data collector, and monitoring device.
@@ -164,13 +191,38 @@ Therefore, from the transport management viewpoint, various needings have been f
 % Antonio - ¿a quienes te refieres? :D
 \end{itemize}
 
-In order to fulfil these requirements, the BT device discovery used for this work is able to catch waves emitted by different technological components. The components can be the ones embedded in vehicles (hands-free or GPS), accessories that the users incorporate to their vehicles, as well as mobile phones, tablets or laptops.
+In order to fulfil these requirements, the BT device discovery used
+for this work is able to catch pulses emitted by different
+technological components. The components can be the ones embedded in
+vehicles (hands-free or GPS), accessories that the users incorporate
+to their vehicles, as well as mobile phones, tablets or laptops.  % decir las limitaciones que tienen estos últimos - JJ
 The main data being collected is the MAC address of the device BT card.
-This is an unique identifier for each device, so that passing vehicles can be identified.
-From the user's personal data protection point of view, the intrusiveness is minimum since one-way encryption (or codification) algorithms are used to hide the real MAC addresses which are stored. Moreover it is even safer from the point of view of data privacy, since this piece of information can not be attached to any given person.
+This is an unique identifier for each device, so that passing vehicles
+can be identified. % and, since itis unique, allows us to know whether
+                   % the vehicle has been in different places - JJ 
+From the user's personal data protection point of view, the
+invasion of privacy is minimum since one-way encryption (or codification)
+algorithms are used to hide the real MAC addresses which are
+stored. Moreover it is even safer from the point of view of data
+privacy, since this piece of information can not be attached to any
+given person. 
 
-The work shows how the large amount of data collected, related to detected BT devices (which pass near the device), are considered as the starting point to  compute statistics, to study several indicators about the use of vehicles, and to perform time-series forecasting for the monitored area population.
+The work shows how the large amount of data collected, related to
+detected BT devices (which pass near the device), are considered as
+the starting point to  compute statistics, to study several indicators
+about the use of vehicles, and to perform time-series forecasting for
+the monitored area population. % No digas lo que vas a hacer. Di por
+                               % qué lo haces y lo que quieres
+                               % obtener. Hay que probar que este
+                               % sistema es 1. de bajo costo
+                               % 2. Refleja condiciones reales
+                               % 3. Permite hallar cosas qeu otros no
+                               % (como saber cuanto tarda en llegar de
+                               % un punto a otro) 4. predecir aun
+                               % plazo determinado - JJ
 
+% Anunciad aquí lo que vais a hacer y por qué es interesante; ¿qué
+% interés tiene saber cuantos coches hay en días laborables? - JJ
 Fot this reason, the paper is organized as follows:
 ???????In Section \ref{soa} current technologies to monitor the traffic that passes through a certain area is summarized.
 Section \ref{obj} details the goals of this paper.
@@ -183,73 +235,110 @@ Finally, we present some conclusions and future work (Section 5).
 
 \section{Background and State of the Art}
 \label{sec:soa}
-This section introduces the two techniques used in this work. On the one hand, the methods developed to detect traffic flows; and on the other hand, algorithms and techniques suitable to be used for time-series prediction tasks.
+This section introduces the two main components of the work. On the
+one hand, the methods developed to detect and store data about traffic flows; and on the other hand, the algorithms and techniques considered in the time-series prediction tasks. 
+% Asigna una tarea a alguien en GitHub para que se haga. Quizás Pedro
+% García. 
 
 %===============================================================================
 
 \subsection{Traffic detection technologies}
 \label{subsec:traffic}
 
+% Esto debería ir antes del estado del arte. Así te puedes referir a
+% él - JJ
+% Antonio - pos eso, es una sección conjunta. a la vez que se explican los métodos se comenta el estado del arte en los mismos. ;)
 Traffic detection technologies can be generally classified into two groups: intrusive and non-intrusive.
 
-Intrusive detection technologies are installed on or within the roadway, requiring lane closures. Using this type of technology is inherently more hazardous and is generally more time consuming, especially for temporary traffic data collection. This technology has a number of drawbacks:
+%Vamos a ver si de una vez por todas dejáis de copiar frases literales
+%de "por ahí". Esta frase está sacada de http://www.ugpti.org/research/projects.php?view=123&program=atac
+% Intrusive detection technologies are installed on or within the roadway, requiring lane closures. Using this type of technology is inherently more hazardous and is generally more time consuming, especially for temporary traffic data collection. This technology has a number of drawbacks:
+% \begin{itemize}
+%   \item Installation requires pavement cut.
+%   \item Improper installation decreases pavement life.
+%   \item Installation and maintenance require lane closure.
+%   \item Detection accuracy may decrease when design requires detection of a large variety of vehicle classes.
+%   \item Poor pavement condition can dramatically shorten the life span of intrusive sensors.
+% \end{itemize}
+% Borro y expresadlo de otra forma. - JJ
+
+% Antonio - Hecho debajo. ;)
+
+Intrusive detection technologies imply a physical modification of the roadway, i.e., they are installed on, and frequently, under the pavement. This is the main disadvantage, since it requires the lanes must be closed for the installation process. Moreover it could affect the road life, requiring usually several posterior maintenance tasks.
+These methods also present some accuracy problems due to the difficulty to detect different types of vehicles.
+Some examples of intrusive technologies are inductive loop detectors, piezoelectric sensors, or weigh in motion detectors.
+
+% Non-intrusive technologies are traffic detection sensors that cause
+% minimal disruption to normal traffic operations during installation,
+% operation and maintenance compared to conventional detection
+% methods. They can also be deployed more safely than conventional
+% detection methods, since they are located adjacent to the roadway
+% and require minimal interaction with traffic flow. Non-intrusive
+% technologies can be classified in two big groups: active
+% technologies (microwave radar, ultrasonic and laser radar), and
+% passive technologies (infrared, acoustic and video image
+% processing). 
+%También está copiado. Por favor, no copiéis nunca frases ni siquiera
+%en versiones iniciales - JJ
+
+On the other hand non-intrusive technologies do not cause traffic interruptions during the installation and maintenance processes, since they are usually placed on the roadway sides, or are installed on traffic or informative signs.
+Non-intrusive methods are classified in active and passive technologies. 
+Active ones include microwave, ultrasonic and laser radars. Passive methods can be infrared and video image processing or acoustic sensors, among others.
+
+%Figure \ref{tipossensores} shows a classification of sensor-based information systems according to the intrusiveness of the technology.
+
+%\begin{figure}[htpb] 
+%\begin{center} 
+%\includegraphics[scale=0.55]{intrusivos.jpeg}  %tipossensores.jpg}
+%\end{center} 
+%\caption{Information systems classification, according to the intrusiveness of the technology.} 
+%\label{tipossensores} 
+%\end{figure}
+
+% Antonio - quito la figura porque se han comentado los ejemplos en el texto. ;)
+
+Current technologies most frequently used in traffic monitoring
+include pneumatic tubes, loop detectors, floating vehicles, and
+automatic recognition systems, among others. Some of them are explained next:
+%usad \itemize, jolines... - JJ
+% Antonio - hecho. Reescribo además cada punto para que no nos digan ná. ;D
+
 \begin{itemize}
-  \item Installation requires pavement cut.
-  \item Improper installation decreases pavement life.
-  \item Installation and maintenance require lane closure.
-  \item Detection accuracy may decrease when design requires detection of a large variety of vehicle classes.
-  \item Poor pavement condition can dramatically shorten the life span of intrusive sensors.
+    \item \emph{Manual counting} is a traditional method in which human observers, using a counting tool, perform the data gathering task. They can extract information difficult to obtain with other methods, such as vehicle classification or occupancy.
+
+    \item \emph{Pneumatic road tubes}: are included in the intrusive technologies. They are deployed across the roadway and detect pressure changes when the vehicles pass over them. However, their efficiency depends on the weather conditions and temperature, and are not reliable to recognize low speed traffic flows.
+
+    \item \emph{Piezoelectric sensors}: are another intrusive components which work in a similar way than the previous tubes, but based in the mechanical deformation of the material, which means an electric signal (potential difference) of different intensity is detected. The deformation depends on the vehicle's weight, so these sensors can differentiate some classes of vehicles and measure speed.
+
+    \item \emph{Magnetic loops}: the most common intrusive technology in traffic data gathering. They consist in a set of loops placed under the asphalt generating a magnetic field. When a vehicle moves over this field it can be detected and counted. They can differentiate between vehicles (in some range) depending on the detected iron mass size. They have a shorter life (can be damaged by heavy vehicles) and are quite expensive (installation and maintenance), but are not affected by weather conditions.
+
+    \item \emph{Passive and active infrared sensors}: non-intrusive method which consider the infrared energy which vehicles radiate to detect their presence, speed and even their type. They perform worse in bad weather conditions and have a quite limited covering.
+
+    \item \emph{Microwave radar}: another non-intrusive technology. It is based in the Doppler effect, and can detect vehicles in movement and their speed. The advantage is that it is not affected by weather conditions.
+
+    \item \emph{Ultrasonic sensors}: it is also a non-intrusive technology based in sound. There are some devices that emit ultrasonic sound waves which are detected by the sensors when returning once they have rebounded in a vehicle. They measure the returning time for the signal to calculate the vehicle's speed. Weather conditions and temperature affect their performance. 
+
 \end{itemize}
+% 
 
-Non-intrusive technologies are traffic detection sensors that cause minimal disruption to normal traffic operations during installation, operation and maintenance compared to conventional detection methods. They can also be deployed more safely than conventional detection methods, since they are located adjacent to the roadway and require minimal interaction with traffic flow. Non-intrusive technologies can be classified in two big groups: active technologies (microwave radar, ultrasonic and laser radar), and passive technologies (infrared, acoustic and video image processing). 
-
-Figure \ref{tipossensores} shows a classification of information systems according to the intrusiveness of the technology.
-
-\begin{figure}[htpb] 
-\begin{center} 
-\includegraphics[scale=0.55]{intrusivos.jpeg}  %tipossensores.jpg}
-\end{center} 
-\caption{Information systems classification, according to the intrusiveness of the technology.} 
-\label{tipossensores} 
-\end{figure}
-
-Current technologies most frequently used in traffic monitoring include pneumatic tubes, loop detectors, floating vehicles, and automatic recognition systems, among others.
-
-
-\emph{Manual counts} is the most traditional method. In this case trained observers gather traffic data that cannot be efficiently obtained through automated counts; e.g., vehicle occupancy rate, pedestrians and vehicle classifications. The most common equipments used are tally sheet, mechanical count boards, and electronic count board systems.
-
-\emph{Passive and active infra-red} sensors are based on detecting the presence, speed, and type of vehicles using the infrared energy radiating from the detection area. The main drawbacks are the performance during bad weather, as well as limited lane coverage.
-
-\emph{Microwave radar} can detect moving vehicles and their speed (Doppler radar). It records count data, speed, and simple vehicle classification. Its behaviour is not affected by weather conditions.
-
-\emph{Ultrasonic sensors} devices emit sound waves to detect vehicles by measuring the time for the signal to return to the device. They can be affected by temperature or bad weather. 
-
-\emph{Pneumatic road tubes} are placed across the road lanes to detect the pressure changes produced when a vehicle tyre passes over them. The pulse of air that is created is recorded and processed by a counter located on the side of the road. The main drawback of this technology is that it has limited lane coverage and its efficiency is subject to weather, temperature, and traffic conditions. This system may also not be efficient in measuring low speed flows.
-\emph{Piezoelectric sensors} are very similar to pneumatic road tubes, although the principle is to convert mechanical energy into electrical energy. Indeed, mechanical deformation of the piezoelectric material modifies its surface charge density leading to a potential difference that appears between the electrodes. The amplitude and frequency of the signal is directly proportional to the degree of deformation. This system can be used to measure weight and speed.
-
-\emph{Magnetic loops} (inductive, magnetic, or video processing based) may be used temporarily or permanently, the latter being the more usual. 
-It is the most conventional technology used to collect traffic data. The loops are embedded in roadways in a square formation that generates a magnetic field. The information is then transmitted to a counting device placed on the side of the road. This has a generally short life expectancy because it can be damaged by heavy vehicles, but is not affected by bad weather conditions. This technology has been widely deployed over the last decades. However, the implementation and maintenance costs can be expensive.
-
-The use of so-called \emph{floating vehicles} consists on a vehicle provided with sensors to collect information while driving on a predefined route.
-This active device data collection is one of the most popular among operators of roads, used especially for the collection of travel time and for loop detector calibration.
-Depending on the level of automation in the data collection, the cost can vary.
+A different technology consists in the use of the so-called \emph{floating vehicles}, i.e. vehicles provided with sensors and anthems to collect information while driving on a predefined route (active) or from an static, and usually strategic, position (passive).
+This active data gathering is one of the most popular among operators of roads, and is especially used for the calculation of travel times and for loop detectors calibration. Depending on the level of automation in the data collection, the cost can vary.
 
 In some areas, such as electronic toll or transit systems, \emph{automatic vehicle identification systems} (AVI) are also widely used. 
 These sensors are non-exhaustive data sources to identify tags located in vehicles, such as in payment-systems without stopping. 
-The system detects the pass, and the data is sent to the server where it is processed in order to carry out an event (pay toll, opening in the fence, etc).
+The system detects the pass, and the data is sent to the server where it is processed in order to carry out an event (pay toll, opening the fence, etc).
 
-The main disadvantage of these systems is that they are unable to identify vehicles detected, in order to obtain origin/destination matrixes.
-Just the number of vehicles and their type can be calculated, but does not allow to obtain moves flow, nor to determine whether a certain vehicle passes repeatedly.
-In addition, its high cost makes it unprofitable covering secondary roads with them, so they are often located on major roads.
+The main disadvantage of all these systems is that they are unable to identify vehicles detected, in order to obtain origin/destination matrixes.
+Just the number of vehicles and sometimes their type can be computed, but does not allow to obtain moves flow, nor to determine whether a certain vehicle passes repeatedly.
+In addition, its high cost makes it unprofitable covering secondary roads with them, so they are often located on main roadways.
 
-Finally, the \emph{automatic recognition} technology has experienced an increase in recent years due to its ability to detect individual vehicles without relying on in-vehicle systems. 
-Video image detection is a good example: video cameras record vehicle numbers, type and speed by means of different video techniques, e.g. trip line and tracking. 
+Thus the \emph{automatic recognition} technology has rapidly grown in recent years due to its ability to detect individual vehicles without relying on in-vehicle systems. 
+\emph{Video image detection} is an example: video cameras record vehicle numbers, type and speed by means of different video techniques, e.g. trip line and tracking. 
 Furthermore, they are used for automatic detection of incidents on the road. 
 That is the main advantage over previous information systems.
 However, system reliability might not be the best, as the system can be sensitive to meteorological conditions.
 Moreover, these systems are very costly compared to the previous ones.
-Finally, from a privacy point of view, the Spanish Data Protection Agency\footnote{Agencia de Protección de Datos} considers the car license plate as a personal data, so that it would require the user consent.
-
+Finally, from a privacy point of view, the Spanish Data Protection Agency\footnote{Agencia de Protección de Datos} considers the car license plate as a personal data, so their use could require the user consent.
 
 % ------------------------------------------------------------------------------
 
@@ -258,6 +347,7 @@ There are different companies working in the traffic information area using appr
 
 \begin{itemize}
 
+%aunque sean comerciales deberíais buscar referencias donde se usen. 
 \item \textbf{Bit Carrier} \cite{patenteBC} \cite{BitCarrier}: It offers a traffic management system based in BT to count people and commercial routes (pathsolver). Its technology was implanted in highways managed by Abertis for traffic control and monitoring. Actually it has a 150 devices network in Catalonia, so it allows count the traffic times of 200.000 persons each day.
  
 \item \textbf{Trafficnow} \cite{Trafficnow}: Another BT system product. A pilot experience has been implanted in Vigo.
@@ -272,12 +362,14 @@ There are different companies working in the traffic information area using appr
 \end{itemize}
 
 The proposal presented in this work have some common features with the previous approaches, offering similar functionality but with reduced cost.
+% Antonio - hay que darle muuucho más bombo a lo que se hace en el artículo con el método que proponemos. Decir sus ventajas (bajo coste, gran capacidad de detección, etc) y compararlas con los métodos existentes.
 
 %===============================================================================
 
 \subsection{Time series forecasting}
+% Debería ir también en la introducción, antes del estado del arte. 
 \label{subsec:time-series}
-Briefly described, a time series is a set of chronologically collected data. Time series forecasting is the task of predicting values of a given series using its own past and present values; the values of any related exogeneous variable can be also used, when available.
+Briefly described, a time series is a set of chronologically ordered data. Time series forecasting is the task of predicting values of a given series using its own past and present values; the values of any related exogeneous variable can be also used, when available.
 Time series forecasting is a major field of research, mainly in the areas of statistics \cite{Gooijer25years} and operational research \cite{Fildes2008}, as time series can be found in fields like Engineering, Biology, Economy, or Social Sciences, among many others.
 
 Time series forecasting is usually tackled trying to find out an underlying model that describes the series behaviour. For this reason, there exist a wide variety of methods to perform forecast using both linear and nonlinear models. The group of linear methods comprises the exponential smoothing methods \cite{Brown1959,Winters1960}, simple exponential smoothing (SES), or State space models \cite{Snyder1985}, among many others. Nevertheless, the most well-known, widely used linear methods are the ARIMA ones \cite{BoxJenk}. ARIMA methods can be summarized as iterative cycles in which: a) the time series is classified as belonging to a pre-established class; b) according to that class, a set of parameters is estimated; and c) the obtained model is verified in other to accept it, or search for another one returning to first step. The models provide by ARIMA integrate in their equations autoregressive (AR) and moving average (MA) components to have into account pass values as well as previous forecasting errors.
@@ -322,10 +414,11 @@ As can be observed, the approaches in the literature consider the lags selection
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATA COLLECTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Data-collecting}
+\section{Procedures used for data collection}
 \label{sec:data}
 
-Identifying the MAC address of BT devices passing by the roads has being achieved using Intelify (see Figure \ref{intelify}), a hardware solution with a low power consumption and a high detection range.
+Identifying the MAC address of BT devices passing by the roads has
+being achieved using the Intelify device (see Figure \ref{intelify}), a hardware solution with a low power consumption and a high detection range.
 
 \begin{figure}[htpb] 
 \begin{center} 
@@ -385,7 +478,13 @@ Operating System & Debian 6.0 Squeeze  \\
 
 This hardware device is based on technology developed by Ciudad 2020 \cite{cityanalytics,Blobject}, and the services it offers are based on a net of Intelify devices. Using such an structure, it has the capacity to discover information about the physical environment and help with decision making to any kind of organization based on people flow and behavior.
 
-Valuable information about tourism, trade and mobility can be gathered through the deployment of autonomous devices around a city. A specific example is the service offered in \cite{numerodepersonas}. It offers information about foot traffic through Cordoba city center.
+Valuable information about tourism, trade and mobility can be gathered
+through the deployment of autonomous devices around a city. A specific
+example is the service offered in \cite{numerodepersonas}. It offers
+information about foot traffic through Cordoba city center. % Esta
+                                % frase ya la habéis dicho al
+                                % principio. O la mudáis allí o
+                                % borráis la parte "publicitaria" - JJ
 
 The cost of this solution is 1000 euros per device, including maintenance of remote computer, communications using a 3G telephony service and storage and data management.
 
@@ -395,8 +494,14 @@ In \cite{estudioprecision} it was obtained an a priori error estimation of $8.5\
 
 
 ??????DescripciÃ³n de los datos recopilados
-For this work, the data collected by 5 nodes during 60 days have been used. First day corresponds to November 24, 2011, while last day corresponds to January 22, 2013. Figure \ref{fig:collected-data} shows the ammount of BT devices detected by each node along this period. Nodes 4 and 5 are shown in a separate graphics since they were located in a highway, so that they registered a higher number of BT devices.
-\newpage
+For this work, the data collected by 5 nodes during 60 days has been
+used. First day corresponds to November 24, 2011, while last day
+corresponds to January 22, 2013. Figure \ref{fig:collected-data} shows
+the ammount of BT devices detected by each node along this
+period. Nodes 4 and 5 are shown in a separate graphics since they were
+located in a highway, so that they registered a higher number of BT
+devices. % Se va a liberar ese dato? Convendría hacerlo (también por
+         % el proyecto CEI BIOTIC - JJ
 \begin{figure}[htb]
  \begin{center}
 \includegraphics[scale=0.6]{number-of-bt-devices-detected-1-2-3.jpg} 
@@ -406,7 +511,14 @@ For this work, the data collected by 5 nodes during 60 days have been used. Firs
  \end{center}
  \end{figure}
 
-As figure \ref{fig:weekly} shows, the number of BT devices detected clearly varies from weekdays to weekends; although the figur shows the sum of the 5 nodes, this charasteristics is also observed in every single node.
+As figure \ref{fig:weekly} shows, the number of BT devices detected clearly varies from weekdays to weekends; although the figure shows the sum of the 5 nodes, this charasteristics is also observed when considering every single node.
+\begin{figure}[htb]
+ \begin{center}
+\includegraphics[scale=0.6]{weekly.jpg} 
+ \caption{Data summarized with respect to the day of the week. Data collected in Saturday and Sunday is clearly lower than data collected during weekdays.
+ \label{fig:weekly}}
+ \end{center}
+ \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% EXPERIMENTS AND RESULTS %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Experiments and results}
@@ -416,8 +528,20 @@ As figure \ref{fig:weekly} shows, the number of BT devices detected clearly vari
 
 In this section the analysis of collected data during the monitoring period (November 8 to December 9) to obtain statistics and so study the use of vehicles is carried out.
 
- % Concretamente, en las siguientes subsecciones, reportaremos informaciÃ³n acerca del nÃºmero total de vehÃ­culos detectados por cada nodo, en dÃ­as laborables o festivos, sobre la densidad del trÃ¡fico por rango horario, acerca de los desplazamientos individuales, y de la velocidad media en un tramo delimitado por dos nodos consecutivos.
-Specifically, the following subsections report information about the total number of vehicles detected by each node, on weekdays or holidays, information on traffic density by time range on individual movements, and the average speed on a section delimited by two consecutive nodes.
+ % Concretamente, en las siguientes subsecciones, reportaremos
+ % informaciÃ³n acerca del nÃºmero total de vehÃ­culos detectados por
+ % cada nodo, en dÃ­as laborables o festivos, sobre la densidad del
+ % trÃ¡fico por rango horario, acerca de los desplazamientos
+ % individuales, y de la velocidad media en un tramo delimitado por
+ % dos nodos consecutivos. 
+Specifically, the following subsections report information about the
+total number of vehicles detected by each node, on weekdays or
+holidays, information on traffic density by time range on individual
+movements, and the average speed on a section delimited by two
+consecutive nodes.
+% Convendría que buscárais resultados similares en otros trabajos para
+% comparar y probar efectivamente que son razonables los resultados
+% son correctos (y ha sido más barato obtenerlos, por ejemplo) - JJ
 
  % Por Ãºltimo, puesto que el dÃ­a 14 de noviembre de 2012 se celebrÃ³ la huelga general, estudiaremos cÃ³mo afectÃ³ la huelga al trÃ¡fico en el Ã¡rea metropolitana de Granada, comparando los totales de detecciÃ³n de dispositivos entre el dÃ­a de la huelga (14 de noviembre), y el miÃ©rcoles siguiente (21 de noviembre).
 Finally, since November 14 2012 a general strike was held, we will study how the strike affected traffic in the metropolitan area of Granada (Spain), by comparing total number of devices detected that day (November 14), and the following day (November 15).
@@ -851,7 +975,7 @@ The results yielded by every method have been compared using two non-parametric 
  \label{tb:friedman-iman-tests}}
  \end{table}
 
-Futhermore, Friedman test results also provide a mechanism to establish a ranking between the methods, determining which one can be considered the best. Once the method has been found out, it can be compared against the rest methods using the Holm's procedure (¿???CITA). This method computes the probability that two methods can be considered to have a similar behaviour, being this the null hypothesis. The null hypothesis is rejected when this probability is lower than $0.05$, so that methods can be considered to be significantly differents. Holm's procedure has been applied to any of the six error measure being considered. Table \ref{tb:holm-all} summarizes the rankings of methods, as well as the existence or absence of significant differences. Thus, this statistic study shows that L-Co-R is the best algorithm in four of six error measures (MAE, MAPE, MASE, and MdAPE); nevertheless, it can not be said to be better than ARIMA in any case but, for most measures, it overcomes the rest of methods. 
+Futhermore, Friedman test results also provide a mechanism to establish a ranking between the methods, determining which one can be considered the best. Once the method has been found out, it can be compared against the rest methods using the Holm's procedure (¿???CITA). This method computes the probability that two methods can be considered to have a similar behaviour, being this the null hypothesis. The null hypothesis is rejected when this probabilhttp://www.restaurantelaplatea.com/menu-celebraciones/ity is lower than $0.05$, so that methods can be considered to be significantly differents. Holm's procedure has been applied to any of the six error measure being considered. Table \ref{tb:holm-all} summarizes the rankings of methods, as well as the existence or absence of significant differences. Thus, this statistic study shows that L-Co-R is the best algorithm in four of six error measures (MAE, MAPE, MASE, and MdAPE); nevertheless, it can not be said to be better than ARIMA in any case but, for most measures, it overcomes the rest of methods. 
 
 
 \begin{table}[!htp]\footnotesize
