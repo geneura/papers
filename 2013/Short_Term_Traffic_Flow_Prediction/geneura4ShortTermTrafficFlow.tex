@@ -132,6 +132,9 @@ Blah, blah, blah...
 
 \begin{keyword}
 %% keywords here, in the form: keyword \sep keyword
+Traffic data gathering \sep Bluetooth \sep Traffic flow prediction \sep Times-Series Forecasting 
+% Antonio - ¿Sería 'Prediction' o 'Forecasting'?
+
 
 %% MSC codes here, in the form: \MSC code \sep code
 %% or \MSC[2008] code \sep code (2000 is the default)
@@ -232,10 +235,8 @@ Finally, we present some conclusions and future work (Section 5).
 
 \section{Background and State of the Art}
 \label{sec:soa}
-This section introduces the two techniques used in this work. On the
-one hand, the methods developed to detect traffic flows; and on the
-other hand, algorithms and techniques suitable to be used for
-time-series prediction tasks. 
+This section introduces the two main components of the work. On the
+one hand, the methods developed to detect and store data about traffic flows; and on the other hand, the algorithms and techniques considered in the time-series prediction tasks. 
 % Asigna una tarea a alguien en GitHub para que se haga. Quizás Pedro
 % García. 
 
@@ -246,6 +247,7 @@ time-series prediction tasks.
 
 % Esto debería ir antes del estado del arte. Así te puedes referir a
 % él - JJ
+% Antonio - pos eso, es una sección conjunta. a la vez que se explican los métodos se comenta el estado del arte en los mismos. ;)
 Traffic detection technologies can be generally classified into two groups: intrusive and non-intrusive.
 
 %Vamos a ver si de una vez por todas dejáis de copiar frases literales
@@ -260,6 +262,12 @@ Traffic detection technologies can be generally classified into two groups: intr
 % \end{itemize}
 % Borro y expresadlo de otra forma. - JJ
 
+% Antonio - Hecho debajo. ;)
+
+Intrusive detection technologies imply a physical modification of the roadway, i.e., they are installed on, and frequently, under the pavement. This is the main disadvantage, since it requires the lanes must be closed for the installation process. Moreover it could affect the road life, requiring usually several posterior maintenance tasks.
+These methods also present some accuracy problems due to the difficulty to detect different types of vehicles.
+Some examples of intrusive technologies are inductive loop detectors, piezoelectric sensors, or weigh in motion detectors.
+
 % Non-intrusive technologies are traffic detection sensors that cause
 % minimal disruption to normal traffic operations during installation,
 % operation and maintenance compared to conventional detection
@@ -273,58 +281,64 @@ Traffic detection technologies can be generally classified into two groups: intr
 %También está copiado. Por favor, no copiéis nunca frases ni siquiera
 %en versiones iniciales - JJ
 
-Figure \ref{tipossensores} shows a classification of information systems according to the intrusiveness of the technology.
+On the other hand non-intrusive technologies do not cause traffic interruptions during the installation and maintenance processes, since they are usually placed on the roadway sides, or are installed on traffic or informative signs.
+Non-intrusive methods are classified in active and passive technologies. 
+Active ones include microwave, ultrasonic and laser radars. Passive methods can be infrared and video image processing or acoustic sensors, among others.
 
-\begin{figure}[htpb] 
-\begin{center} 
-\includegraphics[scale=0.55]{intrusivos.jpeg}  %tipossensores.jpg}
-\end{center} 
-\caption{Information systems classification, according to the intrusiveness of the technology.} 
-\label{tipossensores} 
-\end{figure}
+%Figure \ref{tipossensores} shows a classification of sensor-based information systems according to the intrusiveness of the technology.
+
+%\begin{figure}[htpb] 
+%\begin{center} 
+%\includegraphics[scale=0.55]{intrusivos.jpeg}  %tipossensores.jpg}
+%\end{center} 
+%\caption{Information systems classification, according to the intrusiveness of the technology.} 
+%\label{tipossensores} 
+%\end{figure}
+
+% Antonio - quito la figura porque se han comentado los ejemplos en el texto. ;)
 
 Current technologies most frequently used in traffic monitoring
 include pneumatic tubes, loop detectors, floating vehicles, and
-automatic recognition systems, among others. These are explained next:
+automatic recognition systems, among others. Some of them are explained next:
 %usad \itemize, jolines... - JJ
+% Antonio - hecho. Reescribo además cada punto para que no nos digan ná. ;D
 
+\begin{itemize}
+    \item \emph{Manual counting} is a traditional method in which human observers, using a counting tool, perform the data gathering task. They can extract information difficult to obtain with other methods, such as vehicle classification or occupancy.
 
-% \emph{Manual counting} is the most traditional method. In this case trained observers gather traffic data that cannot be efficiently obtained through automated counts; e.g., vehicle occupancy rate, pedestrians and vehicle classifications. The most common equipments used are tally sheet, mechanical count boards, and electronic count board systems.
-% en serio, también copiado y de otro sitio... como tenga que seguir
-% buscando cosas copiadas apaga y vámonos... - JJ
+    \item \emph{Pneumatic road tubes}: are included in the intrusive technologies. They are deployed across the roadway and detect pressure changes when the vehicles pass over them. However, their efficiency depends on the weather conditions and temperature, and are not reliable to recognize low speed traffic flows.
 
-\emph{Passive and active infra-red} sensors are based on detecting the presence, speed, and type of vehicles using the infrared energy radiating from the detection area. The main drawbacks are the performance during bad weather, as well as limited lane coverage.
+    \item \emph{Piezoelectric sensors}: are another intrusive components which work in a similar way than the previous tubes, but based in the mechanical deformation of the material, which means an electric signal (potential difference) of different intensity is detected. The deformation depends on the vehicle's weight, so these sensors can differentiate some classes of vehicles and measure speed.
 
-\emph{Microwave radar} can detect moving vehicles and their speed (Doppler radar). It records count data, speed, and simple vehicle classification. Its behaviour is not affected by weather conditions.
+    \item \emph{Magnetic loops}: the most common intrusive technology in traffic data gathering. They consist in a set of loops placed under the asphalt generating a magnetic field. When a vehicle moves over this field it can be detected and counted. They can differentiate between vehicles (in some range) depending on the detected iron mass size. They have a shorter life (can be damaged by heavy vehicles) and are quite expensive (installation and maintenance), but are not affected by weather conditions.
 
-\emph{Ultrasonic sensors} devices emit sound waves to detect vehicles by measuring the time for the signal to return to the device. They can be affected by temperature or bad weather. 
+    \item \emph{Passive and active infrared sensors}: non-intrusive method which consider the infrared energy which vehicles radiate to detect their presence, speed and even their type. They perform worse in bad weather conditions and have a quite limited covering.
 
-\emph{Pneumatic road tubes} are placed across the road lanes to detect the pressure changes produced when a vehicle tyre passes over them. The pulse of air that is created is recorded and processed by a counter located on the side of the road. The main drawback of this technology is that it has limited lane coverage and its efficiency is subject to weather, temperature, and traffic conditions. This system may also not be efficient in measuring low speed flows.
-\emph{Piezoelectric sensors} are very similar to pneumatic road tubes, although the principle is to convert mechanical energy into electrical energy. Indeed, mechanical deformation of the piezoelectric material modifies its surface charge density leading to a potential difference that appears between the electrodes. The amplitude and frequency of the signal is directly proportional to the degree of deformation. This system can be used to measure weight and speed.
+    \item \emph{Microwave radar}: another non-intrusive technology. It is based in the Doppler effect, and can detect vehicles in movement and their speed. The advantage is that it is not affected by weather conditions.
 
-\emph{Magnetic loops} (inductive, magnetic, or video processing based) may be used temporarily or permanently, the latter being the more usual. 
-It is the most conventional technology used to collect traffic data. The loops are embedded in roadways in a square formation that generates a magnetic field. The information is then transmitted to a counting device placed on the side of the road. This has a generally short life expectancy because it can be damaged by heavy vehicles, but is not affected by bad weather conditions. This technology has been widely deployed over the last decades. However, the implementation and maintenance costs can be expensive.
+    \item \emph{Ultrasonic sensors}: it is also a non-intrusive technology based in sound. There are some devices that emit ultrasonic sound waves which are detected by the sensors when returning once they have rebounded in a vehicle. They measure the returning time for the signal to calculate the vehicle's speed. Weather conditions and temperature affect their performance. 
 
-The use of so-called \emph{floating vehicles} consists on a vehicle provided with sensors to collect information while driving on a predefined route.
-This active device data collection is one of the most popular among operators of roads, used especially for the collection of travel time and for loop detector calibration.
-Depending on the level of automation in the data collection, the cost can vary.
+\end{itemize}
+% 
+
+A different technology consists in the use of the so-called \emph{floating vehicles}, i.e. vehicles provided with sensors and anthems to collect information while driving on a predefined route (active) or from an static, and usually strategic, position (passive).
+This active data gathering is one of the most popular among operators of roads, and is especially used for the calculation of travel times and for loop detectors calibration. Depending on the level of automation in the data collection, the cost can vary.
 
 In some areas, such as electronic toll or transit systems, \emph{automatic vehicle identification systems} (AVI) are also widely used. 
 These sensors are non-exhaustive data sources to identify tags located in vehicles, such as in payment-systems without stopping. 
-The system detects the pass, and the data is sent to the server where it is processed in order to carry out an event (pay toll, opening in the fence, etc).
+The system detects the pass, and the data is sent to the server where it is processed in order to carry out an event (pay toll, opening the fence, etc).
 
-The main disadvantage of these systems is that they are unable to identify vehicles detected, in order to obtain origin/destination matrixes.
-Just the number of vehicles and their type can be calculated, but does not allow to obtain moves flow, nor to determine whether a certain vehicle passes repeatedly.
-In addition, its high cost makes it unprofitable covering secondary roads with them, so they are often located on major roads.
+The main disadvantage of all these systems is that they are unable to identify vehicles detected, in order to obtain origin/destination matrixes.
+Just the number of vehicles and sometimes their type can be computed, but does not allow to obtain moves flow, nor to determine whether a certain vehicle passes repeatedly.
+In addition, its high cost makes it unprofitable covering secondary roads with them, so they are often located on main roadways.
 
-Finally, the \emph{automatic recognition} technology has experienced an increase in recent years due to its ability to detect individual vehicles without relying on in-vehicle systems. 
-Video image detection is a good example: video cameras record vehicle numbers, type and speed by means of different video techniques, e.g. trip line and tracking. 
+Thus the \emph{automatic recognition} technology has rapidly grown in recent years due to its ability to detect individual vehicles without relying on in-vehicle systems. 
+\emph{Video image detection} is an example: video cameras record vehicle numbers, type and speed by means of different video techniques, e.g. trip line and tracking. 
 Furthermore, they are used for automatic detection of incidents on the road. 
 That is the main advantage over previous information systems.
 However, system reliability might not be the best, as the system can be sensitive to meteorological conditions.
 Moreover, these systems are very costly compared to the previous ones.
-Finally, from a privacy point of view, the Spanish Data Protection Agency\footnote{Agencia de Protección de Datos} considers the car license plate as a personal data, so that it would require the user consent.
-
+Finally, from a privacy point of view, the Spanish Data Protection Agency\footnote{Agencia de Protección de Datos} considers the car license plate as a personal data, so their use could require the user consent.
 
 % ------------------------------------------------------------------------------
 
@@ -348,6 +362,7 @@ There are different companies working in the traffic information area using appr
 \end{itemize}
 
 The proposal presented in this work have some common features with the previous approaches, offering similar functionality but with reduced cost.
+% Antonio - hay que darle muuucho más bombo a lo que se hace en el artículo con el método que proponemos. Decir sus ventajas (bajo coste, gran capacidad de detección, etc) y compararlas con los métodos existentes.
 
 %===============================================================================
 
