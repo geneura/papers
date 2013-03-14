@@ -99,9 +99,11 @@ Email: \{jmerelo,amorag\}@geneura.ugr.es}
 
 \section{Introduction and state of the art}
 
-Evolution seems to be an effective method for improve, therefore optimice, behaviours. To use computers for emulate the biological evolution has became an excellent tool for problem solving named evolutionary programming, evolution strategies, artificial life and genetic algorithms (GA). For doing so the scientific community has been produced several libraries of diverse quality and applied it in many domains.
+Evolution seems to be an effective method for improve, therefore optimice, behaviours. To use computers for emulate the biological evolution has became an excellent tool for problem solving named evolutionary programming, evolution strategies, artificial life and genetic algorithms (GA). For doing so the scientific community has been produced several libraries of diverse quality and applied it in many domains. Nevertheless it is concentred in the use of widespread implementation technologies like C/C++, Fortran and Java. Getting out of that mainstream it is not normally seen a land for improvement science. 
 
 This article centered on \emph{Genetic Algorithms} as domain of application and will not develop any theory about that. Nevertheless the principal concepts involved and it's characteristics most be told in order to show how was modeled by Erlang constructs.
+
+Others concurrent oriented languages like Ada \cite{asdsd} has been reported like a feasible technology for implemented this kind of algorithm.
 
 % Actualizar esto
 The rest of the paper is organized as follows: next section
@@ -125,15 +127,19 @@ A varied arsenal of programming patterns, i.e., paradigms, exist for implement t
 
 There is a claim in modern software development for programming languages that help with concurrent programming and with better abstractions. The functional programming language Erlang is an answer that provides the actor pattern concept for concurrency and the functional paradigm for general modeling and design of solutions.
 
-Actors are a concurrent unit of execution using asynchronous messages passing for communication, for been implemented as process in the VM of the language and not like OS thread are very lightweight in creation, live and death. The use of immutable messages eliminate many of the typical problems of concurrent development and support the emulation of the Object Oriented paradigm with his modeling facilities. Functional programming has been defined by the role of functions in program composition and by the use of the very efficient lists data structure with many high order functions that operate upon it, Erlang honored the functional linage and include a ultra fast distributed data base. Besides, Erlang posees a macro system and the concept of records for encapsulate coding patterns and to group data by an entity.
+Actors are a concurrent unit of execution using asynchronous messages passing for communication, for been implemented as process in the virtual machine (VM) of the language and not like OS threads are very lightweight in creation, live and death. The use of immutable messages eliminate many of the typical problems of concurrent development and support the emulation of the Object Oriented (OO) paradigm with his modeling facilities.
+
+Functional programming has been defined by the role of functions in program composition and by the use of the very efficient lists data structure with many high order functions that operate upon it, Erlang honored the functional linage and include a ultra fast persistent technology call it Dets and Mnesia. Besides, Erlang posees a macro system and the concept of records for encapsulate coding patterns and group data by an entity.
+
 
 
 \subsection{Genetic Algorithm mapping to Erlang}
 
-The implementation of a genetic algorithm in a functional language most follow a different path, that's means to structure the algorithm model in terms less imperative and more declarative. We going to use a parallel pool based evolutionary strategy\cite{DBLP:conf/3pgcic/GuervosMFEL12} as use case in order to show our mean.
+Genetics algorithms, like many models of computations tend to be described in literature in is operational, imperative way. It's implementation in a functional language most follow a different path, that's means to structure the algorithm model in terms less imperative and more declarative. We going to use a parallel pool based evolutionary strategy\cite{DBLP:conf/3pgcic/GuervosMFEL12} as use case in order to show our mean.
 
-The pool (a server) will be an execution entity that will own the population and keep track of the advance in the solution search. The clients, concurrents to, that do the calculations could join and leave at any time without any consequences. Chromosomes will be encoding like lists and the differents steps of the EAs resides on Erlang functions.
+The pool (a server) will be an execution entity that will own the population and keep track of the advance in the solution search. The clients, concurrents to, do the calculations and could join and leave at any time without any consequences. Chromosomes will be encoding like lists and the differents steps of the EAs resides on Erlang functions.
 
+An Erlang actors is implemented by a sequence of pairs patterns/expressions that define each message that he could handle, It's close at the OO parlance and a way to organize the code. In this case we use one message for each service that the pool most provide, table \ref{poolTable} presents that.
 
 \begin{table}
   \centering
@@ -150,12 +156,12 @@ The pool (a server) will be an execution entity that will own the population and
 \end{verbatim} & A client Pid is registered.\\
 \hline
 \begin{verbatim}
-{initEvolution, 
+{initEvolution,
   NPopulation}->
-\end{verbatim} & The EA begins.  \\
+\end{verbatim} & The EA begins to evolve, the parameter NPopulationn means the initial population.  \\
 \hline
 \begin{verbatim}
-{generationEnd, Pid, 
+{generationEnd, Pid,
   NewIndividuals}->
 \end{verbatim} & One client report his successfully end of calculation. \\
 \hline
