@@ -187,11 +187,10 @@ vehicles employed and the working hours of the drivers (see Table
 \ref{tab:vehicledata}), plus the parameter configuration of the
 evolutionary algorithm those used in \cite{EVITAchapter2008}. In the
 multiobjective approach we have used the NSGA-II algorithm
- \cite{nsgaII2000} because it is considered the state of the art.
+ \cite{nsgaII2000} because it is considered one of the best algorithms in the state of the art.
 
 
-The rest of the paper is structured as follows. Delivery patterns
-are explained in Section \ref{sec:admpat}. The  methodology is
+The rest of the paper is structured as follows. The next section is devoted to briefly introduce the main concepts of multiobjective optimization. Delivery patterns are explained in Section \ref{sec:admpat}. The  methodology is
 described in Section \ref{sec:evita}. Section \ref{sec:exp-simulated} describes the experimental setup with the simulated data, with results contained in Section \ref{sec:results_sim}. Section \ref{sec:exp-real} describes the experiments with real geographical data. Finally, Section \ref{sec:conclusions}
 presents the conclusions and outlines future areas of research.
 \begin{table}[hbt]
@@ -217,6 +216,49 @@ not. As a consequence of the business logic, we will only consider
 \hline \multicolumn{7}{c}{} \\
 \end{tabular}} \end{center}
 \end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%  MO Optimization  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Multiobjective optimization}
+\label{sec:mulobj}
+
+Multicriteria or Multiobjective Optimization Problems\\ (MOP)
+\cite{Osyczka1985} are those where several 
+ objectives have to be simultaneously optimized. These problems do not
+ have a single best solution, one that is better than any other with
+ respect to every objective. In fact, frequently improving the
+ solution for one objective implies a worsening for another. 
+%
+Thus in a MOP there is a set of solutions that are better than the rest considering all the objectives; this set is known as the \textit{Pareto set} (PS). They try to approach the ideal set of solutions
+which is usually represented graphically as the \textit{Pareto front} (PF). These are related to an important concept, the \textit{dominance}, defined as follows (\textit{a} dominates \textit{b}):
+%
+\begin{small}
+\begin{equation}\label{eq:modom}
+\begin{array}{ll}
+a \prec b\;\;if: \\
+\forall i\in 1,2,...,k \; | \; C_i(a)\leq C_i(b)\:\; \wedge \:\; \exists j\in 1,2,...k \;| \; C_j(a)<C_j(b)
+\end{array}
+\end{equation}
+\end{small}
+%
+where \textit{a $\in$ X} and \textit{b $\in$ X} are two different decision vectors of \textit{n} values, and every \textit{C} is a cost function (one per objective). If it intends to minimize the cost and Equation \ref{eq:modom} is true, then \textit{b is dominated by a}.
+
+Hence, the solutions in the PS are known as \textit{non-dominated solutions}, while the remainder are known as dominated solutions. 
+%
+%Figure \ref{fig:pareto_front} shows the representation of the PF of a multi-objective (bi-criteria) problem, where the domination concept can be clearly seen.
+%
+%\begin{figure}[ht]
+%\begin{center}
+%\includegraphics[scale=0.5]{figures/pareto_front.eps}
+%\caption{Example of the Pareto front in a problem with two objectives to minimize (F1 and F2). Black dots correspond to solutions in the Pareto front ($a$ and $b$ among them). Dominated solutions are shown in gray ($c$ for instance).
+%\label{fig:pareto_front}}
+%\end{center}
+%\end{figure}
+%
+Since none of the solutions in the PS is absolutely better
+than the other non-dominated solutions, all of them are equally
+acceptable as regards the satisfaction of all the objectives. These concepts can be extended in \cite{Coello2002}. 
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Admisible Patterns  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -697,9 +739,7 @@ transport cost. We will also try an integral multiobjective approach, with a sin
 
 %ACKNOWLEDGMENTS are optional
 \section*{Acknowledgements}
-
-This work has been supported by project TIN2011-28627-C04-02 (ANYSELF), awarded by the Spanish Ministry of Science and Innovation, the FPU Grant 2009-2942, project P08-TIC-03903 awarded by the Andalusian Regional Government, and project 83 (CANUBE) awarded by the CEI-BioTIC UGR (\url{http://biotic.ugr.es}).
-
+This work has been supported in part by HPC-Europa 2 project (with the support of the European Commission - Capacities Area - Research Infrastructures), and the P08-TIC-03903 project awarded by the Andalusian Regional Government, the FPU Grant 2009-2942, the TIN2011-28627-C04-02 project, the University of Granada PR-PP-2011-5 project and, in part, by the MUSES project (number 318508 - FP7).
 
 %
 % The following two commands are all you need in the
