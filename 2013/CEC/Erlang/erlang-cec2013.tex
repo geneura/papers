@@ -91,8 +91,9 @@ Email: jmerelo@geneura.ugr.es}
 \maketitle
 
 \begin{abstract}
-%\boldmath
+New languages and technologies are taken the actual multicore space. Erlang is a functional language used for build concurrent, robust soft real-time systems of many fields. Evolutionary computing provides elegant solutions for many high performance computing problems for which such technology shines. Genetic algorithms has been particulary developed and applied in several domains, libraries of diverse characteristics has been implemented and converted in valuables products.
 
+Object oriented, or even structured programming paradigm are the dominants ways in the field. In this paper, a functional oriented approach to the modeling and implementation of genetic algorithms is presented. The language Erlang is used to show how simple and efficient could be a develop of a concurrent evolutionary algorithm.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
@@ -103,15 +104,16 @@ Evolution seems to be an effective method for improving, therefore optimizing, b
 
 This article is centered on \emph{Genetic Algorithms} as a domain of application and will not develop any theory about that. Nevertheless the principal concepts involved and it's characteristics most be told in order to show how was modeled by Erlang constructs.
 
-Other concurrent oriented languages like Ada \cite{asdsd} has been reported like a feasible technology for implemented this kind of algorithms.
+Genetic algorithms are general function optimizers that encode a potential solution to a specific problem on a simple data structure (a chromosome). There are only two components of them that are problem dependent: the solution encoding and the function that evaluate the quality of a solution. The rest is problem independent and could and most be implemented following the best architecture and engineering best practices.
+
+On the object oriented world there is reported various analysis to model GA behaviour, nevertheless thats not the case on the functional side. This work try to show on that direction posible areas of improvement.  
+
+Other concurrent oriented languages like Ada \cite{Santos2002} has been reported like a feasible technology for implemented this kind of algorithms.
 
 % Actualizar esto
 The rest of the paper is organized as follows: next section
-presents the state of the resolution of the MasterMind puzzle and its
-evolution, having special emphasis in its evolutionary solutions; we will
-explain then the general characteristics of the evolutionary algorithm
-used to solve MasterMind in this work. Results obtained with this setup will be
-presented in Section \ref{sec:results}, and we will finish the paper
+presents considerations around the functional paradigm and its conceptual relation with evolutionary computation; we will
+explain then the general characteristics of a pool based concurrent evolutionary evolutionary used as use case in this work. Results obtained will be presented in Section \ref{sec:results}, and we will finish the paper
 with the conclusions that derive from them (commented in Section
 \ref{sec:conclusions}).
 
@@ -127,9 +129,9 @@ A varied arsenal of programming patterns, i.e., paradigms, exist for implement t
 
 There is a claim in modern software development for programming languages that help with concurrent programming and with better abstractions. The functional programming language Erlang is an answer that provides the actor pattern concept for concurrency and the functional paradigm for general modeling and design of solutions.
 
-Actors are a concurrent unit of execution using asynchronous messages passing for communication, for been implemented as process in the virtual machine (VM) of the language and not like OS threads are very lightweight in creation, live and death. The use of immutable messages eliminate many of the typical problems of concurrent development and support the emulation of the Object Oriented (OO) paradigm with his modeling facilities.
+Actors are a concurrent unit of execution using asynchronous messages passing for communication, it is implemented as process in the virtual machine (VM) of the language's runtime and not like OS threads and for that are very lightweight in birth, live and death. The use of immutable messages eliminate many of the typical problems of concurrent development and support the emulation of the Object Oriented (OO) paradigm with his modeling facilities.
 
-Functional programming has been defined by the role of functions in program composition and by the use of the very efficient lists data structure with many high order functions that operate upon it, Erlang honored the functional linage and include a ultra fast persistent technology call it Dets and Mnesia. Besides, Erlang posees a macro system and the concept of records for encapsulate coding patterns and group data by an entity.
+Functional programming has been defined by the role of functions in program composition and by the use of the very efficient lists data structure with many high order functions that operate upon it, Erlang honored the functional linage and include an ultra fast persistent technology call it Dets and Mnesia. Besides, Erlang posees a macro system and the concept of records for encapsulate coding patterns and group data by an entity.
 
 
 
@@ -139,7 +141,7 @@ Genetics algorithms, like many models of computations tend to be described in li
 
 The pool (a server) will be an execution entity that will own the population and keep track of the advance in the solution search. The clients, concurrents to, do the calculations and could join and leave at any time without any consequences. Chromosomes will be encoding like lists and the differents steps of the EAs resides on Erlang functions.
 
-An Erlang actors is implemented by a sequence of pairs patterns/expressions that define each message that he could handle, It's close at the OO parlance and a way to organize the code. In this case we use one message for each service that the pool most provide, table \ref{poolTable} presents that.
+An Erlang actors is implemented by a sequence of pairs patterns/expressions that define each message that he could handle, It's close at the OO parlance and a way to organize the code. In this case we use one message for each service that pool most provide, table \ref{poolTable} presents that.
 
 \begin{table}
   \centering
@@ -152,28 +154,49 @@ An Erlang actors is implemented by a sequence of pairs patterns/expressions that
 \end{verbatim}& Initialization, the parameter NIM is the initial configuration. \\
 \hline
 \begin{verbatim}
-{register2me, Pid}->
-\end{verbatim} & A client Pid is registered.\\
+{requestWork, Pid, 
+   Capacity} ->
+\end{verbatim} & Client requests for a population to evolve.\\
 \hline
 \begin{verbatim}
-{initEvolution,
-  NPopulation}->
-\end{verbatim} & The EA begins to evolve, the parameter NPopulationn means the initial population.  \\
-\hline
-\begin{verbatim}
-{generationEnd, Pid,
-  NewIndividuals}->
+{generationEnd, 
+  NewIndividuals,
+  OldIndexes, Pid} ->
 \end{verbatim} & One client report his successfully end of calculation. \\
 \hline
    \end{tabular}
   \caption{The messages that a pool accepts.}\label{poolTable}
 \end{table}
 
+The clients are modeled by actors to, they are the units of evolution, whit the major calculi responsibilities; the table \ref{clientsTable} shows its interface.
 
+\begin{table}
+  \centering
+   \begin{tabular}{|p{3cm}|p{4cm}|}
+   \hline
+   \textbf{Message} & \textbf{Description}\\
+     \hline
+\begin{verbatim}
+initEvolution ->
+\end{verbatim} & Marks the beginning of the processing. \\
+\hline
+\begin{verbatim}
+{evolve, P, NIndexes} ->
+\end{verbatim} & When the pool could assign a subpopulation to process. \\
+\hline
+\end{tabular}
+  \caption{The messages that a client is able to respond.}\label{clientTable}
+\end{table}
+
+\subsubsection{Generality and configuration}
+
+The tow previous components have the general architecture of the algorithm, they are generals and could be use for many problems. In order to solve a particular situation they most be \emph{injected} by severals functions and data structures that defines: the chromosomes, fitness, mutation, selection criteria and replacement politics. All of that particularization most be implemented in some Erlang source file and configurated in the \emph{configBuilder} module.
+
+The design made promote a clear separation between architecture (the general, constant and paradigmatics foundation part) and problem encoding (the representation and criterias of solution finding).
 
 \section{Experiments and results}
 
-
+In order to test the 
 
 \section{Discussion, conclusions and future work}
 
