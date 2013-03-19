@@ -1,0 +1,236 @@
+% THIS IS SIGPROC-SP.TEX - VERSION 3.1
+% WORKS WITH V3.2SP OF ACM_PROC_ARTICLE-SP.CLS
+% APRIL 2009
+%
+% It is an example file showing how to use the 'acm_proc_article-sp.cls' V3.2SP
+% LaTeX2e document class file for Conference Proceedings submissions.
+% ----------------------------------------------------------------------------------------------------------------
+% This .tex file (and associated .cls V3.2SP) *DOES NOT* produce:
+%       1) The Permission Statement
+%       2) The Conference (location) Info information
+%       3) The Copyright Line with ACM data
+%       4) Page numbering
+% ---------------------------------------------------------------------------------------------------------------
+% It is an example which *does* use the .bib file (from which the .bbl file
+% is produced).
+% REMEMBER HOWEVER: After having produced the .bbl file,
+% and prior to final submission,
+% you need to 'insert'  your .bbl file into your source .tex file so as to provide
+% ONE 'self-contained' source file.
+%
+% Questions regarding SIGS should be sent to
+% Adrienne Griscti ---> griscti@acm.org
+%
+% Questions/suggestions regarding the guidelines, .tex and .cls files, etc. to
+% Gerald Murray ---> murray@hq.acm.org
+%
+% For tracking purposes - this is V3.1SP - APRIL 2009
+
+\documentclass{acm_proc_article-sp}
+
+\usepackage{url}
+
+\begin{document}
+
+\title{Adapting evolutionary algorithms to the concurrent funcional language Erlang}
+
+%\subtitle{[Extended Abstract]
+%\titlenote{A full version of this paper is available as
+%\textit{Author's Guide to Preparing ACM SIG Proceedings Using
+%\LaTeX$2_\epsilon$\ and BibTeX} at
+%\texttt{www.acm.org/eaddress.htm}}}
+%
+% You need the command \numberofauthors to handle the 'placement
+% and alignment' of the authors beneath the title.
+%
+% For aesthetic reasons, we recommend 'three authors at a time'
+% i.e. three 'name/affiliation blocks' be placed beneath the title.
+%
+% NOTE: You are NOT restricted in how many 'rows' of
+% "name/affiliations" may appear. We just ask that you restrict
+% the number of 'columns' to three.
+%
+% Because of the available 'opening page real-estate'
+% we ask you to refrain from putting more than six authors
+% (two rows with three columns) beneath the article title.
+% More than six makes the first-page appear very cluttered indeed.
+%
+% Use the \alignauthor commands to handle the names
+% and affiliations for an 'aesthetic maximum' of six authors.
+% Add names, affiliations, addresses for
+% the seventh etc. author(s) as the argument for the
+% \additionalauthors command.
+% These 'additional authors' will be output/set for you
+% without further effort on your part as the last section in
+% the body of your article BEFORE References or any Appendices.
+
+\numberofauthors{3} %  in this sample file, there are a *total*
+% of EIGHT authors. SIX appear on the 'first-page' (for formatting
+% reasons) and the remaining two appear in the \additionalauthors section.
+%
+\author{
+% You can go ahead and credit any number of authors here,
+% e.g. one 'row of three' or two rows (consisting of one row of three
+% and a second row of one, two or three).
+%
+% The command \alignauthor (no curly braces needed) should
+% precede each author name, affiliation/snail-mail address and
+% e-mail address. Additionally, tag each line of
+% affiliation/address with \affaddr, and tag the
+% e-mail address with \email.
+%
+% 1st. author
+\alignauthor
+J. Albert Cruz\\
+       \affaddr{Centro de Arquitecturas Empresariales}\\
+       \affaddr{Universidad de Ciencias Inform\'aticas}\\
+       \affaddr{La Habana, Cuba}\\
+       \email{jalbert@uci.cu}
+% 2nd. author
+\alignauthor
+Juan-J. Merelo\\
+       \affaddr{Departamento de Arquitectura y Tecnolog\'ia de Computadores}\\
+       \affaddr{University of Granada}\\
+       \affaddr{Granada, Spain}\\
+       \email{jmerelo@geneura.ugr.es}
+% 3rd. author
+\alignauthor
+Antonio Miguel Mora\\
+       \affaddr{Departamento de Arquitectura y Tecnolog\'ia de Computadores}\\
+       \affaddr{University of Granada}\\
+       \affaddr{Granada, Spain}\\
+       \email{amora@geneura.ugr.es}
+  % use '\and' if you need 'another row' of author names
+}
+\date{19 March 2013}
+% Just remember to make sure that the TOTAL number of authors
+% is the number that will appear on the first page PLUS the
+% number that will appear in the \additionalauthors section.
+
+\maketitle
+%\begin{abstract}
+%New languages and technologies are taken the actual multicore space. Erlang is a functional language used for build concurrent, robust soft real-time systems of many fields. Evolutionary computing provides elegant solutions for many high performance computing problems for which such technology shines. Genetic algorithms has been particulary developed and applied in several domains, libraries of diverse characteristics has been implemented and converted in valuables products.
+%
+%Object oriented, or even structured programming paradigm are the dominants ways in the field. In this paper, a functional oriented approach to the modeling and implementation of genetic algorithms is presented. The language Erlang is used to show how simple and efficient could be a develop of a concurrent evolutionary algorithm.
+%\end{abstract}
+
+% A category with the (minimum) three required fields
+%\category{H.4}{Information Systems Applications}{Miscellaneous}
+%A category including the fourth, optional field follows...
+%\category{D.2.8}{Software Engineering}{Metrics}[complexity measures, performance measures]
+
+%\terms{Theory}
+
+%\keywords{ACM proceedings, \LaTeX, text tagging} % NOT required for Proceedings
+
+
+\section{Introduction}
+
+Evolution seems to be an effective method for improving, therefore optimizing, behaviours that lead to better use of available resources. For doing so the scientific community has produced several libraries of diverse quality and applied it in many domains. Nevertheless it is concentrated in the use of widespread implementation technologies like C/C++, Fortran and Java. Getting out of that mainstream it is not normally seen a land for improvement science.
+
+This article is centered on \emph{Genetic Algorithms} as a domain of application and will not develop any theory about that. Nevertheless the principal concepts involved and it's characteristics most be told in order to show how was modeled by Erlang constructs.
+
+Genetic algorithms are general function optimizers that encode a potential solution to a specific problem on a simple data structure (a chromosome). There are only two components of them that are problem dependent: the solution encoding and the function that evaluate the quality of a solution. The rest is problem independent and could and most be implemented following the best architecture and engineering best practices.
+
+On the object oriented world there is reported various analysis to model GA behaviour, nevertheless thats not the case on the functional side. This work try to show on that direction posible areas of improvement.
+
+Other concurrent oriented languages like Ada \cite{Santos2002} has been reported like a feasible technology for implemented this kind of algorithms.
+
+% Actualizar esto
+The rest of the paper is organized as follows: next section
+presents considerations around the functional paradigm and its conceptual relation with evolutionary computation; we will
+explain then the general characteristics of a pool based concurrent evolutionary evolutionary used as use case in this work. Results obtained will be presented in Section \ref{sec:results}, and we will finish the paper
+with the conclusions that derive from them (commented in Section
+\ref{sec:conclusions}).
+
+
+
+
+\section{Implementing an evolutionary algorithm in a concurrent functional language}
+\label{sec:evo}
+
+A varied arsenal of programming patterns, i.e., paradigms, exist for implement the algorithms models. EAs are characterized by an intensive use of strings (lists of some kind) for encoding genes, the existence of populations that evolve by herself and the variation of criterias for selection trough time. An programming language whose characteristics fits these needs will be highly appreciated.
+
+\subsection{Erlang characterization}
+
+There is a claim in modern software development for programming languages that help with concurrent programming and with better abstractions. The functional programming language Erlang is an answer that provides the actor pattern concept for concurrency and the functional paradigm for general modeling and design of solutions.
+
+Actors are a concurrent unit of execution using asynchronous messages passing for communication, it is implemented as process in the virtual machine (VM) of the language's runtime and not like OS threads and for that are very lightweight in birth, live and death. The use of immutable messages eliminate many of the typical problems of concurrent development and support the emulation of the Object Oriented (OO) paradigm with his modeling facilities.
+
+Functional programming has been defined by the role of functions in program composition and by the use of the very efficient lists data structure with many high order functions that operate upon it, Erlang honored the functional linage and include an ultra fast persistent technology call it Dets and Mnesia. Besides, Erlang posees a macro system and the concept of records for encapsulate coding patterns and group data by an entity.
+
+
+
+\subsection{Genetic Algorithm mapping to Erlang}
+
+Genetics algorithms, like many models of computations tend to be described in literature in is operational, imperative way. It's implementation in a functional language most follow a different path, that's means to structure the algorithm model in terms less imperative and more declarative. We going to use a parallel pool based evolutionary strategy\cite{DBLP:conf/3pgcic/GuervosMFEL12} as use case in order to show our mean.
+
+The pool (a server) will be an execution entity that will own the population and keep track of the advance in the solution search. The clients, concurrents to, do the calculations and could join and leave at any time without any consequences. Chromosomes will be encoding like lists and the differents steps of the EAs resides on Erlang functions.
+
+An Erlang actors is implemented by a sequence of pairs patterns/expressions that define each message that he could handle, It's close at the OO parlance and a way to organize the code. In this case we use one message for each service that pool most provide, table \ref{poolTable} presents that.
+
+\begin{table}
+  \centering
+   \begin{tabular}{|p{3cm}|p{4cm}|}
+   \hline
+   \textbf{Message} & \textbf{Description}\\
+     \hline
+\begin{verbatim}
+{configPool, NIM}->
+\end{verbatim}& Initialization, the parameter NIM is the initial configuration. \\
+\hline
+\begin{verbatim}
+{requestWork, Pid,
+   Capacity} ->
+\end{verbatim} & Client requests for a population to evolve.\\
+\hline
+\begin{verbatim}
+{generationEnd,
+NewIndividuals,
+OldIndexes, Pid}->
+\end{verbatim} & One client report his successfully end of calculation. \\
+\hline
+   \end{tabular}
+  \caption{The messages that a pool accepts.}\label{poolTable}
+\end{table}
+
+The clients are modeled by actors to, they are the units of evolution, whit the major calculi responsibilities; the table \ref{clientsTable} shows its interface.
+
+\begin{table}
+  \centering
+   \begin{tabular}{|p{3cm}|p{4cm}|}
+   \hline
+   \textbf{Message} & \textbf{Description}\\
+     \hline
+\begin{verbatim}
+initEvolution ->
+\end{verbatim} & Marks the beginning of the processing. \\
+\hline
+\begin{verbatim}
+{evolve, P, 
+  NIndexes} ->
+\end{verbatim} & When the pool could assign a subpopulation to process. \\
+\hline
+\end{tabular}
+  \caption{The messages that a client is able to respond.}\label{clientTable}
+\end{table}
+
+\subsubsection{Generality and configuration}
+
+The tow previous components have the general architecture of the algorithm, they are generals and could be use for many problems. In order to solve a particular situation they most be \emph{injected} by severals functions and data structures that defines: the chromosomes, fitness, mutation, selection criteria and replacement politics. All of that particularization most be implemented in some Erlang source file and configurated in the \emph{configBuilder} module.
+
+The design made promote a clear separation between architecture (the general, constant and paradigmatics foundation part) and problem encoding (the representation and criterias of solution finding).
+
+\section{Conclusions}
+
+In this ongoing project we are testing the efficiency and simplicity of implementations of GA by functional programming. The parallels models of GA are mapped to actors in the Erlang languages obtaining easy to reason and modified architectures. All code are released as open source code at \url{https://github.com/jalbertcruz/erlEA/}.
+
+\section*{Acknowledgements}
+This work is supported by projects TIN2011-28627-C04-02 and TIN2011-28627-C04-01 and -02 (ANYSELF), awarded by the Spanish Ministry of Science and Innovation and P08-TIC-03903 and TIC-6083 (DNEMESIS) awarded by the Andalusian Regional Government. It is supported too by the PhD Programm of Intelligent Systems and Softcomputing hold by the Asociación Universitaria Iberoamericana de Postgrado -AUIP-, the University of Granada, Spain, and the University of Informatics Sciences, Cuba.
+
+\nocite{*}
+\bibliographystyle{abbrv}
+\bibliography{concurrent}
+\balancecolumns
+
+\end{document}
