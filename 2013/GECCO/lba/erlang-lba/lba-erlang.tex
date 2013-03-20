@@ -32,7 +32,7 @@
 
 \begin{document}
 
-\title{Adapting evolutionary algorithms to the concurrent funcional language Erlang}
+\title{Adapting evolutionary algorithms to the concurrent functional language Erlang}
 
 %\subtitle{[Extended Abstract]
 %\titlenote{A full version of this paper is available as
@@ -99,7 +99,7 @@ Antonio Miguel Mora\\
        \affaddr{Departamento de Arquitectura y Tecnolog\'ia de Computadores}\\
        \affaddr{University of Granada}\\
        \affaddr{Granada, Spain}\\
-       \email{amora@geneura.ugr.es}
+       \email{amorag@geneura.ugr.es}
   % use '\and' if you need 'another row' of author names
 }
 \date{19 March 2013}
@@ -126,17 +126,34 @@ Antonio Miguel Mora\\
 
 \section{Introduction}
 
-Evolution seems to be an effective method for improving, therefore optimizing, behaviours that lead to better use of available resources. For doing so the scientific community has produced several libraries of diverse quality and applied it in many domains. Nevertheless it is concentrated in the use of widespread implementation technologies like C/C++, Fortran and Java. Getting out of that mainstream it is not normally seen a land for improvement science.
+Evolutionary Computation (EC) seems to be an effective method for improving, and therefore optimizing, behaviours that lead to a better use of available resources. 
+% Antonio - he puesto Evolutionary Computation, ya que Evolution es muy genÈrico
+% Eso sÌ, es un comienzo un tanto raro, a quÈ te refieres con los recursos disponibles. La optimizaciÛn se refiere a muchos ·mbitos, no sÛlo a un mejor uso de los recursos... ;)
+For doing so the scientific community has produced several libraries of diverse quality and applied it in many domains. 
+% Antonio - falta una frase para conectar esta con la anterior. Pasar de hablar de EC a decir que para eso (para optimizar usando EC) los cientÌficos han hecho librerÌas... mejor decir que el campo de la EC es uno de los m·s prolÌficos en la creaciÛn de librerÌas, etc, etc...
+Nevertheless it is concentrated in the use of widespread implementation technologies such as C/C++, Fortran and Java. 
+Getting out of that mainstream is not normally considered in the community.
+% Getting out of that mainstream it is not normally seen a land for improvement science.
+% Antonio - Esta frase casi no se entiende. La intento reescribir a ver si dice lo que t˙ querÌas.
 
-This article is centered on \emph{Genetic Algorithms} as a domain of application and will not develop any theory about that. Nevertheless the principal concepts involved and it's characteristics most be told in order to show how was modeled by Erlang constructs.
+% Antonio - haz una breve inroducciÛna Erlang aquÌ y dÌ si se usa o no en la comunidad cientÌfica. Pon alguna cita. ;)
 
-Genetic algorithms are general function optimizers that encode a potential solution to a specific problem on a simple data structure (a chromosome). There are only two components of them that are problem dependent: the solution encoding and the function that evaluate the quality of a solution. The rest is problem independent and could and most be implemented following the best architecture and engineering best practices.
+Genetic Algorithms (GA) \cite{GA_Goldberg89} 
+% Antonio -  Pongo una cita a GAs
+are general function optimizers that encode a potential solution to a specific problem on a simple data structure (a chromosome). There are only two components of them that are problem dependent: the solution encoding and the function that evaluate the quality of a solution, i.e. the fitness function. The rest of the algorithm does not depend on the problem and could (and should) be implemented following the best architecture and engineering practices.
 
-On the object oriented world there is reported various analysis to model GA behaviour, nevertheless thats not the case on the functional side. This work try to show on that direction posible areas of improvement.
+On the object oriented world there are reported various analysis to model GA behaviour, nevertheless that is not the case on the functional side. This work try to show some possible areas of improvement on that sense.
 
-Other concurrent oriented languages like Ada \cite{Santos2002} has been reported like a feasible technology for implemented this kind of algorithms.
+This article is focused on GAs as a domain of application, and describes their principal concepts and characteristics, showing how can they be modeled by means of Erlang constructs.
+% Antonio - cuenta en un par de lÌneas quÈ es Erlang. ;)
+
+Other concurrent oriented languages such as Ada \cite{Santos2002} has been reported as a feasible technology for implement this kind of algorithms.
+% Antonio - esto no lo digas si no lo vas a extender un poco. Queda como una frase 'huÈrfana'. ;)
+% DÌ por ejemplo quÈ desventajas tiene respecto a Erlang...
+
 
 % Actualizar esto
+% Antonio - sÌ, revÌsalo porque ya no hay secciÛn de resultados
 The rest of the paper is organized as follows: next section
 presents considerations around the functional paradigm and its conceptual relation with evolutionary computation; we will
 explain then the general characteristics of a pool based concurrent evolutionary evolutionary used as use case in this work. Results obtained will be presented in Section \ref{sec:results}, and we will finish the paper
@@ -149,25 +166,42 @@ with the conclusions that derive from them (commented in Section
 \section{Implementing an evolutionary algorithm in a concurrent functional language}
 \label{sec:evo}
 
-A varied arsenal of programming patterns, i.e., paradigms, exist for implement the algorithms models. EAs are characterized by an intensive use of strings (lists of some kind) for encoding genes, the existence of populations that evolve by herself and the variation of criterias for selection trough time. An programming language whose characteristics fits these needs will be highly appreciated.
+A varied arsenal of programming patterns, i.e., paradigms, exist for implement the algorithms models. GAs are characterized by an intensive use of strings
+% Antonio - he puesto GAs porque es lo qu ehas comentado en la intro. ;)
+ (lists of some kind) for encoding genes, the existence of populations that evolve by theirselves, and the variation in selection criterias through time. A programming language whose characteristics fit these needs would be highly appreciated.
 
 \subsection{Erlang characterization}
+% Antonio - ødescription?
 
-There is a claim in modern software development for programming languages that help with concurrent programming and with better abstractions. The functional programming language Erlang is an answer that provides the actor pattern concept for concurrency and the functional paradigm for general modeling and design of solutions.
+There is a claim in modern software development for programming languages that help with concurrent programming and with better abstractions. 
+% Antonio - quÈ quiere decir better abstraction? acl·ralo. :D
+The functional programming language Erlang is an answer that provides the actor pattern concept for concurrency and the functional paradigm for general modeling and design of solutions.
+% Antonio - este texto parece de publicidad de Erlang, jeje.
 
-Actors are a concurrent unit of execution using asynchronous messages passing for communication, it is implemented as process in the virtual machine (VM) of the language's runtime and not like OS threads and for that are very lightweight in birth, live and death. The use of immutable messages eliminate many of the typical problems of concurrent development and support the emulation of the Object Oriented (OO) paradigm with his modeling facilities.
+Actors are concurrent execution units which use asynchronous messages passing for communication. They are implemented as processes in the virtual machine (VM) 
+% Antonio - no has comentado quÈ es la VM. No has dicho que se implementa sobre Java...
+of the language's runtime and not like O.S. threads. Thus they are very lightweight in birth, live and death. 
+% Antonio - øquÈ quiere decir que sean ligeros?
+The use of immutable messages 
+% Antonio - dÌ quÈ son mensajes inmutables
+eliminate many of the typical problems of concurrent development, and support the emulation of the Object Oriented (OO) paradigm with its modeling facilities.
 
-Functional programming has been defined by the role of functions in program composition and by the use of the very efficient lists data structure with many high order functions that operate upon it, Erlang honored the functional linage and include an ultra fast persistent technology call it Dets and Mnesia. Besides, Erlang posees a macro system and the concept of records for encapsulate coding patterns and group data by an entity.
+Functional programming has been defined by the role of functions in program composition and by the use of the very efficient lists data structure with many high order functions that operate upon them, 
+% Antonio - Esta frase no se entiende bien y est· mal escrita. ;)
+Erlang honored the functional linage and include an ultra fast persistent technology called Dets and Mnesia. Besides, Erlang offers a macro system, 
+% Antonio - explica quÈ es esto de macro system
+and the concept of records for encapsulate coding patterns and group data by an entity.
 
 
 
 \subsection{Genetic Algorithm mapping to Erlang}
 
-Genetics algorithms, like many models of computations tend to be described in literature in is operational, imperative way. It's implementation in a functional language most follow a different path, that's means to structure the algorithm model in terms less imperative and more declarative. We going to use a parallel pool based evolutionary strategy\cite{DBLP:conf/3pgcic/GuervosMFEL12} as use case in order to show our mean.
+Genetics algorithms, as many computational models tend to be described in literature in is operational, and imperative way. Their implementation in a functional language must follow a different path, structuring the algorithm model in terms less imperative and more declarative. We are going to use a parallel pool based evolutionary strategy\cite{DBLP:conf/3pgcic/GuervosMFEL12} as use case in order to show our mean.
 
-The pool (a server) will be an execution entity that will own the population and keep track of the advance in the solution search. The clients, concurrents to, do the calculations and could join and leave at any time without any consequences. Chromosomes will be encoding like lists and the differents steps of the EAs resides on Erlang functions.
+The pool (a server) will be an execution entity that will own the population and keep a track of the advance in the solution search. The clients, which are concurrent, do the calculations and could join and leave at any time without consequences. Chromosomes will be encoded as lists and the different components of the GAs are implemented as Erlang functions.
+% Antonio - functions -> actors?
 
-An Erlang actors is implemented by a sequence of pairs patterns/expressions that define each message that he could handle, It's close at the OO parlance and a way to organize the code. In this case we use one message for each service that pool most provide, table \ref{poolTable} presents that.
+An Erlang actor is implemented by a sequence of pairs pattern/expression that define each message that it could handle. It is close to the OO parlance and a way to organize the code. In this case we use one message per service that pool must provide, table \ref{poolTable} presents this.
 
 \begin{table}
   \centering
@@ -188,13 +222,13 @@ An Erlang actors is implemented by a sequence of pairs patterns/expressions that
 {generationEnd,
 NewIndividuals,
 OldIndexes, Pid}->
-\end{verbatim} & One client report his successfully end of calculation. \\
+\end{verbatim} & One client report its successfully end of calculation. \\
 \hline
    \end{tabular}
   \caption{The messages that a pool accepts.}\label{poolTable}
 \end{table}
 
-The clients are modeled by actors to, they are the units of evolution, whit the major calculi responsibilities; the table \ref{clientsTable} shows its interface.
+Clients are modeled by actors. They are the units of evolution, with the main computation responsibilities; the table \ref{clientTable} shows its interface.
 
 \begin{table}
   \centering
@@ -212,18 +246,19 @@ initEvolution ->
 \end{verbatim} & When the pool could assign a subpopulation to process. \\
 \hline
 \end{tabular}
-  \caption{The messages that a client is able to respond.}\label{clientTable}
+  \caption{The messages that a client is able to respond to.}\label{clientTable}
 \end{table}
 
 \subsubsection{Generality and configuration}
 
-The tow previous components have the general architecture of the algorithm, they are generals and could be use for many problems. In order to solve a particular situation they most be \emph{injected} by severals functions and data structures that defines: the chromosomes, fitness, mutation, selection criteria and replacement politics. All of that particularization most be implemented in some Erlang source file and configurated in the \emph{configBuilder} module.
+The two previous components have the general architecture of the algorithm, they are general and could be used for many problems. In order to solve a particular situation they must be \emph{injected} by several functions and data structures which define: the chromosomes, fitness function, mutation operator, selection criteria and replacement policy. All these particularizations must be implemented in some Erlang source file and configured in the \emph{configBuilder} module.
 
-The design made promote a clear separation between architecture (the general, constant and paradigmatics foundation part) and problem encoding (the representation and criterias of solution finding).
+The design made promotes a clear separation between architecture (the general, constant and paradigmatic foundation part) and problem encoding (the representation and criteria of solution finding).
 
 \section{Conclusions}
+\label{sec:conclusions}
 
-In this ongoing project we are testing the efficiency and simplicity of implementations of GA by functional programming. The parallels models of GA are mapped to actors in the Erlang languages obtaining easy to reason and modified architectures. All code are released as open source code at \url{https://github.com/jalbertcruz/erlEA/}.
+In this ongoing project we are testing the efficiency and simplicity of implementations of GAs by functional programming. The parallel models of GA are mapped to actors in the Erlang languages obtaining easily to understand architectures. All the code has been released as open source code at \url{https://github.com/jalbertcruz/erlEA/}.
 
 \section*{Acknowledgements}
 This work is supported by projects TIN2011-28627-C04-02 and TIN2011-28627-C04-01 and -02 (ANYSELF), awarded by the Spanish Ministry of Science and Innovation and P08-TIC-03903 and TIC-6083 (DNEMESIS) awarded by the Andalusian Regional Government. It is supported too by the PhD Programm of Intelligent Systems and Softcomputing hold by the Asociaci√≥n Universitaria Iberoamericana de Postgrado -AUIP-, the University of Granada, Spain, and the University of Informatics Sciences, Cuba.
