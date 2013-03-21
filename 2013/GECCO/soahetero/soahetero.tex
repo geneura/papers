@@ -190,7 +190,7 @@ Evolutionary Art is also applied.
 \terms{Algorithms}
 
 
-\keywords{parameter setting, distributed algorithms, island model}
+\keywords{service oriented architecture, framework, parameter setting, distributed algorithms, island model, evolutionary art}
 
 
 %
@@ -199,22 +199,22 @@ Evolutionary Art is also applied.
 \section{Introduction}
 \label{sec:intro}
 %
-Ian Foster in \cite{foster2005service} defined the term ``Service-Oriented Science'', that is, scientific research using interoperable and distributed networks of services, being the key of success the uniformity of interfaces, so researchers can discover and access to services without develop specific code for each data source, program or sensor. Therefore, this paradigm has the potential to increase scientific productivity thanks to those available distributed tools, and also increasing the automation of computation data analysis. On the other way, other trends such as Cloud Computing \cite{CLOUD} or GRID \cite{GRID1} are leading to heterogeneous computational devices working at the same time.  Moreover, many laboratories do not count with classic clusters, but the usual workstations used by scientists can behave in group as a heterogeneous cluster. 
+Ian Foster in \cite{SERVICEORIENTEDSCIENCE05} defined the term ``Service-Oriented Science'', that is, scientific research using interoperable and distributed networks of services, being the key of success the uniformity of interfaces, so researchers can discover and access to services without develop specific code for each data source, program or sensor. Therefore, this paradigm has the potential to increase scientific productivity thanks to those available distributed tools, and also increasing the automation of computation data analysis. On the other way, other trends such as Cloud Computing \cite{CLOUD} or GRID \cite{GRID1} are leading to heterogeneous computational devices working at the same time.  Moreover, many laboratories do not count with classic clusters, but the usual workstations used by scientists can behave in group as a heterogeneous cluster. 
 
 Nowadays, there exist a lot of frameworks for Evolutionary Algorithms (EAs), but all of them are Object Oriented statically programmed, not taking advantages that the Service Oriented Computing can offer. As services must be well-defined, encapsulated and reusable, we need to abstract enough to have a good evolutionary algorithm design. In \cite{GENERICITY05} authors discuss about genericity in evolutionary computation software tools. Although it is based in Object Oriented programming, the genericity of a EA framework can be applied to develop EC services, and extended with new functionalities.
 
-The proposed work \cite{OSGILIATH} shows an abstract Service Oriented Architecture for Evolutionary Algorithms (SOA-EA), whith guidelines and steps to migrate from traditional development to SOA. It also presents an specific implementation, called OSGiLiath: an environment for the development of distributed algorithms extensible via plug-ins architecture and based in a wide-accepted software specification (OSGi: Open Services Gateway Initiative \cite{OSGI}). %OSGi features (service-oriented architecture, declarative services, dynamic life-cycle management, or package abstraction) are used to create algorithms in a layered way. Moreover, it uses the new OSGi 4.2 distribution capabilities to develop distributed services.
+Our previous work \cite{OSGILIATH} shows an abstract Service Oriented Architecture for Evolutionary Algorithms (SOA-EA), with guidelines and steps to migrate from traditional development to SOA. It also presents an specific implementation, called OSGiLiath: an environment for the development of distributed algorithms extensible via plug-ins architecture and based in a wide-accepted software specification (OSGi: Open Services Gateway Initiative \cite{OSGI}). %OSGi features (service-oriented architecture, declarative services, dynamic life-cycle management, or package abstraction) are used to create algorithms in a layered way. Moreover, it uses the new OSGi 4.2 distribution capabilities to develop distributed services.
 
 
 %Heterogeneous dEAs can be divided in two categories: a dEA where the parameters are different in each island (heterogeneous parameters) or the same algorithm in heterogeneous hardware. It also have been proved that this kind of algorithms are even more efficient in heterogeneous hardware configurations, than in homogeneous devices \cite{HETEROGENEOUSHARD}. This can be explained by different reasons, such as different memory access times, cache, or even implementation languages or compilers in each machine, leading to different explotation rate of the search space. The heterogeneous parameters configuration also have been proved as more efficient than a fixed set of parameters for different problems \cite{HETEROGENEOUSPARAMETERS}. Our motivation in this work is to combine both ideas adapting the population size of the islands to the heterogeneous hardware. To calculate the computational power, the algorithm is executed in each machine, and then, the total size of individuals is distributed according the number of generations attained in each node during the same time. Two different problems (MMDP and OneMax) have been used as a benchmark.
 
-This work shows how this implementation have been used to obtain results in two areas: parameter tuning in heterogeneous devices \cite{HETEROGENEOUSHARD} and Evolutionary Art \cite{EVOART}.
+This paper shows how this implementation have been used to obtain results in two areas: parameter tuning in heterogeneous devices \cite{HETEROGENEOUSHARD} and Evolutionary Art \cite{EVOART}.
 
 
 
 The rest of the work is structured as follows: after the state of
-the art, we present the developed algorithms and experimental setting. 
-Then, the results of the experiments are shown (Section \ref{sec:results}), followed by conclusions and suggestions for future work.
+the art, we present the developed service oriented architecture in Section \ref{sec:soaea}. 
+Then, the results of the first experiment in heterogeneous clusters are shown (Section \ref{sec:heterogeneous}), followed by an application in Evolutionary Art (Section \ref{sec:evoart}). Finally conclusions and suggestions for future work are shown.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  SOA  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -235,11 +235,11 @@ JCLEC or jMetal.
  services (operators) outside the source code. Parallelism and distribution are added in other frameworks, like
 MALLBA, DREAM or ECJ, but
 using external libraries (such as MPI or DRM), so the code that uses these
-libraries is mixed with the algoritmh's code.
+libraries is mixed with the algorithm's code.
 
 
 
-Even being distributed, these frameworks can not communicate with each other. HeuristicLab is one of the few plug-in and service oriented frameworks. It uses web services for communication, but just to distribute the load, after consulting a central database of available jobs. The work \cite{SURVEYMOFS} contains a comparasion and the references of the previous algorithms. %Finally, the only service oriented optimization framework is GridUFO \cite{GRIDUFO}, but it only allows the modification of the objective function and the addition of whole algorithms, without combining existing services.
+Even being distributed, these frameworks can not communicate with each other. HeuristicLab is one of the few plug-in and service oriented frameworks. It uses web services for communication, but just to distribute the load, after consulting a central database of available jobs. The work \cite{SURVEYMOFS} contains a comparison and the references of the previous algorithms. %Finally, the only service oriented optimization framework is GridUFO \cite{GRIDUFO}, but it only allows the modification of the objective function and the addition of whole algorithms, without combining existing services.
 %
 
 %In the field of the Evolutionary Computing there are two different approaches about the algorithm parameter setting: parameter control and parameter tuning \cite{PARAMETERTUNING}. The first one refers to set a number of parameters of an EA and to change these parameter while the algorithm is running. The parameter tuning consist in establish a good set of parameters before the run (and do not change them during runtime).
@@ -254,15 +254,16 @@ Even being distributed, these frameworks can not communicate with each other. He
 
 % Habla también del Algorithm::Evolutionary, hombre... - JJ -FERGU: Si lo he mencionao arriba!
 
-In the field of heterogeneous evolutionary computing, two areas exist: heterogeneous hardware and heterogeneous parameters. In the first area  authors study or adapt algorithms according the machine configuration \cite{HETEROGENEOUSHARD, HYDROCM, HETEROGENEOUSTOPOLOGY}. In the area of heterogeneous parameters,  setting in each island a different sets of parameters can also increase the performance of a distributed EAs, as explained in \cite{HETEROGENEOUSPARAMETERS, HETEROGENEOUSMIGRATION}.
+In the field of heterogeneous evolutionary computing, two areas exist: heterogeneous hardware and heterogeneous parameters. In the first area  authors study or adapt algorithms according the machine configuration \cite{HETEROGENEOUSHARD, HETEROGENEOUSTOPOLOGY}. In the area of heterogeneous parameters,  setting in each island a different sets of parameters can also increase the performance of a distributed EAs, as explained in \cite{HETEROGENEOUSPARAMETERS, HETEROGENEOUSMIGRATION}.
 
-Our work presents a combination of previous ideas, where a parameter tuning given by the computational cost of the machines is performed. For our knowledge, there are not works that modify parameters of the GA depending of the node where the island is being executed.
+Our work presents a combination of previous ideas, where a parameter tuning given by the computational cost of the machines is performed. For our knowledge, there are not works that modify parameters of the EA depending of the node where the island is being executed.
 
 %%%%%%%%%%%%%%%%%%  Experiments  %%%%%%%%%%%%%%%%%%%
 \section{A Service Oriented Architecture for Evolutionary Algorithms}
+\label{sec:soaea}
 
 In \cite{OSGILIATH} we presented an abstract architecture formed by loosely coupled, highly configurable and
-lan\-gua\-ge-in\-de\-pen\-dent services for Evolutionary Computation. As an example of an implementation 
+lan\-gua\-ge-in\-de\-pen\-dent services for Evolutionary Computation (SOA-EA). As an example of an implementation 
 of this architecture, a complete process development using a specific service oriented 
 technology (OSGi) was explained. With this implementation, less effort than classical development 
 in integration, distribution mechanisms and execution time management has been attained. 
@@ -281,10 +282,10 @@ A specific implementation of our architecture (called OSGiLiath) has been develo
 
 
 \section{Adapting the population size to hardware}
-\label{sec:adapting}
+\label{sec:heterogeneous}
 
-One of the first experiments performed with OSGiLiath have been stablish the effect of the population size in homogeneous and heterogeneous clusters. 
-The algorithm to improve is a dGA. The algorithm is steady-state: the offspring is mixed with the parents and the worst individuals are removed. A ring topology is used, and the best individual is sent after a fixed number of generations of each node (64).  Two different parameter configurations have been used: 64 individuals per node (homogeneous size) and a different number of individuals proportional to the number of generations attained in this first homogeneous size execution (heterogeneous size). A uniform crossover is used (with a rate of 0.5) and a bit-flip mutation (with a probability of 1/genome size).
+One of the first experiments performed with OSGiLiath has been establish the effect of the population size in homogeneous and heterogeneous clusters. 
+The algorithm to improve is a dGA. The algorithm is steady-state: the offspring is mixed with the parents and the worst individuals are removed. A ring topology is used, and the best individual is sent after a fixed number of generations of each node (64).  Two different parameter configurations have been used: 64 individuals per node (homogeneous size) and a different number of individuals proportional to the number of generations attained in this first homogeneous size execution (heterogeneous size). An uniform crossover is used (with a rate of 0.5) and a bit-flip mutation (with a probability of 1/genome size).
 
 
 The problems to evaluate are the Massively Multimodal Deceptive Problem (MMDP) \cite{goldberg92massive} and the OneMax problem \cite{ONEMAX}. Each one requires different actions/abilities by the GA at the level of population sizing, individual selection and building-blocks mixing. The chromosome length is 150 for MMDP and 5000 for OneMax. %The MMDP  is designed to be difficult for an EA, due to its multimodality and deceptiveness. Deceptive problems are functions where low-order building-blocks do not combine to form higher order building-blocks. Instead, low-order building-blocks may mislead the search towards local optima, thus challenging search mechanisms. MMDP it is composed of $k$ subproblems of 6 bits each one ($s_i$). Depending of the number of ones (unitation) $s_i$ takes the values shown in Table \ref{table:mmdp}.  
@@ -331,7 +332,7 @@ The number of individuals in each node of the HeSi configuration is proportional
 
 \subsection{Results}
 
-The objetives of the parallel programming are to tackle large computational problems, increase the performance of algorithms in a finite time, or reduce time. In this work we focus in the last objective. As claimed by \cite{EVALUATIONPARALLEL} the number of evaluations can be misleading in the parallel algorithms area. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, and the real algorithm speed could not be reflected correctly. However, the number of evaluations has been added in this section to better understand the results. Also, the total number of generations, and the maximum number of generations of the slower of the four nodes are shown. It is difficult to compare between the HoHa and HeHa for the same reasons: the evaluation time is different in each system (and also in each node).
+The objectives of the parallel programming are to tackle large computational problems, increase the performance of algorithms in a finite time, or reduce time. In this work we focus in the last objective. As claimed by \cite{EVALUATIONPARALLEL} the number of evaluations can be misleading in the parallel algorithms area. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, and the real algorithm speed could not be reflected correctly. However, the number of evaluations has been added in this section to better understand the results. Also, the total number of generations, and the maximum number of generations of the slower of the four nodes are shown. It is difficult to compare between the HoHa and HeHa for the same reasons: the evaluation time is different in each system (and also in each node).
 
 % Pero tienes que hacer énfasis en lo fácil que ha sido desarrollarlo
 % y sacar resultados nuevos y todo eso - JJ
@@ -384,7 +385,7 @@ HeSi/HoHa		& 149732,6 $\pm$ 81983,74	& 438171,16	$\pm$ 240169,19	& 24430043,46 $
 
 \subsubsection{OneMax Problem}
 
-Results for this problem are shown in Table \ref{tab:onemaxresults}. In this problem, adapting the population sizes decreases significantly the time for solving in the heterogeneous cluster, and, as before, the number of evaluations remains the same. In the homogeneous system, the effect of changing the population sizes is more evident, and this time the evaluations (and therefore, the time) are reduced (both significally). 
+Results for this problem are shown in Table \ref{tab:onemaxresults}. In this problem, adapting the population sizes decreases significantly the time for solving in the heterogeneous cluster, and, as before, the number of evaluations remains the same. In the homogeneous system, the effect of changing the population sizes is more evident, and this time the evaluations (and therefore, the time) are reduced (both significantly). 
 
 The efficiency on OneMax problems depends more on the ability to mix the building-blocks, and less on the genetic diversity and size of the population (as with MMDP). No genetic diversity is particularly required. When properly tuned, a simple Genetic Algorithm is able to solve OneMax in linear time. Sometimes, problems like OneMax are used as control functions, in order to check if very efficient algorithms on hard functions fail on easier functions. %As can be seen in Figure \ref{fig:gensonemaxhomosize}, the HoSi/HeHa, the average fitness of all populations are increasing in linear way. However, the lower processor evaluates extremely less times.  On the other side, in Figure \ref{fig:gensonemaxheterosize}, the adaptation of the population size makes that lower processors increase the number of evaluations, but the average fitness is also maintained in linear way (and in smaller increase rate) between migrations. However, the other processors are still spending more number of evaluations. That is the reason why the number of evaluations is higher in HeHa, and lower in HoHa. Computational time is more efficiently used in faster nodes, having more chance to mix the individuals. Also, because the larger size of the individuals in the OneMax problem (5000 bits vs. 150), the transmission time is larger, (white gaps in the figures). That also implies for N4 send their best individual to N1 in a extremely large time when using HoSi (each 64 generations).
 
@@ -447,6 +448,7 @@ HeSi/HoHa		& 13897,86$\pm$	625,27 		&	20725,63$\pm$	929,43 	&	651952,8 $\pm$	291
 %\end{figure*}
 
 \section{Comparing his\-to\-grams in Evolutionary Art}
+\label{evoart}
 
 OSGiLiath has also been used to study the differences of
 using the information of the HSV (Hue, Saturation, Value) and
@@ -457,7 +459,7 @@ generate their associate images and extract information of
 them (HSV, RGB and Average histograms) to fit with the
 histograms of a test image. 
 
-A steady-state evolutionary algorithm has been used. Each individual is randomly generated at the initialization of the EA. The genome size is 50 elements (circles of maximum radium of 128 pixels). Population size has been set to 32 individuals. Uniform crossover rate is 0.5, and a binary tournament has been chosen for selection (that is, a pool of 16 parents is selected and crossed). Mutation probability is 0.04 (the usual value of {\em 1/genomesize}). Finally, the image size for each individual is 256x256 pixels. The individuals have been compared with the histograms obtained from the an stetical predefined image to guide the evolution.
+A steady-state evolutionary algorithm has been used. Each individual is randomly generated at the initialization of the EA. The genome size is 50 elements (circles of maximum radium of 128 pixels). Population size has been set to 32 individuals. Uniform crossover rate is 0.5, and a binary tournament has been chosen for selection (that is, a pool of 16 parents is selected and crossed). Mutation probability is 0.04 (the usual value of {\em 1/genomesize}). Finally, the image size for each individual is 256x256 pixels. The individuals have been compared with the histograms obtained from the an aesthetic predefined image to guide the evolution.
 
 Three different fitness functions using color histogram have been tested and added to OSGiLiath as services: difference between the HSV and RGB histograms, and an average difference of the two histograms at the same time. Experiments show that better results in terms of similarity are obtained using the HSV comparison (due to the noisy information provided by the RGB). Table \ref{tab:artresults} show the attained results. This is a basic image metric, only used by purposes of proof-of-concept and more complex measurements will be studied in next works.
 
@@ -480,12 +482,14 @@ Average & 0.173 $\pm$ 0.012	& 0.294 $\pm$ 0.013	& {\em 0.234 $\pm$ 0.010} \\ \hl
 % ¿Algún experimento específico que puedas desarrollar rápidamente?  JJ Fergu: puf, a ver si hago algo.
 
 \section{Conclusions}
-Service Oriented Computing is a new trend where ... 
+Service Oriented Computing is a new trend where computational resources cooperate in an automatic way without taking into account programming language or operating system. 
 Also, other trends, such as Cloud Computing are providing a massively amount of heterogeneous computational devices. This has been the motivation to develop SOA-EA and OSGiLiath.
 
 The first applications have been a preliminary study about adapting the population size of an EA to computational power of different nodes in an heterogeneous cluster. Results show that adapting the population size decrease the execution time significantly in heterogeneous clusters, while changing this parameter in homogeneous clusters not always performs better. This is a promising start for adapting EAs to the computational power of each execution node.
 
 In future work a scalability study will be performed, with more computational nodes and larger problem instances. Also, other parameters such as migration rate or crossover probability will be adapted to the execution nodes. This studies will lead to automatic adaptation during runtime, with different nodes entering or exiting in the topology during the algorithm execution or adapting to the current load of the system.
+
+Finally, new experiments in the field of Evolutionary Art will be performed.
 
 The project development is explained in \url{http://www.osgiliath.org}, and also avaible for download and modification under a GPL V3 License.
 
