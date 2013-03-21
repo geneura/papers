@@ -13,7 +13,8 @@
     \clubpenalty=10000
     \widowpenalty = 10000
 
-\title{Service Oriented Evolutionary Framework: applications and results}
+\title{Osgiliath, a service oriented evolutionary eramework: applications and results}
+% uso consistente de mayúsculas y minúsculas
 
 %\subtitle{[Extended Abstract]
 %\titlenote{A full version of this paper is available as
@@ -167,8 +168,16 @@
 
 \maketitle
 
-\begin{abstract}
-This paper shows the stage of development of a Service Oriented Architecture for Evolutionary Algorithms and the first results attained in two different areas: Parameter Adaptation and Evolutionary Art. An abstract architecture is presented, with its assocciated implementation using a wide-used technology. Results attained in experiments with parameter adaptation in distributed heterogeneous machines are presented and the usage of the architecture in Evolutionary Art is also applied.
+\begin{abstract} %Se supone que ya está desarrollado, no diga el estado de desarrollo. Di que funcionalidades tiene - JJ
+This paper shows the stage of development of a Service Oriented
+Architecture for Evolutionary Algorithms and the first results
+attained in two different areas: Parameter Adaptation and Evolutionary
+Art. An abstract architecture is presented, with its assocciated %"an"
+                                %o "the" - JJ
+implementation using a widely used technology. Results attained in
+experiments with parameter adaptation in distributed heterogeneous
+machines are presented and the usage of the architecture in
+Evolutionary Art is also applied. 
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -190,7 +199,7 @@ This paper shows the stage of development of a Service Oriented Architecture for
 \section{Introduction}
 \label{sec:intro}
 %
-Ian Foster in \cite{foster2005service}, defined the term ``Service-Oriented Science'', that is, scientific research using interoperable and distributed networks of services, being the key of success the uniformity of interfaces, so researchers can discover and access to services without develop specific code for each data source, program or sensor. Therefore, this paradigm has the potential to increase scientific productivity thanks to those available distributed tools, and also increasing the automation of computation data analysis. On the other way, other trends such as Cloud Computing \cite{CLOUD} or GRID \cite{OPENSCIENCEGRID} are leading to heterogeneous computational devices working at the same time.  Moreover, many laboratories do not count with classic clusters, but the usual workstations used by scientists can behave in group as a heterogeneous cluster. 
+Ian Foster in \cite{foster2005service} defined the term ``Service-Oriented Science'', that is, scientific research using interoperable and distributed networks of services, being the key of success the uniformity of interfaces, so researchers can discover and access to services without develop specific code for each data source, program or sensor. Therefore, this paradigm has the potential to increase scientific productivity thanks to those available distributed tools, and also increasing the automation of computation data analysis. On the other way, other trends such as Cloud Computing \cite{CLOUD} or GRID \cite{OPENSCIENCEGRID} are leading to heterogeneous computational devices working at the same time.  Moreover, many laboratories do not count with classic clusters, but the usual workstations used by scientists can behave in group as a heterogeneous cluster. 
 
 Nowadays, there exist a lot of frameworks for Evolutionary Algorithms (EAs), but all of them are Object Oriented statically programmed, not taking advantages that the Service Oriented Computing can offer.
 
@@ -243,10 +252,16 @@ Even being distributed, these frameworks can not communicate with each other. He
 
 %Computational performance of nodes or network speeds can also be inherents parameter of an algorithm. In \cite{HETEROGENEOUSHARD} authors compared a distributed GA in homogeneous and heterogeneous clusters. Super-linear performance was obtained in the heterogeneous clusters, being more efficient that the same algorithm in homogeneous ones. Some authors have expanded this idea adapting the algorithm to be executed: in \cite{HYDROCM} authors presented a distributed hybrid meta-heuristic that combines GAs and Simulated Annealing (SA). Their system executes the costly algorithms (GAs) in faster nodes, and simpler meta-heuristics (SA) in slower nodes, obtaining better results than other configurations. In \cite{HETEROGENEOUSTOPOLOGY} different configurations of heterogeneous machines for a tree topology were studied. However, the heterogeneity was simulated in an homogeneous clusters with programs to add computational load. Load-balancing was also applied taking into account the computational load of the nodes in \cite{PARALLELIMPLEMENTATION}: a small benchmark was executed in all nodes at the beginning of the algorithm to distribute individuals of an Evolutionary Strategy (ES). However, there was not communication between the nodes. In the area of heterogeneous parameters, but homogeneous hardware, setting each island a random set of parameters can also increase the performance of a distributed Genetic Algorithm (dGA), as explained in \cite{HETEROGENEOUSPARAMETERS}. That model outperformed a tuned canonical dGA with the same parameters in all islands. Finally, adapting the migration period has produced better results than homogeneous periods in homogeneous clusters, as explained by \cite{HETEROGENEOUSMIGRATION}.
 
-%Our work presents a combination of previous ideas, where a parameter tuning given by the computational cost of the machines is performed. For our knowledge, there are not works that modify parameters of the GA depending of the node where the island is being executed.
+%Our work presents a combination of previous ideas, where a parameter
+%tuning given by the computational cost of the machines is
+%performed. For our knowledge, there are not works that modify
+%parameters of the GA depending of the node where the island is being
+%executed.
+
+% Habla también del Algorithm::Evolutionary, hombre... - JJ
 
 %%%%%%%%%%%%%%%%%%  Experiments  %%%%%%%%%%%%%%%%%%%
-\section{Service Oriented Architecture for Evolutionary Algorithms}
+\section{A Service Oriented Architecture for Evolutionary Algorithms}
 
 In \cite{OSGILIATH} we presented an abstract architecture formed by loosely coupled, highly configurable and
 lan\-gua\-ge-in\-de\-pen\-dent services for Evolutionary Computation. As an example of an implementation 
@@ -316,6 +331,9 @@ The number of individuals in each node of the HeSi configuration is proportional
 \subsection{Results}
 
 The objetives of the parallel programming are to tackle large computational problems, increase the performance of algorithms in a finite time, or reduce time. In this work we focus in the last objective. As claimed by \cite{EVALUATIONPARALLEL} the number of evaluations can be misleading in the parallel algorithms area. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, and the real algorithm speed could not be reflected correctly. However, the number of evaluations has been added in this section to better understand the results. Also, the total number of generations, and the maximum number of generations of the slower of the four nodes are shown. It is difficult to compare between the HoHa and HeHa for the same reasons: the evaluation time is different in each system (and also in each node).
+
+% Pero tienes que hacer énfasis en lo fácil que ha sido desarrollarlo
+% y sacar resultados nuevos y todo eso - JJ
 
 \subsubsection{MMDP Problem}
 Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. These results are also shown in the boxplots of the Figure \ref{fig:timeMMDP} (time). First, a Kolmogorov-Smirnov test is performed to asset the normality of the distributions. If the results fit a normal distribution, then a Student's T-Test is calculated. Otherwise, the non-parametric test Wilcoxon signed rank is applied.
@@ -455,6 +473,8 @@ Average Histogram& 0.173 $\pm$ 0.012	& 0.294 $\pm$ 0.013	& {\em 0.234 $\pm$ 0.01
 \end{tabular}
 \label{tab:artresults}
 \end{table*}
+
+% ¿Algún experimento específico que puedas desarrollar rápidamente?  JJ
 
 \section{Conclusions}
 Service Oriented Computing is a new trend where ... 
