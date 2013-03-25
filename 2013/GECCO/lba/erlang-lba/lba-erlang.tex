@@ -145,13 +145,13 @@ are general function optimizers that encode a potential solution to a specific p
 
  Inside the object oriented world there are reported various analysis for modeling GA behaviour, nevertheless that is not the case of the functional side. This work tries to show some possible areas of improvement on that sense.
 
-This article is focused on GAs as a domain of application, and describes their principal concepts and characteristics, showing how can they be modeled by means of Erlang constructs.
+This article is focused on GAs as a domain of application, and describes their principal concepts and characteristics, showing how can they be modeled by means of Erlang constructs. 
 
 
 
 % Antonio - cuenta en un par de líneas qué es Erlang. ;)
 
-Other concurrent oriented languages such as Ada \cite{Santos2002} has been reported as a feasible technology for implement this kind of algorithms.
+%Other concurrent oriented languages such as Ada \cite{Santos2002} has been reported as a feasible technology for implement this kind of algorithms.
 % Antonio - esto no lo digas si no lo vas a extender un poco. Queda como una frase 'huérfana'. ;)
 % Dí por ejemplo qué desventajas tiene respecto a Erlang...
 
@@ -159,10 +159,7 @@ Other concurrent oriented languages such as Ada \cite{Santos2002} has been repor
 % Actualizar esto
 % Antonio - sí, revísalo porque ya no hay sección de resultados
 The rest of the paper is organized as follows: next section
-presents considerations around the functional paradigm and its conceptual relation with evolutionary computation; we will
-explain then the general characteristics of a pool based concurrent evolutionary evolutionary used as use case in this work. Results obtained will be presented in Section \ref{sec:results}, and we will finish the paper
-with the conclusions that derive from them (commented in Section
-\ref{sec:conclusions}).
+presents considerations around the functional paradigm and its conceptual relation with evolutionary computation; we will explain then the general characteristics of a pool based concurrent evolutionary evolutionary used as use case in this work. Results and conclusions obtained will be presented in Section \ref{sec:conclusions}.
 
 
 
@@ -216,7 +213,7 @@ An Erlang actor is implemented by a sequence of pairs pattern/expression definin
 \begin{verbatim}
 {configPool, NIM}->
 \end{verbatim}& Initialization, the parameter NIM is the initial configuration. \\
-\hline
+\hline 
 \begin{verbatim}
 {requestWork, Pid,
    Capacity} ->
@@ -261,10 +258,14 @@ The two previous components have the architecture of the algorithm, they are gen
 
 The design made promotes a clear separation between architecture (the general, constant and paradigmatic foundation part) and problem encoding (the representation and criteria of solution finding).
 
-\section{Conclusions}
+\section{Experiment and conclusions}
 \label{sec:conclusions}
 
 In this ongoing project we are testing the efficiency and simplicity of implementations of GAs by functional programming. The parallel models of GA are mapped to actors in the Erlang languages obtaining easily to understand architectures. All the code has been released as open source code at \url{https://github.com/jalbertcruz/erlEA/}.
+
+The library was tested with \emph{MaxOnes} problem. The chromosomes was 128 elements long, with an initial population of 256 individuals. 50 clients was used and they worked with 20 individuals each time a pool assign a generation to them. The solution, an optimum, was reached after 3229 assignments.
+
+With this concept test we are showing how simple is to structure a parallel GA, now we could proceed with more complex GA models, experiments and problems in order to explore the potential of the technology.
 
 \section*{Acknowledgements}
 This work is supported by projects TIN2011-28627-C04-02 and TIN2011-28627-C04-01 and -02 (ANYSELF), awarded by the Spanish Ministry of Science and Innovation and P08-TIC-03903 and TIC-6083 (DNEMESIS) awarded by the Andalusian Regional Government. It is supported too by the PhD Programm of Intelligent Systems and Softcomputing hold by the Asociación Universitaria Iberoamericana de Postgrado -AUIP-, the University of Granada, Spain, and the University of Informatics Sciences, Cuba. It has also been supported by project 83, Campus CEI BioTIC http://ceibiotic.ugr.es
