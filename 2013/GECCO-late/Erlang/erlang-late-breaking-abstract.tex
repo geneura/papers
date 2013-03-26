@@ -85,7 +85,7 @@
 In this paper we describe how the usual sequential and procedural
 Evolutionary Algorithm is mapped to a concurrent and functional
 framework using the Erlang language. The design decisions, as well as
-some early results, are shown. 
+some early results, are shown.
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -125,9 +125,7 @@ are general function optimizers that encode a potential solution to a specific p
 
  Inside the object oriented world there are reported various analysis for modeling GA behaviour, nevertheless that is not the case of the functional side. This work tries to show some possible areas of improvement on that sense.
 
-This article is focused on GAs as a domain of application, and
-describes how their principal traits can the be modeled by means of
-Erlang constructs. This will be done in the next section.
+This article is focused on GAs as a domain of application, and describes how their principal traits can the be modeled by means of Erlang constructs. This will be done in the next section.
 
 
 
@@ -162,7 +160,7 @@ The functional programming language Erlang would an answer that provides the act
 Actors are concurrent execution units which use asynchronous message passing for communication. They are implemented as processes in the Erlang's virtual machine
 % Antonio - no has comentado qué es la VM. No has dicho que se implementa sobre Java...
  and not like operating system (OS) threads, therefore they are very
- lightweight in creation and execution. 
+ lightweight in creation and execution.
 % Antonio - ¿qué quiere decir que sean ligeros?
 The use of messages eliminate the sharing of state and
 % Antonio - dí qué son mensajes inmutables
@@ -170,12 +168,9 @@ eliminate many of the typical problems of concurrent development, thats support 
 
 Functional programming is defined by the use of functions in program composition and by using lists.
 % Antonio - Esta frase no se entiende bien y está mal escrita. ;)
-Erlang honored the functional linage and include ultra fast persistent
-technologies called Dets and Mnesia. % que sirven para... - JJ
+Erlang honored the functional linage and include ultra fast technologies for persist data called Dets and Mnesia. % que sirven para... - JJ
 % ¿las usas aquí? ¿Pueden ser útiles? - JJ
-Besides, Erlang offers
-% Antonio - explica qué es esto de macro system
-the concept of records for group data. % y esto es útil porque... -JJ
+Besides, Erlang offers the concept of records for group data which helps to modularize the code. % y esto es útil porque... -JJ
 
 %\subsection{Genetic Algorithm mapping to Erlang}
 
@@ -184,8 +179,7 @@ described in literature in an operational and imperative way. Their
 implementation in a functional language must follow a different path,
 structuring the algorithm model in less imperative and more
 declarative terms. We are going to use a parallel pool based
-evolutionary strategy\cite{DBLP:conf/3pgcic/GuervosMFEL12} as use case
-in order to show our mean. % ¿nuestra media? - JJ  
+evolutionary strategy\cite{DBLP:conf/3pgcic/GuervosMFEL12} as use case. % ¿nuestra media? - JJ
 
 The pool will be an execution entity (an actor acting like a server) that will own the population and also keep a track of the advance in the solution search. The clients, which are concurrent, will do the calculations and will join and leave the system at any time without consequences. Chromosomes will be encoded as lists and the different parts of the GAs algorithms will be implemented as Erlang functions.
 % Antonio - functions -> actors?
@@ -199,7 +193,7 @@ An Erlang actor is implemented by a sequence of pairs pattern/expression definin
    \textbf{Message} & \textbf{Description}\\
      \hline
 {\tt \{configPool, NIM \}->} & Initialization, the parameter NIM is the initial configuration. \\
-\hline 
+\hline
 {\tt \{requestWork, Pid, Capacity \}  -> } & Client requests for a population to evolve.\\
 \hline
 {\tt \{generationEnd, NewIndividuals, OldIndexes, Pid \} -> } & One client report its successfully end of calculation. \\
@@ -231,9 +225,7 @@ Clients are modeled by actors. They are the units of evolution, with the main co
 
 The two previous components have the architecture of the algorithm, they are general and could be used for many problems. In order to solve a particular situation, they must be \emph{injected} by several functions and data structures which define: chromosomes, fitness function, mutation operator, selection criteria and replacement policy. All these particularizations must be implemented in an Erlang source file and configured in the \emph{configBuilder} module.
 
-The proposed design promotes a clear separation between architecture
-(the general, constant and paradigmatic foundation part) and problem
-encoding (the representation and criteria of solution finding). % lo
+The proposed design promotes a clear separation between architecture (the general, constant and paradigmatic foundation part) and problem encoding (the representation and criteria of solution finding) which is good for apply the library to solve another problem. % lo
                                 % que es bueno porque... - JJ
 
 \section{Experiment and conclusions}
@@ -241,13 +233,9 @@ encoding (the representation and criteria of solution finding). % lo
 
 In this ongoing project we are testing the efficiency and simplicity of implementations of GAs by functional programming. The parallel models of GA are mapped to actors in the Erlang languages obtaining easily to understand architectures. All the code has been released as open source code at \url{https://github.com/jalbertcruz/erlEA/}.
 
-The library was tested with \emph{MaxOnes} problem. The chromosomes
-was 128 elements long, with an initial population of 256
-individuals. 50 clients were used and they worked with 20 individuals
-each time a pool assigned a generation to them. The solution, an
-optimum, was reached after 3229 assignments.
+The library was tested with \emph{MaxOnes} problem. The chromosomes was 128 elements long, with an initial population of 256 individuals. 50 clients were used and they worked with 20 individuals each time a pool assigned a generation to them. The solution, an optimum, was reached after 3159 assignments in 3.144590 seconds. For 100 clients the solution was reached in 6.121570 seconds and 6446 assignments; and for 25 clients it was 1835 assignments in 1.687000 seconds. This results shows that in this case there it is not convenient to use very much clients in order to obtain the solution, when the number of clients increase there is a lot of bad solutions thats cames and goes to the clients.
 % Pon alguna medida temporal. También deberías hacer algún experimento
-% con 100 clientes, por ejemplo. 
+% con 100 clientes, por ejemplo.
 
 With this concept test we are showing how simple is to structure a parallel GA, now we could proceed with more complex GA models, experiments and problems in order to explore the potential of the technology.
 
@@ -255,7 +243,7 @@ With this concept test we are showing how simple is to structure a parallel GA, 
 
 This work is supported by project TIN2011-28627-C04-02 (ANYSELF),
 awarded by the Spanish Mineco and P08-TIC-03903 awarded by the
-Andalusian Regional Government. It isalso supported too by the PhD
+Andalusian Regional Government. It is also supported too by the PhD
 Program of the AUIP and by project 83, Campus CEI BioTIC.
 
 \nocite{*}
