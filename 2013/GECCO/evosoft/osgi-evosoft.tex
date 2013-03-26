@@ -194,6 +194,9 @@ This paper shows a
 %
 
 %%CAMBIAR ESTO
+Service Oriented Science refers to...
+
+
 When building quality software systems it is necessary to design them
 with a high level of modularity. Besides the benefits that classic
 modularization paradigms can offer (like object-oriented modelling)
@@ -208,9 +211,9 @@ experimental evaluation, and combination of different optimization
 paradigms \cite{PLUGINS}.  
 
 On the other hand, other patterns for integration, like SOA, have emerged. SOA (Service Oriented Architecture) \cite{PAPAZOGLOU} is a paradigm for
-organizing and utilizing distributed capabilities, called {\em services}. A service is an interaction depicted in Figure \ref{SOADIAGRAM}.
+organizing and utilizing distributed capabilities, called {\em services}. A service is an interaction depicted in Figure \ref{SOADIAGRAM} METER FIGURA!.
 
-In our previous work \cite{OSGILIATH} we presente an abstract Service Oriented Architecture for Evolutionary Algorithms (SOA-EA), with guidelines and steps to migrate from traditional development to SOA. It also presents an specific implementation, called OSGiLiath: an environment for the development of distributed algorithms extensible via plug-ins architecture and based in a wide-accepted software specification (OSGi: Open Services Gateway Initiative \cite{OSGI}).
+
 
 %\begin{figure}[ht] 
 %\begin{center} 
@@ -228,10 +231,10 @@ The service provider publishes service descriptions (or interfaces) in the servi
 Distributed computing offers the possibility of taking advantage of parallel processing
  in order to obtain a higher 
 computing power than other multiprocessor architectures. Two clear examples are the
-research lines centred in clusters \cite{Buyya} and GRID \cite{GRID_ALGORITHMS}
+research lines centred in clusters \cite{Buyya} and GRID \cite{OPENSCIENCEGRID}
 for parallel processing. SOA it is also used in this area, using platforms based on Web Services \cite{PAPAZOGLOU}, and new standards for this paradigm have emerged, like OSGi.
 
-
+In our previous work \cite{OSGILIATH} we presented an abstract Service Oriented Architecture for Evolutionary Algorithms (SOA-EA), with guidelines and steps to migrate from traditional development to SOA. It also presents an specific implementation, called OSGiLiath: an environment for the development of distributed algorithms extensible via plug-ins architecture and based in a wide-accepted software specification (OSGi: Open Services Gateway Initiative \cite{OSGI}). In this work, a full service development is presented, taking into account the specific technology used, instead an abstract design, as previous work.
 
 Therefore, the objective of the proposed environment in this paper is to facilitate the
 development of distributed computing applications by using the OSGi standard,
@@ -239,8 +242,7 @@ taking advantage
 of the plug-in software development and SOA that can compete with existing
 distributed applications in easy of use, compatibility and development.
 The rest of the work is structured as follows: after the state of
-the art, we present the developed algorithms and experimental setting. 
-Then, the results of the experiments are shown (Section \ref{sec:results}), followed by conclusions and suggestions for future work.
+the art, we present design principles to create services for Evolutionary Computation (Section \ref{sec:design}). Then, the OSGi implementation technology is explained (Section \ref{sec:technology}), used to build our framework (explained in Section \ref{sec:osgiliath}). Then, the steps to create services with this framework are explaiend (Section \ref{sec:development}). Finally, conclusions and suggestions for future work are shown (Section \ref{sec:conclusions}).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  SOA  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -259,12 +261,12 @@ install and require many programming skills. Another problem could be
 the lack of comfort, for example, C++ has a more complicate sintaxis
 than other languages. There also exist frameworks that use metaheuristics to apply in specific fields, like the KEEL framework \cite{KEEL}, that let the creation of heuristics to apply in data-mining problems.
 
-Among this great number of frameworks we want to focus in the most widely accepted distributed algorithms frameworks. ECJ \cite{luke:ejb}, Evolutionary Computation in Java, is a set of Java classes that can be extended and includes several communication modules. MALLBA \cite{MALLBA} is based in software skelletons with a common and public interface. Every skeleton implements a resolution technique for optimization in the fields of exact, heuristic or hybrid optimization. It provides LAN and WAN capacity distribution with MPI . However, this both frameworks are not based in the plug-in development, so they can not take advantage of features like the life-cycle management, versioning, or dynamic service binding, as OSGi proposes.
+Among this great number of frameworks we want to focus in the most widely accepted distributed algorithms frameworks. ECJ \cite{ECJ}, Evolutionary Computation in Java, is a set of Java classes that can be extended and includes several communication modules. MALLBA \cite{MALLBA} is based in software skelletons with a common and public interface. Every skeleton implements a resolution technique for optimization in the fields of exact, heuristic or hybrid optimization. It provides LAN and WAN capacity distribution with MPI . However, this both frameworks are not based in the plug-in development, so they can not take advantage of features like the life-cycle management, versioning, or dynamic service binding, as OSGi proposes.
 
 
 
 
-Another important platform is DREAM \cite{LNCSDREAM}, which is an open source framework for Evolutionary Algorithms based on Java that
+Another important platform is DREAM \cite{DREAM}, which is an open source framework for Evolutionary Algorithms based on Java that
 defines an island model and uses the Gossip protocol and TCP/IP sockets for
 communication. It can be deployed in P2P platforms and it is divided
 in five modules. Every module provides an user interface and different
@@ -272,53 +274,62 @@ interaction and abstraction level, but adding new functionalities is not so easy
 
 Moreover, MALLBA and DREAM could be considered abandoned frameworks, due to no new publications or versions have been released. The MALLBA authors are now working in the jMetal Framework \cite{JMETAL}, that is a newer Java-based framework, but it has not yet distributed capabilities and it is focused in multi-objective optimization.
 
-ParadiseEO \cite{PARADISE} allows the design of Evolutionary Algorithms and Local Search with hybridization, providing a variety of operators and evaluation functions. It also implement the most common parallel and distributed models, and it is based in standard libraries like MPI, PVM and Pthreads. However, it has the same problems that the previous frameworks, not lifecycle management or service oriented programming. GAlib \cite{GALIB} is very similar and share the same characteristics and problems.
+ParadiseEO \cite{PARADISEO} allows the design of Evolutionary Algorithms and Local Search with hybridization, providing a variety of operators and evaluation functions. It also implement the most common parallel and distributed models, and it is based in standard libraries like MPI, PVM and Pthreads. However, it has the same problems that the previous frameworks, not lifecycle management or service oriented programming. GAlib \cite{GALIB} is very similar and share the same characteristics and problems.
 
-In the field of the plug-in based frameworks, HeuristicLab \cite{HEURISTICLAB} is the most outstanding example. It also allows the distributed programming using Web Services and a centralized database, instead using their own plug-in design for this distributed communication. 
+In the field of the plug-in based frameworks, HeuristicLab \cite{HEURISTICLAB} is the most outstanding example. It also allows the distributed programming using Web Services and a centralized database, instead using their own plug-in design for this distributed communication.
 
-HeuristicLab \cite{HEURISTICLAB} is one of the few plug-in and service oriented frameworks. It uses web services for communication, but just to distribute the load, after consulting a central database of available jobs.
-
-Finally, METCO framework \cite{METCO} also have the same problems, it does not use a standard plug-in system or SOA, but let the implementation of existing interfaces, and lets the user configure its existing functionalities.
-
-
+METCO framework \cite{METCO} also have the same problems, it does not use a standard plug-in system or SOA, but let the implementation of existing interfaces, and lets the user configure its existing functionalities.
 
 Finally, the only service oriented optimization framework is GridUFO \cite{GRIDUFO}, but it only allows the modification of the objective function and the addition of whole algorithms, without combining existing services. 
 
-\section{Service Oriented Architecture in Evolutionary Algorithms}
-Previous sections have demonstrated that it is possible to create a service oriented architecture for EAs using a specific SOA technology. This architecture uses the features that SOA offers. To do this:
-In summary, the previous works present a number of shortcomings when designing and adding new features: they need to modify source code or be stopped in order to add new features and they are not based in a public plug-in specification. Also they have not an event administration mechanism and they are not service-oriented, so they not take advantage of this paradigm.
+\section{Designing Services for a Service Oriented Architecture for Evolutionary Algorithms}
+\label{sec:design}
+In \cite{OSGILIATH} we demonstrated that it is possible to create a service oriented architecture for EAs using a specific SOA technology. This architecture used the features that SOA offers. To do this, loose coupling services for EAs were designed (SOA-EA), and they were implemented using a SOA technology and compared with other frameworks. These services can be combined in several ways to obtain different algorithms (from a canonical GA, a NSGA-II has been created just adding new services). Also. several techniques were presented to combine existing services in a flexible way.
+
+
+
+\subsection{Design principles}
+
+Services must match the technological requirements given in previous sub-section. However, other design restrictions must be taken into account, given the stateless nature of services in SOA:
+
+First, as services are unaware of others, there must not be global variables in any part of the code. Services are listening, and waiting to be executed. For example, a fitness service with a counter that is increased each time is called (to stop the algorithm if a limit is reached, for example). If several (and different) algorithms are working in parallel, and calling this function at the same time the counter would not distinguish between algorithms, giving erroneous results. However, a service that maintains some kind of state is permited, for example, a statistic service that read events from all the algorithms being executed at the same time.
+
+Moreover, a service is always a request-response function. For example, the fitness calculation must not be a method of the {\em Individual} implementation, but a function that receives a list of individuals and returns a list of the calculated fitness of that individuals. This allow things such as remote fitness calculation and load balancing, impossible to perform if the fitness is a method of the Individual class.
+
+Thinking as abstract as possible requires separate concepts such the order of recombination, and the crossover itself. Usually, after parent selection, individuals are crossed in order. However, if we need a different mechanism for mating (for example, using more than two parents, or parent selected several times) a dupplication of effort is needed. That is the reason we should sepparate the concept {\em recombine} from {\em crossover}. 
+
+Finally, we must not make assumptions about services previously executed or being executed next. For example, services such {\em Recombinator} or {\em Mutator} should return the individuals with the Fitness already calculated. Usually this step is performed in the last stage of the generation, but if we require the individuals for other tasks: for example, a Local Search or a statistics collector to guide the algorithm.
+
+\subsection{Other technological restrictions}
+
+In \cite{OSGILIATH} we presented the advantages of using SOA in Evolutionary Algorithms area: firstly, SOA fits with the genericity advantages in the development of software for EAs \cite{GENERICITY05} and adds new features, like language independence and  distribution mechanisms. It also allows the addition and removal of services in execution time without altering the general execution of the algorithm (that is, it is not mandatory to stop it or to add extra code to support new operators). This issue increases the interoperability between different software elements. Moreover, this allows easy code distribution: SOA does not require the use of a concrete implementation or library.
+
+In this work, a new process development, explaining the specific technology used is presented. The services developed must match with the next technological restrictions:
 \begin{itemize}
-\item In Sections \ref{sec:soa4eas} and \ref{sec:examples} loose coupling services for EAs have been designed (SOA-EA), and they have been implemented in Section \ref{sec:osgiliath}.
-\item These services can be combined in several ways to obtain different algorithms (from a canonical GA, a NSGA-II has been created just adding new services). These services are dynamically bound to cha\-nge the needed EA aspects. The source code of  the basic EA services have not been re-written or re-compiled to achieve this task.
-\item New services can be added in execution time using our implementation.
-\item No specific source code for a basic distribution have been added, neither the existing source code has been modified.
-\item Several techniques have been presented to combine existing services in a flexible way.
+\item These services can dynamically bound to cha\-nge the needed EA aspects. 
+\item The source code of  the basic EA services must not been re-written or re-compiled to achieve this task. 
+\item New services can be added in execution time. 
+\item No specific source code for a distribution must added, neither the existing source code of the services should be modified for this purpose (that is, changing distribution libraries must not add extra code in exisitng services).
 \end{itemize}
 
 
-However, after the explanation of the most important issues of EAs in SOA (Algorithm representation, dynamism, load distribution and self-adapting), we want to share  the benefits of SOA with the rest of EA researchers:
 
-% estás repitiendo lo mismo que dijiste antes, sin una prueba ni
-% comparación! - JJ
-% FERGU: hombre, la prueba es el código fuente que está en el SVN.
 
-\begin{itemize}
-\item Firstly, SOA fits with the genericity advantages in the development of software for EAs \cite{GENERICITY05} and adds new features, like language independence and  distribution mechanisms.
-\item SOA allows the addition and removal of services in execution time without altering the general execution of the algorithm (that is, it is not mandatory to stop it or to add extra code to support new operators).
-\item It also increases the interoperability between different software elements (for example, it is possible to add communication libraries without modifying existing code).
-\item Related to the previous point, the existing EA frameworks could be re-used thanks to SOA, because it provides language independence.
-\item Easiness for code distribution: SOA does not require the use of a concrete implementation or library.
-\item Access to already created and operative services.% (as previously stated STATService for non-parametric tests).
-\item Collaboration among geografically distributed work teams.
-\end{itemize}
+
+
+
+
+
+
 
 \section{Implementation technology}
-This section dives into some technical features of the OSGi platform, to guide the reader to understand the OSGiLiatH framework in a deeper way, and to evaluate the advantages of using this features in the development of distributed algorithms.
+\label{sec:technology}
+This section dives into some technical features of the OSGi platform, to guide the reader to understand the OSGiLiatH framework in a deeper way, and to evaluate the advantages of using this features in the development of distributed algorithms and match with the previous restrictions.
 
-OSGi (Open Service Gateway Initiative) \cite{OSGI} was proposed by a consortium of more than
+The used technology, OSGi (Open Service Gateway Initiative) \cite{OSGI} was proposed by a consortium of more than
 eighty companies in order to develop an infrastructure for the
 deployment of service in heterogeneous network of devices, mainly
-oriented to domotics \cite{OSGIOVERVIEW}. Nowadays it defines a
+oriented to domotics \cite{GATEWAY}. Nowadays it defines a
 specification for a Service Oriented Architecture for virtual
 machines (VMs). It provides very desiderable features, like
 packet abstraction, life-cycle management, packaging or versioning,
@@ -352,7 +363,7 @@ This advantages are not so
                                 also big application servers
                                (Glassfish or IBM Websphere) or
                                residential gateways
-                               \cite{OSGIGATEWAY}, among other
+                               \cite{GATEWAY}, among other
                                examples. 
 
 \subsection{OSGi Architecture}
@@ -408,18 +419,18 @@ Regarding to explained OSGi layers how to use all OSGi capabilities is shown nex
 \caption{Example of MANIFEST.MF. This example defines which packages are necessary to activate the bundle and which packages are exported.}
 \end {figure}
 
-As can be seen in previous sections, it is in the second and third level of the development in OSGiLiatH where the declarative services specification is used to automatically obtain the implementation of the interfaces. In normal environments, to create an specific implementation of an interface (i.e. {\em ObjectiveFunction}) is as follows:
+In normal environments, to create an specific implementation of an interface (i.e. {\em FitnessCalculator}) is as follows:
 
 \begin{lstlisting}
-class GeneticAlgorithm implements Algorithm{
- ObjectiveFunction obj;
- //A new instance is bind to a reference
- ObjectiveFunction f = new ExampleFunction();
+class EvolutionaryAlgorithm implements Algorithm{
+ FitnessCalculator fc;
+ //A new instance is bound to a reference
+ f = new ExampleFunction();
 }
 \end{lstlisting}
  
-With Declarative Services, the {\em new Implementation()} part is not necessary. For example, Figure \ref{fig:ds} shows a service component file, which stablish in execution time which implementation is bound to the interfaces. This example indicates that the implementation of service {\em Algorithm} is {\em GeneticAlgorithm}, but this service is not activated until all their references (other services, like {\em ObjectiveFunction} or {\em Crossover}) are also activated. The tag {\em cardinality} means that at least one service of that kind must exist (the first {\em 1} represents optionality) and  the second part (the other {\em 1} indicates the number of different implementations that can be managed: one ({\em 1}) or many ({\em *}). The file where these capabilities are defined is declared in section {\em Service-Component} of MANIFEST.MF file, as can be seen in Figure \ref{fig:manifest}.
-\begin{figure}[t]
+With Declarative Services, the {\em new ExampleFunction()} part is not necessary. For example, Figure \ref{fig:ds} shows a service component file, which stablish in execution time which implementation is bound to the interfaces. This example indicates that the implementation of service {\em Algorithm} is {\em EvolutionaryAlgorithm}, but this service is not activated until all their references (other services, like {\em ObjectiveFunction} or {\em Crossover}) are also activated. The tag {\em cardinality} means that at least one service of that kind must exist (the first {\em 1} represents optionality) and  the second part (the other {\em 1} indicates the number of different implementations that can be managed: one ({\em 1}) or many ({\em *}). The file where these capabilities are defined is declared in section {\em Service-Component} of MANIFEST.MF file, as can be seen in Figure \ref{fig:manifest}.
+\begin{figure*}[t]
 \noindent
 \ttfamily
 
@@ -451,23 +462,26 @@ With Declarative Services, the {\em new Implementation()} part is not necessary.
 \mbox{}
 
 \normalfont
-\label{fig:ds}
 \caption{Service Description. This documents indicates that the implementation of the service {\em Algorithm} is {\em GeneticAlgorithm}, but it can not activate until their references (other services) are activated.}
-\end {figure}
+\label{fig:ds}
+\end {figure*}
 
 This document indicates that the implementation of the service {\em Algorithm} is the class {\em GeneticAlgorithm}, but it can not be activated until the rest of the references (another services, like {\em Crossover}) are activated first. We need to create XML files for the rest of services to use (i.e. ObjectiveFunction)
 
 \begin{lstlisting}
-class GeneticAlgorithm implements Algorithm{
- //Other service references, like Crossover, Parameters...
- ObjectiveFunction obj;
+class EvolutionaryAlgorithm implements Algorithm{
+ //Other service references,
+ // like Crossover, Parameters...
+ FitnessCalculator fc;
  
  //Methods to bind/unbind each reference
- public ObjectiveFunction setObjectiveFunction(ObjectiveFunction obj){
-  this.obj = obj;
+ public FitnessCalculator 
+    setFitnessCalculator(FitnessCalculator fc){
+  this.fc = fc;
  }
 	
- public void unsetObjectiveFunction(ObjectiveFunction obj){
+ public void 
+    unsetFitnessCalculator(FitnessCalculator obj){
   this.obj = null;
  }
 }
@@ -494,7 +508,8 @@ Code to send an event to other bundles is shown below. The programmer specifies 
 
 \begin{lstlisting}
 Properties props = new Properties(); //Optional
-String topic = "es/ugr/osgiliath/algorithms/geneticalgorithm/endgeneration";
+String topic = "es/ugr/osgiliath/algorithms/
+geneticalgorithm/endgeneration";
 Event evt = new Event(topic,props);
 eventAdmin.postEvent(evt);
 \end{lstlisting}
@@ -514,7 +529,8 @@ class ExampleImpl implements ExampleService,EventHandler{
  public void handleEvent(Event ev){
   if(evt.getTopic().endsWith("endgeneration")){
    // An event with topic 
-   // "es/ugr/osgiliath/algorithms/geneticalgorithm/endgeneration"
+   // "es/ugr/osgiliath/algorithms/
+   // geneticalgorithm/endgeneration"
    System.out.println("Generation over");
   else{
    // Other event with topic starts with
@@ -528,9 +544,9 @@ class ExampleImpl implements ExampleService,EventHandler{
 %%%%%%%%%%%%%%%%%%  DEVELOPMENT  %%%%%%%%%%%%%%%%%%%
 
 \subsection{Distribution}
-In OSGiLiath all services can be distributed using the OSGi features. In this case, the distribution is performed using the service descriptor to set which service is distributable and which is the distribution technology that provides service discovering and data transmission.
+In our presented framework for EAs all services can be distributed using the OSGi features. In this case, the distribution is performed using the service descriptor to set which service is distributable and which is the distribution technology that provides service discovering and data transmission.
 
-OSGi allows several implementations for the service distribution. ECF\footnote{\url{http://www.eclipse.org/ecf/}} has been chosen because it is the most mature and accepted implementation \cite{petzold2011dynamic}, and it also supports the largest number of transmission protocols, including both synchronous and asynchronous communication. It provides a modular implementation of the OSGi 4.2 Remote Services standard \footnote{\url{http://www.osgi.org/Release4/Download}}. This specification uses the OSGi service registry to expose remote services.. ECF also separates the source code from the discovery and transmission mechanism, allowing users to apply the most adequate technology to their needs, and providing the integration with existing applications. % For example, the lines of Figure \ref{fig:remote} have been added to the service descriptor of {\em MOP2 Fitness Calculator} to distribute it in the local network.
+OSGi allows several implementations for the service distribution. ECF\footnote{\url{http://www.eclipse.org/ecf/}} has been chosen because it is the most mature and accepted implementation \cite{petzold2011dynamic}, and it also supports the largest number of transmission protocols, including both synchronous and asynchronous communication. It provides a modular implementation of the OSGi 4.2 Remote Services standard \footnote{\url{http://www.osgi.org/Release4/Download}}. This specification uses the OSGi service registry to expose remote services. ECF also separates the source code from the discovery and transmission mechanism, allowing users to apply the most adequate technology to their needs, and providing the integration with existing applications. % For example, the lines of Figure \ref{fig:remote} have been added to the service descriptor of {\em MOP2 Fitness Calculator} to distribute it in the local network.
 
 ECF includes a number of protocols for service discovery and service providers:
 \begin{itemize}
@@ -539,7 +555,8 @@ ECF includes a number of protocols for service discovery and service providers:
 \end{itemize}
 
 \section{OSGiLiath}
-This section explains the functionality and design of the proposed environment, called OSGiLiatH ({\em OSGi Laboratory for Implementation and Testing of Heuristics}). This environment is a  framework for the development of heuristic optimization applications, not centred on a concrete paradigm, and whose main objective is to promote the OSGi and SOA usage and offer to programmers the next features:
+\label{sec:osgiliath}
+This section explains the functionality and design of the proposed environment, called OSGiLiatH ({\em OSGi Laboratory for Implementation and Testing of Heuristics}), presented in \cite{OSGILIATHNICSO}. This environment is a  framework for the development of heuristic optimization applications, not centred on a concrete paradigm, and whose main objective is to promote the OSGi and SOA usage and offer to programmers the next features:
 
 \begin{itemize}
 \item Easy interfaces. After a study of the previous frameworks a complete interface hierachy has been developed.
@@ -548,12 +565,13 @@ This section explains the functionality and design of the proposed environment, 
 \item Client/Server or Distributed Model. All components of the framework can communicate in a bi-directional way, so a central broker is not necessary if it is not required.
 \item Paradigm independent. The framework is not focused in a type of metaheuristic.
 \item Declarative Services. Bind interfaces to specific implementations can be done without modifying existent source code. Programmers do not need to instantiate implementations of the services.
-\item Remote event handling: Using the OSGi and R-OSGi advantages, users can use a powerful tool to synchronize or share data among services.
+\item Remote event handling: Using the OSGi advantages, users can use a powerful tool to synchronize or share data among services.
 \end{itemize}
 
 The source code is available at \url{http://atc.ugr.es/~pgarcia}, under a GPL license.
 
 \subsection{OSGiLiath organization}
+
 By now, OSGiLiath counts with the next bundles:
 
 \begin{itemize}
@@ -562,24 +580,28 @@ By now, OSGiLiath counts with the next bundles:
 \item Basic Evolutionary Components: Includes several implementations of the previous interfaces: 
 \item Binary Problems: Includes implementation of well-known problems, such as OneMax and MMDP, with INDIVIDUALS tal...
 \item Function Problems: 
-\item NSGA2: 
+\item NSGA2: Implementations of elements for the NSGA2 algorithm.
 \item OSGiLiART: Service implementation for the creation of Evolutionary Art.
 \item NoOSGi: Because OSGi allows the separation of source code with the OSGi framework capabilities, this bundle includes Java code to integrate the services without any specific technology (just basic Object Oriented programming).
 \item IntelligentManager: An example of how the services can be bound/unbound in real-time. By now, in each step the IntelligentRandomManager hace PATATIN Y PATATAN.
 \end{itemize}
 
-\section{Development of service}
+\section{Development of services in OSGiLiath}
 \label{sec:development}
 This section presents the steps to add services to the existent OSGiLiath core.
 
 \subsection{Bundle creation}
+Services can be added to existent bundles or new bundles can be created. Each bundle includes a MANIFEST.MF file (as depicted in Figure \ref{fig:manifest}). In this case, we have selected the packages to import (including interfaces and classed from the Osgiliath core)
 
 \subsection{Implementing services}
+To implement a service, a class must be created
 
+\subsection{Adding communication}
+Thanks to the OSGi 4.2 specification, services must be indistinguishable from the ones in the local OSGi environment or in other OSGi environment (in the same machine or even in the same network). To achieve this, the ECF is used to export services.
 
 
 \section{Conclusions}
-
+\label{sec:conclusions}
 
 
 %ACKNOWLEDGMENTS are optional
