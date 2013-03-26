@@ -1,0 +1,512 @@
+\documentclass[a4paper,twoside]{article}
+
+\usepackage{epsfig}
+\usepackage{subfigure}
+\usepackage{calc}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{multicol}
+\usepackage{pslatex}
+\usepackage{apalike}
+\usepackage{SciTePress}
+\usepackage[small]{caption}
+
+\subfigtopskip=0pt
+\subfigcapskip=0pt
+\subfigbottomskip=0pt
+
+\newcommand{\metodo}{L-Co-R}
+
+\begin{document}
+
+\title{Authors' Instructions - Sustuir esta linea por el titulo de al menos 2 lineas que va a poner Victor }
+
+\author{\authorname{E. Parras-Gutierrez\sup{1}, V.M. Rivas\sup{1} and J.J. Merelo\sup{2}}
+\affiliation{\sup{1}Department of Computer Sciences, University of Jaen, Campus Las Lagunillas s/n, 23071, Jaen, Spain}
+\affiliation{\sup{2}Department of Computers, Architecture and Technology, University of Granada, C/ Periodista Daniel Saucedo s/n, 18071, Granada, Spain}
+\email{\{eparrasg, vrivas\}@vrivas.es, jmerelo@geneura.ugr.es}
+}
+
+
+\keywords{Time series forecasting, Coevolutionary algorithms, Neural Networks, Significant lags}
+
+\abstract{This paper presents an experimental study in which the effectiveness of the {\metodo} method is tested. {\metodo} is a coevolutionary algorithm to time series forecasting that evolves, on one hand, RBFNs building an appropriate architecture of net, and on the other hand, sets of time lags that represents the time series in order to perform the forecasting using, at the same time, its own forecasted values. This coevolutive approach makes possible to divide the main problem into two subproblems where every individual of one population cooperates with the individuals of the other population. The goal of this work is to analyze the results yielded by {\metodo} comparing with other methods from the time series forecasting field. For that, 20 time series and 5 different methods found in the literature have been selected, and 3 distinct quality measures have been used to show the results. Finally, a statistical study confirms the good results of {\metodo} in most of the cases.}
+
+
+
+
+%\keywords{The paper must have at least one keyword. The text must be set to 9-point font size and without the use of bold or italic font style. For more than one keyword, please use a colon as a separator. Keywords must be titlecased.}
+
+%\abstract{The abstract should summarize the contents of the paper and should contain at least 70 and at most 200 words. The text must be set to 9-point font size.}
+
+
+\onecolumn \maketitle \normalsize \vfill
+
+\section{\uppercase{Introduction}}
+\label{sec:introduction}
+
+\noindent Time series are present in any act or behavior of the daily life among many other activities in different areas. %like Engineering, Biology, Economy, Social Sciences, etc. 
+Formally defined, a time series is a set of observed values from a variable along the time in regular periods of time (every day, every month, every year...) \cite{Pena2005}. Accordingly, the labor of forecasting time series can be defined as the task of predicting successive values of the variable in time spaced based on past and present observations.
+
+During many decades, a lot of varied approaches have been arising trying to model and forecast time series. These techniques can be classified into three different areas: descriptive traditional technologies, linear and nonlinear modern models, and technologies coming from the soft computing area. From all developed method, ARIMA, proposed by Box and Jenkins \cite{BoxJenk}, is possibly the most known. %in time series forecasting. 
+Nevertheless, it gives simplistic linear models %has a disadvantage since simplistic linear models are given, 
+being unable to find subtle patterns in the time series data. On the other hand, different techniques such as %fuzzy logic, expert systems, evolutionary algorithms (EAs), or specially 
+artificial neural network (ANNs) have been dealt with time series forecasting within soft computing area. More precisely, ANNs have stand out as a satisfactory tool for researchers due to their learning and generalization capabilities.
+
+The {\metodo} method \cite{Parras2012Softcomputing}, developed inside the field of ANNs, makes jointly use of Radial Basis Function Networks (RBFNs) and EAs. The objective of the algorithm is the automatic forecasting of any given time series minimizing the obtained error. Moreover, {\metodo} designs appropriate neural networks and selects the time lags, that will be used in the prediction, in a coevolutive \cite{Paredis95} approach that allows to separate the main problem in two subproblems depending on each other. Therefore, the algorithm evolves two subpopulations based on a cooperative scheme in which every individual of a subpopulation collaborates with individuals from the other subpopulation in order to obtain good solutions.
+
+The main goal of this work is to analyze the effectiveness of the {\metodo} method when automatically forecasting using the own predicted values for next predictions. Thus, 5 different methods used in time series forecasting have been selected in order to test the behavior of the method.
+
+The rest of the paper is organized as follows: section \ref{sec:preliminaries} introduces some preliminary topics related to this research; section \ref{sec:method} describes the method {\metodo}; section \ref{sec:experimentation} presents the experimentation and the statistical study carried out %and a comparative statistical study of the results obtained
+, and finally section \ref{sec:conclusions} presents some conclusions of the work.
+
+
+
+
+
+\section{\uppercase{Preliminaries}}
+\label{sec:preliminaries}
+
+\noindent 
+
+%\subsection{Time series forecasting}
+
+Mainly, the proposed approaches in time series forecasting can be grouped in linear and nonlinear models. Methods like exponential smoothing methods \cite{Winters1960}, simple exponential smoothing, Holt's linear methods, some variations of the Holt-Winter's methods, State space models \cite{Snyder1985}, and ARIMA models \cite{BoxJenk}, have stand out from linear methods, used chiefly for modeling time series. Nonlinear models arose because linear models were insufficient in many real applications; between nonlinear methods it can be found regime-switching models, which comprise the wide variety of existing threshold autoregressive models \cite{Tong1978} as: self-exciting models \cite{Tong1983}, smooth transition models \cite{Chan1986}, and continuous-time models \cite{Brockwell1992157}, among others. Nevertheless, soft computing approaches were developed in order to save disadvantages of nonlinear models like the lack of robustness in complex model and the difficulty to use \cite{Clements2004}.% and De Gooijer \cite{Gooijer25years}.
+
+%\subsection{Soft computing methods for time series forecasting}
+
+Although many works were realized within soft computing area%(as for example \cite{Samanta2011})%, \cite{Zhu2011}, or \cite{Wang2011}, among others)
+, more specifically ANNs were successfully applied to time series forecasting \cite{Jain2007}%, as concluded %Tang \cite{Tang1991}, Zhang \cite{Zhang1998b} or Jain and Kumar \cite{Jain2007}
+, and recognized as an important tool for forecasting, as mentioned before. %There exist numerous works of different application areas where ANNs are used to forecast time series. 
+%The work by Arizmendi \cite{Arizmendi1993} obtained accurate predictions of the airborne pollen concentrations using ANNs. Zhang and Hu \cite{Zhang1998b} employed ANNs, and Rivas et al. \cite{Rivas04} RBFNs, for forecasting British pound and US dollar exchange rates. Bezerianos et al. \cite{Bezerianos1999} employed RBFNs for the assessment and prediction of the heart rate variability.
+
+%\subsection{Radial Basic Function Networks}
+
+Inside the ANNs, the utilization of RBFs as activation functions were considered by works as \cite{Broomhead88} and \cite{Rivas04}, and applied to time series by Carse and Fogarty \cite{Carse1996}, and Whitehead and Choate \cite{Whitehead96}. Later works like the ones by Harpham and Dawson \cite{Harpham06} or  Du \cite{Du2008} focused on RBFNs for time series forecasting.
+
+%\subsection{Lags selection in time series forecasting}
+
+On the other hand, an issue that must be taken into account when working with time series is the correct choice of the time lags for representing the series. Takens' theorem \cite{Takens1980} establishes that if $d$, a $d$-dimensional space where $d$ is the minimum dimension capable of representing such a relationship, is sufficiently large is possible to build a state space using the correct time lags and if this space is correctly rebuilt also guarantees that the dynamics of this space is topologically identical to the dynamics of the real systems state space.
+
+Many methods are based in Takens' theorem (like \cite{Luko2010}) but, in general, the approaches found in the literature consider the lags selection as a pre or postprocessing or as a part of the learning process (as \cite{Araujo2010a} or \cite{Maus2011}). In the {\metodo} method faces the selection of the time lags jointly with the design process, thus it employs coevolution to simultaneously solve these problems.
+
+%\subsection{Cooperative coevolution algorithms and time series forecasting}
+
+Cooperative coevolution \cite{Potter94} has also been used in order to train ANNs to design neural network ensembles \cite{Garcia-Pedrajas05} and RBFNs \cite{Li08}. But in addition, cooperative coevolution is utilized in time series forecasting in works as the one by Xin \cite{Xin10}. %Qian-Li \cite{Qian-Li08} or 
+
+
+%\subsection{Quality measures for time series forecasting}
+
+Additionally, another question to take into account working with time series is the measure to use in order to calculate the accuracy of the obtained results by the method utilized. Mean Absolute Percentage Error (MAPE) \cite{Bowerman2004} was the first measure employed in the M-competition \cite{Makridakis1982} and most textbooks recommended it. Later, many other measures as Geometric Mean Relative Absolute Error, Median Relative Absolute Error, Symmetric Median and Median Absolute Percentage Error (MdAPE), and Symmetric Mean Absolute Percentage Error, among others, were proposed \cite{Makridakis2000}. However, a disadvantage was found in these measures, they were not generally applicable and can be infinite, undefined or can produce misleading results, as Hyndman and Koehler explained in their work \cite{Hyndman2006}. Thus, they proposed Mean Absolute Scaled Error (MASE) that is less sensitive to outliers, less variable on small samples, and more easily interpreted.
+
+In this work, the measures used are MAPE, MASE, and MdAPE, taking into account that $Y_t$ is the observation at time $t = {1,...,n}$; $F_t$ is the forecast of $Y_t$; $e_t$ is the forecast error (i.e. $e_t= Y_t - F_t$); $p_t = 100e_t/Y_t$ is the percentage error, and $q_t$ is determined as:
+
+ \begin{center}
+ \smallskip
+ $q_t = \displaystyle\frac{e_t}{\displaystyle\frac{1}{n-1} \sum_{i=2}^n \mid Y_i - Y_{i-1} \mid }$
+ \end{center}
+
+
+%\begin{table}[h]
+%\caption{Used forecast accuracy measures.}
+%\label{tab:measures}
+%\centering
+%\begin{tabular}{|c|c|}
+%  \hline MAPE & $mean(\mid p_t\mid)$ \\
+%  \hline MASE & $mean(\mid q_t\mid)$ \\
+%  \hline MdAPE & $median(\mid p_t\mid)$ \\
+%  \hline
+%\end{tabular}
+%\end{table}
+
+
+
+
+
+
+
+
+\section{\uppercase{Description of the method}}
+\label{sec:method}
+
+\noindent This section describes {\metodo} \cite{Parras2012Softcomputing}, a coevolutionary algorithm developed to minimize the error obtained for automatically time series forecasting. The algorithm works building at time RBFNs and sets of lags that will be used to predict future values. For this task, {\metodo} is able to simultaneously evolve two populations of different individual species, in which any member of each population can cooperate with individuals from the other one in order to generate good solutions, that is, each individual represents itself a possible solution to the subproblem. Therefore, the algorithm is composed of the following two populations:
+
+\begin{itemize}
+  \item Population of RBFNs: it consists of a set of RBFNs which evolves to design a suitable architecture of the network. This population employs real codification so every individual represent a set of neurons (RBFs) that composes the net. During the evolutionary process neurons can grow or decrease since the number of neurons is variable. Each neuron of the net is defined by a center (a vector with the same dimension as the inputs) and a radius. The exact dimension of the input space is given by an individual of the population of lags (the one chosen to evaluate the net).
+
+  \item Population of lags: it is composed of sets of lags evolves to forecast future values of the time series. The population uses a binary codification scheme thus each gene indicates if that specific lag in the time series will be utilized in the forecasting process. The length of the chromosome is set at the beginning corresponding with the specific parameter, so that it cannot vary its size during the execution of the algorithm.
+\end{itemize}
+
+
+As the fundamental objective, {\metodo} forecasts any time series for any horizon and builds appropriate RBFNs designed with suitable sets of lags, reducing any hand made preprocessing step. Figure \ref{generalscheme} describes the general scheme of the algorithm {\metodo}.
+
+%In the following subsections it is described the general scheme of the proposal, each process which takes part in the coevolution, the process of collaboration between them, and the trend removal mechanism.
+
+\begin{figure}
+\centering
+\begin{tabular}{|l|}
+\hline
+\\
+Trend preprocessing \\
+t = 0;  \\
+\emph{initialize} P\_lags(t); \\
+\emph{initialize} P\_RBFNs(t);  \\
+\emph{evaluate} individuals in P\_lags(t); \\
+\emph{evaluate} individuals in P\_RBFNs(t); \\
+while termination condition not satisfied do \\
+begin  \\
+\ \ \ t = t+1;  \\
+\ \ \ /* Evolve population of lags */ \\
+\ \ \ for i=0 to max\_gen\_lags do \\
+\ \ \ begin  \\
+\ \ \ \ \ set threshold;  \\
+\ \ \ \ \ \emph{select} P\_lags'(t) from P\_lags(t); \\
+\ \ \ \ \ \emph{apply} genetic operators in P\_lags'(t); \\
+\ \ \ \ \ /* Evaluate P\_lags'(t) */ \\
+\ \ \ \ \ \ \ \emph{choose} collaborators from P\_RBFNs(t); \\
+\ \ \ \ \ \ \ \emph{evaluate} individuals in P\_lags'(t); \\
+\ \ \ \ \ \emph{replace} individuals P\_lags(t) with P\_lags'(t); \\
+\ \ \ \ \ if threshold $<$ 0  \\
+\ \ \ \ \ begin  \\
+\ \ \ \ \ \ \ \ \emph{diverge} P\_lags(t); \\
+\ \ \ \ \ end \\
+\ \ \ end  \\
+\ \ \ /* Evolve population of RBFNs */ \\
+\ \ \ for i=0 to max\_gen\_RBFNs do \\
+\ \ \ begin \\
+\ \ \ \ \ \emph{select} P\_RBFNs'(t) from P\_RBFNs(t); \\
+\ \ \ \ \ \emph{apply} genetic operators in P\_RBFNs'(t); \\
+\ \ \ \ \ /* Evaluate P\_RBFNs'(t) */  \\
+\ \ \ \ \ \ \ \emph{choose} collaborators from P\_lags(t); \\
+\ \ \ \ \ \ \ \emph{evaluate} individuals in P\_RBFNs'(t); \\
+\ \ \ \ \ \emph{replace} individuals with P\_RBFNs'(t);  \\
+\ \ \ end  \\
+end  \\
+\emph{train} models and select the best one \\
+forecast test values with the final model \\
+Trend postprocessing \\
+\\
+\hline
+\end{tabular}
+\caption{General scheme of method {\metodo}.}
+\label{generalscheme}
+\end{figure}
+
+{\metodo} performs a process to automatically remove the trend of the times series to work with, if necessary. This procedure is divided into two main phases: preprocessing, which takes places at the beginning of the algorithm, and postprocessing, at the end of coevolutionary process. Basically, the algorithm checks if the time series includes trend and, in affirmative case, the trend is removed.
+
+The performance of {\metodo} starts with the creation of the two initial populations, randomly generated for the first generation; then, each individual of the populations is evaluated. The {\metodo} algorithm uses a sequential scheme in which only one population is active, so the two population take turns in evolving. Firstly, the evolutionary process of the population of lags occurs: the individuals which will belong to the subpopulation are selected; following the CHC scheme \cite{Eshelman}, genetic operators are applied; the collaborator for every individual is chosen from the population of RBFNs; and the individuals are evaluated again and assigned the result as fitness. After that, the best individuals from the subpopulation will replace the worst individuals of the population. During the evolution, the population of lags checks that al least one gene of the chromosome must be set to one because necessarily the net needs one input to obtained the forecasted value.
+
+In the second place, the population of RBFNs commences the evolutionary process. For the first generation, every net in the population has a number of neurons randomly chosen which may not exceed a maximum number previously fixed. As in population of lags, the individuals for the subpopulation are selected, the genetic operators are applied, every individual chooses the collaborator from the population of lags, and then, the individuals are evaluated and the result is assigned as fitness. Fitness function is defined by the inverse of the root mean squared error.%The number of neurons can increase or decrease as the algorithm evolves. The vector of weights is initialized to zero, the center is determined choosing patterns from the training set at random, and the radius is estimated calculating the half of the average distance from centers.
+
+At the end of the coevolutionary process, two models formed by a set of lags (from the first population) and a neural network (from the second population) are obtained. On the one hand, a model is composed of the best set of lags and its best collaborator, and on the other hand, the other model is composed of the best net found and its best collaborator. Then, the two models are trained again and the final model chosen is the one that obtains the best fitness. This final model obtains the future values of the time series used for the prediction, and then, forecasted data will be used to find next values.
+
+The collaboration scheme used in {\metodo} is the best collaboration scheme \cite{Potter94}. %and, for credit assignment, the optimistic approach \cite{Wiegand01}. 
+Thus, every individual in any population chooses the best collaborator from the other population. Only at the beginning of the coevolutionary process, the collaborator is selected randomly because the population has not been evaluated yet.
+
+%The method establishes the fitness function using the equation \ref{eq:fitness}.
+%
+%\begin{eqnarray}
+%F = \frac{1}{\displaystyle \sqrt{\frac{1}{n}\sum_{t=0}^{n} (Y_t - F_t)^2}}
+%\label{eq:fitness}
+%\end{eqnarray}
+
+
+The method has a set of specific operators specially developed to work with individuals from each of the populations. %Therefore, the operators have been designed trying to cover the search space in an effective way, maximizing the success probability.
+The operators used by {\metodo} are the followings:
+
+\begin{itemize}
+  \item{Population of RBFNs:} tournament selection, x\_fix crossover, four operators to mutate randomly chosen (C\_random, R\_random, Adder, and Deleter) and replacement of the worst individuals by the best ones of the subpopulation.
+    %\begin{itemize}
+%      \item Tournament selection%: this population implements tournament selection
+%      \item X\_fix crossover operator%: it replaces a sequence of neurons in the hidden layer of a network by an equal size sequence of neurons in the hidden layer of other network. %To do this, an individual and a number of neurons are randomly selected. Then, the current and random individual exchange as many neurons as the random number indicates.
+%          %This operator enables sharing information between the networks without affecting the hidden layer size.
+%      \item Mutation: there are four operators to mutate the individuals which can be randomly chosen:%. The choice of one of this mutation operators is carried out randomly, giving to the deleter operator double possibility of being selected.
+%          C\_random, R\_random, Adder, and Deleter, that modify, add or delete neurons.
+%          %\begin{itemize}
+%              %\item C\_random: this operator modifies the point where each RBF of hidden neurons of the net is centered. %The number of neurons affected is determined by an internal application factor. The operator performs an exploration of the solution space replacing the center of the neuron by a new random center. Each of the components of the new center is chosen following an uniform probability distribution in the range [\emph{min}, \emph{max}] determined from input patterns.
+%              %\item R\_random: this operator modifies the radius value of hidden neurons. %The operator assigns a random value to the radius following an internal probability.
+%              %\item Adder: it adds new neurons to the hidden layer. %The values for the center and radius vectors of a new neuron are randomly set, within the range for each dimension of input space.
+%              %\item Deleter: it deletes neurons from the hidden layer %this operator does the opposite of adder operator, it deletes neurons from the hidden layer. The exact number of neurons varies from one net to another, since the operator is applied to each neuron with a probability.
+%                  %The deleter operator has a twofold objective. The first one is to reduce the complexity of the network without losing their ability to approximate the training data set. The second one is to prevent overtraining networks, since a high capacity of generalization is desirable.
+%          %\end{itemize}
+%      \item Replacement: the worst individuals of the population are replaced by the best ones of the subpopulation, hence, the best individuals remain in next generations. %the new individuals and the parent ones are joined in an unique population. Then, the worst individuals are eliminated keeping the best ones until the population reaches the original population size. Therefore, the best individuals remain in the next generation.
+%    \end{itemize}
+
+
+  \item{Population of lags:} elitist selection, HUX crossover operator, replacement of the worst individuals, and diverge (the population is restarted when it is blocked).
+    %\begin{itemize}
+%        \item The individuals, as the CHC algorithm establishes, are crossed checking the incest prevention. After the cross, the individuals and their parents compete to survive with an elitism approach. %in order to select individuals for the child population, the individuals of the parent population are randomly organized to form the current population. Then, they are coupled and the crossover operator will be applied to breed. Since the algorithm uses elitism, the best individuals found up to the moment will remain in the current population.
+%
+%        \item HUX crossover operator% is used by this population for breeding. It %needs two parents, if both parents are not very similar, couples of points are randomly generated and the fragment of the chromosome between them is exchanged, bearing in mind the incest prevention. This application way
+%            %guarantees the two offspring are always at the maximum Hamming distance from their parents.
+%
+%        %\item Mutation. There is no mutation operator in this population, this is because it implements the CHC algorithm so no mutation operator is applied since the HUX crossover has a strong exploration component.
+%
+%        \item Replacement: as in the population of RBFNs, %the new individuals and the parent ones compete for survive to new generations, then
+%        the worst individuals are eliminated. %are joined in an unique population. Then, the worst individuals are eliminated keeping the best ones until the population reaches the original population size. Therefore, the best individuals remain in the next generation.
+%
+%        \item Diverge: the population is restarted when it is blocked. %when the population is stagnated a restart is produced. The best individual is kept and the rest of the population is generated again in a random way.
+%    \end{itemize}
+\end{itemize}
+
+
+
+
+\section{\uppercase{Experimentation and statistical study}}
+\label{sec:experimentation}
+
+\noindent The main goal of the experiments is to study the behavior of the algorithm {\metodo} comparing with other 5 methods found in the literature and for 3 different quality measures. %For that, 3 different quality measures described in section \ref{sec:preliminaries} have been used.
+
+%The methodology of the experimentation and the results obtained can be observed in section \ref{experimentalmethodoly}, section \ref{analysisresults} contains a statistic study in which the results are analyzed.
+
+\subsection{Experimental methodology}
+\label{experimentalmethodoly}
+
+\noindent The experimentation has been carried out using 20 data bases taken from the INE\footnote{National Statistics Institute (http://www.ine.es/)}. The data represent observations from different activities and have different nature, size, and characteristics: Airline, WmFrancfort, WmLondon, WmMadrid, WmMilan, WmNewYork, WmTokyo, Deceases, SpaMovSpec, Exchange, Gasoline, MortCanc, MortMade, Books, FreeHouPrize, Prisoners, TurIn, TurOut, TUrban, and HouseFin. %These time series can be accessed at https://sites.google.com/site/presetemp/datos. The first 75\% of the observations has been considered to form the training data and the other 25\% to test.
+
+% Metodos
+
+To compare the effectiveness of {\metodo} it has used 5 methods found within the field of time series forecasting: Exponential smoothing method (ETS), Croston, Theta, Random Walk (RW), and ARIMA. %These methods have been executed with R.
+
+% Medidas de error
+
+In order to show de results 3 distinct quality measures have been considered: MAPE, MASE, and MdAPE. They have been estimated by means of 30 executions of every time series and the results are the average of these executions. For each execution, the following parameters are used in the {\metodo} algorithm: lags population size=50, lags population generations=5, lags chromosome size=10\%, RBFNs population size=50, RBFNs population generations=10, validation rate=0.25, maximum number of neurons of first generation=0.05, tournament size=3, replacement rate=0.5, crossover rate=0.8, mutation rate=0.2, and total number of generations=20.
+
+% Resultados
+
+Tables \ref{tab:resultsMAPE}, \ref{tab:resultsMASE}, and \ref{tab:resultsMDAPE} show the results of the {\metodo} and the utilized methods to compare (ETS, Croston, Theta, RW, and ARIMA), for measures MAPE, MASE, and MdAPE, respectively. As mentioned before, every result indicated in the tables represent the average of 30 executions for each time series. Better results are emphasized with the character (*). With respect to MAPE, the {\metodo} algorithm obtains the best results in 15 of 20 time series used, as can be seen in table \ref{tab:resultsMAPE}. Regarding MASE, {\metodo} stands out yielding the best results for 5 time series; ETS, Croston and Theta for 3 time series; RW only for 2; and ARIMA for 4 time series; as can be observed in table \ref{tab:resultsMASE}. Concerning MdAPE, {\metodo} acquires better results than the other methods in 12 of 20 time series, as table \ref{tab:resultsMDAPE} shows. Thus, the {\metodo} algorithm is able to achieve a more accurate forecast in the most time series for any of the quality measures considered.
+
+
+\begin{table*}[h]
+\caption{Results of the methods {\metodo}, ETS, Croston, Theta, RW, and ARIMA, with respect to MAPE. Better results are marked with character (*).}
+\label{tab:resultsMAPE}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+  \hline
+  Time series & {\metodo} & ETS & Croston & Theta & RW & ARIMA \\
+  \hline Airline	&	30.380*	&	274.770	&	72.606	&	141.452	&	137.986	&	53.636\\
+  \hline WmFrancfort	&	16.423	&	17.393	&	40.544	&	22.745	&	25.169	&	12.136*\\
+  \hline WmLondon	&	2.860*	&	5.383	&	27.682	&	10.136	&	13.397	&	5.212\\
+  \hline WmMadrid	&	20.101	&	27.035	&	44.285	&	25.505	&	27.034	&	12.930*\\
+  \hline WmMilan	&	30.529*	&	34.858	&	49.750	&	34.078	&	34.823	&	34.823\\
+  \hline WmNewYork	&	8.259	&	7.182*	&	30.297	&	14.669	&	18.073	&	7.536\\
+  \hline WmTokyo	&	4.764*	&	12.807	&	20.556	&	10.575	&	12.591	&	12.591\\
+  \hline Deceases	&	5.981*	&	8.002	&	7.472	&	7.264	&	8.040	&	8.040\\
+  \hline SpaMovSpec	&	53.788*	&	217.978	&	78.648	&	70.500	&	78.935	&	88.197\\
+  \hline Exchange	&   43.044	&   46.025	&   31.121*	&   39.138	&   33.631	&   45.254\\
+  \hline Gasoline	&	1.654*	&	7.986	&	9.587	&	6.701	&	7.974	&	9.359\\
+  \hline MortCanc	&	1.137*	&	12.979	&	32.489	&	5.889	&	6.256	&	5.440\\
+  \hline MortMade	&	3.931*	&	13.526	&	46.362	&	40.272	&	12.800	&	31.000\\
+  \hline Books	&	13.787*	&	23.588	&	23.122	&	22.360	&	22.640	&	23.476\\
+  \hline FreeHouPrize	&	3.424*	&	8.540	&	29.271	&	5.215	&	9.220	&	10.227\\
+  \hline Prisoners	&   8.392	&   3.103*	&   14.220	&   6.888	&   9.474   &	3.150\\
+  \hline TurIn	&	1.357*	&	7.074	&	11.234	&	7.084	&	7.110	&	6.377\\
+  \hline TurOut	&	8.133*	&	13.261	&	12.159	&	15.238	&	13.226	&	9.634\\
+  \hline TUrban	&	2.734*	&	11.957	&	9.067	&	8.949	&	10.116	&	9.291\\
+  \hline HouseFin	&	16.452*	&	22.296	&	21.548	&	19.947	&	22.887	&	19.555\\
+  \hline
+\end{tabular}
+\end{table*}
+
+
+\begin{table*}[h]
+\caption{Results of the methods {\metodo}, ETS, Croston, Theta, RW, and ARIMA, with respect to MASE.}
+\label{tab:resultsMASE}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+  \hline
+  TS & {\metodo} & ETS & Croston & Theta & RW & ARIMA \\
+  \hline Airline	&	1.913	&	12.707	&	2.738	&	5.853	&	5.664	&	1.441*\\
+  \hline WmFrancfort	&	3.578*	&	3.608	&	7.984	&	4.673	&	5.159	&	7.988\\
+  \hline WmLondon	&	1.648	&	1.603*	&	8.410	&	3.099	&	4.119	&	3.484\\
+  \hline WmMadrid	&	4.442*	&	5.686	&	9.126	&	5.362	&	5.685	&	8.625\\
+  \hline WmMilan	&	5.967*	&	6.684	&	9.263	&	6.534	&	6.678	&	19.327\\
+  \hline WmNewYork	&	2.667	&	1.837*	&	7.982	&	3.942	&	4.879	&	6.228\\
+  \hline WmTokyo	&	2.791	&	2.443	&	3.935	&	2.129	&	2.402	&	1.628*\\
+  \hline Deceases	&	1.059	&	1.059	&	0.952*	&	0.955	&	1.064	&	1.144\\
+  \hline SpaMovSpec	&	1.027	&	2.027	&	1.009*	&	1.023	&	1.010	&	1.933\\
+  \hline Exchange	&	41.181	&	44.039	&	30.448*	&	37.807	&	32.825	&	70.734\\
+  \hline Gasoline	&	1.198*	&	1.543	&	1.864	&	1.274	&	1.541	&	1.698\\
+  \hline MortCanc	&	0.646	&	1.618	&	4.098	&	0.725	&	0.796	&	0.277*\\
+  \hline MortMade	&	1.314	&	1.303*	&	4.500	&	3.869	&	1.315	&	1.712\\
+  \hline Books	&	0.762	&	0.965	&	0.936	&	0.894	&	0.759*	&	1.147\\
+  \hline FreeHouPrize	&	3.339*	&	5.642	&	19.468	&	3.487	&	6.183	&	6.805\\
+  \hline Prisoners	&	14.482	&	5.485	&	23.979	&	11.934	&	16.305	&	4.031*\\
+  \hline TurIn	&	1.903	&	1.902	&	3.151	&	1.824*	&	1.916	&	1.950\\
+  \hline TurOut	&	2.005	&	2.000	&	2.088	&	2.239	&	1.996*	&	2.241\\
+  \hline TUrban	&	0.886	&	0.978	&	0.772	&	0.744*	&	0.887	&	0.897\\
+  \hline HouseFin	&	1.319	&	1.283	&	1.234	&	1.095*	&	1.322	&	1.502\\
+  \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[h]
+\caption{Results of the methods {\metodo}, ETS, Croston, Theta, RW, and ARIMA, with respect to MdAPE.}
+\label{tab:resultsMDAPE}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+  \hline
+  Time series & {\metodo} & ETS & Croston & Theta & RW & ARIMA \\
+  \hline Airline	&	15.057*	&	233.934	&	54.657	&	119.754	&	118.090	&	15.212\\
+  \hline WmFrancfort	&	14.610	&	14.603	&	39.259	&	19.960	&	22.750	&	11.026*\\
+  \hline WmLondon	&	3.498*	&	5.430	&	30.550	&	10.474	&	15.722	&	5.099\\
+  \hline WmMadrid	&	22.718	&	28.116	&	45.817	&	26.787	&	28.116	&	11.446*\\
+  \hline WmMilan	&	30.476*	&	34.685	&	50.040	&	33.872	&	34.643	&	34.643\\
+  \hline WmNewYork	&	9.114	&	4.598*	&	35.253	&	16.505	&	23.137	&	5.712\\
+  \hline WmTokyo	&	5.517*	&	9.864	&	18.782	&	9.075	&	9.556	&	9.556\\
+  \hline Deceases	&	4.267*	&	5.464	&	6.121	&	4.440	&	5.458	&	5.458\\
+  \hline SpaMovSpec	&	17.669*	&	107.283	&	51.653	&	53.104	&	51.568	&	54.033\\
+  \hline Exchange	&	44.368	&	46.597	&	34.121*	&	38.832	&	36.521	&	45.961\\
+  \hline Gasoline	&	1.792*	&	7.587	&	9.045	&	6.429	&	7.563	&	8.923\\
+  \hline MortCanc	&	11.25	&	9.694	&	30.568	&	4.047*	&	5.339	&	5.116\\
+  \hline MortMade	&	3.459*	&	12.111	&	45.704	&	41.989	&	15.629	&	28.374\\
+  \hline Books	&	4.868*	&	18.111	&	17.230	&	16.566	&	11.567	&	18.093\\
+  \hline FreeHouPrize	&	1.803*	&	5.222	&	29.683	&	5.201	&	9.748	&	6.572\\
+  \hline Prisoners	&	6.766	&	1.512*	&	12.651	&	5.287	&	7.817	&	1.621\\
+  \hline TurIn	&	2.945*	&	6.627	&	11.696	&	4.779	&	6.669	&	4.605\\
+  \hline TurOut	&	5.289*	&	11.331	&	11.518	&	10.873	&	11.392	&	7.689\\
+  \hline TUrban	&	5.290	&	8.262	&	6.822	&	4.922*	&	8.900	&	6.374\\
+  \hline HouseFin	&	18.286	&	22.623	&	21.279	&	18.845	&	23.684	&	17.297*\\
+  \hline
+\end{tabular}
+\end{table*}
+
+
+
+
+\subsection{Analysis of the results}
+\label{analysisresults}
+
+\noindent To analyze in more detail the results and check whether the observed differences are significant, two main steps are performed: firstly, identifying whether exist differences in general between the methods used in the comparison; and secondly, determining if the best method is significant better than the rest of the methods. To do this, first of all it has to be decided if is possible to use parametric o non-parametric statistical techniques. An adequate use of parametric statistical techniques reaching three necessary conditions: independency, normality and homoscedasticity \cite{Sheskin2004}%,Zar1999}. 
+Owing to these conditions are not fulfilled a non-parametric test should be used.
+
+\begin{itemize}
+  \item Significant differences among methods. For every quality measure used the Friedman and Iman-Davenport tests have been applied, tables \ref{tab:FriedmanIman} and \ref{tab:ImanDavenport} 
+  shows the results for MAPE, MASE and MdAPE, for Friedman and Iman-Davenport, respectively. From left to right tables show the Friedman and Iman–-Davenport values ($\chi^2$ and $F_F$, respectively), the corresponding critical values for each distribution by using a level of significance $\alpha$ = 0.05, and the \emph{p-value} obtained for the measures utilized.
+
+    \begin{table}[h]
+        \caption{Results of the Friedman test with respect to MAPE, MASE, and MdAPE.}
+        \label{tab:Friedman}
+        \centering
+        \begin{tabular}{|c|c|c|c|}
+         \hline Measure & F. Value & Value in $\chi^2$ & $p$ value \\
+         \hline MAPE	&	39.364	&	5	&	2.101E-10	\\
+         \hline MASE	&	18.893	&	5	&	2.012E-03	\\
+         \hline MdAPE	&	38.350	&	5	&	3.209E-07	\\
+         \hline
+        \end{tabular}
+    \end{table}
+
+    \begin{table}[h]
+        \caption{Results of the Iman-Davenport test with respect to MAPE, MASE, and MdAPE.}
+        \label{tab:ImanDavenport}
+        \centering
+        \begin{tabular}{|c|c|c|c|}
+         \hline Measure &  I-D. Value & Value in $F_F$ & $p$ value \\
+         \hline MAPE	&	12.283	&	5 and 95	&	3.416E-09\\
+         \hline MASE	&	4.426	&	5 and 95	&	1.146E-03\\
+         \hline MdAPE	&	11.819	&	5 and 95	&	6.717E-09\\
+         \hline
+        \end{tabular}
+    \end{table}
+      
+
+    As can be observed, the critical values of Friedman and Iman–-Davenport are smaller than the statistic, it means that there are significant differences among the methods in all cases.
+    In addition, Friedman provides a ranking of the algorithms, the method with a lowest result is taken as the control algorithm. As show table \ref{tab:ranking} the {\metodo} algorithm is taken as the control algorithm for all quality measures.
+
+    %\begin{table}[h]
+%        \caption{Average ranking of the algorithms by Friedman for MAPE, MASE, and MdAPE.}
+%        \label{tab:ranking}
+%        \centering
+%        \begin{tabular}{|c|c|c|c|c|c|}
+%         \hline \multicolumn{2}{|c|}{MAPE}   &  \multicolumn{2}{c|}{MASE}  &   \multicolumn{2}{c|}{MdAPE} \\
+%         \hline {\metodo} & 1.500   &   {\metodo} & 2.525   &   {\metodo} & 1.850 \\
+%         \hline Theta	&	3.150	&	Theta   &   2.700   &   ARIMA   &   2.925\\
+%         \hline ARIMA	&	3.175	&	RW      &   3.450   &   Theta   &   2.950\\
+%         \hline RW      &   4.125   &   ETS     &   3.475   &   RW      &   4.050\\
+%         \hline ETS     &   4.250   &   Croston &   4.400   &   ETS     &   4.075\\
+%         \hline Croston &   4.800   &   ARIMA   &   4.450   &   Croston &   5.150\\
+%         \hline
+%        \end{tabular}
+%    \end{table}
+    \begin{table}[h]
+        \caption{Average ranking of the algorithms by Friedman for MAPE, MASE, and MdAPE.}
+        \label{tab:ranking}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|}
+         \hline \multicolumn{2}{|c|}{MAPE}   &  \multicolumn{2}{c|}{MASE}  &   \multicolumn{2}{c|}{MdAPE} \\
+         \hline {\metodo} & 1.50   &   {\metodo} & 2.53   &   {\metodo} & 1.85 \\
+         \hline Theta	&	3.15   &	Theta   &   2.70   &   ARIMA   &   2.93\\
+         \hline ARIMA	&	3.18   &	RW      &   3.45   &   Theta   &   2.95\\
+         \hline RW      &   4.13   &   ETS     &   3.48   &   RW      &   4.05\\
+         \hline ETS     &   4.25   &   Croston &   4.40   &   ETS     &   4.08\\
+         \hline Croston &   4.80   &   ARIMA   &   4.45   &   Croston &   5.15\\
+         \hline
+        \end{tabular}
+    \end{table}
+
+  \item Significant differences between the best method and the rest. In order to check if the control algorithm has statistical differences regarding the other methods used, the Holm procedure \cite{Holm1979} is used. Table \ref{tab:holm} presents the results of the Holm's procedure, it shows the adjusted $p$ values from each comparison among the algorithm control and the rest of the methods for MAPE, MASE, and MdAPE, considering a level of significance of $alpha$=0.05.
+
+      \begin{table*}[h]
+        \caption{Adjusted $p$ values of Holm's procedure between the control algorithm ({\metodo}) and the other methods for MAPE, MASE, and MdAPE ($alpha$=0.05).}
+        \label{tab:holm}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|}
+         \hline \multicolumn{2}{|c|}{MAPE}   &  \multicolumn{2}{c|}{MASE}  &   \multicolumn{2}{c|}{MdAPE} \\
+         \hline Croston &   2.433E-08   &   ARIMA   &   1.138E-03   &   Croston &   2.432E-08\\
+         \hline ETS     &   3.346E-06   &   Croston &   1.528E-03   &   ETS     &   1.692E-04\\
+         \hline RW      &   9.120E-06   &   ETS     &   1.083E-01   &   RW      &   2.002E-04\\
+         \hline ARIMA	&	4.636E-03   &	RW      &   1.179E-01   &   Theta   &   6.298E-02\\
+         \hline Theta	&	5.287E-03   &	Theta   &   7.673E-01   &   ARIMA   &   6.920E-02\\
+         \hline
+        \end{tabular}
+    \end{table*}
+
+    As can be seen in table \ref{tab:holm}, there are significant differences among {\metodo} and all the rest methods for MAPE. With respect to MASE, there exist significant differences between the {\metodo} algorithm and ARIMA and Croston, although it is not appropriate to assure that with methods ETS, RW, and Theta. Regarding MdAPE, {\metodo} has significant differences with methods Croston, ETS, and RW.
+
+    In conclusion, it is possible to confirm that the {\metodo} method is able to achieve a better forecast in majority of cases comparing with the other 5 methods utilized and concerning to 3 different quality measures.
+
+\end{itemize}
+
+
+
+
+
+
+\section{\uppercase{Conclusions}}
+\label{sec:conclusions}
+
+\noindent In this contribution, the behavior of the method {\metodo} for an automatic time series forecasting is reviewed. {\metodo} is a recent algorithm developed for minimizing the error when predicting future values of any time series given. %Based in a coevolutive approach is able to evolve RBFNs and sets of lags that will be use in the forecast.
+%At the same time, {\metodo} is able to build appropriate network architecture and sets of lags, which will be used to perform the forecast, in a coevolutive approach that permits to decompose the main problem into two subproblems which depend on each other.
+
+The algorithm has been tested with 20 different time series and%, in order to compare, it has been 
+contrasted with a set of 5 representative methods from the field of the time series forecasting: ETS, Croston, Theta, RW, and ARIMA. In addition, 3 distinct quality measures (MAPE, MASE and MdAPE) has been used to assure the results. {\metodo} obtains the best results in the majority of the cases tested for every measure considered.
+
+A statistic study has been done in order to confirm the results achieved. %Primarily, it has been checked the differences among the results obtained by the methods with the Friedman and Iman-Davenport tests. Then, the Holm procedure has been applied to find significant differences between the control algorithm ({\metodo}) and the rest of the methods. 
+With respect to MAPE, {\metodo} is significant better than the rest of the method; regarding MASE, {\metodo} has significant differences with ARIMA and Croston; and respecting MdAPE, {\metodo} obtains significant better results than Croston, ETS and RW.
+
+Then, it can be concluded that the {\metodo} algorithm yields better results in the most of time series used than the other methods utilized.
+
+
+
+
+
+
+\section*{\uppercase{Acknowledgements}}
+
+\noindent This work has been supported by the regional project TIC-3928 (Feder Founds), the Spanish project TIN 2012-33856 (Feder Founds), TIN 2011-28627-C02 (Feder Founds).
+
+
+%\vfill
+\bibliographystyle{apalike}
+{\small
+\bibliography{ECTA-IJCCI}}
+
+
+
+
+\vfill
+\end{document}
+
