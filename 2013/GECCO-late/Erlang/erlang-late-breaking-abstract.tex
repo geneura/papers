@@ -60,6 +60,8 @@
 
 \usepackage{url}
 
+\hyphenation{NIndexes}
+
 \begin{document}
 
 \title{Adapting evolutionary algorithms to the concurrent functional language Erlang}
@@ -192,14 +194,14 @@ An Erlang actor is implemented by a sequence of pairs pattern/expression definin
    \hline
    \textbf{Message} & \textbf{Description}\\
      \hline
-{\tt \{configPool, NIM \}->} & Initialization, the parameter NIM is the initial configuration. \\
+{\tt \{configPool, NIM\} ->} & Initialization, the parameter NIM is the initial configuration. \\
 \hline
-{\tt \{requestWork, Pid, Capacity \}  -> } & Client requests for a population to evolve.\\
+{\tt \{requestWork, Pid, Capacity\} -> } & Client requests for a population to evolve.\\
 \hline
-{\tt \{generationEnd, NewIndividuals, OldIndexes, Pid \} -> } & One client report its successfully end of calculation. \\
+{\tt \{generationEnd, NewIndividuals, OldIndexes, Pid\} -> } & One client report its successfully end of calculation. \\
 \hline
    \end{tabular}
-  \caption{The messages that a pool accepts.}\label{poolTable}
+  \caption{The messages that pool accepts.}\label{poolTable}
 \end{table}
 
 Clients are modeled by actors. They are the units of evolution, with the main computation responsibilities; the table \ref{clientTable} shows its interface.
@@ -212,10 +214,10 @@ Clients are modeled by actors. They are the units of evolution, with the main co
      \hline
 {\tt initEvolution -> } & Marks the beginning of the processing. \\
 \hline
-{\tt {evolve, P, NIndexes} -> } & When the pool could assign a subpopulation to process. \\
+{\tt \{evolve, P, NIndexes\} -> } & When the pool could assign a subpopulation to process. \\
 \hline
 \end{tabular}
-  \caption{The messages that a client is able to respond to.}\label{clientTable}
+  \caption{The messages a client is able to respond.}\label{clientTable}
 \end{table}
 
 %\subsection{Generality and configuration}
