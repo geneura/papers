@@ -294,7 +294,11 @@ Services must match the technological requirements given in previous sub-section
 
 First, as services are unaware of others, there must not be global variables in any part of the code. Services are listening, and waiting to be executed. For example, a fitness service with a counter that is increased each time is called (to stop the algorithm if a limit is reached, for example). If several (and different) algorithms are working in parallel, and calling this function at the same time the counter would not distinguish between algorithms, giving erroneous results. However, a service that maintains some kind of state is permited, for example, a statistic service that read events from all the algorithms being executed at the same time.
 
+Also, a service must not be distinguishable from local or in other node in the network. Every stage in the algorithm should be treated as service to be executed in local or in remote, even the {\em Population} or the {\em Parameters}. Mechanisms to ensure the correct data-sharing should be provided. Also, many implementations of the same service could exist at the same time (different implementation of \em Crossover, for example) and it should be correctly managed and used.
+
 Moreover, a service is always a request-response function. For example, the fitness calculation must not be a method of the {\em Individual} implementation, but a function that receives a list of individuals and returns a list of the calculated fitness of that individuals. This allow things such as remote fitness calculation and load balancing, impossible to perform if the fitness is a method of the Individual class.
+
+
 
 Thinking as abstract as possible requires separate concepts such the order of recombination, and the crossover itself. Usually, after parent selection, individuals are crossed in order. However, if we need a different mechanism for mating (for example, using more than two parents, or parent selected several times) a dupplication of effort is needed. That is the reason we should sepparate the concept {\em recombine} from {\em crossover}. 
 
@@ -568,21 +572,21 @@ This section explains the functionality and design of the proposed environment, 
 \item Remote event handling: Using the OSGi advantages, users can use a powerful tool to synchronize or share data among services.
 \end{itemize}
 
-The source code is available at \url{http://atc.ugr.es/~pgarcia}, under a GPL license.
+The source code is available at \url{http://www.osgiliath.org}, under a GPL license.
 
 \subsection{OSGiLiath organization}
 
 By now, OSGiLiath counts with the next bundles:
 
 \begin{itemize}
-\item osgiliath: This is the core bundle. It includes all the interfaces common to the algorithms such as...
-\item Evolutionary Algorithm: Evolutionary Algorithm implementation and interfaces to create the rest of Recombinator and Crossover, Mutator and Mutation, TERMINA. It also provides interfaces for the creation of individuals: Individual, Fitness, Gene, Genome, 
-\item Basic Evolutionary Components: Includes several implementations of the previous interfaces: 
-\item Binary Problems: Includes implementation of well-known problems, such as OneMax and MMDP, with INDIVIDUALS tal...
+\item osgiliath: This is the core bundle. It includes all the interfaces common to the algorithms such as {\em Algorithm}, {\em AlgorithmParameters} or {\em Problem}. 
+\item Evolutionary Algorithm:  Includes the {\em EvolutionaryAlgorithm} implementation and interfaces to create the rest of the services that form an EA: {\em Recombinator} and {\em Crossover}, {\em Mutator} and {\em Mutation}, {\em StopCriterion} or {\em FitnessCalculator}. It also provides interfaces for the creation of individuals: {\em Individual}, {\em Fitness}, {\em Gene}, and {\em Genome}. 
+\item Basic Evolutionary Components: Includes several implementations (the most common ones) of the previous interfaces: {\em ListPopulation}, {\em ListIndividual}, {\em DoubleFitness}, {\em NGenerationStopCriterion}, {\em BasicOrderRecombinator}, {\em ListCrossover} and others.
+\item Binary Problems: Includes implementation of well-known problems, such as OneMax and MMDP: {\em OneMaxFitnessCalculator}, {\em MMDPFitnessCalculator} or {\em BinaryProblemRandomInitializer}.
 \item Function Problems: 
 \item NSGA2: Implementations of elements for the NSGA2 algorithm.
-\item OSGiLiART: Service implementation for the creation of Evolutionary Art.
-\item NoOSGi: Because OSGi allows the separation of source code with the OSGi framework capabilities, this bundle includes Java code to integrate the services without any specific technology (just basic Object Oriented programming).
+\item OSGiLiART: Service implementation for the creation of Evolutionary Art: {\em ArtisticIndividual} or {\em HistogramFitnessCalculator} are examples.
+\item NoOSGi: Because OSGi allows the separation of source code with the OSGi framework capabilities, this bundle includes Java code to integrate the services without any specific technology (just using basic Object Oriented programming).
 \item IntelligentManager: An example of how the services can be bound/unbound in real-time. By now, in each step the IntelligentRandomManager hace PATATIN Y PATATAN.
 \end{itemize}
 
