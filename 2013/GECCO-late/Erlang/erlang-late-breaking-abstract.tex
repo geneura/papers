@@ -1,62 +1,9 @@
-% This is "sig-alternate.tex" V2.0 May 2012
-% This file should be compiled with V2.5 of "sig-alternate.cls" May 2012
-%
-% This example file demonstrates the use of the 'sig-alternate.cls'
-% V2.5 LaTeX2e document class file. It is for those submitting
-% articles to ACM Conference Proceedings WHO DO NOT WISH TO
-% STRICTLY ADHERE TO THE SIGS (PUBS-BOARD-ENDORSED) STYLE.
-% The 'sig-alternate.cls' file will produce a similar-looking,
-% albeit, 'tighter' paper resulting in, invariably, fewer pages.
-%
-% ----------------------------------------------------------------------------------------------------------------
-% This .tex file (and associated .cls V2.5) produces:
-%       1) The Permission Statement
-%       2) The Conference (location) Info information
-%       3) The Copyright Line with ACM data
-%       4) NO page numbers
-%
-% as against the acm_proc_article-sp.cls file which
-% DOES NOT produce 1) thru' 3) above.
-%
-% Using 'sig-alternate.cls' you have control, however, from within
-% the source .tex file, over both the CopyrightYear
-% (defaulted to 200X) and the ACM Copyright Data
-% (defaulted to X-XXXXX-XX-X/XX/XX).
-% e.g.
-% \CopyrightYear{2007} will cause 2007 to appear in the copyright line.
-% \crdata{0-12345-67-8/90/12} will cause 0-12345-67-8/90/12 to appear in the copyright line.
-%
-% ---------------------------------------------------------------------------------------------------------------
-% This .tex source is an example which *does* use
-% the .bib file (from which the .bbl file % is produced).
-% REMEMBER HOWEVER: After having produced the .bbl file,
-% and prior to final submission, you *NEED* to 'insert'
-% your .bbl file into your source .tex file so as to provide
-% ONE 'self-contained' source file.
-%
-% ================= IF YOU HAVE QUESTIONS =======================
-% Questions regarding the SIGS styles, SIGS policies and
-% procedures, Conferences etc. should be sent to
-% Adrienne Griscti (griscti@acm.org)
-%
-% Technical questions _only_ to
-% Gerald Murray (murray@hq.acm.org)
-% ===============================================================
-%
-% For tracking purposes - this is V2.0 - May 2012
-
 \documentclass{sig-alternate}
 \usepackage[latin1]{inputenc}
-%\usepackage{subfigure}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{cite}
-%\usepackage{stfloats}
-%\usepackage{listings}
 \usepackage{url}
-%\usepackage[ruled,lined,linesnumbered,longend]{algorithm2e}
-
-%\documentclass{acm_proc_article-sp}
 
 \usepackage{url}
 
@@ -118,18 +65,26 @@ Getting out of that mainstream it is not normally seen as a land for scientific 
 % Getting out of that mainstream it is not normally seen a land for improvement science.
 % Antonio - Esta frase casi no se entiende. La intento reescribir a ver si dice lo que tú querías.
 % Y yo la vuelvo a reescribir. - JJ
-One no mainstream language with very much potential is Erlang, it is an implementation technology that support functional and concurrent paradigms and that's starting to been used in the scientific community \cite{Sher2013}.
+One such language with a big potential is Erlang, which is an implementation technology that supports the functional and concurrent paradigms and that is starting to be used in the scientific community \cite{Sher2013}. 
 % Antonio - haz una breve inroduccióna Erlang aquí y dí si se usa o no en la comunidad científica. Pon alguna cita. ;)
+% afú, qué inglés... - JJ
 
-Genetic Algorithms (GA) \cite{GA_Goldberg89}
+In this paper we propose to apply this language (and underlying paradigm) to Genetic Algorithms (GA) \cite{GA_Goldberg89},
 % Antonio -  Pongo una cita a GAs
-are general function optimizers that encode a potential solution to a specific problem on a simple data structure (a chromosome). There are only two components of them that are problem dependent: the solution encoding and the function that evaluate the quality of a solution, i.e., the fitness function. The rest of the algorithm does not depend on the problem and could be implemented following the best architecture and engineering practices.
+which are general function optimizers that encode a potential solution
+to a specific problem in a simple data structure (a chromosome). There
+are only two components of them that are problem dependent: the
+solution encoding and the function that evaluate the quality of a
+solution, i.e., the fitness function. The rest of the algorithm does
+not depend on the problem and could be implemented following the best
+architecture and engineering practices.
 
- Inside the object oriented world there are reported various analysis for modeling GA behaviour, nevertheless that is not the case of the functional side. This work tries to show some possible areas of improvement on that sense.
-
-This article is focused on GAs as a domain of application, and describes how their principal traits can the be modeled by means of Erlang constructs. This will be done in the next section.
-
-
+Many such practices have been proposed in the object oriented paradigm
+\cite{EO:FEA2000}, but that is not the case of the functional
+side. This work tries to show some possible areas of improvement on
+that sense by focusing on GAs as a domain of application and
+describing how their principal traits can the be modeled by means of
+Erlang constructs. This will be done in the next section. 
 
 % Antonio - cuenta en un par de líneas qué es Erlang. ;)
 
@@ -149,30 +104,40 @@ This article is focused on GAs as a domain of application, and describes how the
 
 A variety of programming patterns, i.e., paradigms, exist for implementing the algorithms models. GAs are characterized by an intensive use of strings
 % Antonio - he puesto GAs porque es lo qu ehas comentado en la intro. ;)
- (lists of some kind) for encoding genes, the existence of populations that evolve by theirselves, and the variation in selection criterias through time. A programming language whose characteristics fit these needs would be highly appreciated.
+ (lists of some kind) for encoding genes and a population that evolves
+ via operators that are applied to all or a part or it. Most modern
+ languages can handle these data structures (and the operators needed
+ to manipulate them).
+%A programming language whose characteristics fit these needs would be
+%highly appreciated. Ya hay un montón de lenguajes que hacen eso..
 
 %\subsection{Erlang description}
 % Antonio - ¿description?
 
 There is a claim in modern software development for programming languages that help with concurrent programming and simplify coding practice.
 % Antonio - qué quiere decir better abstraction? acláralo. :D
-The functional programming language Erlang would an answer that provides the actor pattern concept for concurrency and the functional paradigm for general modeling, design and coding of solutions.
+The functional programming language Erlang would be an answer that provides the actor pattern concept for concurrency and the functional paradigm for general modeling, design and coding of solutions.
 % Antonio - este texto parece de publicidad de Erlang, jeje.
-
+%
 Actors are concurrent execution units which use asynchronous message passing for communication. They are implemented as processes in the Erlang's virtual machine
 % Antonio - no has comentado qué es la VM. No has dicho que se implementa sobre Java...
- and not like operating system (OS) threads, therefore they are very
+ and not as operating system (OS) threads, which means that they are very
  lightweight in creation and execution.
 % Antonio - ¿qué quiere decir que sean ligeros?
-The use of messages eliminate the sharing of state and
+The use of messages eliminates the sharing of state and
 % Antonio - dí qué son mensajes inmutables
-eliminate many of the typical problems of concurrent development, thats support the emulation of the Object Oriented (OO) paradigm with its modeling facilities.
+eliminate many of the typical problems of concurrent development,
+namely, supporting the emulation of the Object Oriented (OO) paradigm
+with its modeling facilities. 
 
-Functional programming is defined by the use of functions in program composition and by using lists.
+Functional programming, the other main feature of the Erlang language, is defined by the use of functions in program composition and by using lists.
 % Antonio - Esta frase no se entiende bien y está mal escrita. ;)
-Erlang honored the functional linage and include ultra fast technologies for persist data called Dets and Mnesia. % que sirven para... - JJ
-% ¿las usas aquí? ¿Pueden ser útiles? - JJ
+Erlang honored the functional linage and includes ultra fast technologies for persist data called Dets and Mnesia. % que sirven para... - JJ
+% ¿las usas aquí? ¿Pueden ser útiles? - JJ 
+% si no lo son podrías borrarlo. Y, por favor, comprueba la corrección
+% gramatical de número - JJ
 Besides, Erlang offers the concept of records for group data which helps to modularize the code. % y esto es útil porque... -JJ
+% No me has contestado a esto...
 
 %\subsection{Genetic Algorithm mapping to Erlang}
 
@@ -181,16 +146,21 @@ described in literature in an operational and imperative way. Their
 implementation in a functional language must follow a different path,
 structuring the algorithm model in less imperative and more
 declarative terms. We are going to use a parallel pool based
-evolutionary strategy\cite{DBLP:conf/3pgcic/GuervosMFEL12} as use case. % ¿nuestra media? - JJ
+evolutionary strategy (which was already used for instance in \cite{DBLP:conf/3pgcic/GuervosMFEL12}) as use case. % ¿nuestra media? - JJ
 
-The pool will be an execution entity (an actor acting like a server) that will own the population and also keep a track of the advance in the solution search. The clients, which are concurrent, will do the calculations and will join and leave the system at any time without consequences. Chromosomes will be encoded as lists and the different parts of the GAs algorithms will be implemented as Erlang functions.
+The pool will be an execution entity (an actor acting like a server) that will own the population and also keep a track of the advance in the solution search. The clients, which are concurrent, will do the calculations and will join and leave the system at any time without consequences. Chromosomes will be encoded as lists and the different parts of the GA algorithm will be implemented as Erlang functions.
 % Antonio - functions -> actors?
 
-An Erlang actor is implemented by a sequence of pairs pattern/expression defining each message that it could handle. It is close to the OO parlance and a way to organize the code. In this case we use one message per service that pool must provide, table \ref{poolTable} presents this.
-
+An Erlang actor is implemented by a sequence of pairs
+pattern/expression defining each message that it could handle. It is
+close to the OO parlance and a way to organize the code. In this case
+we use one message per service that pool must provide; Table
+\ref{poolTable} presents this.
+%Antonio: no le has protestado porque ha puesto Table en minúsculas - JJ
+%
 \begin{table}
   \centering
-   \begin{tabular}{|p{3cm}|p{4cm}|}
+   \begin{tabular}{|p{3.2cm}|p{3.8cm}|}
    \hline
    \textbf{Message} & \textbf{Description}\\
      \hline
@@ -198,13 +168,13 @@ An Erlang actor is implemented by a sequence of pairs pattern/expression definin
 \hline
 {\tt \{requestWork, Pid, Capacity\} -> } & Client requests for a population to evolve.\\
 \hline
-{\tt \{generationEnd, NewIndividuals, OldIndexes, Pid\} -> } & One client report its successfully end of calculation. \\
+{\tt \{generationEnd, NewIndividuals, OldIndexes, Pid\} ->}& One client report its successfully end of calculation. \\
 \hline
    \end{tabular}
-  \caption{The messages that pool accepts.}\label{poolTable}
+  \caption{The messages that the pool accepts.}\label{poolTable}
 \end{table}
-
-Clients are modeled by actors. They are the units of evolution, with the main computation responsibilities; the table \ref{clientTable} shows its interface.
+%
+Clients are modeled by actors. They are the units of evolution, with the main computation responsibilities; the Table \ref{clientTable} shows its interface.
 
 \begin{table}
   \centering
@@ -225,19 +195,50 @@ Clients are modeled by actors. They are the units of evolution, with the main co
 % Al dejar solamente secciones ha quedado un poco raro, digo yo, nada vean ahora y quítenlas si se debe..
 % Las voy a quitar porque además falta espacio
 
-The two previous components have the architecture of the algorithm, they are general and could be used for many problems. In order to solve a particular situation, they must be \emph{injected} by several functions and data structures which define: chromosomes, fitness function, mutation operator, selection criteria and replacement policy. All these particularizations must be implemented in an Erlang source file and configured in the \emph{configBuilder} module.
+The two previous components constitute the main features of the
+architecture of the algorithm; they are general-purpose and could be
+used for many problems. % Many problems qué? - JJ
+ In order to solve a particular situation, they must be
+ \emph{injected} by several functions and data structures which define
+ chromosomes, fitness function, mutation operator, selection criteria
+ and replacement policy. All these particularizations must be
+ implemented in an Erlang source file and configured in the
+ \emph{configBuilder} module. % ¿Esto es general a todos los programas
+                              % en Erlang? - JJ
 
-The proposed design promotes a clear separation between architecture (the general, constant and paradigmatic foundation part) and problem encoding (the representation and criteria of solution finding) which is good for apply the library to solve another problem. % lo
-                                % que es bueno porque... - JJ
+The proposed design promotes a clear separation between architecture
+(the general, constant and paradigmatic foundation part) and problem
+encoding (the representation and criteria of solution finding) which
+is good for applying the library to solve another problem.  %Lo has
+                                %explicado en parte, pero no del
+                                %todo. ¿Por qué habría que querer
+                                %hacerlo así? ¿Vas a implementar otros
+                                %tipos de algoritmos genéticos?
+                                %¿Podría servir para cualquier
+                                %algoritmo basado en población?
+This design has been implemented and tested with a simple benchmark
+problem. This will be presented in the next section. 
 
 \section{Experiment and conclusions}
 \label{sec:conclusions}
 
 In this ongoing project we are testing the efficiency and simplicity of implementations of GAs by functional programming. The parallel models of GA are mapped to actors in the Erlang languages obtaining easily to understand architectures. All the code has been released as open source code at \url{https://github.com/jalbertcruz/erlEA/}.
 
-The library was tested with \emph{MaxOnes} problem. The chromosomes was 128 elements long, with an initial population of 256 individuals. 50 clients were used and they worked with 20 individuals each time a pool assigned a generation to them. The solution, an optimum, was reached after 3159 assignments in 3.144590 seconds. For 100 clients the solution was reached in 6.121570 seconds and 6446 assignments; and for 25 clients it was 1835 assignments in 1.687000 seconds. This results shows that in this case there it is not convenient to use very much clients in order to obtain the solution, when the number of clients increase there is a lot of bad solutions thats cames and goes to the clients.
-% Pon alguna medida temporal. También deberías hacer algún experimento
-% con 100 clientes, por ejemplo.
+The library was tested with \emph{MaxOnes} problem. The chromosomes
+was 128 elements long, with an initial population of 256
+individuals. 50 clients were used and they worked with 20 individuals
+each time a pool assigned a generation to them. The solution, an
+optimum, was reached after 3159 assignments in 3.144590 seconds. For
+100 clients the solution was reached in 6.121570 seconds and 6446
+assignments; and for 25 clients it was 1835 assignments in 1.687000
+seconds. This results shows that in this case there it is not
+convenient to use many clients in order to obtain the solution, when
+the number of clients increase there is a lot of bad solutions evaluated. 
+% Esto deberías haberlo puesto en una tabla. Pero el problema
+% principal es que la solución es bastante mala. ¿Seguro que el
+% algoritmo genético va bien? ¿Seguro que los actores funcionan de
+% forma concurrente o ocupan todos el mismo proceso y se ejecutan de
+% forma secuencial? - JJ
 
 With this concept test we are showing how simple is to structure a parallel GA, now we could proceed with more complex GA models, experiments and problems in order to explore the potential of the technology.
 
