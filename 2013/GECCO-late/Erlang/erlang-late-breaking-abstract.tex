@@ -201,7 +201,7 @@ used for many problems. % Many problems qué? - JJ
  In order to solve a particular situation, they must be
  \emph{injected} by several functions and data structures which define
  chromosomes, fitness function, mutation operator, selection criteria
- and replacement policy. All these particularizations must be
+ and replacement policy. All these customizations must be
  implemented in an Erlang source file and configured in the
  \emph{configBuilder} module. % ¿Esto es general a todos los programas
                               % en Erlang? - JJ
@@ -217,30 +217,26 @@ is good for applying the library to solve another problem.  %Lo has
                                 %¿Podría servir para cualquier
                                 %algoritmo basado en población?
 This design has been implemented and tested with a simple benchmark
-problem. This will be presented in the next section. 
+problem. In this ongoing project we are testing the efficiency and
+simplicity of implementations of GAs by functional programming. The
+parallel models of GA are mapped to actors in the Erlang languages
+obtaining easily to understand architectures. All the code has been
+released as open source code at
+\url{https://github.com/jalbertcruz/erlEA/}. Only some initial tests
+have been made using the well-known MaxOnes problem with different
+number of workers and a single pool. These tests show that the the
+pool concept can be readily implemented using Erlang and, thus, the
+genetic algorithm concept has been mapped successfully to this
+functional and concurrent architectures. However, the main problem
+with the implementation is that the pool uses a single thread so that
+scalability is not too good. 
 
-\section{Experiment and conclusions}
-\label{sec:conclusions}
-
-In this ongoing project we are testing the efficiency and simplicity of implementations of GAs by functional programming. The parallel models of GA are mapped to actors in the Erlang languages obtaining easily to understand architectures. All the code has been released as open source code at \url{https://github.com/jalbertcruz/erlEA/}.
-
-The library was tested with \emph{MaxOnes} problem. The chromosomes
-was 128 elements long, with an initial population of 256
-individuals. 50 clients were used and they worked with 20 individuals
-each time a pool assigned a generation to them. The solution, an
-optimum, was reached after 3159 assignments in 3.144590 seconds. For
-100 clients the solution was reached in 6.121570 seconds and 6446
-assignments; and for 25 clients it was 1835 assignments in 1.687000
-seconds. This results shows that in this case there it is not
-convenient to use many clients in order to obtain the solution, when
-the number of clients increase there is a lot of bad solutions evaluated. 
-% Esto deberías haberlo puesto en una tabla. Pero el problema
-% principal es que la solución es bastante mala. ¿Seguro que el
-% algoritmo genético va bien? ¿Seguro que los actores funcionan de
-% forma concurrente o ocupan todos el mismo proceso y se ejecutan de
-% forma secuencial? - JJ
-
-With this concept test we are showing how simple is to structure a parallel GA, now we could proceed with more complex GA models, experiments and problems in order to explore the potential of the technology.
+So future work will try to create a truly concurrent implementation of
+this ErlEA (Erlang evolutionary algorithm) by decoupling pool
+operations (such as insertion and deletion) from the pool itself, that
+can be handled using technologies mentiones above such as Dets. What
+we intend with this is to achieve truly concurrent pool operations
+such as those afforded by technologies such as CouchDB (used in SofEA \cite{DBLP:conf/3pgcic/GuervosMFEL12}). 
 
 \section*{Acknowledgements}
 
