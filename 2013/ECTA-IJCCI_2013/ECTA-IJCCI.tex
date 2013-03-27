@@ -32,9 +32,21 @@
 
 \keywords{Time series forecasting, Coevolutionary algorithms, Neural Networks, Significant lags}
 
-\abstract{This paper presents an experimental study in which the effectiveness of the {\metodo} method is tested. {\metodo} is a coevolutionary algorithm to time series forecasting that evolves, on one hand, RBFNs building an appropriate architecture of net, and on the other hand, sets of time lags that represents the time series in order to perform the forecasting using, at the same time, its own forecasted values. This coevolutive approach makes possible to divide the main problem into two subproblems where every individual of one population cooperates with the individuals of the other population. The goal of this work is to analyze the results yielded by {\metodo} comparing with other methods from the time series forecasting field. For that, 20 time series and 5 different methods found in the literature have been selected, and 3 distinct quality measures have been used to show the results. Finally, a statistical study confirms the good results of {\metodo} in most of the cases.}
-
-
+\abstract{This paper presents an experimental study in which the
+  effectiveness of the {\metodo} method is tested. % why? - Jj
+ {\metodo} is a
+  coevolutionary algorithm to time series forecasting that evolves, on
+  one hand, RBFNs building an appropriate architecture of net, and on
+  the other hand, sets of time lags that represents the time series in
+  order to perform the forecasting using, at the same time, its own
+  forecasted values. This coevolutive approach makes possible to
+  divide the main problem into two subproblems where every individual
+  of one population cooperates with the individuals of the other. The goal of this work is to analyze the results obtained
+  by {\metodo} comparing with other methods from the time series
+  forecasting field. For that, 20 time series and 5 different methods
+  found in the literature have been selected, and 3 distinct quality
+  measures have been used to show the results. Finally, a statistical
+  study confirms the good results of {\metodo} in most cases.} 
 
 
 %\keywords{The paper must have at least one keyword. The text must be set to 9-point font size and without the use of bold or italic font style. For more than one keyword, please use a colon as a separator. Keywords must be titlecased.}
@@ -47,19 +59,65 @@
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-\noindent Time series are present in any act or behavior of the daily life among many other activities in different areas. %like Engineering, Biology, Economy, Social Sciences, etc. 
-Formally defined, a time series is a set of observed values from a variable along the time in regular periods of time (every day, every month, every year...) \cite{Pena2005}. Accordingly, the labor of forecasting time series can be defined as the task of predicting successive values of the variable in time spaced based on past and present observations.
+%\noindent Time series are present in any act or behavior of the daily
+%life among many other activities in different areas. %like
+%Engineering, Biology, Economy, Social Sciences, etc.  
+%Yo suprimiría esta frase - JJ
+Formally defined, a time series is a set of observed values from a
+variable along time in regular periods (for instance, every day, every
+month or every year) \cite{Pena2005}. Accordingly, the work of
+forecasting in a time series can be defined as the task of predicting
+successive values of the variable in time spaced based on past and
+present observations. 
 
-During many decades, a lot of varied approaches have been arising trying to model and forecast time series. These techniques can be classified into three different areas: descriptive traditional technologies, linear and nonlinear modern models, and technologies coming from the soft computing area. From all developed method, ARIMA, proposed by Box and Jenkins \cite{BoxJenk}, is possibly the most known. %in time series forecasting. 
-Nevertheless, it gives simplistic linear models %has a disadvantage since simplistic linear models are given, 
-being unable to find subtle patterns in the time series data. On the other hand, different techniques such as %fuzzy logic, expert systems, evolutionary algorithms (EAs), or specially 
-artificial neural network (ANNs) have been dealt with time series forecasting within soft computing area. More precisely, ANNs have stand out as a satisfactory tool for researchers due to their learning and generalization capabilities.
+For many decades, different approaches have been used for to
+modelling and forecasting time series. These techniques can be
+classified into three different areas: descriptive traditional
+technologies, linear and nonlinear modern models, and soft computing
+techniques. From all developed method, ARIMA, proposed by Box and
+Jenkins \cite{BoxJenk}, is possibly the most widely known and used. %in time series
+                                %forecasting.  
+Nevertheless, it yields simplistic linear models, %has a disadvantage since simplistic linear models are given, 
+being unable to find subtle patterns in the time series data. %Esto es
+                                %discutible. Cita - JJ
+% On the other hand, different techniques such as %fuzzy logic, expert systems, evolutionary algorithms (EAs), or specially 
+%artificial neural network (ANNs) have been dealt with time series forecasting within soft computing area. More precisely, ANNs have stand out as a satisfactory tool for researchers due to their learning and generalization capabilities.
+% EL INGLÉS!!!!! - 
+New methods based on artificial neural networks, such as the one used
+in this paper, on the other hand, can generate more complex
+models that are able to grasp those subtle variations. 
 
-The {\metodo} method \cite{Parras2012Softcomputing}, developed inside the field of ANNs, makes jointly use of Radial Basis Function Networks (RBFNs) and EAs. The objective of the algorithm is the automatic forecasting of any given time series minimizing the obtained error. Moreover, {\metodo} designs appropriate neural networks and selects the time lags, that will be used in the prediction, in a coevolutive \cite{Paredis95} approach that allows to separate the main problem in two subproblems depending on each other. Therefore, the algorithm evolves two subpopulations based on a cooperative scheme in which every individual of a subpopulation collaborates with individuals from the other subpopulation in order to obtain good solutions.
+The {\metodo} method \cite{Parras2012Softcomputing}, developed inside
+the field of ANNs, makes jointly use of Radial Basis Function Networks
+(RBFNs) and EAs. The objective of the algorithm is the automatic
+forecasting of any given time series minimizing the obtained error. % no va a ser maximizar el error. esto es trivial. - JJ
+ Moreover, {\metodo} designs adequate neural networks and selects the
+ time lags that will be used in the prediction, in a coevolutive
+ \cite{Paredis95} % la cita de Paredis está un poco obsoleta. Cita
+                  % algo más moderno, inclusive trabajos de Pedro - JJ
+ approach that allows to separate the main problem in two dependent
+ subproblems. The algorithm evolves two subpopulations based on a
+ cooperative scheme in which every individual of a subpopulation
+ collaborates with individuals from the other subpopulation in order
+ to obtain good solutions. 
 
-The main goal of this work is to analyze the effectiveness of the {\metodo} method when automatically forecasting using the own predicted values for next predictions. Thus, 5 different methods used in time series forecasting have been selected in order to test the behavior of the method.
+% Si alguien ha leído (o evaluado) el trabajo anterior, ¿cuál es la
+% principal aportación de este? - JJ
+The main goal of this work is to analyze the effectiveness of the
+{\metodo} method when automatically forecasting using the own
+predicted values for next predictions. Thus, 5 different methods used
+in time series forecasting have been selected in order to test the
+behavior of the method.
+% ¿Lo has hecho ya? ¿Qué es nuevo en este artículo? ¿Sólo la
+% aplicación del método?
 
-The rest of the paper is organized as follows: section \ref{sec:preliminaries} introduces some preliminary topics related to this research; section \ref{sec:method} describes the method {\metodo}; section \ref{sec:experimentation} presents the experimentation and the statistical study carried out %and a comparative statistical study of the results obtained
+The rest of the paper is organized as follows: section
+\ref{sec:preliminaries} introduces some preliminary topics related to
+this research; section \ref{sec:method} describes the method
+{\metodo}; section \ref{sec:experimentation} presents the
+experimentation and the statistical study carried out %and a
+                                %comparative statistical study of the
+                                %results obtained 
 , and finally section \ref{sec:conclusions} presents some conclusions of the work.
 
 
@@ -77,28 +135,50 @@ Approaches proposed in time series forecasting can be mainly grouped as linear a
 
 %\subsection{Soft computing methods for time series forecasting}
 
-Although many works were realized within soft computing area%(as for example \cite{Samanta2011})%, \cite{Zhu2011}, or \cite{Wang2011}, among others)
-, more specifically ANNs were successfully applied to time series forecasting \cite{Jain2007}%, as concluded %Tang \cite{Tang1991}, Zhang \cite{Zhang1998b} or Jain and Kumar \cite{Jain2007}
-, and recognized as an important tool for time-series forecasting. %There exist numerous works of different application areas where ANNs are used to forecast time series. 
+ANNs have also been applied successfully \cite{Jain2007}%, as concluded %Tang \cite{Tang1991}, Zhang \cite{Zhang1998b} or Jain and Kumar \cite{Jain2007}
+and recognized as an important tool for time-series forecasting. %There exist numerous works of different application areas where ANNs are used to forecast time series. 
 %The work by Arizmendi \cite{Arizmendi1993} obtained accurate predictions of the airborne pollen concentrations using ANNs. Zhang and Hu \cite{Zhang1998b} employed ANNs, and Rivas et al. \cite{Rivas04} RBFNs, for forecasting British pound and US dollar exchange rates. Bezerianos et al. \cite{Bezerianos1999} employed RBFNs for the assessment and prediction of the heart rate variability.
-
+% Yo quitaría tanto comentario. ¿Es que lo vas a usar luego? - JJ
 %\subsection{Radial Basic Function Networks}
-
-Inside the ANNs, the utilization of RBFs as activation functions were considered by works as \cite{Broomhead88} and \cite{Rivas04}, and applied to time series by Carse and Fogarty \cite{Carse1996}, and Whitehead and Choate \cite{Whitehead96}. Later works like the ones by Harpham and Dawson \cite{Harpham06} or  Du \cite{Du2008} focused on RBFNs for time series forecasting.
+Within ANNs, the utilization of RBFs as activation functions were
+considered by works as \cite{Broomhead88} and \cite{Rivas04}, and
+applied to time series by Carse and Fogarty \cite{Carse1996}, and
+Whitehead and Choate \cite{Whitehead96}. Later works like the ones by
+Harpham and Dawson \cite{Harpham06} or  Du \cite{Du2008} focused on
+RBFNs for time series forecasting. % No me gusta tampoco como está
+                                % estructurado. Podías simplemente
+                                % decir que las RBFs, que son ANNs,
+                                % también se han usado. O quitar
+                                % directamente la frase de las ANNs. - JJ
 
 %\subsection{Lags selection in time series forecasting}
 
-On the other hand, an issue that must be taken into account when working with time series is the correct choice of the time lags for representing the series. Takens' theorem \cite{Takens1980} establishes that if $d$, a $d$-dimensional space where $d$ is the minimum dimension capable of representing such a relationship, is sufficiently large is possible to build a state space using the correct time lags and if this space is correctly rebuilt also guarantees that the dynamics of this space is topologically identical to the dynamics of the real systems state space.
+On the other hand, an issue that must be taken into account when
+working with time series is the correct choice of the time lags for
+representing the series. Takens' theorem \cite{Takens1980} establishes
+that if $d$, a $d$-dimensional space where $d$ is the minimum
+dimension capable of representing such a relationship, is sufficiently
+large is possible to build a state space using the correct time lags
+and if this space is correctly rebuilt also guarantees that the
+dynamics of this space is topologically identical to the dynamics of
+the real systems state space. 
 
 Many methods are based in Takens' theorem (like \cite{Luko2010}) but, in general, the approaches found in the literature consider the lags selection as a pre or postprocessing or as a part of the learning process \cite{Araujo2010a},\cite{Maus2011}. In the {\metodo} method the selection of the time lags is jointly faced along with the design process, thus it employs coevolution to simultaneously solve these problems.
 
-%\subsection{Cooperative coevolution algorithms and time series forecasting}
+%\subsection{Cooperative coevolution algorithms and time series
+%forecasting}
+% El estado del arte debe tener una "narrativa" Mi método se basa en
+% esto, esto y esto. El estao del arte en esto y aquello es
+% este. Nuestro método usa tal, que también ha sido usado... no
+% sueltes una serie de párrafos sin ton ni son como los ingredientes
+% de un codido para que los junte el revisor - JJ
 
 Cooperative coevolution \cite{Potter94} has also been used in order to train ANNs to design neural network ensembles \cite{Garcia-Pedrajas05} and RBFNs \cite{Li08}. But in addition, cooperative coevolution is utilized in time series forecasting in works as the one by Xin \cite{Xin10}. %Qian-Li \cite{Qian-Li08} or 
 
 
 %\subsection{Quality measures for time series forecasting}
-
+% Si no vas a avanzar el estado del arte en este tema, no forma parte
+% del estado del arte, sino de la parte de metodología. - JJ
 Additionally, another question when dealing with time series is the measure to be used in order to calculate the accuracy of the obtained predictions. Mean Absolute Percentage Error (MAPE) \cite{Bowerman2004} was the first measure employed in the M-competition \cite{Makridakis1982} and most textbooks recommended it. Later, many other measures as Geometric Mean Relative Absolute Error, Median Relative Absolute Error, Symmetric Median and Median Absolute Percentage Error (MdAPE), and Symmetric Mean Absolute Percentage Error, among others, were proposed \cite{Makridakis2000}. However, a disadvantage was found in these measures, they were not generally applicable and can be infinite, undefined or can produce misleading results, as Hyndman and Koehler explained in their work \cite{Hyndman2006}. Thus, they proposed Mean Absolute Scaled Error (MASE) that is less sensitive to outliers, less variable on small samples, and more easily interpreted.
 
 In this work, the measures used are MAPE (i.e., $mean(\mid p_t\mid)$), MASE (defined as $mean(\mid q_t\mid)$), and MdAPE (as $median(\mid p_t\mid)$ ), taking into account that $Y_t$ is the observation at time $t = {1,...,n}$; $F_t$ is the forecast of $Y_t$; $e_t$ is the forecast error (i.e. $e_t= Y_t - F_t$); $p_t = 100e_t/Y_t$ is the percentage error, and $q_t$ is determined as:
@@ -123,11 +203,6 @@ In this work, the measures used are MAPE (i.e., $mean(\mid p_t\mid)$), MASE (def
 
 
 
-
-
-
-
-
 \section{\uppercase{Description of the method}}
 \label{sec:method}
 
@@ -143,7 +218,9 @@ In this work, the measures used are MAPE (i.e., $mean(\mid p_t\mid)$), MASE (def
 As the fundamental objective, {\metodo} forecasts any time series for any horizon and builds appropriate RBFNs designed with suitable sets of lags, reducing any hand made preprocessing step. Figure \ref{generalscheme} describes the general scheme of the algorithm {\metodo}.
 
 %In the following subsections it is described the general scheme of the proposal, each process which takes part in the coevolution, the process of collaboration between them, and the trend removal mechanism.
-
+% hay un entorno algorithm2e que deja los algoritmos estos más
+% chulos. En todo caso, no sé si para un artículo corto de este estilo
+% deberías ser tan prolijo en la descripción - JJ
 \begin{figure}
 \centering
 \begin{tabular}{|l|}
@@ -198,7 +275,7 @@ Trend postprocessing \\
 
 The performance of {\metodo} starts with the creation of the two initial populations, randomly generated for the first generation; then, each individual of the populations is evaluated. The {\metodo} algorithm uses a sequential scheme in which only one population is active, so the two population take turns in evolving. Firstly, the evolutionary process of the population of lags occurs: the individuals which will belong to the subpopulation are selected; following the CHC scheme \cite{Eshelman}, genetic operators are applied; the collaborator for every individual is chosen from the population of RBFNs; and the individuals are evaluated again and assigned the result as fitness. After that, the best individuals from the subpopulation will replace the worst individuals of the population. During the evolution, the population of lags checks that al least one gene of the chromosome must be set to one because necessarily the net needs one input to obtained the forecasted value.
 
-In the second place, the population of RBFNs commences the evolutionary process. For the first generation, every net in the population has a number of neurons randomly chosen which may not exceed a maximum number previously fixed. As in population of lags, the individuals for the subpopulation are selected, the genetic operators are applied, every individual chooses the collaborator from the population of lags, and then, the individuals are evaluated and the result is assigned as fitness. Fitness function is defined by the inverse of the root mean squared error.%The number of neurons can increase or decrease as the algorithm evolves. The vector of weights is initialized to zero, the center is determined choosing patterns from the training set at random, and the radius is estimated calculating the half of the average distance from centers.
+In the second place, the population of RBFNs starts the evolutionary process. For the first generation, every net in the population has a number of neurons randomly chosen which may not exceed a maximum number previously fixed. As in population of lags, the individuals for the subpopulation are selected, the genetic operators are applied, every individual chooses the collaborator from the population of lags, and then, the individuals are evaluated and the result is assigned as fitness. Fitness function is defined by the inverse of the root mean squared error.%The number of neurons can increase or decrease as the algorithm evolves. The vector of weights is initialized to zero, the center is determined choosing patterns from the training set at random, and the radius is estimated calculating the half of the average distance from centers.
 
 At the end of the coevolutionary process, two models formed by a set of lags (from the first population) and a neural network (from the second population) are obtained. On the one hand, a model is composed of the best set of lags and its best collaborator, and on the other hand, the other model is composed of the best net found and its best collaborator. Then, the two models are trained again and the final model chosen is the one that obtains the best fitness. This final model obtains the future values of the time series used for the prediction, and then, forecasted data will be used to find next values.
 
@@ -213,7 +290,7 @@ Thus, every individual in any population chooses the best collaborator from the 
 %\end{eqnarray}
 
 
-The method has a set of specific operators specially developed to work with individuals from each of the populations. %Therefore, the operators have been designed trying to cover the search space in an effective way, maximizing the success probability.
+The method has a set of specific operators specially developed to work with individuals from every population. %Therefore, the operators have been designed trying to cover the search space in an effective way, maximizing the success probability.
 The operators used by {\metodo} are the followings:
 
 \begin{itemize}
@@ -251,7 +328,9 @@ The operators used by {\metodo} are the followings:
 %    \end{itemize}
 \end{itemize}
 
-
+% Esto deberíais explicarlo un poco más. Si necesitas especio, resume
+% la explicación del método. Es un congreso de algoritmos genéticos,
+% hay que ser detallista en este tema - JJ
 
 
 \section{\uppercase{Experimentation and statistical study}}
@@ -265,14 +344,33 @@ The operators used by {\metodo} are the followings:
 \label{experimentalmethodoly}
 
 \noindent The experimentation has been carried out using 20 data bases taken from the INE\footnote{National Statistics Institute (http://www.ine.es/)}. The data represent observations from different activities and have different nature, size, and characteristics. The data bases have been labeled as: Airline, WmFrancfort, WmLondon, WmMadrid, WmMilan, WmNewYork, WmTokyo, Deceases, SpaMovSpec, Exchange, Gasoline, MortCanc, MortMade, Books, FreeHouPrize, Prisoners, TurIn, TurOut, TUrban, and HouseFin. %These time series can be accessed at https://sites.google.com/site/presetemp/datos. The first 75\% of the observations has been considered to form the training data and the other 25\% to test.
+% ¿Por qué se han elegido estos y no otros? ¿NO hay benchmarks en este
+% área?
 
 % Metodos
 
-To compare the effectiveness of {\metodo} it has used 5 methods found within the field of time series forecasting: Exponential smoothing method (ETS), Croston, Theta, Random Walk (RW), and ARIMA. %These methods have been executed with R.
+To compare the effectiveness of {\metodo} it has used 5 methods found
+within the field of time series forecasting: Exponential smoothing
+method (ETS), Croston, Theta, Random Walk (RW), and ARIMA. %These
+                                %methods have been executed with R.
+% Cita de estos métodos (o de la librería en R, seguro que tiene su
+% .bib) - JJ
 
 % Medidas de error
 
-In order to show de results 3 distinct quality measures have been considered: MAPE, MASE, and MdAPE. They have been estimated by means of 30 executions of every time series, and the results are the average of these executions. For each execution, the following parameters are used in the {\metodo} algorithm: lags population size=50, lags population generations=5, lags chromosome size=10\%, RBFNs population size=50, RBFNs population generations=10, validation rate=0.25, maximum number of neurons of first generation=0.05, tournament size=3, replacement rate=0.5, crossover rate=0.8, mutation rate=0.2, and total number of generations=20.
+In order to show the results 3 distinct quality measures have been
+% ponía _de_ results!!!! Revisad el inglés.
+considered: MAPE, MASE, and MdAPE. They have been estimated by means
+% Aquí tendrías que poner la parte correspondiente del estado del arte
+% - JJ
+of 30 executions of every time series, and the results are the average
+of these executions. For each execution, the following parameters are
+used in the {\metodo} algorithm: lags population size=50, lags
+population generations=5, lags chromosome size=10\%, RBFNs population
+size=50, RBFNs population generations=10, validation rate=0.25,
+maximum number of neurons of first generation=0.05, tournament size=3,
+replacement rate=0.5, crossover rate=0.8, mutation rate=0.2, and total
+number of generations=20. 
 
 % Resultados
 
@@ -343,7 +441,11 @@ Tables \ref{tab:resultsMAPE}, \ref{tab:resultsMASE}, and \ref{tab:resultsMDAPE} 
 \end{table*}
 
 \begin{table*}[h]
-\caption{Results of the methods {\metodo}, ETS, Croston, Theta, RW, and ARIMA, with respect to MdAPE. Best result per database is marked with character *.}
+\caption{Results of the methods {\metodo}, ETS, Croston, Theta, RW,
+  and ARIMA, with respect to MdAPE. Best result per database is marked
+  with character *.} % no hay error? Siempre son las diferencias
+                     % significativas? Cuando se obtienen peores
+                     % resultados, ¿a qué puede deberse? - JJ
 \label{tab:resultsMDAPE}
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -381,9 +483,12 @@ Tables \ref{tab:resultsMAPE}, \ref{tab:resultsMASE}, and \ref{tab:resultsMDAPE} 
 
 \noindent To analyze in more detail the results and check whether the observed differences are significant, two main steps are performed: firstly, identifying whether exist differences in general between the methods used in the comparison; and secondly, determining if the best method is significant better than the rest of the methods. To do this, first of all it has to be decided if is possible to use parametric o non-parametric statistical techniques. An adequate use of parametric statistical techniques reaching three necessary conditions: independency, normality and homoscedasticity \cite{Sheskin2004}. %,Zar1999}. 
 Owing to these conditions are not fulfilled, a non-parametric test should be used.
-
+%No uses itemize. Intégralos en un párrafo - JJ
 \begin{itemize}
-  \item Significant differences among methods. For every quality measure used the Friedman and Iman-Davenport tests have been applied, tables \ref{tab:FriedmanIman} and \ref{tab:ImanDavenport} 
+  \item Significant differences among methods. For every quality
+    measure used the Friedman and Iman-Davenport tests have been
+    applied, tables \ref{tab:FriedmanIman} and
+    \ref{tab:ImanDavenport} % este falta
   shows the results for MAPE, MASE and MdAPE, for Friedman and Iman-Davenport, respectively. From left to right tables show the Friedman and Iman-Davenport values ($\chi^2$ and $F_F$, respectively), the corresponding critical values for each distribution by using a level of significance $\alpha$ = 0.05, and the \emph{p-value} obtained for the measures utilized.
 
     \begin{table}[h]
@@ -475,19 +580,44 @@ Owing to these conditions are not fulfilled, a non-parametric test should be use
 
 
 
-\section{\uppercase{Conclusions}}
+\section{\uppercase{Conclusions}} % ¿Por qué Uppercase? Yo
+                                % reescribiría entera esta sección - JJ
 \label{sec:conclusions}
 
-\noindent In this contribution, the behavior of the method {\metodo} for an automatic time series forecasting is reviewed. {\metodo} is a recent algorithm developed for minimizing the error when predicting future values of any time series given. %Based in a coevolutive approach is able to evolve RBFNs and sets of lags that will be use in the forecast.
+\noindent In this contribution, the behavior of the {\metodo} method, a recent algorithm developed for minimizing the error when predicting future values of any time series given, for automatic time series forecasting is studied. %Based in a coevolutive approach is able to evolve RBFNs and sets of lags that will be use in the forecast.
 %At the same time, {\metodo} is able to build appropriate network architecture and sets of lags, which will be used to perform the forecast, in a coevolutive approach that permits to decompose the main problem into two subproblems which depend on each other.
 
 The algorithm has been tested with 20 different time series and%, in order to compare, it has been 
-contrasted with a set of 5 representative methods from the field of the time series forecasting: ETS, Croston, Theta, RW, and ARIMA. In addition, 3 distinct quality measures (MAPE, MASE and MdAPE) has been used to assure the results. {\metodo} obtains the best results in the majority of the cases tested for every measure considered.
+contrasted with a set of five representative methods from the field of
+the time series forecasting: ETS, Croston, Theta, RW, and ARIMA. In
+addition, 3 distinct quality measures (MAPE, MASE and MdAPE) has been
+used to check the results. {\metodo} obtains the best results in the
+majority of the cases tested for every measure considered. % Demasiado
+                                % extenso para las conclusiones. 
 
 A statistic study has been done in order to confirm the results achieved. %Primarily, it has been checked the differences among the results obtained by the methods with the Friedman and Iman-Davenport tests. Then, the Holm procedure has been applied to find significant differences between the control algorithm ({\metodo}) and the rest of the methods. 
-With respect to MAPE, {\metodo} is significantly better than the rest of the method; regarding MASE, {\metodo} has significant differences with ARIMA and Croston; and respecting MdAPE, {\metodo} obtains significant better results than Croston, ETS and RW.
+With respect to MAPE, {\metodo} is significantly better than the rest
+of the method; regarding MASE, {\metodo} has significant differences
+with ARIMA and Croston; and with respect to MdAPE, {\metodo} obtains
+significantly better results than Croston, ETS and RW. % Deberías
+                                % repetir \metodo menos - JJ
+% En todo caso, la conclusión debería tratar de explicar a qué se debe
+% esta mejora, no sólo a enunciar el resultado.
 
-Then, it can be concluded that the {\metodo} algorithm yields better results in the most of time series used than the other methods utilized.
+Thus, it can be concluded that the {\metodo} algorithm yields better
+results in most time series used than the other methods utilized. % So
+                                % what? Debéis generalizar la
+                                % conclusión. Un artículo nunca debe
+                                % ser "pruebo este método sobre este
+                                % conjunto obtengo mejores
+                                % resultados". Debes decir por qué y
+                                % qué posible generalización tiene. - JJ
+
+%Nada de trabajo futuro? - JJ
+% Las conclusiones repiten un poco los resultados. Deberían ser un
+% poco menos sintéticas y más explicativas y sobre todo explicar lo
+% que hace que este método sea mejor. No podéis simplemente repetir lo
+% que tenéis en las tablas. 
 
 
 
@@ -496,7 +626,9 @@ Then, it can be concluded that the {\metodo} algorithm yields better results in 
 
 \section*{\uppercase{Acknowledgements}}
 
-\noindent This work has been supported by the regional project TIC-3928 (Feder Founds), the Spanish project TIN 2012-33856 (Feder Founds), TIN 2011-28627-C02 (Feder Founds).
+\noindent This work has been supported by the regional projects
+TIC-3928 and -TIC-03903 (Feder Funds), the Spanish project TIN
+2012-33856 (Feder Founds), TIN 2011-28627-C04-02 (Feder Funds). 
 
 
 %\vfill
