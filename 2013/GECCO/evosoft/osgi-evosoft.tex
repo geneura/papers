@@ -170,7 +170,7 @@ showstringspaces=false
 \maketitle
 
 \begin{abstract}
-This paper shows a 
+This paper shows the design and implementation of services for Evolutionary Computation in a Service Oriented Architecture. Services are developted taking into account design and technological restrictions. OSGiLiath, an implementation of an abstract Service Oriented Architecture for Evolutionary Algorithms is used to develop new services. 
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -194,7 +194,7 @@ This paper shows a
 %
 
 %%CAMBIAR ESTO
-Service Oriented Science refers to...
+Service Oriented Architecture \cite{PAPAZOGLOU} is becoming an important trend in software development. This paradigm allows the organization and distribution using the {\em service} concept. A service is an interaction depicted in Figure \ref{SOADIAGRAM} METER FIGURA! The service provider publishes service descriptions (or interfaces) in the service registry, so the service requesters can discover services and bind to the service providers.
 
 
 When building quality software systems it is necessary to design them
@@ -210,8 +210,7 @@ development can offer are carried out in the development of algorithms,
 experimental evaluation, and combination of different optimization
 paradigms \cite{PLUGINS}.  
 
-On the other hand, other patterns for integration, like SOA, have emerged. SOA (Service Oriented Architecture) \cite{PAPAZOGLOU} is a paradigm for
-organizing and utilizing distributed capabilities, called {\em services}. A service is an interaction depicted in Figure \ref{SOADIAGRAM} METER FIGURA!.
+
 
 
 
@@ -224,7 +223,7 @@ organizing and utilizing distributed capabilities, called {\em services}. A serv
 %\label{SOADIAGRAM} 
 %\end{figure} 
 
-The service provider publishes service descriptions (or interfaces) in the service registry, so the service requesters can discover services and bind to the service providers.
+
 
 
 
@@ -232,15 +231,15 @@ Distributed computing offers the possibility of taking advantage of parallel pro
  in order to obtain a higher 
 computing power than other multiprocessor architectures. Two clear examples are the
 research lines centred in clusters \cite{Buyya} and GRID \cite{OPENSCIENCEGRID}
-for parallel processing. SOA it is also used in this area, using platforms based on Web Services \cite{PAPAZOGLOU}, and new standards for this paradigm have emerged, like OSGi.
+for parallel processing. SOA it is also used in this area, using platforms based on Web Services \cite{PAPAZOGLOU}, and new standards for this paradigm have emerged, like OSGi (Open Services Gateway Initiative) \cite{OSGI}.
 
-In our previous work \cite{OSGILIATH} we presented an abstract Service Oriented Architecture for Evolutionary Algorithms (SOA-EA), with guidelines and steps to migrate from traditional development to SOA. It also presents an specific implementation, called OSGiLiath: an environment for the development of distributed algorithms extensible via plug-ins architecture and based in a wide-accepted software specification (OSGi: Open Services Gateway Initiative \cite{OSGI}). In this work, a full service development is presented, taking into account the specific technology used, instead an abstract design, as previous work.
+In our previous work \cite{OSGILIATH} we presented an abstract Service Oriented Architecture for Evolutionary Algorithms (SOA-EA), with guidelines and steps to migrate from traditional development to SOA. It also presented an specific implementation, called OSGiLiath: an environment for the development of distributed algorithms extensible via plug-ins architecture and based in a wide-accepted software specification (OSGi). In this work, a full service development is presented, taking into account the specific technology used, instead an abstract design, as in our previous work.
 
-Therefore, the objective of the proposed environment in this paper is to facilitate the
-development of distributed computing applications by using the OSGi standard,
-taking advantage
-of the plug-in software development and SOA that can compete with existing
-distributed applications in easy of use, compatibility and development.
+%Therefore, the objective of the proposed environment in this paper is to facilitate the
+%development of distributed computing applications by using the OSGi standard,
+%taking advantage
+%of the plug-in software development and SOA that can compete with existing
+%distributed applications in easy of use, compatibility and development.
 The rest of the work is structured as follows: after the state of
 the art, we present design principles to create services for Evolutionary Computation (Section \ref{sec:design}). Then, the OSGi implementation technology is explained (Section \ref{sec:technology}), used to build our framework (explained in Section \ref{sec:osgiliath}). Then, the steps to create services with this framework are explaiend (Section \ref{sec:development}). Finally, conclusions and suggestions for future work are shown (Section \ref{sec:conclusions}).
 
@@ -263,16 +262,13 @@ than other languages. There also exist frameworks that use metaheuristics to app
 
 Among this great number of frameworks we want to focus in the most widely accepted distributed algorithms frameworks. ECJ \cite{ECJ}, Evolutionary Computation in Java, is a set of Java classes that can be extended and includes several communication modules. MALLBA \cite{MALLBA} is based in software skelletons with a common and public interface. Every skeleton implements a resolution technique for optimization in the fields of exact, heuristic or hybrid optimization. It provides LAN and WAN capacity distribution with MPI . However, this both frameworks are not based in the plug-in development, so they can not take advantage of features like the life-cycle management, versioning, or dynamic service binding, as OSGi proposes.
 
-
-
-
 Another important platform is DREAM \cite{DREAM}, which is an open source framework for Evolutionary Algorithms based on Java that
 defines an island model and uses the Gossip protocol and TCP/IP sockets for
 communication. It can be deployed in P2P platforms and it is divided
 in five modules. Every module provides an user interface and different
 interaction and abstraction level, but adding new functionalities is not so easy, due to the the fact that system must be stopped before adding new modules and the implementation of interfaces must be defined in the source code, so a new compilation is needed. OSGi lets the addition of new functionalities only compiling the new features, not the existing ones. 
 
-Moreover, MALLBA and DREAM could be considered abandoned frameworks, due to no new publications or versions have been released. The MALLBA authors are now working in the jMetal Framework \cite{JMETAL}, that is a newer Java-based framework, but it has not yet distributed capabilities and it is focused in multi-objective optimization.
+The MALLBA authors are now working in the jMetal Framework \cite{JMETAL}, that is a newer Java-based framework, but it has not yet distributed capabilities and it is focused in multi-objective optimization.
 
 ParadiseEO \cite{PARADISEO} allows the design of Evolutionary Algorithms and Local Search with hybridization, providing a variety of operators and evaluation functions. It also implement the most common parallel and distributed models, and it is based in standard libraries like MPI, PVM and Pthreads. However, it has the same problems that the previous frameworks, not lifecycle management or service oriented programming. GAlib \cite{GALIB} is very similar and share the same characteristics and problems.
 
@@ -280,17 +276,22 @@ In the field of the plug-in based frameworks, HeuristicLab \cite{HEURISTICLAB} i
 
 METCO framework \cite{METCO} also have the same problems, it does not use a standard plug-in system or SOA, but let the implementation of existing interfaces, and lets the user configure its existing functionalities.
 
-Finally, the only service oriented optimization framework is GridUFO \cite{GRIDUFO}, but it only allows the modification of the objective function and the addition of whole algorithms, without combining existing services. 
+Finally, the only service oriented optimization framework is GridUFO \cite{GRIDUFO}, but it only allows the modification of the objective function and the addition of whole algorithms, without combining existing services.
+
+Previous frameworks are designed to be extensible and re-usable, but without taking into account the restrictions of SOA to achieve even more independence and development improvements.
 
 \section{Designing Services for a Service Oriented Architecture for Evolutionary Algorithms}
 \label{sec:design}
-In \cite{OSGILIATH} we demonstrated that it is possible to create a service oriented architecture for EAs using a specific SOA technology. This architecture used the features that SOA offers. To do this, loose coupling services for EAs were designed (SOA-EA), and they were implemented using a SOA technology and compared with other frameworks. These services can be combined in several ways to obtain different algorithms (from a canonical GA, a NSGA-II has been created just adding new services). Also. several techniques were presented to combine existing services in a flexible way.
+
+In \cite{OSGILIATH} we demonstrated that it is possible to create a service oriented architecture for EAs using a specific SOA technology. This architecture used the features that SOA offers. To do this, loose coupling services for EAs were designed (SOA-EA), and they were implemented using a SOA technology and compared with other frameworks. These services can be combined in several ways to obtain different algorithms (for example, from a canonical GA, a NSGA-II can been created just adding new services). Also. several techniques were presented to combine existing services in a flexible way.
 
 
 
 \subsection{Design principles}
 
-Services must match the technological requirements given in previous sub-section. However, other design restrictions must be taken into account, given the stateless nature of services in SOA:
+%Services must match the technological requirements given in previous sub-section. However, other design restrictions must be taken into account, 
+
+One of the main restrictions in SOA, appart from focusing in develop abstract services, is the stateless nature of services. Therefore, in SOA the services design must :
 
 First, as services are unaware of others, there must not be global variables in any part of the code. Services are listening, and waiting to be executed. For example, a fitness service with a counter that is increased each time is called (to stop the algorithm if a limit is reached, for example). If several (and different) algorithms are working in parallel, and calling this function at the same time the counter would not distinguish between algorithms, giving erroneous results. However, a service that maintains some kind of state is permited, for example, a statistic service that read events from all the algorithms being executed at the same time.
 
@@ -317,18 +318,9 @@ In this work, a new process development, explaining the specific technology used
 \end{itemize}
 
 
-
-
-
-
-
-
-
-
-
 \section{Implementation technology}
 \label{sec:technology}
-This section dives into some technical features of the OSGi platform, to guide the reader to understand the OSGiLiatH framework in a deeper way, and to evaluate the advantages of using this features in the development of distributed algorithms and match with the previous restrictions.
+This section dives into some technical features of the OSGi platform, to guide the reader to understand the OSGiLiatH framework in a deeper way, and to evaluate the advantages of using this features in the development of distributed algorithms to match with the previous restrictions.
 
 The used technology, OSGi (Open Service Gateway Initiative) \cite{OSGI} was proposed by a consortium of more than
 eighty companies in order to develop an infrastructure for the
