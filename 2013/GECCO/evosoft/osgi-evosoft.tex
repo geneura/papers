@@ -4,6 +4,11 @@
 \usepackage{url} 
 \usepackage{listings}
 \usepackage{color}
+
+\usepackage{color}
+\usepackage{alltt}
+\usepackage[T1]{fontenc}
+
 \input{coloricos}
 %Comentario mielda para arreglar el git
 \lstset{
@@ -170,7 +175,7 @@ showstringspaces=false
 \maketitle
 
 \begin{abstract}
-This paper shows the design and implementation of services for Evolutionary Computation in a Service Oriented Architecture. Services are developted taking into account design and technological restrictions. OSGiLiath, an implementation of an abstract Service Oriented Architecture for Evolutionary Algorithms is used to develop new services. 
+This paper shows the design and implementation of services for Evolutionary Computation in the Service Oriented Architecture paradigm. This paradigm allows independence in language and distribution, but the service development require technological and design restrictions. OSGiLiath, an implementation of an abstract Service Oriented Architecture for Evolutionary Algorithms, is used to develop new interoperable services, taking into account these restrictions. 
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -194,7 +199,15 @@ This paper shows the design and implementation of services for Evolutionary Comp
 %
 
 %%CAMBIAR ESTO
-Service Oriented Architecture \cite{PAPAZOGLOU} is becoming an important trend in software development. This paradigm allows the organization and distribution using the {\em service} concept. A service is an interaction depicted in Figure \ref{SOADIAGRAM} METER FIGURA! The service provider publishes service descriptions (or interfaces) in the service registry, so the service requesters can discover services and bind to the service providers.
+Service Oriented Architecture \cite{PAPAZOGLOU} is becoming an important trend in software development. This paradigm allows the organization and distribution using the {\em service} concept. A service is an interaction depicted in Figure \ref{SOADIAGRAM} METER FIGURA! The service provider publishes {\em service descriptions} (or interfaces) in the {\em service registry}, so the {\em service requesters} can discover services and bind to the {\em service providers}.
+
+SOA allows independence in language and distribution mechanisms, allowing easy extension and integration, but it requires the next constraints:
+
+\begin{itemize}
+\item Services are an input/output function.
+\item The services must not have state.
+\item The order of execution of the services is not defined.
+\end{itemize}
 
 
 When building quality software systems it is necessary to design them
@@ -295,7 +308,7 @@ One of the main restrictions in SOA, appart from focusing in develop abstract se
 
 First, as services are unaware of others, there must not be global variables in any part of the code. Services are listening, and waiting to be executed. For example, a fitness service with a counter that is increased each time is called (to stop the algorithm if a limit is reached, for example). If several (and different) algorithms are working in parallel, and calling this function at the same time the counter would not distinguish between algorithms, giving erroneous results. However, a service that maintains some kind of state is permited, for example, a statistic service that read events from all the algorithms being executed at the same time.
 
-Also, a service must not be distinguishable from local or in other node in the network. Every stage in the algorithm should be treated as service to be executed in local or in remote, even the {\em Population} or the {\em Parameters}. Mechanisms to ensure the correct data-sharing should be provided. Also, many implementations of the same service could exist at the same time (different implementation of \em Crossover, for example) and it should be correctly managed and used.
+Also, a service must not be distinguishable from local or in other node in the network. Every stage in the algorithm should be treated as service to be executed in local or in remote, even the {\em Population} or the {\em Parameters}. Mechanisms to ensure the correct data-sharing should be provided. Also, many implementations of the same service could exist at the same time (different implementation of {\em Crossover}, for example) and it should be correctly managed and used.
 
 Moreover, a service is always a request-response function. For example, the fitness calculation must not be a method of the {\em Individual} implementation, but a function that receives a list of individuals and returns a list of the calculated fitness of that individuals. This allow things such as remote fitness calculation and load balancing, impossible to perform if the fitness is a method of the Individual class.
 
@@ -429,34 +442,22 @@ With Declarative Services, the {\em new ExampleFunction()} part is not necessary
 \begin{figure*}[t]
 \noindent
 \ttfamily
-
-\hlstd{}\hlkwa{$<$?xml\ }\hlstd{}\hlkwb{version}\hlstd{=}\hlstr{"1.0"}\hlstd{}\hlkwa{?$>$}\hspace*{\fill}\\
-\hlstd{}\hlkwa{$<$component\ }\hlstd{}\hlkwb{name}\hlstd{=}\hlstr{"geneticalgorithm"}\hlstd{}\hlkwa{$>$}\hspace*{\fill}\\
-\hlstd{\ }\hlkwa{$<$implementation}\hspace*{\fill}\\
-\hlstd{}\hlstd{\ \ }\hlstd{}\hlkwb{class}\hlstd{=}\hlstr{"es.ugr.osgiliath.geneticalgorithm.GeneticAlgorithm"}\hlstd{}\hlkwa{/$>$}\hspace*{\fill}\\
-\hlstd{\ }\hlkwa{$<$service$>$}\hspace*{\fill}\\
-\hlstd{}\hlstd{\ \ }\hlstd{}\hlkwa{$<$provide}\hspace*{\fill}\\
-\hlstd{}\hlstd{\ \ \ }\hlstd{}\hlkwb{interface}\hlstd{=}\hlstr{"es.ugr.osgiliath.algorithms.Algorithm"}\hlstd{}\hlkwa{/$>$}\hspace*{\fill}\\
-\hlstd{\ }\hlkwa{$<$/service$>$}\hspace*{\fill}\\
-\hlstd{\ }\hlkwa{$<$reference\ }\hlstd{}\hlkwb{name}\hlstd{=}\hlstr{"OBJECTIVEFUNCTION"}\hlstd{\hspace*{\fill}\\
-}\hlstd{\ \ }\hlstd{}\hlkwb{interface}\hlstd{=}\hlstr{"es.ugr.osgiliath.geneticalgorithm.ObjectiveFunction"}\hlstd{\hspace*{\fill}\\
-}\hlstd{\ \ }\hlstd{}\hlkwb{bind}\hlstd{=}\hlstr{"setObjectiveFunction"}\hlstd{\hspace*{\fill}\\
-}\hlstd{\ \ }\hlstd{}\hlkwb{unbind}\hlstd{=}\hlstr{"unsetObjectiveFunction"}\hlstd{\hspace*{\fill}\\
-}\hlstd{\ \ }\hlstd{}\hlkwb{cardinality}\hlstd{=}\hlstr{"1..1"}\hlstd{}\hlkwa{/$>$}\hspace*{\fill}\\
-\hlstd{\ }\hlkwa{$<$reference\ }\hlstd{}\hlkwb{name}\hlstd{=}\hlstr{"PARAMETERS"}\hlstd{\hspace*{\fill}\\
-}\hlstd{\ \ %}\hlstd{}\hlkwb{interface}\hlstd{=}\hlstr{"es.ugr.osgiliath.algorithms.Parameters"}\hlstd{\hspace*{\fill}%\\
-}\hlstd{\ \ }\hlstd{}\hlkwb{bind}\hlstd{=}\hlstr{"setParameters"}\hlstd{\hspace*{\fill}\\
-}\hlstd{\ \ }\hlstd{}\hlkwb{unbind}\hlstd{=}\hlstr{"unsetParameters"}\hlstd{\hspace*{\fill}\\
-}\hlstd{\ \ }\hlstd{}\hlkwb{cardinality}\hlstd{=}\hlstr{"1..1"}\hlstd{}\hlkwa{/$>$}\hspace*{\fill}\\
-\hlstd{\ }\hlkwa{$<$reference\ }\hlstd{}\hlkwb{name}\hlstd{=}\hlstr{"CROSSOVER"}\hlstd{\hspace*{\fill}\\
-}\hlstd{\ \ }\hlstd{}\hlkwb{interface}\hlstd{=}\hlstr{"es.ugr.osgiliath.geneticalgorithm.operators.Crossover"}\hlstd{\hspace*{\fill}\\
-}\hlstd{\ \ }\hlstd{}\hlkwb{bind}\hlstd{=}\hlstr{"setCrossover"}\hlstd{\hspace*{\fill}\\
-}\hlstd{\ \ }\hlstd{}\hlkwb{unbind}\hlstd{=}\hlstr{"unsetCrossover"}\hlstd{\hspace*{\fill}\\
-}\hlstd{\ \ }\hlstd{}\hlkwb{cardinality}\hlstd{=}\hlstr{"1..1"}\hlstd{}\hlkwa{/$>$}\hspace*{\fill}\\
-\hlstd{\ }\hlcom{$<$!{-}{-}\ Rest\ of\ references\ ...{-}{-}$>$}\hlstd{}\hspace*{\fill}\\
-\hlkwa{$<$/component$>$}\hlstd{}\hspace*{\fill}\\
+\hlstd{}\hlopt{$<$}\hlstd{?xml\ version}\hlopt{=}\hlstd{"}\hlnum{1.0}\hlstd{"\ encoding}\hlopt{=}\hlstd{"UTF{-}8"?}\hlopt{$>$}\hspace*{\fill}\\
+\hlstd{}\hlopt{$<$}\hlstd{scr}\hlopt{:}\hlstd{component\ xmlns}\hlopt{:}\hlstd{scr}\hlopt{=}\hlstd{"http}\hlopt{://}\hlstd{www}\hlopt{.}\hlstd{osgi}\hlopt{.}\hlstd{org}\hlopt{/}\hlstd{xmlns}\hlopt{/}\hlstd{scr}\hlopt{/}\hlstd{v1}\hlopt{.}\hlstd{1}\hlnum{.0}\hlstd{"\ name}\hlopt{=}\hlstd{"VRPFitnessCalculator"}\hlopt{$>$}\hspace*{\fill}\\
+\hlstd{}\hlstd{\ \ \ }\hlstd{}\hlopt{$<$}\hlstd{implementation\ class}\hlopt{=}\hlstd{"es}\hlopt{.}\hlstd{ugr}\hlopt{.}\hlstd{osgiliath}\hlopt{.}\hlstd{vrp}\hlopt{.}\hlstd{VRPFitnessCalculator"}\hlopt{/$>$}\hspace*{\fill}\\
+\hlstd{}\hlstd{\ \ \ }\hlstd{}\hlopt{$<$}\hlstd{service}\hlopt{$>$}\hspace*{\fill}\\
+\hlstd{}\hlstd{\ \ \ \ \ \ }\hlstd{}\hlopt{$<$}\hlstd{}\hlkwa{provide\ }\hlstd{interface}\hlopt{=}\hlstd{"es}\hlopt{.}\hlstd{ugr}\hlopt{.}\hlstd{osgiliath}\hlopt{.}\hlstd{evolutionary}\hlopt{.}\hlstd{elements}\hlopt{.}\hlstd{FitnessCalculator"}\hlopt{/$>$}\hspace*{\fill}\\
+\hlstd{}\hlstd{\ \ \ }\hlstd{}\hlopt{$<$/}\hlstd{service}\hlopt{$>$}\hspace*{\fill}\\
+\hlstd{}\hlstd{\ \ \ }\hlstd{}\hlopt{$<$}\hlstd{reference\ bind}\hlopt{=}\hlstd{"setTransportData"\ \hspace*{\fill}\\
+}\hlstd{\ \ \ \ }\hlstd{unbind}\hlopt{=}\hlstd{"unsetTransportData"\hspace*{\fill}\\
+}\hlstd{\ \ \ \ }\hlstd{cardinality}\hlopt{=}\hlstd{"}\hlnum{1}\hlstd{}\hlopt{.}\hlstd{}\hlnum{.1}\hlstd{"\ \hspace*{\fill}\\
+}\hlstd{\ \ \ \ }\hlstd{interface}\hlopt{=}\hlstd{"es}\hlopt{.}\hlstd{ugr}\hlopt{.}\hlstd{osgiliath}\hlopt{.}\hlstd{vrp}\hlopt{.}\hlstd{TransportData"\ \hspace*{\fill}\\
+}\hlstd{\ \ \ \ }\hlstd{name}\hlopt{=}\hlstd{"TransportData"\ \hspace*{\fill}\\
+}\hlstd{\ \ \ \ }\hlstd{policy}\hlopt{=}\hlstd{"static"\hspace*{\fill}\\
+}\hlstd{\ \ \ }\hlstd{}\hlopt{/$>$}\hspace*{\fill}\\
+\hlstd{}\hlstd{\ \ \ }\hlstd{}\hlopt{$<$}\hlstd{property\ name}\hlopt{=}\hlstd{"name"\ }\hlkwa{type}\hlstd{}\hlopt{=}\hlstd{"String"\ }\hlkwa{value}\hlstd{}\hlopt{=}\hlstd{"vrpfitnesscalculator"}\hlopt{/$>$}\hspace*{\fill}\\
+\hlstd{}\hlopt{$<$/}\hlstd{scr}\hlopt{:}\hlstd{component}\hlopt{$>$}\hlstd{}\hspace*{\fill}\\
 \mbox{}
-
 \normalfont
 \caption{Service Description. This documents indicates that the implementation of the service {\em Algorithm} is {\em GeneticAlgorithm}, but it can not activate until their references (other services) are activated.}
 \label{fig:ds}
@@ -587,13 +588,13 @@ By now, OSGiLiath counts with the next bundles:
 This section presents the steps to add services to the existent OSGiLiath core.
 
 \subsection{Bundle creation}
-Services can be added to existent bundles or new bundles can be created. Each bundle includes a MANIFEST.MF file (as depicted in Figure \ref{fig:manifest}). In this case, we have selected the packages to import (including interfaces and classed from the Osgiliath core)
+Services can be added to existent bundles or new bundles can be created. Each bundle includes a MANIFEST.MF file (as depicted in Figure \ref{fig:manifest}). In this case, we have selected the packages to import (including interfaces and classed from the Osgiliath core) and to export. The section {\em Service-Description} shows the location of the Component Definitions that describe the services. In this case, two interfaces will be implemented: {\em TransportData} and {\em FitnessCalculator}.
 
 \subsection{Implementing services}
-To implement a service, a class must be created
+To implement a service, a class must be created implementing an interface. For example, {\em VRPFitnessCalculator} implements the interface {\em FitnessCalculator}. The relation between these two elements is made in the Component Definition of the Figure \ref{fig:ds}. This way, the implementation is announced to the other services in the environment, that can bind or unbind. For example, the implementation {\em VRPInitializer} (implementing {\em Initializer}) requires this implementation to create the individuals. Services can automatically bind other services with the set/unset methods in the component definition. Also, other services appart from the EA can be added (for example, in this bundle the service {\em TransportData}, who includes information about distances of the nodes has been included).
 
 \subsection{Adding communication}
-Thanks to the OSGi 4.2 specification, services must be indistinguishable from the ones in the local OSGi environment or in other OSGi environment (in the same machine or even in the same network). To achieve this, the ECF is used to export services.
+Thanks to the OSGi 4.2 specification, services must be indistinguishable from the ones in the local OSGi environment or in other OSGi environment (in the same machine or even in the same network). To achieve this, the ECF is used to export services. In this case, the {\em Migration} service is used. This service has two operations: send and read. The first one is used to send the individuals to the migrator, and the other is used to read the individuals of that migrator. Usually, each node (island) has one migrator to receive individuals, and references to the other nodes' migrators. In our case, the implementation of {\em Replacer} binds the local {\em Migrator} to write in it the individual(s) to sent. One type of Migrator implementation is the {\em MigratorRingBuffer}: this classs implements that interface and automatically binds all the Migrators available in the environment. Using ECF, a property added to the service () automatically announces the implementation to all nodes in the network.  The {\em MigratorRingBuffer} sends the individuals to the remote Migrator whose id is inmediatelly higher than the local id (a ring).
 
 
 \section{Conclusions}
