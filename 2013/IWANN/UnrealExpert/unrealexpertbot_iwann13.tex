@@ -33,12 +33,16 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   AUTHORS   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\author{A.M. Mora \and F. Aisa \and R. Caballero \and \\ P. García-Sánchez \and J.J. Merelo \and P.A. Castillo}
+\author{A.M. Mora\inst{1} \and F. Aisa\inst{1} \and R. Caballero\inst{1} \and P. García-Sánchez\inst{1} \and \\ J.J. Merelo\inst{1} \and P.A. Castillo\inst{1} \and A.J. Fernández-Leiva\inst{2}}
 \authorrunning{A.M. Mora et al.}
 
 \institute{Departamento de Arquitectura y Tecnolog\'{\i}a de Computadores.\\
 Universidad de Granada (Spain)\\
-\email{\{amorag,jmerelo,pgarcia,pedro\}@geneura.ugr.es, francisco\_aisa@hotmail.com, rcabamo@gmail.com}
+\email{\{amorag,jmerelo,pgarcia,pedro\}@geneura.ugr.es, francisco\_aisa@hotmail.com, rcabamo@gmail.com} 
+\and
+Depto. Lenguajes y Ciencias de la Computación\\
+University of Málaga (Spain)\\
+\email{afdez@lcc.uma.es}
 }
 
 \maketitle
@@ -58,7 +62,7 @@ The result of this process yields an even better rival; however the noisy nature
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-0.7cm}
+
 \section{Introduction}
 \label{sec:intro}
 %
@@ -135,10 +139,9 @@ A GA is an algorithm where a population of possible solutions (called individual
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-\vspace{-0.3cm}
+
 \section{State of the Art}
 \label{sec:stateofart}
-\vspace{-0.1cm}
 %
 
 %When they arose (became famous) in the last years of the 80s (with Wolfenstein\texttrademark~in 1987), the FPS games were devoted to single player modes. Later, most of them offered multiplayer possibilities but always against other human players, such as DOOM\texttrademark~in 1988.
@@ -166,10 +169,8 @@ Our work is devoted to present and study two ideas: first a human-like bot, base
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  EXPERT BOT  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-\vspace{-0.3cm}
 \section{UT2K4 Expert Bot}
 \label{sec:unrealexpertbot}
-\vspace{-0.1cm}
 %
 
 The design of the expert bot (\textit{E-Bot}) AI is based in the
@@ -418,7 +419,6 @@ As a general summary, the bot tends to be defensive if its health is lower than 
 
 The value of the expert bot has been tested in an experiment, consisting in four different \textit{1 vs 1 - Death Match} combats against a standard UT2K4 game bot, held in two different maps. The bots have been fighting, respecting championship rules, during 15 minutes. The results of every match as well as the average are shown in Table \ref{tab:e-bot_results}.
 %
-\vspace{-0.1cm}
 \begin{table}[htp]
 \centering
 {\footnotesize
@@ -436,16 +436,13 @@ Average & 21.75 & 9.25\\
 \label{tab:e-bot_results} }
 }
 \end{table}
-\vspace{-0.6cm}
 
 As it can be seen \textit{E-Bot} outperforms the standard game bot, even in the hardest difficulty level, which is a challenge for a medium level player. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   EVOLUTIONARY BOT  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-0.3cm}
 \section{Evolution of the UT2K4 Expert Bot}
 \label{sec:evolution}
-\vspace{-0.1cm}
 
 Following previous approaches \cite{cole_GAtuning_cec2004,Mora_Unrealbot_EVO2010,Mora_UnrealTeams_CIG2010}, the expert bot will be improved. To this end, the set of parameters which act as thresholds, weights, priorities and conditions, and which finally determine the final behaviour of the bot, will be optimized by means of a Genetic Algorithm (GA)\cite{GA_Goldberg89}, which can evolve their values searching for the best combination, i.e. the set of values which performs better in a battle.
 Following this idea, we have designed and tested a GA-based bot, named \textit{GE-Bot}\footnote{The source code of both \textit{E-Bot} and \textit{GE-Bot} can be downloaded from\\ 
@@ -453,10 +450,8 @@ Following this idea, we have designed and tested a GA-based bot, named \textit{G
 
 
 %--------------------------------------------------------------------
-\vspace{-0.3cm}
 \subsection{First approach: chromosome-143}
 \label{subsec:first_GA}
-\vspace{-0.2cm}
 
 In this approach the \textit{chromosome scheme} has 143 genes, grouped in six different blocks: having 2 genes for health levels, 3 genes for distance, 5 genes to value the risk, 1 gene for time to see an enemy, 6 genes for items priority, and 126 genes related to weapons selection.
 %, as shown in Table \ref{tab:chromosome143}.
@@ -616,9 +611,8 @@ Figure \ref{fig:exp1} shows the best and average fitness evolution in the run, c
 %
 \begin{figure}[htb]
    \centering
-   \includegraphics[scale=0.2]{imags/exp1_c143-30g-30i-15min.eps}
-   \includegraphics[scale=0.2]{imags/exp2_c143-30g-30i-15min-3evs.eps}
-\vspace{-0.3cm}
+   \includegraphics[scale=0.3]{imags/exp1_c143-30g-30i-15min.eps}
+   \includegraphics[scale=0.3]{imags/exp2_c143-30g-30i-15min-3evs.eps}
    \caption{Fitness evolution of the best, elite and average in 30 generations for the first approach of GE-Bot (143 genes chromosome, 1 evaluation (left) and 3 evaluations (right) per individual).}
    \label{fig:exp1}
 \end{figure}
@@ -636,10 +630,9 @@ The best fitness graphs proved the noise nature of the function, so even conside
 The reasons of these light tendencies and high oscillations might be two: first reason could be the chromosome length, since the evolution of 143 genes might take much more generations; the second reason could be the inclusion of diversity enhancement mechanisms, such as the uniform crossover or the random generation of some individuals (which substitute the four worst). 
 
 %--------------------------------------------------------------------
-\vspace{-0.3cm}
+
 \subsection{Second approach: chromosome-26}
 \label{subsec:second_GA}
-\vspace{-0.2cm}
 
 Since the chromosome length implies a high number of generations (and so, huge computational time) are required for a good optimization process, the \textit{chromosome scheme} was redefined considering 26 genes, by reducing the weapons block to just 9 genes (one associated to the priority of each weapon). This representation is less precise from the expert's AI performance point of view, but with a more approachable size.
 The rest of the algorithm terms and operators remained the same.
@@ -647,9 +640,8 @@ Results are presented in Figure \ref{fig:exp3} (two runs of ten), with a differe
 %
 \begin{figure}[htb]
    \centering
-   \includegraphics[scale=0.2]{imags/exp3_c26-50g-30i-5mins-1.eps}
-   \includegraphics[scale=0.2]{imags/exp3_c26-50g-30i-5mins-2.eps}
-\vspace{-0.3cm} 
+   \includegraphics[scale=0.3]{imags/exp3_c26-50g-30i-5mins-1.eps}
+   \includegraphics[scale=0.3]{imags/exp3_c26-50g-30i-5mins-2.eps}
   \caption{Fitness evolution of the best, elite and average in 50 generations for the second approach of GE-Bot (26 genes chromosome). Two different runs.}
    \label{fig:exp3}
 \end{figure}
@@ -657,10 +649,8 @@ Results are presented in Figure \ref{fig:exp3} (two runs of ten), with a differe
 As it is shown, there are again fluctuations and light improving tendencies. The oscillations seem to be lighter, but what is happening is that the resulting values have been reduced (due to the shorter battle time). The average fitness tendency on the other hand is less clear this time. Thus, the reduction in the evaluation time just has meant an improvement in the computational cost.
 
 %--------------------------------------------------------------------
-\vspace{-0.3cm}
 \subsection{Third approach: fitness and operators redefinition}
 \label{subsec:third_GA}
-\vspace{-0.2cm}
 
 According to the second conclusion reached by the end of Subsection \ref{subsec:first_GA}, the evolution in this problem is quite difficult, so it would be recommended the implementation of mechanisms to increase the exploitation of solutions rather than increasing diversity (as it has been done). 
 
@@ -688,9 +678,8 @@ Figure \ref{fig:exp4} shows the results of two runs (of ten), considering the sa
 %
 \begin{figure}[htb]
    \centering
-   \includegraphics[scale=0.2]{imags/exp4_c26-50g-30i-5mins-fitcomplex-1.eps}
-   \includegraphics[scale=0.2]{imags/exp4_c26-50g-30i-5mins-fitcomplex-2.eps}
-\vspace{-0.3cm}
+   \includegraphics[scale=0.3]{imags/exp4_c26-50g-30i-5mins-fitcomplex-1.eps}
+   \includegraphics[scale=0.3]{imags/exp4_c26-50g-30i-5mins-fitcomplex-2.eps}
    \caption{Fitness evolution of the best, and average in 50 generations for the third approach of GE-Bot (26 genes chromosome, complex fitness function and stationary scheme).}
    \label{fig:exp4}
 \end{figure}
@@ -803,13 +792,10 @@ As it can be seen, the results are better than in previous approaches, showing a
 %However the evolution in this scope is quite difficult, so it would be recommended the implementation of mechanisms to increase the exploitation of solutions rather than increasing diversity (as it is done here). For instance a stationary model (almost all the population is maintained from one generation to another) could be considered.
 
 %---------------------------------------------------------------
-\vspace{-0.3cm}
 \section{Expert Bot versus Evolved Bots}
-\vspace{-0.1cm}
 
 A last test has been performed confronting the best individuals of the \textit{GE-Bot} approaches against \textit{E-Bot}, since they have been optimized for beating it (they have fought against it during the evolution).
 The average results of four matches are shown in Table \ref{tab:ge-bot_vs_e-bot_results}. They have been held in the same two maps and for 15 minutes each.
-\vspace{-0.3cm}
 %
 \begin{table}[htp]
 \centering
@@ -827,7 +813,6 @@ GE-Bot: 26chr-50gen-1evals-complexfitness & 17.5 & 6.2 & E-Bot \\
 \label{tab:ge-bot_vs_e-bot_results} }
 }
 \end{table}
-\vspace{-0.8cm}
 
 The results show that the \textit{GE-Bots} with a higher number of
 generations and smaller chromosome perform better than the one with
@@ -848,10 +833,8 @@ good performance beating \textit{E-Bot} in average. Finally, the last approach c
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-\vspace{-0.4cm}
 \section{Conclusions and Future Work}
 \label{sec:conclusions}
-\vspace{-0.2cm}
 %
 
 In this work, a human-like bot for the First Person Shooter game Unreal Tournament\texttrademark~2004 (UT2K4) has been described. It models the expert knowledge of a Spanish high-level player so, its has been named Expert-Bot (\textit{E-Bot}). Its behaviour is based in a shape of finite state machine with two levels of states (primary and secondary), each of them with an associated priority for performing actions. This work flow is flexible, so the AI engine can alter/change it depending on the conditions or status (bot's or enemy's). Moreover, the bot uses a database for `learning' the maps, as a human player would do the first time it navigates around a new arena.
@@ -877,13 +860,12 @@ Finally, another option to study could be the optimization of \textit{E-Bot} for
 multiplayer and team modes, which are so far the most famous among the players.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   ACKNOWLEDGEMENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%
 \section*{Acknowledgements}
 
-This paper has been funded in part by projects P08-TIC-03903 (Andalusian Regional Government), and TIN2011-28627-C04-02 (Spanish Ministry of Science and Innovation), and by the FPU Grant 2009-2942.
+This paper has been funded in part by project TIN2011-28627-C04-02 (ANYSELF), projects P08-TIC-03903 (EVORQ) and P10-TIC-6083 (DNEMESIS) awarded by the Andalusian Regional Government, and project 83 (CANUBE) awarded by the CEI-BioTIC UGR.
 The authors are very grateful to the Pogamut developers, specially to Michal Bida and Jakub Gemrot, by their dedication and support which has definitely aided to finish this work.
 
-\vspace{-0.2cm}
 \bibliographystyle{splncs}
 \bibliography{unreal_expert}
 
