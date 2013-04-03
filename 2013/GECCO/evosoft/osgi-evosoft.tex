@@ -84,7 +84,7 @@ showstringspaces=false
 \numberofauthors{1}
  \author{
  \alignauthor
- P. Garc{\'i}a-S{\'a}nchez, M. G. Arenas, P. A. Castillo, C. Fernandes, J. Gonz{\'a}lez, A.M. Mora and J.J. Merelo\\
+ P. Garc{\'i}a-S{\'a}nchez, M. G. Arenas, A.M. Mora, P. A. Castillo, C. Fernandes, P. de las Cuevas, J. Gonz{\'a}lez and J.J. Merelo\\
         \affaddr{University of Granada}\\
         \affaddr{Department of Computer Architecture and Computer Technology, ETSIIT}\\
         \affaddr{18071 - Granada, Spain}\\
@@ -173,7 +173,7 @@ showstringspaces=false
 \maketitle
 
 \begin{abstract}
-This paper shows the design and implementation of services for Evolutionary Computation in the Service Oriented Architecture paradigm. This paradigm allows independence in language and distribution, but the development require to manage some technological and design issues, such as abstract design or unordered execution. To solve them, OSGiLiath, an implementation of an abstract Service Oriented Architecture for Evolutionary Algorithms, is used to develop new interoperable services taking into account these restrictions.  
+This paper shows the design and implementation of services for Evolutionary Computation in the Service Oriented Architecture paradigm. This paradigm allows independence in language and distribution, but the development requires to manage some technological and design issues, such as abstract design or unordered execution. To solve them, OSGiLiath, an implementation of an abstract Service Oriented Architecture for Evolutionary Algorithms, is used to develop new interoperable services taking into account these restrictions.  
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -246,7 +246,7 @@ paradigms \cite{PLUGINS}.
 
 
 
-In our previous work \cite{OSGILIATH} we presented an abstract Service Oriented Architecture for Evolutionary Algorithms (SOA-EA), with guidelines and steps to migrate from traditional development in Evolutionary Algorithms (EAs) to SOA. It also presented a specific implementation, called OSGiLiath: an environment for the development of distributed algorithms extensible via plug-ins architecture and based in a wide-accepted software specification (OSGi). In this work, a full service development is presented, taking into account the specific technology used, instead an abstract design, as in our previous work.
+In our previous work \cite{OSGILIATH} we presented an abstract Service Oriented Architecture for Evolutionary Algorithms (SOA-EA), with guidelines and steps to migrate from traditional development in Evolutionary Algorithms (EAs) to SOA. It also presented a specific implementation, called OSGiLiath ({\em OSGi Laboratory for Implementation and Testing of Heuristics}): an environment for the development of distributed algorithms extensible via plug-ins architecture and based in a wide-accepted software specification (OSGi). In this work, a full service development is presented, taking into account the specific technology used, instead an abstract design, as in our previous work.
 
 %Therefore, the objective of the proposed environment in this paper is to facilitate the
 %development of distributed computing applications by using the OSGi standard,
@@ -254,7 +254,7 @@ In our previous work \cite{OSGILIATH} we presented an abstract Service Oriented 
 %of the plug-in software development and SOA that can compete with existing
 %distributed applications in easy of use, compatibility and development.
 The rest of the work is structured as follows: after the state of
-the art, we present design principles to create services for Evolutionary Computation (Section \ref{sec:design}). Then, the OSGi implementation technology is explained in Section \ref{sec:technology}, used to build our framework (described in Section \ref{sec:osgiliath}). Then, the steps to create services with this framework are explaiend (Section \ref{sec:development}). Finally, conclusions and suggestions for future work are presented (Section \ref{sec:conclusions}).
+the art, we present design principles to create services for Evolutionary Computation (Section \ref{sec:design}). Then, the OSGi implementation technology is explained in Section \ref{sec:technology}, used to build our framework (described in Section \ref{sec:osgiliath}). Then, the steps to create services with this framework are explained (Section \ref{sec:development}). Finally, conclusions and suggestions for future work are presented (Section \ref{sec:conclusions}).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  SOA  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -305,19 +305,19 @@ One of the main restrictions in SOA, appart from focusing in develop abstract se
 
 First, as services are unaware of others, there must not be global variables in any part of the code. Services are listening, and waiting to be executed. For example, a fitness service with a counter that is increased each time is called (to stop the algorithm if a limit is reached, for example). If several (and different) algorithms are working in parallel, and calling this function at the same time the counter would not distinguish between algorithms, giving erroneous results. However, a service that maintains some kind of state is allowed, for example, a statistic service that read events from all the algorithms being executed at the same time, but this should be managed to avoid errors.
 
-Also, a service must not be distinguishable from local or remote running in other node in the network. Every stage in the algorithm should be treated as service to be executed in local or in remote, even the {\em Population} or the {\em Parameters}. Mechanisms to ensure the correct data-sharing should be provided. Also, many implementations of the same service could exist at the same time (different implementation of {\em Crossover}, for example) and it should be correctly managed and used.
+Also, a service must not be distinguishable from local or remote running in other node in the network. Every stage in the algorithm should be treated as service to be executed in local or in remote, even the {\em Population} or the {\em Parameters}. Mechanisms to ensure the correct data-sharing should be provided. Also, many implementations of the same service could exist at the same time (different implementations of {\em Crossover}, for example) and it should be correctly managed and used.
 
-Moreover, a service is always a request-response function. For example, the fitness calculation must not be a method of the {\em Individual} implementation, but a function that receives a list of individuals and returns a list of the calculated fitness of that individuals. This allow things such as remote fitness calculation and distributed load balancing, impossible to perform if the fitness is a method of the Individual class.
+Moreover, a service is always a request-response function. For example, the fitness calculation must not be a method of the {\em Individual} implementation, but a function that receives a list of individuals and returns a list of the calculated fitness of that individuals. This allow things such as remote fitness calculation and distributed load balancing, impossible to perform if the fitness is a method of the {\em Individual} class.
 
 
 
 Thinking as abstract as possible requires separate concepts such the order of recombination, and the crossover itself. Usually, after parent selection, individuals are crossed in order. However, if we need a different mechanism for mating (for example, using more than two parents, or parent selected several times) a duplication of effort is needed. That is the reason we should sepparate the concept {\em recombine} from {\em crossover}. 
 
-Finally, we must not make assumptions about services previously executed or being executed next. For example, services such {\em Recombinator} or {\em Mutator} should return the individuals with the Fitness already calculated. Usually this step is performed in the last stage of the generation, but if we require the individuals for other tasks: for example, a Local Search or a statistics collector to guide the algorithm.
+Finally, we must not make assumptions about services previously executed or being executed next. For example, services such {\em Recombinator} or {\em Mutator} should return the individuals with their fitness already calculated. Usually this step is performed in the last stage of the generation, but if we require the individuals for other tasks: for example, a Local Search or a statistics collector to guide the algorithm.
 
 \subsection{Other technological restrictions}
 
-In \cite{OSGILIATH} we presented the advantages of using SOA in Evolutionary Algorithms area: firstly, SOA fits with the genericity advantages in the development of software for EAs \cite{GENERICITY05} and adds new features, like language independence and  distribution mechanisms. It also allows the addition and removal of services in execution time without altering the general execution of the algorithm (that is, it is not mandatory to stop it or to add extra code to support new operators). This issue increases the interoperability between different software elements. Moreover, this allows easy code distribution: SOA does not require the use of a concrete implementation or library.
+In \cite{OSGILIATH} we also presented the advantages of using SOA in Evolutionary Algorithms area: firstly, SOA fits with the genericity advantages in the development of software for EAs \cite{GENERICITY05} and adds new features, like language independence and  distribution mechanisms. It also allows the addition and removal of services in execution time without altering the general execution of the algorithm (that is, it is not mandatory to stop it or to add extra code to support new operators). This issue increases the interoperability between different software elements. Moreover, this allows easy code distribution: SOA does not require the use of a concrete implementation or library.
 
 In this work, a new process development, explaining the specific technology used is presented. The services developed must match with the next technological restrictions:
 \begin{itemize}
@@ -330,7 +330,7 @@ In this work, a new process development, explaining the specific technology used
 
 \section{Implementation technology}
 \label{sec:technology}
-This section dives into some technical features of the OSGi platform, to guide the reader to understand the OSGiLiatH framework in a deeper way, and to evaluate the advantages of using this features in the development of distributed algorithms to match with the previous restrictions.
+This section dives into some technical features of the OSGi platform, to guide the reader to understand the OSGiLiath framework in a deeper way, and to evaluate the advantages of using this features in the development of distributed algorithms to match with the previous restrictions.
 
 The used technology, OSGi, was proposed by a consortium of more than
 eighty companies in order to develop an infrastructure for the
@@ -376,7 +376,7 @@ This advantages are not so
 To understand how OSGi \cite{OSGI} works and which capabilities could offer to the OSGiLiath users it is necessary to understand how OSGi is built. OSGi has a layered model that is depicted in Figure \ref{fig:osgi-original}. The terms present in this Figure are:
 
 \begin{itemize}
-\item Bundles: Bundles are the OSGi components made by developers.
+\item Bundles: Bundles are the OSGi components made by developers. Is a normal {\em jar} file including Java classes and interfaces with different MANIFEST.MF and extra files (such as the Service Descriptions).
 \item Services: This layer connects bundles in a dynamic way by offering a publish-find-bind model.
 \item Life-Cycle: The API to install, start, stop, update, and uninstall bundles.
 \item Modules: This layer defines how a bundle can import and export code (using the MANIFEST.MF file).
@@ -407,7 +407,7 @@ packaging management is specified in detail. The OSGi framework provides
 APIs for the management of services that are exposed or used by the
 bundles.
 
-Java programmers are familiar with the {\em jar} concept. The first difference among a {\em bundle} and a {\em jar} is that the second has a MANIFEST.MF file adapted to be used in OSGi. This file indicates which clases imports or exports the {\em bundle}. An example can be seen in Figure \ref{fig:manifest}. This file shows the name of the bundle and its version (this is useful to select specific services), and the execution environment (that is, the Java Virtual Machine required). Also, this file specifies the XML files of the declarative services (in section {\em Service-Component}).
+Java programmers are familiar with the {\em jar} concept. The first difference among a {\em bundle} and a {\em jar} is that the second has a MANIFEST.MF file adapted to be used in OSGi. This file indicates which clases imports or exports the {\em bundle}. An example can be seen in Figure \ref{fig:manifest}. This file shows the name of the bundle and its version (this is useful to select specific services), and the execution environment (that is, the Java Virtual Machine required). Also, this file specifies the XML files of the declarative services (in section {\em Service-Component}). However, this {\em bundle} can be used as a normal {\em jar} outside OSGi.
 
 \begin{figure}[t]
 \noindent
@@ -417,7 +417,7 @@ Java programmers are familiar with the {\em jar} concept. The first difference a
 \hlstd{}{\bf Bundle-Name:} VRP\\
 \hlstd{}{\bf Bundle-SymbolicName:} VRP\\
 \hlstd{}{\bf Bundle-Version:} 1.0.0\\
-\hlstd{}{\bf Bundle-RequiredExecutionEnvironment:} J2SE-1.5\\
+\hlstd{}{\bf Bundle-RequiredExecutionEnvironment:} JAVA-1.6\\
 \hlstd{}{\bf Import-Package:}  es.ugr.osgiliath,\\
  \hlstd{}  es.ugr.osgiliath.algorithms,\\
 \hlstd{} es.ugr.osgiliath.events,\\
@@ -452,11 +452,11 @@ In normal environments, to create a specific implementation of an interface (i.e
 class EvolutionaryAlgorithm implements Algorithm{
  FitnessCalculator fc;
  //A new instance is bound to a reference
- f = new ExampleFunction();
+ fc = new ExampleFunction();
 }
 \end{lstlisting}
  
-With Declarative Services, the {\em new ExampleFunction()} part is not used, so if a new implementation is desired no code recompilation is necessary. For example, Figure \ref{fig:ds} shows a service component file, which establish in execution time which implementation is bound to the interfaces. This example indicates that the implementation of service {\em FitnessCalculator} is {\em VRPFitnessCalculator}, but this service is not activated until all their references (other services, like {\em TransportData}) are also activated. The tag {\em cardinality} means that at least one service of that kind must exist (the first {\em 1} represents optionality) and  the second part (the other {\em 1} indicates the number of different implementations that can be managed: one ({\em 1}) or many ({\em *}). The file where these capabilities are defined is declared in section {\em Service-Component} of MANIFEST.MF file, as can be seen in Figure \ref{fig:manifest}.
+With Declarative Services, the {\em new ExampleFunction()} part is not used, so if a new implementation is desired no code recompilation is necessary.  Figure \ref{fig:ds} shows a declarative service description file, which establish in execution time which implementation is bound to the interfaces. This example indicates that the implementation of service {\em FitnessCalculator} is {\em VRPFitnessCalculator}, but this service is not activated until all their references (other services, like {\em TransportData}) are also activated. The tag {\em cardinality} means that at least one service of that kind must exist (the first {\em 1} represents optionality) and  the second part (the other {\em 1} indicates the number of different implementations that can be managed: one ({\em 1}) or many ({\em *}).  We need to create XML files for the rest of services to expose (i.e. {\em TransportData}). The file where these capabilities are defined is declared in section {\em Service-Component} of MANIFEST.MF file, as can be seen in Figure \ref{fig:manifest}.
 \begin{figure*}[t]
 \noindent
 \ttfamily
@@ -481,7 +481,7 @@ With Declarative Services, the {\em new ExampleFunction()} part is not used, so 
 \label{fig:ds}
 \end {figure*}
 
-This document indicates that the implementation of the service {\em FitnessCalculator} is the class {\em VRPFitnessCalculator}, but it can not be activated until the rest of the references (another services, like {\em TransportData}) are activated first. We need to create XML files for the rest of services to use (i.e. TransportData). Next code shows the code for this implementation:
+ Next code shows the code for this implementation:
 
 \begin{lstlisting}
 class VRPFitnessCalculator implements FitnessCalculator{
@@ -536,7 +536,7 @@ eventAdmin.postEvent(evt);
 For the other hand, the steps to handle events are:
 \begin{itemize}
 \item Register a service that implements the OSGi EventHandler interface (via Declarative Services or manually).
-\item Specify in this service the topics to subscribe to. For example, the String {\em ``es/ugr/osgiliath/algorithms/*''} (the * is a wildcard) inside the $<$property$>$ tag in the Service Component.
+\item Specify in this service the topics to subscribe to. For example, the String {\em ``es/ugr/osgiliath/algorithms/*''} (the * is a wildcard) inside the $<$property$>$ tag in the Service Description.
 \item Overwrite the handleEvent method of this interface with the desired code.
 \end{itemize}
 
@@ -565,21 +565,21 @@ class ExmplImpl implements ExmplService,EventHandler{
 \subsection{Distribution}
 In a good service-oriented framework for EAs all services must be capable to be indistinguishable of being a local or a remote service. Services can be distributed using the OSGi features. In this case, the distribution is performed using the service descriptor to set which service is distributable and which is the distribution technology that provides service discovering and data transmission.
 
-OSGi allows several implementations for the service distribution. ECF (Eclipse Communication Framework)\footnote{\url{http://www.eclipse.org/ecf/}} has been chosen because it is the most mature and accepted implementation \cite{petzold2011dynamic}, and it also supports the largest number of transmission protocols, including both synchronous and asynchronous communication. It provides a modular implementation of the OSGi 4.2 Remote Services standard\footnote{\url{http://www.osgi.org/Release4/Download}}. This specification uses the OSGi service registry to expose remote services (being indistinguishable). ECF also separates the source code from the discovery and transmission mechanism, allowing users to apply the most adequate technology to their needs, and providing the integration with existing applications. % For example, the lines of Figure \ref{fig:remote} have been added to the service descriptor of {\em MOP2 Fitness Calculator} to distribute it in the local network.
+OSGi allows several implementations for the service distribution. ECF (Eclipse Communication Framework)\footnote{\url{http://www.eclipse.org/ecf/}} has been chosen because it is the most mature and accepted implementation \cite{petzold2011dynamic}, and it also supports the largest number of transmission protocols, including both synchronous and asynchronous communication. It provides a modular implementation of the OSGi 4.2 Remote Services standard\footnote{\url{http://www.osgi.org/Release4/Download}}. This specification uses the OSGi service registry to expose remote services to other machines (being indistinguishable from the local ones). ECF also separates the source code from the discovery and transmission mechanism, allowing users to apply the most adequate technology to their needs, and providing the integration with existing applications. % For example, the lines of Figure \ref{fig:remote} have been added to the service descriptor of {\em MOP2 Fitness Calculator} to distribute it in the local network.
 
 ECF includes a number of protocols for service discovery and service providers:
 \begin{itemize}
 \item Service Discovery API: Includes protocols to announce and discover remote services: Zeroconf, SLP/RFC 2608, Zookeeper, file-based and others \footnote{\url{http://wiki.eclipse.org/ECF_API_Docs#Discovery_API}}.
-\item Remote Service API: Includes protocols to establish the communication (data streams, formats and others): R-OSGi, ActiveMQ/JMS, REST, SOAP, XMPP, ECF Generic \footnote{\url{http://wiki.eclipse.org/ECF_API_Docs#Remote_Services_API}}.
+\item Remote Service API: Includes protocols to establish the communication (data streams, formats and others): R-OSGi, ActiveMQ/JMS, REST, SOAP, XMPP, ECF Generic \footnote{\url{http://wiki.eclipse.org/ECF_API_Docs#Remote_Services_API}}. This allow to communicate to systems that do not use OSGi or Java.
 \end{itemize}
 
 \section{OSGiLiath}
 \label{sec:osgiliath}
-All previous elements can be combined to create a service oriented environment. This section explains the functionality and design of the proposed environment, called OSGiLiatH ({\em OSGi Laboratory for Implementation and Testing of Heuristics}), presented in \cite{OSGILIATHNICSO}. This environment is a  framework for the development of heuristic optimization applications, not centered on a concrete paradigm, and whose main objective is to promote the OSGi and SOA usage and offer to programmers the next features:
+All previous elements can be combined to create a service oriented environment. This section explains the functionality and design of the proposed environment, called OSGiLiath, presented in \cite{OSGILIATHNICSO}. This environment is a  framework for the development of heuristic optimization applications, not centered on a concrete paradigm, and whose main objective is to promote the OSGi and SOA usage and offer to programmers the next features:
 
 \begin{itemize}
 \item Easy interfaces. After a study of the previous frameworks a complete interface hierachy has been developed.
-\item Asynchronous data sending/receiving. Thanks to R-OSGi distributed capabilities, the framework has easy distribution of services, without implementing specific source functions, like MPI or other distribution frameworks. Programmers do not need to write communication code. 
+\item Asynchronous data sending/receiving. Thanks to ECF distributed capabilities, the framework has easy distribution of services, without implementing specific source functions, like MPI or other distribution frameworks. Programmers do not need to write communication code. 
 \item Component Oriented Programming. The framework is plug-in oriented, so new improvements can be added in easy way without modification of existent modules. Adding o modifying implementations of services can be performed without re-compilation of the source code.
 \item Client/Server or Distributed Model. All components of the framework can communicate in a bi-directional way, so a central broker is not necessary if it is not required.
 \item Paradigm independent. The framework is not focused in a type of metaheuristic.
@@ -596,10 +596,10 @@ By now, OSGiLiath counts with the next bundles:
 \begin{itemize}
 \item osgiliath: This is the core bundle. It includes all the interfaces common to the algorithms such as {\em Algorithm}, {\em AlgorithmParameters} or {\em Problem}. 
 \item Evolutionary Algorithm:  Includes the {\em EvolutionaryAlgorithm} implementation and interfaces to create the rest of the services that form an EA: {\em Recombinator} and {\em Crossover}, {\em Mutator} and {\em Mutation}, {\em StopCriterion} or {\em FitnessCalculator}. It also provides interfaces for the creation of individuals: {\em Individual}, {\em Fitness}, {\em Gene}, and {\em Genome}. 
-\item Basic Evolutionary Components: Includes several implementations (the most common ones) of the previous interfaces: {\em ListPopulation}, {\em ListIndividual}, {\em DoubleFitness}, {\em NGenerationStopCriterion}, {\em BasicOrderRecombinator}, {\em ListCrossover} and others.
+\item Basic Evolutionary Components: Includes several implementations (the most common ones) of the previous interfaces: {\em ListPopulation}, {\em ListIndividual}, {\em DoubleFitness}, {\em NGenerationStopCriterion}, {\em BasicOrderRecombinator}, {\em UPXListCrossover} and others.
 \item Binary Problems: Includes implementation of well-known problems, such as OneMax and MMDP: {\em OneMaxFitnessCalculator}, {\em MMDPFitnessCalculator} or {\em BinaryProblemRandomInitializer}.
 \item Function Problems: Multi-dimensional optimization functions, such as Griegwank or Rastrigin are implemented in this bundle, with their associate Initializers or Fitness Calculators.
-\item NSGA2: Implementations of elements for the NSGA2 algorithm.
+\item NSGA2: Interfaces and implementations of services for the NSGA2 algorithm.
 \item OSGiLiART: Service implementation for the creation of Evolutionary Art: {\em ArtisticIndividual} or {\em HistogramFitnessCalculator} are examples.
 \item NoOSGi: Because OSGi allows the separation of source code with the OSGi framework capabilities, this bundle includes Java code to integrate the services without any specific technology (just using basic Object Oriented programming).
 \item IntelligentManager: An example of how the services can be bound/unbound in real-time. By now, in each step the {\em IntelligentRandomManager} selects randomly from the available Crossovers, Mutators and Replacers implementations.
@@ -611,13 +611,13 @@ This section presents the steps to add services to the existent OSGiLiath core. 
 
 \subsection{Bundle creation}
 
-In OSGiLiath Services can be added to existent bundles or new bundles can be created. Each bundle includes a MANIFEST.MF file (as depicted in Figure \ref{fig:manifest}). In this case, we have selected the packages to import (including interfaces and classed from the Osgiliath core) and to export. The section {\em Service-Description} shows the location of the Component Definitions that describe the services. In this case, two interfaces will be implemented: {\em TransportData} and {\em FitnessCalculator}. Other classes related with the VRP are added, such as {\em Route} or {\em Shop}.
+In OSGiLiath Services can be added to existent bundles or new bundles can be created. Each bundle includes a MANIFEST.MF file (as depicted in Figure \ref{fig:manifest}). In this case, we have selected the packages to import (including interfaces and classed from the Osgiliath core) and to export. The section {\em Service-Description} shows the location of the component definitions that describe the services. In this case, two interfaces will be implemented: {\em TransportData} and {\em FitnessCalculator}. Other classes related with the VRP are added, such as {\em Route} or {\em Shop}.
 
 \subsection{Implementing services}
 To implement a service, a class must be created implementing an interface. For example, {\em VRPFitnessCalculator} implements the interface {\em FitnessCalculator}. The relation between these two elements is made in the Component Definition of the Figure \ref{fig:ds}. This way, the implementation is announced to the other services in the environment, that can bind or unbind. For example, the implementation {\em VRPInitializer} (implementing {\em Initializer}) requires this implementation to create the individuals. Services can automatically bind other services with the set/unset methods in the component definition. Also, other services appart from the EA can be added (for example, in this bundle the service {\em TransportData}, who includes information about distances and time of the nodes has been included). Finally, {\em VRPMutation} and {\em VRPCrossover} are added, following the suggestions of Section \ref{sec:design}.
 
 \subsection{Adding communication}
-Thanks to the OSGi 4.2 specification, services must be indistinguishable from the ones in the local OSGi environment or in other OSGi environment (in the same machine or even in the same network). To achieve this, the ECF is used to export services. In this case, the {\em Migration} service is used. This service has two operations: send and read. The first one is used to send the individuals to the migrator, and the other is used to read the individuals of that migrator. Usually, each node (island) has one migrator to receive individuals, and references to the other nodes' migrators. In our case, the implementation of {\em Replacer} binds the local {\em Migrator} to write in it the individual(s) to sent. One example of Migrator implementation is the {\em MigratorRingBuffer}: this class implements that interface and automatically binds all the Migrators available in the environment (in a vector of references) thanks to the bind/unbind methods of DS. So, the migrators can be added during runtime, and no stop the algorithm if one node fails.  The {\em MigratorRingBuffer} sends the individuals to the remote Migrator whose id is inmediatelly higher than the local id (a ring). Figure \ref{MIGRATOR} shows this configuration. For example, from the {\em Replacer} implementation, a reference to the local {\em Migrator} interface just send and read the individuasl. The {\em MigratorRingBuffer} implementation binds an unbinds other migrators in other nodes, keeping a reference to these interfaces. Several properties added to the service (for example, in the Figure \ref{fig:ds}) allows to ECF automatically announce the implementation to all nodes in the network and no specific code is required to change from one distribution mechanism to another. 
+Thanks to the OSGi 4.2 specification, services must be indistinguishable from the ones in the local OSGi environment or in other OSGi environment (in the same machine or even in the same network). To achieve this, the ECF is used to export services. In this case, the {\em Migration} service is used. This service has two operations: {\em send} and {\em read}. The first one is used to send the individuals to the migrator, and the other is used to read the individuals of that migrator. Usually, each node (island) has one migrator to receive individuals, and references to the other nodes' migrators. In our case, the implementation of {\em Replacer} binds the local {\em Migrator} to write in it the individual(s) to sent. One example of Migrator implementation is the {\em MigratorRingBuffer}: this class implements that interface and automatically binds all the Migrators available in the environment (in a vector of references) thanks to the bind/unbind methods of declarative services and ECF. So, the migrators can be added during runtime, and no stop the algorithm if one node fails.  The {\em MigratorRingBuffer} sends the individuals to the remote Migrator whose id is inmediatelly higher than the local id (or the smaller, if it not exist) following a ring topology. Figure \ref{MIGRATOR} shows this configuration. The {\em Replacer} implementation, a reference to the local {\em Migrator} interface just send and read the individuasl. The {\em MigratorRingBuffer} implementation binds an unbinds other migrators in other nodes, keeping a reference to these remote service interfaces. Several properties can added to the service allows to ECF automatically announce the implementation to all nodes in the network and no specific code is required to change from one distribution mechanism to another. 
 
 \begin{figure*}[ht] 
 \begin{center} 
