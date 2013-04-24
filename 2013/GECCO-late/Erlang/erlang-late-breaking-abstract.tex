@@ -1,4 +1,4 @@
-\documentclass{sig-alternate}
+\documentclass{sig-alt-release2}
 \usepackage[latin1]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -6,10 +6,16 @@
 \usepackage{url}
 
 \usepackage{url}
+\usepackage{array}
 
 \hyphenation{NIndexes}
 
 \begin{document}
+\conferenceinfo{GECCO'13 Companion,} {July 6--10, 2013, Amsterdam, The Netherlands.}
+\CopyrightYear{2013}
+\crdata{978-1-4503-1964-5/13/07}
+\clubpenalty=10000
+\widowpenalty = 10000
 
 \title{Adapting Evolutionary Algorithms to the Concurrent Functional Language Erlang}
 
@@ -60,33 +66,40 @@ some early results, are shown.
 % Yo quitaría esta frase - JJ
 %This scientific field is very active producing libraries of diverse quality and applying it to many domains.
 % Antonio - falta una frase para conectar esta con la anterior. Pasar de hablar de EC a decir que para eso (para optimizar usando EC) los científicos han hecho librerías... mejor decir que el campo de la EC es uno de los más prolíficos en la creación de librerías, etc, etc...
-The Evolutionary Computation (EC) field  is  focused on the use widespread implementation technologies such as C/C++, Fortran and Java.
-Getting out of that mainstream it is not normally seen as a land for scientific improvements.
+The Evolutionary Computation (EC) field  is  focused on the widespread use of implementation technologies such as C/C++, Fortran and Java. Getting out of that mainstream it is not normally seen as a land for scientific improvements.
 % Getting out of that mainstream it is not normally seen a land for improvement science.
 % Antonio - Esta frase casi no se entiende. La intento reescribir a ver si dice lo que tú querías.
 % Y yo la vuelvo a reescribir. - JJ
-One such language with a big potential is Erlang, which is an implementation technology that supports the functional and concurrent paradigms and that is starting to be used in the scientific community \cite{Sher2013}. 
+% Paloma: pues yo lo de "focused on the use widespread implementation technologies such as" no lo entiendo.              ¿"Focused on the widespread use of implementation technologies such as"?
+%One such language with a big potential is Erlang, which is an implementation technology that supports the functional and concurrent paradigms and that is starting to be used in the scientific community \cite{Sher2013}.
+Erlang is a programming language with a lot of potential, it supports the functional and concurrent paradigms and it is been used in the scientific community \cite{Sher2013}.
 % Antonio - haz una breve inroduccióna Erlang aquí y dí si se usa o no en la comunidad científica. Pon alguna cita. ;)
 % afú, qué inglés... - JJ
+% Paloma - He corregido eel "it's supports" por "it supports" y el "it been use" por "it is been used".
 
-In this paper we propose to apply this language (and underlying paradigm) to Genetic Algorithms (GA) \cite{GA_Goldberg89},
+In this paper we propose to apply this language (and its underlying paradigm) to Genetic Algorithms (GA) \cite{GA_Goldberg89},
 % Antonio -  Pongo una cita a GAs
+% Paloma - He incluido un "its" después del "and" entre paréntesis para que se entienda mejor.
 which are general function optimizers that encode a potential solution
-to a specific problem in a simple data structure (a chromosome). There
+to a specific problem in a simple data structure (e.g. a chromosome). There
+% Paloma - Propongo poner "(e.g. a chromosome)".
 are only two components of them that are problem dependent: the
-solution encoding and the function that evaluate the quality of a
+solution encoding and the function that evaluates the quality of a
 solution, i.e., the fitness function. The rest of the algorithm does
 not depend on the problem and could be implemented following the best
 architecture and engineering practices.
+% Paloma -He corregido el "evaluates" y ya está.
 
-Many such practices have been proposed in the object oriented paradigm
-\cite{EO:FEA2000}, but that is not the case of the functional
+Many of these practices have been proposed on the object oriented paradigm
+% Paloma - Nunca he visto "Many such". Yo pondría "Many of these" pero si estáis seguros de que "Many such" está bien... También he corregido la proposición, es "on", no "in".
+\cite{EO:FEA2000}, but this is not the case of the functional
 side. This work tries to show some possible areas of improvement on
 that sense by focusing on GAs as a domain of application and
-describing how their principal traits can the be modeled by means of
-Erlang constructs. This will be done in the next section. 
+describing how their principal traits can be modeled by means of
+Erlang constructs. This will be done in the next section.
 
 % Antonio - cuenta en un par de líneas qué es Erlang. ;)
+% Paloma - Sobraba un "the".
 
 %Other concurrent oriented languages such as Ada \cite{Santos2002} has been reported as a feasible technology for implement this kind of algorithms.
 % Antonio - esto no lo digas si no lo vas a extender un poco. Queda como una frase 'huérfana'. ;)
@@ -105,7 +118,7 @@ Erlang constructs. This will be done in the next section.
 A variety of programming patterns, i.e., paradigms, exist for implementing the algorithms models. GAs are characterized by an intensive use of strings
 % Antonio - he puesto GAs porque es lo qu ehas comentado en la intro. ;)
  (lists of some kind) for encoding genes and a population that evolves
- via operators that are applied to all or a part or it. Most modern
+ via operators that are applied to all or a part of it. Most modern
  languages can handle these data structures (and the operators needed
  to manipulate them).
 %A programming language whose characteristics fit these needs would be
@@ -116,8 +129,9 @@ A variety of programming patterns, i.e., paradigms, exist for implementing the a
 
 There is a claim in modern software development for programming languages that help with concurrent programming and simplify coding practice.
 % Antonio - qué quiere decir better abstraction? acláralo. :D
-The functional programming language Erlang would be an answer that provides the actor pattern concept for concurrency and the functional paradigm for general modeling, design and coding of solutions.
+The functional programming language Erlang could be a good choice since it provides the actor pattern concept for concurrency and the functional paradigm for general modeling, design and coding of solutions.
 % Antonio - este texto parece de publicidad de Erlang, jeje.
+% Paloma - Pero Antonio, en realidad lo que hay es que decir por qué Erlang es mejor ¿no? Pero bueno, podéis probar con "The functional programming language Erlang could be a good choice because it provides the actor pattern concept..."
 %
 Actors are concurrent execution units which use asynchronous message passing for communication. They are implemented as processes in the Erlang's virtual machine
 % Antonio - no has comentado qué es la VM. No has dicho que se implementa sobre Java...
@@ -126,18 +140,20 @@ Actors are concurrent execution units which use asynchronous message passing for
 % Antonio - ¿qué quiere decir que sean ligeros?
 The use of messages eliminates the sharing of state and
 % Antonio - dí qué son mensajes inmutables
-eliminate many of the typical problems of concurrent development,
+also many of the typical problems of concurrent development,
+% Paloma - He quitado el segundo "eliminates" para que no fuese redundante.
 namely, supporting the emulation of the Object Oriented (OO) paradigm
-with its modeling facilities. 
-
-Functional programming, the other main feature of the Erlang language, is defined by the use of functions in program composition and by using lists.
+with its modeling facilities. Functional programming, the other main feature of the Erlang language, is defined by the use of functions in program composition and by using lists.
 % Antonio - Esta frase no se entiende bien y está mal escrita. ;)
-Erlang honored the functional linage and includes ultra fast technologies for persist data called Dets and Mnesia. % que sirven para... - JJ
-% ¿las usas aquí? ¿Pueden ser útiles? - JJ 
+% Paloma - Antonio, si no nos dices qué es lo que está mal...
+%Erlang honored the functional linage and includes ultra fast technologies for persist data called Dets and Mnesia. % que sirven para... - JJ
+% ¿las usas aquí? ¿Pueden ser útiles? - JJ
 % si no lo son podrías borrarlo. Y, por favor, comprueba la corrección
 % gramatical de número - JJ
-Besides, Erlang offers the concept of records for group data which helps to modularize the code. % y esto es útil porque... -JJ
+% JA: No, no las uso por ahora, son las BDs de Erlang...
+%Besides, Erlang offers the concept of records for group data which helps to modularize the code. % y esto es útil porque... -JJ
 % No me has contestado a esto...
+% JA: Había añadido "helps to modularize the code", pero ahora lo leo y creo que mejor lo quito.
 
 %\subsection{Genetic Algorithm mapping to Erlang}
 
@@ -168,7 +184,7 @@ we use one message per service that pool must provide; Table
 \hline
 {\tt \{requestWork, Pid, Capacity\} -> } & Client requests for a population to evolve.\\
 \hline
-{\tt \{generationEnd, NewIndividuals, OldIndexes, Pid\} ->}& One client report its successfully end of calculation. \\
+{\tt \{generationEnd, NewIndividuals, OldIndexes, Pid\} ->}& One client reports its successfully end of calculation. \\
 \hline
    \end{tabular}
   \caption{The messages that the pool accepts.}\label{poolTable}
@@ -197,46 +213,73 @@ Clients are modeled by actors. They are the units of evolution, with the main co
 
 The two previous components constitute the main features of the
 architecture of the algorithm; they are general-purpose and could be
-used for many problems. % Many problems qué? - JJ
+used for solve many differents optimization problems . % Many problems qué? - JJ
  In order to solve a particular situation, they must be
  \emph{injected} by several functions and data structures which define
  chromosomes, fitness function, mutation operator, selection criteria
- and replacement policy. All these customizations must be
- implemented in an Erlang source file and configured in the
+ and replacement policy. All these particularizations must be
+ implemented in an Erlang source file and, in our case, configured in the
  \emph{configBuilder} module. % ¿Esto es general a todos los programas
                               % en Erlang? - JJ
 
 The proposed design promotes a clear separation between architecture
 (the general, constant and paradigmatic foundation part) and problem
 encoding (the representation and criteria of solution finding) which
-is good for applying the library to solve another problem.  %Lo has
+is good for applying the library to solve others practical problems with GAs using a pool based approach.  %Lo has
                                 %explicado en parte, pero no del
                                 %todo. ¿Por qué habría que querer
                                 %hacerlo así? ¿Vas a implementar otros
                                 %tipos de algoritmos genéticos?
                                 %¿Podría servir para cualquier
                                 %algoritmo basado en población?
+                                % JA: No, a lo que me refiero es que la biblioteca está diseñada de manera que se puede usar el mismo enfoque basado en pool a otros problemas para los que habría que usar otro cromosoma, función de evaluación etc ...
 This design has been implemented and tested with a simple benchmark
-problem. In this ongoing project we are testing the efficiency and
-simplicity of implementations of GAs by functional programming. The
-parallel models of GA are mapped to actors in the Erlang languages
-obtaining easily to understand architectures. All the code has been
-released as open source code at
-\url{https://github.com/jalbertcruz/erlEA/}. Only some initial tests
-have been made using the well-known MaxOnes problem with different
-number of workers and a single pool. These tests show that the the
-pool concept can be readily implemented using Erlang and, thus, the
-genetic algorithm concept has been mapped successfully to this
-functional and concurrent architectures. However, the main problem
-with the implementation is that the pool uses a single thread so that
-scalability is not too good. 
+problem. This will be presented in the next section.
 
-So future work will try to create a truly concurrent implementation of
-this ErlEA (Erlang evolutionary algorithm) by decoupling pool
-operations (such as insertion and deletion) from the pool itself, that
-can be handled using technologies mentiones above such as Dets. What
-we intend with this is to achieve truly concurrent pool operations
-such as those afforded by technologies such as CouchDB (used in SofEA \cite{DBLP:conf/3pgcic/GuervosMFEL12}). 
+\section{Experiment and conclusions}
+\label{sec:conclusions}
+
+In this ongoing project we are testing the efficiency and simplicity of implementations of GAs by functional programming. The parallel models of GA are mapped to actors in the Erlang languages obtaining easily to understand architectures. All the code has been released as open source code at \url{https://github.com/jalbertcruz/erlEA/}.
+
+The library was tested with \emph{MaxOnes} problem. The chromosomes
+was 128 elements long, with an initial population of 256
+individuals; Table \ref{resultsTable} presents the results.
+
+\begin{table}
+  \centering
+   \begin{tabular}{|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2.5cm}|}
+   \hline
+   \textbf{No. clients} & \textbf{Assignments}& \textbf{Time (seconds)}\\
+     \hline
+    25 & 3040 & 5.339950 \\
+\hline
+    50 & 4301 & 7.891000 \\
+\hline
+    100 & 5630 & 11.671210 \\
+\hline
+\end{tabular}
+  \caption{Experiments results.}\label{resultsTable}
+\end{table}
+
+%50 clients were used and they worked with 20 individuals
+%each time a pool assigned a generation to them. The solution, an
+%optimum, was reached after 3159 assignments in 3.144590 seconds. For
+%100 clients the solution was reached in 6.121570 seconds and 6446
+%assignments; and for 25 clients it was 1835 assignments in 1.687000
+%seconds.
+
+
+This results shows that in this case there it is not
+convenient to use many clients in order to obtain the solution, when
+the number of clients increase there is a lot of bad solutions evaluated.
+% Esto deberías haberlo puesto en una tabla. Pero el problema
+% principal es que la solución es bastante mala. ¿Seguro que el
+% algoritmo genético va bien? ¿Seguro que los actores funcionan de
+% forma concurrente o ocupan todos el mismo proceso y se ejecutan de
+% forma secuencial? - JJ
+% JA: Si, ellos trabajan concurrente, el problema a de estar en otra parte del algoritmo... creo que ahora es muy tarde para encontrarlo.
+
+With this concept test we are showing how simple is to structure a parallel GA, and now we could proceed with more complex GA models, experiments and problems in order to explore the potential of the technology.
 
 \section*{Acknowledgements}
 
