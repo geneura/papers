@@ -12,6 +12,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage[ruled,lined,linesnumbered,longend]{algorithm2e}
+\usepackage{flushend}
 % Add the compsoc option for Computer Society conferences.
 %
 % If IEEEtran.cls has not been installed into the LaTeX system files,
@@ -159,8 +160,7 @@ MasterMind such as the heuristic solution we present in this paper.
 % IdÈntico a otro trabajo publicado, cambiar si se puede
 % Antonio - pos eso mismo. XD
 \caption{Scheme of partitions after two combinations have been played
-  in an imaginary game  after two combinations have already been
-  played.  Every combination is matched with all
+  in an imaginary game; colors are here represented with capital letters.  Every combination is matched with all
   the rest of the consistent set (that is, the set of consistent combinations).
 % Antonio - se repite esta misma frase al principio del caption, escrÌbelo de otra forma
 In boldface, the combinations which have the minimal worst set score (which 
@@ -264,7 +264,14 @@ As an example, let us suppose
 % Antonio - supongo que te refieres a la tabla tab:partitions, la otra
 % est· comentada
 % no, a otra... lo he cambiado. 
-the hidden combination considered is AABB; then there will be 256 combinations whose response will be 0b, 0w (those with other colors), 256 with 0b, 1w (those with either an A or a B), and so on. Some partitions may also be empty, or contain a single element (4b, 0w will contain just AABB, obviously).  For a more exhaustive explanation see \cite{Kooi200513}; the whole partition set for an
+the hidden combination considered is AABB (we are representing here
+colors by letters; in practice there is no difference as long as they
+are different symbols); then there will be 256 combinations whose
+response will be 0b, 0w (those with other colors), 256 with 0b, 1w
+(those with either an A or a B), and so on. Some partitions may also
+be empty, or contain a single element (4b, 0w will contain just AABB,
+obviously).  For a more exhaustive explanation see \cite{Kooi200513};
+the whole partition set for an  
 advanced stage of the game is shown in Table \ref{tab:partitions}. Each combination is thus characterized by the features of these partitions: the number of non-empty ones, the average number of combinations in them, the
 maximum, and other characteristics related to the reduction of the size of the search space that might distinguish them. 
 For instance, in Table \ref{tab:partitions}, the combination ABDC (and others) would have a maximum of non-zero partitions (none of them has zero elements), while AACC (and others, shown in boldface) have a minimum worst-case
@@ -592,13 +599,12 @@ consistent solution.
 % No, una soluciÛn consistent
 
 Evo, which is explained extensively in
-\cite{DBLP:conf/cec/GuervosMC11} looks for consistent combinations
+\cite{DBLP:conf/cec/GuervosMC11} is a diversity-enhanced  evolutionary
+algorithm that looks for consistent combinations 
 until a prefixed amount of them has been found; this parameter is
 called {\em consistent set size} or simply $cs$. It uses Most Parts to
 score consistent combinations, and the {\em distance to consistency}
 for non-consistent ones, so that the fitness directs search towards
-% Antonio - the search?
-% NO - jj
 finding consistent solutions and to find solutions with better
 score. When the algorithm finds $cs$ solutions or when the number of
 solutions found does not vary for a number of generations (set to
@@ -650,10 +656,11 @@ been profiled (implementation {\em always} matters
   under review}
 % Antonio - øquÈ es eso de 'paper submitted'?
 % lo he cambiado por un footnote. JJ
-and uses Entropy instead of Most Parts for scoring. In general,
-Entropy should offer better solutions \cite{mm:evostar13}. However,
-the sampling size of 
-the consistent set will play differently in the two scoring methods,
+and uses Entropy instead of Most Parts for scoring. In general, it has
+been proved extensively in the literature (for instance, in
+\cite{mm:evostar13}, that compares Most Parts and Entropy) that
+Entropy should offer better solutions . However,
+the sampling size of the consistent set will play differently in the two scoring methods,
 that is why we are interested in finding out which one of them yields
 the best solutions and for which $cs$. 
 % In fact, being this one a {\em
@@ -678,11 +685,14 @@ amount of generations needed to obtain a solution.
 \label{sec:exp}
 
 The experiments presented in this paper extend those published
-previously, mainly in \cite{DBLP:conf/cec/GuervosMC11} and \cite{merelo12:gameon}.
+previously, mainly in \cite{DBLP:conf/cec/GuervosMC11} which
+was a general introduction to the Evo method and
+\cite{merelo12:gameon} where we did some initial experiments in using
+a small consistent set size, limited to Evo using Most Parts scoring. 
 In this paper we will set the consistent set size $cs$
 % Antonio - this size -> decir lo que sea this. :D
 % Ok - jj
-to a common for all sizes and minimal value: 10 (that is why we will
+to a minimal value that is common for all sizes: 10 (that is why we will
 denominate the method tested {\em Evo10}) and 8 and 16 for the
 Entropy score. 
 This value has been chosen to be small enough to be convenient, but not so small that the scoring methods are rendered meaningless. This will reduce the parameters
@@ -788,16 +798,16 @@ Evo10.
 % Fuera - JJ
 \begin{figure*}[!htb]
 \centering
-\includegraphics[scale=0.50]{proportion.png}
+\includegraphics[scale=0.50]{proportion.eps}
 \caption{Average proportion of search space (that is, number of evaluations divided by search space size)
-  vs. search space size for the original Evo++ method (dotted, green or light
-  color) and the current Evo10 (dashed, red or intense). Please note
+  vs. search space size for the original Evo++ method (dotted, red or light
+  color) and the current Evo10 (solid, black). Please note
   that the $x$ axis is logarithmic.   \label{fig:prop}}
 \end{figure*} 
 %
 \begin{figure*}[!htb]
 \centering
-\includegraphics[scale=0.50]{size.png}
+\includegraphics[scale=0.50]{size.eps}
 \caption{Average number of evaluations 
   vs. search space size for the original Evo++ method (dashed, light
   color) and the current Evo10 (solid, black).  Please note that the
@@ -857,7 +867,7 @@ approachable using this type of evolutionary algorithms.
 %
 \begin{figure}[!h]
 \centering
-\includegraphics[scale=0.50]{eval-vs-pop.png}
+\includegraphics[scale=0.50]{eval-vs-pop.eps}
 \caption{Boxplot of the average number of evaluations 
   vs. population size for Evo10.  \label{fig:eval:pop}}
 \end{figure} 
@@ -974,7 +984,7 @@ solution is already in the original population and is played).
 %
 \begin{figure}[!h]
 \centering
-\includegraphics[scale=0.50]{cset-size.png}
+\includegraphics[scale=0.50]{cset-size.eps}
 \caption{Average actual size of the set of consistent combinations for the original Evo++ method (solid, light
   color) and Evo10 (dashed, intense or red) in the $\ell=5, \kappa=9$ problem.  Please note that the
   $y$ axis is logarithmic. As shown in Table \ref{tab:moves45} the
