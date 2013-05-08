@@ -132,33 +132,29 @@ El resto del trabajo se estructura como sigue: después del estado del arte, pre
 
 
 
-\section{State of the art}
+\section{Estado del arte}
 \label{sec:soa}
 
-Migration among otherwise reproductively isolated populations has been proven to leverage the inherent parallelism in 
-evolutionary algorithms, not only by obtaining speed-ups, but also by increasing the quality of results, since the reproduction restrictions inherent in the division of the population into islands is a good mechanism to preserve population diversity, as shown in, for instance, \cite{cantu2001migration}. 
+Aunque SOA se usa ampliamente en el desarrollo de software no está muy aceptada en la comunidad de las metaheurísticas. La mayoría de los frameworks tienen carencia de la baja generalidad, ya que están enfocados en un campo específico, como EasyLocal++ \cite{EASYLOCAL}(centrado en Búsqueda Local) o SIGMA \cite{SIGMA} (en el campo de optimización de sistemas de soporte  a la decisión). Otro problema común es que suelen ser simplemente librerías o múdulos Perl \cite{PERL}, no tienen GUIs o son muy complicados de instalar y requieren muchas destrezas de programación. Otro problema puede ser la pérdida de confort a la hora de programar, por ejemplo, C tiene una sintaxis más complicada que otros lenguajes.
 
-To improve population diversity in an island model evolutionary algorithm, the MultiKulti algorithm \cite{MULTIKULTI11} takes the genotypic
-differences of individuals when selecting migrants into account. 
-It is based in the idea that the inflow of migrants that differ from the rest of an island's population increases diversity and thus improves performance.
-An island requests a migrant from one of its neighbours by sending a genotype that represents the population. This can either be the the best individual (based in the assumption that when a population tends to converge after a few generations, the best is a fair representation of the whole population) or a {\em consensus sequence} (the most frequent allele in each position of the genotype using binary genomes). 
-In answer, an island selects the most different genotype in either its whole population or the top individuals (the elite).
-In their experiments, the islands were connected in a ring topology, with migration taking place asynchronously.
-Results of the experiments performed in \cite{MULTIKULTI11} show that
-MultiKulti policies outperform classic migration policies (send the best or
-random individuals from the population), especially with a low number of individuals but larger number
-of islands. 
-It is shown to be better to send the consensus as a representation and that sending the most different of a well-chosen
-elite (those with the best fitness) is better than sending the most different overall. 
+Entre la gran cantidad de herramientas software que existen, queremos centrarnos en los frameworks de algoritmos distribuídos más aceptados. ECJ \cite{ECJ}, Evolutionary Computation in Java, es un conjunto de clases Java que pueden ser extendidas e incluyen varios módulos de comunicación. MALLBA \cite{MALLBA} se basa en esqueletos software con una interfaz común pública. Cada esqueleto implementa una técnica de resolución para optimizaciónen el campo de optimización exacta, heurística o híbrida. Proporciona capacidades de distribución utilizando MPI. Sin embargo estos dos frameworks no se basan en el desarrollo orientado a plug-ins, por lo que no pueden tomar las ventajas de características como gestión del ciclo de vida, versionado o enlazado dinámico de servicios, como propone OSGi.
 
-On-line evolutionary robotics has been studied in works like \cite{nordin1997line}, where genetic programming was used to
-evolve a robot in real time, and \cite{watson2002embodied}, where several robots evolve at the same time, exchanging parts of their genotypes when within communication range. 
-\cite{HUIJSMAN11} compares an encapsulated and a distributed version; the latter is implemented as a variant of EVAG \cite{EVAG10}, where each robot has one active solution (genotype) a cache of genotypes that are active in neighbouring robots. Parents are selected through a binary tournament in each robot's cache. If the new solution (candidate) is better than the active, it replaces the active solution. 
-The work compares this algorithm with a panmictic version, where parents are selected (again using binary tournament) from the combined active solutions of all robots.
-%The results show that the encapsulated algorithm --$mu+1$, \cite{Haasdijk2010On-line-evoluti}-- is reliable, and this algorithm is reliable when the number of robots increases. %The comparison of using newscast or a panmictic neighborhood shows the newscast performance is worst, but in a panmictic case a large number of peers could be difficult to manage in real-case scenarios.
+Otra plataforma importante es DREAM \cite{DREAM}, un framework open source para Algoritmos Evolutivos basado en Java que define un modelo de isla y usa el protocolo Gossip y sockets TCP/IP para comunicación. Puede desplegarse en plataformas P2P y está dividido en cinco capas. Cada capa proporciona una interfaz de usuario y diferentesniveles de interacción y abstracción, pero añadir nuevas funcionalidades no es tan fácil, debido al hecho de que el sistema debe pararse antes de añadir nuevos módulos y la implementación de interfaces debe estar definida en el código fuente, por lo que necesita compilarse con cada elemento a añadir (como en ECJ). OSGi permite añadir nuevas funcionalidades sólamente compilando las nuevas características y no ya las existentes.
 
-One of the peculiarities of evolutionary robotics, particularly on-line, is that the fitness evaluations are very noisy \cite{Haasdijk2010On-line-evoluti}. 
-The conclusions in \cite{MULTIKULTI11}, however, are based on experiments with noiseless fitness functions, so we cannot take these conclusions for granted in on-line evolutionary robotics and we have to test the MultiKulti algorithm in our particular setting.
+Among this great number of software tools we want to focus in the most widely accepted distributed algorithms frameworks. ECJ \cite{ECJ}, Evolutionary Computation in Java, is a set of Java classes that can be extended and includes several communication modules. MALLBA \cite{MALLBA} is based in software skelletons with a common and public interface. Every skeleton implements a resolution technique for optimization in the fields of exact, heuristic or hybrid optimization. It provides LAN and WAN capacity distribution with MPI . However, this both frameworks are not based in the plug-in development, so they can not take advantage of features like the life-cycle management, versioning, or dynamic service binding, as OSGi proposes.
+
+Los autores de MALLBA están trabajando ahora en el framework jMetal \cite{JMETAL}, un nuevo framework basado en Java, pero sin posibilidad de distribución y mayormente centrado en optimización Multi-Objetivo.
+
+ParadiseEO \cite{PARADISEO} permite el diseño de AEs y Búsqueda Local con hibridación, proporcionando una gran variedad de operadores y funciones de evaluación. También implementa los modelos paralelos y distribuídos más comunes, y está basado en librerías estándar como MPI, PVM y Pthreads. Sin embargo, cuenta con los mismos problemas que los frameworks anteriores, no cuenta con gestión del ciclo de vida, ni programación orientada a servicios. GAlib \cite{GALIB} es muy similar y comparte las mismas características y problemas. 
+
+En el campo de los frameworks basados en plug-ins, HeuristicLab \cite{HEURISTICLAB} es el ejemplo más avanzado. Permite además programación distribuída utilizando Servicios Web y una base de datos centralizada, pero no usa su propio diseño de plug-ins para la comunicación distribuída.
+
+
+METCO  \cite{METCO} cuenta con los mismos problemas que los frameworks anteriores, no utiliza un sistema de plug-ins estándar ni SOA, pero permite la implementación de interfaces existentes y configurar sus funcionalidades. 
+
+Finalmente, el único framework orientado a servicios para optimización es GridUFO \cite{GRIDUFO}, pero sólo permite la modificación de la función objetivo y añadir nuevos algoritmos, sin poder combinar servicios existentes.
+
+Los frameworks anteriores han sido diseñados para ser extendibles y re-usables, pero sin tener en cuenta las restricciones de SOA para lograr más independencia y mejoras en el desarrollo.
 
 \section{Algorithms and Experimental Setup}
 
