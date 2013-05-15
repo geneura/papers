@@ -23,7 +23,7 @@
 % first the title is needed
 \title{Estudio sobre algoritmos genéticos en la nube y el modelo de programación MapReduce\thanks{Financiado con los proyectos EvOrq (TIC-3903) y Beca FPU AP2009-2942. }}
 
-% Mete tambi�n el del ministerio, que estaba vigente cuando el PFC. 
+% Mete tambi?n el del ministerio, que estaba vigente cuando el PFC. 
 
 % a short form should be given in case it is too long for the running head
 \titlerunning{Estudio sobre AGs en la nube}
@@ -454,6 +454,230 @@ del algoritmo centrada en su funcionalidad.
 
 \section{Experimentos}
 
+\subsection{Entorno Local}
+
+La solución secuencial fue probada en una máquina aislada, que corría Ubuntu 12.04 de 64 bits. El equipo en cuestión es un 
+HP Pavilion DV6 3034ss, Intel(R) Core(TM) i5 CPU M 450 @ 2.40GHz, 4 GB RAM.
+
+\subsubsection{Entorno Cloud de Amazon}
+
+La batería de ejecuciones en la nube de Amazon consta de diferentes máquinas virtuales, instancias con diferentes características 
+cada una, que han sido expuestas en la sección \ref{TiposInstancias} y que ahora volvemos a resumir brevemente.
+
+\begin{itemize}
+ \item \textbf{Micro}: 613 MB de memoria, un máximo de dos unidades informáticas EC2 (para ráfagas periódicas cortas) y únicamente  
+ almacenamiento EBS. Plataforma de 32 o 64 bits.
+ \item \textbf{Small}: Dispone de 1.7 GB de memoria, una unidad de computación EC2 (1 núcleo virtual con una unidad informática EC2), 
+ 160 GB de almacenamiento, plataforma de 32 o 64 bits.
+ \item \textbf{Medium}: Dispone de 3.75 GB de memoria, dos unidades de computación EC2 (1 núcleo virtual con dos unidades 
+ informáticas EC2), 410 GB de almacenamiento, plataforma de 32 o 64 bits.
+ \item \textbf{Large}: Dispone de 7.5 GB de memoria, cuatro unidades de computación EC2 (2 núcleos virtuales con dos unidades 
+ informáticas cada uno de ellos), 850 GB de almacenamiento, plataforma de 64 bits.
+ \item \textbf{ExtraLarge}: Dispone de 15 GB de memoria, ocho unidades de computación EC2 (4 cores virtuales con dos unidades 
+ informáticas cada uno de ellos), 1690 GB de almacenamiento, plataforma de 64 bits.
+ \item \textbf{High-CPU ExtraLarge}:  7 GB de memoria, 20 unidades informáticas EC2 (8 núcleos virtuales 
+ con 2,5 unidades informáticas EC2 cada uno), 1.690 GB de almacenamiento de instancias, plataforma de 64 bits.
+\end{itemize}
+
+\section{Resultados}
+
+Los Resultados de todas las ejecuciones para cada tipo de instancia, pueden consultarse en la dirección 
+https://s3.amazonaws.com/secuencial/results/$<$Problema$>$ $<$Configuración$>$.txt
+
+siendo $<$Problema$>$ el problema que se desea consultar y $<$Configuración$>$ el número de configuración que se pueden 
+consultar en la sección \ref{Parametros}. Así, por ejemplo, si se desea consultar los resultados del problema ``Marea'' con 
+la configuración 2, habría que descargar el fichero desde: 
+https://s3.amazonaws.com/secuencial/results/Marea2.txt
+
+Veamos, primero, las tablas de resultados de tiempo de ejecución, para cada problema y tanto en entorno local, como en 
+entorno Cloud, en cada tipo de instancia. Podemos apreciarlos en las tablas 
+
+\begin{table}[htb]
+\begin{tabular}{|| c | c | c | c | c |c | c | c ||}
+    \hline
+    \textbf{Configuración} & \textbf{Local} & \textbf{Micro} & \textbf{Small} & \textbf{Medium} &
+    \textbf{Large} & \textbf{ExtraLarge} & \textbf{High CPU EL}  \\
+
+    \hline
+    \textbf{Config. 1} & 62 & 225 & 117 & 62 & 72 & 58 & 54 \\
+    \hline
+    \textbf{Config. 2} & 354 & Error & 703 & 373 & 424 & 338 & 320 \\
+    \hline
+    \textbf{Config. 3} & 1972 & Error & Error & 1583 & 1807 & 1434 & 1357 \\
+    \hline
+  \end{tabular}
+  \caption{Tiempo de Ejecución en segundos. Rastrigin.} 
+  \label{TablaParametrosRastrigin}
+\end{table}
+
+
+\begin{table}[htb]
+\begin{tabular}{|| c | c | c | c | c |c | c | c ||}
+    \hline
+    \textbf{Configuración} & \textbf{Local} & \textbf{Micro} & \textbf{Small} & \textbf{Medium} &
+    \textbf{Large} & \textbf{ExtraLarge} & \textbf{High CPU EL}  \\
+
+    \hline
+    \textbf{Config. 1} & 16 & 47 & 41 & 21 & 24 & 19 & 17 \\
+    \hline
+    \textbf{Config. 2} & 164 & 701 & 425 & 222 & 253 & 203 & 169 \\
+    \hline
+    \textbf{Config. 3} & 815 & 4067 & 2070 & 1070 & 1215 & 974 & 818 \\
+    \hline
+  \end{tabular}
+  \caption{Tiempo de Ejecución en segundos. Marea.} 
+  \label{TablaParametrosMarea}
+\end{table}
+
+
+\begin{table}[htb]
+\begin{tabular}{|| c | c | c | c | c |c | c | c ||}
+    \hline
+    \textbf{Configuración} & \textbf{Local} & \textbf{Micro} & \textbf{Small} & \textbf{Medium} &
+    \textbf{Large} & \textbf{ExtraLarge} & \textbf{High CPU EL}  \\
+
+    \hline
+    \textbf{Config. 1} & 99 & 583 & 220 & 111 & 134 & 108 & 106 \\
+    \hline
+    \textbf{Config. 2} & 664 & 4043 & 1280 & 715 & 797 & 634 & 669 \\
+    \hline
+    \textbf{Config. 3} & 1648 & Error & 3029 & 1667 & 1936 & 1527 & 1578 \\
+    \hline
+  \end{tabular}
+  \caption{Tiempo de Ejecución en segundos. OneMax} 
+  \label{TablaParametrosOneMax}
+\end{table}
+
+La convergencia de los algoritmos puede ser vista en los ficheros de resultados antes nombrados. No obstante, vamos a estudiar 
+algún caso para verla gráficamente. \newpage
+
+En primer lugar, se quiere ver el comportamiento en tiempo de la función Marea con la configuración 3, en cada una de las instancias
+probadas. Veamoslo en la figura \ref{FiguraTiempos}.
+
+%\begin{figure}[h]
+%  \begin{center}
+%  \includegraphics[scale=0.7]{figuras/graficos/tiempo.jpg}
+%  \caption {Comparativa de tiempos. Config: Marea3.xml} 
+%  \label{FiguraTiempos}
+% \end{center}
+%\end{figure}	
+
+Se puede observar que mi portatil, el llamado entorno local, se ha comportado muy bien, puesto que tiene tiempos de manera similar a 
+la instancia ExtraLarge y HCPUExtraLarge, por lo que en el caso de querer hacer pocas pruebas, quizás con el entorno local 
+valdría, pero no es el caso, porque hemos hecho una batería relativamente grande de pruebas.  \vspace{12pt}
+
+Por otra parte, las instancias 
+Small y Micro, quedarían totalmente descartadas para algún futuro proyecto, puesto que el tiempo excede de los límites 
+permitidos, sobre todo la micro instancia. Estas instancias, pueden ser válidas en el Cloud Computing como servidor de pequeñas 
+webs o pruebas que no requieran de demasiado cómputo de datos. \vspace{12pt}
+
+Pasemos ahora a estudiar la escalabilidad, que viendo los ficheros de resultados queda demostrada que existe, pero el objetivo es 
+ver el comportamiento según la configuración y los métodos escogidos. Se ha escogido como instancia representativa, los resultados 
+de la instancia Large, puesto que los tiempos son relativamente buenos y no tiene problemas de algún resultado que no se tiene, 
+por error en la memoria y similares.\vspace{12pt}
+
+Primero, observemos la Figura \ref{GraficaMarea}. Esta figura muestra la convergencia al óptimo, que sería 1, durante las 10 
+primeras iteraciones. Hay que aclarar primero, que la aleatoriedad a la hora de generar la población inicial juega un papel 
+importante pero, aparte de esto, se pueden destacar varios puntos.
+
+\begin{itemize}
+ \item La configuración 2 converge más rápidamente. Esto obedece a que para problemas no demasiado complejos, el reemplazo 
+ de los peores se comporta mejor que el reemplazo generacional.
+ \item Las configuraciones 1 y 3 son iguales, excepto en el tamaño de la población y número generaciones. Esto no influye, 
+ en la convergencia en las 10 primeras iteraciones y queda reflejado en la figura, que convergen de manera muy similar.
+ \item Otro punto característico de estas dos configuraciones es que la línea de convergencia hay un punto en el que 
+ baja en vez de ir en aumento en busca del óptimo. El porqué es muy 
+ sencillo, la selección probabilística hace que a veces el mejor sea descartado, que es lo que ha ocurrido en estos dos 
+ casos.
+\end{itemize}
+
+
+%\begin{figure}[h]
+%  \begin{center}
+%  \includegraphics[scale=0.7]{figuras/graficos/Marea.jpg}
+%  \caption {Marea. Convergencia en instancia Large para las 3 configuraciones.} 
+%  \label{GraficaMarea}
+% \end{center}
+%\end{figure}
+
+Sin nada más que referirnos, pasemos a observar una figura similar, pero correspondiente a la función Rastrigin. En este caso, 
+no hace falta señalar que la convergencia hacia abajo se debe, a que es una función de minimización. No hay demasiado que 
+destacar en esta figura, sólo un par de cosas:
+
+\begin{itemize}
+ \item La configuración 3 es la que se comporta mejor, de manera destacada en las 100 primeras iteraciones de Rastrigin. Por detrás 
+ de ella iría la configuración 2 y finalmente la uno parece que es la peor.
+ \item En este caso podemos ver lo anteriormente comentado, parece que la mayor convergencia es fruto del azar y 
+ la probabilidad, puesto que las configuraciones 1 y 3 son la misma, pero es bastante probable, que al generar 50 mil individuos 
+ saldrá unos mejores individuos que al generar 10 mil como ocurre en la configuración número 1.
+\end{itemize}
+
+
+%\begin{figure}[h]
+%  \begin{center}
+%  \includegraphics[scale=0.7]{figuras/graficos/Rastrigin.jpg}
+%  \caption {Rastrigin. Convergencia en instancia Large para las 3 configuraciones.} 
+%  \label{GraficaRastrigin}
+% \end{center}
+%\end{figure}
+
+
+Por último, la Figura \ref{GraficaOneMax}, muestra la convergencia durante 300 iteraciones de la función OneMax, que cuenta 
+los unos de un cromosoma binario, hasta maximizar este número. El  óptimo sería 512, que es el tamaño de la cadena elegido 
+para observar los resultados.
+
+\begin{itemize}
+ \item El mejor comportamiento es la configuración 3. Parece que aquí influye de nuevo el número de individuos de la población. 
+ Llega al óptimo casi unas 20 iteraciones antes que sus competidores.
+ \item El reemplazo generacional de la configuración 2 vemos que en un inicio de algoritmo puede no ser muy bueno si no hay buena 
+ calidad en la población inicial, sin embargo observamos que la convergencia es constante, no como en el caso de la primera, que 
+ tras un buen inicio, converge más lentamente hasta ser la última en alcanzar el óptimo. Quizás el hecho de la menor presión 
+ de selección haya influido en esto.
+\end{itemize}
+
+
+
+
+
+No se han observado significativos cambios en los resultados utilizando los dos diferentes métodos de cruce que disponemos. 
+
+
+
+
+\subsection{Análisis}
+Una vez vistos los resultados, analizando las tablas de tiempos, ficheros de resultados y gráficas obtenidas 
+podemos sacar las siguientes conclusiones:
+
+\begin{itemize}
+ \item \textbf{Limitación de Algunas instancias}. Algunas de las instancias, como era evidente no tienen memoria suficiente para realizar tareas complejas de cálculos. En 
+ nuestro caso, ha quedado demostrado en las instancias micro que no ha podido resolver Rastrigin con la configuración 2 y 3, y 
+ la small que no ha podido resolver la configuración 3 del mismo problema, ambas por falta de memoria, debido a que el problema 
+ Rastrigin trabaja con un gran número de números reales de precisión doble lo que hace ocupar gran parte de la memoria disponible.
+ \item \textbf{Beneficioso}. En los demás casos, la utilización del cloud computing ha sido favorable debido a que los tiempos que nos han dado 
+ han sido muy parecidos, en muchos casos mejores, a los de nuestro pc, lo que lleva a pensar que para casos más complejos 
+ se podrían comportar mejor.
+ \item \textbf{Trabajo Paralelo en Instancias}. Otra ventaja ha sido, que, en el mismo tiempo que se han realizado las ejecuciones para nuestro entorno local, han sido 
+ llevadas a cabo todas las ejecuciones en las seis instancias en la nube, ya que, las instancias han trabajado paralelamente y,
+ lógicamente, sin influir unas con otras.
+ \item \textbf{Selección}. Para el caso de la selección, en nuestro caso se ha comportado mejor la selección determinística por torneo, puesto que 
+ los problemas que hemos tratado no son muy complejos, se ha llegado al óptimo relativamente rápido y no han requerido de una 
+ amplía búsqueda ni en la salida de grandes óptimos locales, que son en los casos en los que la probabilística podría 
+ resultar favorable. Podemos apreciar una cosa curiosa en la selección probabilística, y es que cuando se ha alcanzado el óptimo, 
+ y en todas las iteraciones sea este el mejor individuo, hay alguna iteración en los que se genera uno peor a él y es seleccionado 
+ como mejor, quedando una gráfica y tanto rara.
+ \item \textbf{Reemplazamiento}. El reemplazamiento generacional depende mucho de las tasas de selección, cruce y mutación elegidas. 
+ Si éstas son bajas, la población puede ir incluso decreciendo, pueso que la generación anterior es entera borrada y 
+ la nueva contendrá menos individuos. Esto hace que su comportamiento sea ligeramente más rápido en estos casos. Sin embargo, 
+ en nuestro problema ha resultado mejor el reemplazamiento de los nuevos individuos generados por los menos adaptados de la 
+ generación anterior (Worst), quizás por la misma razón que antes en la selección, no son problemas suficientemente complejos 
+ que requieran de una diversidad grande.
+ \item \textbf{Cruce}. No se ha encontrado ningún resultado digno de mencionar en cuanto al cruce de uno o dos puntos. Por cuestiones 
+ puramente teóricas, podemos decir que el de dos puntos puede dar más diversidad a la población, pero no se ha visto que esto 
+ quede plasmado en nuestro estudio.
+ \item \textbf{Mejorable}. Para muchos exigentes, esto no es suficiente, necesitan mejoras de tiempos evidentes y por ello se 
+ ha propuesto una alternativa mejor con Map Reduce, que se verá en el capítulo posterior.
+\end{itemize}
+
 \section{Conclusiones y trabajo futuro}
 \label{sec:conc}
 
@@ -558,7 +782,7 @@ En conclusión, prácticamente para cualquier cosa en Internet se puede usar el 
 una pequeña parte, pero hay mucha luz detrás de las nubes.
 
 
-% Eh.. un poco escaso, �no?
+% Eh.. un poco escaso, ?no?
 \bibliographystyle{splncs}
 \bibliography{cloudproject}
 \end{document}
