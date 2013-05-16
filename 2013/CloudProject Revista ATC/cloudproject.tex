@@ -7,11 +7,12 @@
 \usepackage{color}
 \usepackage{alltt}
 \usepackage{verbatim}
+\usepackage{amsmath}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 %%
 \usepackage{url}
-\urldef{\mailsa}\path|{pgarcia,pedro}@atc.ugr.es|
+\urldef{\mailsa}\path|munozs.88@gmail.com,{pgarcia,pedro}@atc.ugr.es|%{MARIBELamorag,jmerelo}@geneura.ugr.es|
 
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
 \noindent\keywordname\enspace\ignorespaces#1}
@@ -21,7 +22,7 @@
 \mainmatter  % start of an individual contribution
 
 % first the title is needed
-\title{Estudio sobre algoritmos genéticos en la nube y el modelo de programación MapReduce\thanks{Financiado con los proyectos EvOrq (TIC-3903) y Beca FPU AP2009-2942. }}
+\title{Estudio sobre algoritmos genéticos en la nube y el modelo de programación MapReduce\thanks{Financiado con los proyectos EvOrq (TIC-3903), Beca FPU AP2009-2942, ANYSELF (TIN2011-28627-C04-02) y CANUBE (Proyecto 83 CEI-BIOTIC). }}
 
 % Mete tambi?n el del ministerio, que estaba vigente cuando el PFC. 
 
@@ -34,7 +35,7 @@
 % their surnames. This ensures that the names appear correctly in
 % the running heads and the author index.
 %
-\author{G. Mu\~noz \inst{1} \and Pablo Garc\'ia-S\'anchez\inst{1}  \and Pedro A. Castillo\inst{1}  \and Quien sea \inst{1}}
+\author{G. Mu\~noz \inst{1} \and P. Garc\'ia-S\'anchez\inst{1}  \and P. A. Castillo\inst{1}  }%\and M. G. Arenas \and A. M. Mora  \and J. J. Merelo \inst{1}}
 %
 \authorrunning{P. Garc\'ia-S\'anchez et al.}
 % (feature abused for this document to repeat the title also on left hand pages)
@@ -58,7 +59,7 @@
 
 
 \begin{abstract}
-Este trabajo presenta el proyecto fin de carrera Estudio sobre algoritmos genéticos en la nube y el modelo de progrmación MapReduce.
+Este trabajo presenta el proyecto fin de carrera ``Estudio sobre algoritmos genéticos en la nube y el modelo de programación MapReduce''. Durante el desarrollo de este proyecto se investigó en el uso y aplicación de Algoritmos Genéticos en distintos entornos de Cloud Computing, como el MapReduce o virtualización de instancias. Se ejecutaron distintas configuraciones de parámetros del algoritmo en distintas instancias de Amazon Web Services. Los resultados muestran el efecto de estos parámetros al tipo de instancia utilizada.
 
 \end{abstract}
 
@@ -92,15 +93,17 @@ de problemas se encuentran los de búsqueda, a menudo representados por medio de
 escenarios de gran complejidad. 
 
 
-Sentando estos principios evidentes en la sociedad actual, el motivo de este trabajo es el de buscar una aproximación nueva para 
+Sentando estos principios evidentes en la sociedad actual, el motivo de este proyecto fin de carrera fué el de buscar una aproximación nueva para 
 desarrollar trabajos de investigación usando las facilidades que nos brinda el Cloud Computing, y concretamente la resolución de 
 problemas de búsqueda representados mediante algoritmos Genéticos, yendo más allá y sentando las bases de un framework como 
 Hadoop Map Reduce, para la reducción de complejidad y tiempo en estos fines.
 
+El resto del trabajo se organiza como sigue: primero se define el concepto de Cloud Computing en la Sección \ref{sec:cloud}. A continuación se explican dos tipos de tecnologías a aplicar los experimentos: Amazon Web Services y el modelo MapReduce y  (en las Secciones \ref{sec:aws} y \ref{sec:mapreduce} , respectivamente). Los Algoritmos genéticos se presentan en la Sección \ref{sec:ags}. Después se describen los experimentos a realizar (Sección \ref{sec:experimentos}) y el análisis de sus resultados (Sección \ref{sec:analisis}). Finalmente se presentan las conclusiones y trabajo futuro.
+
 
 
 \section{Cloud Computing}
-
+\label{sec:cloud}
 Cloud computing es aún un paradigma en evolución, sus definiciones, arquitecturas, modelos, casos de uso, tecnologías base, problemas, 
 riesgos y beneficios, son continuamente redefinidos en debates promocionados por el sector público y privado. En\cite{Bible2011} 
 podemos ver varias  definiciones aunque muchos citan como más precisa la definición dada por el NIST, se enuncia a continuación.
@@ -150,8 +153,6 @@ infraestructura que se esconde detrás de la nube es invisible.
 
 
 
-En general, como vemos en la figura\ref{Figura3} Cloud computing surge de la combinación y agrupación de tecnología ya conocidas, que 
-permiten obtener un nuevo enfoque y proyección.
 
 
 Para ejemplificar algunos de los puntos más interesantes del cloud computing nos basaremos en Google, una de las principales 
@@ -178,8 +179,173 @@ nuevo de la nube.
 
 \end{itemize}
 
-\section{Algoritmos Genéticos}
 
+
+
+\section{Amazon Web Services}
+\label{sec:aws}
+En esta sección se presenta Amazon Web Services 
+\cite{Eva11} en general, y en particular por las herramientas de estos servicios que se han utilizado para el desarrollo de 
+este trabajo.
+
+
+\subsection{Introducción}
+
+Amazon EC2 proporciona un servicio Web que permite obtener y configurar recursos computacionales de forma sencilla. Proporciona un 
+control completo de los recursos computacionales y permite al usuario emplear el entorno de Amazon.
+Amazon EC2 reduce el tiempo requerido para obtener e iniciar nuevas instancias a minutos, permitiendo escalar la capacidad de 
+forma rápida y en función de los requerimientos. Amazon EC2 permite al usuario adquirir la capacidad que en cada momento necesita. 
+Además, proporciona a los desarrolladores las herramientas para construir aplicaciones robustas y aislarlas de los escenarios comunes 
+propensos a fallos.
+
+
+\subsection{Características}
+
+Amazon EC2 es un entorno de computación virtual que permite emplear interfaces Web para lanzar instancias de una gran variedad de 
+sistemas operativos, instalar entornos de aplicaciones personalizados, gestionar los permisos de acceso a
+la red, y ejecutar las imágenes virtuales usando tantos sistemas como sea preciso.
+
+Para emplear Amazon EC2 es necesario:
+
+\begin{itemize}
+ \item Seleccionar una plantilla preconfigurada para ser ejecutada de forma inmediata, o crear una Amazon Machine Image (AMI) 
+ que contenga sus aplicaciones, librerías, datos y las opciones de configuración asociadas.
+ \item Configurar la seguridad y el acceso a la red para la instancia de Amazon EC2.
+ \item Escoger el tipo de instancia y el sistema operativo que desee y, a continuación, iniciar, apagar y monitorizar tantas 
+ instancias como sea necesario, usando las APIs del servicio Web o la gran variedad de herramientas proporcionadas.
+ \item Determinar si se ejecutarán las máquinas virtuales en múltiples ubicaciones, si se utilizarán direcciones IP estáticas o se 
+ conectarán sistemas de almacenamiento persistente a las mismas.
+ \item Pagar sólo por los recursos que se consumen, como el de tiempo de CPU de las instancias o los datos transferidos.
+ 
+\end{itemize}
+
+\subsection{Aspectos destacados del servicio}
+
+\begin{itemize}
+ \item \textbf{Elástico}. Amazon EC2 permite incrementar o reducir la capacidad en minutos. Se podría ordenar la iniciación de 
+ cientos o miles de instancias de máquinas virtuales de forma simultánea. La aplicación de usuario podría escalar de forma automática 
+ los recursos necesarios en función de las necesidades de la aplicación empleando el API del servicio Web de Amazon.
+ \item \textbf{Controlado por completo}. Se tiene el control completo de las instancias. El usuario tiene acceso de root a cada una
+ de ellas y, por tanto, podría controlarlas de la misma forma que cualquier otra máquina.
+ \item \textbf{Flexible}. Permite seleccionar distintos tipos de instancias, sistemas operativos y paquetes de software. Amazon EC2 
+ permite seleccionar la configuración de memoria, CPU, espacio de almacenamiento, tamaño de la partición de inicio. 
+ \item \textbf{Diseñado para ser empleado con otros servicios Web de Amazon}. Amazon EC2 emplea el servicio de almacenamiento 
+ Amazon Simple Storage Service (Amazon S3), Amazon SimpleDB y Amazon Simple Queue Service (Amazon SQS) para proporcionar una solución 
+ completa a la computación, el procesamiento de colas y el almacenamiento en un amplio rango de aplicaciones.
+ \item \textbf{Confiable}. Amazon EC2 ofrece un entorno confiable donde puedan reemplazarse las instancias de forma rápida y 
+ predecible. El acuerdo de nivel de servicio de Amazon es del 99.95\% para cada una de las zonas de la región de Amazon EC2.
+ \item \textbf{Seguro}. Amazon EC2 proporciona numerosos mecanismos de seguridad para los recursos. Incluye interfaces Web para 
+ configurar las opciones de firewall entre sus grupos de instancias.
+ \item \textbf{Barato}. Se cobra una tasa reducida por la capacidad de computación que se consume. Existen diferentes 
+ servicios:
+  \subitem \textit{Instancias bajo demanda}. Permiten pagar por la capacidad de computación por cada hora de utilización sin la necesidad 
+  de establecer compromisos a largo plazo. Esto permite liberar al usuario de los costes y la complejidad que supone la planificación, 
+  la adquisición y el mantenimiento de hardware.
+  \subitem \textit{Instancias reservadas}. Las instancias reservadas permiten efectuar un pago inicial bajo, de usa sola vez para 
+  cada instancia que desea reservar y disponer de una tasa de descuento significativo en la utilización por hora de la misma.
+  \subitem \textit{Instancias Spot}. Permiten al usuario efectuar una oferta por la capacidad no utilizada de Amazon EC2, lo que 
+  permitiría ejecutar las instancias durante el tiempo que el precio ofertado supere al precio actual de los recursos no utilizados.
+
+\end{itemize}
+
+
+
+
+\section{Modelo MapReduce}
+\label{sec:mapreduce}
+
+Durante años, los programadores se han visto forzados a realizar implementaciones específicas para trabajar con grandes 
+volúmenes de datos en sus entornos distribuidos de trabajo.
+
+Pese a que no siempre es necesario, el tamaño de la información entrante suele ser grande y los cálculos deben ser distribuidos 
+entre una gran multitud de máquinas para acabar en un tiempo razonable. Los problemas de cómo paralelizar estos cálculos, 
+distribuir la información y manejar los fallos dificultan basatante la labor de implementación. 
+
+El modelo de programación MapReduce es una propuesta que pretende resolver las dificultades anteriores, ya que sus características 
+y motivación se basan en la delegación de los cómputos intensivos en datos a un clúster de máquinas remotas que,
+mediante un sistema de ficheros distribuido, repartirán la carga de trabajo, optimizando tiempo y recursos. 
+Asimismo, facilita un patrón de desarrollo paralelo para simplificar la implementación de aplicaciones intensivas en 
+datos en entornos distribuidos. Este modelo puede dividir un espacio grande de problema en espacios pequeños y paralelizar 
+la ejecución de tareas más pequeñas en estos sub-espacios. 
+
+Este modelo ha cobrado especial interés por su aplicabilidad en entornos de Cloud Computing \cite{Web08}. 
+MapReduce ofrece unas ventajas muy directas y evidentes como es la centralización de los datos en servidores remotos, 
+eliminando las dependencias con los soportes físicos; o la contratación de servicios en función de las
+necesidades de las empresas, sin tener que añadir equipos, software o personal, lo que conlleva un considerable ahorro 
+también en el plano energético. 
+
+
+MapReduce \cite{Dea08} es un modelo de programación, desarrollado por Google, que es utilizado para procesar grandes conjuntos de 
+datos distribuidos a lo largo de un clúster de servidores. Este procesado computacional puede tener lugar tanto sobre datos
+almacenados en sistemas de ficheros, como en bases de datos. El modelo de programación está inspirado en los lenguajes funcionales 
+y permite al desarrollador expresar sus algoritmos utilizando únicamente dos funciones, \textbf{map} y \textbf{reduce}. 
+
+Las funciones map y reduce de MapReduce se definen sobre datos estructurados en pares clave-valor. La función map, escrita por el 
+usuario, recibe un par clave-valor y devuelve un conjunto de pares clave-valor intermedio:
+
+\begin{equation}
+	map: (k1 , v1) \xrightarrow{} [(k2 , v2)] 
+  \label{EcuacionMap}
+\end{equation}
+
+
+Esta función (\ref{EcuacionMap})  se aplica en paralelo a cada par del conjunto de datos de entrada produciendo una lista de 
+pares $(k2, v2)$ por cada llamada. MapReduce agrupa todos los valores intermedios asociados con la misma clave k y se los 
+pasa a la función reduce.
+
+La función reduce (\ref{EcuacionReduce}) recibe dicha clave y su conjunto de valores asociados y los fusiona para formar un conjunto 
+de valores más pequeño:
+
+
+\begin{equation}
+	reduce: (k2 , [v2]) \xrightarrow{} [v3]
+	\label{EcuacionReduce}
+\end{equation}
+
+
+Cada llamada reduce produce bien una lista v3 o un valor vacío. Los resultados de las llamadas se recopilan en la lista de 
+resultados buscada. 
+
+
+
+
+Desde la perspectiva del flujo de datos, la ejecución de MapReduce consiste en M tareas map y R tareas reduce independientes. 
+Generalmente, los resultados intermedios se particionan en R trozos para R tareas reduce. 
+
+
+
+Los principales elementos de un flujo de trabajo MapReduce son los siguientes:
+
+\begin{itemize}
+ \item \textbf{Proceso que lee la entrada}: divide los datos de entrada en bloques, siendo asignados cada uno de estos bloques a la 
+ función map correspondiente. Estos datos serán leídos de un almacenamiento estable y generará pares clave/valor. 
+ Un ejemplo común sería la lectura de un directorio entero, y la devolución de un registro por cada línea de cada fichero.
+
+ \item \textbf{Función de mapeo} (map): Cada función map recibe una serie de pares clave-valor, los procesa individualmente, y 
+ devuelve cero o más pares clave-valor de salida. Los tipos de datos de la entrada y la salida de la función map suele ser
+distintos. Por ejemplo, si la aplicación realizase un conteo de palabras, la función map separaría la línea en palabras y 
+sacaría como resultado la palabra como clave y un 1 como valor.
+ 
+ \item \textbf{Función de partición}: Las salidas de cada uno de los nodos map son asignadas a un nodo reduce en concreto a 
+ partir del resultado obtenido por la función ``partition'' de la aplicación. Esta función devuelve el índice del reduce buscado, 
+ dada una clave y un número de nodo reduce. Una función típica es hallar el valor hash de la clave y hacer módulo del número 
+ de nodo reduce.
+
+ \item \textbf{Función de comparación}: La entrada de cada reduce se obtiene de la máquina en la que se ejecutó y ordenó el 
+ map utilizando la función de comparación de la aplicación.
+
+ \item \textbf{Función de escritura de salida}: Escribe la salida de la función reduce en un almacenamiento estable, típicamente 
+ un sistema de ficheros distribuido.
+ 
+\end{itemize}
+
+El principal beneficio de este modelo de programación es la simplicidad. El programador simplemente proporciona una descripción 
+del algoritmo centrada en su funcionalidad.
+
+
+
+\section{Algoritmos Genéticos}
+\label{sec:ags}
 
 La técnica de búsqueda conocida como Algoritmo Genético se basa en los mecanismos de selección que utiliza la naturaleza, 
 de acuerdo a los cuales los individuos más aptos de una población son los que sobreviven, al adaptarse más
@@ -209,53 +375,19 @@ imitando la combinación biológica de dos cromosomas aislados (gametos). Y por 
 de modo aleatorio, los valores del alelo en algunas localizaciones del cromosoma. 
 
 
-\section{Fundamentos biológicos}
-
-La computación evolutiva, dentro de la que se encuadran los AGs, tiene una fuerte base biológica. Originalmente, 
-los algoritmos evolutivos consistían en copiar procesos que tienen lugar en la selección natural. A pesar de que 
-aún hoy en día no todos los detalles de la evolución biológica son completamente conocidos, existen algunos hechos apoyados 
-sobre una fuerte evidencia experimental:
-
-\begin{itemize}
- \item La evolución es un proceso que opera, más que sobre los propios organismos, sobre los cromosomas. Estos cromosomas son 
- partes del ADN portadores de los factores de la herencia o genes.
- \item La selección natural es el proceso por el cual los organismos mejor adaptados desplazan lentamente organismos peor adaptados. 
- Este proceso conduce a la acumulación lenta de cambios genéticos favorables en una población. Dicha selección al operar a lo 
- largo de muchas generaciones puede cambiar los atributos básicos de la población original de organismos.
- \item Los procesos evolutivos tienen lugar durante la etapa de reproducción. Aunque existe una larga serie de mecanismos 
- que afectan a la misma, los más comunes son la mutación y el cruce o recombinación.
-\end{itemize}
-
-
-En analogía analogía directa con el comportamiento natural, los AGs trabajan con una población de individuos, cada uno de los cuales 
-representa una posible solución a un problema dado. A cada individuo se le asigna un valor o puntuación, relacionado con la bondad 
-de dicha solución, llamado fitness. En la naturaleza, esto equivaldría al grado de efectividad de un organismo para competir por 
-unos determinados recursos. Cuanto mayor sea la adaptación de un individuo al problema, mayor será la probabilidad de que el mismo 
-sea seleccionado para reproducirse, cruzando su material genético con otro individuo seleccionado. Este cruce producirá nuevos 
-individuos -descendientes de los anteriores- los cuales comparten algunas de las características de sus padres. Cuanto
-menor sea la adaptación de un individuo, menor será la probabilidad de que dicho individuo sea seleccionado para la reproducción, 
-y por tanto de que su material genético se propague en sucesivas generaciones posteriores. De esta manera se produce una nueva población
-de posibles soluciones, la cual reemplaza a la anterior y verifica la propiedad de contener una mayor proporción de buenas 
-características en comparación con la población anterior. Así a lo largo de las generaciones las buenas características se
-propagan a través de la población.  Si el AG ha sido bien diseñado, la población convergerá hacia una solución óptima del problema.
-
-Según \cite{Enfoque09} estas ideas están enla base del diseño de los algoritmos evolutivos. Además, muchas de las propiedades de la
-evolución de los seres vivos, como la edad, la mayor o menor tendencia a la mutación según el estadio de la evolución, etc. están
-siendo objeto de investigación para su incorporación a las técnicas de computación evolutiva. Sin embargo, los algoritmos evolutivos
-no tratan de ser un reflejo fiel de la evolución biológica. Debemos tener en cuenta que la naturaleza evoluciona a lo largo de millones
-de años, mientras que a nosotros nso interesa que nuestros algoritmos nos proporcionen una solución en un tiempo algo más corto.
 
 
 
-\section{Algoritmo Genético Básico}
+
+\subsection{Algoritmo Genético Básico}
 
 En esta sección se describen los componentes de un algoritmo genético básico y sus formas más comunes.
 
-\subsection{Representación de los Individuos}
+\subsubsection{Representación de los Individuos}
 
 Desde los primeros estudios de los AGs los individuos son cadenas binarias, siendo hoy en día aún la aproximación
 más utilizada, aunque existen otras que utilizan letras o valores númericos para representar a sus cromosomas. 
-Podemos ver un ejemplo en la \ref{Figura9}
+
 
 
 La sencillez de la representación binaria que utilizan los AGs les aporta características muy importantes de eficiencia. 
@@ -271,12 +403,12 @@ que codifican un elemento particular del candidato a solución. Un alelo en una 
 un 0 o un 1 (para alfabetos largos cada posición puede tener más alelos). El genotipo de un individuo en un AG que emplea
 cadenas de bits es, simplemente, la configuración de bits del cromosoma de ese individuo. 
 
-Cabe resaltar que en este trabajo usaremos tanto codificación binaria como codificación real que
+Cabe resaltar que en este trabajo se usó tanto codificación binaria como codificación real que
 consiste en exactamente lo mismo pero un gen es representado como un número real, generalmente en un dominio dado por el 
 problema. 
 
 
-\subsection{Funcionamiento}
+\subsubsection{Funcionamiento}
 
 Sea X el problema a resolver, el esquema general de un algoritmo genético es el siguiente \cite{Her03}:
 
@@ -350,111 +482,140 @@ dependerá, en gran parte, el éxito o fracaso de nuestro algoritmo.
 
 
 
-\section{Modelo MapReduce}
+\section{Experimentos}
+\label{sec:experimentos}
+Esta sección muestra los experimentos a realizar para hacer comparativas sobre la mejor configuración para AGs en Amazon EC2.
 
+\subsection{Parámetros de los algoritmos}
 
-Durante años, los programadores se han visto forzados a realizar implementaciones específicas para trabajar con grandes 
-volúmenes de datos en sus entornos distribuidos de trabajo.
-
-Pese a que no siempre es necesario, el tamaño de la información entrante suele ser grande y los cálculos deben ser distribuidos 
-entre una gran multitud de máquinas para acabar en un tiempo razonable. Los problemas de cómo paralelizar estos cálculos, 
-distribuir la información y manejar los fallos dificultan basatante la labor de implementación. 
-
-El modelo de programación MapReduce es una propuesta que pretende resolver las dificultades anteriores, ya que sus características 
-y motivación se basan en la delegación de los cómputos intensivos en datos a un clúster de máquinas remotas que,
-mediante un sistema de ficheros distribuido, repartirán la carga de trabajo, optimizando tiempo y recursos. 
-Asimismo, facilita un patrón de desarrollo paralelo para simplificar la implementación de aplicaciones intensivas en 
-datos en entornos distribuidos. Este modelo puede dividir un espacio grande de problema en espacios pequeños y paralelizar 
-la ejecución de tareas más pequeñas en estos sub-espacios. 
-
-Este modelo ha cobrado especial interés por su aplicabilidad en entornos de Cloud Computing \cite{Web08}. 
-MapReduce ofrece unas ventajas muy directas y evidentes como es la centralización de los datos en servidores remotos, 
-eliminando las dependencias con los soportes físicos; o la contratación de servicios en función de las
-necesidades de las empresas, sin tener que añadir equipos, software o personal, lo que conlleva un considerable ahorro 
-también en el plano energético. 
-
-Este capítulo se estructura en varias secciones. En la primera de ellas se introduce el modelo MapReduce, desarrollando sus
-dos primitivas fundamentales: map y reduce. En siguientes secciones se irán analizando las distintas implementaciones y 
-ejemplos de uso, así como una visión general de Amazón Elastic MapReduce, la implementación de este paradigma por parte de
-Amazon.
-
-\section{Introducción}
-
-MapReduce \cite{Dea08} es un modelo de programación, desarrollado por Google, que es utilizado para procesar grandes conjuntos de 
-datos distribuidos a lo largo de un clúster de servidores. Este procesado computacional puede tener lugar tanto sobre datos
-almacenados en sistemas de ficheros, como en bases de datos. El modelo de programación está inspirado en los lenguajes funcionales 
-y permite al desarrollador expresar sus algoritmos utilizando únicamente dos funciones, \textbf{map} y \textbf{reduce}. 
-
-Las funciones map y reduce de MapReduce se definen sobre datos estructurados en pares clave-valor. La función map, escrita por el 
-usuario, recibe un par clave-valor y devuelve un conjunto de pares clave-valor intermedio:
-
-%\begin{equation}
-%	map: (k1 , v1) \xrightarrow{} [(k2 , v2)] 
-%  \label{EcuacionMap}
-%\end{equation}
-
-
-Esta función (\ref{EcuacionMap})  se aplica en paralelo a cada par del conjunto de datos de entrada produciendo una lista de 
-pares $(k2, v2)$ por cada llamada. MapReduce agrupa todos los valores intermedios asociados con la misma clave k y se los 
-pasa a la función reduce.
-
-La función reduce (\ref{EcuacionReduce}) recibe dicha clave y su conjunto de valores asociados y los fusiona para formar un conjunto 
-de valores más pequeño:
-
-
-%\begin{equation}
-%	reduce: (k2 , [v2]) \xrightarrow{} [v3]
-%	\label{EcuacionReduce}
-%\end{equation}
-
-
-Cada llamada reduce produce bien una lista v3 o un valor vacío. Los resultados de las llamadas se recopilan en la lista de 
-resultados buscada. 
-
-
-
-
-Desde la perspectiva del flujo de datos, la ejecución de MapReduce consiste en M tareas map y R tareas reduce independientes. 
-Generalmente, los resultados intermedios se particionan en R trozos para R tareas reduce. La Figura \ref{Figura20} muestra el 
-flujo de datos de alto nivel de un trabajo MapReduce.
-
-
-
-Los principales elementos de un flujo de trabajo MapReduce son los siguientes:
+Se van a usar diferentes configuraciones para ver el comportamiento y tiempo de ejecución en los distintos entornos. 
+Primero se explicará lo que significa cada columna de las tablas y a continuación se mostrarán.
 
 \begin{itemize}
- \item \textbf{Proceso que lee la entrada}: divide los datos de entrada en bloques, siendo asignados cada uno de estos bloques a la 
- función map correspondiente. Estos datos serán leídos de un almacenamiento estable y generará pares clave/valor. 
- Un ejemplo común sería la lectura de un directorio entero, y la devolución de un registro por cada línea de cada fichero.
-
- \item \textbf{Función de mapeo} (map): Cada función map recibe una serie de pares clave-valor, los procesa individualmente, y 
- devuelve cero o más pares clave-valor de salida. Los tipos de datos de la entrada y la salida de la función map suele ser
-distintos. Por ejemplo, si la aplicación realizase un conteo de palabras, la función map separaría la línea en palabras y 
-sacaría como resultado la palabra como clave y un 1 como valor.
- 
- \item \textbf{Función de partición}: Las salidas de cada uno de los nodos map son asignadas a un nodo reduce en concreto a 
- partir del resultado obtenido por la función ``partition'' de la aplicación. Esta función devuelve el índice del reduce buscado, 
- dada una clave y un número de nodo reduce. Una función típica es hallar el valor hash de la clave y hacer módulo del número 
- de nodo reduce.
-
- \item \textbf{Función de comparación}: La entrada de cada reduce se obtiene de la máquina en la que se ejecutó y ordenó el 
- map utilizando la función de comparación de la aplicación.
-
- \item \textbf{Función de escritura de salida}: Escribe la salida de la función reduce en un almacenamiento estable, típicamente 
- un sistema de ficheros distribuido.
- 
+ \item \textbf{Función}: Función a optimizar, ya sea maximizar o minimizar.
+ \item \textbf{Población}: Tamaño de la población de individuos.
+ \item \textbf{Individuo}: Longitud de cada individuo en bits.
+ \item \textbf{Generaciones}: Número de generaciones que queremos evaluar.
+ \item \textbf{Mutrate}: Tasa de mutación en \%.
+ \item \textbf{Crossrate}: Tasa de cruce en \%.
+ \item \textbf{Selrate}: Tasa de selección en \%.
+ \item \textbf{Selección}: Método de selección.
+ \item \textbf{Cruce}: Método de cruce.
+ \item \textbf{Mutación}: Método de mutación.
+ \item \textbf{Reemplazamiento}: Método de reemplazamiento.
 \end{itemize}
 
-El principal beneficio de este modelo de programación es la simplicidad. El programador simplemente proporciona una descripción 
-del algoritmo centrada en su funcionalidad.
+Todos los parámetros y configuraciones se han establecido buscando la mayor variedad posible con el objeto de tener diferentes 
+opiniones sobre la ventajas e inconvenientes en  escalabilidad, tiempo de ejecución...
+
+\begin{table}[htb]
+
+  \begin{tabular}{|| c | c | c | c |c | c | c ||}
+    \hline
+    \textbf{Configuración} & \textbf{Población} & \textbf{Bits} & \textbf{Generaciones} &
+    \textbf{Selrate} & \textbf{Crossrate} & \textbf{Mutrate}  \\
+
+    \hline
+    \textbf{Config.1} & 10000 & 512 & 100 & 30 & 10 & 10 \\
+    \hline
+    \textbf{Config.2} & 30000 & 512 & 200 & 20 & 20 & 20 \\
+    \hline
+    \textbf{Config.3} & 50000 & 512 & 500 & 40 & 30 & 10 \\
+    \hline
+  \end{tabular}
+  \caption{Rastrigin. Tabla de configuraciones establecidas.} 
+  \label{TablaParametrosRastrigin}
+\end{table}
 
 
+\begin{table}[htb]
+  \begin{tabular}{|| c | c | c | c | c ||}
+    \hline
+    \textbf{Configuración} & \textbf{Selección} & \textbf{Cruce} & \textbf{Mutación} & \textbf{Reemplazamiento} \\
+    \hline
+    \textbf{Config.1} & Probabilistic (10\%) & One-Point & NRandom (1) & Worst \\
+    \hline
+     \textbf{Config.2} & Deterministic & Two-Point & NRandom (1) & Worst  \\
+    \hline
+    \textbf{Config.3} & Probabilistic (10\%) & One-Point & NRandom (1) & Worst  \\
+    \hline
+  \end{tabular}
+  \caption{Rastrigin. Metodos de selección, cruce, mutación y reemplazamiento.} 
+  \label{TablaMetodosRastrigin}
+\end{table}
+
+\begin{table}[htb]
+
+  \begin{tabular}{|| c | c | c | c |c | c | c ||}
+    \hline
+    \textbf{Configuración} & \textbf{Población} & \textbf{Individuo} & \textbf{Generaciones} &
+    \textbf{Selrate} & \textbf{Crossrate} & \textbf{Mutrate}  \\
+
+    \hline
+    \textbf{Config.1} & 2500 & 64 & 800 & 40 & 15 & 10 \\
+    \hline
+    \textbf{Config.2} & 10000 & 64 & 1000 & 20 & 30 & 10 \\
+    \hline
+    \textbf{Config.3} & 50000 & 64 & 2000 & 40 & 15 & 10 \\
+    \hline
+  \end{tabular}
+  \caption{Marea. Tabla de configuraciones establecidas.} 
+  \label{TablaParametrosMarea}
+\end{table}
+
+\begin{table}[htb]
+  \begin{tabular}{|| c | c | c | c | c ||}
+    \hline
+    \textbf{Configuración} & \textbf{Selección} & \textbf{Cruce} & \textbf{Mutación} & \textbf{Reemplazamiento} \\
+    \hline
+    \textbf{Config.1} & Probabilistic (15\%) & Two-Point & NRandom (1) & Generational \\
+    \hline
+     \textbf{Config.2} & Deterministic & One-Point & NRandom (2) & Worst  \\
+    \hline
+    \textbf{Config.3} & Probabilistic (15\%) & Two-Point & NRandom (1) & Generational  \\
+    \hline
+  \end{tabular}
+  \caption{Marea. Metodos de selección, cruce, mutación y reemplazamiento.} 
+  \label{TablaMetodosMarea}
+\end{table}
 
 
+\begin{table}[htb]
 
-\section{Experimentos}
+  \begin{tabular}{|| c | c | c | c |c | c | c ||}
+    \hline
+    \textbf{Configuración} & \textbf{Población} & \textbf{Individuo} & \textbf{Generaciones} &
+    \textbf{Selrate} & \textbf{Crossrate} & \textbf{Mutrate}  \\
 
-\subsection{Entorno Local}
+    \hline
+    \textbf{Config.1} & 10000 & 512 & 1000 & 30 & 30 & 10 \\
+    \hline
+    \textbf{Config.2} & 20000 & 512 & 3000 & 50 & 30 & 20 \\
+    \hline
+    \textbf{Config.3} & 40000 & 512 & 3000 & 50 & 30 & 10 \\
+    \hline
+  \end{tabular}
+  \caption{OneMax. Tabla de configuraciones establecidas.} 
+  \label{TablaParametrosOneMax}
+\end{table}
+
+\begin{table}[htb]
+  \begin{tabular}{|| c | c | c | c | c ||}
+    \hline
+    \textbf{Configuración} & \textbf{Selección} & \textbf{Cruce} & \textbf{Mutación} & \textbf{Reemplazamiento} \\
+    \hline
+    \textbf{Config.1} & Deterministic & Two-Point & NRandom (1) & Worst \\
+    \hline
+     \textbf{Config.2} & Probabilistic (15\%)  & One-Point & NRandom (2) & Generational \\
+    \hline
+    \textbf{Config.3} & Probabilistic (15\%) & One-Point & NRandom (1) & Worst  \\
+    \hline
+  \end{tabular}
+  \caption{OneMax. Metodos de selección, cruce, mutación y reemplazamiento.} 
+  \label{TablaMetodosOneMax}
+\end{table}
+
+\subsubsection{Entorno Local}
 
 La solución secuencial fue probada en una máquina aislada, que corría Ubuntu 12.04 de 64 bits. El equipo en cuestión es un 
 HP Pavilion DV6 3034ss, Intel(R) Core(TM) i5 CPU M 450 @ 2.40GHz, 4 GB RAM.
@@ -462,7 +623,7 @@ HP Pavilion DV6 3034ss, Intel(R) Core(TM) i5 CPU M 450 @ 2.40GHz, 4 GB RAM.
 \subsubsection{Entorno Cloud de Amazon}
 
 La batería de ejecuciones en la nube de Amazon consta de diferentes máquinas virtuales, instancias con diferentes características 
-cada una, que han sido expuestas en la sección \ref{TiposInstancias} y que ahora volvemos a resumir brevemente.
+cada una:
 
 \begin{itemize}
  \item \textbf{Micro}: 613 MB de memoria, un máximo de dos unidades informáticas EC2 (para ráfagas periódicas cortas) y únicamente  
@@ -479,15 +640,13 @@ cada una, que han sido expuestas en la sección \ref{TiposInstancias} y que ahor
  con 2,5 unidades informáticas EC2 cada uno), 1.690 GB de almacenamiento de instancias, plataforma de 64 bits.
 \end{itemize}
 
-\section{Resultados}
 
-Los Resultados de todas las ejecuciones para cada tipo de instancia, pueden consultarse en la dirección 
-https://s3.amazonaws.com/secuencial/results/$<$Problema$>$ $<$Configuración$>$.txt
+Los resultados de todas las ejecuciones para cada tipo de instancia, pueden consultarse en la dirección 
+\url{https://s3.amazonaws.com/secuencial/results/$<$Problema$>$ $<$Configuración$>$.txt}
 
-siendo $<$Problema$>$ el problema que se desea consultar y $<$Configuración$>$ el número de configuración que se pueden 
-consultar en la sección \ref{Parametros}. Así, por ejemplo, si se desea consultar los resultados del problema ``Marea'' con 
+siendo $<$Problema$>$ el problema que se desea consultar y $<$Configuración$>$ el número de configuración. Así, por ejemplo, si se desea consultar los resultados del problema ``Marea'' con 
 la configuración 2, habría que descargar el fichero desde: 
-https://s3.amazonaws.com/secuencial/results/Marea2.txt
+\url{https://s3.amazonaws.com/secuencial/results/Marea2.txt}
 
 Veamos, primero, las tablas de resultados de tiempo de ejecución, para cada problema y tanto en entorno local, como en 
 entorno Cloud, en cada tipo de instancia. Podemos apreciarlos en las tablas 
@@ -549,10 +708,9 @@ entorno Cloud, en cada tipo de instancia. Podemos apreciarlos en las tablas
 \end{table}
 
 La convergencia de los algoritmos puede ser vista en los ficheros de resultados antes nombrados. No obstante, vamos a estudiar 
-algún caso para verla gráficamente. \newpage
+algún caso para verla gráficamente.
 
-En primer lugar, se quiere ver el comportamiento en tiempo de la función Marea con la configuración 3, en cada una de las instancias
-probadas. Veamoslo en la figura \ref{FiguraTiempos}.
+
 
 %\begin{figure}[h]
 %  \begin{center}
@@ -562,19 +720,19 @@ probadas. Veamoslo en la figura \ref{FiguraTiempos}.
 % \end{center}
 %\end{figure}	
 
-Se puede observar que mi portatil, el llamado entorno local, se ha comportado muy bien, puesto que tiene tiempos de manera similar a 
+Se puede observar que el portatil, el llamado entorno local, se ha comportado muy bien, puesto que tiene tiempos de manera similar a 
 la instancia ExtraLarge y HCPUExtraLarge, por lo que en el caso de querer hacer pocas pruebas, quizás con el entorno local 
-valdría, pero no es el caso, porque hemos hecho una batería relativamente grande de pruebas.  \vspace{12pt}
+valdría, pero no es el caso, porque hemos hecho una batería relativamente grande de pruebas.  
 
 Por otra parte, las instancias 
 Small y Micro, quedarían totalmente descartadas para algún futuro proyecto, puesto que el tiempo excede de los límites 
 permitidos, sobre todo la micro instancia. Estas instancias, pueden ser válidas en el Cloud Computing como servidor de pequeñas 
-webs o pruebas que no requieran de demasiado cómputo de datos. \vspace{12pt}
+webs o pruebas que no requieran de demasiado cómputo de datos. 
 
 Pasemos ahora a estudiar la escalabilidad, que viendo los ficheros de resultados queda demostrada que existe, pero el objetivo es 
 ver el comportamiento según la configuración y los métodos escogidos. Se ha escogido como instancia representativa, los resultados 
 de la instancia Large, puesto que los tiempos son relativamente buenos y no tiene problemas de algún resultado que no se tiene, 
-por error en la memoria y similares.\vspace{12pt}
+por error en la memoria y similares.
 
 Primero, observemos la Figura \ref{GraficaMarea}. Esta figura muestra la convergencia al óptimo, que sería 1, durante las 10 
 primeras iteraciones. Hay que aclarar primero, que la aleatoriedad a la hora de generar la población inicial juega un papel 
@@ -592,17 +750,16 @@ importante pero, aparte de esto, se pueden destacar varios puntos.
 \end{itemize}
 
 
-%\begin{figure}[h]
-%  \begin{center}
-%  \includegraphics[scale=0.7]{figuras/graficos/Marea.jpg}
-%  \caption {Marea. Convergencia en instancia Large para las 3 configuraciones.} 
-%  \label{GraficaMarea}
-% \end{center}
-%\end{figure}
+\begin{figure}[h]
+  \begin{center}
+  \includegraphics[scale=0.7]{images/Marea.eps}
+  \caption {Marea. Convergencia en instancia Large para las 3 configuraciones.} 
+  \label{GraficaMarea}
+ \end{center}
+\end{figure}
 
 Sin nada más que referirnos, pasemos a observar una figura similar, pero correspondiente a la función Rastrigin. En este caso, 
-no hace falta señalar que la convergencia hacia abajo se debe, a que es una función de minimización. No hay demasiado que 
-destacar en esta figura, sólo un par de cosas:
+no hace falta señalar que la convergencia hacia abajo se debe, a que es una función de minimización. En esta figura hay que destacar:
 
 \begin{itemize}
  \item La configuración 3 es la que se comporta mejor, de manera destacada en las 100 primeras iteraciones de Rastrigin. Por detrás 
@@ -613,18 +770,26 @@ destacar en esta figura, sólo un par de cosas:
 \end{itemize}
 
 
-%\begin{figure}[h]
-%  \begin{center}
-%  \includegraphics[scale=0.7]{figuras/graficos/Rastrigin.jpg}
-%  \caption {Rastrigin. Convergencia en instancia Large para las 3 configuraciones.} 
-%  \label{GraficaRastrigin}
-% \end{center}
-%\end{figure}
+\begin{figure}[h]
+  \begin{center}
+  \includegraphics[scale=0.7]{images/Rastrigin.eps}
+  \caption {Rastrigin. Convergencia en instancia Large para las 3 configuraciones.} 
+  \label{GraficaRastrigin}
+ \end{center}
+\end{figure}
 
 
 Por último, la Figura \ref{GraficaOneMax}, muestra la convergencia durante 300 iteraciones de la función OneMax, que cuenta 
 los unos de un cromosoma binario, hasta maximizar este número. El  óptimo sería 512, que es el tamaño de la cadena elegido 
 para observar los resultados.
+
+\begin{figure}[h]
+  \begin{center}
+  \includegraphics[scale=0.7]{images/OneMax.eps}
+  \caption {Rastrigin. Convergencia en instancia Large para las 3 configuraciones.} 
+  \label{GraficaOneMax}
+ \end{center}
+\end{figure}
 
 \begin{itemize}
  \item El mejor comportamiento es la configuración 3. Parece que aquí influye de nuevo el número de individuos de la población. 
@@ -639,12 +804,9 @@ para observar los resultados.
 
 
 
-No se han observado significativos cambios en los resultados utilizando los dos diferentes métodos de cruce que disponemos. 
 
-
-
-
-\subsection{Análisis}
+\section{Análisis de los resultados}
+\label{sec:analisis}
 Una vez vistos los resultados, analizando las tablas de tiempos, ficheros de resultados y gráficas obtenidas 
 podemos sacar las siguientes conclusiones:
 
@@ -675,7 +837,7 @@ podemos sacar las siguientes conclusiones:
  puramente teóricas, podemos decir que el de dos puntos puede dar más diversidad a la población, pero no se ha visto que esto 
  quede plasmado en nuestro estudio.
  \item \textbf{Mejorable}. Para muchos exigentes, esto no es suficiente, necesitan mejoras de tiempos evidentes y por ello se 
- ha propuesto una alternativa mejor con Map Reduce, que se verá en el capítulo posterior.
+ ha propuesto una alternativa mejor con Map Reduce.
 \end{itemize}
 
 \section{Conclusiones y trabajo futuro}
@@ -695,7 +857,7 @@ sea una tecnología verdaderamente interesante para el mundo científico e inves
 análisis financiero, meteorológico o bioinformática, entre otras muchas cosas, se trabaja con ingentes cantidades de datos 
 que requieren de millones de cálculos en poco tiempo y precisan de mucho tiempo, pese a tener grandes centros de datos. 
 
-Por ello en este trabajo se ha propuesto un pequeño estudio dentro del gran mundo que es la bioinformática, utilizando 
+Por ello en este proyecto se ha propuesto un pequeño estudio dentro del gran mundo que es la bioinformática, utilizando 
 la infraestructura de Amazon, el mayor proveedor de Cloud Computing y mucho más configurable que Google App Engine,
 para la ejecución y análisis de algoritmos genéticos básicos.  
 
@@ -769,17 +931,13 @@ nodo maestro mientras los otros se encontrarían ociosos.
 especificación de los datos de entrada de un trabajo MapReduce) para poder configurar el número de tareas map a gusto del usuario.
 \end{itemize}
 
-En lo que engloba al Cloud Computing, hay varias opciones que me gustaría llevar a cabo:
+En lo que engloba al Cloud Computing, hay varias opciones que nos gustaría llevar a cabo:
 
 \begin{itemize}
  \item Mover una aplicación a la nube, migrar sus datos, configurar una  instancia para que no sea volátil, contratando una ip estática  y que 
  ésta actúe como servidor, y montar una página web en ella. 
  \item Utilizar proveedores PaaS, como Windows Azure o Google App Engine para desarrollar un servicio en la web. 
 \end{itemize}
-
-
-En conclusión, prácticamente para cualquier cosa en Internet se puede usar el Cloud Computing o aprovecharse de él, sólo se ha visto 
-una pequeña parte, pero hay mucha luz detrás de las nubes.
 
 
 % Eh.. un poco escaso, ?no?
