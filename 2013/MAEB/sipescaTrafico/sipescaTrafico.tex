@@ -1,0 +1,907 @@
+\documentclass[runningheads]{llncs}
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx,epsfig}
+\usepackage{rotating}
+\usepackage{subfig}
+\usepackage{listings}
+%%%%
+
+\usepackage{color}
+\usepackage{alltt}
+\usepackage{verbatim}
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-noshorthands]{babel}
+
+%%
+
+\usepackage{url}
+
+%\urldef{\mailsa}\path|pgarcia@atc.ugr.es|
+
+\urldef{\mailsa}\path|ANONYMOUS@SECRET.COM|
+
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\lstset{
+basicstyle=\ttfamily \scriptsize,
+language=c++,
+frame=single,
+stringstyle=\ttfamily,
+showstringspaces=false
+}
+
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+\renewcommand{\floatpagefraction}{0.9}
+
+\begin{document}
+
+\mainmatter  % start of an individual contribution
+
+
+
+% first the title is needed
+\title{Predicci\'on de tr\'afico a corto plazo con datos reales \thanks{Este trabajo ha sido desarrollado bajo los proyectos 
+}}
+%EvOrq (TIC-3903), CEI BioTIC GENIL (CEB09-0010), MICINN CEI Program (PYR-2010-13) and FPU research grant AP2009-2942 .
+
+% a short form should be given in case it is too long for the running head
+\titlerunning{Predicción de tr\'afico con datos reales}
+\author{No author given}
+%\author{Anonymous\inst{1}, A. E. Eiben\inst{2}, E. Haasdijk\inst{2}, B. Weel\inst{2} and J.J. Merelo\inst{1}}
+
+%
+
+%\authorrunning{P. Garc\'ia-S\'anchez et al.}
+\authorrunning{Anonymous.}
+% (feature abused for this document to repeat the title also on left hand pages)
+% the affiliations are given next; don't give your e-mail address
+% unless you accept that it will be published
+
+%\institute{Dept. of Computer Architecture and Technology, University of Granada, Spain \and Dept. of Computer Science, Vrije Universiteit Amsterdam, The Netherlands
+%\mailsa}
+\institute{No institute given\mailsa}
+
+
+
+
+%\toctitle{BLABLABLA}
+
+%\tocauthor{Authors' Instructions}
+\maketitle
+\begin{abstract}
+
+HHHHH
+\end{abstract}
+
+
+\section{Introducci\'on}
+\noindent 
+El desarrollo de nuevos sistemas que informen de las condificiones del tráfico y del flujo de
+veh\'iculos en las carreteras, es una apuesta de la Dirección General de Tráfico (DGT) dentro del
+territorio nacional y de las administracciones homólogas fuera del territorio nacional. Ejemplos de
+esta apuesta son los proyectos desarrollados para informar lo más exactamente posible
+acerca del estado del tráfico, como el que lleva a cabo Google Maps que proporciona desde hace no
+mucho tiempo (2011) información del estado del tráfico en las ciudades más importantes de algunos
+paises, aunque el proyecto inicial empezó sólo en algunas ciudades de EEUU (2009). Otros ejemplos
+nacionales son la apuesta de la DGT por la investigación en tráfico financiando proyectos y
+promocionando encuentros sobre movilidad y seguridad vial.  
+
+Paralelamente a esta circunstancia, la población actual está evolucionando y se está convirtiendo
+en una población permanentemente informada, conectada y ubícua, puesto que en España existen
+actualmente más de $52$ millones de clientes de telefonía móvil
+(\url{http://goo.gl/WTPN3}). Esta característica permite que casi cualquier
+conductor utilice a diario esos dispositivos de comunicación y por lo tanto lo lleven siempre con
+ellos mismos para comunicarse tanto de forma hablada como escrita, informarse, consultando
+cualquier dato que les pueda interesar (gracias a las tarifas de datos), o utilizando cualquier
+otro servicio accesible desde el dispositivo. 
+
+En España existían en 2012 165.568  Km de vías (último dato oficial publicado)
+\cite{DatosTrafico2012}, lo que da una idea muy clara de la complejidad de una red, puesto que,
+aunque sea sólo por la extensión necesita muchísimo trabajo para su coordinación, su mantenimiento y
+su gestión en general. Por lo que al organismo que gestiona la red le es de mucha
+utilidad tener información lo más precisa posible, por básica que sea sobre los usuarios de la
+utilizan, para poder preveer situaciones de saturación, o de evacuación en caso de alguna
+emergencia. Datos tan básicos como número de vehículos que pasan por cada via o a qué hora hay más
+afluencia para intentar regular la señalización de cada vía podrían facilitar el trabajo de los
+operarios.
+
+En este trabajo se presenta un sistema de recogida de información de estado del tráfico y se
+analizan los datos recogidos incluyendo una predicción inicial de las series temporales de datos
+recogidas. Una serie temporal es un conjunto de datos
+ordenados de forma cronológica que sirve de base para realizar una predicción de valores futuros
+dentro de esa misma serie temporal. La predicción de series temporales es un campo de investigación
+activo dentro de areas como la estadística o la investigación operativa \cite{Fildes2008},
+\cite{Gooijer25years}, y son datos presentes tanto en el campo de la ingeniería como en la
+biología, economía o las ciencias sociales entre otras.
+
+La captación de datos se basa en la detección de dispositivos \textit{bluetooth} (BT),
+en diferentes vias, lo que nos proporciona una descripción de las condiciones de tráfico en tiempo
+real y un conjunto de datos válidos para utilizarlos con técnicas de predicción de series
+temporales. La captación de datos incluye tanto dispositivos BT empotrados en algún tipo de
+vehículo como dispositivos de usuarios particulares que lleven el bluetooth activado. El principal
+dato recolectado de cada dispositivo es la dirección MAC que se encripta y se almacena, lo que
+permite identificar de forma unívoca el dispositivo, pero no el usuario, por lo que la privacidad de
+la persona usuaria del dispositivo está totalmente reservada. Esta identificación única puede
+permitir la identificación del dispositivo en varios puntos de la ciudad, lo que puede dar una idea
+del tipo de desplazamientos que ese usuario ha realizado.
+
+En este primer trabajo se han aplicado varios algoritmos de predicción de series temporales ya
+validados en la bibliografía y se presentan los resultados iniciales para predicción a corto plazo
+(1 día) sin modificar, tratar o adecuar la serie de datos inicialmente recopilada por el dispositivo
+de captación. 
+
+El objetivo final de este proceso de investigación inicial es predecir el flujo de tráfico que
+tendrán las vías monitorizadas con este tipo de dispositivo o cualquier otro que proporcione una
+información simple y fiable a cerca del paso de vehículos por un determinado punto. Esta predicción
+permitirá, por ejemplo, poder tomar decisiones
+acerca del mejor itinerario a elegir para un determinado desplazamiento, tanto para los usuarios
+de las vias como para las administraciones a la hora de planificar señalización, e intervención en
+las vías monitorizadas.
+
+El artículo a partir de este punto se organiza en secciones. La sección \ref{sec:soa} repasa el
+estado del arte tanto de los algoritmos de de predicción de series temporales como de los
+dispositivos de captación de datos existentes actualmente. La sección \ref{sec:hw} presenta el
+dispositivo utilizado y una descripción del proceso de captación de datos, y la sección
+\ref{sec:experiments} presenta los resultados obtenidos en la
+predicción a corto plazo del flujo del tráfico. Por último en la última sección se presentan
+unas conclusiones iniciales y los pasos que se pondrán en práctica como líneas
+futuras de trabajo.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BACKGROUND and SOTA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Estado del arte}
+\label{sec:soa}
+
+En esta sección se repasarán de forma resumida los dispositivos de captación de tráfico existentes
+y posteriormente introduciremos un pequeño estado del arte sobre los algoritmos de predicción de
+series temporales que están vigentes. 
+
+
+Las tecnologías que permiten detectar el flujo de tráfico se clasifican en dos grupos:
+intrusivas y no intrusivas.  Las intrusivas implican una modificación física de la via que
+monitoriza y esta característica se convierte en su principal inconveniente, puesto que la via debe
+ser cerrada para su instalación además de un posterior manteninimiento.  En cualquier caso estas
+técnicas sólo cuentan vehículos que atraviesan el sistema de monitorización, sin identificarlos de
+ninguna forma. En este grupo se incluyen por ejemplo los sensores piezoelectricos o los tubos
+neumáticos. Las tecnologías no intrusivas no producen interrupción del tráfico, puesto que su
+colocación no está físicamente en el pavimento, sino en zonas adyacentes de la via como paneles
+informativos, carteles de señalización, puestos de emergencias, etc.  En este último grupo se
+incluyen los radares, la señalización lumínica o las cámaras de monitorización. 
+
+ 
+El inconveniente principal de este sistema de monitorización es que no permiten identificar los
+vehículos de forma unívoca para poder construir patrones de desplazamiento o matrices de frecuencia
+de destinos para un conjunto de orígenes dados. 
+
+% ------------------------------------------------------------------------------
+Respecto al estado del arte de los algoritmos de predicción, existen muchos trabajos relacionados
+con el tema y que han sido ampliamente utilizados con conjuntos de datos públicos con los que han
+sido testeados por sus desarrolladores. Todos los algoritmos de predicción intentan modelar un
+sistema numérico que represente el comportamiento de la serie y con el pueda predecirla. Estos
+modelos pueden ser lineales o no lineales. 
+
+Dentro del grupo de los lineales hay varios, pero el más conocido es el llamado método ARIMA
+\cite{BoxJenk}. ARIMA es un modelo simple y cuyo funcionamiento está ampliamente demostrado, pero
+no funciona muy bien con muchas aplicaciones a series temporales reales, puesto que su ajuste no es
+fácil y lo debe de realizar operarios especializados. Esta es la principal razón de que surgieran
+los métodos no lineales. 
+
+Los modelos no lieales se ajustan mejor a aplicaciones reales aunque la facilidad de uso sigue
+siendo escasa \cite{Clements2004}, de ahí que existan propuestas donde se recomienda que se le debe
+dar prioridad a la facilidad de uso frente a otros aspectos más técnicos \cite{Gooijer25years}.
+
+La predicción de series temporales también se ha abordado desde otros campos, como técnicas de
+Soft-Computing, \cite{Samanta2011}, \cite{Zhu2011}; Técnicas Fuzzy \cite{Qiu2011}, \cite{Wang2011};
+redes neuronales, \cite{Yu2010}; Regresión \cite{Kavaklioglu2011}; y sistemas expertos
+\cite{Dash1995}.
+
+En nuestro caso nos hemos centrado en métodos no lieales basados en la utilización de Redes
+Nuronales, puesto que tal y como afirma Tang \cite{Tang1991} son métodos que ofrecen una mayor
+flexibilidad y efectividad a la hora de predecir una serie temporal real. 
+
+Existen muchos trabajos que aplican las redes neuronales a la predicción de series temporales
+\cite{Rivas04}. En concreto las llamadas RBFNs que se proponen en este trabajo se han utilizado en
+trabajos recientes como \cite{Hippert10,Lee09}, \cite{PerezGodoy2010} donde se aplican en un
+algoritmo evolutivo híbrido para la predicción a corto, medio plazo del precio del aceite de oliva.
+
+Para realizar la predicción se utilizan periodos de tiempo de la serie de tamaño
+finito llamados ``lags''. Los lags deben representar perfectamente el comportamiento de la serie y
+su relación y según el teorema de Takens \cite{Takens1980} se establece que cogiendo adecuadamente
+estos lags, el comportamiento del espacio multidimensional construido a partir de dicho lag, puede
+representar de forma correcta el comportamiento de la serie temporal real. 
+
+Existen métodos automáticos que intentan determinar el lag más adecuado como pueden ser el
+algoritmo QIEHI \cite{Araujo2010a}, \cite{Araujo2010b}. E incluso algunos autores han ido más alla,
+buscando no sólo el lag, sino las características externas que afectan a la serie y que con un
+preprocesamiento previo de la serie temporal, puede desembocar en la elección de un lag  más
+adecuado para la predicción, \cite{garcia2008}. También se ha realizado este estudio después de la
+predicción,  \cite{Maus2011}, incluyendo un post procesamiento de los datos que modifica el lag de
+salida del método. 
+
+Tal y como se ha ido detallando, los procedimientos empleados en la literatura son variados y
+pueden incluir pre o post procesamiento de los datos. 
+
+En la propuesta que se presenta en este artículo, se utiliza para la predicción un método no
+lineal que utiliza redes de base radial (RBFs) para determinar de forma cooperativa el lag y la
+predicción de la serie temporal a la que se aplique el algoritmo, si necesidad de ningún pre o pro
+procesamiento. 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATA COLLECTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Recolección de Datos}
+\label{sec:hw}
+
+El dispositivo utilizado para la captación de datos es Intelify (figura 
+\ref{intelify} \url{http://www.intelify.net/}) que ofrece una solución compacta para captar
+dispositivos BT y transmitir la información a un servidor remoto manteniendo un índice de detección
+adecuado ( incluye un $8.5\%$ de error en la captación).
+
+\begin{figure}[ht] 
+\begin{center} 
+ % \epsfig{file=soaDiagram.eps,width=7.5cm} 
+\includegraphics[scale=0.6]{intelifychisme1.eps}
+\end{center} 
+\caption{Dispositivo Intelify} 
+\label{intelify} 
+\end{figure} 
+
+Intelify es un dispositivo autónomo que puede ser instalado en el área donde se desean captar
+datos. Dispone de varios sensores y capta la información para enviarla a través de una conexion 3G. 
+Los datos recopilados que se incluyen en este trabajo han sido captados por 5 puntos diferentes
+(nodos 1-6) durante un total de 60 días. En la figura \ref{fig:collected-data} se representan el
+número de dispositivos BT captados por cada uno de los dispositivos de cdaptación a lo largo de este
+periodo. Los nodos 4 y 5  han sido separados en otra figura puesto que son nodos colocados en una
+vía de gran afluencia de tráfico y no son comparables con los otros 4. En esta figura se puede
+apreciar perfectamente que los fines de semana el flujo de dispositivos captados es diferente al
+resto de la
+semana, incluso si se muestra la suma de las cinco series (Figura \ref{fig:weekly}).
+
+\begin{figure}[htb]
+ \begin{center}
+\includegraphics[scale=0.6]{number-of-bt-devices-detected-1-2-3.eps} 
+\includegraphics[scale=0.6]{number-of-bt-devices-detected-4-5.eps}
+ \caption{Número total de dispositivos captados por cada nodo organizados por días. Los valores
+de los nodos 4 y 5 son muy diferentes a los demás, por lo que se han separado en un gráfico
+diferente para que se puedan apreciar los tramos crecientes y decrecientes de las
+demás series.
+ \label{fig:collected-data}}
+ \end{center}
+ \end{figure}
+
+
+\begin{figure}[htb]
+ \begin{center}
+\includegraphics[scale=0.6]{weekly.eps} 
+ \caption{Datos acumulados de todas las series por cada día de la semana. Los datos recolectados
+en sábado o domingo son claramente inferiores al resto de los días. 
+ \label{fig:weekly}}
+ \end{center}
+ \end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% EXPERIMENTS AND RESULTS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Experiments and results}
+\label{sec:experiments}
+
+En esta sección se analizan los datos recolectados y se obtienen los resultados estadísticos
+iniciales a cerca de la predicción realizada. 
+
+Debido al gran número de métodos existentes para realizar predicción, hemos seleccionado sólo 6 de
+ellos para poder realizar comparaciones entre los diferentes resultados. En esta selección se han
+incluido métodos lineales y no lineales. En concreto la selección Es ARIMA, Croston, Theta,
+Spline, L-Co-R y como método de control hemos seleccionado la media. Todos los métodos excepto
+L-Co-R están incluidos dentro del paquete estadístico R. L-Co-R es un algoritmo coevolutivo
+desarrollado por parte del equipo que firma el trabajo que ha generado resultados muy buenos dentro
+de la predicción a corto plazo. Se trata de un método no lineal basado en evolucionar RBFs y Lags
+simultáneamente para adecuar la red al lag elegido y el lag elegido a la red que el método
+construye.
+
+Los experimentos se han realizado utilizando las cinco series de datos descritas en la sección
+anterior. Los primeros 53 días de la serie se han utilizado para entrenar los diferentes métodos y
+poder construir el modelo predictivo, mientras que los 7 días restantes se han utilizado para
+testear la predicción generada. La predicción se genera con un horizonte de 1, es decir conocidos
+los datos de la serie con $n$ elementos, el algoritmo predice el elemento $n+1$. 
+
+Para cada método y cada serie, se han calculado una serie de medidas de error para poder
+comparar la predicción de los diferentes métodos:
+\begin{itemize}
+  \item \it{Mean Absolute Error} (MAE):
+        \begin{equation}\label{eq:MAE}
+            MAE = mean(\mid e_t\mid)
+        \end{equation}
+
+  \item \it{Mean Absolute Percentage Error} (MAPE):
+        \begin{equation}\label{eq:MAPE}
+            MAPE = mean(\mid p_t\mid)
+        \end{equation}
+
+        \bigskip
+  \item \it{Median Absolute Percentage Error} (MdAPE):
+        \begin{equation}\label{eq:MDAPE}
+            MdAPE = median(\mid p_t\mid)
+        \end{equation}
+
+  \item \it{Mean Absolute Scaled Error} (MASE):
+        \begin{equation}\label{eq:MASE}
+            MASE = mean(\mid q_t\mid)
+        \end{equation}
+
+  \item \it{Mean Squared Error} (MSE):
+        \begin{equation}\label{eq:MSE}
+            MSE = \frac{1}{n}\sum_{i=1}^n {e_t}^2
+        \end{equation}
+
+%  \item Root Mean Squared Error (RMSE):
+%        \begin{equation}\label{eq:RMSE}
+%            RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^n {e_t}^2}
+%        \end{equation}
+
+donde  $Y_t$ es el dato observado en tiempo $t = {1,...,n}$; $F_t$ es la predicción de  $Y_t$; $e_t$
+es el error de predicción (i.e. $e_t= Y_t - F_t$); $p_t = 100e_t/Y_t$ es el porcentaje de error y 
+         $q_t = \displaystyle\frac{e_t}{\displaystyle\frac{1}{n-1} \sum_{i=2}^n \mid Y_i - Y_{i-1} \mid }$
+\end{itemize}
+
+Puesto que el algoritmo L-Co-R no es determinista, y para eliminar los posibles beneficios del
+comportamiento del generador de números aleatorios que utiliza, se ha ejecutado 30 veces para cada
+una de las series, es decir, los datos mostrados como resultado del algoritmo L-Co-R son medias de
+error de 30 ejecuciones.
+
+La tabla \ref{tb:ts-results} muestra los diferentes valores de error para cada uno de los métodos y
+para cfada serie. Destacados en el texto aparecen el mejor (menor) valor obtenido para cada nodo y
+cada medida de error. Tal y como se puede apreciar en la tabla, la tendencia es siempre que el
+mejor algoritmo es justo el algoritmo L-Co-R puesto que obtiene los menores errores para las
+medidas MAE, MAPE, MdAPE y MASE (excepto para el nodo 2), aunque para otras medidas como MSE no hay
+un claro algoritmo ganador. 
+
+\begin{table} \footnotesize
+ \begin{center}
+ \begin{tabular}{|l|c|c|c|c|c|c|}
+
+
+\hline 
+ \multicolumn{6}{|c|}{Nodo 1} \\ 
+ \hline 
+ & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
+\hline
+
+\emph{ARIMA } & $514,83$ & $40,42$ & $1,14$ & $30,76$ & $424860,5$ \\%& $36,83$ \\ 
+\emph{CROSTON } & $509,91$ & $39,28$ & $1,13$ & $33,8$ & $387403,9$ \\%& $36,46$ \\ 
+\emph{THETA } & $528,59$ & $41,16$ & $1,17$ & $32,78$ & $443898,5$ \\%& $37,87$ \\ 
+\emph{SPLINE } & $550,02$ & $43,87$ & $1,21$ & $30,1$ & $488504,9$ \\%& $39,04$ \\ 
+\emph{MEAN } & $456,95$ & $38,57$ & $1,01$ & $26,11$ & $318623,5$ \\%& $32,48$ \\ 
+\emph{L-Co-R} & $\textbf{372,77}$ & $\textbf{23,66}$ & $\textbf{0,81}$ & $\textbf{18,46}$ &
+$\textbf{231731,8}$ \\%& $\textbf{28,87}$ \\ 
+\hline 
+ \multicolumn{6}{|c|}{Nodo 2} \\ 
+ \hline 
+ & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
+\hline
+
+\emph{ARIMA } & $433,52$ & $26,64$ & $\textbf{1,03}$ & $22,38$ & $\textbf{310105,3}$ \\%&$25,15$
+\emph{CROSTON } & $532,87$ & $27,98$ & $1,26$ & $27,89$ & $398979,9$ \\%& $30,5$ \\ 
+\emph{THETA } & $435,58$ & $26,77$ & $1,03$ & $22,55$ & $312496,1$ \\%& $25,28$ \\ 
+\emph{SPLINE } & $535,86$ & $34,53$ & $1,27$ & $24,7$ & $447557,4$ \\%& $31,17$ \\ 
+\emph{MEAN } & $489,57$ & $24,44$ & $1,16$ & $28,64$ & $361070,5$ \\%& $27,52$ \\ 
+\emph{L-Co-R} & $\textbf{429,78}$ & $\textbf{11,41}$ & $1,04$ & $\textbf{11,98}$ & $311561,7$ \\%&
+$\textbf{23,5}$ \\ 
+\hline 
+ \multicolumn{6}{|c|}{Node 3} \\ 
+ \hline 
+ & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
+\hline
+
+\emph{ARIMA } & $373,17$ & $35,11$ & $1,32$ & $27,54$ & $\textbf{150293,6}$ \\%& $\textbf{33,45}$\\ 
+\emph{CROSTON } & $377,42$ & $37,03$ & $1,34$ & $27,89$ & $160970,9$ \\%& $33,78$ \\ 
+\emph{THETA } & $394,95$ & $38,11$ & $1,4$ & $29,41$ & $175710,7$ \\%& $35,34$ \\ 
+\emph{SPLINE } & $384,68$ & $38,86$ & $1,36$ & $29,36$ & $184807,2$ \\%& $34,36$ \\ 
+\emph{MEAN } & $373,18$ & $35,11$ & $1,32$ & $27,53$ & $150307,8$ \\%& $33,45$ \\ 
+\emph{L-Co-R} & $\textbf{363,3}$ & $\textbf{10,56}$ & $\textbf{0,84}$ & $\textbf{17,01}$ &
+$182469,9$ \\%& $35,32$ \\ 
+\hline 
+ \multicolumn{6}{|c|}{Nodo 4} \\ 
+ \hline 
+ & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
+\hline
+
+\emph{ARIMA } & $3168,36$ & $40,62$ & $1,04$ & $18,99$ & $21792093$ \\%& $37,44$ \\ 
+\emph{CROSTON } & $3789,4$ & $56,83$ & $1,25$ & $54,33$ & $25037291$ \\%& $49,12$ \\ 
+\emph{THETA } & $3085,3$ & $38,14$ & $1,01$ & $25,42$ & $21510757$ \\%& $37,48$ \\ 
+\emph{SPLINE } & $3758,06$ & $39,45$ & $1,24$ & $43,53$ & $28745309$ \\%& $48,79$ \\ 
+\emph{MEAN } & $4545,17$ & $92,73$ & $1,5$ & $40,07$ & $26612429$ \\%& $55,57$ \\ 
+\emph{L-Co-R} & $\textbf{540,59}$ & $\textbf{6,26}$ & $\textbf{0,07}$ & $\textbf{4,14}$ &
+$\textbf{1120317,2}$ \\%& $\textbf{8,17}$ \\ 
+\hline 
+ \multicolumn{6}{|c|}{Nodo 5} \\ 
+ \hline 
+ & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
+\hline
+
+\emph{ARIMA } & $5012,95$ & $43,8$ & $1,13$ & $20,19$ & $\textbf{29974781}$ \\%& $\textbf{33,85}$\\ 
+\emph{CROSTON } & $5583,14$ & $46,32$ & $1,26$ & $26,12$ & $35082013$ \\%& $37,51$ \\ 
+\emph{THETA } & $5779,37$ & $45,78$ & $1,3$ & $28,25$ & $35859271$ \\%& $38,94$ \\ 
+\emph{SPLINE } & $5878,35$ & $46,26$ & $1,32$ & $28,69$ & $37288518$ \\%& $39,64$ \\ 
+\emph{MEAN } & $5013,48$ & $43,81$ & $1,13$ & $20,19$ & $29980578$ \\%& $33,85$ \\ 
+\emph{L-Co-R} & $\textbf{4978,08}$ & $\textbf{24,59}$ & $\textbf{0,87}$ & $\textbf{9,37}$ &
+$35875329$ \\%& $35,8$ \\ 
+
+
+\hline
+
+ \end{tabular}
+ \end{center}
+ \caption{Valores obtenidos para las cinco medidas de error (MAE,
+MAPE, MASE, MdAPE y MSE) para los métodos de predicción seleccionados (ARIMA, Croston, Theta,
+Spline, Mean and L-Co-R) para todos los nodos. En negrita se resalta el mejor resultado para cada
+caso.
+ \label{tb:ts-results}}
+ \end{table}
+
+Los resultados de cada método se han comparado utilizando dos medidas no paramétricas: El test de
+Friedman y el test de Iman-Davenport mediante las cuales podemos determinar si existen diferencias
+significativas entre los métodos o no, estableciendo así un ranking de métodos de mejor a peor en
+el proceso de predicción. Los resultados revelan que existen diferencias significativas cuando el
+valor $P-value$ es mejor que $0.05$. 
+
+
+
+\begin{table} \footnotesize
+ \begin{center}
+ \begin{tabular}{|l|c|c|}
+\hline
+\emph{Error} & \emph{Friedman P-value} & \emph{Iman-Davenport P-value} \\
+\hline
+\emph{MAE} & $0.0052$ & $0.0003$ \\
+\emph{MAPE} & $0.0080$ & $0.0008$ \\
+\emph{MASE} & $0.0141$ & $0.0030$ \\
+\emph{MdAPE} & $0.0063$ & $0.0005$ \\
+\emph{MSE} & $0.0213$ & $0.0066$ \\
+%\emph{SMAPE} & $0.0440$ & $0.0233$ \\
+\hline
+
+ \end{tabular}
+ \end{center}
+ \caption{Resultado del valor \emph{P-value} para los test de Friedman y Iman-Davenport
+para cada medida de error. Un valor de \emph{P-value} menor que $0.05$ (todos en este caso)
+indica que existen diferencias significativas entre los errores calculados para cada
+método.
+ \label{tb:friedman-iman-tests}}
+ \end{table}
+
+El ranking formado por los valores resultados de los test no-paramétricos, determinan cual es el
+mejor método. Una vez que este método se ha encontrado, se puede comparar de nuevo con el método de
+Holm \cite{Holm1979}. En la tabla \ref{tb:holm-all} se resumen los resultados así como la
+existencia de diferencias significativas entre los métodos. En este caso, los resultados muestran
+que el algoritmo L-Co-R es el mejor para cuatro de las medidas de error utilizadas (MAE, MAPE,
+MASE, y MdAPE), aunque no se puede realizar esta afirmación si lo comparamos con el método ARIMA,
+donde no se encuentran para estas series, diferencias significativas en los resultados de
+predicción.  
+
+
+\begin{table}[!htp]\footnotesize
+\begin{center}
+\begin{tabular}{|cccccc|}
+\hline
+\emph{Error}&\emph{Método de Control}&\emph{Ranking}&
+\emph{Método}&$p$& \emph{Hipótesis nula}\\
+\hline
+&&1&ARIMA&0.176&Aceptada\\
+&&2&MEAN&0.028& \textbf{Rechazada}\\
+MAE&L-Co-R&3&THETA&0.007& \textbf{Rechazada}\\
+&&4&CROSTON&0.007& \textbf{Rechazada}\\
+&&5&SPLINE&2.003E-4& \textbf{Rechazada}\\
+\hline
+&&1&ARIMA&0.090& Aceptada\\
+&&2&MEAN&0.0.063& Aceptado \\
+MAPE&L-Co-R&3&THETA&0.011& \textbf{Rechazada}\\
+&&4&CROSTON&0.002& \textbf{Rechazada}\\
+&&5&SPLINE&3.857E-4& \textbf{Rechazada}\\
+\hline
+&&1&ARIMA&0.398& Aceptada\\
+&&2&MEAN&0.063& Aceptado \\
+MASE&L-Co-R&3&THETA&0.028& \textbf{Rechazada}\\
+&&4&CROSTON&0.018& \textbf{Rechazada}\\
+&&5&SPLINE&7.232E-4& \textbf{Rechazada}\\
+\hline
+&&1&ARIMA&0.176&Aceptada\\
+&&2&MEAN&0.042& \textbf{Rechazada}\\
+MdAPE&L-Co-R&3&THETA&0.004& \textbf{Rechazada}\\
+&&4&SPLINE&0.002& \textbf{Rechazada}\\
+&&5&CROSTON&7.232E-4& \textbf{Rechazada}\\
+\hline
+&&1&L-Co-R&0.500&Aceptada\\
+&&2&MEAN&0.398& Aceptado \\
+MSE&ARIMA&3&CROSTON&0.176& Aceptado \\
+&&4&THETA&0.176& Aceptado \\
+&&5&SPLINE&7.232E-4& \textbf{Rechazada}\\
+\hline
+&&1&L-Co-R&0.866& Aceptada\\
+&&2&MEAN&0.310& Aceptado \\
+SMAPE&ARIMA&3&CROSTON&0.091 & Aceptado \\
+&&4&THETA&0.043& \textbf{Rechazada}\\
+&&5&SPLINE&0.006& \textbf{Rechazada}\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Resultados del test de Holm para cada medida de error. Valores de $p$ menores o
+iguales a $0.05$ indican que los resultados de error calculados por el algoritmo de control y los
+demás métodos, se pueden considerar significativamente diferentes.
+\label{tb:holm-all}}
+
+\end{table}
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% CONCLUSIONS AND FUTURE WORK %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Conclusiones y trabajo futuro}
+\label{sec:conclusions}
+
+En este trabajo se presenta la utilización de un dispositivo de captación de emisiones BT para
+recopilar series temporales relacionadas con el flujo del tráfico en cualquier tipo de vía.
+Concretamente se han monitorizado 6 vías obteniendo las correspondientes series para cada uno de
+los  dispositivos (Nodo 1-5). 
+
+Utilizando estas series temporales reales que incluyen el número de dispositivos captados por día,
+se ha realizado un estudio de las series para predecir a corto plazo (1 día) cual será el flujo de
+tráfico en cada uno de los nodos. Se han seleccionado 5 métodos de predicción con los que se han
+calculado 5 medidas de error. 
+
+Los resultados obtenidos demuestran que la predicción con el algoritmo L-Co-R a corto plazo es
+significativamente mejor que las predicciones obtenidas con el resto de los métodos para todas las
+medidas de error seleccionadas menos una. 
+
+Este trabajo abre un abanico de posibilidades de análisis de la gran cantidad de datos captados y
+la posibilidad de desarrollar métodos de predicción no sólo a corto plazo, sino a medio y largo
+plazo, lo que facilitará la tarea de previsión del flujo de tráfico en las vías monitorizadas y por
+consiguiente una mejor gestión del tráfico en dichas vías por parte de las autoridades competentes.
+
+\section{Agradecimientos}
+Este trabajo ha sido realizado gracias a la beca FPU AP2009-2942 y los proyectos EvOrq (P08-TIC-03903), Proyecto 83 (CANUBE) del CEI-BioTIC UGR, y TIN2011-28627-C04-02 (ANYSELF).
+
+\bibliographystyle{splncs}
+
+\begin{thebibliography}{x}
+
+\bibitem{DatosTrafico2012}
+Dirección General de Tráfico. Evolución 1970-2012. Ministerio de Fomento, Mayo 2013
+\url{
+http://www.fomento.gob.es/MFOM/LANG_CASTELLANO/DIRECCIONES_GENERALES/CARRETERAS/CATYEVO_RED_CARRETE
+RAS/}
+
+\bibitem{BoxJenk}
+G.~Box, G.~Jenkins, Time series analysis: forecasting and control, San
+  Francisco: Holden Day, 1976.
+
+\bibitem{Gooijer25years}
+J.~{De Gooijer}, R.~Hyndman, 25 years of time series forecasting, International
+  Journal of Forecasting 22~(3) (2006) 443--473.
+
+\bibitem{Fildes2008}
+R.~Fildes, K.~Nikolopoulos, S.~Crone, A.~Syntetos, Forecasting and operational
+  research: a review, Journal of the Operational Research Society 59 (2008)
+  1150--1172.
+
+\bibitem{Brown1959}
+R.~Brown, Statistical forecasting for inventory control, McGraw-Hill, 1959.
+
+\bibitem{Winters1960}
+P.~Winters, Forecasting sales by exponentially weighted moving averages,
+  Management Science 6~(3) (1960) 324--342.
+
+\bibitem{Snyder1985}
+R.~Snyder, Recursive estimation of dynamic linear models, Journal of the Royal
+  Statistical Society. Series B (Methodological) 47~(2) (1985) 272--276.
+
+\bibitem{Tong1978}
+H.~Tong, On a threshold model, Pattern recognition and signal processing, NATO
+  ASI Series E: Applied Sc. 29 (1978) 575--586.
+
+\bibitem{Tong1983}
+H.~Tong, Threshold models in non-linear time series analysis, Springer-Verlag,
+  1983.
+
+\bibitem{Chan1986}
+K.~Chan, H.~Tong, On estimating thresholds in autoregressive models, Journal of
+  Time Series Analysis 7~(3) (1986) 179--190.
+
+\bibitem{Brockwell1992157}
+P.~Brockwell, R.~Hyndman, On continuous-time threshold autoregression,
+  International Journal of Forecasting 8~(2) (1992) 157--173.
+
+\bibitem{Clements2004}
+M.~Clements, P.~Franses, N.~Swanson, Forecasting economic and financial
+  time-series with non-linear models, International Journal of Forecasting
+  20~(2) (2004) 169--183.
+
+\bibitem{Samanta2011}
+B.~Samanta, Prediction of chaotic time series using computational intelligence,
+  Expert Systems with Applications 38~(9) (2011) 11406--11411.
+
+\bibitem{Zhu2011}
+S.~Zhu, J.~Wang, W.~Zhao, J.~Wang, A seasonal hybrid procedure for electricity
+  demand forecasting in china, Applied Energy 88~(11) (2011) 3807--3815.
+
+\bibitem{Qiu2011}
+W.~Qiu, X.~Liu, H.~Li, A generalized method for forecasting based on fuzzy time
+  series, Expert Systems with Applications 38~(8) (2011) 10446--10453.
+
+\bibitem{Wang2011}
+C.~Wang, A comparison study between fuzzy time series model and arima model for
+  forecasting taiwan export, Expert Systems with Applications 38~(8) (2011)
+  9296--9304.
+
+\bibitem{Yu2010}
+T.~Yu, K.~Huarng, A neural network-based fuzzy time series model to improve
+  forecasting, Expert Systems with Applications 37~(4) (2010) 3366--3372.
+
+\bibitem{Kavaklioglu2011}
+K.~Kavaklioglu, Modeling and prediction of turkey's electricity consumption
+  using support vector regression, Applied Energy 88~(1) (2011) 368--375.
+
+\bibitem{Dash1995}
+P.~K. Dash, A.~C. Liew, S.~Rahman, G.~Ramakrishna, Building a fuzzy expert
+  system for electric load forecasting using a hybrid neural network, Expert
+  Systems with Applications 9~(3) (1995) 407--421.
+
+\bibitem{Tang1991}
+Z.~Tang, C.~de~Almeida, P.~Fishwick, Time series forecasting using neural
+  networks vs. box-jenkins methodology, Simulation 57~(5) (1991) 303--310.
+
+\bibitem{Zhang1998b}
+G.~Zhang, B.~Patuwo, M.~Hu, Forecasting with artificial neural networks: The
+  state of the art, International Journal of Forecasting 14~(1) (1998) 35--62.
+
+\bibitem{Jain2007}
+A.~Jain, A.~Kumar, Hybrid neural network models for hydrologic time series
+  forecasting, Applied Soft Computing 7~(2) (2007) 585--592.
+
+\bibitem{Arizmendi1993}
+C.~M. Arizmendi, J.~Sanchez, N.~E. Ramos, G.~I. Ramos, Time series predictions
+  with neural nets: Application to airborne pollen forecasting, International
+  Journal of Biometeorology 37~(3) (1993) 139--144.
+
+\bibitem{Rivas04}
+V.~Rivas, J.~Merelo, P.~Castillo, M.~Arenas, J.~Castellano, Evolving rbf neural
+  networks for time-series forecasting with evrbf, Information Sciences
+  165~(3-4) (2004) 207 -- 220.
+
+\bibitem{Bezerianos1999}
+A.~Bezerianos, S.~Papadimitriou, D.~Alexopoulos, Radial basis function neural
+  networks for the characterization of heart rate variability dynamics,
+  Artificial Intelligence in Medicine 15~(3) (1999) 215--234.
+
+\bibitem{Broomhead88}
+D.~Broomhead, D.~Lowe, Multivariable functional interpolation and adaptive
+  networks, Complex Systems 2 (1988) 321--355.
+
+\bibitem{Carse1996}
+B.~Carse, T.~Fogarty, Fast evolutionary learning of minimal radial basis
+  function neural networks using a genetic algorithm, in: Proceedings of
+  Evolutionary Computing, Vol. 1143 of Lecture Notes in Computer Science,
+  Springer Berlin/Heidelberg, 1996, pp. 1--22.
+
+\bibitem{Whitehead96}
+B.~Whitehead, T.~Choate, Cooperative-competitive genetic evolution of radial
+  basis function centers and widths for time series prediction, IEEE
+  Transactions on Neural Networks 7~(4) (1996) 869--880.
+
+\bibitem{Harpham06}
+C.~Harpham, C.~Dawson, The effect of different basis functions on a radial
+  basis function network for time series prediction: A comparative study,
+  Neurocomputing 69~(16-18) (2006) 2161--2170.
+
+\bibitem{Du2008}
+H.~Du, N.~Zhang, Time series prediction using evolving radial basis function
+  networks with new encoding scheme, Neurocomputing 71~(7-9) (2008) 1388--1400.
+
+\bibitem{Chatterjee06}
+A.~Chatterjee, P.~Siarry, Nonlinear inertia weight variation for dynamic
+  adaptation in particle swarm optimization, Computers \& Operations Research
+  33~(3) (2006) 859--871.
+
+\bibitem{Hippert10}
+H.~Hippert, J.~Taylor, An evaluation of bayesian techniques for controlling
+  model complexity and selecting inputs in a neural network for short-term load
+  forecasting, Neural Networks 23~(3) (2010) 386--395.
+
+\bibitem{Lee09}
+C.~Lee, C.~Ko, Time series prediction using rbf neural networks with a
+  nonlinear time-varying evolution pso algorithm, Neurocomputing 73~(1-3)
+  (2009) 449--460.
+
+\bibitem{PerezGodoy2010}
+M.~Perez-Godoy, P.~P\'erez-Recuerda, M.~Fr\'{i}as, A.~Rivera, C.~Carmona,
+  M.~Parras, Co$^2$rbfn for short and medium term forecasting of the
+  extra-virgin olive oil price, in: J.~Gonz\'alez, D.~Pelta, C.~Cruz,
+  G.~Terrazas, N.~Krasnogor (Eds.), Proceedings of Nature Inspired Cooperative
+  Strategies for Optimization, Vol. 284, Springer Berlin/Heidelberg, 2010, pp.
+  113--125.
+
+\bibitem{Takens1980}
+F.~Takens, Dynamical Systems and Turbulence, Lecture Notes In Mathematics, Vol.
+  898, Springer, New York, NY, 1980, Ch. Detecting strange attractor in
+  turbulence, pp. 366--381.
+
+\bibitem{Ferreira2008}
+T.~Ferreira, G.~Vasconcelos, P.~Adeodato, A new intelligent system methodology
+  for time series forecasting with artificial neural networks, Neural
+  Processing Letters 28~(2) (2008) 113--129.
+
+\bibitem{Luko2010}
+K.~Lukoseviciute, M.~Ragulskis, Evolutionary algorithms for the selection of
+  time lags for time series forecasting by fuzzy inference systems,
+  Neurocomputing 73~(10-12) (2010) 2077--2088.
+
+\bibitem{Araujo2010a}
+R.~Ara\'ujo, A quantum-inspired evolutionary hybrid intelligent apporach fo
+  stock market prediction, International Jorunal of Intelligent Computing and
+  Cybernetics 3~(10) (2010) 24--54.
+
+\bibitem{Araujo2010b}
+R.~Ara\'ujo, Hybrid intelligent methodology to design translation invariant
+  morphological operators for brazilian stock market prediction, Neural
+  Networks 23~(10) (2010) 1238--1251.
+
+\bibitem{garcia2008}
+R.~Garc{\'\i}a-Pajares, J.~Benitez, G.~Sainz~Palmero, Feature selection form
+  time series forecasting: a case study, in: Proceedings of 8th International
+  Conference on Hybrid Intelligent Systems, 2008, pp. 555--560.
+
+\bibitem{Maus2011}
+A.~Maus, J.~C. Sprott, Neural network method for determining embedding
+  dimension of a time series, Communications in Nonlinear Science and Numerical
+  Simulation 16~(8) (2011) 3294--3302.
+
+\bibitem{Potter94}
+M.~Potter, K.~{De Jong}, A cooperative coevolutionary approach to function
+  optimization, in: Proceedings of Parallel Problem Solving from Nature, Vol.
+  866 of Lecture Notes in Computer Science, Springer Berlin/Heidelberg, 1994,
+  pp. 249--257.
+
+\bibitem{Potter00}
+M.~Potter, K.~{De Jong}, Cooperative coevolution: An architecture for evolving
+  coadapted subcomponents, Evolutionary Computation 8~(1) (2000) 1--29.
+
+\bibitem{Wiegand01}
+R.~Wiegand, W.~Liles, K.~{De Jong}, An empirical analysis of collaboration
+  methods in cooperative coevolutionary algorithms, in: Proceedings of the
+  Genetic and Evolutionary Computation Conference, 2001, pp. 1235--1242.
+
+\bibitem{Panait03}
+L.~Panait, R.~Wiegand, S.~Luke, Improving coevolutionary search for optimal
+  multiagent behaviors, in: Proceedings of the International Joint Conference
+  on Artificial Intelligence, Morgan Kaufmann, 2003, pp. 653--658.
+
+\bibitem{Chun07}
+C.~Au, H.~Leung, Biasing mutations in cooperative coevolution, in: Proceedings
+  of IEEE Congress on Evolutionary Computation, 2007, pp. 828--835.
+
+\bibitem{Tan06}
+K.~Tan, Y.~Yang, C.~Goh, A distributed cooperative co-evolutionary algorithm
+  for multi-objective optimization, IEEE Transactions on Evolutionary
+  Computation 10~(5) (2006) 527--549.
+
+\bibitem{Garcia-Pedrajas10}
+N.~Garc\'{i}a-Pedrajas, J.~R. del Castillo, D.~Ortiz-Boyer, A cooperative
+  coevolutionary algorithm for instance selection for instance-based learning,
+  Machine Learning 78~(3) (2010) 381--420.
+
+\bibitem{Derrac10}
+J.~Derrac, S.~Garc\'{i}a, F.~Herrera, Ifs-coco: Instance and feature selection
+  based on cooperative coevolution with nearest neighbor rule, Pattern
+  Recognition 43~(6) (2010) 2082--2105.
+
+\bibitem{Garcia-Pedrajas05}
+N.~Garc\'{i}a-Pedrajas, C.~Hervas-Mart\'{i}nez, D.~Ortiz-Boyer, Cooperative
+  coevolution of artificial neural network ensembles for pattern
+  classification, IEEE Transactions on Evolutionary Computation 9~(3) (2005)
+  271--302.
+
+\bibitem{Li08}
+M.~Li, J.~Tian, F.~Chen, Improving multiclass pattern recognition with a
+  co-evolutionary rbfnn, Pattern Recognition Letters 29~(4) (2008) 392--406.
+
+\bibitem{Xin10}
+X.~Ma, H.~Wu, Power system short-term load forecasting based on cooperative
+  co-evolutionary immune network model, in: Proceedings of 2nd International
+  Conference on Education Technology and Computer, 2010, pp. 582--585.
+
+\bibitem{Qian-Li08}
+M.~Qian-Li, Z.~Qi-Lun, P.~Hong, Z.~Tan-Wei, Q.~Jiang-Wei, Multi-step-prediction
+  of chaotic time series based on co-evolutionary recurrent neural network,
+  Chinese Physics B 17~(2).
+
+\bibitem{Bowerman2004}
+B.~Bowerman, R.~O'Connell, A.~Koehler, Forecasting: methods and applications,
+  Thomson Brooks/Cole: Belmont, CA., 2004.
+
+\bibitem{Makridakis1982}
+S.~Makridakis, A.~Andersen, R.~Carbone, R.~Fildes, M.~Hibon, R.~Lewandowski,
+  J.~Newton, E.~Parzen, R.~Winkler, The accuracy of extrapolation (time series)
+  methods: Results of a forecasting competition, Journal of Forecasting 1~(2)
+  (1982) 111--153.
+
+\bibitem{Armstrong}
+J.~Armstrong, F.~Collopy, Error measures for generalizing about forecasting
+  methods: Empirical comparisons, International Journal of Forecasting 8~(1)
+  (1992) 69--80.
+
+\bibitem{Fildes1992}
+R.~Fildes, The evaluation of extrapolative forecasting methods, International
+  Journal of Forecasting 8~(1) (1992) 81--98.
+
+\bibitem{Makridakis2000}
+S.~Makridakis, M.~Hibon, The m3-competition: results, conclusions and
+  implications, International Journal of Forecasting 16~(4) (2000) 451--476.
+
+\bibitem{Hyndman2006}
+R.~Hyndman, A.~Koehler, Another look at measures of forecast accuracy,
+  International Journal of Forecasting 22~(4) (2006) 679--688.
+
+\bibitem{Zhang2005}
+G.~Zhang, M.~Qi, Neural network forecasting for seasonal and trend time series,
+  European Journal of Operational Research 160~(2) (2005) 501--514.
+
+\bibitem{Eshelman}
+L.~Eshelman, The chc adptive search algorithm: How to have safe search when
+  engaging in nontraditional genetic recombination, in: Proceedings of 1st
+  Workshop on Foundations of Genetic Algorithms, 1991, pp. 265--283.
+
+\bibitem{Wichern}
+D.~Wichern, R.~Jones, Assessing the impact of market disturbances using
+  intervention analysis, Management Science 24~(3) (1977) 329--337.
+
+\bibitem{Keel2009}
+J.~Alcal\'a-Fdez, L.~S\'anchez, S.~Garc\'{i}a, M.~del Jesus, S.~Ventura,
+  J.~Garrell, J.~Otero, C.~Romero, J.~Bacardit, V.~Rivas, J.~Fern\'andez,
+  F.~Herrera, Keel: a software tool to assess evolutionary algorithms for data
+  mining problems, Soft Computing - A Fusion of Foundations, Methodologies and
+  Applications 13~(3) (2009) 307--318.
+
+\bibitem{Wang}
+L.~Wang, J.~Mendel, Generating fuzzy rules by learning from examples, IEEE
+  Transactions on Systems, Man and Cybernetics 22~(6) (2002) 1414--1427.
+
+\bibitem{Martinez}
+A.~Mart\'{i}nez-Estudillo, F.~Mart\'{i}nez-Estudillo, C.~Herv\'as-Mart\'{i}nez,
+  N.~Garc\'{i}a-Pedrajas, Evolutionary product unit based neural networks for
+  regression, Neural Networks 19~(4) (2006) 477--486.
+
+\bibitem{Rustagi94}
+J.~Rustagi, Optimization techniques in statistics, Academic Press (Boston),
+  1994.
+
+\bibitem{Sheskin2004}
+D.~Sheskin, Handbook of parametric and nonparametric statistical procedures,
+  Chapman \& Hall/CRC, 2004.
+
+\bibitem{Zar1999}
+J.~Zar, Biostatistical analysis, Prentice Hall, Englewood Cliffs, 1999.
+
+\bibitem{Garcia2009}
+S.~Garc\'{i}a, A.~Fern\'andez, J.~Luengo, F.~Herrera, A study of statistical
+  techniques and performance measures for genetics-based machine learning:
+  accuracy and interpretability, Soft Computing 13~(10) (2009) 959--977.
+
+\bibitem{Holm1979}
+S.~Holm, A simple sequentially rejective multiple test procedure, Scandinavian
+  Journal of Statistics 6~(2) (1979) 65--70. 
+
+
+\end{thebibliography}
+
+%\bibliography{sipesca}
+
+\end{document}
+
