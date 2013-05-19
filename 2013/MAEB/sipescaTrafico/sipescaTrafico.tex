@@ -48,9 +48,12 @@ showstringspaces=false
 \title{Predicci\'on de tr\'afico a corto plazo con datos reales \thanks{Este trabajo ha sido desarrollado bajo los proyectos 
 }}
 %EvOrq (TIC-3903), CEI BioTIC GENIL (CEB09-0010), MICINN CEI Program (PYR-2010-13) and FPU research grant AP2009-2942 .
+% También el CANUBE
+% No he podido compilarlo porque falta la bibliografía. ¿Podéis poner el PDF?
 
 % a short form should be given in case it is too long for the running head
 \titlerunning{Predicción de tr\'afico con datos reales}
+% Tampoco es muy informativo este título y ocupa 15 páginas. ¿Cuál es el límite? - JJ
 \author{No author given}
 %\author{Anonymous\inst{1}, A. E. Eiben\inst{2}, E. Haasdijk\inst{2}, B. Weel\inst{2} and J.J. Merelo\inst{1}}
 
@@ -87,9 +90,11 @@ territorio nacional y de las administracciones homólogas fuera del territorio n
 esta apuesta son los proyectos desarrollados para informar lo más exactamente posible
 acerca del estado del tráfico, como el que lleva a cabo Google Maps que proporciona desde hace no
 mucho tiempo (2011) información del estado del tráfico en las ciudades más importantes de algunos
+% cita - JJ
 paises, aunque el proyecto inicial empezó sólo en algunas ciudades de EEUU (2009). Otros ejemplos
 nacionales son la apuesta de la DGT por la investigación en tráfico financiando proyectos y
 promocionando encuentros sobre movilidad y seguridad vial.  
+% citas - JJ
 
 Paralelamente a esta circunstancia, la población actual está evolucionando y se está convirtiendo
 en una población permanentemente informada, conectada y ubícua, puesto que en España existen
@@ -143,6 +148,7 @@ acerca del mejor itinerario a elegir para un determinado desplazamiento, tanto p
 de las vias como para las administraciones a la hora de planificar señalización, e intervención en
 las vías monitorizadas.
 
+% ¿Sección en mayúscula? JJ
 El artículo a partir de este punto se organiza en secciones. La sección \ref{sec:soa} repasa el
 estado del arte tanto de los algoritmos de de predicción de series temporales como de los
 dispositivos de captación de datos existentes actualmente. La sección \ref{sec:hw} presenta el
@@ -184,31 +190,43 @@ con el tema y que han sido ampliamente utilizados con conjuntos de datos públic
 sido testeados por sus desarrolladores. Todos los algoritmos de predicción intentan modelar un
 sistema numérico que represente el comportamiento de la serie y con el pueda predecirla. Estos
 modelos pueden ser lineales o no lineales. 
-
+% Ya vamos con la enumeración. El estado del arte se debe contar, no enumerar - JJ
 Dentro del grupo de los lineales hay varios, pero el más conocido es el llamado método ARIMA
 \cite{BoxJenk}. ARIMA es un modelo simple y cuyo funcionamiento está ampliamente demostrado, pero
 no funciona muy bien con muchas aplicaciones a series temporales reales, puesto que su ajuste no es
 fácil y lo debe de realizar operarios especializados. Esta es la principal razón de que surgieran
 los métodos no lineales. 
 
-Los modelos no lieales se ajustan mejor a aplicaciones reales aunque la facilidad de uso sigue
+Los modelos no lineales se ajustan mejor a aplicaciones reales aunque la facilidad de uso sigue
 siendo escasa \cite{Clements2004}, de ahí que existan propuestas donde se recomienda que se le debe
-dar prioridad a la facilidad de uso frente a otros aspectos más técnicos \cite{Gooijer25years}.
+dar prioridad a la facilidad de uso frente a otros aspectos más técnicos \cite{Gooijer25years}. % ¿qué resultados obtienen? ¿Qué problemas? 
 
 La predicción de series temporales también se ha abordado desde otros campos, como técnicas de
 Soft-Computing, \cite{Samanta2011}, \cite{Zhu2011}; Técnicas Fuzzy \cite{Qiu2011}, \cite{Wang2011};
 redes neuronales, \cite{Yu2010}; Regresión \cite{Kavaklioglu2011}; y sistemas expertos
 \cite{Dash1995}.
 
-En nuestro caso nos hemos centrado en métodos no lieales basados en la utilización de Redes
+En nuestro caso nos hemos centrado en métodos no lineales basados en la utilización de Redes
 Nuronales, puesto que tal y como afirma Tang \cite{Tang1991} son métodos que ofrecen una mayor
-flexibilidad y efectividad a la hora de predecir una serie temporal real. 
+flexibilidad y efectividad a la hora de predecir una serie temporal
+real.  %Esto podías haberlo dicho cuando mencionas las redes
+       %neuronales para que no parezca que lo has metido a posteriori
+       %- JJ 
 
 Existen muchos trabajos que aplican las redes neuronales a la predicción de series temporales
-\cite{Rivas04}. En concreto las llamadas RBFNs que se proponen en este trabajo se han utilizado en
-trabajos recientes como \cite{Hippert10,Lee09}, \cite{PerezGodoy2010} donde se aplican en un
-algoritmo evolutivo híbrido para la predicción a corto, medio plazo del precio del aceite de oliva.
+\cite{Rivas04}.  %Y seguro que hay algunos que no son de este autor - JJ
+En concreto las llamadas RBFNs que se proponen en este trabajo se han utilizado en
+trabajos recientes como \cite{Hippert10,Lee09}, % ¿Recientes? - JJ
+ \cite{PerezGodoy2010} donde se aplican en un
+algoritmo evolutivo híbrido para la predicción a corto, medio plazo
+del precio del aceite de oliva. % ¿Por qué no lo pones también antes
+                                % cuando hablas en general de los
+                                % métocos? Cuando llega aquí el lector
+                                % ya se ha olvidado que estaba
+                                % hablando de tu método. - JJ 
 
+% ¿Esto no debería ir antes? ¿Está relacionado con tu método? ¿Es el
+% estado del arte? - JJ
 Para realizar la predicción se utilizan periodos de tiempo de la serie de tamaño
 finito llamados ``lags''. Los lags deben representar perfectamente el comportamiento de la serie y
 su relación y según el teorema de Takens \cite{Takens1980} se establece que cogiendo adecuadamente
@@ -216,7 +234,9 @@ estos lags, el comportamiento del espacio multidimensional construido a partir d
 representar de forma correcta el comportamiento de la serie temporal real. 
 
 Existen métodos automáticos que intentan determinar el lag más adecuado como pueden ser el
-algoritmo QIEHI \cite{Araujo2010a}, \cite{Araujo2010b}. E incluso algunos autores han ido más alla,
+algoritmo QIEHI \cite{Araujo2010a}, \cite{Araujo2010b}. E incluso
+algunos autores han ido más allá, % Ponía "alla", pása el corrector
+                                % ortográfico - JJ
 buscando no sólo el lag, sino las características externas que afectan a la serie y que con un
 preprocesamiento previo de la serie temporal, puede desembocar en la elección de un lag  más
 adecuado para la predicción, \cite{garcia2008}. También se ha realizado este estudio después de la
@@ -224,12 +244,12 @@ predicción,  \cite{Maus2011}, incluyendo un post procesamiento de los datos que
 salida del método. 
 
 Tal y como se ha ido detallando, los procedimientos empleados en la literatura son variados y
-pueden incluir pre o post procesamiento de los datos. 
+pueden incluir pre o post procesamiento de los datos. % ¿ein? - JJ
 
 En la propuesta que se presenta en este artículo, se utiliza para la predicción un método no
 lineal que utiliza redes de base radial (RBFs) para determinar de forma cooperativa el lag y la
 predicción de la serie temporal a la que se aplique el algoritmo, si necesidad de ningún pre o pro
-procesamiento. 
+procesamiento. % ¿Y por qué no pones eso en el título? - JJ
 
 
 
@@ -253,7 +273,8 @@ adecuado ( incluye un $8.5\%$ de error en la captación).
 \end{figure} 
 
 Intelify es un dispositivo autónomo que puede ser instalado en el área donde se desean captar
-datos. Dispone de varios sensores y capta la información para enviarla a través de una conexion 3G. 
+datos. % No se va a instalar en otra - JJ
+Dispone de varios sensores y capta la información para enviarla a través de una conexion 3G. 
 Los datos recopilados que se incluyen en este trabajo han sido captados por 5 puntos diferentes
 (nodos 1-6) durante un total de 60 días. En la figura \ref{fig:collected-data} se representan el
 número de dispositivos BT captados por cada uno de los dispositivos de cdaptación a lo largo de este
@@ -286,7 +307,7 @@ en sábado o domingo son claramente inferiores al resto de los días.
  \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% EXPERIMENTS AND RESULTS %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Experiments and results}
+\section{Experimentos y resultados}
 \label{sec:experiments}
 
 En esta sección se analizan los datos recolectados y se obtienen los resultados estadísticos
@@ -294,7 +315,8 @@ iniciales a cerca de la predicción realizada.
 
 Debido al gran número de métodos existentes para realizar predicción, hemos seleccionado sólo 6 de
 ellos para poder realizar comparaciones entre los diferentes resultados. En esta selección se han
-incluido métodos lineales y no lineales. En concreto la selección Es ARIMA, Croston, Theta,
+incluido métodos lineales y no lineales. En concreto la selección Es
+ARIMA, Croston, Theta, % ¿por qué? - JJ
 Spline, L-Co-R y como método de control hemos seleccionado la media. Todos los métodos excepto
 L-Co-R están incluidos dentro del paquete estadístico R. L-Co-R es un algoritmo coevolutivo
 desarrollado por parte del equipo que firma el trabajo que ha generado resultados muy buenos dentro
@@ -567,10 +589,15 @@ plazo, lo que facilitará la tarea de previsión del flujo de tráfico en las v�
 consiguiente una mejor gestión del tráfico en dichas vías por parte de las autoridades competentes.
 
 \section{Agradecimientos}
-Este trabajo ha sido realizado gracias a la beca FPU AP2009-2942 y los proyectos EvOrq (P08-TIC-03903), Proyecto 83 (CANUBE) del CEI-BioTIC UGR, y TIN2011-28627-C04-02 (ANYSELF).
+Este trabajo ha sido realizado gracias a la beca FPU AP2009-2942 y los
+proyectos EvOrq (P08-TIC-03903), Proyecto 83 (CANUBE) del CEI-BioTIC
+UGR, y TIN2011-28627-C04-02 (ANYSELF). 
+% ¿Seguro que no es anónimo? - JJ
 
 \bibliographystyle{splncs}
 
+% me parecen excesivas citas, y además no me gusta nada que estén
+% aquí... - JJ
 \begin{thebibliography}{x}
 
 \bibitem{DatosTrafico2012}
