@@ -45,11 +45,11 @@ showstringspaces=false
 \mainmatter  % start of an individual contribution
 
 % first the title is needed
-\title{}
+\title{Adaptando algoritmos evolutivos paralelos al lenguaje funcional Erlang}
 %EvOrq (TIC-3903), CEI BioTIC GENIL (CEB09-0010), MICINN CEI Program (PYR-2010-13) and FPU research grant AP2009-2942 .
 
 % a short form should be given in case it is too long for the running head
-\titlerunning{}
+\titlerunning{Adaptando algoritmos evolutivos al lenguaje Erlang}
 \author{No author given}
 %\author{Anonymous\inst{1}, A. E. Eiben\inst{2}, E. Haasdijk\inst{2}, B. Weel\inst{2} and J.J. Merelo\inst{1}}
 
@@ -68,12 +68,11 @@ showstringspaces=false
 %\tocauthor{Authors' Instructions}
 \maketitle
 \begin{abstract}
-En el presente artículo se muestra la modelación e implementación de las ideas de la Computación Evolutiva bajo los paradigmas de programación funcional y concurrente. Bajo este enfoque son expuestas ventajas y desventajas de estos paradigmas en dicho dominio de aplicación a través de un caso de estudio.
-
-
+En el presente artículo se describe la modelación e implementación de un modelo de Computación Evolutiva sobre los paradigmas de programación funcional y concurrente al mapearse los conceptos de los modelos sobre los de los paradigmas. Bajo este enfoque son expuestas las ventajas de estos en dicho dominio de aplicación, analizándose algunas de las decisiones de diseño tomadas y viendo sus resultados en la implementación de un caso de estudio.
 %Este artículo muestra el diseño e implementación de servicios para Computación Evolutiva dentro del paradigma de la Arquitectura Orientada a Servicios. Este paradigma proporciona independencia en el lenguaje y distribución, pero el desarrollo requiere tratar con algunas características tecnológicas y de diseño, como el diseño abstracto o la ejecución desordenada. Para resolverlas, se utiliza OSGiLiath, una implementacion de una Arquitectura Orientada a Servicios para Algoritmos Evolutivos, para desarrollar nuevos servicios interoperables teniendo en cuenta esas restricciones.
 \end{abstract}
 
+\keywords{Algoritmos Evolutivos, Lenguajes Funcionales, Lenguajes Concurrentes, Erlang, Implementación de Algoritmos, Modelación}
 
 \section{Introducción}
 
@@ -84,8 +83,7 @@ Dos paradigmas emergen actualmente en la industria del software como herramienta
 
 El desafío de los multi-cores \cite{SutterL05}, entendiéndola como la necesidad de hacer paralelo el más simple de nuestros programas si queremos que haga uso de los modernos y potentes microprocesadores, lleva a crear (o retomar), patrones para el desarrollo de estos algoritmos muchos de los cuales acaban como nuevas características en lenguajes de programación. Ejemplos de estos son: Clojure, Go, Scala, Haskell y Erlang; en todos aparecen construcciones que soportan dentro del propio lenguaje modos de manejar la concurrencia: facilitando razonar sobre ella y simplificando su sintaxis.
 
-TODO
-El resto del articulo sigue....
+El resto del trabajo se estructura como sigue: estado del arte, dentro del que se caracterizan los paradigmas funcional y concurrente y se describe el lenguaje Erlang que los incluye. A continuación se muestra la modelación de un algoritmo genético usando conceptos de los paradigmas antes expuestos (Sección \ref{sec:design}); y finalmente, en la Sección \ref{sec:conclusions}, se presentan los resultados y conclusiones.
 
 %-----------------------------------------------------
 
@@ -93,7 +91,7 @@ El resto del articulo sigue....
 \section{Estado del arte}
 \label{sec:fprog2ae}
 
-Independientemente a la variedad de problemas a los que es aplicable la CE, en particular los Algoritmos Genéticos (AG), los conceptos en los que se basan son los mismos y así lo reflejan de una manera u otra las diferentes implementaciones realizadas. Lógicamente esto ha culminado en la creación de bibliotecas o frameworks que encapsulan los elementos comunes según la variante arquitectónica que se necesite usar. A semejanza del resto del espectro de proyectos software, el paradigma dominante para la creación de tales bibliotecas es el Orientado a Objetos (OO).
+Independientemente a la variedad de problemas a los que es aplicable la CE, en particular los Algoritmos Genéticos (AG), los conceptos en los que se basan son los mismos y así lo reflejan de una manera u otra las diferentes implementaciones realizadas. Lógicamente esto ha culminado en la creación de bibliotecas que encapsulan los elementos comunes según la variante arquitectónica que se necesite usar. A semejanza del resto del espectro de proyectos software, el paradigma dominante para la creación de tales bibliotecas es el Orientado a Objetos (OO).
 
 \subsection{Herramientas existentes}
 
@@ -106,7 +104,7 @@ ECJ consiste en un conjunto de herramientas para el trabajo con poblaciones, pos
 
 \subsubsection{ParadisEO}
 
-Framework orientado a objetos escrito en C++ para el diseño de metaheurísticas paralelas y distribuidas, basado en Evolving Objects \cite{Keijzer2001}, incluye soporte para algoritmos evolutivos, búsquedas locales con soporte para los patrones paralelos y distribuidos más comunes \cite{PARADISEO}. Posee soporte solamente para los modelos clásicos de AG paralelos.
+Marco de trabajo orientado a objetos escrito en C++ para el diseño de metaheurísticas paralelas y distribuidas, basado en Evolving Objects \cite{Keijzer2001}, incluye soporte para algoritmos evolutivos, búsquedas locales con soporte para los patrones paralelos y distribuidos más comunes \cite{PARADISEO}. Posee soporte solamente para los modelos clásicos de AG paralelos.
 
 % ParadisEO viene de EO, que precisamente lo iniciamos entre otro y
 % yo, aunque hace tiempo que no hacemos nada.
@@ -121,7 +119,7 @@ MALLBA consiste en una biblioteca integrada de plantillas para optimización com
 
 \subsection{Programación funcional}
 
-El paradigma de la programación funcional por su parte, aún cuando ofrece varias ventajas, no ha sido muy usado. Un tiempo atrás se exploraron en el campo de la Programación Genética \cite{Briggs:2008:FGP:1375341.1375345,Huelsbergen:1996:TSE:1595536.1595579,walsh:1999:AFSFESIHLP} no obstante dentro de los AG ha sido poca o nula su presencia \cite{Hawkins:2001:GFG:872017.872197}.
+El paradigma de la programación funcional por su parte, aún cuando ofrece varias ventajas, no ha sido muy usado. Un tiempo atrás se exploraron en el campo de la Programación Genética \cite{Briggs:2008:FGP:1375341.1375345,Huelsbergen:1996:TSE:1595536.1595579,walsh:1999:AFSFESIHLP}, más recientemente en la neuroevolución  \cite{Sher2013}; sin embargo dentro de los AG ha sido poca su presencia \cite{Hawkins:2001:GFG:872017.872197}.
 
 La programación funcional se caracteriza por el uso de las funciones como datos (pasándolas por parámetros y devolviéndolas como resultados), en particular de las funciones puras: aquellas cuyo resultado solo depende de los parámetros de entrada, excluyendo los cambios de estado, por lo que constituye un excelente enfoque del desarrollo de algoritmos concurrentes que tienen precisamente en la comunicación via cambios de estado a la primera fuente de errores y complejidad.
 
@@ -187,7 +185,7 @@ Los componentes del AG paralelo identificados como principales a la hora de dise
      \hline
   actor & Unidad de ejecución, proceso. \\
      \hline
-  ets & Lista persistente. \\
+  ets & Listado de cromosomas compartidos mediante la piscina. \\
      \hline
   módulo random & Generación de números aleatorios. \\
   \hline
@@ -196,7 +194,7 @@ Los componentes del AG paralelo identificados como principales a la hora de dise
 \end{table}
 
 
-\subsection{erlEA}
+\subsection{Biblioteca erlEA}
 
 En la realización del caso de estudio fue implementado, teniendo en cuenta los conceptos seleccionados anteriormente, un proyecto Erlang con varios módulos. El código se encuentra bajo licencias libres en la dirección: \url{http://secret.com}. Sus principales módulos y funciones son descritas a continuación.
 
@@ -255,25 +253,33 @@ Este es el módulo del proceso encargado de inicializar el trabajo de las piscin
 
 \subsubsection{Módulos auxiliares}
 
-Los módulos ya descritos contienen toda la lógica del AG, faltan sin embargo, para que sea operativo el software, algunos códigos no funcionales. Dichos módulos son:
+Los módulos ya descritos contienen toda la lógica del AG, faltan sin embargo, para que sea operativo el software, algunos códigos no funcionales. 
+
+Dichos módulos son:
 
 \begin{description}
-  
+
   \item[experiment] -- Encargado de iniciar una corrida del experimento.
-  
+
   \item[configBuilder] -- Especificación de los parámetros de un experimento.
-  
-  \item[profiler] -- Análisis de rendimiento: tiempos de ejecución, cantidad de iteraciones.
-  
+
+  \item[profiler] -- Análisis del comportamiento: tiempos de ejecución, cantidad de iteraciones, etc.
+
 \end{description}
 
-\section{Conclusiones}
+\section{Resultados y conclusiones}
 \label{sec:conclusions}
-%Este trabajo muestra los requisitos para crear un framework orientado a servicios para AEs y la tecnología escogida para cumplir esos requisitos.  Service Oriented Architecture (SOA) ofrece independencia del lenguaje, mecanismos de distribución o incluso sistemas operativos, permitiendo la integración de diferentes elementos. Sin embargo, algunos elementos deben considerarse en el desarrollo: los servicios son funciones de entrada/salida sin estado, los servicios pueden aparecer o desaparecer en tiempo real, y el orden de ejecución no debe estar fijo. En el campo de los AEs los servicios deben desarrollarse teniendo en cuenta estas restricciones. Este trabajo muestra el diseño abstracto de los elementos de un AE, junto con los requisitos tecnológicos a resolver. Se ha utilizado la tecnología OSGi como ejemplo. Los elementos para crear una SOA para AEs han sido presentados junto con un ejemplo de desarrollo.
+
+El diseño fue puesto a prueba con cromosomas de longitud 128, una población de 256 individuos por isla, 4 islas, 10 evaluadores y 5 reproductores por isla obteniéndose la solución del problema a los 3.922001 segundos y con 228 migraciones. Aunque los resultados no son los mejores posibles, si se obtuvo el óptimo lo que demuestra que el algoritmo fue correcto en su implementación.
+
+Con este trabajo se muestra la simplicidad de implementación de un modelo híbrido de AG, en su versión concurrente, normalmente abrumadoramente compleja sencillamente por ser concurrente. En la arquitectura las unidades de ejecución fueron mapeadas a actores, las estructurales a módulos y las procedurales a funciones; quedando claramente identificadas y listas a futuras extensiones.
+
+Como trabajo futuro queda la implementación de un experimento más complejo dónde se use además una arquitectura distribuida y heterogénea. Dado que el lenguaje tiene de manera nativa el soporte para la distribución de procesos y su MV está implementada para multitud de plataformas hacer esto sólo conllevaría cambios en las funciones que tratan con los cromosomas lográndose un elevando nivel de reutilización del diseño.
 
 %ACKNOWLEDGMENTS are optional
 \section{Agradecimientos}
-Este trabajo ha sido realizado gracias a la beca FPU AP2009-2942 y los proyectos EvOrq (P08-TIC-03903), Proyecto 83 (CANUBE) del CEI-BioTIC UGR, y TIN2011-28627-C04-02 (ANYSELF).
+
+Este trabajo ha sido realizado gracias al proyecto TIN2011-28627-C04-02 (ANYSELF) auspiciado por el Mineco, y al P08-TIC-03903 del Gobierno Regional de Andalucía. Es también respaldado por el Programa de Doctorado de la AUIP y por el proyecto 83 del Campus CEI BioTIC.
 
 \bibliographystyle{splncs}
 \bibliography{osgiliath,geneura,erlang-ae-model,referencias}
