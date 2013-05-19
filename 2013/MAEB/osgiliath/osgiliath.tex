@@ -50,6 +50,7 @@ showstringspaces=false
 % first the title is needed
 \title{Desarrollo de servicios para una Arquitectura Orientada a Servicios para Algoritmos Evolutivos \thanks{Este trabajo ha sido desarrollado bajo los proyectos 
 }}
+% Muchos servicios me parecen ¿Resolviendo problemas? ¿Creando aplicaciones? ¿Desarrollo ágil? - JJ
 %EvOrq (TIC-3903), CEI BioTIC GENIL (CEB09-0010), MICINN CEI Program (PYR-2010-13) and FPU research grant AP2009-2942 .
 
 % a short form should be given in case it is too long for the running head
@@ -78,12 +79,32 @@ showstringspaces=false
 %\tocauthor{Authors' Instructions}
 \maketitle
 \begin{abstract}
-Este artículo muestra el diseño e implementación de servicios para Computación Evolutiva dentro del paradigma de la Arquitectura Orientada a Servicios. Este paradigma proporciona independencia en el lenguaje y distribución, pero el desarrollo requiere tratar con algunas características tecnológicas y de diseño, como el diseño abstracto o la ejecución desordenada. Para resolverlas, se utiliza OSGiLiath, una implementacion de una Arquitectura Orientada a Servicios para Algoritmos Evolutivos, para desarrollar nuevos servicios interoperables teniendo en cuenta esas restricciones.
+Este artículo muestra el diseño e implementación de servicios para
+Computación Evolutiva dentro del paradigma de la Arquitectura
+Orientada a Servicios. Este paradigma proporciona independencia en el
+lenguaje y distribución, pero el desarrollo requiere tratar con
+algunas características tecnológicas y de diseño, como el diseño
+abstracto o la ejecución desordenada. Para resolverlas, se utiliza
+OSGiLiath, una implementacion de una Arquitectura Orientada a
+Servicios para Algoritmos Evolutivos, para desarrollar nuevos
+servicios interoperables teniendo en cuenta esas restricciones. % ¿Cuál es el objetivo del trabajo? ¿Lo has cumplido? ¿Qué resultados has obtenido? - JJ
+
 \end{abstract}
 
 
+% Creo que el límite son 10 páginas, ¿no? - JJ
 \section{Introduction}
-\noindent Service Oriented Architecture (SOA), o Arquitectura Orientada a Servicios (AOS) \cite{PAPAZOGLOU} se está convirtiendo en una importante tendencia en el desarrollo de software. Este paradigma permite la organización y distribución utilizando el concepto de {\em servicio}. Un servicio es una interacción en la que un {\em proveedor de servicio} publica {\em descripciones de servicio} (o interfaces) en el {\em registro de servicios}, para que los {\em consumidores de servicio} puedan encontrarlo y enlazarse con los proveedores de servicio para usarlo.
+
+\noindent El paradigma Service Oriented Architecture (SOA) o de
+Arquitectura Orientada a Servicios (AOS) \cite{PAPAZOGLOU} se está
+convirtiendo en una importante tendencia en el desarrollo de
+software. Este paradigma permite la organización y distribución % ¿de
+                                % qué? - JJ
+utilizando el concepto de {\em servicio}, es decir, una 
+interacción en la que un {\em proveedor de servicio} publica {\em
+  descripciones de servicio} (o interfaces) en el {\em registro de
+  servicios}, para que los {\em consumidores de servicio} puedan
+encontrarlo y enlazarse con los proveedores  para usarlo. 
 
 SOA permite independencia en el lenguaje de programación y los mecanismos de distribución, centrándose en la facilidad de extensión e integración, pero cuenta con las siguientes restricciones:
 
@@ -91,7 +112,8 @@ SOA permite independencia en el lenguaje de programación y los mecanismos de di
 \item Los servicios deben ser funciones de entrada/salida.
 \item Los servicios no deben tener estado (es decir, no usar variables globales).
 \item El orden de ejecución de los servicios no es fijo.
-\item Los servicios deben ser diseñados tan abstractos como sea posible.
+\item Los servicios deben ser diseñados tan abstractos como sea
+  posible. % ¿a un nivel de abstracción adecuado? - JJ
 \end{itemize}
 
 La computación distribuida ofrece la posibilidad de utilizar las ventajas del procesamiento paralelo y así conseguir un mayor poder de cómputo \cite{OPENSCIENCEGRID}.
@@ -108,9 +130,34 @@ OSGi permite construir sistemas software de calidad considerando un alto nivel d
 %\label{SOADIAGRAM} 
 %\end{figure} 
 
-En nuestro trabajo anterior \cite{OSGILIATH} presentamos una Arquitectura Orientada a Servicios para Algoritmos Evolutivos (SOA-EA), junto con guías y pasos para migrar del desarrollo tradicional de Algoritmos Evolutivos (AEs) a SOA. También se presentó una implementación específica, llamada OSGiLiath ({\em OSGi Laboratory for Implementation and Testing of Heuristics}): un entorno para el desarrollo de algoritmos distribuidos extensible con una arquitectura basada en plug-ins y basada en una especificación software ampliamente aceptada (OSGi). En este trabajo mostramos el desarrollo completo de un servicio utilizando la tecnología específica, en lugar del diseño abstracto presentado en nuestro anterior trabajo.
+% ¿nuestro trabajo? ¿No se anónimo? - JJ 
+En nuestro trabajo anterior \cite{OSGILIATH} presentamos una
+Arquitectura Orientada a Servicios para Algoritmos Evolutivos
+(SOA-EA), junto con guías y pasos para migrar del desarrollo
+tradicional de Algoritmos Evolutivos (AEs) a SOA. También se presentó
+una implementación específica, llamada OSGiLiath ({\em OSGi Laboratory
+  for Implementation and Testing of Heuristics}): un entorno para el
+desarrollo de algoritmos distribuidos extensible con una arquitectura
+basada en plug-ins y basada en una especificación software ampliamente
+aceptada (OSGi). En este trabajo mostramos el desarrollo completo de
+un servicio utilizando la tecnología específica, en lugar del diseño
+abstracto presentado en nuestro anterior trabajo. % Esto debería ir al
+                                % título y al abstract. Y deberías
+                                % insertar alguna medida que indicara
+                                % en qué es ese desarrollo completo
+                                % mejorque hacerlo con Perl, por
+                                % ejemplo - JJ 
 
-El resto del trabajo se estructura como sigue: después del estado del arte, presentamos los principios de diseño para crear servicios para Computación Evolutiva (CE) (Sección \ref{sec:design}). A continuación, se explica la tecnología de implementación OSGi en la Sección \ref{sec:technology}, utilizada para construir nuestro framework (descrito en la Sección \ref{sec:osgiliath}). Después, se presentan los pasos para crear servicios dentro de este framework (Sección \ref{sec:development}). Finalmente se presentan las conclusiones y trabajo futuro (Sección \ref{sec:conclusions}).
+El resto del trabajo se estructura como sigue: después del estado del
+arte, presentamos los principios de diseño para crear servicios para
+Computación Evolutiva (CE) (Sección \ref{sec:design}). A continuación,
+se explica la tecnología de implementación OSGi en la Sección
+\ref{sec:technology}, utilizada para construir nuestro framework
+(descrito en la Sección \ref{sec:osgiliath}). Después, se presentan
+los pasos para crear servicios dentro de este framework (Sección
+\ref{sec:development}). Finalmente se presentan las conclusiones y
+trabajo futuro (Sección \ref{sec:conclusions}). % ¿cómo se dice
+                                % framework en español? - JJ
 
 
 
@@ -121,7 +168,22 @@ Aunque SOA se usa ampliamente en el desarrollo de software no está muy aceptada
 
 Entre la gran cantidad de herramientas software que existen, queremos centrarnos en los frameworks de algoritmos evolutivos distribuídos más aceptados. ECJ \cite{ECJ}, Evolutionary Computation in Java, es un conjunto de clases Java que pueden ser extendidas e incluyen varios módulos de comunicación. MALLBA \cite{MALLBA} se basa en esqueletos software con una interfaz común pública. Cada esqueleto implementa una técnica de resolución para optimizaciónen el campo de optimización exacta, heurística o híbrida. Proporciona capacidades de distribución utilizando MPI. Sin embargo estos dos frameworks no se basan en el desarrollo orientado a plug-ins, por lo que no pueden tomar las ventajas de características como gestión del ciclo de vida, versionado o enlazado dinámico de servicios, como propone OSGi.
 
-Otra plataforma importante es DREAM \cite{DREAM}, un framework para Algoritmos Evolutivos basado en Java que define un modelo de isla y usa el protocolo Gossip y sockets TCP/IP para comunicación. Puede desplegarse en plataformas P2P y está dividido en cinco capas. Cada capa proporciona una interfaz de usuario y diferentesniveles de interacción y abstracción, pero añadir nuevas funcionalidades no es tan fácil, debido al hecho de que el sistema debe pararse antes de añadir nuevos módulos y la implementación de interfaces debe estar definida en el código fuente, por lo que necesita compilarse con cada elemento a añadir (como en ECJ). OSGi permite añadir nuevas funcionalidades sólamente compilando las nuevas características y no las ya existentes. jMetal \cite{JMETAL}, un también es un framework basado en Java, pero sin posibilidad de distribución y mayormente centrado en optimización Multi-Objetivo.
+Otra plataforma importante es DREAM \cite{DREAM}, un framework para
+Algoritmos Evolutivos basado en Java que define un modelo de isla y
+usa el protocolo Gossip y sockets TCP/IP para comunicación. Puede
+desplegarse en plataformas P2P y está dividido en cinco capas. Cada
+capa proporciona una interfaz de usuario y diferentesniveles de
+interacción y abstracción, pero añadir nuevas funcionalidades no es
+tan fácil, debido al hecho de que el sistema debe pararse antes de
+añadir nuevos módulos y la implementación de interfaces debe estar
+definida en el código fuente, por lo que necesita compilarse con cada
+elemento a añadir (como en ECJ). OSGi permite añadir nuevas
+funcionalidades sólamente compilando las nuevas características y no
+las ya existentes. jMetal \cite{JMETAL},  también es un framework
+basado en Java, pero sin posibilidad de distribución y mayormente
+centrado en optimización Multi-Objetivo. % Toma enumeración
+                                % habitual. ¿Qué tienen de
+                                % bueno/malo/diferente? - JJ
 
 ParadiseEO \cite{PARADISEO} permite el diseño de AEs y Búsqueda Local con hibridación, proporcionando una gran variedad de operadores y funciones de evaluación. También implementa los modelos paralelos y distribuídos más comunes, y está basado en librerías estándar como MPI, PVM y Pthreads. Sin embargo, cuenta con los mismos problemas que los frameworks anteriores, no cuenta con gestión del ciclo de vida, ni programación orientada a servicios. GAlib \cite{GALIB} es muy similar y comparte las mismas características y problemas. 
 
@@ -129,7 +191,10 @@ En el campo de los frameworks basados en plug-ins, HeuristicLab \cite{HEURISTICL
 
 Finalmente, el único framework orientado a servicios para optimización es GridUFO \cite{GRIDUFO}, pero sólo permite la modificación de la función objetivo y añadir nuevos algoritmos, sin poder combinar servicios existentes.
 
-Los frameworks anteriores han sido diseñados para ser extendibles y re-usables, pero sin tener en cuenta las restricciones de SOA para lograr más independencia y mejoras en el desarrollo.
+Los frameworks anteriores han sido diseñados para ser extendibles y
+re-usables, pero sin tener en cuenta las restricciones de SOA para
+lograr más independencia y mejoras en el desarrollo. % Por eso
+                                % nosotros ... - JJ
 
 \section{Diseñando servicios para una Arquitectura Orientada a Servicios para AEs}
 \label{sec:design}
@@ -170,12 +235,14 @@ Esta sección explica algunas características técnicas de la tecnología escog
 
 La tecnología utilizada, OSGi, define una especificación para SOAs en máquinas virtuales. Proporciona características muy deseables, como abstracción de paquetes, administración del ciclo de vida o versionado, permitiento reducción en el tiempo de desarrollo, soporte, y complejidad en el despligue de las aplicaciones.
 
-Esta tecnología permite descubrimiento dinámico de nuevos componentes, para incrementar la colaboración y minimizar y administrar el acoplamiento entre módulos. Además, ya existen interfaces estándar para patrones muy usados, como servidores HTTP, configuración, logs, seguridad o administración de XML.
+Esta tecnología permite descubrimiento dinámico de nuevos componentes, para incrementar la colaboración y minimizar y administrar el acoplamiento entre módulos. Además, ya existen interfaces estándar para patrones muy usados, como servidores HTTP, configuración, registros, seguridad o administración de XML.
 
 OSGi cuenta con un modelo orientado a capas, que explican su funcionalidad. Cada una se basa en la capa siguiente:
 
 \begin{itemize}
-\item Bundles: son los componentes OSGi creados por los desarrolladore (aplicaciones).
+\item Bundles: son los componentes OSGi creados por los desarrolladore
+  (aplicaciones). % ¿hatos? Debes de minimizar la cantidad de palabras
+                  % inglesas - JJ 
 \item Servicios: Esta capa conecta los bundles de forma dinámica ofreciendo un modelo de publicación-búsqueda-enlace.
 \item Ciclo de vida: La API para instalar, iniciar, parar, actualizar y desinstalar bundles.
 \item Módulos: Esta capa define cómo un bundle puede importar y exportar código.
@@ -237,7 +304,11 @@ Para implementar un servicio se crea una clase que implementa una interfaz. Por 
 \hlstd{}\hlopt{$<$/}\hlstd{scr}\hlopt{:}\hlstd{component}\hlopt{$>$}\hlstd{}\hspace*{\fill}\\
 \mbox{}
 \normalfont
-\caption{Service Description. Este documento indica que la implementación del servicio {\em FitnessCalculator} es {\em VRPFitnessCalculator}, pero no se puede activar hasta que todas sus referencias (otros servicios) se activen.}
+\caption{Service Description. Este documento indica que la
+  implementación del servicio {\em FitnessCalculator} es {\em
+    VRPFitnessCalculator}, pero no se puede activar hasta que todas
+  sus referencias (otros servicios) se activen.}
+% Esto podías suprimirlo si te falta espacio - JJ
 \label{fig:ds}
 \end {figure*}
 
@@ -252,6 +323,9 @@ Gracias a la especificación OSGi 4.2, los servicios pueden y deben ser indistin
 \caption{Utilizando el servicio Migrator para crear un AE distribuído basado en islas con topología en anillo (las cajas blancas son interfaces de los servicios y las grises son las implementaciones).} 
 \label{MIGRATOR} 
 \end{figure} 
+
+% ¿ya se ha acabado? ¿Esto es todo? ¿Un manual de usuario? ¿No dices
+% nada más? ¿Cuanto tiempo? ¿Cuantas líneas de código? ¿Algo? - JJ
 
 \section{Conclusiones}
 \label{sec:conclusions}
