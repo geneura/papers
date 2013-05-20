@@ -1,0 +1,288 @@
+\documentclass[runningheads]{llncs}
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx,epsfig}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{rotating}
+\usepackage{subfig}
+\usepackage{listings}
+%%%%
+
+\usepackage{color}
+\usepackage{alltt}
+\usepackage{verbatim}
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-noshorthands]{babel}
+
+%%
+
+\usepackage{url}
+
+%\urldef{\mailsa}\path|pgarcia@atc.ugr.es|
+
+\urldef{\mailsa}\path|ANONYMOUS@SECRET.COM|
+
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\lstset{
+basicstyle=\ttfamily \scriptsize,
+language=c++,
+frame=single,
+stringstyle=\ttfamily,
+showstringspaces=false
+}
+
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+\renewcommand{\floatpagefraction}{0.9}
+
+\begin{document}
+
+\mainmatter  % start of an individual contribution
+
+% first the title is needed
+\title{Adaptando algoritmos evolutivos paralelos al lenguaje funcional Erlang}
+%EvOrq (TIC-3903), CEI BioTIC GENIL (CEB09-0010), MICINN CEI Program (PYR-2010-13) and FPU research grant AP2009-2942 .
+
+% a short form should be given in case it is too long for the running head
+\titlerunning{Adaptando algoritmos evolutivos al lenguaje Erlang}
+\author{No author given}
+%\author{Anonymous\inst{1}, A. E. Eiben\inst{2}, E. Haasdijk\inst{2}, B. Weel\inst{2} and J.J. Merelo\inst{1}}
+
+%
+
+%\authorrunning{P. Garc\'ia-S\'anchez et al.}
+\authorrunning{Anonymous.}
+% (feature abused for this document to repeat the title also on left hand pages)
+% the affiliations are given next; don't give your e-mail address
+% unless you accept that it will be published
+
+%\institute{Dept. of Computer Architecture and Technology, University of Granada, Spain \and Dept. of Computer Science, Vrije Universiteit Amsterdam, The Netherlands
+%\mailsa}
+\institute{No institute given \mailsa}
+
+%\tocauthor{Authors' Instructions}
+\maketitle
+\begin{abstract}
+En el presente artículo se describe la modelación e implementación de un modelo de Computación Evolutiva sobre los paradigmas de programación funcional y concurrente al mapearse los conceptos de los modelos sobre los de los paradigmas. Bajo este enfoque son expuestas las ventajas de estos en dicho dominio de aplicación, analizándose algunas de las decisiones de diseño tomadas y viendo sus resultados en la implementación de un caso de estudio.
+%Este artículo muestra el diseño e implementación de servicios para Computación Evolutiva dentro del paradigma de la Arquitectura Orientada a Servicios. Este paradigma proporciona independencia en el lenguaje y distribución, pero el desarrollo requiere tratar con algunas características tecnológicas y de diseño, como el diseño abstracto o la ejecución desordenada. Para resolverlas, se utiliza OSGiLiath, una implementacion de una Arquitectura Orientada a Servicios para Algoritmos Evolutivos, para desarrollar nuevos servicios interoperables teniendo en cuenta esas restricciones.
+\end{abstract}
+
+\keywords{Algoritmos Evolutivos, Lenguajes Funcionales, Lenguajes Concurrentes, Erlang, Implementación de Algoritmos, Modelación}
+
+\section{Introducción}
+
+
+\noindent El campo de la Computación Evolutiva (CE) es rico en características, modelos y problemas pero no lo es igual en cuanto a paradigmas de programación a usar en la implementación de los algoritmos. Tecnologías como Java, C/C++ y Perl se mantienen como las más usadas y aunque se acepta la importancia de la implementación \cite{DBLP:conf/iwann/MereloRACML11}, no es mucho el interés de la comunidad científica en abordar nuevos lenguajes de programación por novedosos y prometedores que pudieran ser.
+
+Dos paradigmas emergen actualmente en la industria del software como herramientas de abstracción: el funcional y el concurrente, ante viejos y nuevos problemas. Aunque los lenguajes funcionales están a la mano desde hace buen tiempo, LISP es uno de los lenguajes de programación más longevos que existe, nunca han sido de mucho uso fundamentalmente por no disponerse de implementaciones eficientes. Esto ha ido cambiando, sus desventajas superándose y las ventajas llevando a que varios de sus conceptos sean incluidos en lenguajes orientados a objetos modernos (ejemplo C\#).
+
+El desafío de los multi-cores \cite{SutterL05}, entendiéndola como la necesidad de hacer paralelo el más simple de nuestros programas si queremos que haga uso de los modernos y potentes microprocesadores, lleva a crear (o retomar), patrones para el desarrollo de estos algoritmos muchos de los cuales acaban como nuevas características en lenguajes de programación. Ejemplos de estos son: Clojure, Go, Scala, Haskell y Erlang; en todos aparecen construcciones que soportan dentro del propio lenguaje modos de manejar la concurrencia: facilitando razonar sobre ella y simplificando su sintaxis.
+
+El resto del trabajo se estructura como sigue: estado del arte, dentro del que se caracterizan los paradigmas funcional y concurrente y se describe el lenguaje Erlang que los incluye. A continuación se muestra la modelación de un algoritmo genético usando conceptos de los paradigmas antes expuestos (Sección \ref{sec:design}); y finalmente, en la Sección \ref{sec:conclusions}, se presentan los resultados y conclusiones.
+
+%-----------------------------------------------------
+
+
+\section{Estado del arte}
+\label{sec:fprog2ae}
+
+Independientemente a la variedad de problemas a los que es aplicable la CE, en particular los Algoritmos Genéticos (AG), los conceptos en los que se basan son los mismos y así lo reflejan de una manera u otra las diferentes implementaciones realizadas. Lógicamente esto ha culminado en la creación de bibliotecas que encapsulan los elementos comunes según la variante arquitectónica que se necesite usar. A semejanza del resto del espectro de proyectos software, el paradigma dominante para la creación de tales bibliotecas es el Orientado a Objetos (OO).
+
+\subsection{Herramientas existentes}
+
+Son numerosas las herramientas desarrolladas para el trabajo con algoritmos evolutivos; en dependencia de su objetivo soportan diferentes plataformas, modelos de AE, integración con otros entornos y tamaños de los problemas. Entre las más representativas se encuentran: ECKit\footnote{http://cs.gmu.edu/~eclab/tools.html}, JDEAL\footnote{http://laseeb.isr.ist.utl.pt/sw/jdeal/home.html}, ECJ\footnote{http://cs.gmu.edu/~eclab/projects/ecj/}, ParadisEO\footnote{http://paradiseo.gforge.inria.fr/}, EASEA\footnote{https://lsiit.u-strasbg.fr/easea/index.php/EASEA\_platform} y MALLBA\footnote{http://neo.lcc.uma.es/software/mallba/index.php}.
+
+
+\subsubsection{ECJ}
+
+ECJ consiste en un conjunto de herramientas para el trabajo con poblaciones, posee facilidades para la optimización paralela y la optimización multiobjetivo \cite{Luke2010}. Entre otras formas de representación admite la programación genética. Está implementado en Java y soporta múltiples modelos de AG paralelos: modelo de islas y celular asíncrono, maestro-esclavo y distribución coevolucionaria.
+
+\subsubsection{ParadisEO}
+
+Marco de trabajo orientado a objetos escrito en C++ para el diseño de metaheurísticas paralelas y distribuidas, basado en Evolving Objects \cite{Keijzer2001}, incluye soporte para algoritmos evolutivos, búsquedas locales con soporte para los patrones paralelos y distribuidos más comunes \cite{PARADISEO}. Posee soporte solamente para los modelos clásicos de AG paralelos.
+
+% ParadisEO viene de EO, que precisamente lo iniciamos entre otro y
+% yo, aunque hace tiempo que no hacemos nada.
+
+\subsubsection{EASEA}
+
+\emph{EAsy Specification of Evolutionary Algorithms} es una plataforma de evolución artificial masivamente paralela desarrollada por SONIC (Stochastic Optimisation and Nature Inspired Computing). Posee un lenguaje propio en el que se se describe el algoritmo: estructura de los individuos, operador de inicialización, función de aptitud y los operadores de crossover y mutación; a partir de esto la plataforma traduce a un conjunto de ficheros C++ que pueden además ser compilados para que usen las GPUs nVidia. Solo soporta el modelo de islas de pGA.
+
+\subsubsection{MALLBA}
+
+MALLBA consiste en una biblioteca integrada de plantillas para optimización combinatoria: técnicas exactas, heurísticas e híbridas. Soporta ejecución tanto en ambientes secuenciales como paralelos, teniendo en cuenta el uso tanto de redes LANs como WANs \cite{MALLBA}. Está implementada en C++ e incluye las versiones distribuidas y celulares de AG así como las técnicas CHC y $\mu$CHC.
+
+\subsection{Programación funcional}
+
+El paradigma de la programación funcional por su parte, aún cuando ofrece varias ventajas, no ha sido muy usado. Un tiempo atrás se exploraron en el campo de la Programación Genética \cite{Briggs:2008:FGP:1375341.1375345,Huelsbergen:1996:TSE:1595536.1595579,walsh:1999:AFSFESIHLP}, más recientemente en la neuroevolución  \cite{Sher2013}; sin embargo dentro de los AG ha sido poca su presencia \cite{Hawkins:2001:GFG:872017.872197}.
+
+La programación funcional se caracteriza por el uso de las funciones como datos (pasándolas por parámetros y devolviéndolas como resultados), en particular de las funciones puras: aquellas cuyo resultado solo depende de los parámetros de entrada, excluyendo los cambios de estado, por lo que constituye un excelente enfoque del desarrollo de algoritmos concurrentes que tienen precisamente en la comunicación via cambios de estado a la primera fuente de errores y complejidad.
+
+El uso de listas, con implementaciones muy optimizadas, es omnipresente en la PF también, siendo en los AG también una de las estructuras de datos más utilizadas. Lo que da un conveniente pareo de conceptos entre dominio de la solución y dominio de implementación.
+
+\subsection{Erlang}
+
+
+Erlang es un lenguaje de programación funcional, concurrente y distribuido, adecuado para la construcción de sistemas que requieran grandes niveles de distribución, tolerancia a fallos y disponibilidad. Ha sido en más de una ocasión escogido por encima de C/C++ para el desarrollo de sistemas de uso intensivo de recursos \cite{Cesarini2009} dada la eficiencia de su ejecución.
+
+Utiliza el modelo {\em actor} para su implementación del paradigma de programación concurrente y posee facilidades para la integración con otros lenguajes tales como C/C++ y Java. Sus procesos son manejados por su máquina virtual (MV), que tiene un planificador por cada núcleo de la CPU, lo cual lo hacen ideal para la actual (y venideras) generación de procesadores multi-núcleos.
+
+El que sea un lenguaje concurrente significa que posee entre sus tipos de datos el de proceso, siendo valores de primera clase, no facilidades proveídas por bibliotecas. Siendo en principio tan ligeros que una misma instancia de la MV puede tener a la vez millones en ejecución.
+
+\section{Diseñando AGs en un lenguaje funcional y concurrente}
+\label{sec:design}
+
+Para lograr una buena implementación de un algoritmo, cualquiera sea su naturaleza, es necesario tener en cuenta las características del lenguaje en el que se realizará así como cada concepto constituyente del dominio del problema. Se usará como caso de estudio un AG paralelo híbrido, sobre una topología de isla, en la que cada nodo será a su vez un AG concurrente basado en piscina. El lenguaje de programación será Erlang y el problema {\em OneMax}.
+
+Los componentes del AG paralelo identificados como principales a la hora de diseñar la implementación aparecen listados en la Tabla \ref{agpComp}. Las construcciones de Erlang identificadas para la modelación son las expuestas en la Tabla \ref{erlComp}.
+
+
+\begin{table}
+  \centering
+   \begin{tabular}{|p{3.2cm}|p{5cm}|p{3cm}|}
+   \hline
+   \textbf{Componente AG} & \textbf{Papel} & \textbf{Descripción}\\
+     \hline
+      cromosoma & Representación de la solución al problema. & cadena binaria \\
+     \hline
+      cromosoma evaluado & Par \{cromosoma, fitness\}. & cantidad de valores 1\\
+     \hline
+      población & Conjunto de cromosomas. & lista\\
+     \hline
+     cruzamiento & Relación entre dos cromosomas que da por resultado otros dos nuevos. & función de cruzamiento\\
+     \hline
+      mutación & Modificación de un cromosoma.& función de cambio de un valor\\
+     \hline
+     selección & Criterio para obtener una sublista a partir de la población. & función de selección\\
+     \hline
+      piscina & Población compartida entre las unidades de cálculo en un nodo. & población\\
+     \hline
+      isla & Nodo de la topología. & población\\
+     \hline
+      migración & Evento aleatorio de intercambio de cromosomas. & mensaje\\
+     \hline
+   \end{tabular}
+  \caption{Componentes del AG paralelo.}\label{agpComp}
+\end{table}
+
+\begin{table}
+  \centering
+\begin{tabular}{|p{3.4cm}|p{7cm}|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  \textbf{Componente Erlang} & \textbf{Papel} \\
+     \hline
+  tupla & Tipo de datos para representar entes compuestos cuyas componentes sean de diferentes tipos y no varíen en el tiempo. \\
+     \hline
+  lista & Tipo de datos para representar entes compuestos cuyas componentes sean de igual tipo y varíen en el tiempo. \\
+     \hline
+  función & Relaciones entre datos, operaciones. \\
+     \hline
+  actor & Unidad de ejecución, proceso. \\
+     \hline
+  ets & Listado de cromosomas compartidos mediante la piscina. \\
+     \hline
+  módulo random & Generación de números aleatorios. \\
+  \hline
+\end{tabular}
+  \caption{Construcciones de Erlang.}\label{erlComp}
+\end{table}
+
+
+\subsection{Biblioteca erlEA}
+
+En la realización del caso de estudio fue implementado, teniendo en cuenta los conceptos seleccionados anteriormente, un proyecto Erlang con varios módulos. El código se encuentra bajo licencias libres en la dirección: \url{http://secret.com}. Sus principales módulos y funciones son descritas a continuación.
+
+
+\subsubsection{Módulo reproducer}
+
+Este es el módulo del proceso que selecciona la subpoblación a reproducir, los padres, realiza el cruzamiento y desencadena las migraciones. Como actor responde a los mensajes {\em evolve}: para realizar una iteración y {\em emigrateBest} para efectuar una emigración. Las funciones con las que logra esto aparecen enumeradas en la Tabla \ref{tb:reproducer}.
+
+\begin{table}
+  \centering
+\begin{tabular}{|p{5cm}|p{7cm}|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   \textbf{Función} &  \textbf{Descripción} \\
+  \hline
+  {\tt extractSubpopulation(Table, N) } & A partir de una {\em ets} y una cantidad, selecciona de la {\em ets} un grupo de cromosomas. \\
+  \hline
+  {\tt bestParent(Pop2r)} & Selecciona de una lista de cromosomas el mejor individuo. \\
+  \hline
+ {\tt selectPop2Reproduce(Pop, N)} & Selecciona aleatoriamente un conjunto de pares de una lista de cromosomas. \\
+  \hline
+  {\tt crossover(Ind1, Ind2)} & Realización de un cruce y mutación sobre el mismo, a partir de dos cromosomas. \\
+  \hline
+\end{tabular}
+  \caption{Funciones del módulo reproducer.}\label{tb:reproducer}
+\end{table}
+
+
+\subsubsection{Módulo evaluator}
+
+Este es el módulo del proceso que calcula el fitness, hace periódicas consultas sobre el pool para obtener individuos a los que calcularle el fitness. Está compuesto por la función maxOnes/1 que calcula el fitness y por el mensaje eval, dicho mensaje es el que activa al evaluador para que calcule.
+
+\subsubsection{Módulo poolManager}
+
+Este es el módulo del proceso encargado de inicializar el trabajo de las piscinas así como enrutar los mensajes entre los evaluadores. Es el encargado de controlar la finalización del algoritmo una vez se ha encontrado la solución.  Los mensajes a los que responde este actor aparecen enumerados en la Tabla \ref{tb:poolManager}.
+
+\begin{table}
+  \centering
+\begin{tabular}{|p{5cm}|p{7cm}|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   \textbf{Mensaje} &  \textbf{Descripción} \\
+  \hline
+  {\tt evolveDone } & Finalización de una iteración de reproducción. \\
+  \hline
+  {\tt evalDone} & Finalización de una iteración de evaluación. \\
+  \hline
+ {\tt solutionReached} & Obtención de la solución. \\
+  \hline
+  {\tt migration} & Realización de una inmigración. \\
+  \hline
+\end{tabular}
+  \caption{Mensajes a los que responde el actor del módulo poolManager.}\label{tb:poolManager}
+\end{table}
+
+
+\subsubsection{Módulos auxiliares}
+
+Los módulos ya descritos contienen toda la lógica del AG, faltan sin embargo, para que sea operativo el software, algunos códigos no funcionales. 
+
+Dichos módulos son:
+
+\begin{description}
+
+  \item[experiment] -- Encargado de iniciar una corrida del experimento.
+
+  \item[configBuilder] -- Especificación de los parámetros de un experimento.
+
+  \item[profiler] -- Análisis del comportamiento: tiempos de ejecución, cantidad de iteraciones, etc.
+
+\end{description}
+
+\section{Resultados y conclusiones}
+\label{sec:conclusions}
+
+El diseño fue puesto a prueba con cromosomas de longitud 128, una población de 256 individuos por isla, 4 islas, 10 evaluadores y 5 reproductores por isla obteniéndose la solución del problema a los 3.922001 segundos y con 228 migraciones. Aunque los resultados no son los mejores posibles, si se obtuvo el óptimo lo que demuestra que el algoritmo fue correcto en su implementación.
+
+Con este trabajo se muestra la simplicidad de implementación de un modelo híbrido de AG, en su versión concurrente, normalmente abrumadoramente compleja sencillamente por ser concurrente. En la arquitectura las unidades de ejecución fueron mapeadas a actores, las estructurales a módulos y las procedurales a funciones; quedando claramente identificadas y listas a futuras extensiones.
+
+Como trabajo futuro queda la implementación de un experimento más complejo dónde se use además una arquitectura distribuida y heterogénea. Dado que el lenguaje tiene de manera nativa el soporte para la distribución de procesos y su MV está implementada para multitud de plataformas hacer esto sólo conllevaría cambios en las funciones que tratan con los cromosomas lográndose un elevando nivel de reutilización del diseño.
+
+%ACKNOWLEDGMENTS are optional
+\section{Agradecimientos}
+
+Este trabajo ha sido realizado gracias al proyecto TIN2011-28627-C04-02 (ANYSELF) auspiciado por el Mineco, y al P08-TIC-03903 del Gobierno Regional de Andalucía. Es también respaldado por el Programa de Doctorado de la AUIP y por el proyecto 83 del Campus CEI BioTIC.
+
+\bibliographystyle{splncs}
+\bibliography{osgiliath,geneura,erlang-ae-model,referencias}
+
+\end{document}
+
