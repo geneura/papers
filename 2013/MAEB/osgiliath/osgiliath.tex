@@ -50,7 +50,7 @@ showstringspaces=false
 % first the title is needed
 \title{Desarrollo de servicios para una Arquitectura Orientada a Servicios para Algoritmos Evolutivos \thanks{Este trabajo ha sido desarrollado bajo los proyectos 
 }}
-% Muchos servicios me parecen ¿Resolviendo problemas? ¿Creando aplicaciones? ¿Desarrollo ágil? - JJ
+% Muchos servicios me parecen ¿Resolviendo problemas? ¿Creando aplicaciones? ¿Desarrollo ágil? - JJ - FERGU: es que se desarrollan varios
 %EvOrq (TIC-3903), CEI BioTIC GENIL (CEB09-0010), MICINN CEI Program (PYR-2010-13) and FPU research grant AP2009-2942 .
 
 % a short form should be given in case it is too long for the running head
@@ -85,21 +85,21 @@ Orientada a Servicios. Este paradigma proporciona independencia en el
 lenguaje y distribución, pero el desarrollo requiere tratar con
 algunas características tecnológicas y de diseño, como el diseño
 abstracto o la ejecución desordenada. Para resolverlas, se utiliza
-OSGiLiath, una implementacion de una Arquitectura Orientada a
+ANONYMOUS, una implementacion de una Arquitectura Orientada a
 Servicios para Algoritmos Evolutivos, para desarrollar nuevos
-servicios interoperables teniendo en cuenta esas restricciones. % ¿Cuál es el objetivo del trabajo? ¿Lo has cumplido? ¿Qué resultados has obtenido? - JJ
+servicios interoperables teniendo en cuenta esas restricciones. % ¿Cuál es el objetivo del trabajo? ¿Lo has cumplido? ¿Qué resultados has obtenido? - JJ - FERGU: pues cómo debe ser el diseño
 
 \end{abstract}
 
 
-% Creo que el límite son 10 páginas, ¿no? - JJ
+% Creo que el límite son 10 páginas, ¿no? - JJ - FERGU: si, tengo que arreglarlo
 \section{Introduction}
 
 \noindent El paradigma Service Oriented Architecture (SOA) o de
 Arquitectura Orientada a Servicios (AOS) \cite{PAPAZOGLOU} se está
 convirtiendo en una importante tendencia en el desarrollo de
 software. Este paradigma permite la organización y distribución % ¿de
-                                % qué? - JJ
+                                % qué? - JJ - FERGU: Añadido
 utilizando el concepto de {\em servicio}, es decir, una 
 interacción en la que un {\em proveedor de servicio} publica {\em
   descripciones de servicio} (o interfaces) en el {\em registro de
@@ -112,8 +112,7 @@ SOA permite independencia en el lenguaje de programación y los mecanismos de di
 \item Los servicios deben ser funciones de entrada/salida.
 \item Los servicios no deben tener estado (es decir, no usar variables globales).
 \item El orden de ejecución de los servicios no es fijo.
-\item Los servicios deben ser diseñados tan abstractos como sea
-  posible. % ¿a un nivel de abstracción adecuado? - JJ
+\item Los servicios deben ser diseñados con un nivel de abstracción adecuado. % ¿a un nivel de abstracción adecuado? - JJ - FERGU: Sí, mejor.
 \end{itemize}
 
 La computación distribuida ofrece la posibilidad de utilizar las ventajas del procesamiento paralelo y así conseguir un mayor poder de cómputo \cite{OPENSCIENCEGRID}.
@@ -130,13 +129,14 @@ OSGi permite construir sistemas software de calidad considerando un alto nivel d
 %\label{SOADIAGRAM} 
 %\end{figure} 
 
-% ¿nuestro trabajo? ¿No se anónimo? - JJ 
+% ¿nuestro trabajo? ¿No se anónimo? - JJ - FERGU: Sí, de hecho esa referencia está anonima ahora
 En nuestro trabajo anterior \cite{OSGILIATH} presentamos una
 Arquitectura Orientada a Servicios para Algoritmos Evolutivos
 (SOA-EA), junto con guías y pasos para migrar del desarrollo
 tradicional de Algoritmos Evolutivos (AEs) a SOA. También se presentó
-una implementación específica, llamada OSGiLiath ({\em OSGi Laboratory
-  for Implementation and Testing of Heuristics}): un entorno para el
+una implementación específica, llamada ANONYMOUS: %({\em OSGi Laboratory
+  %for Implementation and Testing of Heuristics}): 
+  un entorno para el
 desarrollo de algoritmos distribuidos extensible con una arquitectura
 basada en plug-ins y basada en una especificación software ampliamente
 aceptada (OSGi). En este trabajo mostramos el desarrollo completo de
@@ -146,18 +146,18 @@ abstracto presentado en nuestro anterior trabajo. % Esto debería ir al
                                 % insertar alguna medida que indicara
                                 % en qué es ese desarrollo completo
                                 % mejorque hacerlo con Perl, por
-                                % ejemplo - JJ 
+                                % ejemplo - JJ - FERGU: Bueno, es que eso ya lo puse en el trabajo anterior, pero pongo una referencia más abajo a los resultados.
 
 El resto del trabajo se estructura como sigue: después del estado del
 arte, presentamos los principios de diseño para crear servicios para
 Computación Evolutiva (CE) (Sección \ref{sec:design}). A continuación,
 se explica la tecnología de implementación OSGi en la Sección
-\ref{sec:technology}, utilizada para construir nuestro framework
+\ref{sec:technology}, utilizada para construir nuestro {\em framework}
 (descrito en la Sección \ref{sec:osgiliath}). Después, se presentan
 los pasos para crear servicios dentro de este framework (Sección
 \ref{sec:development}). Finalmente se presentan las conclusiones y
 trabajo futuro (Sección \ref{sec:conclusions}). % ¿cómo se dice
-                                % framework en español? - JJ
+                                % framework en español? - JJ - Fergu: no lo sé, por eso lo dejo así, creo que está bastante aceptado, pero en cursiva
 
 
 
@@ -183,7 +183,7 @@ las ya existentes. jMetal \cite{JMETAL},  también es un framework
 basado en Java, pero sin posibilidad de distribución y mayormente
 centrado en optimización Multi-Objetivo. % Toma enumeración
                                 % habitual. ¿Qué tienen de
-                                % bueno/malo/diferente? - JJ
+                                % bueno/malo/diferente? - JJ - FERGU: Pues que no tienen distribución xD
 
 ParadiseEO \cite{PARADISEO} permite el diseño de AEs y Búsqueda Local con hibridación, proporcionando una gran variedad de operadores y funciones de evaluación. También implementa los modelos paralelos y distribuídos más comunes, y está basado en librerías estándar como MPI, PVM y Pthreads. Sin embargo, cuenta con los mismos problemas que los frameworks anteriores, no cuenta con gestión del ciclo de vida, ni programación orientada a servicios. GAlib \cite{GALIB} es muy similar y comparte las mismas características y problemas. 
 
@@ -193,9 +193,8 @@ Finalmente, el único framework orientado a servicios para optimización es Grid
 
 Los frameworks anteriores han sido diseñados para ser extendibles y
 re-usables, pero sin tener en cuenta las restricciones de SOA para
-lograr más independencia y mejoras en el desarrollo. % Por eso
-                                % nosotros ... - JJ
-
+lograr más independencia y mejoras en el desarrollo. A continuación explicamos cuales deben ser los requisitos para poder cumplir con esas restricciones.% Por eso
+                                % nosotros ... - JJ - FERGU: Añadido
 \section{Diseñando servicios para una Arquitectura Orientada a Servicios para AEs}
 \label{sec:design}
 
@@ -231,7 +230,7 @@ Los servicios a desarrollar deben cumplir las siguientes restricciones tecnológ
 \section{Tecnología de implementación}
 \label{sec:technology}
 
-Esta sección explica algunas características técnicas de la tecnología escogida para implementar una SOA para AEs y así guiar al lector para entender el framework OSGiLiath y poder evaluar las ventajas de utilizar estas características en el desarrollo de algoritmos distribuidos que cumplan las restricciones anteriores.
+Esta sección explica algunas características técnicas de la tecnología escogida para implementar una SOA para AEs y así guiar al lector para entender el framework ANONYMOUS y poder evaluar las ventajas de utilizar estas características en el desarrollo de algoritmos distribuidos que cumplan las restricciones anteriores.
 
 La tecnología utilizada, OSGi, define una especificación para SOAs en máquinas virtuales. Proporciona características muy deseables, como abstracción de paquetes, administración del ciclo de vida o versionado, permitiento reducción en el tiempo de desarrollo, soporte, y complejidad en el despligue de las aplicaciones.
 
@@ -240,11 +239,11 @@ Esta tecnología permite descubrimiento dinámico de nuevos componentes, para in
 OSGi cuenta con un modelo orientado a capas, que explican su funcionalidad. Cada una se basa en la capa siguiente:
 
 \begin{itemize}
-\item Bundles: son los componentes OSGi creados por los desarrolladore
+\item {\em Bundles}: son los componentes OSGi creados por los desarrolladore
   (aplicaciones). % ¿hatos? Debes de minimizar la cantidad de palabras
-                  % inglesas - JJ 
+                  % inglesas - JJ - Fergu: buf, lo sé, pero es que es jodido, sobre todo con ésta. Lo pongo en cursiva al menos
 \item Servicios: Esta capa conecta los bundles de forma dinámica ofreciendo un modelo de publicación-búsqueda-enlace.
-\item Ciclo de vida: La API para instalar, iniciar, parar, actualizar y desinstalar bundles.
+\item Ciclo de vida: La API para instalar, iniciar, parar, actualizar y desinstalar {\em bundles}.
 \item Módulos: Esta capa define cómo un bundle puede importar y exportar código.
 \item Seguridad: los aspectos de seguridad se administran en esta capa.
 \item Entorno de ejecución: Define qué metodos y clases están disponibles en una plataforma específica. Por ejemplo, los dispositivos móviles cuentan con menos clases Java debido a restricciones de rendimiento.
@@ -253,9 +252,10 @@ OSGi cuenta con un modelo orientado a capas, que explican su funcionalidad. Cada
 Para cumplir la restricción de que en un buen framework para EAs los servicios deben de ser indistinguibles de ser locales o remotos se han utilizado otras características OSGi.  Se ha elegido ECF (Eclipse Communication Framework)\footnote{\url{http://www.eclipse.org/ecf/}} por ser la implementación más madura y aceptada \cite{petzold2011dynamic}, y porque soporta el mayor número de protocolos de transmisión, incluyendo comunicación síncrona y asíncrona. Proporciona una implementación modular del estándar de Servicios Remotos de OSGi V4.2 \footnote{\url{http://www.osgi.org/Release4/Download}}. Esta especificación utiliza el registro de servicios de OSGi para exponer servicios como remotos (siendo indistinguibles de los locales). ECF también separa el código fuente del mecanismo de descubrimiento y transmisión, permitiendo que los usuarios apliquen la tecnología más adecuada a sus necesidades y proporcionando integración con aplicaciones existentes.
 
 
-\section{OSGiLiath}
+\section{ANONYMOUS}
 \label{sec:osgiliath}
-Utilizando tecnologías como OSGi o ECF se puede crear un entorno orientado a servicios. Esta sección explica la funcionalidad y diseño del entorno OSGiLiath ({\em OSGi Laboratory for Implementation and Testing of Heuristics}), presentado en \cite{OSGILIATHNICSO}. Este entorno es un framework para el desarrollo de aplicaciones de optimización utilizando metaheurísticas, no centrándose en un paradigma concreto, y cuyo principal objetivo es promover el uso de SOA y OSGi, y ofrecer a los programadores las siguientes características:
+Utilizando tecnologías como OSGi o ECF se puede crear un entorno orientado a servicios. Esta sección explica la funcionalidad y diseño del entorno ANONYMOUS %({\em OSGi Laboratory for Implementation and Testing of Heuristics})
+, presentado en \cite{OSGILIATHNICSO}. Este entorno es un framework para el desarrollo de aplicaciones de optimización utilizando metaheurísticas, no centrándose en un paradigma concreto, y cuyo principal objetivo es promover el uso de SOA y OSGi, y ofrecer a los programadores las siguientes características:
 
 
 \begin{itemize}
@@ -270,14 +270,14 @@ Utilizando tecnologías como OSGi o ECF se puede crear un entorno orientado a se
 
 El código fuente está disponible en \url{http://www.ANONYMOUS.org}, bajo una licencia LGPL.
 
-\section{Desarrollo de servicios en OSGiLiath}
+\section{Desarrollo de servicios en ANONYMOUS}
 \label{sec:development}
 
-Esta sección explica los pasos para añadir servicios al núcleo de OSGiLiath. En esta sección se explica cómo añadir el problema del Vehicle Routing Problem (VRP).
+Esta sección explica los pasos para añadir servicios al núcleo de ANONYMOUS. En esta sección se explica cómo añadir el problema del Vehicle Routing Problem (VRP).
 
 \subsection{Creación de un bundle}
 
-En OSGiLiath, los servicios se pueden añadir a bundles existentes o crear nuevos. Cada {\em bundle} incluye un fichero MANIFEST.MF . En este fichero se seleccionan los paquetes que importar (incluyendo interfaces y clases del núcleo de OSGiLiath) y exportar. La sección {\em Service-Description} en este fichero muestra la localización de Component Definitions para describir los servicios. En este caso se implementan dos interfaces: {\em TransportData} y {\em FitnessCalculator}. Otras clases relacionadas con el VRP se añaden, como {\em Route} o {\em Shop}.
+En ANONYMOUS, los servicios se pueden añadir a bundles existentes o crear nuevos. Cada {\em bundle} incluye un fichero MANIFEST.MF . En este fichero se seleccionan los paquetes que importar (incluyendo interfaces y clases del núcleo de ANONYMOUS) y exportar. La sección {\em Service-Description} en este fichero muestra la localización de Component Definitions para describir los servicios. En este caso se implementan dos interfaces: {\em TransportData} y {\em FitnessCalculator}. Otras clases relacionadas con el VRP se añaden, como {\em Route} o {\em Shop}.
 
 
 \subsection{Implementando servicios}
@@ -289,14 +289,14 @@ Para implementar un servicio se crea una clase que implementa una interfaz. Por 
 \scriptsize
 \hlstd{}\hlopt{$<$}\hlstd{?xml\ version}\hlopt{=}\hlstd{"}\hlnum{1.0}\hlstd{"\ encoding}\hlopt{=}\hlstd{"UTF{-}8"?}\hlopt{$>$}\hspace*{\fill}\\
 \hlstd{}\hlopt{$<$}\hlstd{scr}\hlopt{:}\hlstd{component\ xmlns}\hlopt{:}\hlstd{scr}\hlopt{=}\hlstd{"http}\hlopt{://}\hlstd{www}\hlopt{.}\hlstd{osgi}\hlopt{.}\hlstd{org}\hlopt{/}\hlstd{xmlns}\hlopt{/}\hlstd{scr}\hlopt{/}\hlstd{v1}\hlopt{.}\hlstd{1}\hlnum{.0}\hlstd{"\ name}\hlopt{=}\hlstd{"VRPFitnessCalculator"}\hlopt{$>$}\hspace*{\fill}\\
-\hlstd{}\hlstd{\ \ \ }\hlstd{}\hlopt{$<$}\hlstd{implementation\ class}\hlopt{=}\hlstd{"es}\hlopt{.}\hlstd{ugr}\hlopt{.}\hlstd{osgiliath}\hlopt{.}\hlstd{vrp}\hlopt{.}\hlstd{VRPFitnessCalculator"}\hlopt{/$>$}\hspace*{\fill}\\
+\hlstd{}\hlstd{\ \ \ }\hlstd{}\hlopt{$<$}\hlstd{implementation\ class}\hlopt{=}\hlstd{"es}\hlopt{.}\hlstd{ugr}\hlopt{.}\hlstd{ANONYMOUS}\hlopt{.}\hlstd{vrp}\hlopt{.}\hlstd{VRPFitnessCalculator"}\hlopt{/$>$}\hspace*{\fill}\\
 \hlstd{}\hlstd{\ \ \ }\hlstd{}\hlopt{$<$}\hlstd{service}\hlopt{$>$}\hspace*{\fill}\\
-\hlstd{}\hlstd{\ \ \ \ \ \ }\hlstd{}\hlopt{$<$}\hlstd{}\hlkwa{provide\ }\hlstd{interface}\hlopt{=}\hlstd{"es}\hlopt{.}\hlstd{ugr}\hlopt{.}\hlstd{osgiliath}\hlopt{.}\hlstd{evolutionary}\hlopt{.}\hlstd{elements}\hlopt{.}\hlstd{FitnessCalculator"}\hlopt{/$>$}\hspace*{\fill}\\
+\hlstd{}\hlstd{\ \ \ \ \ \ }\hlstd{}\hlopt{$<$}\hlstd{}\hlkwa{provide\ }\hlstd{interface}\hlopt{=}\hlstd{"es}\hlopt{.}\hlstd{ugr}\hlopt{.}\hlstd{ANONYMOUS}\hlopt{.}\hlstd{evolutionary}\hlopt{.}\hlstd{elements}\hlopt{.}\hlstd{FitnessCalculator"}\hlopt{/$>$}\hspace*{\fill}\\
 \hlstd{}\hlstd{\ \ \ }\hlstd{}\hlopt{$<$/}\hlstd{service}\hlopt{$>$}\hspace*{\fill}\\
 \hlstd{}\hlstd{\ \ \ }\hlstd{}\hlopt{$<$}\hlstd{reference\ bind}\hlopt{=}\hlstd{"setTransportData"\ \hspace*{\fill}\\
 }\hlstd{\ \ \ \ }\hlstd{unbind}\hlopt{=}\hlstd{"unsetTransportData"\hspace*{\fill}\\
 }\hlstd{\ \ \ \ }\hlstd{cardinality}\hlopt{=}\hlstd{"}\hlnum{1}\hlstd{}\hlopt{.}\hlstd{}\hlnum{.1}\hlstd{"\ \hspace*{\fill}\\
-}\hlstd{\ \ \ \ }\hlstd{interface}\hlopt{=}\hlstd{"es}\hlopt{.}\hlstd{ugr}\hlopt{.}\hlstd{osgiliath}\hlopt{.}\hlstd{vrp}\hlopt{.}\hlstd{TransportData"\ \hspace*{\fill}\\
+}\hlstd{\ \ \ \ }\hlstd{interface}\hlopt{=}\hlstd{"es}\hlopt{.}\hlstd{ugr}\hlopt{.}\hlstd{ANONYMOUS}\hlopt{.}\hlstd{vrp}\hlopt{.}\hlstd{TransportData"\ \hspace*{\fill}\\
 }\hlstd{\ \ \ \ }\hlstd{name}\hlopt{=}\hlstd{"TransportData"\ \hspace*{\fill}\\
 }\hlstd{\ \ \ \ }\hlstd{policy}\hlopt{=}\hlstd{"static"\hspace*{\fill}\\
 }\hlstd{\ \ \ }\hlstd{}\hlopt{/$>$}\hspace*{\fill}\\
@@ -308,7 +308,7 @@ Para implementar un servicio se crea una clase que implementa una interfaz. Por 
   implementación del servicio {\em FitnessCalculator} es {\em
     VRPFitnessCalculator}, pero no se puede activar hasta que todas
   sus referencias (otros servicios) se activen.}
-% Esto podías suprimirlo si te falta espacio - JJ
+% Esto podías suprimirlo si te falta espacio - JJ - FERGU: si, era por meter alguna figura. Si me paso lo quito.
 \label{fig:ds}
 \end {figure*}
 
@@ -320,23 +320,18 @@ Gracias a la especificación OSGi 4.2, los servicios pueden y deben ser indistin
  % \epsfig{file=soaDiagram.eps,width=7.5cm} 
 \includegraphics[scale=0.6]{images/migrator.eps}
 \end{center} 
-\caption{Utilizando el servicio Migrator para crear un AE distribuído basado en islas con topología en anillo (las cajas blancas son interfaces de los servicios y las grises son las implementaciones).} 
+\caption{Utilizando el servicio {\em Migrator} para crear un AE distribuído basado en islas con topología en anillo (las cajas blancas son interfaces de los servicios y las grises son las implementaciones).} 
 \label{MIGRATOR} 
 \end{figure} 
 
 % ¿ya se ha acabado? ¿Esto es todo? ¿Un manual de usuario? ¿No dices
-% nada más? ¿Cuanto tiempo? ¿Cuantas líneas de código? ¿Algo? - JJ
+% nada más? ¿Cuanto tiempo? ¿Cuantas líneas de código? ¿Algo? - JJ - FERGU: He dicho al principio cómo deben ser los servicios y he explicado los pasos para hacerlo con una tecnología.
 
 \section{Conclusiones}
 \label{sec:conclusions}
 Este trabajo muestra los requisitos para crear un framework orientado a servicios para AEs y la tecnología escogida para cumplir esos requisitos.  Service Oriented Architecture (SOA) ofrece independencia del lenguaje, mecanismos de distribución o incluso sistemas operativos, permitiendo la integración de diferentes elementos. Sin embargo, algunos elementos deben considerarse en el desarrollo: los servicios son funciones de entrada/salida sin estado, los servicios pueden aparecer o desaparecer en tiempo real, y el orden de ejecución no debe estar fijo. En el campo de los AEs los servicios deben desarrollarse teniendo en cuenta estas restricciones. Este trabajo muestra el diseño abstracto de los elementos de un AE, junto con los requisitos tecnológicos a resolver. Se ha utilizado la tecnología OSGi como ejemplo. Los elementos para crear una SOA para AEs han sido presentados junto con un ejemplo de desarrollo.
 
 Como trabajo futuro, se pretende realizar un estudio sobre escalabilidad utilizando otros algoritmos (como GRASP, Scatter Search, Ant Colony Optimization y otros). Además está planeado incrementar el uso de las ventajas de OSGi, como la administración de eventos o la gestión de servicios de forma más profunda. Finalmente, se plantea desarrollar un portal o un repositorio Maven\footnote{\url{http://www.maven.org}} para centralizar todas las implementaciones de problemas y algoritmos para permitir la distribución junto con la plataforma base. También se plantea un estudio sobre portar software existente (especialmente los frameworks escritos en Java, como DREAM o ECJ) a nuestro framework. Además, debido a la facilidad de enlazar implementaciones a interfaces, se plantea desarrollar la funcionalidad de elegir una u otra implementación dependiendo de varios parámetros, o por ejemplo, utilizar Programación Genética para evolucionar e hibridizar algoritmos.
-
-%ACKNOWLEDGMENTS are optional
-\section{Agradecimientos}
-Este trabajo ha sido realizado gracias a la beca FPU AP2009-2942 y los proyectos EvOrq (P08-TIC-03903), Proyecto 83 (CANUBE) del CEI-BioTIC UGR, y TIN2011-28627-C04-02 (ANYSELF).
-
 
 
 
