@@ -8,11 +8,12 @@
 \usepackage{alltt}
 \usepackage{verbatim}
 \usepackage{amsmath}
-\usepackage[utf8]{inputenc}
+\usepackage[cp1252]{inputenc}
 \usepackage[spanish]{babel}
 %%
 \usepackage{url}
-\urldef{\mailsa}\path|munozs.88@gmail.com,{pgarcia,pedro}@atc.ugr.es|%{MARIBELamorag,jmerelo}@geneura.ugr.es|
+\hyphenation{Map-Re-du-ce}
+\urldef{\mailsa}\path|munozs.88@gmail.com,{pgarcia,pedro,mgarenas}@atc.ugr.es,{amorag,jmerelo}@geneura.ugr.es|
 
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
 \noindent\keywordname\enspace\ignorespaces#1}
@@ -22,7 +23,7 @@
 \mainmatter  % start of an individual contribution
 
 % first the title is needed
-\title{Estudio sobre algoritmos gen®¶ticos en la nube y el modelo de programaci®Æn MapReduce\thanks{Financiado con los proyectos EvOrq (TIC-3903), Beca FPU AP2009-2942, ANYSELF (TIN2011-28627-C04-02) y CANUBE (Proyecto 83 CEI-BIOTIC). }}
+\title{Estudio sobre algoritmos genÈticos en la nube y el modelo de programaciÛn MapReduce\thanks{Financiado con los proyectos EvOrq (TIC-3903), Beca FPU AP2009-2942, ANYSELF (TIN2011-28627-C04-02) y CANUBE (Proyecto 83 CEI-BIOTIC). }}
 
 % Mete tambi?n el del ministerio, que estaba vigente cuando el PFC. 
 
@@ -35,14 +36,14 @@
 % their surnames. This ensures that the names appear correctly in
 % the running heads and the author index.
 %
-\author{G. Mu\~noz \inst{1} \and P. Garc\'ia-S\'anchez\inst{1}  \and P. A. Castillo\inst{1}  }%\and M. G. Arenas \and A. M. Mora  \and J. J. Merelo \inst{1}}
+\author{G. Mu\~noz  \and P. Garc\'ia-S\'anchez  \and P. A. Castillo \and M. G. Arenas \and A. M. Mora  \and J. J. Merelo \inst{1}}
 %
 \authorrunning{P. Garc\'ia-S\'anchez et al.}
 % (feature abused for this document to repeat the title also on left hand pages)
 
 % the affiliations are given next; don't give your e-mail address
 % unless you accept that it will be published
-\institute{Dpto. de Arquitectura y Tecnolog®™a de los Computadores, Universidad de Granada\\
+\institute{Dpto. de Arquitectura y TecnologÌa de los Computadores, Universidad de Granada\\
 \mailsa}
 
 
@@ -53,219 +54,223 @@
 % "llncs.dem" accompanies the document class "llncs.cls".
 %
 
-\toctitle{Estudio sobre algoritmos gen®¶ticos en la nube y el modelo de programaci®Æn MapReduce}
+\toctitle{Estudio sobre algoritmos genÈticos en la nube y el modelo de programaciÛn MapReduce}
 \tocauthor{Authors' Instructions}
 \maketitle
 
 
 \begin{abstract}
-Este trabajo presenta el proyecto fin de carrera ``Estudio sobre algoritmos gen®¶ticos en la nube y el modelo de programaci®Æn MapReduce''. Durante el desarrollo de este proyecto se investig®Æ en el uso y aplicaci®Æn de Algoritmos Gen®¶ticos en distintos entornos de Cloud Computing, como el MapReduce o virtualizaci®Æn de instancias. Se ejecutaron distintas configuraciones de par®¢metros del algoritmo en distintas instancias de Amazon Web Services. Los resultados muestran el efecto de estos par®¢metros al tipo de instancia utilizada. 
+Este trabajo presenta el proyecto fin de carrera ``Estudio sobre algoritmos genÈticos en la nube y el modelo de programaciÛn MapReduce''. Durante el desarrollo de este proyecto se investigÛ en el uso y aplicaciÛn de Algoritmos GenÈticos en distintos entornos de Cloud Computing, como el MapReduce o virtualizaciÛn de instancias. Se ejecutaron distintas configuraciones de par·metros del algoritmo (como el tamaÒo de poblaciÛn o el tipo de crossover) en distintas instancias de Amazon Web Services. Los resultados muestran el efecto de estos par·metros al tipo de instancia utilizada. 
 % si usas computaci√≥n nube en el t√≠tulo, √∫salo en todos sitios - JJ
 % Por otro lado, d√≠ cu√°l era el objetivo del trabajo. No puedes
 % limitarte a decir "distintas configuraciones de par√°metros" si no
 % explicas lo que son, ni para qu√© sirven, ni siquiera por qu√© has
-% decidido usar computaci√≥n nube. 
+% decidido usar computaci√≥n nube. FERGU: AÒadidos
+\vspace{1cm}
+
+\textbf{Abstract} This paper shows the final degree project ``An study of genetic algorithms in the cloud and the MapReduce model''. During the development of this project the usage and application of genetic algorithms in different Cloud Computing environments was investigated, such as MapReduce or virtualization. Different parameter configurations, such as the population size or crossover type, were launched in different instances of Amazon Web Services. Results show the effect of these parameters to the different types of used instances.
 
 \end{abstract}
 
+\keywords{Cloud Computing, Proyecto Fin de Carrera, Amazon EC2, VirtualizaciÛn, MapReduce, Algoritmos Evolutivos}
 
-\section{Introducci®Æn}
-\noindent En la ®≤ltima d®¶cada Internet ha transformado nuestra econom®™a y nuestra sociedad. Ha demostrado ser una infraestructura de comunicaci®Æn 
+\section{IntroducciÛn}
+\noindent En la ˙ltima dÈcada Internet ha transformado nuestra economÌa y nuestra sociedad. Ha demostrado ser una infraestructura de comunicaciÛn 
 y enlace de gran valor que se adapta gradualmente a las necesidades de los usuarios. Con Internet se ha creado una red mundial de 
-intercambio de conocimientos, creatividad y colaboraci®Æn.  % madre m√≠a, esta frase es de los 90!!!! - JJ
+intercambio de conocimientos, creatividad y colaboraciÛn.  % madre m√≠a, esta frase es de los 90!!!! - JJ - FERGU: No la he escrito yo, que conste ;)
 
 Del mismo modo, Internet ha dado un gran salto adelante gracias al despliegue de la banda ancha de
 alta velocidad, lo que ha permitido el lanzamiento de muchos nuevos servicios interactivos y de
 contenido. 
 
-Todo esto hace que los programas inform®¢ticos ofertados en la red como un servicio disminuyan sus costes y aumenten su eficacia, 
+Todo esto hace que los programas inform·ticos ofertados en la red como un servicio disminuyan sus costes y aumenten su eficacia, 
 provocando una gran mejora de la productividad. Desplegado adecuadamente, la llamada Internet del
-futuro, que cada vez es m®¢s presente, trae consigo innovaci®Æn, aumento de la productividad, nuevos
-mercados y m®¢s crecimiento y empleo en esta d®¶cada que reci®¶n acabamos de comenzar. 
+futuro, que cada vez es m·s presente, trae consigo innovaciÛn, aumento de la productividad, nuevos
+mercados y m·s crecimiento y empleo en esta dÈcada que reciÈn acabamos de comenzar. 
 
 En este marco se engloba el Cloud Computing, un nuevo modelo de negocio en Internet, que beneficia tanto al proveedor de 
-servicios en la nube como al usuario, capaz de tener acceso instant®¢neo a una infraestructura
-escalable y potente a un coste m®™nimo.
+servicios en la nube como al usuario, capaz de tener acceso instant·neo a una infraestructura
+escalable y potente a un coste mÌnimo.
  
-Paralelamente a esta transformaci®Æn, la ciencia ha estado evolucionando constantemente durante los ®≤ltimos lustros, en gran parte, 
-gracias a la aparici®Æn y el uso  de nuevas tecnolog®™as. La investigaci®Æn cient®™fica avanza al
-un®™sono con ®¶sta, pues un cambio tecnol®Ægico, la mayor®™a 
-de las veces, abre un nuevo abanico de posibilidades para la comunidad cient®™fica ya sea para el
-desarrollo en un ®¢mbito cl®™nico, cient®™fico o industrial, ya que la necesidad de capacidad de
-procesamiento de datos es com®≤n al sector en el que se desarrollen.
+Paralelamente a esta transformaciÛn, la ciencia ha estado evolucionando constantemente durante los ˙ltimos lustros, en gran parte, 
+gracias a la apariciÛn y el uso  de nuevas tecnologÌas. La investigaciÛn cientÌfica avanza al
+unÌsono con Èsta, pues un cambio tecnolÛgico, la mayorÌa 
+de las veces, abre un nuevo abanico de posibilidades para la comunidad cientÌfica ya sea para el
+desarrollo en un ·mbito clÌnico, cientÌfico o industrial, ya que la necesidad de capacidad de
+procesamiento de datos es com˙n al sector en el que se desarrollen.
 
-Por otra parte, el crecimiento de los vol®≤menes de datos a procesar es exponencial, por lo que para
-resolver un problema complejo el personal cient®™fico o investigador tiene que tratar con una
-cantidad de informaci®Æn ingente. Dentro de estos conjuntos 
-de problemas se encuentran los de b®≤squeda, a menudo abordados por los denominados Algoritmos
-Gen®¶ticos, que se usan cada vez m®¢s en 
+Por otra parte, el crecimiento de los vol˙menes de datos a procesar es exponencial, por lo que para
+resolver un problema complejo el personal cientÌfico o investigador tiene que tratar con una
+cantidad de informaciÛn ingente. Dentro de estos conjuntos 
+de problemas se encuentran los de b˙squeda, a menudo abordados por los denominados Algoritmos
+GenÈticos, que se usan cada vez m·s en 
 escenarios de gran complejidad. 
 
-% si son evidentes, ¬°no los digas! ¬°No metas m√°s rollo de la cuenta! - JJ
-Sentando estos principios evidentes en la sociedad actual, la motivaci®Æn de este proyecto fin de
-carrera fu®¶ el de buscar una aproximaci®Æn nueva para 
-desarrollar trabajos de investigaci®Æn usando las facilidades que nos brinda el Cloud Computing, y concretamente la resoluci®Æn de 
-problemas de b®≤squeda representados mediante Algoritmos Gen®¶ticos, yendo m®¢s all®¢ y sentando las
-bases de un framework como \it{Hadoop Map Reduce}, para la reducci®Æn de complejidad y tiempo de
-procesamiento en los m®¶todos de b®≤squeda.
+% si son evidentes, ¬°no los digas! ¬°No metas m√°s rollo de la cuenta! - JJ - FERGU: lo quito
+Sentando estos principios en la sociedad actual, la motivaciÛn de este proyecto fin de
+carrera fuÈ el de buscar una aproximaciÛn nueva para 
+desarrollar trabajos de investigaciÛn usando las facilidades que nos brinda el Cloud Computing, y concretamente la resoluciÛn de 
+problemas de b˙squeda representados mediante Algoritmos GenÈticos, yendo m·s all· y sentando las
+bases de un framework como {\it Hadoop Map Reduce}, para la reducciÛn de complejidad y tiempo de
+procesamiento en los mÈtodos de b˙squeda.
 
 El resto del trabajo se organiza como sigue: primero se define el concepto de Cloud Computing en la
-Secci®Æn \ref{sec:cloud}. A continuaci®Æn se explican dos tipos de tecnolog®™as a aplicar los
-experimentos: \it{Amazon Web Services} y el modelo \it{MapReduce} y  (en las Secciones \ref{sec:aws}
-y \ref{sec:mapreduce} , respectivamente). Los Algoritmos gen®¶ticos se presentan en la Secci®Æn
-\ref{sec:ags}. Despu®¶s se describen los experimentos a realizar (Secci®Æn \ref{sec:experimentos}) y
-el an®¢lisis de sus resultados (Secci®Æn \ref{sec:analisis}). Finalmente se presentan las conclusiones
+SecciÛn \ref{sec:cloud}. A continuaciÛn se explican dos tipos de tecnologÌas a aplicar los
+experimentos: {\it Amazon Web Services} y el modelo {\it MapReduce} y  (en las Secciones \ref{sec:aws}
+y \ref{sec:mapreduce} , respectivamente). Los Algoritmos genÈticos se presentan en la SecciÛn
+\ref{sec:ags}. DespuÈs se describen los experimentos a realizar (SecciÛn \ref{sec:experimentos}) y
+el an·lisis de sus resultados (SecciÛn \ref{sec:analisis}). Finalmente se presentan las conclusiones
 y trabajo futuro.
 
 
 
 \section{Cloud Computing}
 \label{sec:cloud}
-Cloud computing es a®≤n un paradigma en evoluci®Æn, sus definiciones, arquitecturas, modelos, casos de uso, tecnolog®™as base, problemas, 
-riesgos y beneficios, son continuamente redefinidos en debates promocionados por el sector p®≤blico y
+Cloud computing es a˙n un paradigma en evoluciÛn, sus definiciones, arquitecturas, modelos, casos de uso, tecnologÌas base, problemas, 
+riesgos y beneficios, son continuamente redefinidos en debates promocionados por el sector p˙blico y
 privado. En \cite{Bible2011} 
-podemos ver varias  definiciones aunque muchos citan como m®¢s precisa la definici®Æn dada por el
-\it{National Institute of Standards and Technology} (NIST), donde se define el \it{Cloud Computing}
+podemos ver varias  definiciones aunque muchos citan como m·s precisa la definiciÛn dada por el
+{\it National Institute of Standards and Technology} (NIST), donde se define el {\it Cloud Computing}
 como: 
 
 \textit{Cloud Computing es un modelo para habilitar acceso conveniente por demanda a un conjunto compartido de recursos computacionales 
-configurables, por ejemplo, redes, servidores, almacenamiento, aplicaciones y servicios, que pueden ser r®¢pidamente proporcionados y 
-liberados con un esfuerzo m®™nimo de administraci®Æn o de interacci®Æn con el proveedor de servicios. Este modelo de nube promueve la 
-disponibilidad y est®¢ compuesto por cinco caracter®™sticas esenciales, tres modelos de servicio y cuatro modelos de despliegue. }
+configurables, por ejemplo, redes, servidores, almacenamiento, aplicaciones y servicios, que pueden ser r·pidamente proporcionados y 
+liberados con un esfuerzo mÌnimo de administraciÛn o de interacciÛn con el proveedor de servicios. Este modelo de nube promueve la 
+disponibilidad y est· compuesto por cinco caracterÌsticas esenciales, tres modelos de servicio y cuatro modelos de despliegue. }
 
 
 En un intento de adentrarse en lo que es y no es el Cloud computing compararemos este paradigma con
-la computaci®Æn tradicional. Con la computaci®Æn
+la computaciÛn tradicional. Con la computaciÛn
 tradicional ejecutamos copias de software en cada ordenador. 
 Los documentos que creamos  son almacenados en el ordenador en el que fueron creados. Aunque se puede acceder a los documentos desde 
 otros ordenadores de la red, no se puede desde ordenadores de fuera de ella. 
 
 Con cloud computing, los programas que usamos no se ejecutan en nuestro ordenador personal, sino que son almacenados en servidores 
-accedidos v®™a Internet. Si tu ordenador se rompiera, el software seguir®™a estando operativo para los
-dem®¢s. De la misma forma, los documentos que creamos son almacenados en una colecci®Æn de
-servidores en los que un usuario con permiso puede, no s®Ælo acceder a los 
-documentos, sino tambi®¶n editar y colaborar en ellos en tiempo real. A diferencia de la computaci®Æn
+accedidos vÌa Internet. Si tu ordenador se rompiera, el software seguirÌa estando operativo para los
+dem·s. De la misma forma, los documentos que creamos son almacenados en una colecciÛn de
+servidores en los que un usuario con permiso puede, no sÛlo acceder a los 
+documentos, sino tambiÈn editar y colaborar en ellos en tiempo real. A diferencia de la computaciÛn
 tradicional, el modelo 
-de Cloud no es PC-C®¶ntrico por lo que el dispositivo que se usa para acceder a la informaci®Æn no es
-lo m®¢s importante. 
+de Cloud no es PC-CÈntrico por lo que el dispositivo que se usa para acceder a la informaciÛn no es
+lo m·s importante. 
 
-A continuaci®Æn, veremos qu®¶ es Cloud Computing y qu®¶ no es \cite{Web08} .
+A continuaciÛn, veremos quÈ es Cloud Computing y quÈ no es \cite{Web08} .
 
-\subsection{Qu®¶ no es cloud computing}
+\subsection{QuÈ no es cloud computing}
 
 Cloud computing no es una red de ordenadores. Con una red, las aplicaciones  y documentos son almacenados en un servidor de la empresa 
-y accedidos a trav®¶s de la red de la empresa. Cloud computing es mucho m®¢s que esto. Engloba m®≤ltiples empresas, m®≤ltiples servidores y 
-m®≤ltiples redes. A diferencia de una red de ordenadores, los servicios cloud y el almacenamiento pueden ser accedidos desde cualquier 
-ordenador del mundo con una conexi®Æn a internet. 
+y accedidos a travÈs de la red de la empresa. Cloud computing es mucho m·s que esto. Engloba m˙ltiples empresas, m˙ltiples servidores y 
+m˙ltiples redes. A diferencia de una red de ordenadores, los servicios cloud y el almacenamiento pueden ser accedidos desde cualquier 
+ordenador del mundo con una conexiÛn a internet. 
 
-Cloud computing tampoco es la subcontrataci®Æn de un servicio externo de manera tradicional, donde la compaÅ0ä9®™a contratada presta sus 
+Cloud computing tampoco es la subcontrataciÛn de un servicio externo de manera tradicional, donde la compaÒÌa contratada presta sus 
 servicios a la empresa contratadora. Mientras una empresa de outsourcing organiza sus datos y aplicaciones, estos documentos y 
-programas solamente son accesibles a los empleados de la empresa a trav®¶s de la red de la misma, no a todo el mundo v®™a internet.
-As®™ que, a pesar de las aparentes similitudes, las redes y el outsourcing no son cloud computing.
+programas solamente son accesibles a los empleados de la empresa a travÈs de la red de la misma, no a todo el mundo vÌa internet.
+AsÌ que, a pesar de las aparentes similitudes, las redes y el outsourcing no son cloud computing.
 
 
-\subsection{Qu®¶ es cloud computing}
+\subsection{QuÈ es cloud computing}
 
-La clave de la definici®Æn de Cloud Computing es el Cloud en s®™ mismo. Para nuestro prop®Æsito, el cloud es un gran conjunto de ordenadores 
-interconectados. Estos computadores pueden ser PC's o servidores, p®≤blicos o privados. 
+La clave de la definiciÛn de Cloud Computing es el Cloud en sÌ mismo. Para nuestro propÛsito, el cloud es un gran conjunto de ordenadores 
+interconectados. Estos computadores pueden ser PC's o servidores, p˙blicos o privados. 
 
-Esta nube de computadores se extiende m®¢s all®¢ de una simple compaÅ0ä9®™a o empresa. Las aplicaciones y datos servidos por la nube est®¢n 
-disponibles para un amplio grupo de usuarios, a trav®¶s de empresas y plataformas. El acceso es v®™a Internet. Cualquier usuario autorizado 
-puede acceder a estos documentos  y aplicaciones  desde cualquier ordenador con conexi®Æn a Internet. Y, para el usuario, la tecnolog®™a e 
-infraestructura que se esconde detr®¢s de la nube es invisible. 
+Esta nube de computadores se extiende m·s all· de una simple compaÒÌa o empresa. Las aplicaciones y datos servidos por la nube est·n 
+disponibles para un amplio grupo de usuarios, a travÈs de empresas y plataformas. El acceso es vÌa Internet. Cualquier usuario autorizado 
+puede acceder a estos documentos  y aplicaciones  desde cualquier ordenador con conexiÛn a Internet. Y, para el usuario, la tecnologÌa e 
+infraestructura que se esconde detr·s de la nube es invisible. 
 
 
-Para ejemplificar algunos de los puntos m®¢s interesantes del cloud computing nos basaremos en
-Google, una de las principales compaÅ0ä9®™as impulsoras del Cloud. Seg®≤n su perspectiva, hay seis
+Para ejemplificar algunos de los puntos m·s interesantes del cloud computing nos basaremos en
+Google, una de las principales compaÒÌas impulsoras del Cloud. Seg˙n su perspectiva, hay seis
 propiedades clave en el cloud computing.
 
 \begin{itemize}
 
 % no uses expresiones inglesas cuando hay una espa√±ola perfectamente
-% v√°lida. - JJ
-\item Es ``User-Centric'': Una vez que t®≤ eres un usuario conectado a la nube, cualquier cosa que haya almacenada all®™ - documentos, mensajes, 
-im®¢genes, aplicaciones - se convierte en tuya. Adem®¢s, no solo los datos son tuyos sino que puedes compartirlos con otros. 
-En efecto, cualquier dispositivo que acceda a tus datos en la nube tambi®¶n convierte los datos en suyos.
-\item Es ``Task-Centric'': En vez de concentrarse en la aplicaci®Æn y qu®¶ hacer, se centra en lo que necesitas y c®Æmo la aplicaci®Æn puede 
-hacerlo por ti. Las aplicaciones tradicionales - procesadores de textos, hojas de c®¢lculo, email... -  se est®¢n convirtiendo en m®¢s 
+% v√°lida. - JJ - FERGU: cambiado
+\item Es ``Centrado en el usuario'': Una vez que t˙ eres un usuario conectado a la nube, cualquier cosa que haya almacenada allÌ - documentos, mensajes, 
+im·genes, aplicaciones - se convierte en tuya. Adem·s, no solo los datos son tuyos sino que puedes compartirlos con otros. 
+En efecto, cualquier dispositivo que acceda a tus datos en la nube tambiÈn convierte los datos en suyos.
+\item Es ``Centrado en la tarea'': En vez de concentrarse en la aplicaciÛn y quÈ hacer, se centra en lo que necesitas y cÛmo la aplicaciÛn puede 
+hacerlo por ti. Las aplicaciones tradicionales - procesadores de textos, hojas de c·lculo, email... -  se est·n convirtiendo en m·s 
 importantes que los documentos que se crean.
-\item Es poderoso: Conectando cientos o miles de computadores juntos en una nube se crea una riqueza de computaci®Æn imposible de hacer 
-en un ®≤nico PC.
-\item Es accesible: Como los datos son almacenados en la nube, usuarios pueden recuperar informaci®Æn instant®¢neamente desde m®≤ltiples 
-repositorios. No est®¢s limitado a una ®≤nica fuente de datos, como lo est®¢s en un PC.
-\item Es inteligente: Con el volumen de datos almacenados en la nube, el data-mining y an®¢lisis son necesarios para acceder a esta 
-informaci®Æn de una manera inteligente.
+\item Es poderoso: Conectando cientos o miles de computadores juntos en una nube se crea una riqueza de computaciÛn imposible de hacer 
+en un ˙nico PC.
+\item Es accesible: Como los datos son almacenados en la nube, usuarios pueden recuperar informaciÛn instant·neamente desde m˙ltiples 
+repositorios. No est·s limitado a una ˙nica fuente de datos, como lo est·s en un PC.
+\item Es inteligente: Con el volumen de datos almacenados en la nube, el data-mining y an·lisis son necesarios para acceder a esta 
+informaciÛn de una manera inteligente.
 \item Es programable: Muchas de las tareas necesarias para el cloud computing deben de ser automatizadas. Por ejemplo, para proteger 
-la identidad de los datos, la informaci®Æn almacenada en un ®≤nico computador en la nube debe ser replicada en los otros computadores 
-de la nube. Si uno de ®¶stos falla, la programaci®Æn de la nube redistribuir®¢ autom®¢ticamente los datos de ®¶ste computador hacia uno 
+la identidad de los datos, la informaciÛn almacenada en un ˙nico computador en la nube debe ser replicada en los otros computadores 
+de la nube. Si uno de Èstos falla, la programaciÛn de la nube redistribuir· autom·ticamente los datos de Èste computador hacia uno 
 nuevo de la nube.
 
 \end{itemize}
 
 \section{Amazon Web Services}
 \label{sec:aws}
-En esta secci®Æn se presenta \it{Amazon Web Services} 
+En esta secciÛn se presenta {\it Amazon Web Services} 
 \cite{Eva11} en general, y en particular, los servicios que se han
 utilizado para el desarrollo de 
 este trabajo.
 
 
-\subsection{Caracter®™sticas}
+\subsection{CaracterÌsticas}
 
 Amazon EC2 proporciona un servicio Web que permite obtener y configurar recursos computacionales de
 forma sencilla. Proporciona un control completo de los recursos computacionales y permite al usuario
 emplear el entorno de Amazon.
 Amazon EC2 reduce el tiempo requerido para obtener e iniciar nuevas instancias a minutos, permitiendo escalar la capacidad de 
-forma r®¢pida y en funci®Æn de los requerimientos. Amazon EC2 permite al usuario adquirir la capacidad que en cada momento necesita. 
-Adem®¢s, proporciona a los desarrolladores las herramientas para construir aplicaciones robustas y aislarlas de los escenarios comunes 
+forma r·pida y en funciÛn de los requerimientos. Amazon EC2 permite al usuario adquirir la capacidad que en cada momento necesita. 
+Adem·s, proporciona a los desarrolladores las herramientas para construir aplicaciones robustas y aislarlas de los escenarios comunes 
 propensos a fallos.
 
-Amazon EC2 es un entorno de computaci®Æn virtual que permite emplear interfaces Web para lanzar
+Amazon EC2 es un entorno de computaciÛn virtual que permite emplear interfaces Web para lanzar
 instancias de una gran variedad de 
 sistemas operativos, instalar entornos de aplicaciones personalizados, gestionar los permisos de acceso a
-la red, y ejecutar las im®¢genes virtuales usando tantos sistemas como sea preciso.
+la red, y ejecutar las im·genes virtuales usando tantos sistemas como sea preciso.
 
 Para emplear Amazon EC2 es necesario:
 
 \begin{itemize}
  \item Seleccionar una plantilla preconfigurada para ser ejecutada de forma inmediata, o crear una Amazon Machine Image (AMI) 
- que contenga sus aplicaciones, librer®™as, datos y las opciones de configuraci®Æn asociadas.
+ que contenga sus aplicaciones, librerÌas, datos y las opciones de configuraciÛn asociadas.
  \item Configurar la seguridad y el acceso a la red para la instancia de Amazon EC2.
- \item Escoger el tipo de instancia y el sistema operativo que desee y, a continuaci®Æn, iniciar, apagar y monitorizar tantas 
+ \item Escoger el tipo de instancia y el sistema operativo que desee y, a continuaciÛn, iniciar, apagar y monitorizar tantas 
  instancias como sea necesario, usando las APIs del servicio Web o la gran variedad de herramientas proporcionadas.
- \item Determinar si se ejecutar®¢n las m®¢quinas virtuales en m®≤ltiples ubicaciones, si se utilizar®¢n direcciones IP est®¢ticas o se 
- conectar®¢n sistemas de almacenamiento persistente a las mismas.
- \item Pagar s®Ælo por los recursos que se consumen, como el de tiempo de CPU de las instancias o los datos transferidos.
+ \item Determinar si se ejecutar·n las m·quinas virtuales en m˙ltiples ubicaciones, si se utilizar·n direcciones IP est·ticas o se 
+ conectar·n sistemas de almacenamiento persistente a las mismas.
+ \item Pagar sÛlo por los recursos que se consumen, como el de tiempo de CPU de las instancias o los datos transferidos.
  
 \end{itemize}
 
 \subsection{Aspectos destacados del servicio}
 
 \begin{itemize}
- \item \textbf{El®¢stico}. Amazon EC2 permite incrementar o reducir la capacidad en minutos. Se podr®™a ordenar la iniciaci®Æn de 
- cientos o miles de instancias de m®¢quinas virtuales de forma simult®¢nea. La aplicaci®Æn de usuario podr®™a escalar de forma autom®¢tica 
- los recursos necesarios en funci®Æn de las necesidades de la aplicaci®Æn empleando el API del servicio Web de Amazon.
+ \item \textbf{El·stico}. Amazon EC2 permite incrementar o reducir la capacidad en minutos. Se podrÌa ordenar la iniciaciÛn de 
+ cientos o miles de instancias de m·quinas virtuales de forma simult·nea. La aplicaciÛn de usuario podrÌa escalar de forma autom·tica 
+ los recursos necesarios en funciÛn de las necesidades de la aplicaciÛn empleando el API del servicio Web de Amazon.
  \item \textbf{Controlado por completo}. Se tiene el control completo de las instancias. El usuario tiene acceso de root a cada una
- de ellas y, por tanto, podr®™a controlarlas de la misma forma que cualquier otra m®¢quina.
+ de ellas y, por tanto, podrÌa controlarlas de la misma forma que cualquier otra m·quina.
  \item \textbf{Flexible}. Permite seleccionar distintos tipos de instancias, sistemas operativos y paquetes de software. Amazon EC2 
- permite seleccionar la configuraci®Æn de memoria, CPU, espacio de almacenamiento, tamaÅ0ä9o de la partici®Æn de inicio. 
- \item \textbf{DiseÅ0ä9ado para ser empleado con otros servicios Web de Amazon}. Amazon EC2 emplea el servicio de almacenamiento 
- Amazon Simple Storage Service (Amazon S3), Amazon SimpleDB y Amazon Simple Queue Service (Amazon SQS) para proporcionar una soluci®Æn 
- completa a la computaci®Æn, el procesamiento de colas y el almacenamiento en un amplio rango de aplicaciones.
- \item \textbf{Confiable}. Amazon EC2 ofrece un entorno confiable donde puedan reemplazarse las instancias de forma r®¢pida y 
+ permite seleccionar la configuraciÛn de memoria, CPU, espacio de almacenamiento, tamaÒo de la particiÛn de inicio. 
+ \item \textbf{DiseÒado para ser empleado con otros servicios Web de Amazon}. Amazon EC2 emplea el servicio de almacenamiento 
+ Amazon Simple Storage Service (Amazon S3), Amazon SimpleDB y Amazon Simple Queue Service (Amazon SQS) para proporcionar una soluciÛn 
+ completa a la computaciÛn, el procesamiento de colas y el almacenamiento en un amplio rango de aplicaciones.
+ \item \textbf{Confiable}. Amazon EC2 ofrece un entorno confiable donde puedan reemplazarse las instancias de forma r·pida y 
  predecible. El acuerdo de nivel de servicio de Amazon es del $99.95\%$ para cada una de las zonas
-de la regi®Æn de Amazon EC2.
+de la regiÛn de Amazon EC2.
  \item \textbf{Seguro}. Amazon EC2 proporciona numerosos mecanismos de seguridad para los recursos. Incluye interfaces Web para 
  configurar las opciones de firewall entre sus grupos de instancias.
- \item \textbf{Barato}. Se cobra una tasa reducida por la capacidad de computaci®Æn que se consume. Existen diferentes 
+ \item \textbf{Barato}. Se cobra una tasa reducida por la capacidad de computaciÛn que se consume. Existen diferentes 
  servicios:
-  \subitem \textit{Instancias bajo demanda}. Permiten pagar por la capacidad de computaci®Æn por cada hora de utilizaci®Æn sin la necesidad 
-  de establecer compromisos a largo plazo. Esto permite liberar al usuario de los costes y la complejidad que supone la planificaci®Æn, 
-  la adquisici®Æn y el mantenimiento de hardware.
+  \subitem \textit{Instancias bajo demanda}. Permiten pagar por la capacidad de computaciÛn por cada hora de utilizaciÛn sin la necesidad 
+  de establecer compromisos a largo plazo. Esto permite liberar al usuario de los costes y la complejidad que supone la planificaciÛn, 
+  la adquisiciÛn y el mantenimiento de hardware.
   \subitem \textit{Instancias reservadas}. Las instancias reservadas permiten efectuar un pago inicial bajo, de usa sola vez para 
-  cada instancia que desea reservar y disponer de una tasa de descuento significativo en la utilizaci®Æn por hora de la misma.
+  cada instancia que desea reservar y disponer de una tasa de descuento significativo en la utilizaciÛn por hora de la misma.
   \subitem \textit{Instancias Spot}. Permiten al usuario efectuar una oferta por la capacidad no utilizada de Amazon EC2, lo que 
-  permitir®™a ejecutar las instancias durante el tiempo que el precio ofertado supere al precio actual de los recursos no utilizados.
+  permitirÌa ejecutar las instancias durante el tiempo que el precio ofertado supere al precio actual de los recursos no utilizados.
 
 \end{itemize}
 
@@ -275,33 +280,33 @@ de la regi®Æn de Amazon EC2.
 \section{Modelo MapReduce}
 \label{sec:mapreduce}
 
-Durante aÅ0ä9os, los programadores se han visto forzados a realizar implementaciones espec®™ficas para trabajar con grandes 
-vol®≤menes de datos en sus entornos distribuidos de trabajo.
+Durante aÒos, los programadores se han visto forzados a realizar implementaciones especÌficas para trabajar con grandes 
+vol˙menes de datos en sus entornos distribuidos de trabajo.
 
-Pese a que no siempre es necesario, el tamaÅ0ä9o de la informaci®Æn entrante suele ser grande y los c®¢lculos deben ser distribuidos 
-entre una gran multitud de m®¢quinas para acabar en un tiempo razonable. Los problemas de c®Æmo paralelizar estos c®¢lculos, 
-distribuir la informaci®Æn y manejar los fallos dificultan basatante la labor de implementaci®Æn. 
+Pese a que no siempre es necesario, el tamaÒo de la informaciÛn entrante suele ser grande y los c·lculos deben ser distribuidos 
+entre una gran multitud de m·quinas para acabar en un tiempo razonable. Los problemas de cÛmo paralelizar estos c·lculos, 
+distribuir la informaciÛn y manejar los fallos dificultan basatante la labor de implementaciÛn. 
 
-El modelo de programaci®Æn MapReduce es una propuesta que pretende resolver las dificultades anteriores, ya que sus caracter®™sticas 
-y motivaci®Æn se basan en la delegaci®Æn de los c®Æmputos intensivos en datos a un cl®≤ster de m®¢quinas remotas que,
-mediante un sistema de ficheros distribuido, repartir®¢n la carga de trabajo, optimizando tiempo y recursos. 
-Asimismo, facilita un patr®Æn de desarrollo paralelo para simplificar la implementaci®Æn de aplicaciones intensivas en 
-datos en entornos distribuidos. Este modelo puede dividir un espacio grande de problema en espacios pequeÅ0ä9os y paralelizar 
-la ejecuci®Æn de tareas m®¢s pequeÅ0ä9as en estos sub-espacios. 
+El modelo de programaciÛn MapReduce es una propuesta que pretende resolver las dificultades anteriores, ya que sus caracterÌsticas 
+y motivaciÛn se basan en la delegaciÛn de los cÛmputos intensivos en datos a un cl˙ster de m·quinas remotas que,
+mediante un sistema de ficheros distribuido, repartir·n la carga de trabajo, optimizando tiempo y recursos. 
+Asimismo, facilita un patrÛn de desarrollo paralelo para simplificar la implementaciÛn de aplicaciones intensivas en 
+datos en entornos distribuidos. Este modelo puede dividir un espacio grande de problema en espacios pequeÒos y paralelizar 
+la ejecuciÛn de tareas m·s pequeÒas en estos sub-espacios. 
 
-Este modelo ha cobrado especial inter®¶s por su aplicabilidad en entornos de Cloud Computing \cite{Web08}. 
-MapReduce ofrece unas ventajas muy directas y evidentes como es la centralizaci®Æn de los datos en servidores remotos, 
-eliminando las dependencias con los soportes f®™sicos; o la contrataci®Æn de servicios en funci®Æn de las
-necesidades de las empresas, sin tener que aÅ0ä9adir equipos, software o personal, lo que conlleva un considerable ahorro 
-tambi®¶n en el plano energ®¶tico. 
+Este modelo ha cobrado especial interÈs por su aplicabilidad en entornos de Cloud Computing \cite{Web08}. 
+MapReduce ofrece unas ventajas muy directas y evidentes como es la centralizaciÛn de los datos en servidores remotos, 
+eliminando las dependencias con los soportes fÌsicos; o la contrataciÛn de servicios en funciÛn de las
+necesidades de las empresas, sin tener que aÒadir equipos, software o personal, lo que conlleva un considerable ahorro 
+tambiÈn en el plano energÈtico. 
 
 
-MapReduce \cite{Dea08} es un modelo de programaci®Æn, desarrollado por Google, que es utilizado para procesar grandes conjuntos de 
-datos distribuidos a lo largo de un cl®≤ster de servidores. Este procesado computacional puede tener lugar tanto sobre datos
-almacenados en sistemas de ficheros, como en bases de datos. El modelo de programaci®Æn est®¢ inspirado en los lenguajes funcionales 
-y permite al desarrollador expresar sus algoritmos utilizando ®≤nicamente dos funciones, \textbf{map} y \textbf{reduce}. 
+MapReduce \cite{Dea08} es un modelo de programaciÛn, desarrollado por Google, que es utilizado para procesar grandes conjuntos de 
+datos distribuidos a lo largo de un cl˙ster de servidores. Este procesado computacional puede tener lugar tanto sobre datos
+almacenados en sistemas de ficheros, como en bases de datos. El modelo de programaciÛn est· inspirado en los lenguajes funcionales 
+y permite al desarrollador expresar sus algoritmos utilizando ˙nicamente dos funciones, \textbf{map} y \textbf{reduce}. 
 
-Las funciones map y reduce de MapReduce se definen sobre datos estructurados en pares clave-valor. La funci®Æn map, escrita por el 
+Las funciones map y reduce de MapReduce se definen sobre datos estructurados en pares clave-valor. La funciÛn map, escrita por el 
 usuario, recibe un par clave-valor y devuelve un conjunto de pares clave-valor intermedio:
 
 \begin{equation}
@@ -310,12 +315,12 @@ usuario, recibe un par clave-valor y devuelve un conjunto de pares clave-valor i
 \end{equation}
 
 
-Esta funci®Æn (\ref{EcuacionMap})  se aplica en paralelo a cada par del conjunto de datos de entrada produciendo una lista de 
+Esta funciÛn (\ref{EcuacionMap})  se aplica en paralelo a cada par del conjunto de datos de entrada produciendo una lista de 
 pares $(k2, v2)$ por cada llamada. MapReduce agrupa todos los valores intermedios asociados con la misma clave k y se los 
-pasa a la funci®Æn reduce.
+pasa a la funciÛn reduce.
 
-La funci®Æn reduce (\ref{EcuacionReduce}) recibe dicha clave y su conjunto de valores asociados y los fusiona para formar un conjunto 
-de valores m®¢s pequeÅ0ä9o:
+La funciÛn reduce (\ref{EcuacionReduce}) recibe dicha clave y su conjunto de valores asociados y los fusiona para formar un conjunto 
+de valores m·s pequeÒo:
 
 
 \begin{equation}
@@ -324,13 +329,13 @@ de valores m®¢s pequeÅ0ä9o:
 \end{equation}
 
 
-Cada llamada reduce produce bien una lista v3 o un valor vac®™o. Los resultados de las llamadas se recopilan en la lista de 
+Cada llamada reduce produce bien una lista v3 o un valor vacÌo. Los resultados de las llamadas se recopilan en la lista de 
 resultados buscada. 
 
 
 
 
-Desde la perspectiva del flujo de datos, la ejecuci®Æn de MapReduce consiste en M tareas map y R tareas reduce independientes. 
+Desde la perspectiva del flujo de datos, la ejecuciÛn de MapReduce consiste en M tareas map y R tareas reduce independientes. 
 Generalmente, los resultados intermedios se particionan en R trozos para R tareas reduce. 
 
 
@@ -339,60 +344,60 @@ Los principales elementos de un flujo de trabajo MapReduce son los siguientes:
 
 \begin{itemize}
  \item \textbf{Proceso que lee la entrada}: divide los datos de entrada en bloques, siendo asignados cada uno de estos bloques a la 
- funci®Æn map correspondiente. Estos datos ser®¢n le®™dos de un almacenamiento estable y generar®¢ pares clave/valor. 
- Un ejemplo com®≤n ser®™a la lectura de un directorio entero, y la devoluci®Æn de un registro por cada l®™nea de cada fichero.
+ funciÛn map correspondiente. Estos datos ser·n leÌdos de un almacenamiento estable y generar· pares clave/valor. 
+ Un ejemplo com˙n serÌa la lectura de un directorio entero, y la devoluciÛn de un registro por cada lÌnea de cada fichero.
 
- \item \textbf{Funci®Æn de mapeo} (map): Cada funci®Æn map recibe una serie de pares clave-valor, los procesa individualmente, y 
- devuelve cero o m®¢s pares clave-valor de salida. Los tipos de datos de la entrada y la salida de la funci®Æn map suele ser
-distintos. Por ejemplo, si la aplicaci®Æn realizase un conteo de palabras, la funci®Æn map separar®™a la l®™nea en palabras y 
-sacar®™a como resultado la palabra como clave y un 1 como valor.
+ \item \textbf{FunciÛn de mapeo} (map): Cada funciÛn map recibe una serie de pares clave-valor, los procesa individualmente, y 
+ devuelve cero o m·s pares clave-valor de salida. Los tipos de datos de la entrada y la salida de la funciÛn map suele ser
+distintos. Por ejemplo, si la aplicaciÛn realizase un conteo de palabras, la funciÛn map separarÌa la lÌnea en palabras y 
+sacarÌa como resultado la palabra como clave y un 1 como valor.
  
- \item \textbf{Funci®Æn de partici®Æn}: Las salidas de cada uno de los nodos map son asignadas a un nodo reduce en concreto a 
- partir del resultado obtenido por la funci®Æn ``partition'' de la aplicaci®Æn. Esta funci®Æn devuelve el ®™ndice del reduce buscado, 
- dada una clave y un n®≤mero de nodo reduce. Una funci®Æn t®™pica es hallar el valor hash de la clave y hacer m®Ædulo del n®≤mero 
+ \item \textbf{FunciÛn de particiÛn}: Las salidas de cada uno de los nodos map son asignadas a un nodo reduce en concreto a 
+ partir del resultado obtenido por la funciÛn ``partition'' de la aplicaciÛn. Esta funciÛn devuelve el Ìndice del reduce buscado, 
+ dada una clave y un n˙mero de nodo reduce. Una funciÛn tÌpica es hallar el valor hash de la clave y hacer mÛdulo del n˙mero 
  de nodo reduce.
 
- \item \textbf{Funci®Æn de comparaci®Æn}: La entrada de cada reduce se obtiene de la m®¢quina en la que se ejecut®Æ y orden®Æ el 
- map utilizando la funci®Æn de comparaci®Æn de la aplicaci®Æn.
+ \item \textbf{FunciÛn de comparaciÛn}: La entrada de cada reduce se obtiene de la m·quina en la que se ejecutÛ y ordenÛ el 
+ map utilizando la funciÛn de comparaciÛn de la aplicaciÛn.
 
- \item \textbf{Funci®Æn de escritura de salida}: Escribe la salida de la funci®Æn reduce en un almacenamiento estable, t®™picamente 
+ \item \textbf{FunciÛn de escritura de salida}: Escribe la salida de la funciÛn reduce en un almacenamiento estable, tÌpicamente 
  un sistema de ficheros distribuido.
  
 \end{itemize}
 
-El principal beneficio de este modelo de programaci®Æn es la simplicidad. El programador simplemente proporciona una descripci®Æn 
+El principal beneficio de este modelo de programaciÛn es la simplicidad. El programador simplemente proporciona una descripciÛn 
 del algoritmo centrada en su funcionalidad.
 
 
 
-\section{Algoritmos Gen®¶ticos}
+\section{Algoritmos GenÈticos}
 \label{sec:ags}
 
-La t®¶cnica de b®≤squeda conocida como Algoritmo Gen®¶tico se basa en los mecanismos de selecci®Æn que utiliza la naturaleza, 
-de acuerdo a los cuales los individuos m®¢s aptos de una poblaci®Æn son los que sobreviven, al adaptarse m®¢s
-f®¢cilmente a los cambios que se producen en su entorno. Hoy en d®™a se sabe que estos cambios se efect®≤an en los genes de 
-un individuo (unidad b®¢sica de codificaci®Æn de cada uno de los atributos de un ser vivo), 
-y que sus atributos m®¢s deseables (es decir, los quele permiten adaptarse mejor a su entorno) se transmiten a sus descendientes 
-cuando ®¶ste se reproduce sexualmente. 
+La tÈcnica de b˙squeda conocida como Algoritmo GenÈtico se basa en los mecanismos de selecciÛn que utiliza la naturaleza, 
+de acuerdo a los cuales los individuos m·s aptos de una poblaciÛn son los que sobreviven, al adaptarse m·s
+f·cilmente a los cambios que se producen en su entorno. Hoy en dÌa se sabe que estos cambios se efect˙an en los genes de 
+un individuo (unidad b·sica de codificaciÛn de cada uno de los atributos de un ser vivo), 
+y que sus atributos m·s deseables (es decir, los quele permiten adaptarse mejor a su entorno) se transmiten a sus descendientes 
+cuando Èste se reproduce sexualmente. 
 
-La primera menci®Æn del t®¶rmino Algoritmo Gen®¶tico, y la primera publicaci®Æn
-sobre una aplicaci®Æn del mismo, se deben a J.D.Bagley \cite{Bagley67}, que diseÅ0ä9®Æ AGs para
-buscar conjuntos de par®¢metros en funciones de evaluaci®Æn de juegos. 
-Pero es otro cient®™fico el considerado creador de los AGs: John Holland, que los desarroll®Æ, junto a sus alumnos y colegas, 
+La primera menciÛn del tÈrmino Algoritmo GenÈtico, y la primera publicaciÛn
+sobre una aplicaciÛn del mismo, se deben a J.D.Bagley \cite{Bagley67}, que diseÒÛ AGs para
+buscar conjuntos de par·metros en funciones de evaluaciÛn de juegos. 
+Pero es otro cientÌfico el considerado creador de los AGs: John Holland, que los desarrollÛ, junto a sus alumnos y colegas, 
 durante los 60 y 70.  
 
-El prop®Æsito original de Holland no era diseÅ0ä9ar algoritmos para resolver problemas concretos, sino estudiar, de un modo formal, 
-el fen®Æmeno de la adaptaci®Æn tal y como ocurre en la naturaleza y desarrollar v®™as de extrapolar esos mecanismos de adaptaci®Æn
+El propÛsito original de Holland no era diseÒar algoritmos para resolver problemas concretos, sino estudiar, de un modo formal, 
+el fenÛmeno de la adaptaciÛn tal y como ocurre en la naturaleza y desarrollar vÌas de extrapolar esos mecanismos de adaptaciÛn
 natural a los sistemas computacionales.  
 
 En \cite{Holland75} Holland presentaba el AG como una
-abstracci®Æn de la evoluci®Æn biol®Ægica, y proporcionaba el entramado te®Ærico para la adaptaci®Æn bajo el algoritmo gen®¶tico. 
-El AG de Holland era un m®¶todo para desplazarse, de una poblaci®Æn de cromosomas a una nueva poblaci®Æn, utilizando
-un sistema similar a la selecci®Æn natural junto con los operadores de cruce, mutaci®Æn e inversi®Æn inspirados en la gen®¶tica. 
-En este primitivo algoritmo, cada cromosoma consta de genes (bits) y cada uno de ellos es una muestra de un alelo particular (0 ®Æ 1). 
-El operador de selecci®Æn escoge entre los cromosomas de la poblaci®Æn aquellos con capacidad de reproducci®Æn, y entre ®¶stos, 
-los que sean m®¢s compatibles producir®¢n m®¢s descendencia que el resto. El operador de cruce extrae partes de dos cromosomas,
-imitando la combinaci®Æn biol®Ægica de dos cromosomas aislados (gametos). Y por ®≤ltimo, el operador de mutaci®Æn se encarga de cambiar, 
+abstracciÛn de la evoluciÛn biolÛgica, y proporcionaba el entramado teÛrico para la adaptaciÛn bajo el algoritmo genÈtico. 
+El AG de Holland era un mÈtodo para desplazarse, de una poblaciÛn de cromosomas a una nueva poblaciÛn, utilizando
+un sistema similar a la selecciÛn natural junto con los operadores de cruce, mutaciÛn e inversiÛn inspirados en la genÈtica. 
+En este primitivo algoritmo, cada cromosoma consta de genes (bits) y cada uno de ellos es una muestra de un alelo particular (0 Û 1). 
+El operador de selecciÛn escoge entre los cromosomas de la poblaciÛn aquellos con capacidad de reproducciÛn, y entre Èstos, 
+los que sean m·s compatibles producir·n m·s descendencia que el resto. El operador de cruce extrae partes de dos cromosomas,
+imitando la combinaciÛn biolÛgica de dos cromosomas aislados (gametos). Y por ˙ltimo, el operador de mutaciÛn se encarga de cambiar, 
 de modo aleatorio, los valores del alelo en algunas localizaciones del cromosoma. 
 
 
@@ -400,141 +405,141 @@ de modo aleatorio, los valores del alelo en algunas localizaciones del cromosoma
 
 
 
-\subsection{Algoritmo Gen®¶tico B®¢sico}
+\subsection{Algoritmo GenÈtico B·sico}
 
-En esta secci®Æn se describen los componentes de un algoritmo gen®¶tico b®¢sico y sus formas m®¢s comunes.
+En esta secciÛn se describen los componentes de un algoritmo genÈtico b·sico y sus formas m·s comunes.
 
-\subsubsection{Representaci®Æn de los Individuos}
+\subsubsection{RepresentaciÛn de los Individuos}
 
-Desde los primeros estudios de los AGs los individuos son cadenas binarias, siendo hoy en d®™a a®≤n la aproximaci®Æn
-m®¢s utilizada, aunque existen otras que utilizan letras o valores n®≤mericos para representar a sus cromosomas. 
+Desde los primeros estudios de los AGs los individuos son cadenas binarias, siendo hoy en dÌa a˙n la aproximaciÛn
+m·s utilizada, aunque existen otras que utilizan letras o valores n˙mericos para representar a sus cromosomas. 
 
 
 
-La sencillez de la representaci®Æn binaria que utilizan los AGs les aporta caracter®™sticas muy importantes de eficiencia. 
-Sin embargo debemos disponer de un m®¶todo para poder evaluar la adecuaci®Æn del individuo como soluci®Æn al 
-problema. L®Ægicamente, el m®¶todo de transformaci®Æn es espec®™fico del problema considerado. Sin embargo, a la hora de diseÅ0ä9ar
-el m®¶todo de codificaci®Æn es importante tener en cuenta una serie de directrices. As®™, debemos buscar una codificaci®Æn tal que
-cada punto del espacio de b®≤squeda est®¶ representado por el mismo n®≤mero de cadenas binarias, y tal que sea capaz de representar
+La sencillez de la representaciÛn binaria que utilizan los AGs les aporta caracterÌsticas muy importantes de eficiencia. 
+Sin embargo debemos disponer de un mÈtodo para poder evaluar la adecuaciÛn del individuo como soluciÛn al 
+problema. LÛgicamente, el mÈtodo de transformaciÛn es especÌfico del problema considerado. Sin embargo, a la hora de diseÒar
+el mÈtodo de codificaciÛn es importante tener en cuenta una serie de directrices. AsÌ, debemos buscar una codificaciÛn tal que
+cada punto del espacio de b˙squeda estÈ representado por el mismo n˙mero de cadenas binarias, y tal que sea capaz de representar
 todos los puntos del espacio del problema. 
 
-En el contexto de los AGs, el t®¶rmino cromosoma se refiere a un candidato a soluci®Æn del problema, que frecuentemente es 
+En el contexto de los AGs, el tÈrmino cromosoma se refiere a un candidato a soluciÛn del problema, que frecuentemente es 
 codificado como una cadena de bits. Los genes son tanto un bit como bloques cortos de bits adyacentes 
-que codifican un elemento particular del candidato a soluci®Æn. Un alelo en una cadena de bits ser®¢ 
-un 0 o un 1 (para alfabetos largos cada posici®Æn puede tener m®¢s alelos). El genotipo de un individuo en un AG que emplea
-cadenas de bits es, simplemente, la configuraci®Æn de bits del cromosoma de ese individuo. 
+que codifican un elemento particular del candidato a soluciÛn. Un alelo en una cadena de bits ser· 
+un 0 o un 1 (para alfabetos largos cada posiciÛn puede tener m·s alelos). El genotipo de un individuo en un AG que emplea
+cadenas de bits es, simplemente, la configuraciÛn de bits del cromosoma de ese individuo. 
 
-Cabe resaltar que en este trabajo se us®Æ tanto codificaci®Æn binaria como codificaci®Æn real que
-consiste en exactamente lo mismo pero un gen es representado como un n®≤mero real, generalmente en un dominio dado por el 
+Cabe resaltar que en este trabajo se usÛ tanto codificaciÛn binaria como codificaciÛn real que
+consiste en exactamente lo mismo pero un gen es representado como un n˙mero real, generalmente en un dominio dado por el 
 problema. 
 
 
 \subsubsection{Funcionamiento}
 
-Sea X el problema a resolver, el esquema general de un algoritmo gen®¶tico es el siguiente \cite{Her03}:
+Sea X el problema a resolver, el esquema general de un algoritmo genÈtico es el siguiente \cite{Her03}:
 
 
 
 
-A continuaci®Æn se proceder®¢ a una explicaci®Æn exhaustiva de dicho algoritmo.
-Dada una representaci®Æn de candidatos a soluciones en una cadena de bits, un AG simple, tal y como 
-se describe en \cite{Mit98}, funcionar®™a del siguiente modo:
+A continuaciÛn se proceder· a una explicaciÛn exhaustiva de dicho algoritmo.
+Dada una representaciÛn de candidatos a soluciones en una cadena de bits, un AG simple, tal y como 
+se describe en \cite{Mit98}, funcionarÌa del siguiente modo:
 
 \begin{enumerate}
- \item Comenzar con una poblaci®Æn P generada aleatoriamente de n cromosomas de L bits.
- \item Calcular el valor de la funci®Æn de evaluaci®Æn o fitness (f(x)) para cada cromosoma x de P.
+ \item Comenzar con una poblaciÛn P generada aleatoriamente de n cromosomas de L bits.
+ \item Calcular el valor de la funciÛn de evaluaciÛn o fitness (f(x)) para cada cromosoma x de P.
  \item Repetir los siguientes pasos hasta que se hayan creado todos los  descendientes:
  \begin{enumerate}
-    \item Seleccionar un par de cromosomas de P, siendo la probabilidad de selecci®Æn proporcional al fitness.
-    Los cromosomas seleccionados ser®¢n llamados cromosomas padre.
-    \item Con probabilidad \textit{$p_c$} (tasa de cruce), cruzar el par de cromosomas padre en un punto (o m®¢s)
-    elegido aleatoriamente para formar dos descendientes. Si no tiene lugar ning®≤n cruce, formar dos descendientes que sean copias
+    \item Seleccionar un par de cromosomas de P, siendo la probabilidad de selecciÛn proporcional al fitness.
+    Los cromosomas seleccionados ser·n llamados cromosomas padre.
+    \item Con probabilidad \textit{$p_c$} (tasa de cruce), cruzar el par de cromosomas padre en un punto (o m·s)
+    elegido aleatoriamente para formar dos descendientes. Si no tiene lugar ning˙n cruce, formar dos descendientes que sean copias
     exactas de sus respectivos padres.
-    \item Mutar los dos descendientes en cada lugar con probabilidad \textit{$p_m$} (tasa de mutaci®Æn), y colocar 
-    los cromosomas resultantes en la nueva poblaci®Æn P'.
+    \item Mutar los dos descendientes en cada lugar con probabilidad \textit{$p_m$} (tasa de mutaciÛn), y colocar 
+    los cromosomas resultantes en la nueva poblaciÛn P'.
  \end{enumerate}
- \item Reemplazar la poblaci®Æn actual P con la nueva poblaci®Æn P'.
- \item Evaluar la condici®Æn de finalizaci®Æn.
+ \item Reemplazar la poblaciÛn actual P con la nueva poblaciÛn P'.
+ \item Evaluar la condiciÛn de finalizaciÛn.
  \item Volver al paso 2.
 
 \end{enumerate}
 
-En el paso 2 del algoritmo se habla de una funci®Æn de evaluaci®Æn, la cual debe ser diseÅ0ä9ada para cada problema de manera 
-espec®™fica. Dado un cromosoma cualquiera, la funci®Æn de evaluaci®Æn le asigna un n®≤mero real, que se supone refleja el nivel de 
-adaptaci®Æn al problema del  individuo representado por el cromosoma. 
+En el paso 2 del algoritmo se habla de una funciÛn de evaluaciÛn, la cual debe ser diseÒada para cada problema de manera 
+especÌfica. Dado un cromosoma cualquiera, la funciÛn de evaluaciÛn le asigna un n˙mero real, que se supone refleja el nivel de 
+adaptaciÛn al problema del  individuo representado por el cromosoma. 
 
-Asimismo, la primera operaci®Æn del paso 3 del algoritmo es la llamada fase de selecci®Æn. Esta selecci®Æn se efect®≤a usando 
-un procedimiento que favorezca a los individuos mejor adaptados. Existen diferentes m®¶todos de selecci®Æn, que posteriormente
+Asimismo, la primera operaciÛn del paso 3 del algoritmo es la llamada fase de selecciÛn. Esta selecciÛn se efect˙a usando 
+un procedimiento que favorezca a los individuos mejor adaptados. Existen diferentes mÈtodos de selecciÛn, que posteriormente
 veremos. 
 
-Cada iteraci®Æn de este proceso recibe el nombre de generaci®Æn.
-Cada generaci®Æn se obtiene a partir de la anterior por medio de los llamados operadores de reproducci®Æn (paso 3 del algoritmo), 
+Cada iteraciÛn de este proceso recibe el nombre de generaciÛn.
+Cada generaciÛn se obtiene a partir de la anterior por medio de los llamados operadores de reproducciÛn (paso 3 del algoritmo), 
 que pueden ser de dos tipos:
 
 \begin{enumerate}
- \item \textbf{Copia:} Es un tipo de reproducci®Æn asexual, en la que un determinado n®≤mero de individuos pasa directamente a la 
- siguiente generaci®Æn, sin sufrir ning®≤n proceso de variaci®Æn en sus genes.
- \item \textbf{Cruce:} Es una reproducci®Æn de tipo sexual en la que se genera una descendencia a partir de un n®≤mero fijo de 
- individuos, dos por lo general, de la generaci®Æn anterior. Existen varios tipos de cruce, que veremos m®¢s tarde.
+ \item \textbf{Copia:} Es un tipo de reproducciÛn asexual, en la que un determinado n˙mero de individuos pasa directamente a la 
+ siguiente generaciÛn, sin sufrir ning˙n proceso de variaciÛn en sus genes.
+ \item \textbf{Cruce:} Es una reproducciÛn de tipo sexual en la que se genera una descendencia a partir de un n˙mero fijo de 
+ individuos, dos por lo general, de la generaciÛn anterior. Existen varios tipos de cruce, que veremos m·s tarde.
 \end{enumerate}
 
 
-El algoritmo acabar®¢ cuando se cumpla la condici®Æn de fin, que normalmente ser®¢ una de las siguientes:
+El algoritmo acabar· cuando se cumpla la condiciÛn de fin, que normalmente ser· una de las siguientes:
 
 \begin{enumerate}
- \item Se ha encontrado una soluci®Æn que satisface un criterio m®™nimo.
- \item Se ha llegado a un n®≤mero determinado de generaciones establecido previamente.
- \item Se ha llegado a un l®™mite preestablecido en tiempo de computaci®Æn.
- \item Tras varias generaciones el fitness de la mejor soluci®Æn no ha variado.
+ \item Se ha encontrado una soluciÛn que satisface un criterio mÌnimo.
+ \item Se ha llegado a un n˙mero determinado de generaciones establecido previamente.
+ \item Se ha llegado a un lÌmite preestablecido en tiempo de computaciÛn.
+ \item Tras varias generaciones el fitness de la mejor soluciÛn no ha variado.
  \item Parada manual.
- \item Combinaci®Æn de las anteriores
+ \item CombinaciÛn de las anteriores
 \end{enumerate}
 
-Posiblemente el criterio m®¢s utilizado sea el primero, seg®≤n el cual De Jong en su tesis doctoral
-\cite{John75} afirm®Æ que si el AG es correcto, la poblaci®Æn evolucionar®¢ a lo largo de las sucesivas generaciones de tal forma que la
-evaluaci®Æn media entre todos los individuos, as®™ como la propia del mejor individuo, converger®¢n hacia el ®Æptimo global. 
-Se dice que un gen ha convergido cuando al menos el 95\% de los individuos de la poblaci®Æn comparten el mismo valor para dicho gen. 
-Se dice que la poblaci®Æn converge cuando todos los genes han convergido. Se puede generalizar dicha definici®Æn al caso en que al menos un
-$\beta \%$ de los individuos de la poblaci®Æn hayan convergido. 
+Posiblemente el criterio m·s utilizado sea el primero, seg˙n el cual De Jong en su tesis doctoral
+\cite{John75} afirmÛ que si el AG es correcto, la poblaciÛn evolucionar· a lo largo de las sucesivas generaciones de tal forma que la
+evaluaciÛn media entre todos los individuos, asÌ como la propia del mejor individuo, converger·n hacia el Ûptimo global. 
+Se dice que un gen ha convergido cuando al menos el 95\% de los individuos de la poblaciÛn comparten el mismo valor para dicho gen. 
+Se dice que la poblaciÛn converge cuando todos los genes han convergido. Se puede generalizar dicha definiciÛn al caso en que al menos un
+$\beta \%$ de los individuos de la poblaciÛn hayan convergido. 
 
-El esqueleto de este algoritmo es la base de la mayor®™a de las aplicaciones de los algoritmos gen®¶ticos. Se podr®™a profundizar mucho m®¢s 
-en detalles sobre cuales deben ser las diferentes probabilidades, tamaÅ0ä9o de la poblaci®Æn y n®≤mero de generaciones. De esos detalles 
-depender®¢, en gran parte, el ®¶xito o fracaso de nuestro algoritmo.
+El esqueleto de este algoritmo es la base de la mayorÌa de las aplicaciones de los algoritmos genÈticos. Se podrÌa profundizar mucho m·s 
+en detalles sobre cuales deben ser las diferentes probabilidades, tamaÒo de la poblaciÛn y n˙mero de generaciones. De esos detalles 
+depender·, en gran parte, el Èxito o fracaso de nuestro algoritmo.
 
 
 % ¬øNo hay un estado del arte? Hay un art√≠culo de Una-May O'Reilly en
 % el √∫ltimo EvoStar sobre el tema - JJ
 \section{Experimentos}
 \label{sec:experimentos}
-Esta secci®Æn muestra los experimentos a realizar para hacer comparativas sobre la mejor configuraci®Æn para AGs en Amazon EC2.
+Esta secciÛn muestra los experimentos a realizar para hacer comparativas sobre la mejor configuraciÛn para AGs en Amazon EC2.
 
-\subsection{Par®¢metros de los algoritmos}
+\subsection{Par·metros de los algoritmos}
 
-Se van a usar diferentes configuraciones para ver el comportamiento y tiempo de ejecuci®Æn en los distintos entornos. 
-Primero se explicar®¢ lo que significa cada columna de las tablas y a continuaci®Æn se mostrar®¢n.
+Se van a usar diferentes configuraciones para ver el comportamiento y tiempo de ejecuciÛn en los distintos entornos. 
+Primero se explicar· lo que significa cada columna de las tablas y a continuaciÛn se mostrar·n.
 
 \begin{itemize}
- \item \textbf{Funci®Æn}: Funci®Æn a optimizar, ya sea maximizar o minimizar.
- \item \textbf{Poblaci®Æn}: TamaÅ0ä9o de la poblaci®Æn de individuos.
+ \item \textbf{FunciÛn}: FunciÛn a optimizar, ya sea maximizar o minimizar.
+ \item \textbf{PoblaciÛn}: TamaÒo de la poblaciÛn de individuos.
  \item \textbf{Individuo}: Longitud de cada individuo en bits.
- \item \textbf{Generaciones}: N®≤mero de generaciones que queremos evaluar.
- \item \textbf{Mutrate}: Tasa de mutaci®Æn en \%.
+ \item \textbf{Generaciones}: N˙mero de generaciones que queremos evaluar.
+ \item \textbf{Mutrate}: Tasa de mutaciÛn en \%.
  \item \textbf{Crossrate}: Tasa de cruce en \%.
- \item \textbf{Selrate}: Tasa de selecci®Æn en \%.
- \item \textbf{Selecci®Æn}: M®¶todo de selecci®Æn.
- \item \textbf{Cruce}: M®¶todo de cruce.
- \item \textbf{Mutaci®Æn}: M®¶todo de mutaci®Æn.
- \item \textbf{Reemplazamiento}: M®¶todo de reemplazamiento.
+ \item \textbf{Selrate}: Tasa de selecciÛn en \%.
+ \item \textbf{SelecciÛn}: MÈtodo de selecciÛn.
+ \item \textbf{Cruce}: MÈtodo de cruce.
+ \item \textbf{MutaciÛn}: MÈtodo de mutaciÛn.
+ \item \textbf{Reemplazamiento}: MÈtodo de reemplazamiento.
 \end{itemize}
 
-Todos los par®¢metros y configuraciones se han establecido buscando la mayor variedad posible con el objeto de tener diferentes 
-opiniones sobre la ventajas e inconvenientes en  escalabilidad, tiempo de ejecuci®Æn...
+Todos los par·metros y configuraciones se han establecido buscando la mayor variedad posible con el objeto de tener diferentes 
+opiniones sobre la ventajas e inconvenientes en  escalabilidad, tiempo de ejecuciÛn...
 
 \begin{table}[htb]
 
   \begin{tabular}{|| c | c | c | c |c | c | c ||}
     \hline
-    \textbf{Configuraci®Æn} & \textbf{Poblaci®Æn} & \textbf{Bits} & \textbf{Generaciones} &
+    \textbf{ConfiguraciÛn} & \textbf{PoblaciÛn} & \textbf{Bits} & \textbf{Generaciones} &
     \textbf{Selrate} & \textbf{Crossrate} & \textbf{Mutrate}  \\
 
     \hline
@@ -553,7 +558,7 @@ opiniones sobre la ventajas e inconvenientes en  escalabilidad, tiempo de ejecuc
 \begin{table}[htb]
   \begin{tabular}{|| c | c | c | c | c ||}
     \hline
-    \textbf{Configuraci®Æn} & \textbf{Selecci®Æn} & \textbf{Cruce} & \textbf{Mutaci®Æn} & \textbf{Reemplazamiento} \\
+    \textbf{ConfiguraciÛn} & \textbf{SelecciÛn} & \textbf{Cruce} & \textbf{MutaciÛn} & \textbf{Reemplazamiento} \\
     \hline
     \textbf{Config.1} & Probabilistic (10\%) & One-Point & NRandom (1) & Worst \\
     \hline
@@ -562,7 +567,7 @@ opiniones sobre la ventajas e inconvenientes en  escalabilidad, tiempo de ejecuc
     \textbf{Config.3} & Probabilistic (10\%) & One-Point & NRandom (1) & Worst  \\
     \hline
   \end{tabular}
-  \caption{Rastrigin. Metodos de selecci®Æn, cruce, mutaci®Æn y reemplazamiento.} 
+  \caption{Rastrigin. Metodos de selecciÛn, cruce, mutaciÛn y reemplazamiento.} 
   \label{TablaMetodosRastrigin}
 \end{table}
 
@@ -570,7 +575,7 @@ opiniones sobre la ventajas e inconvenientes en  escalabilidad, tiempo de ejecuc
 
   \begin{tabular}{|| c | c | c | c |c | c | c ||}
     \hline
-    \textbf{Configuraci®Æn} & \textbf{Poblaci®Æn} & \textbf{Individuo} & \textbf{Generaciones} &
+    \textbf{ConfiguraciÛn} & \textbf{PoblaciÛn} & \textbf{Individuo} & \textbf{Generaciones} &
     \textbf{Selrate} & \textbf{Crossrate} & \textbf{Mutrate}  \\
 
     \hline
@@ -588,7 +593,7 @@ opiniones sobre la ventajas e inconvenientes en  escalabilidad, tiempo de ejecuc
 \begin{table}[htb]
   \begin{tabular}{|| c | c | c | c | c ||}
     \hline
-    \textbf{Configuraci®Æn} & \textbf{Selecci®Æn} & \textbf{Cruce} & \textbf{Mutaci®Æn} & \textbf{Reemplazamiento} \\
+    \textbf{ConfiguraciÛn} & \textbf{SelecciÛn} & \textbf{Cruce} & \textbf{MutaciÛn} & \textbf{Reemplazamiento} \\
     \hline
     \textbf{Config.1} & Probabilistic (15\%) & Two-Point & NRandom (1) & Generational \\
     \hline
@@ -597,7 +602,7 @@ opiniones sobre la ventajas e inconvenientes en  escalabilidad, tiempo de ejecuc
     \textbf{Config.3} & Probabilistic (15\%) & Two-Point & NRandom (1) & Generational  \\
     \hline
   \end{tabular}
-  \caption{Marea. Metodos de selecci®Æn, cruce, mutaci®Æn y reemplazamiento.} 
+  \caption{Marea. Metodos de selecciÛn, cruce, mutaciÛn y reemplazamiento.} 
   \label{TablaMetodosMarea}
 \end{table}
 
@@ -606,7 +611,7 @@ opiniones sobre la ventajas e inconvenientes en  escalabilidad, tiempo de ejecuc
 
   \begin{tabular}{|| c | c | c | c |c | c | c ||}
     \hline
-    \textbf{Configuraci®Æn} & \textbf{Poblaci®Æn} & \textbf{Individuo} & \textbf{Generaciones} &
+    \textbf{ConfiguraciÛn} & \textbf{PoblaciÛn} & \textbf{Individuo} & \textbf{Generaciones} &
     \textbf{Selrate} & \textbf{Crossrate} & \textbf{Mutrate}  \\
 
     \hline
@@ -624,7 +629,7 @@ opiniones sobre la ventajas e inconvenientes en  escalabilidad, tiempo de ejecuc
 \begin{table}[htb]
   \begin{tabular}{|| c | c | c | c | c ||}
     \hline
-    \textbf{Configuraci®Æn} & \textbf{Selecci®Æn} & \textbf{Cruce} & \textbf{Mutaci®Æn} & \textbf{Reemplazamiento} \\
+    \textbf{ConfiguraciÛn} & \textbf{SelecciÛn} & \textbf{Cruce} & \textbf{MutaciÛn} & \textbf{Reemplazamiento} \\
     \hline
     \textbf{Config.1} & Deterministic & Two-Point & NRandom (1) & Worst \\
     \hline
@@ -633,50 +638,50 @@ opiniones sobre la ventajas e inconvenientes en  escalabilidad, tiempo de ejecuc
     \textbf{Config.3} & Probabilistic (15\%) & One-Point & NRandom (1) & Worst  \\
     \hline
   \end{tabular}
-  \caption{OneMax. Metodos de selecci®Æn, cruce, mutaci®Æn y reemplazamiento.} 
+  \caption{OneMax. Metodos de selecciÛn, cruce, mutaciÛn y reemplazamiento.} 
   \label{TablaMetodosOneMax}
 \end{table}
 
 \subsubsection{Entorno Local}
 
-La soluci®Æn secuencial fue probada en una m®¢quina aislada, que corr®™a Ubuntu 12.04 de 64 bits. El equipo en cuesti®Æn es un 
+La soluciÛn secuencial fue probada en una m·quina aislada, que corrÌa Ubuntu 12.04 de 64 bits. El equipo en cuestiÛn es un 
 HP Pavilion DV6 3034ss, Intel(R) Core(TM) i5 CPU M 450 @ 2.40GHz, 4 GB RAM.
 
 \subsubsection{Entorno Cloud de Amazon}
 
-La bater®™a de ejecuciones en la nube de Amazon consta de diferentes m®¢quinas virtuales, instancias con diferentes caracter®™sticas 
+La baterÌa de ejecuciones en la nube de Amazon consta de diferentes m·quinas virtuales, instancias con diferentes caracterÌsticas 
 cada una:
 
 \begin{itemize}
- \item \textbf{Micro}: 613 MB de memoria, un m®¢ximo de dos unidades inform®¢ticas EC2 (para r®¢fagas peri®Ædicas cortas) y ®≤nicamente  
+ \item \textbf{Micro}: 613 MB de memoria, un m·ximo de dos unidades inform·ticas EC2 (para r·fagas periÛdicas cortas) y ˙nicamente  
  almacenamiento EBS. Plataforma de 32 o 64 bits.
- \item \textbf{Small}: Dispone de 1.7 GB de memoria, una unidad de computaci®Æn EC2 (1 n®≤cleo virtual con una unidad inform®¢tica EC2), 
+ \item \textbf{Small}: Dispone de 1.7 GB de memoria, una unidad de computaciÛn EC2 (1 n˙cleo virtual con una unidad inform·tica EC2), 
  160 GB de almacenamiento, plataforma de 32 o 64 bits.
- \item \textbf{Medium}: Dispone de 3.75 GB de memoria, dos unidades de computaci®Æn EC2 (1 n®≤cleo virtual con dos unidades 
- inform®¢ticas EC2), 410 GB de almacenamiento, plataforma de 32 o 64 bits.
- \item \textbf{Large}: Dispone de 7.5 GB de memoria, cuatro unidades de computaci®Æn EC2 (2 n®≤cleos virtuales con dos unidades 
- inform®¢ticas cada uno de ellos), 850 GB de almacenamiento, plataforma de 64 bits.
- \item \textbf{ExtraLarge}: Dispone de 15 GB de memoria, ocho unidades de computaci®Æn EC2 (4 cores virtuales con dos unidades 
- inform®¢ticas cada uno de ellos), 1690 GB de almacenamiento, plataforma de 64 bits.
- \item \textbf{High-CPU ExtraLarge}:  7 GB de memoria, 20 unidades inform®¢ticas EC2 (8 n®≤cleos virtuales 
- con 2,5 unidades inform®¢ticas EC2 cada uno), 1.690 GB de almacenamiento de instancias, plataforma de 64 bits.
+ \item \textbf{Medium}: Dispone de 3.75 GB de memoria, dos unidades de computaciÛn EC2 (1 n˙cleo virtual con dos unidades 
+ inform·ticas EC2), 410 GB de almacenamiento, plataforma de 32 o 64 bits.
+ \item \textbf{Large}: Dispone de 7.5 GB de memoria, cuatro unidades de computaciÛn EC2 (2 n˙cleos virtuales con dos unidades 
+ inform·ticas cada uno de ellos), 850 GB de almacenamiento, plataforma de 64 bits.
+ \item \textbf{ExtraLarge}: Dispone de 15 GB de memoria, ocho unidades de computaciÛn EC2 (4 cores virtuales con dos unidades 
+ inform·ticas cada uno de ellos), 1690 GB de almacenamiento, plataforma de 64 bits.
+ \item \textbf{High-CPU ExtraLarge}:  7 GB de memoria, 20 unidades inform·ticas EC2 (8 n˙cleos virtuales 
+ con 2,5 unidades inform·ticas EC2 cada uno), 1.690 GB de almacenamiento de instancias, plataforma de 64 bits.
 \end{itemize}
 
 
-Los resultados de todas las ejecuciones para cada tipo de instancia, pueden consultarse en la direcci®Æn 
-\url{https://s3.amazonaws.com/secuencial/results/$<$Problema$>$ $<$Configuraci®Æn$>$.txt}
+Los resultados de todas las ejecuciones para cada tipo de instancia, pueden consultarse en la direcciÛn 
+\url{https://s3.amazonaws.com/secuencial/results/$<$Problema$>$ $<$ConfiguraciÛn$>$.txt}
 
-siendo $<$Problema$>$ el problema que se desea consultar y $<$Configuraci®Æn$>$ el n®≤mero de configuraci®Æn. As®™, por ejemplo, si se desea consultar los resultados del problema ``Marea'' con 
-la configuraci®Æn 2, habr®™a que descargar el fichero desde: 
+siendo $<$Problema$>$ el problema que se desea consultar y $<$ConfiguraciÛn$>$ el n˙mero de configuraciÛn. AsÌ, por ejemplo, si se desea consultar los resultados del problema ``Marea'' con 
+la configuraciÛn 2, habrÌa que descargar el fichero desde: 
 \url{https://s3.amazonaws.com/secuencial/results/Marea2.txt}
 
-Veamos, primero, las tablas de resultados de tiempo de ejecuci®Æn, para cada problema y tanto en entorno local, como en 
+Veamos, primero, las tablas de resultados de tiempo de ejecuciÛn, para cada problema y tanto en entorno local, como en 
 entorno Cloud, en cada tipo de instancia. Podemos apreciarlos en las tablas 
 
 \begin{table}[htb]
 \begin{tabular}{|| c | c | c | c | c |c | c | c ||}
     \hline
-    \textbf{Configuraci®Æn} & \textbf{Local} & \textbf{Micro} & \textbf{Small} & \textbf{Medium} &
+    \textbf{ConfiguraciÛn} & \textbf{Local} & \textbf{Micro} & \textbf{Small} & \textbf{Medium} &
     \textbf{Large} & \textbf{ExtraLarge} & \textbf{High CPU EL}  \\
 
     \hline
@@ -687,7 +692,7 @@ entorno Cloud, en cada tipo de instancia. Podemos apreciarlos en las tablas
     \textbf{Config. 3} & 1972 & Error & Error & 1583 & 1807 & 1434 & 1357 \\
     \hline
   \end{tabular}
-  \caption{Tiempo de Ejecuci®Æn en segundos. Rastrigin.} 
+  \caption{Tiempo de EjecuciÛn en segundos. Rastrigin.} 
   \label{TablaParametrosRastrigin}
 \end{table}
 
@@ -695,7 +700,7 @@ entorno Cloud, en cada tipo de instancia. Podemos apreciarlos en las tablas
 \begin{table}[htb]
 \begin{tabular}{|| c | c | c | c | c |c | c | c ||}
     \hline
-    \textbf{Configuraci®Æn} & \textbf{Local} & \textbf{Micro} & \textbf{Small} & \textbf{Medium} &
+    \textbf{ConfiguraciÛn} & \textbf{Local} & \textbf{Micro} & \textbf{Small} & \textbf{Medium} &
     \textbf{Large} & \textbf{ExtraLarge} & \textbf{High CPU EL}  \\
 
     \hline
@@ -706,7 +711,7 @@ entorno Cloud, en cada tipo de instancia. Podemos apreciarlos en las tablas
     \textbf{Config. 3} & 815 & 4067 & 2070 & 1070 & 1215 & 974 & 818 \\
     \hline
   \end{tabular}
-  \caption{Tiempo de Ejecuci®Æn en segundos. Marea.} 
+  \caption{Tiempo de EjecuciÛn en segundos. Marea.} 
   \label{TablaParametrosMarea}
 \end{table}
 
@@ -714,7 +719,7 @@ entorno Cloud, en cada tipo de instancia. Podemos apreciarlos en las tablas
 \begin{table}[htb]
 \begin{tabular}{|| c | c | c | c | c |c | c | c ||}
     \hline
-    \textbf{Configuraci®Æn} & \textbf{Local} & \textbf{Micro} & \textbf{Small} & \textbf{Medium} &
+    \textbf{ConfiguraciÛn} & \textbf{Local} & \textbf{Micro} & \textbf{Small} & \textbf{Medium} &
     \textbf{Large} & \textbf{ExtraLarge} & \textbf{High CPU EL}  \\
 
     \hline
@@ -725,12 +730,12 @@ entorno Cloud, en cada tipo de instancia. Podemos apreciarlos en las tablas
     \textbf{Config. 3} & 1648 & Error & 3029 & 1667 & 1936 & 1527 & 1578 \\
     \hline
   \end{tabular}
-  \caption{Tiempo de Ejecuci®Æn en segundos. OneMax} 
+  \caption{Tiempo de EjecuciÛn en segundos. OneMax} 
   \label{TablaParametrosOneMax}
 \end{table}
 
 La convergencia de los algoritmos puede ser vista en los ficheros de resultados antes nombrados. No obstante, vamos a estudiar 
-alg®≤n caso para verla gr®¢ficamente.
+alg˙n caso para verla gr·ficamente.
 
 
 
@@ -743,31 +748,31 @@ alg®≤n caso para verla gr®¢ficamente.
 %\end{figure}	
 
 Se puede observar que el portatil, el llamado entorno local, se ha comportado muy bien, puesto que tiene tiempos de manera similar a 
-la instancia ExtraLarge y HCPUExtraLarge, por lo que en el caso de querer hacer pocas pruebas, quiz®¢s con el entorno local 
-valdr®™a, pero no es el caso, porque hemos hecho una bater®™a relativamente grande de pruebas.  
+la instancia ExtraLarge y HCPUExtraLarge, por lo que en el caso de querer hacer pocas pruebas, quiz·s con el entorno local 
+valdrÌa, pero no es el caso, porque hemos hecho una baterÌa relativamente grande de pruebas.  
 
 Por otra parte, las instancias 
-Small y Micro, quedar®™an totalmente descartadas para alg®≤n futuro proyecto, puesto que el tiempo excede de los l®™mites 
-permitidos, sobre todo la micro instancia. Estas instancias, pueden ser v®¢lidas en el Cloud Computing como servidor de pequeÅ0ä9as 
-webs o pruebas que no requieran de demasiado c®Æmputo de datos. 
+Small y Micro, quedarÌan totalmente descartadas para alg˙n futuro proyecto, puesto que el tiempo excede de los lÌmites 
+permitidos, sobre todo la micro instancia. Estas instancias, pueden ser v·lidas en el Cloud Computing como servidor de pequeÒas 
+webs o pruebas que no requieran de demasiado cÛmputo de datos. 
 
 Pasemos ahora a estudiar la escalabilidad, que viendo los ficheros de resultados queda demostrada que existe, pero el objetivo es 
-ver el comportamiento seg®≤n la configuraci®Æn y los m®¶todos escogidos. Se ha escogido como instancia representativa, los resultados 
-de la instancia Large, puesto que los tiempos son relativamente buenos y no tiene problemas de alg®≤n resultado que no se tiene, 
+ver el comportamiento seg˙n la configuraciÛn y los mÈtodos escogidos. Se ha escogido como instancia representativa, los resultados 
+de la instancia Large, puesto que los tiempos son relativamente buenos y no tiene problemas de alg˙n resultado que no se tiene, 
 por error en la memoria y similares.
 
-Primero, observemos la Figura \ref{GraficaMarea}. Esta figura muestra la convergencia al ®Æptimo, que ser®™a 1, durante las 10 
-primeras iteraciones. Hay que aclarar primero, que la aleatoriedad a la hora de generar la poblaci®Æn inicial juega un papel 
+Primero, observemos la Figura \ref{GraficaMarea}. Esta figura muestra la convergencia al Ûptimo, que serÌa 1, durante las 10 
+primeras iteraciones. Hay que aclarar primero, que la aleatoriedad a la hora de generar la poblaciÛn inicial juega un papel 
 importante pero, aparte de esto, se pueden destacar varios puntos.
 
 \begin{itemize}
- \item La configuraci®Æn 2 converge m®¢s r®¢pidamente. Esto obedece a que para problemas no demasiado complejos, el reemplazo 
+ \item La configuraciÛn 2 converge m·s r·pidamente. Esto obedece a que para problemas no demasiado complejos, el reemplazo 
  de los peores se comporta mejor que el reemplazo generacional.
- \item Las configuraciones 1 y 3 son iguales, excepto en el tamaÅ0ä9o de la poblaci®Æn y n®≤mero generaciones. Esto no influye, 
+ \item Las configuraciones 1 y 3 son iguales, excepto en el tamaÒo de la poblaciÛn y n˙mero generaciones. Esto no influye, 
  en la convergencia en las 10 primeras iteraciones y queda reflejado en la figura, que convergen de manera muy similar.
- \item Otro punto caracter®™stico de estas dos configuraciones es que la l®™nea de convergencia hay un punto en el que 
- baja en vez de ir en aumento en busca del ®Æptimo. El porqu®¶ es muy 
- sencillo, la selecci®Æn probabil®™stica hace que a veces el mejor sea descartado, que es lo que ha ocurrido en estos dos 
+ \item Otro punto caracterÌstico de estas dos configuraciones es que la lÌnea de convergencia hay un punto en el que 
+ baja en vez de ir en aumento en busca del Ûptimo. El porquÈ es muy 
+ sencillo, la selecciÛn probabilÌstica hace que a veces el mejor sea descartado, que es lo que ha ocurrido en estos dos 
  casos.
 \end{itemize}
 
@@ -780,15 +785,15 @@ importante pero, aparte de esto, se pueden destacar varios puntos.
  \end{center}
 \end{figure}
 
-Sin nada m®¢s que referirnos, pasemos a observar una figura similar, pero correspondiente a la funci®Æn Rastrigin. En este caso, 
-no hace falta seÅ0ä9alar que la convergencia hacia abajo se debe, a que es una funci®Æn de minimizaci®Æn. En esta figura hay que destacar:
+Sin nada m·s que referirnos, pasemos a observar una figura similar, pero correspondiente a la funciÛn Rastrigin. En este caso, 
+no hace falta seÒalar que la convergencia hacia abajo se debe, a que es una funciÛn de minimizaciÛn. En esta figura hay que destacar:
 
 \begin{itemize}
- \item La configuraci®Æn 3 es la que se comporta mejor, de manera destacada en las 100 primeras iteraciones de Rastrigin. Por detr®¢s 
- de ella ir®™a la configuraci®Æn 2 y finalmente la uno parece que es la peor.
+ \item La configuraciÛn 3 es la que se comporta mejor, de manera destacada en las 100 primeras iteraciones de Rastrigin. Por detr·s 
+ de ella irÌa la configuraciÛn 2 y finalmente la uno parece que es la peor.
  \item En este caso podemos ver lo anteriormente comentado, parece que la mayor convergencia es fruto del azar y 
  la probabilidad, puesto que las configuraciones 1 y 3 son la misma, pero es bastante probable, que al generar 50 mil individuos 
- saldr®¢ unos mejores individuos que al generar 10 mil como ocurre en la configuraci®Æn n®≤mero 1.
+ saldr· unos mejores individuos que al generar 10 mil como ocurre en la configuraciÛn n˙mero 1.
 \end{itemize}
 
 
@@ -801,8 +806,8 @@ no hace falta seÅ0ä9alar que la convergencia hacia abajo se debe, a que es una f
 \end{figure}
 
 
-Por ®≤ltimo, la Figura \ref{GraficaOneMax}, muestra la convergencia durante 300 iteraciones de la funci®Æn OneMax, que cuenta 
-los unos de un cromosoma binario, hasta maximizar este n®≤mero. El  ®Æptimo ser®™a 512, que es el tamaÅ0ä9o de la cadena elegido 
+Por ˙ltimo, la Figura \ref{GraficaOneMax}, muestra la convergencia durante 300 iteraciones de la funciÛn OneMax, que cuenta 
+los unos de un cromosoma binario, hasta maximizar este n˙mero. El  Ûptimo serÌa 512, que es el tamaÒo de la cadena elegido 
 para observar los resultados.
 
 \begin{figure}[h]
@@ -814,12 +819,12 @@ para observar los resultados.
 \end{figure}
 
 \begin{itemize}
- \item El mejor comportamiento es la configuraci®Æn 3. Parece que aqu®™ influye de nuevo el n®≤mero de individuos de la poblaci®Æn. 
- Llega al ®Æptimo casi unas 20 iteraciones antes que sus competidores.
- \item El reemplazo generacional de la configuraci®Æn 2 vemos que en un inicio de algoritmo puede no ser muy bueno si no hay buena 
- calidad en la poblaci®Æn inicial, sin embargo observamos que la convergencia es constante, no como en el caso de la primera, que 
- tras un buen inicio, converge m®¢s lentamente hasta ser la ®≤ltima en alcanzar el ®Æptimo. Quiz®¢s el hecho de la menor presi®Æn 
- de selecci®Æn haya influido en esto.
+ \item El mejor comportamiento es la configuraciÛn 3. Parece que aquÌ influye de nuevo el n˙mero de individuos de la poblaciÛn. 
+ Llega al Ûptimo casi unas 20 iteraciones antes que sus competidores.
+ \item El reemplazo generacional de la configuraciÛn 2 vemos que en un inicio de algoritmo puede no ser muy bueno si no hay buena 
+ calidad en la poblaciÛn inicial, sin embargo observamos que la convergencia es constante, no como en el caso de la primera, que 
+ tras un buen inicio, converge m·s lentamente hasta ser la ˙ltima en alcanzar el Ûptimo. Quiz·s el hecho de la menor presiÛn 
+ de selecciÛn haya influido en esto.
 \end{itemize}
 
 
@@ -827,36 +832,36 @@ para observar los resultados.
 
 
 
-\section{An®¢lisis de los resultados}
+\section{An·lisis de los resultados}
 \label{sec:analisis}
-Una vez vistos los resultados, analizando las tablas de tiempos, ficheros de resultados y gr®¢ficas obtenidas 
+Una vez vistos los resultados, analizando las tablas de tiempos, ficheros de resultados y gr·ficas obtenidas 
 podemos sacar las siguientes conclusiones:
 
 \begin{itemize}
- \item \textbf{Limitaci®Æn de Algunas instancias}. Algunas de las instancias, como era evidente no tienen memoria suficiente para realizar tareas complejas de c®¢lculos. En 
- nuestro caso, ha quedado demostrado en las instancias micro que no ha podido resolver Rastrigin con la configuraci®Æn 2 y 3, y 
- la small que no ha podido resolver la configuraci®Æn 3 del mismo problema, ambas por falta de memoria, debido a que el problema 
- Rastrigin trabaja con un gran n®≤mero de n®≤meros reales de precisi®Æn doble lo que hace ocupar gran parte de la memoria disponible.
- \item \textbf{Beneficioso}. En los dem®¢s casos, la utilizaci®Æn del cloud computing ha sido favorable debido a que los tiempos que nos han dado 
- han sido muy parecidos, en muchos casos mejores, a los de nuestro pc, lo que lleva a pensar que para casos m®¢s complejos 
- se podr®™an comportar mejor.
+ \item \textbf{LimitaciÛn de Algunas instancias}. Algunas de las instancias, como era evidente no tienen memoria suficiente para realizar tareas complejas de c·lculos. En 
+ nuestro caso, ha quedado demostrado en las instancias micro que no ha podido resolver Rastrigin con la configuraciÛn 2 y 3, y 
+ la small que no ha podido resolver la configuraciÛn 3 del mismo problema, ambas por falta de memoria, debido a que el problema 
+ Rastrigin trabaja con un gran n˙mero de n˙meros reales de precisiÛn doble lo que hace ocupar gran parte de la memoria disponible.
+ \item \textbf{Beneficioso}. En los dem·s casos, la utilizaciÛn del cloud computing ha sido favorable debido a que los tiempos que nos han dado 
+ han sido muy parecidos, en muchos casos mejores, a los de nuestro pc, lo que lleva a pensar que para casos m·s complejos 
+ se podrÌan comportar mejor.
  \item \textbf{Trabajo Paralelo en Instancias}. Otra ventaja ha sido, que, en el mismo tiempo que se han realizado las ejecuciones para nuestro entorno local, han sido 
  llevadas a cabo todas las ejecuciones en las seis instancias en la nube, ya que, las instancias han trabajado paralelamente y,
- l®Ægicamente, sin influir unas con otras.
- \item \textbf{Selecci®Æn}. Para el caso de la selecci®Æn, en nuestro caso se ha comportado mejor la selecci®Æn determin®™stica por torneo, puesto que 
- los problemas que hemos tratado no son muy complejos, se ha llegado al ®Æptimo relativamente r®¢pido y no han requerido de una 
- ampl®™a b®≤squeda ni en la salida de grandes ®Æptimos locales, que son en los casos en los que la probabil®™stica podr®™a 
- resultar favorable. Podemos apreciar una cosa curiosa en la selecci®Æn probabil®™stica, y es que cuando se ha alcanzado el ®Æptimo, 
- y en todas las iteraciones sea este el mejor individuo, hay alguna iteraci®Æn en los que se genera uno peor a ®¶l y es seleccionado 
- como mejor, quedando una gr®¢fica y tanto rara.
- \item \textbf{Reemplazamiento}. El reemplazamiento generacional depende mucho de las tasas de selecci®Æn, cruce y mutaci®Æn elegidas. 
- Si ®¶stas son bajas, la poblaci®Æn puede ir incluso decreciendo, pueso que la generaci®Æn anterior es entera borrada y 
- la nueva contendr®¢ menos individuos. Esto hace que su comportamiento sea ligeramente m®¢s r®¢pido en estos casos. Sin embargo, 
+ lÛgicamente, sin influir unas con otras.
+ \item \textbf{SelecciÛn}. Para el caso de la selecciÛn, en nuestro caso se ha comportado mejor la selecciÛn determinÌstica por torneo, puesto que 
+ los problemas que hemos tratado no son muy complejos, se ha llegado al Ûptimo relativamente r·pido y no han requerido de una 
+ amplÌa b˙squeda ni en la salida de grandes Ûptimos locales, que son en los casos en los que la probabilÌstica podrÌa 
+ resultar favorable. Podemos apreciar una cosa curiosa en la selecciÛn probabilÌstica, y es que cuando se ha alcanzado el Ûptimo, 
+ y en todas las iteraciones sea este el mejor individuo, hay alguna iteraciÛn en los que se genera uno peor a Èl y es seleccionado 
+ como mejor, quedando una gr·fica y tanto rara.
+ \item \textbf{Reemplazamiento}. El reemplazamiento generacional depende mucho de las tasas de selecciÛn, cruce y mutaciÛn elegidas. 
+ Si Èstas son bajas, la poblaciÛn puede ir incluso decreciendo, pueso que la generaciÛn anterior es entera borrada y 
+ la nueva contendr· menos individuos. Esto hace que su comportamiento sea ligeramente m·s r·pido en estos casos. Sin embargo, 
  en nuestro problema ha resultado mejor el reemplazamiento de los nuevos individuos generados por los menos adaptados de la 
- generaci®Æn anterior (Worst), quiz®¢s por la misma raz®Æn que antes en la selecci®Æn, no son problemas suficientemente complejos 
+ generaciÛn anterior (Worst), quiz·s por la misma razÛn que antes en la selecciÛn, no son problemas suficientemente complejos 
  que requieran de una diversidad grande.
- \item \textbf{Cruce}. No se ha encontrado ning®≤n resultado digno de mencionar en cuanto al cruce de uno o dos puntos. Por cuestiones 
- puramente te®Æricas, podemos decir que el de dos puntos puede dar m®¢s diversidad a la poblaci®Æn, pero no se ha visto que esto 
+ \item \textbf{Cruce}. No se ha encontrado ning˙n resultado digno de mencionar en cuanto al cruce de uno o dos puntos. Por cuestiones 
+ puramente teÛricas, podemos decir que el de dos puntos puede dar m·s diversidad a la poblaciÛn, pero no se ha visto que esto 
  quede plasmado en nuestro estudio.
  \item \textbf{Mejorable}. Para muchos exigentes, esto no es suficiente, necesitan mejoras de tiempos evidentes y por ello se 
  ha propuesto una alternativa mejor con Map Reduce.
@@ -869,100 +874,99 @@ podemos sacar las siguientes conclusiones:
 
 
 El Cloud Computing ha llegado con mucha fuerza y todo hace indicar que viene para quedarse.  Hemos visto durante, 
-la primera parte que son muchas m®¢s las ventajas que nos ofrece este modelo que los inconvenientes a los que nos podemos 
+la primera parte que son muchas m·s las ventajas que nos ofrece este modelo que los inconvenientes a los que nos podemos 
 enfrentar.  
 
-Todo proveedor de computaci®Æn en la nube, nos ofrece una infraestructura que, a no ser que estemos en una gran empresa o 
-seamos poseedores de superordenadores, no est®¢ a nuestro alcance y ello nos hace que instant®¢neamente podamos acceder 
-a esos recursos y hacer uso de ellos de una forma r®¢pida, sencilla y con un coste bajo.  Precisamente esta posibilidad hace que 
-sea una tecnolog®™a verdaderamente interesante para el mundo cient®™fico e investigador, pues habitualmente en tareas como 
-an®¢lisis financiero, meteorol®Ægico o bioinform®¢tica, entre otras muchas cosas, se trabaja con ingentes cantidades de datos 
-que requieren de millones de c®¢lculos en poco tiempo y precisan de mucho tiempo, pese a tener grandes centros de datos. 
+Todo proveedor de computaciÛn en la nube, nos ofrece una infraestructura que, a no ser que estemos en una gran empresa o 
+seamos poseedores de superordenadores, no est· a nuestro alcance y ello nos hace que instant·neamente podamos acceder 
+a esos recursos y hacer uso de ellos de una forma r·pida, sencilla y con un coste bajo.  Precisamente esta posibilidad hace que 
+sea una tecnologÌa verdaderamente interesante para el mundo cientÌfico e investigador, pues habitualmente en tareas como 
+an·lisis financiero, meteorolÛgico o bioinform·tica, entre otras muchas cosas, se trabaja con ingentes cantidades de datos 
+que requieren de millones de c·lculos en poco tiempo y precisan de mucho tiempo, pese a tener grandes centros de datos. 
 
-Por ello en este proyecto se ha propuesto un pequeÅ0ä9o estudio dentro del gran mundo que es la bioinform®¢tica, utilizando 
-la infraestructura de Amazon, el mayor proveedor de Cloud Computing y mucho m®¢s configurable que Google App Engine,
-para la ejecuci®Æn y an®¢lisis de algoritmos gen®¶ticos b®¢sicos.  
+Por ello en este proyecto se ha propuesto un pequeÒo estudio dentro del gran mundo que es la bioinform·tica, utilizando 
+la infraestructura de Amazon, el mayor proveedor de Cloud Computing y mucho m·s configurable que Google App Engine,
+para la ejecuciÛn y an·lisis de algoritmos genÈticos b·sicos.  
 
-Se ha implementado una pequeÅ0ä9a librer®™a para el diseÅ0ä9o de algoritmos gen®¶ticos de forma secuencial y un completo manual para 
-la ejecuci®Æn de estos algoritmos en los servicios web de Amazon.  Las caracter®™sticas m®¢s importantes de esta propuesta han sido:
+Se ha implementado una pequeÒa librerÌa para el diseÒo de algoritmos genÈticos de forma secuencial y un completo manual para 
+la ejecuciÛn de estos algoritmos en los servicios web de Amazon.  Las caracterÌsticas m·s importantes de esta propuesta han sido:
 
 \begin{itemize}
- \item \textbf{Extensibilidad:} Desde el primer momento de desarrollo se ha pretendido dotar a la librer®™a de un car®¢cter extensible, 
- abstrayendo todo lo posible los distintos elementos dentro de un AG con el uso de interfaces, herencia y dem®¢s 
- ventajas de un lenguaje como Java y facilitando el prototipado r®¢pido de AGs  mediante la implementaci®Æn de un n®≤mero m®™nimo de 
+ \item \textbf{Extensibilidad:} Desde el primer momento de desarrollo se ha pretendido dotar a la librerÌa de un car·cter extensible, 
+ abstrayendo todo lo posible los distintos elementos dentro de un AG con el uso de interfaces, herencia y dem·s 
+ ventajas de un lenguaje como Java y facilitando el prototipado r·pido de AGs  mediante la implementaciÛn de un n˙mero mÌnimo de 
  funciones.
 
- \item \textbf{Portabilidad}: La aplicaci®Æn se encapsula en un fichero JAR que puede ser ejecutado en cualquier entorno anfitri®Æn que 
- disponga de un compilador Java, independientemente de su sistema operativo. Esto se ha hecho as®™, porque el objetivo principal e
- era ver las ventajas de computaci®Æn en la nube, y lo mejor era un sistema portable entre distintas instancias vol®¢tiles en 
+ \item \textbf{Portabilidad}: La aplicaciÛn se encapsula en un fichero JAR que puede ser ejecutado en cualquier entorno anfitriÛn que 
+ disponga de un compilador Java, independientemente de su sistema operativo. Esto se ha hecho asÌ, porque el objetivo principal e
+ era ver las ventajas de computaciÛn en la nube, y lo mejor era un sistema portable entre distintas instancias vol·tiles en 
  Amazon EC2.
 
- \item \textbf{Sencillez}: El objetivo principal del trabajo, era conocer un poco m®¢s distintas posibilidades de servicios de la 
- nube de Amazon y como facilita el an®¢lisis de datos  y no profundizar mucho en Algoritmos Gen®¶ticos, por esta raz®Æn se han 
- implementado tres funciones sencillas. El ®≤nico conocimiento necesario para realizar las pruebas viene explicado detalladamente 
- en el documento adjunto o la documentaci®Æn generada por cada proyecto.
+ \item \textbf{Sencillez}: El objetivo principal del trabajo, era conocer un poco m·s distintas posibilidades de servicios de la 
+ nube de Amazon y como facilita el an·lisis de datos  y no profundizar mucho en Algoritmos GenÈticos, por esta razÛn se han 
+ implementado tres funciones sencillas. El ˙nico conocimiento necesario para realizar las pruebas viene explicado detalladamente 
+ en el documento adjunto o la documentaciÛn generada por cada proyecto.
  
- \item \textbf{Aprendizaje}: Este trabajo es v®¢lido tanto como para alguien quiera iniciarse en el conocimiento de los algoritmos 
- gen®¶ticos, como para alguien que quiere sentar las bases de Cloud Computing tener acceso a instancias virtuales en Amazon.
+ \item \textbf{Aprendizaje}: Este trabajo es v·lido tanto como para alguien quiera iniciarse en el conocimiento de los algoritmos 
+ genÈticos, como para alguien que quiere sentar las bases de Cloud Computing tener acceso a instancias virtuales en Amazon.
  
 \end{itemize}
 
 
-Una vez vistos hecho el an®¢lisis de los resultados de la versi®Æn secuencial surgi®Æ la posibilidad de buscar una alterantiva  
-paralela para un algoritmo gen®¶tico  e investigando se encontr®Æ la posibilidad de  usar MapReduce, por ello, se ha descrito 
-te®Æricamente en que consiste este modelo y en concreto, la implementaci®Æn por parte de  Hadoop, que es la 
-m®¢s conocida. 
+Una vez vistos hecho el an·lisis de los resultados de la versiÛn secuencial surgiÛ la posibilidad de buscar una alterantiva  
+paralela para un algoritmo genÈtico  e investigando se encontrÛ la posibilidad de  usar MapReduce, por ello, se ha descrito 
+teÛricamente en que consiste este modelo y en concreto, la implementaciÛn por parte de  Hadoop, que es la 
+m·s conocida. 
 
 
-Para introducirnos en el mundo de Hadoop, se ha explicado como hacer una configuraci®Æn pseudo-distribuida en nuestro pc para 
+Para introducirnos en el mundo de Hadoop, se ha explicado como hacer una configuraciÛn pseudo-distribuida en nuestro pc para 
 comenzar a escribir aplicaciones de este tipo. Como primer ejemplo de ello, se ha propuesto y explicado la 
-implementaci®Æn de un b®¢sico contador de frecuencias de palabras en un conjunto de archivos, 
-que pese a ser sencillo, nos da una muestra del potencial de MapReduce y de la sencillez de su implementaci®Æn.  
+implementaciÛn de un b·sico contador de frecuencias de palabras en un conjunto de archivos, 
+que pese a ser sencillo, nos da una muestra del potencial de MapReduce y de la sencillez de su implementaciÛn.  
 
 
-Como extensi®Æn se ha presentado una aproximaci®Æn a un sistema capaz de adaptar la naturaleza intensiva en datos del modelo MapReduce con el car®¢cter 
-iterativo de un Algoritmo Gen®¶tico, sentando las bases para construir un software que permita ejecutar de forma distribuida 
-algoritmos gen®¶ticos paralelos tanto sobre cl®≤sters, como sobre el servicio que nos proporciona Amazon Elastic MapReduce.  
+Como extensiÛn se ha presentado una aproximaciÛn a un sistema capaz de adaptar la naturaleza intensiva en datos del modelo MapReduce con el car·cter 
+iterativo de un Algoritmo GenÈtico, sentando las bases para construir un software que permita ejecutar de forma distribuida 
+algoritmos genÈticos paralelos tanto sobre cl˙sters, como sobre el servicio que nos proporciona Amazon Elastic MapReduce.  
 
 
-En l®™neas generales, se ha descrito el diseÅ0ä9o y la implementaci®Æn de AGs b®¢sicos tanto de forma secuencial  como paralela utilizando 
+En lÌneas generales, se ha descrito el diseÒo y la implementaciÛn de AGs b·sicos tanto de forma secuencial  como paralela utilizando 
 entornos secuenciales y de cloud computing con Amazon como proveedor, y se ha introducido al uso del Framework de Hadoop para el 
-diseÅ0ä9o de aplicaciones con MapReduce.
+diseÒo de aplicaciones con MapReduce.
 
 
-Por ®≤ltimo, destacar que las pruebas realizadas con la bater®™a de problemas elegida (``Rastrigin'', ``OneMAX'' y ``Marea'') arrojan 
-resultados satisfactorios en cuanto a escalabilidad y tiempo, teniendo en cuenta adem®¢s que nuestra computadora desde la que 
+Por ˙ltimo, destacar que las pruebas realizadas con la baterÌa de problemas elegida (``Rastrigin'', ``OneMAX'' y ``Marea'') arrojan 
+resultados satisfactorios en cuanto a escalabilidad y tiempo, teniendo en cuenta adem·s que nuestra computadora desde la que 
 mandamos los trabajos no consume recurso alguno. 
 
 
-\section*{Futuras l®™neas de trabajo}
+\section*{Futuras lÌneas de trabajo}
 
 
-Hasta el momento solo ha podido desarrollarse un modelo de c®Æmo ser®™a la implementaci®Æn de un algoritmo gen®¶tico paralelo 
-usando MapReduce.  La principal l®™nea de trabajo ser®™a terminar la implementaci®Æn de este modelo y hacer extensible 
+Hasta el momento solo ha podido desarrollarse un modelo de cÛmo serÌa la implementaciÛn de un algoritmo genÈtico paralelo 
+usando MapReduce.  La principal lÌnea de trabajo serÌa terminar la implementaciÛn de este modelo y hacer extensible 
 las clases implementadas para la parte secuencial a la parte paralela.
 
-Dentro de la l®™nea seguida en el proyecto podemos contemplar otras alternativas que completar®™an el estudio del modelo de 
-programaci®Æn MapReduce:
+Dentro de la lÌnea seguida en el proyecto podemos contemplar otras alternativas que completarÌan el estudio del modelo de 
+programaciÛn MapReduce:
 
 \begin{itemize}
- \item Se podr®™a investigar si compensa la generaci®Æn inicial de individuos con una tarea MapReduce como propone \cite{Gen09}. 
-Esto ser®™a ®≤til para utilizar poblaciones de gran tamaÅ0ä9o ya que en este caso, tendr®™a un costo inicial muy alto para el 
-nodo maestro mientras los otros se encontrar®™an ociosos.
- \item Otro aspecto que podr®™a ser estudiado es la definici®Æn de una clase personalizada InputFormat (la encargada de describir la 
-especificaci®Æn de los datos de entrada de un trabajo MapReduce) para poder configurar el n®≤mero de tareas map a gusto del usuario.
+ \item Se podrÌa investigar si compensa la generaciÛn inicial de individuos con una tarea MapReduce como propone \cite{Gen09}. 
+Esto serÌa ˙til para utilizar poblaciones de gran tamaÒo ya que en este caso, tendrÌa un costo inicial muy alto para el 
+nodo maestro mientras los otros se encontrarÌan ociosos.
+ \item Otro aspecto que podrÌa ser estudiado es la definiciÛn de una clase personalizada InputFormat (la encargada de describir la 
+especificaciÛn de los datos de entrada de un trabajo MapReduce) para poder configurar el n˙mero de tareas map a gusto del usuario.
 \end{itemize}
 
-En lo que engloba al Cloud Computing, hay varias opciones que nos gustar®™a llevar a cabo:
+En lo que engloba al Cloud Computing, hay varias opciones que nos gustarÌa llevar a cabo:
 
 \begin{itemize}
- \item Mover una aplicaci®Æn a la nube, migrar sus datos, configurar una  instancia para que no sea vol®¢til, contratando una ip est®¢tica  y que 
- ®¶sta act®≤e como servidor, y montar una p®¢gina web en ella. 
+ \item Mover una aplicaciÛn a la nube, migrar sus datos, configurar una  instancia para que no sea vol·til, contratando una ip est·tica  y que 
+ Èsta act˙e como servidor, y montar una p·gina web en ella. 
  \item Utilizar proveedores PaaS, como Windows Azure o Google App Engine para desarrollar un servicio en la web. 
 \end{itemize}
 
 
-% Eh.. un poco escaso, ?no?
 \bibliographystyle{splncs}
 \bibliography{cloudproject}
 \end{document}
