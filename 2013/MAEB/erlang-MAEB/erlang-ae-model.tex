@@ -50,29 +50,29 @@ showstringspaces=false
 
 % a short form should be given in case it is too long for the running head
 \titlerunning{Adaptando algoritmos evolutivos al lenguaje Erlang}
-\author{No author given}
+\author{A. N. Ónimo}
 %\author{Anonymous\inst{1}, A. E. Eiben\inst{2}, E. Haasdijk\inst{2}, B. Weel\inst{2} and J.J. Merelo\inst{1}}
 
 %
 
 %\authorrunning{P. Garc\'ia-S\'anchez et al.}
-\authorrunning{Anonymous.}
+\authorrunning{Anónimo}
 % (feature abused for this document to repeat the title also on left hand pages)
 % the affiliations are given next; don't give your e-mail address
 % unless you accept that it will be published
 
 %\institute{Dept. of Computer Architecture and Technology, University of Granada, Spain \and Dept. of Computer Science, Vrije Universiteit Amsterdam, The Netherlands
 %\mailsa}
-\institute{No institute given \mailsa}
+\institute{ \mailsa}
 
 %\tocauthor{Authors' Instructions}
 \maketitle
 \begin{abstract}
-En el presente artículo se describe la modelación e implementación de un modelo de Computación Evolutiva sobre los paradigmas de programación funcional y concurrente al mapearse los conceptos de los modelos sobre los de los paradigmas. Bajo este enfoque son expuestas las ventajas de estos en dicho dominio de aplicación, analizándose algunas de las decisiones de diseño tomadas y viendo sus resultados en la implementación de un caso de estudio.
+En el presente artículo se describe la modelización e implementación de un modelo de Computación Evolutiva sobre los paradigmas de programación funcional y concurrente al adaptarse los conceptos de los modelos sobre los de los paradigmas. Bajo este enfoque son expuestas las ventajas de estos en dicho dominio de aplicación, analizándose algunas de las decisiones de diseño tomadas y viendo sus resultados en la implementación de un caso de estudio.
 %Este artículo muestra el diseño e implementación de servicios para Computación Evolutiva dentro del paradigma de la Arquitectura Orientada a Servicios. Este paradigma proporciona independencia en el lenguaje y distribución, pero el desarrollo requiere tratar con algunas características tecnológicas y de diseño, como el diseño abstracto o la ejecución desordenada. Para resolverlas, se utiliza OSGiLiath, una implementacion de una Arquitectura Orientada a Servicios para Algoritmos Evolutivos, para desarrollar nuevos servicios interoperables teniendo en cuenta esas restricciones.
 \end{abstract}
 
-\keywords{Algoritmos Evolutivos, Lenguajes Funcionales, Lenguajes Concurrentes, Erlang, Implementación de Algoritmos, Modelación}
+\keywords{Algoritmos Evolutivos, Lenguajes Funcionales, Lenguajes Concurrentes, Erlang, Implementación de Algoritmos, Modelización}
 
 \section{Introducción}
 
@@ -83,7 +83,7 @@ Dos paradigmas emergen actualmente en la industria del software como herramienta
 
 El desafío de los multi-núcleos \cite{SutterL05}, entendiéndola como la necesidad de hacer paralelo el más simple de nuestros programas si queremos que haga uso de los modernos y potentes microprocesadores, lleva a crear (o retomar), patrones para el desarrollo de estos algoritmos muchos de los cuales acaban como nuevas características en lenguajes de programación. Ejemplos de estos son: Clojure, Go, Scala, Haskell y Erlang; en todos aparecen construcciones que soportan dentro del propio lenguaje modos de manejar la concurrencia: facilitando razonar sobre ella y simplificando su sintaxis.
 
-El resto del trabajo se estructura como sigue: estado del arte, dentro del que se caracterizan los paradigmas funcional y concurrente y se describe el lenguaje Erlang que los incluye. A continuación se muestra la modelación de un algoritmo genético usando conceptos de los paradigmas antes expuestos (Sección \ref{sec:design}); y finalmente, en la Sección \ref{sec:conclusions}, se presentan los resultados y conclusiones.
+El resto del trabajo se estructura como sigue: estado del arte, dentro del que se caracterizan los paradigmas funcional y concurrente y se describe el lenguaje Erlang que los incluye. A continuación se muestra la Modelización de un algoritmo genético usando conceptos de los paradigmas antes expuestos (Sección \ref{sec:design}); y finalmente, en la Sección \ref{sec:conclusions}, se presentan los resultados y conclusiones.
 
 %-----------------------------------------------------
 
@@ -91,16 +91,37 @@ El resto del trabajo se estructura como sigue: estado del arte, dentro del que s
 \section{Estado del arte}
 \label{sec:fprog2ae}
 
-Independientemente a la variedad de problemas a los que es aplicable la CE, en particular los Algoritmos Genéticos (AG), los conceptos en los que se basan son los mismos y así lo reflejan de una manera u otra las diferentes implementaciones realizadas. Lógicamente esto ha culminado en la creación de bibliotecas que encapsulan los elementos comunes según la variante arquitectónica que se necesite usar. A semejanza del resto del espectro de proyectos software, el paradigma dominante para la creación de tales bibliotecas es el Orientado a Objetos (OO).
+Independientemente a la variedad de problemas a los que es aplicable
+la CE, en particular los Algoritmos Genéticos (AG), los conceptos en
+los que se basan son los mismos y así lo reflejan de una manera u otra
+las diferentes implementaciones realizadas. Lógicamente esto ha
+culminado en la creación de bibliotecas que encapsulan los elementos
+comunes según la variante arquitectónica que se necesite usar. A
+semejanza del resto del espectro de proyectos software, el paradigma
+dominante para la creación de tales bibliotecas es el Orientado a
+Objetos (OO). 
 
 \subsection{Herramientas existentes}
 
-Son numerosas las herramientas desarrolladas para el trabajo con algoritmos evolutivos; en dependencia de su objetivo soportan diferentes plataformas, modelos de AE, integración con otros entornos y tamaños de los problemas. Entre las más representativas se encuentran: ECKit\footnote{http://cs.gmu.edu/~eclab/tools.html}, JDEAL\footnote{http://laseeb.isr.ist.utl.pt/sw/jdeal/home.html}, ECJ\footnote{http://cs.gmu.edu/~eclab/projects/ecj/}, ParadisEO\footnote{http://paradiseo.gforge.inria.fr/}, EASEA\footnote{https://lsiit.u-strasbg.fr/easea/index.php/EASEA\_platform} y MALLBA\footnote{http://neo.lcc.uma.es/software/mallba/index.php}.
+Son numerosas las herramientas desarrolladas para el trabajo con
+algoritmos evolutivos; en dependencia de su objetivo soportan
+diferentes plataformas, modelos de AE, integración con otros entornos
+y tamaños de los problemas. Entre las más representativas se
+encuentran: ECKit\footnote{http://cs.gmu.edu/~eclab/tools.html},
+JDEAL\footnote{http://laseeb.isr.ist.utl.pt/sw/jdeal/home.html},
+ECJ\footnote{http://cs.gmu.edu/~eclab/projects/ecj/},
+ParadisEO\footnote{http://paradiseo.gforge.inria.fr/},
+EASEA\footnote{https://lsiit.u-strasbg.fr/easea/index.php/EASEA\_platform}
+y MALLBA\footnote{http://neo.lcc.uma.es/software/mallba/index.php}. De
+estas, la más popular (al menos en número de usuarios y mención en la
+literatura científica) es ECJ, escrita en Java. Como se ve, en todos
+los casos se trata de lenguajes {\em tradicionales}, procedurales o,
+en su mayor parte, orientados a objetos.
 
 
 \subsubsection{ECJ}
 
-ECJ consiste en un conjunto de herramientas para el trabajo con poblaciones, posee facilidades para la optimización paralela y la optimización multiobjetivo \cite{Luke2010}. Entre otras formas de representación admite la programación genética. Está implementado en Java y soporta múltiples modelos de AG paralelos: modelo de islas y celular asíncrono, maestro-esclavo y distribución coevolucionaria.
+ECJ consiste en un conjunto de herramientas para el trabajo con poblaciones, posee facilidades para la optimización paralela y la optimización multiobjetivo \cite{Luke2010}. Entre otras formas de representación admite la programación genética. Está implementado en Java y soporta múltiples modelos de AG paralelos: modelo de islas y celular asíncrono, maestro-esclavo y distribución coevolutiva.
 
 \subsubsection{ParadisEO}
 
@@ -111,7 +132,7 @@ Marco de trabajo orientado a objetos escrito en C++ para el diseño de metaheur�
 
 \subsubsection{EASEA}
 
-\emph{EAsy Specification of Evolutionary Algorithms} es una plataforma de evolución artificial masivamente paralela desarrollada por SONIC (Stochastic Optimisation and Nature Inspired Computing). Posee un lenguaje propio en el que se se describe el algoritmo: estructura de los individuos, operador de inicialización, función de aptitud y los operadores de crossover y mutación; a partir de esto la plataforma traduce a un conjunto de ficheros C++ que pueden además ser compilados para que usen las GPUs nVidia. Solo soporta el modelo de islas de pGA.
+\emph{EAsy Specification of Evolutionary Algorithms} es una plataforma de evolución artificial masivamente paralela desarrollada por SONIC (Stochastic Optimisation and Nature Inspired Computing). Posee un lenguaje propio en el que se se describe el algoritmo: estructura de los individuos, operador de inicialización, función de aptitud y los operadores de entrecruzamiento y mutación; a partir de esto la plataforma traduce a un conjunto de ficheros C++ que pueden además ser compilados para que usen las GPUs nVidia. Solo soporta el modelo de islas de pGA.
 
 \subsubsection{MALLBA}
 
@@ -128,7 +149,12 @@ El uso de listas, con implementaciones muy optimizadas, es omnipresente en la pr
 \subsection{Erlang}
 
 
-Erlang es un lenguaje de programación funcional, concurrente y distribuido, adecuado para la construcción de sistemas que requieran grandes niveles de distribución, tolerancia a fallos y disponibilidad. Ha sido en más de una ocasión escogido por encima de C/C++ para el desarrollo de sistemas de uso intensivo de recursos \cite{Cesarini2009} dada la eficiencia de su ejecución.
+Erlang es un lenguaje de programación funcional, concurrente y
+distribuido, adecuado para la construcción de sistemas que requieran
+grandes niveles de distribución \cite{veldstra:_welcom_erlan}, tolerancia a fallos y
+disponibilidad. Ha sido en más de una ocasión escogido por encima de
+C/C++ para el desarrollo de sistemas de uso intensivo de recursos
+\cite{Cesarini2009} dada la eficiencia de su ejecución \cite{erlang:future}. 
 
 Utiliza el modelo {\em actor} para su implementación del paradigma de programación concurrente y posee facilidades para la integración con otros lenguajes tales como C/C++ y Java. Sus procesos son manejados por su máquina virtual (MV), que tiene un planificador por cada núcleo de la CPU, lo cual lo hacen ideal para la actual (y venideras) generación de procesadores multi-núcleos.
 
@@ -139,7 +165,7 @@ El que sea un lenguaje concurrente significa que posee entre sus tipos de datos 
 
 Para lograr una buena implementación de un algoritmo, cualquiera sea su naturaleza, es necesario tener en cuenta las características del lenguaje en el que se realizará así como cada concepto constituyente del dominio del problema. Se usará como caso de estudio un AG paralelo híbrido, sobre una topología de isla, en la que cada nodo será a su vez un AG concurrente basado en piscina. El lenguaje de programación será Erlang y el problema {\em OneMax}.
 
-Los componentes del AG paralelo identificados como principales a la hora de diseñar la implementación aparecen listados en la Tabla \ref{agpComp}. Las construcciones de Erlang identificadas para la modelación son las expuestas en la Tabla \ref{erlComp}.
+Los componentes del AG paralelo identificados como principales a la hora de diseñar la implementación aparecen listados en la Tabla \ref{agpComp}. Las construcciones de Erlang identificadas para la Modelización son las expuestas en la Tabla \ref{erlComp}.
 
 
 \begin{table}
@@ -253,7 +279,9 @@ Este es el módulo del proceso encargado de inicializar el trabajo de las piscin
 
 \subsubsection{Módulos auxiliares}
 
-Los módulos ya descritos contienen toda la lógica del AG, faltan sin embargo, para que sea operativo el software, algunos códigos no funcionales.
+Los módulos ya descritos contienen toda la lógica del AG, faltan sin
+embargo, para que sea operativo el software, algunos códigos no
+funcionales. 
 
 Dichos módulos son:
 
@@ -267,7 +295,7 @@ Dichos módulos son:
 
 \end{description}
 
-\section{Resultados y conclusiones}
+\section{Resultados, conclusiones y trabajo futuro}
 \label{sec:conclusions}
 
 El diseño fue puesto a prueba con cromosomas de longitud 128, una población de 256 individuos por isla y con evaluadores y reproductores trabajando con bloques de 50 cromosomas. Los resultados obtenidos aparecen en la Tabla \ref{tb:resultados}.
@@ -277,7 +305,9 @@ El diseño fue puesto a prueba con cromosomas de longitud 128, una población de
 \begin{tabular}{|>{\centering}p{.55cm}|>{\centering}p{.75cm}|>{\centering}p{2.1cm}|>{\centering}p{2.5cm}|>{\centering}p{2cm}|>{\centering}p{2.55cm}|>{\centering}p{1.35cm}|}
   \hline
   % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
-  \textbf{No.} & \textbf{Islas} & \textbf{Evaluadores} & \textbf{Reproductores} & \textbf{Migraciones} & \textbf{Reproducciones} & \textbf{Tiempo} \tabularnewline
+  \textbf{No.} & \textbf{Islas} & \textbf{Evaluadores} &
+  \textbf{Reproductores} & \textbf{Migraciones} &
+  \textbf{Reproducciones} & \textbf{Tiempo (s)} \tabularnewline
   \hline
   1 & 2 & 5 & 10 & 215 & 416 & 11.62375 \tabularnewline
   \hline
@@ -295,14 +325,40 @@ El diseño fue puesto a prueba con cromosomas de longitud 128, una población de
   \caption{Resultados de los experimentos.}\label{tb:resultados}
 \end{table}
 
-Con este trabajo se muestra la simplicidad de implementación de un modelo híbrido de AG, en su versión concurrente, normalmente abrumadoramente compleja sencillamente por ser concurrente. En la arquitectura las unidades de ejecución fueron mapeadas a actores, las estructurales a módulos y las procedurales a funciones; quedando claramente identificadas y listas a futuras extensiones.
+Aunque se trata solo de resultados iniciales, ya se puede ver que el
+escalado no es excesivamente bueno, siendo en todo caso mejor cuanto
+menor es el númeor de evaluadores. Sin embargo, también se observa que
+el aumento en el tiempo se debe más al aumento en el número de
+reproducciones que al aumento en el número de islas, obteniendo, por
+ejemplo, en el caso de 8 islas un número de reproducciones superior al
+obtenido para 4 islas con un tiempo un 40\% aproximadamente
+menor. Esto apunta al hecho de que el escalado se debería medir más
+sobre la mejora en la obtención de soluciones que en el tiempo. Sin
+embargo, como se ha comentado en esta primera etapa de la
+investigación nos hemos centrado más en la adaptación del algoritmo
+que en las posibilidades de escalado, que se abordarán como trabajo
+futuro. 
 
-Como trabajo futuro queda la implementación de un experimento más complejo dónde se use además una arquitectura distribuida y heterogénea. Dado que el lenguaje tiene de manera nativa el soporte para la distribución de procesos y su MV está implementada para multitud de plataformas hacer esto sólo conllevaría cambios en las funciones que tratan con los cromosomas lográndose un elevado nivel de reutilización del diseño.
+Con este trabajo se muestra la simplicidad de implementación de un
+modelo híbrido de AG, en su versión concurrente, normalmente
+abrumadoramente compleja sencillamente por ser concurrente. En la
+arquitectura las unidades de ejecución fueron mapeadas a actores, las
+estructurales a módulos y las procedurales a funciones; quedando
+claramente identificadas y listas a futuras extensiones. 
+
+Como trabajo futuro queda la implementación de un experimento más
+complejo dónde se use además una arquitectura distribuida y
+heterogénea. Dado que el lenguaje tiene de manera nativa el soporte
+para la distribución de procesos y su MV está implementada para
+multitud de plataformas hacer esto sólo conllevaría cambios en las
+funciones que tratan con los cromosomas lográndose un elevado nivel de
+reutilización del diseño. 
 
 %ACKNOWLEDGMENTS are optional
 \section{Agradecimientos}
 
-Este trabajo ha sido realizado gracias al proyecto TIN2011-28627-C04-02 (ANYSELF) auspiciado por el Mineco, y al P08-TIC-03903 del Gobierno Regional de Andalucía. Es también respaldado por el Programa de Doctorado de la AUIP y por el proyecto 83 del Campus CEI BioTIC.
+%Este trabajo ha sido realizado gracias al proyecto TIN2011-28627-C04-02 (ANYSELF) auspiciado por el Mineco, y al P08-TIC-03903 del Gobierno Regional de Andalucía. Es también respaldado por el Programa de Doctorado de la AUIP y por el proyecto 83 del Campus CEI BioTIC. 
+Oculto para revisión doble ciego.
 
 \bibliographystyle{splncs}
 \bibliography{osgiliath,geneura,erlang-ae-model,referencias}
