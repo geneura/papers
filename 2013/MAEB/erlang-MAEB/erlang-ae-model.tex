@@ -15,7 +15,7 @@
 \usepackage{url}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish,es-noshorthands]{babel}
-
+\usepackage{array}
 %%
 
 \usepackage{url}
@@ -81,7 +81,7 @@ En el presente artículo se describe la modelación e implementación de un mode
 
 Dos paradigmas emergen actualmente en la industria del software como herramientas de abstracción: el funcional y el concurrente, ante viejos y nuevos problemas. Aunque los lenguajes funcionales están a la mano desde hace buen tiempo, LISP es uno de los lenguajes de programación más longevos que existe, nunca han sido de mucho uso fundamentalmente por no disponerse de implementaciones eficientes. Esto ha ido cambiando, sus desventajas superándose y las ventajas llevando a que varios de sus conceptos sean incluidos en lenguajes orientados a objetos modernos (ejemplo C\#).
 
-El desafío de los multi-cores \cite{SutterL05}, entendiéndola como la necesidad de hacer paralelo el más simple de nuestros programas si queremos que haga uso de los modernos y potentes microprocesadores, lleva a crear (o retomar), patrones para el desarrollo de estos algoritmos muchos de los cuales acaban como nuevas características en lenguajes de programación. Ejemplos de estos son: Clojure, Go, Scala, Haskell y Erlang; en todos aparecen construcciones que soportan dentro del propio lenguaje modos de manejar la concurrencia: facilitando razonar sobre ella y simplificando su sintaxis.
+El desafío de los multi-núcleos \cite{SutterL05}, entendiéndola como la necesidad de hacer paralelo el más simple de nuestros programas si queremos que haga uso de los modernos y potentes microprocesadores, lleva a crear (o retomar), patrones para el desarrollo de estos algoritmos muchos de los cuales acaban como nuevas características en lenguajes de programación. Ejemplos de estos son: Clojure, Go, Scala, Haskell y Erlang; en todos aparecen construcciones que soportan dentro del propio lenguaje modos de manejar la concurrencia: facilitando razonar sobre ella y simplificando su sintaxis.
 
 El resto del trabajo se estructura como sigue: estado del arte, dentro del que se caracterizan los paradigmas funcional y concurrente y se describe el lenguaje Erlang que los incluye. A continuación se muestra la modelación de un algoritmo genético usando conceptos de los paradigmas antes expuestos (Sección \ref{sec:design}); y finalmente, en la Sección \ref{sec:conclusions}, se presentan los resultados y conclusiones.
 
@@ -119,11 +119,11 @@ MALLBA consiste en una biblioteca integrada de plantillas para optimización com
 
 \subsection{Programación funcional}
 
-El paradigma de la programación funcional por su parte, aún cuando ofrece varias ventajas, no ha sido muy usado. Un tiempo atrás se exploraron en el campo de la Programación Genética \cite{Briggs:2008:FGP:1375341.1375345,Huelsbergen:1996:TSE:1595536.1595579,walsh:1999:AFSFESIHLP}, más recientemente en la neuroevolución  \cite{Sher2013}; sin embargo dentro de los AG ha sido poca su presencia \cite{Hawkins:2001:GFG:872017.872197}.
+El paradigma de la programación funcional por su parte, aun cuando ofrece varias ventajas, no ha sido muy usado. Un tiempo atrás se exploraron en el campo de la Programación Genética \cite{Briggs:2008:FGP:1375341.1375345,Huelsbergen:1996:TSE:1595536.1595579,walsh:1999:AFSFESIHLP}, más recientemente en la neuroevolución  \cite{Sher2013}; sin embargo dentro de los AG ha sido poca su presencia \cite{Hawkins:2001:GFG:872017.872197}.
 
-La programación funcional se caracteriza por el uso de las funciones como datos (pasándolas por parámetros y devolviéndolas como resultados), en particular de las funciones puras: aquellas cuyo resultado solo depende de los parámetros de entrada, excluyendo los cambios de estado, por lo que constituye un excelente enfoque del desarrollo de algoritmos concurrentes que tienen precisamente en la comunicación via cambios de estado a la primera fuente de errores y complejidad.
+La programación funcional se caracteriza por el uso de las funciones como datos (pasándolas por parámetros y devolviéndolas como resultados), en particular de las funciones puras: aquellas cuyo resultado solo depende de los parámetros de entrada, excluyendo los cambios de estado. Esto la hace particularmente adecuada para el desarrollo de algoritmos concurrentes pues estos tienen la primera fuente de errores y complejidad en la comunicación entre procesos, a través de cambios de estado.
 
-El uso de listas, con implementaciones muy optimizadas, es omnipresente en la PF también, siendo en los AG también una de las estructuras de datos más utilizadas. Lo que da un conveniente pareo de conceptos entre dominio de la solución y dominio de implementación.
+El uso de listas, con implementaciones muy optimizadas, es omnipresente en la programación funcional también, siendo en los AG también una de las estructuras de datos más utilizadas. Lo que da un conveniente pareo de conceptos entre dominio de la solución y dominio de implementación.
 
 \subsection{Erlang}
 
@@ -196,7 +196,7 @@ Los componentes del AG paralelo identificados como principales a la hora de dise
 
 \subsection{Biblioteca erlEA}
 
-En la realización del caso de estudio fue implementado, teniendo en cuenta los conceptos seleccionados anteriormente, un proyecto Erlang con varios módulos. El código se encuentra bajo licencias libres en la dirección: \url{http://secret.com}. Sus principales módulos y funciones son descritas a continuación.
+En la realización del caso de estudio fue implementado, teniendo en cuenta los conceptos seleccionados anteriormente, un proyecto Erlang con varios módulos. El código se encuentra bajo licencias libres en la dirección: \url{http://secret.com}. Sus principales módulos y funciones son descritos a continuación.
 
 
 \subsubsection{Módulo reproducer}
@@ -253,7 +253,7 @@ Este es el módulo del proceso encargado de inicializar el trabajo de las piscin
 
 \subsubsection{Módulos auxiliares}
 
-Los módulos ya descritos contienen toda la lógica del AG, faltan sin embargo, para que sea operativo el software, algunos códigos no funcionales. 
+Los módulos ya descritos contienen toda la lógica del AG, faltan sin embargo, para que sea operativo el software, algunos códigos no funcionales.
 
 Dichos módulos son:
 
@@ -270,11 +270,34 @@ Dichos módulos son:
 \section{Resultados y conclusiones}
 \label{sec:conclusions}
 
-El diseño fue puesto a prueba con cromosomas de longitud 128, una población de 256 individuos por isla, 4 islas, 10 evaluadores y 5 reproductores por isla obteniéndose la solución del problema a los 3.922001 segundos y con 228 migraciones. Aunque los resultados no son los mejores posibles, si se obtuvo el óptimo lo que demuestra que el algoritmo fue correcto en su implementación.
+El diseño fue puesto a prueba con cromosomas de longitud 128, una población de 256 individuos por isla y con evaluadores y reproductores trabajando con bloques de 50 cromosomas. Los resultados obtenidos aparecen en la Tabla \ref{tb:resultados}.
+
+\begin{table}
+  \centering
+\begin{tabular}{|>{\centering}p{.55cm}|>{\centering}p{.75cm}|>{\centering}p{2.1cm}|>{\centering}p{2.5cm}|>{\centering}p{2cm}|>{\centering}p{2.55cm}|>{\centering}p{1.35cm}|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  \textbf{No.} & \textbf{Islas} & \textbf{Evaluadores} & \textbf{Reproductores} & \textbf{Migraciones} & \textbf{Reproducciones} & \textbf{Tiempo} \tabularnewline
+  \hline
+  1 & 2 & 5 & 10 & 215 & 416 & 11.62375 \tabularnewline
+  \hline
+  2 & 2 & 10 & 20 & 299 & 629 & 25.3412 \tabularnewline
+  \hline
+  3 & 4 & 5 & 10 & 347 & 664 & 10.672001 \tabularnewline
+  \hline
+  4 & 4 & 10 & 20 & 580 & 1223 & 27.09117 \tabularnewline
+  \hline
+  5 & 8 & 5 & 10 & 862 & 1635 & 16.375004 \tabularnewline
+  \hline
+  6 & 8 & 10 & 20 & 1333 & 2845 & 36.294951 \tabularnewline
+  \hline
+\end{tabular}
+  \caption{Resultados de los experimentos.}\label{tb:resultados}
+\end{table}
 
 Con este trabajo se muestra la simplicidad de implementación de un modelo híbrido de AG, en su versión concurrente, normalmente abrumadoramente compleja sencillamente por ser concurrente. En la arquitectura las unidades de ejecución fueron mapeadas a actores, las estructurales a módulos y las procedurales a funciones; quedando claramente identificadas y listas a futuras extensiones.
 
-Como trabajo futuro queda la implementación de un experimento más complejo dónde se use además una arquitectura distribuida y heterogénea. Dado que el lenguaje tiene de manera nativa el soporte para la distribución de procesos y su MV está implementada para multitud de plataformas hacer esto sólo conllevaría cambios en las funciones que tratan con los cromosomas lográndose un elevando nivel de reutilización del diseño.
+Como trabajo futuro queda la implementación de un experimento más complejo dónde se use además una arquitectura distribuida y heterogénea. Dado que el lenguaje tiene de manera nativa el soporte para la distribución de procesos y su MV está implementada para multitud de plataformas hacer esto sólo conllevaría cambios en las funciones que tratan con los cromosomas lográndose un elevado nivel de reutilización del diseño.
 
 %ACKNOWLEDGMENTS are optional
 \section{Agradecimientos}
