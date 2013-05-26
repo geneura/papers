@@ -1,5 +1,5 @@
 \documentclass[a4paper,twoside]{article}
-
+\usepackage[latin1]{inputenc}
 \usepackage{epsfig}
 \usepackage{subfigure}
 \usepackage{calc}
@@ -12,7 +12,6 @@
 \usepackage{apalike}
 \usepackage{SciTePress}
 \usepackage[small]{caption}
-
 \subfigtopskip=0pt
 \subfigcapskip=0pt
 \subfigbottomskip=0pt
@@ -87,21 +86,13 @@ forecast any given time series.
  collaborates with individuals from the other subpopulation in order
  to obtain good solutions. 
 
-While previously work \cite{Parras2012Softcomputing} was focused on 1-step ahead prediction, the main goal of this one is to analyze the effectiveness of the
-{\metodo} method in the medium-term horizon, using the own
-previously predicted values to perform next predictions. Thus, 5 different methods used
-in time series forecasting have been selected in order to test the
-behavior of the method.
+While previously work \cite{Parras2012Softcomputing} was focused on 1-step ahead prediction, the main goal of this one is to analyze the effectiveness of the {\metodo} method in the medium-term horizon, using the own previously predicted values to perform next predictions. For this reason, {\metodo} has been tested over 20 databases, taken from real world, or used in well-known research publications and time series competition. As section \ref{sec:experimentation} shows, the method has been compared against 5 time series forecasting methods.
 
 The rest of the paper is organized as follows: section
 \ref{sec:preliminaries} introduces some preliminary topics related to
 this research; section \ref{sec:method} describes the method
 {\metodo}; section \ref{sec:experimentation} presents the
-experimentation and the statistical study carried out, 
-and finally section \ref{sec:conclusions} presents some conclusions of the work.
-
-
-
+experimentation and the statistical study carried out, while section \ref{sec:conclusions} presents some conclusions of the work.
 
 
 \section{\uppercase{Preliminaries}}
@@ -110,15 +101,17 @@ and finally section \ref{sec:conclusions} presents some conclusions of the work.
 \noindent 
 
 
-Approaches proposed in time series forecasting can be mainly grouped as linear and nonlinear models. Methods like exponential smoothing methods \cite{Winters1960}, simple exponential smoothing, Holt's linear methods, some variations of the Holt-Winter's methods, State space models \cite{Snyder1985}, and ARIMA models \cite{BoxJenk}, have stand out from linear methods, used chiefly for modelling time series. Nonlinear models arose because linear models were insufficient in many real applications; between nonlinear methods it can be found regime-switching models, which comprise the wide variety of existing threshold autoregressive models \cite{Tong1978} as: self-exciting models \cite{Tong1983}, smooth transition models \cite{Chan1986}, and continuous-time models \cite{Brockwell1992157}, among others. Nevertheless, soft computing approaches were developed in order to save disadvantages of nonlinear models like the lack of robustness in complex model and the difficulty to use \cite{Clements2004}.
+Approaches proposed in time series forecasting can be mainly grouped as linear and nonlinear models. Methods like exponential smoothing methods \cite{Winters1960}, simple exponential smoothing, Holt's linear methods, some variations of the Holt-Winter's methods, State space models \cite{Snyder1985}, and ARIMA models \cite{BoxJenk}, have stand out from linear methods, used chiefly for modelling time series. Nonlinear models arose because linear models were insufficient in many real applications; between nonlinear methods it can be found regime-switching models, which comprise the wide variety of existing threshold autoregressive models \cite{Tong1978}.
+% as: self-exciting models \cite{Tong1983}, smooth transition models \cite{Chan1986}, and continuous-time models \cite{Brockwell1992157}, among others. 
+Nevertheless, soft computing approaches were developed in order to save disadvantages of nonlinear models like the lack of robustness in complex model and the difficulty to use \cite{Clements2004}.
 
-ANNs have also been applied successfully \cite{Jain2007}
+ANNs have also been successfully applied  \cite{Jain2007}
 and recognized as an important tool for time-series forecasting. 
 Within ANNs, the utilization of RBFs as activation functions were
-considered by works as \cite{Broomhead88} and \cite{Rivas04}, and
-applied to time series by Carse and Fogarty \cite{Carse1996}, and
-Whitehead and Choate \cite{Whitehead96}. Later works like the ones by
-Harpham and Dawson \cite{Harpham06} or  Du \cite{Du2008} focused on
+considered by works as \cite{Broomhead88} and \cite{Rivas04}, 
+% and applied to time series by, for instance, Carse and Fogarty \cite{Carse1996}, 
+% and Whitehead and Choate \cite{Whitehead96}. Later works like the ones by
+while Harpham and Dawson \cite{Harpham06} or  Du \cite{Du2008} focused on
 RBFNs for time series forecasting. 
 
 
@@ -143,7 +136,7 @@ Cooperative co-evolution \cite{Potter94} has also been used in order to train AN
 \noindent This section describes {\metodo} \cite{Parras2012Softcomputing}, a co-evolutionary algorithm developed to minimize the error obtained for automatically time series forecasting. The algorithm works building at the same time RBFNs and sets of lags that will be used to predict future values. For this task, {\metodo} is able to simultaneously evolve two populations of different individual species, in which any member of each population can cooperate with individuals from the other one in order to generate good solutions, that is, each individual represents itself a possible solution to the subproblem. Therefore, the algorithm is composed of the following two populations:
 
 \begin{itemize}
-  \item Population of RBFNs: it consists of a set of RBFNs which evolves to design a suitable architecture of the network. This population employs real codification so every individual represent a set of neurons (RBFs) that composes the net. During the evolutionary process neurons can grow or decrease since the number of neurons is variable. Each neuron of the net is defined by a center (a vector with the same dimension as the inputs) and a radius. The exact dimension of the input space is given by an individual of the population of lags (the one chosen to evaluate the net).
+  \item Population of RBFNs: it consists of a set of RBFNs which evolves to design a suitable architecture of the network. This population employs real codification so every individual represent a set of neurons (RBFs) that composes the net. Each neuron of the net is defined by a center (a vector with the same dimension as the inputs) and a radius. The exact dimension of the input space is given by an individual of the population of lags (the one chosen to evaluate the net). During the evolutionary process neurons can grow or decrease since the number of neurons is variable, and centers and radius can also be modified by means of muatation.
 
   \item Population of lags: it is composed of sets of lags evolves to forecast future values of the time series. The population uses a binary codification scheme thus each gene indicates if that specific lag in the time series will be utilized in the forecasting process. The length of the chromosome is set at the beginning corresponding with the specific parameter, so that it cannot vary its size during the execution of the algorithm.
 \end{itemize}
@@ -191,10 +184,10 @@ begin  \\
 \ \ \ \ \ \emph{replace} individuals with P\_RBFNs'(t);  \\
 \ \ \ end  \\
 end  \\
+
 \emph{train} models and select the best one \\
 forecast test values with the final model \\
-Trend post-processing \\
-\\
+Trend postprocessing \\
 \hline
 \end{tabular}
 \caption{General scheme of method {\metodo}.}
@@ -216,42 +209,10 @@ The operators used by {\metodo} are the followings:
 
 \begin{itemize}
   \item{Population of RBFNs:} tournament selection, x\_fix crossover, four operators to mutate randomly chosen (C\_random, R\_random, Adder, and Deleter) and replacement of the worst individuals by the best ones of the subpopulation.
-    %\begin{itemize}
-%      \item Tournament selection%: this population implements tournament selection
-%      \item X\_fix crossover operator%: it replaces a sequence of neurons in the hidden layer of a network by an equal size sequence of neurons in the hidden layer of other network. %To do this, an individual and a number of neurons are randomly selected. Then, the current and random individual exchange as many neurons as the random number indicates.
-%          %This operator enables sharing information between the networks without affecting the hidden layer size.
-%      \item Mutation: there are four operators to mutate the individuals which can be randomly chosen:%. The choice of one of this mutation operators is carried out randomly, giving to the deleter operator double possibility of being selected.
-%          C\_random, R\_random, Adder, and Deleter, that modify, add or delete neurons.
-%          %\begin{itemize}
-%              %\item C\_random: this operator modifies the point where each RBF of hidden neurons of the net is centered. %The number of neurons affected is determined by an internal application factor. The operator performs an exploration of the solution space replacing the center of the neuron by a new random center. Each of the components of the new center is chosen following an uniform probability distribution in the range [\emph{min}, \emph{max}] determined from input patterns.
-%              %\item R\_random: this operator modifies the radius value of hidden neurons. %The operator assigns a random value to the radius following an internal probability.
-%              %\item Adder: it adds new neurons to the hidden layer. %The values for the center and radius vectors of a new neuron are randomly set, within the range for each dimension of input space.
-%              %\item Deleter: it deletes neurons from the hidden layer %this operator does the opposite of adder operator, it deletes neurons from the hidden layer. The exact number of neurons varies from one net to another, since the operator is applied to each neuron with a probability.
-%                  %The deleter operator has a twofold objective. The first one is to reduce the complexity of the network without losing their ability to approximate the training data set. The second one is to prevent overtraining networks, since a high capacity of generalization is desirable.
-%          %\end{itemize}
-%      \item Replacement: the worst individuals of the population are replaced by the best ones of the subpopulation, hence, the best individuals remain in next generations. %the new individuals and the parent ones are joined in an unique population. Then, the worst individuals are eliminated keeping the best ones until the population reaches the original population size. Therefore, the best individuals remain in the next generation.
-%    \end{itemize}
-
-
+    
   \item{Population of lags:} elitist selection, HUX crossover operator, replacement of the worst individuals, and diverge (the population is restarted when it is blocked).
-    %\begin{itemize}
-%        \item The individuals, as the CHC algorithm establishes, are crossed checking the incest prevention. After the cross, the individuals and their parents compete to survive with an elitism approach. %in order to select individuals for the child population, the individuals of the parent population are randomly organized to form the current population. Then, they are coupled and the crossover operator will be applied to breed. Since the algorithm uses elitism, the best individuals found up to the moment will remain in the current population.
-%
-%        \item HUX crossover operator% is used by this population for breeding. It %needs two parents, if both parents are not very similar, couples of points are randomly generated and the fragment of the chromosome between them is exchanged, bearing in mind the incest prevention. This application way
-%            %guarantees the two offspring are always at the maximum Hamming distance from their parents.
-%
-%        %\item Mutation. There is no mutation operator in this population, this is because it implements the CHC algorithm so no mutation operator is applied since the HUX crossover has a strong exploration component.
-%
-%        \item Replacement: as in the population of RBFNs, %the new individuals and the parent ones compete for survive to new generations, then
-%        the worst individuals are eliminated. %are joined in an unique population. Then, the worst individuals are eliminated keeping the best ones until the population reaches the original population size. Therefore, the best individuals remain in the next generation.
-%
-%        \item Diverge: the population is restarted when it is blocked. %when the population is stagnated a restart is produced. The best individual is kept and the rest of the population is generated again in a random way.
-%    \end{itemize}
+    
 \end{itemize}
-
-% Esto deberíais explicarlo un poco más. Si necesitas especio, resume
-% la explicación del método. Es un congreso de algoritmos genéticos,
-% hay que ser detallista en este tema - JJ
 
 
 \section{\uppercase{Experimentation and statistical study}}
@@ -262,13 +223,15 @@ The operators used by {\metodo} are the followings:
 \subsection{Experimental methodology}
 \label{experimentalmethodoly}
 
-\noindent The experimentation has been carried out using 20 data bases taken from the INE\footnote{National Statistics Institute (http://www.ine.es/)}. The data represent observations from different activities and have different nature, size, and characteristics. The data bases have been labeled as: Airline, WmFrancfort, WmLondon, WmMadrid, WmMilan, WmNewYork, WmTokyo, Deceases, SpaMovSpec, Exchange, Gasoline, MortCanc, MortMade, Books, FreeHouPrize, Prisoners, TurIn, TurOut, TUrban, and HouseFin.
+\noindent As in \cite{Parras2012Softcomputing}, the experimentation has been carried out using 20 data bases, most of then taken from the INE\footnote{National Statistics Institute (http://www.ine.es/)}. The data represent observations from different activities and have different nature, size, and characteristics. The data bases have been labeled as: Airline, WmFrancfort, WmLondon, WmMadrid, WmMilan, WmNewYork, WmTokyo, Deceases, SpaMovSpec, Exchange, Gasoline, MortCanc, MortMade, Books, FreeHouPrize, Prisoners, TurIn, TurOut, TUrban, and HouseFin. The number of samples in every database is between 43 (for MortCanc) and 618 (for Gasoline, a database used in the NN3 competition).
 
-To compare the effectiveness of {\metodo} it has used 5 methods found
+To compare the effectiveness of {\metodo}, 5 additional methods have been used, all of them found
 within the field of time series forecasting: Exponential smoothing
-method (ETS), Croston, Theta, Random Walk (RW), and ARIMA \cite{HyndmanKhandakar:2008}.
+method (ETS), Croston, Theta, Random Walk (RW), and ARIMA \cite{HyndmanKhandakar:2008}. 
 
-An open question when dealing with time series is the measure to be used in order to calculate the accuracy of the obtained predictions. Mean Absolute Percentage Error (MAPE) \cite{Bowerman2004} was the first measure employed in the M-competition \cite{Makridakis1982} and most textbooks recommended it. Later, many other measures as Geometric Mean Relative Absolute Error, Median Relative Absolute Error, Symmetric Median and Median Absolute Percentage Error (MdAPE), and Symmetric Mean Absolute Percentage Error, among others, were proposed \cite{Makridakis2000}. However, a disadvantage was found in these measures, they were not generally applicable and can be infinite, undefined or can produce misleading results, as Hyndman and Koehler explained in their work \cite{Hyndman2006}. Thus, they proposed Mean Absolute Scaled Error (MASE) that is less sensitive to outliers, less variable on small samples, and more easily interpreted.
+In order to test and compare the generalization capabilities of every method, databases have been split into training and test sets. Training sets have been given the first $75\%$ of the data, while test sets are composed by the remaining $25\%$ samples.
+
+An open question when dealing with time series is the measure to be used in order to calculate the accuracy of the obtained predictions. Mean Absolute Percentage Error (MAPE) \cite{Bowerman2004} was intensively used until many other measures as Geometric Mean Relative Absolute Error, Median Relative Absolute Error, Symmetric Median and Median Absolute Percentage Error (MdAPE), or Symmetric Mean Absolute Percentage Error were proposed \cite{Makridakis2000}. However, a disadvantage was found in these measures, they were not generally applicable and can be infinite, undefined or can produce misleading results, as Hyndman and Koehler explained in their work \cite{Hyndman2006}. Thus, they proposed Mean Absolute Scaled Error (MASE) that is less sensitive to outliers, less variable on small samples, and more easily interpreted.
 
 In this work, the measures used are MAPE (i.e., $mean(\mid p_t\mid)$), MASE (defined as $mean(\mid q_t\mid)$), and MdAPE (as $median(\mid p_t\mid)$ ), taking into account that $Y_t$ is the observation at time $t = {1,...,n}$; $F_t$ is the forecast of $Y_t$; $e_t$ is the forecast error (i.e. $e_t= Y_t - F_t$); $p_t = 100e_t/Y_t$ is the percentage error, and $q_t$ is determined as:
 
@@ -498,8 +461,6 @@ TIC-3928 and -TIC-03903 (Feder Funds), the Spanish projects TIN
 \begin{center}
 \epsfig{file=logos_SIPESCA_2.png,width=6cm}
 \end{center}
-%\caption{ }
-%\label{logos_SIPESCA_2}
 \end{figure}
 
 \bigskip
