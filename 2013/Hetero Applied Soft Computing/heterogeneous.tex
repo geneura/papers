@@ -138,7 +138,7 @@
 %\ead{zoevara@itaca.upv.net}
 
 \address[ugr]{Department of Computer Architecture and Computer Technology and CITIC-UGR, University of Granada, Granada, Spain. Tel: +34958241778. Fax: +34958248993}
-\address[laseeb]{LaSEEB-ISR-IST, Technical University of Lisbon (IST), Lisbon, Portugal}%CAMBIAAAAAAAAAAR!!!!
+\address[laseeb]{LaSEEB-ISR-IST, Technical University of Lisbon (IST), Lisbon, Portugal}%
 %\address[jam]{Jambit GmbH, Munich, Germany}
 
 \begin{abstract}
@@ -160,7 +160,30 @@ Evolutionary Algorithms \sep Genetic Algorithms \sep Heterogeneous computation \
 \label{sec:intro}
 
 
-Evolutionary Algorithms (EAs) are a general technique for solving optimization and search problems based on the evolution of species and natural selection. These algorithms are formed by a population of possible solutions (called {\em individuals}) that competes using their {\em fitness} (quality of adaptation) with the rest of solutions. In each iteration of the algorithm (or {\em generation}) the individuals are evolved by means of selection and recombination/mutation to create a new set of candidates, until a {\em stop criterion} (i.e. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function is usually the problem to solve. 
+Evolutionary Algorithms (EAs) are a general technique for solving optimization and search problems based on the evolution of species and natural selection. These algorithms are formed by a population of possible solutions (called {\em individuals}) that competes using their {\em fitness} (quality of adaptation) with the rest of solutions. In each iteration of the algorithm (or {\em generation}) the individuals are evolved by means of selection and recombination/mutation to create a new set of candidates, until a {\em stop criterion} (i.e. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function is usually the problem to solve.
+
+% Metes muchos the al principio de plural, es incorrecto - JJ - FERGU: Ya veo. Lo cambio en el resto del paper (por ejemplo, en el párrafo de abajo)
+New trends in distributed computing such as Cloud Computing \cite{CLOUD}, GRID
+\cite{OPENSCIENCEGRID} or Service Oriented Science \cite{GLOBUS} are
+leading to heterogeneous computational devices, for instance laptops,
+tablets or desktop PCs, working in the same
+environment. Thus, many laboratories, which do not count with classic
+clusters but the usual workstations used by scientists, can leverage
+this motley set as an heterogeneous cluster. Distributed Evolutionary
+Algorithms (dEAs) \cite{MULTIKULTI,PARALLELGRIDHETEROGENEOUS} have been tested successfully in these
+systems and they are very popular because their implementation is
+not complicated  % ¿seguro? - JJ FERGU: Esto está sacado del artículo ese de abajo xD (no plagiado, claro)
+ and they exploit a coarse grain parallelism with sporadic % o
+                                % sporadic? -JJ FERGU: Corregido
+ communications, being fit to be executed in distributed architectures
+ such as clusters or GRIDs \cite{PLATO}.%Nos puedes citar a nosotros mismos: asynchronous,
+          %Dropbox... - JJ - FERGU: Done 
+
+In distributed EAs a number of nodes executes simultaneously the EA, working with different sub-populations (or islands) at the same time. Each certain number of generations one or more individuals are interchanged (migrated) between populations. Figure \ref{fig:islands} shows this model with a ring topology.  % Revisa el inglés! - JJ FERGU: Ya, el problema es que no detecto los fallos de forma evidente :(
+
+
+
+
 
 %There are different ways to parallelize the EAs, being the most extended:
 % estas no son todas las maneras: se puede paralelizar basado en pool o en P2P.  FERGU: lo dejo abierto 
@@ -180,28 +203,9 @@ Evolutionary Algorithms (EAs) are a general technique for solving optimization a
 \end{figure}
 
 
-In distributed EAs (dEAs) a number of nodes executes simultaneously the EA, working with different sub-populations (or islands) at the same time. Each certain number of generations one or more individuals are interchanged (migrated) between populations. Figure \ref{fig:islands} shows this model with a ring topology. Distributed EAs are very popular because their implementation is
-not complicated  % ¿seguro? - JJ FERGU: Esto está sacado del artículo ese de abajo xD (no plagiado, claro)
- and they exploit a coarse grain parallelism with sporadic % o
-                                % sporadic? -JJ FERGU: Corregido
- communications, being fit to be executed in distributed architectures
- such as clusters or GRIDs \cite{PLATO}. % Revisa el inglés! - JJ FERGU: Ya, el problema es que no detecto los fallos de forma evidente :(
 
 
 
-
-
-% Metes muchos the al principio de plural, es incorrecto - JJ - FERGU: Ya veo. Lo cambio en el resto del paper (por ejemplo, en el párrafo de abajo)
-New trends in distributed computing such as Cloud Computing \cite{CLOUD}, GRID
-\cite{OPENSCIENCEGRID} or Service Oriented Science \cite{GLOBUS} are
-leading to heterogeneous computational devices, for instance laptops,
-tablets or desktop PCs, working in the same
-environment. Thus, many laboratories, which do not count with classic
-clusters but the usual workstations used by scientists, can leverage
-this motley set as an heterogeneous cluster. In fact, distributed Evolutionary
-Algorithms (dEAs) \cite{MULTIKULTI,PARALLELGRIDHETEROGENEOUS} have been tested successfully in these
-systems.  %Nos puedes citar a nosotros mismos: asynchronous,
-          %Dropbox... - JJ - FERGU: Done
 
 
 Distributed EAs can be executed in homogeneous clusters with the same parameters in all nodes (homogeneous dEAs) or with differences in the parameters or nodes (heterogeneous dEAs).
@@ -445,7 +449,7 @@ Proportion  & 38,58   & 37,36   & 22,6   & 1,45 \\ \hline
 
 \subsection{Heterogeneous Size configuration}
 
-Our hipothesis consist in validate if adapting the population size to the computational power of the nodes of an heterogeneous cluster presents an improvement in time. In this work, to determine the computational power of the heterogeneous machines we have used the average number of generations obtained in the HoSi/HeHa configuration for both problems. This comparison takes into account all the evolutionary process in a fair manner (proportional to the memory, processor and network usage), instead a traditional benchmark that usually relies only the CPU speed. This is a possible way to establish the computational power for the experiments of this work and to determine if changing the population size according the computational power reduces the time of the whole system. It should be considered that the contribution of this work is not the way we have used to calculate these sizes, but compare the algorithm with parameters adapted to their power.
+Our hipothesis consist in validate if adapting the population size to the computational power of the nodes of an heterogeneous cluster presents an improvement in time. In this work we have used the average number of generations obtained in the HoSi/HeHa configuration for both problems to determine the computational power of the heterogeneous machines. This comparison takes into account all the evolutionary process in a fair manner (proportional to the memory, processor and network usage), instead a traditional benchmark that usually relies only the CPU speed. Although this is not obviously the best way, it is a possible way to establish the computational power for the experiments of this work and to determine if changing the population size according the computational power reduces the time of the whole system. It should be considered that the contribution of this work is not the way we have used to calculate these sizes, but compare the algorithm with parameters adapted to their power.
 
 Thus, we have used the obtained average number of generations in the previous sub-section to set proportionally the sizes in the HeSi/HeHa and HeSi/HoHa configurations, dividing the total number of individuals (1024). Note that, having two nodes with the same processors and memory (HeN1 and HeN2), they have different computational power: this might be produced by different operating systems, virtual machine versions, or number of processes being executed.
 
@@ -471,8 +475,8 @@ Runs per configuration & 40 \\ \hline
 \hline
 Total individuals & 1024\\ \hline \hline
 Population size in each node in HoSi & 256  \\ \hline
-Population sizes in HeSi for MMDP & 374, 364, 262 and 24 \\ \hline
-Population sizes in HeSi for OneMax & 396,  382, 232 and 14 \\ \hline
+Population sizes in HeSi for MMDP & 374, 364, 262 and 24 (from N1 to N4)\\ \hline
+Population sizes in HeSi for OneMax & 396,  382, 232 and 14 (from N1 to N4)\\ \hline
 \hline\end{tabular}
 \label{table:parameters}
 \end{table}
@@ -487,7 +491,7 @@ In order to deal with the operating system and architecture heterogeneity, the O
 \section{Results}
 \label{sec:results}
 
-The main objetives of parallel programming are to tackle large computational problems, increase the performance of algorithms in a finite time, or reduce computational time to solve the problem. In this work we focus in the last objective.
+The main objetives of parallel programming are to tackle large computational problems, increase the performance of algorithms in a finite time, or reduce computational time to solve the problem (reaching the optimum). In this work we focus in the last objective.
 As claimed by the authors in \cite{EVALUATIONPARALLEL}, assessing the performance of a parallel EA by the number of function evaluations required to attain a solution may be misleading. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, so the real algorithm speed could not be reflected correctly. However, the number of evaluations has been included in this section to better understand the results. The total number of generations, and the maximum number of generations required by the faster node in each configuration are also shown. It is difficult to compare the performance of HoHa and HeHa for the same reason: the evaluation time is different in each system (and even in each node). That is, in this work, we are not making the heterogeneous cluster comparable or better than the homogeneous one (because they are, obviously, different).
 
 \subsection{MMDP results}
@@ -678,10 +682,10 @@ HoSi/HeHa vs HeSi/HeHa  &No  &Wilcoxon     &0.002  & Yes \\ \hline
 HoSi/HoHa vs HeSi/HoHa  &No   &Wilcoxon   &0.08  & No \\ \hline \hline
 \multicolumn{5}{|c|}{Time for OneMax} \\ \hline
 HoSi/HeHa vs HeSi/HeHa  & No & Wilcoxon    &  1\e{-5} & Yes \\ \hline
-HoSi/HoHa vs HeSi/HoHa  & No  & Wilcoxon    &   & Yes \\ \hline \hline
+HoSi/HoHa vs HeSi/HoHa  & No  & Wilcoxon    &  3\e{-8} & Yes \\ \hline \hline
 \multicolumn{5}{|c|}{Evaluations for OneMax}  \\ \hline
-HoSi/HeHa vs HeSi/HeHa  & No  & Wilcoxon    &  & Yes\\ \hline
-HoSi/HoHa vs HeSi/HoHa  & Yes & T-Test    &   & Yes \\ \hline
+HoSi/HeHa vs HeSi/HeHa  & No  & Wilcoxon    & SE QUE FALTA xD & Yes\\ \hline
+HoSi/HoHa vs HeSi/HoHa  & No & Wilcoxon    & 3\e{-8}  & Yes \\ \hline
 
 \end{tabular}
 \label{tab:significance}
@@ -801,7 +805,7 @@ population size of a distributed Evolutionary Algorithm to the computational
 power of different nodes in an heterogeneous cluster (a cluster with different hardware).
 The same parameter set has been also tested in an homogeneous cluster. 
 
-Results shows that adapt the population size to the computational power of each node in the heterogeneous cluster yields significantly
+Results shows that adapting the population size to the computational power of each node in the heterogeneous cluster yields significantly
 better results in time than keeping the same parameter in all nodes. This advantage is due to the combination of the heterogeneous parameters with the heterogeneity of the machines. On the contrary, the same (heterogeneous) parameter set in all islands of the homogeneous cluster could not improve the results than the same parameter in all nodes.
 
 %To obtain a fair parameter configuration,
@@ -818,7 +822,7 @@ the migration.
 
 In this work, we calculate the computational power of each node proportional 
 to the average number of generations for the homogeneous parameter set. These results are a promising start for adapting EAs to the
-performance of each execution node, using more adequate benchmarks. 
+performance of each execution node, using more adequate benchmarks or in a dynamic way. 
 % Falta una discusión sobre si las mejoras se deben exclusivamente al
 % número de evaluaciones o hay algún otro factor ¿menos overhead?
 % ¿nodos más rápidos? - JJ FERGU: no, de hecho el número de evaluaciones no siempre disminuye, lo digo arriba.
