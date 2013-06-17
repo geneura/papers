@@ -7,6 +7,7 @@
 \usepackage{rotating}
 \usepackage{subfig}
 \usepackage{listings}
+\usepackage{wrapfig}
 %%%%
 
 \usepackage{color}
@@ -48,8 +49,7 @@ showstringspaces=false
 
 
 % first the title is needed
-\title{Desarrollo de servicios para una Arquitectura Orientada a Servicios para Algoritmos Evolutivos \thanks{Este trabajo ha sido gracias a la beca FPU AP2009-2942 y los proyectos EvOrq (TIC-3903), CANUBE (CEI2013-P-14) y ANYSELF (TIN2011-28627-C04-02).
-}}
+\title{Desarrollo de servicios para una Arquitectura Orientada a Servicios para Algoritmos Evolutivos}
 % Muchos servicios me parecen ¿Resolviendo problemas? ¿Creando aplicaciones? ¿Desarrollo ágil? - JJ - FERGU: es que se desarrollan varios
 
 
@@ -66,7 +66,7 @@ showstringspaces=false
 % the affiliations are given next; don't give your e-mail address
 % unless you accept that it will be published
 
-\institute{Departamento de Arquitectura y Tecnología de Computadores, Universidad de Granada, España \and LaSEEB-ISR-IST, Technical University of Lisbon (IST), Lisboa, Portugal
+\institute{Dept. de Arquitectura y Tecnología de Computadores, Universidad de Granada \and LaSEEB-ISR-IST, Technical University of Lisbon (IST), Lisboa, Portugal
 \mailsa}
 %\institute{No institute given
 %\mailsa}
@@ -130,7 +130,7 @@ OSGi permite construir sistemas software de calidad considerando un alto nivel d
 %\end{figure} 
 
 % ¿nuestro trabajo? ¿No se anónimo? - JJ - FERGU: Sí, de hecho esa referencia está anonima ahora
-En nuestro trabajo anterior \cite{OSGILIATH} presentamos una
+En un trabajo anterior \cite{OSGILIATH} presentamos una
 Arquitectura Orientada a Servicios para Algoritmos Evolutivos
 (SOA-EA), junto con guías y pasos para migrar del desarrollo
 tradicional de Algoritmos Evolutivos (AEs) a SOA. También se presentó
@@ -141,7 +141,7 @@ desarrollo de algoritmos distribuidos extensible con una arquitectura
 basada en plug-ins y basada en una especificación software ampliamente
 aceptada (OSGi). En este trabajo mostramos el desarrollo completo de
 un servicio utilizando la tecnología específica, en lugar del diseño
-abstracto presentado en nuestro anterior trabajo. % Esto debería ir al
+abstracto presentado en el anterior trabajo. % Esto debería ir al
                                 % título y al abstract. Y deberías
                                 % insertar alguna medida que indicara
                                 % en qué es ese desarrollo completo
@@ -215,14 +215,12 @@ Finalmente, no debemos asumir el orden de los servicios a ejecutar. Por ejemplo,
 
 \subsection{Otras restricciones tecnológicas}
 
-En \cite{OSGILIATH} presentamos las ventajas de usar SOA en algoritmos Evolutivos: para empezar, SOA encaja con las ventajas de generalidad en el desarrollo de AEs explicado en \cite{GENERICITY05}, pero añade nuevas características, como independencia del lenguaje y mecanismos de distribución. También permite añadir y eliminar servicios en tiempo de ejecución sin alterar la ejecución general del algoritmo (es decir, no es obligatorio pararlo o añadir código extra para soportar nuevos operadores). Esto permite incrementar la interoperabilidad entre diferentes elementos software. Además, esto permite distribución del código de manera fácil: SOA no requiere de una implementación o librería de distribución concreta.
-
-Los servicios a desarrollar deben cumplir las siguientes restricciones tecnológicas:
+En \cite{OSGILIATH} presentamos las ventajas de usar SOA en algoritmos Evolutivos: para empezar, SOA encaja con las ventajas de generalidad en el desarrollo de AEs explicado en \cite{GENERICITY05}, pero añade nuevas características, como independencia del lenguaje y mecanismos de distribución. También permite añadir y eliminar servicios en tiempo de ejecución sin alterar la ejecución general del algoritmo (es decir, no es obligatorio pararlo o añadir código extra para soportar nuevos operadores). Esto permite incrementar la interoperabilidad entre diferentes elementos software. Además, esto permite distribución del código de manera fácil: SOA no requiere de una implementación o librería de distribución concreta. Los servicios a desarrollar deben cumplir las siguientes restricciones tecnológicas:
 \begin{itemize}
 \item Estos servicios pueden ser enlazados dinámicamente para cambiar los aspectos necesarios del AE.
 \item El código fuente de los servicios básicos no debe ser reescrito o recompilado para conseguir esta tarea.
 \item Nuevos servicios pueden añadirse en tiempo de ejecución.
-\item No hace falta código fuente específico para distribución, ni el código fuente de los servicios debe modificarse para este propósito. Es decir, cambiar las librerías de distribución no debe añadir código extra en los servicios existentes.
+\item No hace falta código específico para distribución, ni el código fuente de los servicios debe modificarse para este propósito. Es decir, cambiar las librerías de distribución no debe añadir código extra en los servicios existentes.
 \end{itemize}
 
 \section{Tecnología de implementación}
@@ -230,9 +228,7 @@ Los servicios a desarrollar deben cumplir las siguientes restricciones tecnológ
 
 Esta sección explica algunas características técnicas de la tecnología escogida para implementar una SOA para AEs y así guiar al lector para entender el framework OSGiLiath y poder evaluar las ventajas de utilizar estas características en el desarrollo de algoritmos distribuidos que cumplan las restricciones anteriores.
 
-La tecnología utilizada, OSGi, define una especificación para SOAs en máquinas virtuales. Proporciona características muy deseables, como abstracción de paquetes, administración del ciclo de vida o versionado, permitiendo reducción en el tiempo de desarrollo, soporte, y complejidad en el despliegue de las aplicaciones.
-
-Esta tecnología permite descubrimiento dinámico de nuevos componentes, para incrementar la colaboración y minimizar y administrar el acoplamiento entre módulos. Además, ya existen interfaces estándar para patrones muy usados, como servidores HTTP, configuración, registros, seguridad o administración de XML.
+La tecnología utilizada, OSGi, define una especificación para SOAs en máquinas virtuales. Proporciona características muy deseables, como abstracción de paquetes, administración del ciclo de vida o versionado, permitiendo reducción en el tiempo de desarrollo, soporte, y complejidad en el despliegue de las aplicaciones. Esta tecnología permite descubrimiento dinámico de nuevos componentes, para incrementar la colaboración y minimizar y administrar el acoplamiento entre módulos. Además, ya existen interfaces estándar para patrones muy usados, como servidores HTTP, configuración, registros, seguridad o administración de XML.
 
 OSGi cuenta con un modelo orientado a capas, que explican su funcionalidad. Cada una se basa en la capa siguiente:
 
@@ -265,7 +261,7 @@ Utilizando tecnologías como OSGi o ECF se puede crear un entorno orientado a se
 \item Manejo de eventos remoto: utilizando las ventajas de OSGi, los usuarios pueden usar una herramienta muy potente para sincronizar o compartir datos entre servicios.
 \end{itemize}
 
-El código fuente está disponible en \url{http://www.osgiliath.org}, bajo una licencia LGPL.
+El código fuente está disponible en \url{http://www.osgiliath.org} bajo una licencia LGPL.
 
 \section{Desarrollo de servicios en OSGiLiath}
 \label{sec:development}
@@ -295,8 +291,7 @@ Para implementar un servicio se crea una clase que implementa una interfaz. Por 
 }\hlstd{\ \ \ \ }\hlstd{cardinality}\hlopt{=}\hlstd{"}\hlnum{1}\hlstd{}\hlopt{.}\hlstd{}\hlnum{.1}\hlstd{"\ \hspace*{\fill}\\
 }\hlstd{\ \ \ \ }\hlstd{interface}\hlopt{=}\hlstd{"es}\hlopt{.}\hlstd{ugr}\hlopt{.}\hlstd{osgiliath}\hlopt{.}\hlstd{vrp}\hlopt{.}\hlstd{TransportData"\ \hspace*{\fill}\\
 }\hlstd{\ \ \ \ }\hlstd{name}\hlopt{=}\hlstd{"TransportData"\ \hspace*{\fill}\\
-}\hlstd{\ \ \ \ }\hlstd{policy}\hlopt{=}\hlstd{"static"\hspace*{\fill}\\
-}\hlstd{\ \ \ }\hlstd{}\hlopt{/$>$}\hspace*{\fill}\\
+}\hlstd{\ \ \ \ }\hlstd{policy}\hlopt{=}\hlstd{"static"}\hlopt{/$>$}\hspace*{\fill}\\
 \hlstd{}\hlstd{\ \ \ }\hlstd{}\hlopt{$<$}\hlstd{property\ name}\hlopt{=}\hlstd{"name"\ }\hlkwa{type}\hlstd{}\hlopt{=}\hlstd{"String"\ }\hlkwa{value}\hlstd{}\hlopt{=}\hlstd{"vrpfitnesscalculator"}\hlopt{/$>$}\hspace*{\fill}\\
 \hlstd{}\hlopt{$<$/}\hlstd{scr}\hlopt{:}\hlstd{component}\hlopt{$>$}\hlstd{}\hspace*{\fill}\\
 \mbox{}
@@ -315,7 +310,7 @@ Gracias a la especificación OSGi 4.2, los servicios pueden y deben ser indistin
 \begin{figure}[ht] 
 \begin{center} 
  % \epsfig{file=soaDiagram.eps,width=7.5cm} 
-\includegraphics[scale=0.6]{images/migrator.eps}
+\includegraphics[scale=0.5]{images/migrator.eps}
 \end{center} 
 \caption{Utilizando el servicio {\em Migrator} para crear un AE distribuido basado en islas con topología en anillo (las cajas blancas son interfaces de los servicios y las grises son las implementaciones).} 
 \label{MIGRATOR} 
@@ -330,8 +325,18 @@ Este trabajo muestra los requisitos para crear un framework orientado a servicio
 
 Como trabajo futuro, se pretende realizar un estudio sobre escalabilidad utilizando otros algoritmos (como GRASP, Scatter Search, Ant Colony Optimization y otros). Además está planeado incrementar el uso de las ventajas de OSGi, como la administración de eventos o la gestión de servicios de forma más profunda. Finalmente, se plantea desarrollar un portal o un repositorio Maven\footnote{\url{http://www.maven.org}} para centralizar todas las implementaciones de problemas y algoritmos para permitir la distribución junto con la plataforma base. También se plantea un estudio sobre portar software existente (especialmente los frameworks escritos en Java, como DREAM o ECJ) a nuestro framework. Además, debido a la facilidad de enlazar implementaciones a interfaces, se plantea desarrollar la funcionalidad de elegir una u otra implementación dependiendo de varios parámetros, o por ejemplo, utilizar Programación Genética para evolucionar e hibridizar algoritmos.
 
+\section*{Agradecimientos}
 
 
+
+Este trabajo se está desarrollando gracias a la financiación del proyecto FEDER de la Unión Europea con título ``Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos'' (SIPEsCa) del Programa Operativo FEDER de Andalucía 2007-2013 y la beca FPU AP2009-2942 y los proyectos EvOrq (TIC-3903), CANUBE (CEI2013-P-14) y ANYSELF (TIN2011-28627-C04-02).
+\begin{figure}
+\begin{center} 
+\epsfig{file=images/logos_SIPESCA_2.eps,width=5cm}
+\end{center} 
+%\caption{ } 
+%\label{logos_SIPESCA_2} 
+\end{figure}
 \bibliographystyle{splncs}
 \bibliography{osgiliath}
 
