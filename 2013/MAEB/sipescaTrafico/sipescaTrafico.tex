@@ -45,14 +45,17 @@ showstringspaces=false
 
 
 % first the title is needed
-\title{Predicci\'on de tr\'afico a corto plazo con datos reales \thanks{Este trabajo ha sido desarrollado bajo los proyectos 
-}}
+\title{Predicción de tr\'afico mediante co-evolución de Redes Neuronales de Funciones de Base Radial y selección de variables de entrada \thanks{
+Este trabajo ha sido realizado gracias a la beca FPU AP2009-2942 y los
+proyectos EvOrq (P08-TIC-03903), Proyecto 83 (CANUBE) del CEI-BioTIC
+UGR, y TIN2011-28627-C04-02 (ANYSELF). Desarrollado gracias a la financiación del proyecto FEDER de la Unión Europea con título "Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos" (SIPEsCa) del Programa Operativo FEDER de Andalucía 2007-2013. Asimismo, queremos mostrar nuestro agradecimiento al personal e investigadores de la Agencia de Obra Pública de la Junta de Andalucía, Consejería de Fomento y Vivienda, por su dedicación y profesionalidad. }
+}
 %EvOrq (TIC-3903), CEI BioTIC GENIL (CEB09-0010), MICINN CEI Program (PYR-2010-13) and FPU research grant AP2009-2942 .
 % También el CANUBE
 % No he podido compilarlo porque falta la bibliografía. ¿Podéis poner el PDF?
 
 % a short form should be given in case it is too long for the running head
-\titlerunning{Predicción de tr\'afico con datos reales}
+\titlerunning{Predicción de tr\'afico mediante co-evolución}
 % Tampoco es muy informativo este título y ocupa 15 páginas. ¿Cuál es el límite? - JJ
 \author{No author given}
 %\author{Anonymous\inst{1}, A. E. Eiben\inst{2}, E. Haasdijk\inst{2}, B. Weel\inst{2} and J.J. Merelo\inst{1}}
@@ -77,8 +80,7 @@ showstringspaces=false
 %\tocauthor{Authors' Instructions}
 \maketitle
 \begin{abstract}
-
-HHHHH
+Este trabajo presenta un novedoso sistema de detección de flujo de tráfico, y muestra los resultados del algoritmo L-Co-R en la predicción de la serie temporal que el citado flujo de tráfico representa. La predicción de la aserie temporal se ha llevado comparando con algoritmos existente screados para tal efecto y muestra la adecuación delal algoritmo creado, L-Co-R, ante el problema de la predcción de esta serie temporal.
 \end{abstract}
 
 
@@ -133,7 +135,15 @@ dato recolectado de cada dispositivo es la dirección MAC que se encripta y se a
 permite identificar de forma unívoca el dispositivo, pero no el usuario, por lo que la privacidad de
 la persona usuaria del dispositivo está totalmente reservada. Esta identificación única puede
 permitir la identificación del dispositivo en varios puntos de la ciudad, lo que puede dar una idea
-del tipo de desplazamientos que ese usuario ha realizado.
+del tipo de desplazamientos que ese usuario ha realizado. 
+
+Concretamente el dispositivo utilizado para la captación de datos es Intelify (\url{http://www.intelify.net/}) que ofrece una solución compacta para captar
+dispositivos BT y transmitir la información a un servidor remoto manteniendo un índice de detección
+adecuado ( incluye un $8.5\%$ de error en la captación). Intelify es un dispositivo autónomo que puede ser instalado en el área donde se desean captar
+datos. % No se va a instalar en otra - JJ
+Dispone de varios sensores y capta la información para enviarla a través de una conexion 3G. 
+Los datos recopilados que se incluyen en este trabajo han sido captados por 5 puntos diferentes
+(nodos 1-6) durante un total de 60 días. 
 
 En este primer trabajo se han aplicado varios algoritmos de predicción de series temporales ya
 validados en la bibliografía y se presentan los resultados iniciales para predicción a corto plazo
@@ -151,8 +161,7 @@ las vías monitorizadas.
 % ¿Sección en mayúscula? JJ
 El artículo a partir de este punto se organiza en secciones. La sección \ref{sec:soa} repasa el
 estado del arte tanto de los algoritmos de de predicción de series temporales como de los
-dispositivos de captación de datos existentes actualmente. La sección \ref{sec:hw} presenta el
-dispositivo utilizado y una descripción del proceso de captación de datos, y la sección
+dispositivos de captación de datos existentes actualmente. Por su parte, la sección
 \ref{sec:experiments} presenta los resultados obtenidos en la
 predicción a corto plazo del flujo del tráfico. Por último en la última sección se presentan
 unas conclusiones iniciales y los pasos que se pondrán en práctica como líneas
@@ -252,59 +261,6 @@ predicción de la serie temporal a la que se aplique el algoritmo, si necesidad 
 procesamiento. % ¿Y por qué no pones eso en el título? - JJ
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATA COLLECTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Recolección de Datos}
-\label{sec:hw}
-
-El dispositivo utilizado para la captación de datos es Intelify (figura 
-\ref{intelify} \url{http://www.intelify.net/}) que ofrece una solución compacta para captar
-dispositivos BT y transmitir la información a un servidor remoto manteniendo un índice de detección
-adecuado ( incluye un $8.5\%$ de error en la captación).
-
-\begin{figure}[ht] 
-\begin{center} 
- % \epsfig{file=soaDiagram.eps,width=7.5cm} 
-\includegraphics[scale=0.6]{intelifychisme1.eps}
-\end{center} 
-\caption{Dispositivo Intelify} 
-\label{intelify} 
-\end{figure} 
-
-Intelify es un dispositivo autónomo que puede ser instalado en el área donde se desean captar
-datos. % No se va a instalar en otra - JJ
-Dispone de varios sensores y capta la información para enviarla a través de una conexion 3G. 
-Los datos recopilados que se incluyen en este trabajo han sido captados por 5 puntos diferentes
-(nodos 1-6) durante un total de 60 días. En la figura \ref{fig:collected-data} se representan el
-número de dispositivos BT captados por cada uno de los dispositivos de cdaptación a lo largo de este
-periodo. Los nodos 4 y 5  han sido separados en otra figura puesto que son nodos colocados en una
-vía de gran afluencia de tráfico y no son comparables con los otros 4. En esta figura se puede
-apreciar perfectamente que los fines de semana el flujo de dispositivos captados es diferente al
-resto de la
-semana, incluso si se muestra la suma de las cinco series (Figura \ref{fig:weekly}).
-
-\begin{figure}[htb]
- \begin{center}
-\includegraphics[scale=0.6]{number-of-bt-devices-detected-1-2-3.eps} 
-\includegraphics[scale=0.6]{number-of-bt-devices-detected-4-5.eps}
- \caption{Número total de dispositivos captados por cada nodo organizados por días. Los valores
-de los nodos 4 y 5 son muy diferentes a los demás, por lo que se han separado en un gráfico
-diferente para que se puedan apreciar los tramos crecientes y decrecientes de las
-demás series.
- \label{fig:collected-data}}
- \end{center}
- \end{figure}
-
-
-\begin{figure}[htb]
- \begin{center}
-\includegraphics[scale=0.6]{weekly.eps} 
- \caption{Datos acumulados de todas las series por cada día de la semana. Los datos recolectados
-en sábado o domingo son claramente inferiores al resto de los días. 
- \label{fig:weekly}}
- \end{center}
- \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% EXPERIMENTS AND RESULTS %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Experimentos y resultados}
@@ -588,11 +544,6 @@ la posibilidad de desarrollar métodos de predicción no sólo a corto plazo, si
 plazo, lo que facilitará la tarea de previsión del flujo de tráfico en las vías monitorizadas y por
 consiguiente una mejor gestión del tráfico en dichas vías por parte de las autoridades competentes.
 
-\section{Agradecimientos}
-Este trabajo ha sido realizado gracias a la beca FPU AP2009-2942 y los
-proyectos EvOrq (P08-TIC-03903), Proyecto 83 (CANUBE) del CEI-BioTIC
-UGR, y TIN2011-28627-C04-02 (ANYSELF). 
-% ¿Seguro que no es anónimo? - JJ
 
 \bibliographystyle{splncs}
 
@@ -619,32 +570,32 @@ R.~Fildes, K.~Nikolopoulos, S.~Crone, A.~Syntetos, Forecasting and operational
   research: a review, Journal of the Operational Research Society 59 (2008)
   1150--1172.
 
-\bibitem{Brown1959}
-R.~Brown, Statistical forecasting for inventory control, McGraw-Hill, 1959.
+%\bibitem{Brown1959}
+%#R.~Brown, Statistical forecasting for inventory control, McGraw-Hill, 1959.
 
-\bibitem{Winters1960}
-P.~Winters, Forecasting sales by exponentially weighted moving averages,
-  Management Science 6~(3) (1960) 324--342.
+%\bibitem{Winters1960}
+%P.~Winters, Forecasting sales by exponentially weighted moving averages,
+%  Management Science 6~(3) (1960) 324--342.
 
-\bibitem{Snyder1985}
-R.~Snyder, Recursive estimation of dynamic linear models, Journal of the Royal
-  Statistical Society. Series B (Methodological) 47~(2) (1985) 272--276.
+%\bibitem{Snyder1985}
+%R.~Snyder, Recursive estimation of dynamic linear models, Journal of the Royal
+%  Statistical Society. Series B (Methodological) 47~(2) (1985) 272--276.
 
-\bibitem{Tong1978}
-H.~Tong, On a threshold model, Pattern recognition and signal processing, NATO
-  ASI Series E: Applied Sc. 29 (1978) 575--586.
+%\bibitem{Tong1978}
+%H.~Tong, On a threshold model, Pattern recognition and signal processing, NATO
+%  ASI Series E: Applied Sc. 29 (1978) 575--586.
 
-\bibitem{Tong1983}
-H.~Tong, Threshold models in non-linear time series analysis, Springer-Verlag,
-  1983.
+%\bibitem{Tong1983}
+%H.~Tong, Threshold models in non-linear time series analysis, Springer-Verlag,
+%  1983.
 
-\bibitem{Chan1986}
-K.~Chan, H.~Tong, On estimating thresholds in autoregressive models, Journal of
-  Time Series Analysis 7~(3) (1986) 179--190.
+%T\bibitem{Chan1986}
+%K.~Chan, H.~Tong, On estimating thresholds in autoregressive models, Journal of
+%  Time Series Analysis 7~(3) (1986) 179--190.
 
-\bibitem{Brockwell1992157}
-P.~Brockwell, R.~Hyndman, On continuous-time threshold autoregression,
-  International Journal of Forecasting 8~(2) (1992) 157--173.
+%\bibitem{Brockwell1992157}
+%P.~Brockwell, R.~Hyndman, On continuous-time threshold autoregression,
+%  International Journal of Forecasting 8~(2) (1992) 157--173.
 
 \bibitem{Clements2004}
 M.~Clements, P.~Franses, N.~Swanson, Forecasting economic and financial
@@ -685,57 +636,57 @@ P.~K. Dash, A.~C. Liew, S.~Rahman, G.~Ramakrishna, Building a fuzzy expert
 Z.~Tang, C.~de~Almeida, P.~Fishwick, Time series forecasting using neural
   networks vs. box-jenkins methodology, Simulation 57~(5) (1991) 303--310.
 
-\bibitem{Zhang1998b}
-G.~Zhang, B.~Patuwo, M.~Hu, Forecasting with artificial neural networks: The
-  state of the art, International Journal of Forecasting 14~(1) (1998) 35--62.
+%\bibitem{Zhang1998b}
+%G.~Zhang, B.~Patuwo, M.~Hu, Forecasting with artificial neural networks: The
+%  state of the art, International Journal of Forecasting 14~(1) (1998) 35--62.
 
-\bibitem{Jain2007}
-A.~Jain, A.~Kumar, Hybrid neural network models for hydrologic time series
-  forecasting, Applied Soft Computing 7~(2) (2007) 585--592.
+%\bibitem{Jain2007}
+%A.~Jain, A.~Kumar, Hybrid neural network models for hydrologic time series
+%  forecasting, Applied Soft Computing 7~(2) (2007) 585--592.
 
-\bibitem{Arizmendi1993}
-C.~M. Arizmendi, J.~Sanchez, N.~E. Ramos, G.~I. Ramos, Time series predictions
-  with neural nets: Application to airborne pollen forecasting, International
-  Journal of Biometeorology 37~(3) (1993) 139--144.
+%\bibitem{Arizmendi1993}
+%C.~M. Arizmendi, J.~Sanchez, N.~E. Ramos, G.~I. Ramos, Time series predictions
+%  with neural nets: Application to airborne pollen forecasting, International
+%  Journal of Biometeorology 37~(3) (1993) 139--144.
 
 \bibitem{Rivas04}
 V.~Rivas, J.~Merelo, P.~Castillo, M.~Arenas, J.~Castellano, Evolving rbf neural
   networks for time-series forecasting with evrbf, Information Sciences
   165~(3-4) (2004) 207 -- 220.
 
-\bibitem{Bezerianos1999}
-A.~Bezerianos, S.~Papadimitriou, D.~Alexopoulos, Radial basis function neural
-  networks for the characterization of heart rate variability dynamics,
-  Artificial Intelligence in Medicine 15~(3) (1999) 215--234.
+%\bibitem{Bezerianos1999}
+%A.~Bezerianos, S.~Papadimitriou, D.~Alexopoulos, Radial basis function neural
+%  networks for the characterization of heart rate variability dynamics,
+%  Artificial Intelligence in Medicine 15~(3) (1999) 215--234.
 
-\bibitem{Broomhead88}
-D.~Broomhead, D.~Lowe, Multivariable functional interpolation and adaptive
-  networks, Complex Systems 2 (1988) 321--355.
+%\bibitem{Broomhead88}
+%D.~Broomhead, D.~Lowe, Multivariable functional interpolation and adaptive
+%  networks, Complex Systems 2 (1988) 321--355.
 
-\bibitem{Carse1996}
-B.~Carse, T.~Fogarty, Fast evolutionary learning of minimal radial basis
-  function neural networks using a genetic algorithm, in: Proceedings of
-  Evolutionary Computing, Vol. 1143 of Lecture Notes in Computer Science,
-  Springer Berlin/Heidelberg, 1996, pp. 1--22.
+%\bibitem{Carse1996}
+%B.~Carse, T.~Fogarty, Fast evolutionary learning of minimal radial basis
+%  function neural networks using a genetic algorithm, in: Proceedings of
+%  Evolutionary Computing, Vol. 1143 of Lecture Notes in Computer Science,
+%  Springer Berlin/Heidelberg, 1996, pp. 1--22.
 
-\bibitem{Whitehead96}
-B.~Whitehead, T.~Choate, Cooperative-competitive genetic evolution of radial
-  basis function centers and widths for time series prediction, IEEE
-  Transactions on Neural Networks 7~(4) (1996) 869--880.
+%\bibitem{Whitehead96}
+%B.~Whitehead, T.~Choate, Cooperative-competitive genetic evolution of radial
+%  basis function centers and widths for time series prediction, IEEE
+%  Transactions on Neural Networks 7~(4) (1996) 869--880.
 
-\bibitem{Harpham06}
-C.~Harpham, C.~Dawson, The effect of different basis functions on a radial
-  basis function network for time series prediction: A comparative study,
-  Neurocomputing 69~(16-18) (2006) 2161--2170.
+%\bibitem{Harpham06}
+%C.~Harpham, C.~Dawson, The effect of different basis functions on a radial
+%  basis function network for time series prediction: A comparative study,
+%  Neurocomputing 69~(16-18) (2006) 2161--2170.
 
-\bibitem{Du2008}
-H.~Du, N.~Zhang, Time series prediction using evolving radial basis function
-  networks with new encoding scheme, Neurocomputing 71~(7-9) (2008) 1388--1400.
+%\bibitem{Du2008}
+%H.~Du, N.~Zhang, Time series prediction using evolving radial basis function
+%  networks with new encoding scheme, Neurocomputing 71~(7-9) (2008) 1388--1400.
 
-\bibitem{Chatterjee06}
-A.~Chatterjee, P.~Siarry, Nonlinear inertia weight variation for dynamic
-  adaptation in particle swarm optimization, Computers \& Operations Research
-  33~(3) (2006) 859--871.
+%\bibitem{Chatterjee06}
+%A.~Chatterjee, P.~Siarry, Nonlinear inertia weight variation for dynamic
+%  adaptation in particle swarm optimization, Computers \& Operations Research
+%  33~(3) (2006) 859--871.
 
 \bibitem{Hippert10}
 H.~Hippert, J.~Taylor, An evaluation of bayesian techniques for controlling
@@ -760,16 +711,6 @@ F.~Takens, Dynamical Systems and Turbulence, Lecture Notes In Mathematics, Vol.
   898, Springer, New York, NY, 1980, Ch. Detecting strange attractor in
   turbulence, pp. 366--381.
 
-\bibitem{Ferreira2008}
-T.~Ferreira, G.~Vasconcelos, P.~Adeodato, A new intelligent system methodology
-  for time series forecasting with artificial neural networks, Neural
-  Processing Letters 28~(2) (2008) 113--129.
-
-\bibitem{Luko2010}
-K.~Lukoseviciute, M.~Ragulskis, Evolutionary algorithms for the selection of
-  time lags for time series forecasting by fuzzy inference systems,
-  Neurocomputing 73~(10-12) (2010) 2077--2088.
-
 \bibitem{Araujo2010a}
 R.~Ara\'ujo, A quantum-inspired evolutionary hybrid intelligent apporach fo
   stock market prediction, International Jorunal of Intelligent Computing and
@@ -790,136 +731,12 @@ A.~Maus, J.~C. Sprott, Neural network method for determining embedding
   dimension of a time series, Communications in Nonlinear Science and Numerical
   Simulation 16~(8) (2011) 3294--3302.
 
-\bibitem{Potter94}
-M.~Potter, K.~{De Jong}, A cooperative coevolutionary approach to function
-  optimization, in: Proceedings of Parallel Problem Solving from Nature, Vol.
-  866 of Lecture Notes in Computer Science, Springer Berlin/Heidelberg, 1994,
-  pp. 249--257.
-
-\bibitem{Potter00}
-M.~Potter, K.~{De Jong}, Cooperative coevolution: An architecture for evolving
-  coadapted subcomponents, Evolutionary Computation 8~(1) (2000) 1--29.
-
-\bibitem{Wiegand01}
-R.~Wiegand, W.~Liles, K.~{De Jong}, An empirical analysis of collaboration
-  methods in cooperative coevolutionary algorithms, in: Proceedings of the
-  Genetic and Evolutionary Computation Conference, 2001, pp. 1235--1242.
-
-\bibitem{Panait03}
-L.~Panait, R.~Wiegand, S.~Luke, Improving coevolutionary search for optimal
-  multiagent behaviors, in: Proceedings of the International Joint Conference
-  on Artificial Intelligence, Morgan Kaufmann, 2003, pp. 653--658.
-
-\bibitem{Chun07}
-C.~Au, H.~Leung, Biasing mutations in cooperative coevolution, in: Proceedings
-  of IEEE Congress on Evolutionary Computation, 2007, pp. 828--835.
-
-\bibitem{Tan06}
-K.~Tan, Y.~Yang, C.~Goh, A distributed cooperative co-evolutionary algorithm
-  for multi-objective optimization, IEEE Transactions on Evolutionary
-  Computation 10~(5) (2006) 527--549.
-
-\bibitem{Garcia-Pedrajas10}
-N.~Garc\'{i}a-Pedrajas, J.~R. del Castillo, D.~Ortiz-Boyer, A cooperative
-  coevolutionary algorithm for instance selection for instance-based learning,
-  Machine Learning 78~(3) (2010) 381--420.
-
-\bibitem{Derrac10}
-J.~Derrac, S.~Garc\'{i}a, F.~Herrera, Ifs-coco: Instance and feature selection
-  based on cooperative coevolution with nearest neighbor rule, Pattern
-  Recognition 43~(6) (2010) 2082--2105.
-
-\bibitem{Garcia-Pedrajas05}
-N.~Garc\'{i}a-Pedrajas, C.~Hervas-Mart\'{i}nez, D.~Ortiz-Boyer, Cooperative
-  coevolution of artificial neural network ensembles for pattern
-  classification, IEEE Transactions on Evolutionary Computation 9~(3) (2005)
-  271--302.
-
-\bibitem{Li08}
-M.~Li, J.~Tian, F.~Chen, Improving multiclass pattern recognition with a
-  co-evolutionary rbfnn, Pattern Recognition Letters 29~(4) (2008) 392--406.
-
-\bibitem{Xin10}
-X.~Ma, H.~Wu, Power system short-term load forecasting based on cooperative
-  co-evolutionary immune network model, in: Proceedings of 2nd International
-  Conference on Education Technology and Computer, 2010, pp. 582--585.
-
-\bibitem{Qian-Li08}
-M.~Qian-Li, Z.~Qi-Lun, P.~Hong, Z.~Tan-Wei, Q.~Jiang-Wei, Multi-step-prediction
-  of chaotic time series based on co-evolutionary recurrent neural network,
-  Chinese Physics B 17~(2).
-
-\bibitem{Bowerman2004}
-B.~Bowerman, R.~O'Connell, A.~Koehler, Forecasting: methods and applications,
-  Thomson Brooks/Cole: Belmont, CA., 2004.
-
-\bibitem{Makridakis1982}
-S.~Makridakis, A.~Andersen, R.~Carbone, R.~Fildes, M.~Hibon, R.~Lewandowski,
-  J.~Newton, E.~Parzen, R.~Winkler, The accuracy of extrapolation (time series)
-  methods: Results of a forecasting competition, Journal of Forecasting 1~(2)
-  (1982) 111--153.
-
-\bibitem{Armstrong}
-J.~Armstrong, F.~Collopy, Error measures for generalizing about forecasting
-  methods: Empirical comparisons, International Journal of Forecasting 8~(1)
-  (1992) 69--80.
 
 \bibitem{Fildes1992}
 R.~Fildes, The evaluation of extrapolative forecasting methods, International
   Journal of Forecasting 8~(1) (1992) 81--98.
 
-\bibitem{Makridakis2000}
-S.~Makridakis, M.~Hibon, The m3-competition: results, conclusions and
-  implications, International Journal of Forecasting 16~(4) (2000) 451--476.
 
-\bibitem{Hyndman2006}
-R.~Hyndman, A.~Koehler, Another look at measures of forecast accuracy,
-  International Journal of Forecasting 22~(4) (2006) 679--688.
-
-\bibitem{Zhang2005}
-G.~Zhang, M.~Qi, Neural network forecasting for seasonal and trend time series,
-  European Journal of Operational Research 160~(2) (2005) 501--514.
-
-\bibitem{Eshelman}
-L.~Eshelman, The chc adptive search algorithm: How to have safe search when
-  engaging in nontraditional genetic recombination, in: Proceedings of 1st
-  Workshop on Foundations of Genetic Algorithms, 1991, pp. 265--283.
-
-\bibitem{Wichern}
-D.~Wichern, R.~Jones, Assessing the impact of market disturbances using
-  intervention analysis, Management Science 24~(3) (1977) 329--337.
-
-\bibitem{Keel2009}
-J.~Alcal\'a-Fdez, L.~S\'anchez, S.~Garc\'{i}a, M.~del Jesus, S.~Ventura,
-  J.~Garrell, J.~Otero, C.~Romero, J.~Bacardit, V.~Rivas, J.~Fern\'andez,
-  F.~Herrera, Keel: a software tool to assess evolutionary algorithms for data
-  mining problems, Soft Computing - A Fusion of Foundations, Methodologies and
-  Applications 13~(3) (2009) 307--318.
-
-\bibitem{Wang}
-L.~Wang, J.~Mendel, Generating fuzzy rules by learning from examples, IEEE
-  Transactions on Systems, Man and Cybernetics 22~(6) (2002) 1414--1427.
-
-\bibitem{Martinez}
-A.~Mart\'{i}nez-Estudillo, F.~Mart\'{i}nez-Estudillo, C.~Herv\'as-Mart\'{i}nez,
-  N.~Garc\'{i}a-Pedrajas, Evolutionary product unit based neural networks for
-  regression, Neural Networks 19~(4) (2006) 477--486.
-
-\bibitem{Rustagi94}
-J.~Rustagi, Optimization techniques in statistics, Academic Press (Boston),
-  1994.
-
-\bibitem{Sheskin2004}
-D.~Sheskin, Handbook of parametric and nonparametric statistical procedures,
-  Chapman \& Hall/CRC, 2004.
-
-\bibitem{Zar1999}
-J.~Zar, Biostatistical analysis, Prentice Hall, Englewood Cliffs, 1999.
-
-\bibitem{Garcia2009}
-S.~Garc\'{i}a, A.~Fern\'andez, J.~Luengo, F.~Herrera, A study of statistical
-  techniques and performance measures for genetics-based machine learning:
-  accuracy and interpretability, Soft Computing 13~(10) (2009) 959--977.
 
 \bibitem{Holm1979}
 S.~Holm, A simple sequentially rejective multiple test procedure, Scandinavian
