@@ -45,11 +45,8 @@ showstringspaces=false
 
 
 % first the title is needed
-\title{Predicción de tr\'afico mediante co-evolución de Redes Neuronales de Funciones de Base Radial y selección de variables de entrada \thanks{
-Este trabajo ha sido realizado gracias a la beca FPU AP2009-2942 y los
-proyectos EvOrq (P08-TIC-03903), Proyecto 83 (CANUBE) del CEI-BioTIC
-UGR, y TIN2011-28627-C04-02 (ANYSELF). Desarrollado gracias a la financiación del proyecto FEDER de la Unión Europea con título "Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos" (SIPEsCa) del Programa Operativo FEDER de Andalucía 2007-2013. Asimismo, queremos mostrar nuestro agradecimiento al personal e investigadores de la Agencia de Obra Pública de la Junta de Andalucía, Consejería de Fomento y Vivienda, por su dedicación y profesionalidad. }
-}
+\title{Predicción de tr\'afico mediante co-evolución de Redes Neuronales de Funciones de Base Radial y selección de variables de
+entrada }
 %EvOrq (TIC-3903), CEI BioTIC GENIL (CEB09-0010), MICINN CEI Program (PYR-2010-13) and FPU research grant AP2009-2942 .
 % También el CANUBE
 % No he podido compilarlo porque falta la bibliografía. ¿Podéis poner el PDF?
@@ -57,20 +54,22 @@ UGR, y TIN2011-28627-C04-02 (ANYSELF). Desarrollado gracias a la financiación d
 % a short form should be given in case it is too long for the running head
 \titlerunning{Predicción de tr\'afico mediante co-evolución}
 % Tampoco es muy informativo este título y ocupa 15 páginas. ¿Cuál es el límite? - JJ
-\author{No author given}
+\author{V. M. Rivas\inst{1}, Elisabeth Parras-Gutierrez\inst{1}, M. G. Arenas\inst{2}, P. A. Castillo\inst{2}, P. García
+Sánchez\inst{2}, J.J. Merelo\inst{2}}
 %\author{Anonymous\inst{1}, A. E. Eiben\inst{2}, E. Haasdijk\inst{2}, B. Weel\inst{2} and J.J. Merelo\inst{1}}
 
 %
 
 %\authorrunning{P. Garc\'ia-S\'anchez et al.}
-\authorrunning{Anonymous.}
+\authorrunning{V. M. Rivas et al.}
 % (feature abused for this document to repeat the title also on left hand pages)
 % the affiliations are given next; don't give your e-mail address
 % unless you accept that it will be published
 
 %\institute{Dept. of Computer Architecture and Technology, University of Granada, Spain \and Dept. of Computer Science, Vrije Universiteit Amsterdam, The Netherlands
 %\mailsa}
-\institute{No institute given\mailsa}
+\institute{Dept. de Informática, Universidad de Jaén, Jaén, España \and Dept. Arquitectura y Tecnología de los
+Computadores, Universidad de Granada, España \\ vrivas@ujaen.es}
 
 
 
@@ -80,7 +79,10 @@ UGR, y TIN2011-28627-C04-02 (ANYSELF). Desarrollado gracias a la financiación d
 %\tocauthor{Authors' Instructions}
 \maketitle
 \begin{abstract}
-Este trabajo presenta un novedoso sistema de detección de flujo de tráfico, y muestra los resultados del algoritmo L-Co-R en la predicción de la serie temporal que el citado flujo de tráfico representa. La predicción de la aserie temporal se ha llevado comparando con algoritmos existente screados para tal efecto y muestra la adecuación delal algoritmo creado, L-Co-R, ante el problema de la predcción de esta serie temporal.
+Este trabajo presenta un novedoso sistema de detección de flujo de tráfico, y muestra los resultados del algoritmo L-Co-R en la
+predicción de la serie temporal que el citado flujo de tráfico representa. La predicción de la serie temporal se ha realizado
+comparando con algoritmos existentes y muestra la adecuación del algoritmo, L-Co-R, ante el
+problema de la predicción de la serie temporal captada.
 \end{abstract}
 
 
@@ -109,11 +111,11 @@ otro servicio accesible desde el dispositivo.
 
 En España existían en 2012 165.568  Km de vías (último dato oficial publicado)
 \cite{DatosTrafico2012}, lo que da una idea muy clara de la complejidad de una red, puesto que,
-aunque sea sólo por la extensión necesita muchísimo trabajo para su coordinación, su mantenimiento y
+aunque sea sólo por su extensión, necesita muchísimo trabajo para su coordinación, su mantenimiento y
 su gestión en general. Por lo que al organismo que gestiona la red le es de mucha
-utilidad tener información lo más precisa posible, por básica que sea sobre los usuarios de la
+utilidad tener información lo más precisa posible, por básica que sea, sobre los usuarios que la
 utilizan, para poder preveer situaciones de saturación, o de evacuación en caso de alguna
-emergencia. Datos tan básicos como número de vehículos que pasan por cada via o a qué hora hay más
+emergencia. Datos tan básicos como el número de vehículos que pasan por cada vía o a qué hora hay más
 afluencia para intentar regular la señalización de cada vía podrían facilitar el trabajo de los
 operarios.
 
@@ -127,7 +129,7 @@ activo dentro de areas como la estadística o la investigación operativa \cite{
 biología, economía o las ciencias sociales entre otras.
 
 La captación de datos se basa en la detección de dispositivos \textit{bluetooth} (BT),
-en diferentes vias, lo que nos proporciona una descripción de las condiciones de tráfico en tiempo
+en diferentes vías, lo que nos proporciona una descripción de las condiciones de tráfico en tiempo
 real y un conjunto de datos válidos para utilizarlos con técnicas de predicción de series
 temporales. La captación de datos incluye tanto dispositivos BT empotrados en algún tipo de
 vehículo como dispositivos de usuarios particulares que lleven el bluetooth activado. El principal
@@ -140,10 +142,15 @@ del tipo de desplazamientos que ese usuario ha realizado.
 Concretamente el dispositivo utilizado para la captación de datos es Intelify (\url{http://www.intelify.net/}) que ofrece una solución compacta para captar
 dispositivos BT y transmitir la información a un servidor remoto manteniendo un índice de detección
 adecuado ( incluye un $8.5\%$ de error en la captación). Intelify es un dispositivo autónomo que puede ser instalado en el área donde se desean captar
-datos. % No se va a instalar en otra - JJ
-Dispone de varios sensores y capta la información para enviarla a través de una conexion 3G. 
+datos. Dispone de varios sensores y capta la información para enviarla a través de una conexion 3G. 
 Los datos recopilados que se incluyen en este trabajo han sido captados por 5 puntos diferentes
-(nodos 1-6) durante un total de 60 días. 
+(nodos 1-5) durante un total de 60 días. 
+
+La información que se capta se organiza en una entidad que podemos denominar \textit{paso}. Un \textit{paso} será un dispositivo
+detectado en un determinado nodo de captación a una determinada hora de inicio y que se terminó de captar a una
+determinada hora de fin. Es decir, con cuatro datos, nodo, dispositivo, hora de inicio y hora de fin se puede categorizar
+un paso. La mac del dispositivo incluye la identificación de la marca, modelo y algunas características más del dispositivo que
+ayuda a su categorización dentro del abanico de dispositivos captados por Intelify. 
 
 En este primer trabajo se han aplicado varios algoritmos de predicción de series temporales ya
 validados en la bibliografía y se presentan los resultados iniciales para predicción a corto plazo
@@ -155,7 +162,7 @@ tendrán las vías monitorizadas con este tipo de dispositivo o cualquier otro q
 información simple y fiable a cerca del paso de vehículos por un determinado punto. Esta predicción
 permitirá, por ejemplo, poder tomar decisiones
 acerca del mejor itinerario a elegir para un determinado desplazamiento, tanto para los usuarios
-de las vias como para las administraciones a la hora de planificar señalización, e intervención en
+de las vías como para las administraciones a la hora de planificar señalización, e intervención en
 las vías monitorizadas.
 
 % ¿Sección en mayúscula? JJ
@@ -176,15 +183,14 @@ En esta sección se repasarán de forma resumida los dispositivos de captación 
 y posteriormente introduciremos un pequeño estado del arte sobre los algoritmos de predicción de
 series temporales que están vigentes. 
 
-
 Las tecnologías que permiten detectar el flujo de tráfico se clasifican en dos grupos:
-intrusivas y no intrusivas.  Las intrusivas implican una modificación física de la via que
-monitoriza y esta característica se convierte en su principal inconveniente, puesto que la via debe
+intrusivas y no intrusivas.  Las intrusivas implican una modificación física de la vía que
+monitoriza y esta característica se convierte en su principal inconveniente, puesto que la vía debe
 ser cerrada para su instalación además de un posterior manteninimiento.  En cualquier caso estas
 técnicas sólo cuentan vehículos que atraviesan el sistema de monitorización, sin identificarlos de
 ninguna forma. En este grupo se incluyen por ejemplo los sensores piezoelectricos o los tubos
 neumáticos. Las tecnologías no intrusivas no producen interrupción del tráfico, puesto que su
-colocación no está físicamente en el pavimento, sino en zonas adyacentes de la via como paneles
+colocación no está físicamente en el pavimento, sino en zonas adyacentes de la vía como paneles
 informativos, carteles de señalización, puestos de emergencias, etc.  En este último grupo se
 incluyen los radares, la señalización lumínica o las cámaras de monitorización. 
 
@@ -213,47 +219,36 @@ dar prioridad a la facilidad de uso frente a otros aspectos más técnicos \cite
 La predicción de series temporales también se ha abordado desde otros campos, como técnicas de
 Soft-Computing, \cite{Samanta2011}, \cite{Zhu2011}; Técnicas Fuzzy \cite{Qiu2011}, \cite{Wang2011};
 redes neuronales, \cite{Yu2010}; Regresión \cite{Kavaklioglu2011}; y sistemas expertos
-\cite{Dash1995}.
-
-En nuestro caso nos hemos centrado en métodos no lineales basados en la utilización de Redes
-Nuronales, puesto que tal y como afirma Tang \cite{Tang1991} son métodos que ofrecen una mayor
+\cite{Dash1995}. En nuestro caso nos hemos centrado en métodos no lineales basados en la utilización de Redes
+Neuronales, puesto que tal y como afirma Tang \cite{Tang1991} son métodos que ofrecen una mayor
 flexibilidad y efectividad a la hora de predecir una serie temporal
-real.  %Esto podías haberlo dicho cuando mencionas las redes
-       %neuronales para que no parezca que lo has metido a posteriori
-       %- JJ 
+real.  
 
-Existen muchos trabajos que aplican las redes neuronales a la predicción de series temporales
-\cite{Rivas04}.  %Y seguro que hay algunos que no son de este autor - JJ
-En concreto las llamadas RBFNs que se proponen en este trabajo se han utilizado en
-trabajos recientes como \cite{Hippert10,Lee09}, % ¿Recientes? - JJ
- \cite{PerezGodoy2010} donde se aplican en un
-algoritmo evolutivo híbrido para la predicción a corto, medio plazo
-del precio del aceite de oliva. % ¿Por qué no lo pones también antes
-                                % cuando hablas en general de los
-                                % métocos? Cuando llega aquí el lector
-                                % ya se ha olvidado que estaba
-                                % hablando de tu método. - JJ 
+En concreto el algoritmo desarrollado, L-Co-R \cite{Eli2012} utiliza Redes Neuronales de Base Radial (RBFNs). L-Co-R
+\cite{Eli2012} presenta varias ventajas con respecto a otros métodos\footnote{Estas ventajas y el algoritmo al completo están
+detallados en la referencia anterior y no se detallan en esta publicación por falta de espacio}. La princial es que coevoluciona
+los datos de entrada de la serie (lag) junto con la red neuronal que se va a utilizar para predecir. Este enfoque coevolutivo no
+ha sido desarrollado en la literatura, puesto que otros autores coevolucinan las diferentes partes de la red o
+simplemente no utilizan el enfoque coevolutivo a la predicción sino a otro tipo de problemas como la clasificación. Aún así, si
+que existen autores que utilizan el mismo tipo de redes de forma no coevolutiva como \cite{Hippert10,Lee09, PerezGodoy2010} que
+aplican la predicción al precio del aceite de oliva.
 
 % ¿Esto no debería ir antes? ¿Está relacionado con tu método? ¿Es el
 % estado del arte? - JJ
 Para realizar la predicción se utilizan periodos de tiempo de la serie de tamaño
 finito llamados ``lags''. Los lags deben representar perfectamente el comportamiento de la serie y
-su relación y según el teorema de Takens \cite{Takens1980} se establece que cogiendo adecuadamente
+su relación y según el teorema de Takens \cite{Takens1980} estableciendo correctamente 
 estos lags, el comportamiento del espacio multidimensional construido a partir de dicho lag, puede
 representar de forma correcta el comportamiento de la serie temporal real. 
 
 Existen métodos automáticos que intentan determinar el lag más adecuado como pueden ser el
-algoritmo QIEHI \cite{Araujo2010a}, \cite{Araujo2010b}. E incluso
-algunos autores han ido más allá, % Ponía "alla", pása el corrector
+algoritmo QIEHI \cite{Araujo2010a}, \cite{Araujo2010b}. Otros autores han ido más allá, % Ponía "alla", pása el corrector
                                 % ortográfico - JJ
 buscando no sólo el lag, sino las características externas que afectan a la serie y que con un
 preprocesamiento previo de la serie temporal, puede desembocar en la elección de un lag  más
 adecuado para la predicción, \cite{garcia2008}. También se ha realizado este estudio después de la
 predicción,  \cite{Maus2011}, incluyendo un post procesamiento de los datos que modifica el lag de
 salida del método. 
-
-Tal y como se ha ido detallando, los procedimientos empleados en la literatura son variados y
-pueden incluir pre o post procesamiento de los datos. % ¿ein? - JJ
 
 En la propuesta que se presenta en este artículo, se utiliza para la predicción un método no
 lineal que utiliza redes de base radial (RBFs) para determinar de forma cooperativa el lag y la
@@ -271,11 +266,12 @@ iniciales a cerca de la predicción realizada.
 
 Debido al gran número de métodos existentes para realizar predicción, hemos seleccionado sólo 6 de
 ellos para poder realizar comparaciones entre los diferentes resultados. En esta selección se han
-incluido métodos lineales y no lineales. En concreto la selección Es
-ARIMA, Croston, Theta, % ¿por qué? - JJ
-Spline, L-Co-R y como método de control hemos seleccionado la media. Todos los métodos excepto
-L-Co-R están incluidos dentro del paquete estadístico R. L-Co-R es un algoritmo coevolutivo
-desarrollado por parte del equipo que firma el trabajo que ha generado resultados muy buenos dentro
+incluido métodos lineales y no lineales. En concreto la selección es
+ARIMA, Croston, Theta, Spline y L-Co-R y como método de control hemos seleccionado la media.
+Todos los métodos excepto L-Co-R están incluidos dentro del paquete estadístico R y son ampliamente conocidos y esta es la razón
+de por qué han sido seleccionados, puesto que así cualquier otro investigador puede comprobar sus resultados si dispone de R.
+L-Co-R \cite{Eli2012} es un algoritmo coevolutivo 
+desarrollado que ha generado resultados muy buenos dentro
 de la predicción a corto plazo. Se trata de un método no lineal basado en evolucionar RBFs y Lags
 simultáneamente para adecuar la red al lag elegido y el lag elegido a la red que el método
 construye.
@@ -325,13 +321,11 @@ es el error de predicción (i.e. $e_t= Y_t - F_t$); $p_t = 100e_t/Y_t$ es el por
          $q_t = \displaystyle\frac{e_t}{\displaystyle\frac{1}{n-1} \sum_{i=2}^n \mid Y_i - Y_{i-1} \mid }$
 \end{itemize}
 
-Puesto que el algoritmo L-Co-R no es determinista, y para eliminar los posibles beneficios del
-comportamiento del generador de números aleatorios que utiliza, se ha ejecutado 30 veces para cada
-una de las series, es decir, los datos mostrados como resultado del algoritmo L-Co-R son medias de
-error de 30 ejecuciones.
+Los resultados mostrados del algoritmo L-Co-R son medias de
+error de 30 ejecuciones con cada una de las series temporales estudiadas
 
 La tabla \ref{tb:ts-results} muestra los diferentes valores de error para cada uno de los métodos y
-para cfada serie. Destacados en el texto aparecen el mejor (menor) valor obtenido para cada nodo y
+para cada serie. Destacados en el texto aparecen el mejor (menor) valor obtenido para cada nodo y
 cada medida de error. Tal y como se puede apreciar en la tabla, la tendencia es siempre que el
 mejor algoritmo es justo el algoritmo L-Co-R puesto que obtiene los menores errores para las
 medidas MAE, MAPE, MdAPE y MASE (excepto para el nodo 2), aunque para otras medidas como MSE no hay
@@ -341,11 +335,8 @@ un claro algoritmo ganador.
  \begin{center}
  \begin{tabular}{|l|c|c|c|c|c|c|}
 
-
 \hline 
- \multicolumn{6}{|c|}{Nodo 1} \\ 
- \hline 
- & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
+ \textbf{Nodo 1}& \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
 \hline
 
 \emph{ARIMA } & $514,83$ & $40,42$ & $1,14$ & $30,76$ & $424860,5$ \\%& $36,83$ \\ 
@@ -356,9 +347,8 @@ un claro algoritmo ganador.
 \emph{L-Co-R} & $\textbf{372,77}$ & $\textbf{23,66}$ & $\textbf{0,81}$ & $\textbf{18,46}$ &
 $\textbf{231731,8}$ \\%& $\textbf{28,87}$ \\ 
 \hline 
- \multicolumn{6}{|c|}{Nodo 2} \\ 
  \hline 
- & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
+\textbf{Nodo 2} & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
 \hline
 
 \emph{ARIMA } & $433,52$ & $26,64$ & $\textbf{1,03}$ & $22,38$ & $\textbf{310105,3}$ \\%&$25,15$
@@ -367,11 +357,10 @@ $\textbf{231731,8}$ \\%& $\textbf{28,87}$ \\
 \emph{SPLINE } & $535,86$ & $34,53$ & $1,27$ & $24,7$ & $447557,4$ \\%& $31,17$ \\ 
 \emph{MEAN } & $489,57$ & $24,44$ & $1,16$ & $28,64$ & $361070,5$ \\%& $27,52$ \\ 
 \emph{L-Co-R} & $\textbf{429,78}$ & $\textbf{11,41}$ & $1,04$ & $\textbf{11,98}$ & $311561,7$ \\%&
-$\textbf{23,5}$ \\ 
+
 \hline 
- \multicolumn{6}{|c|}{Node 3} \\ 
  \hline 
- & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
+\textbf{Nodo 3} & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
 \hline
 
 \emph{ARIMA } & $373,17$ & $35,11$ & $1,32$ & $27,54$ & $\textbf{150293,6}$ \\%& $\textbf{33,45}$\\ 
@@ -382,9 +371,8 @@ $\textbf{23,5}$ \\
 \emph{L-Co-R} & $\textbf{363,3}$ & $\textbf{10,56}$ & $\textbf{0,84}$ & $\textbf{17,01}$ &
 $182469,9$ \\%& $35,32$ \\ 
 \hline 
- \multicolumn{6}{|c|}{Nodo 4} \\ 
  \hline 
- & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
+ \textbf{Nodo 4}& \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
 \hline
 
 \emph{ARIMA } & $3168,36$ & $40,62$ & $1,04$ & $18,99$ & $21792093$ \\%& $37,44$ \\ 
@@ -395,9 +383,8 @@ $182469,9$ \\%& $35,32$ \\
 \emph{L-Co-R} & $\textbf{540,59}$ & $\textbf{6,26}$ & $\textbf{0,07}$ & $\textbf{4,14}$ &
 $\textbf{1120317,2}$ \\%& $\textbf{8,17}$ \\ 
 \hline 
- \multicolumn{6}{|c|}{Nodo 5} \\ 
  \hline 
- & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
+\textbf{Nodo 5} & \emph{MAE} & \emph{MAPE} & \emph{MASE} & \emph{MdAPE} & \emph{MSE} \\%& \emph{SMAPE} \\ 
 \hline
 
 \emph{ARIMA } & $5012,95$ & $43,8$ & $1,13$ & $20,19$ & $\textbf{29974781}$ \\%& $\textbf{33,85}$\\ 
@@ -415,7 +402,7 @@ $35875329$ \\%& $35,8$ \\
  \end{center}
  \caption{Valores obtenidos para las cinco medidas de error (MAE,
 MAPE, MASE, MdAPE y MSE) para los métodos de predicción seleccionados (ARIMA, Croston, Theta,
-Spline, Mean and L-Co-R) para todos los nodos. En negrita se resalta el mejor resultado para cada
+Spline, Mean y L-Co-R) para todos los nodos. En negrita se resalta el mejor resultado para cada
 caso.
  \label{tb:ts-results}}
  \end{table}
@@ -544,6 +531,17 @@ la posibilidad de desarrollar métodos de predicción no sólo a corto plazo, si
 plazo, lo que facilitará la tarea de previsión del flujo de tráfico en las vías monitorizadas y por
 consiguiente una mejor gestión del tráfico en dichas vías por parte de las autoridades competentes.
 
+Este trabajo se está desarrollando gracias a la financiación de los proyectos TIC-3903, P08-TIC-3928,
+CEI2013-P-14, TIN2011-28627-C04-02, y del proyecto FEDER de la Unión Europea con título "Sistema de Información y Predicción de
+bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos" (SIPEsCa) del
+Programa Operativo FEDER de Andalucía 2007-2013. Asimismo, queremos mostrar nuestro agradecimiento al personal e investigadores de
+la Agencia de Obra Pública de la Junta de Andalucía, Consejería de Fomento y Vivienda, por su dedicación y
+profesionalidad. 
+\begin{figure} 
+\begin{center} 
+\epsfig{file=logos_SIPESCA_2.eps,width=4cm} 
+\end{center}\end{figure}
+
 
 \bibliographystyle{splncs}
 
@@ -556,6 +554,10 @@ Dirección General de Tráfico. Evolución 1970-2012. Ministerio de Fomento, May
 \url{
 http://www.fomento.gob.es/MFOM/LANG_CASTELLANO/DIRECCIONES_GENERALES/CARRETERAS/CATYEVO_RED_CARRETE
 RAS/}
+
+\bibitem{Eli2012}
+Elisabet Parras-Gutierrez, M. G. Arenas, V. M. Rivas,  M. J. del Jesus, Coevolution of lags and RBFNs for time
+series forecasting: L-Co-R algorithm, Soft Computing 16(6), (2012) 919-942.
 
 \bibitem{BoxJenk}
 G.~Box, G.~Jenkins, Time series analysis: forecasting and control, San
