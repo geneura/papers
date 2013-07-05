@@ -37,13 +37,13 @@ Las herramientas de visualización de software juegan un papel muy importante en
 %
 \section{Introducción}
 \label{sec:intro}
-La visualización de software consiste en representar gráficamente (en 2D o 3D) de forma estática o dinámica (con animaciones) información relacionada con la estructura, tamaño, historia o comportamiento de un sistema software. El objetivo es facilitar la comprensión de diferentes aspectos del sistema. Esta visualización permite documentar complejos sistemas detectar anomalías y siendo también especialmente útil durante el aprendizaje de los conceptos. 
+La visualización de software consiste en representar gráficamente (en 2D o 3D) de forma estática o dinámica (con animaciones) información relacionada con la estructura, tamaño, historia o comportamiento de un sistema software. El objetivo es facilitar la comprensión de diferentes aspectos del sistema. Esta visualización permite documentar complejos sistemas y detectar anomalías, siendo también especialmente útil durante el aprendizaje de los conceptos. 
 
 Para representar la estructura del software (generalmente orientado a objetos), normalmente, el enfoque consiste en representar las dependencias existentes entre las diferentes entidades. Estas dependencias puede ser modeladas como un grafo por lo que la visualización de grafos resulta adecuada. El software a un nivel más básico, es decir, a nivel de método, puede ser también representado de esta forma, mediante un diagrama de flujo. Este diagrama está basado en nodos y enlaces.
 
 Sin embargo, el código de un método cumple además con las reglas sintácticas del lenguaje, por lo que también puede ser representado mediante su árbol sintáctico abstracto. En este árbol los nodos representan los diferentes elementos del lenguaje utilizados y las aristas su relación de inclusión (por ejemplo, el nodo IF tiene como nodos hijos la parte THEN y la parte ELSE, cada una con sus propios nodos hijos). A diferencia del diagrama de flujo, la visualización de un árbol es mucho más flexible. La jerarquía de un árbol puede ser visualizada mediante un mapa (sin utilizar flechas) \cite{softwarevisualization}.
 
-Esta forma de visualización es susceptible de ser combinada con técnicas de gamificación \cite{kumar2012gamification}. Para ello, este trabajo propone una metáfora conceptual que consiste en utilizar el mapa de un videojuego de plataformas como representación del árbol sintáctico abstracto del programa. Esta visualización, además, permite la analogía dinámica entre ambos contextos semánticos, es decir, el protagonista del videojuego corre por el mapa y el ordenador ejecuta (corre) el programa. Esta metáfora es útil para el aprendizaje temprano de los elementos del lenguaje de programación.
+Esta forma de visualización es susceptible de ser combinada con técnicas de gamificación \cite{kumar2012gamification}. Para ello, este trabajo propone una metáfora conceptual que consiste en utilizar el mapa de un videojuego de plataformas como representación del árbol sintáctico abstracto del programa. Esta visualización, además, permite la analogía dinámica entre ambos contextos semánticos, es decir, el protagonista del videojuego corre por el mapa y el ordenador ejecuta (corre) el programa. Esta metáfora es útil para el aprendizaje temprano de los elementos de control habituales en los lenguajes de programación.
 
 Para la implementación de una herramienta de visualización dinámica de estas características se ha utilizado Java y Eclipse. El resto de este trabajo está organizado de la siguiente forma: en la sección \ref{sec:background} se explora el contexto taxonómico, se discute el concepto de legibilidad del código y su relación con algunas herramientas existentes para el aprendizaje temprano de la programación, se describen las técnicas gamificación y la importancia de su papel en la metáfora conceptual. En la sección \ref{sec:proposal} se define la herramienta propuesta concretando sus características. En la sección \ref{sec:details} se describen los detalles principales de la implementación. En la sección \ref{sec:conclusions} se establecen las conclusiones obtenidas y la continuación de este trabajo junto con los agradecimientos. 
 
@@ -70,7 +70,7 @@ En concreto se clasifican según se visualiza el código, los datos o el algorit
 \end{center}
 \end{figure}
 
-Este trabajo, y en general la visualización de programas y la programación visual, está motivado por varias razones. El sistema visual humano está optimizado para procesar información multidimensional. La programación convencional, sin embargo, es representada como un texto unidimensional. Un atributo importante de este texto es su capacidad para que sea entendido por un humano, es decir, su legibilidad. 
+En concreto, se estudia la visualización dinámica de programas usando gamificación para mejorar la experiencia del programador, especialmente para el aprendiz, aunque no exclusivamente. El objetivo es añadir un valor expresivo, documentativo y estético al software a nivel de función o método. La justificación se fundamenta en que el sistema visual humano está optimizado para procesar información multidimensional mientras que la programación convencional, sin embargo, es representada como un texto unidimensional. En este sentido, la capacidad del código de ser entendido por un humano, es decir, su legibilidad, es discutida a continuación y evaluada a través de algunas herramientas de ejemplo. En tales ejemplos se pone de manifiesto la necesidad de exploración y explotación de nuevas metáforas conceptuales que, aplicadas a un contexto puramente computacional, sean adecuadamente flexibles para expresar, resumir, documentar y comprender mejor el código. El videojuego de plataformas, como metáfora de programa, resulta ser especialmente adecuado para la descripción de los lenguajes Turing-completos, puesto que es en sí mismo un producto, universalmente conocido, que además ha surgido en el contexto de la programación.
 
 %----------------------------------------------------------------------------
 \subsection{Legibilidad}
@@ -104,15 +104,7 @@ Algunas herramientas que utilizan este enfoque son:
 \end{center}
 \end{figure}
 
-\item {\em Alice}: Alice \cite{AliceOnline} es un lenguaje de programación educativo libre y abierto orientado a objetos con un entorno de desarrollo integrado (IDE). Está programado en Java. Utiliza un entorno sencillo basado en arrastrar y soltar para crear animaciones mediante modelos 3D. La figura \ref{fig:alice} muestra un programa de ejemplo. Este software fue desarrollado por los investigadores de la Universidad Carnegie Mellon, entre los que destaca Randy Pausch.
-
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[scale=0.3]{images/alice.eps}
-\caption{Un programa diseñado con Alice para crear una animación 3D de un muñeco de nieve. 
-\label{fig:alice}}
-\end{center}
-\end{figure}
+\item {\em Alice}: Alice \cite{AliceOnline} es un lenguaje de programación educativo libre y abierto orientado a objetos con un entorno de desarrollo integrado (IDE). Está programado en Java. Utiliza un entorno sencillo basado en arrastrar y soltar para crear animaciones mediante modelos 3D. Este software fue desarrollado por los investigadores de la Universidad Carnegie Mellon, entre los que destaca Randy Pausch.
 
 
 \item {\em Scratch}: Es un entorno de programación online \cite{ScatchOnline} que facilita el aprendizaje autónomo. Fue desarrollado por el ``the Lifelong Kindergarten group'' en el Media Lab del MIT (Massachussets Institute of Tecnology) por un equipo dirigido por Mitchel Resnick y apareció por primera vez en el verano de 2007 \cite{resnick2009scratch}. La figura \ref{fig:scratch} muestra un programa de ejemplo. Los elementos de programación son representados como bloques de distinto color que encajan entre sí.
