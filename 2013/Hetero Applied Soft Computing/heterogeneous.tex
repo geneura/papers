@@ -121,8 +121,8 @@
 \author[ugr]{Pablo Garc\'ia-S\'anchez}
 \ead{pgarcia@atc.ugr.es}
 \author[ugr]{Jes\'us Gonz\'alez}
-\ead{jesus@atc.ugr.es}
-\author[ugr]{Mar\'ia Isabel G. Arenas}
+\ead{jesusgonzalez@ugr.es}
+\author[ugr]{Maribel García Arenas}
 \ead{maribel@ugr.es}
 \author[ugr]{Pedro A. Castillo}
 \ead{pedro@atc.ugr.es}
@@ -132,17 +132,14 @@
 \ead{amorag@geneura.ugr.es}
 \author[ugr]{Juan Juli\'an Merelo}
 \ead{jmerelo@geneura.ugr.es}
-%\author[jam]{Abel Serra}
-%\ead{abel.serra@jambit.com}
-%\author[upv]{Zoe Valero}
-%\ead{zoevara@itaca.upv.net}
+
 
 \address[ugr]{Department of Computer Architecture and Computer Technology and CITIC-UGR, University of Granada, Granada, Spain. Tel: +34958241778. Fax: +34958248993}
 \address[laseeb]{LaSEEB-ISR-IST, Technical University of Lisbon (IST), Lisbon, Portugal}%
-%\address[jam]{Jambit GmbH, Munich, Germany}
+
 
 \begin{abstract}
-This paper presents a study on population size adaptation in a distributed Evolutionary Algorithm executed on a heterogeneous cluster. The total number of individuals is divided taking into account the computational power of each node of a heterogeneous network of computers. Results show that setting the population size according to the computational power in the heterogeneous cluster decreases the time required to obtain the optimum in two problems with different characteristics and computational demands (MMDP and OneMax), while the same parameter configuration could not improve the time in a homogeneous cluster. Also, a study of the influence of the different population sizes on each stage of the algorithm is presented. This opens a new research line on the adaptation (offline or online) of parameters to the computational power of the devices.
+This paper presents a study on population size adaptation in a distributed Evolutionary Algorithm executed on a heterogeneous cluster. The total number of individuals is divided taking into account the computational power of each node. Results show that setting the population size according to the computational power in the heterogeneous cluster decreases the time required to obtain the optimum in two problems with different characteristics and computational demands (MMDP and OneMax), while the same parameter configuration could not improve the time in a homogeneous cluster. Also, a study of the influence of the different population sizes on each stage of the algorithm is presented. This opens a new research line on the adaptation (offline or online) of parameters to the computational power of the devices.
 
 \end{abstract}
 
@@ -196,8 +193,8 @@ In distributed EAs a number of nodes executes simultaneously the EA, working wit
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=images/figure1.eps, width = 7cm}
-\caption{Island model using a ring topology for migration of individuals.}
+\epsfig{file=2.eps, width = 7cm}
+\caption{Island model scheme using a ring topology.}
 \label{fig:islands}
 % Explica qué utilidad tiene en el artículo. FERGU: La cito luego en la sección experimentos
 \end{figure}
@@ -382,7 +379,7 @@ the number of ones (unitation) $s_i$ takes the values shown in Table \ref{table:
 The fitness value is defined as the sum of the $s_i$ subproblems with an optimum of $k$ (Equation \ref{eq:mmdp}).
 The search space is composed of $2^{6k}$ combinations from which there
 are only $2^k$ global solutions with $22^k$ deceptive
-attractors. Hence, a search method will have to find a global solution
+attractors. Hence, a search method have to find a global solution
 out of $2^{5k}$ additionally to deceptiveness. In this work $k=25$. 
 
 \begin{equation}\label{eq:mmdp}
@@ -449,9 +446,9 @@ Proportion  & 38,58   & 37,36   & 22,6   & 1,45 \\ \hline
 
 \subsection{Heterogeneous Size configuration}
 
-Our hipothesis consist in validating the following hypothesis: adapting the population size to the computational power of the nodes of a heterogeneous cluster presents an improvement in time. In this work, we have used the average number of generations obtained in the HoSi/HeHa configuration for both problems to determine the computational power of the heterogeneous machines. This comparison takes into account all the evolutionary process in a fair manner (proportional to the memory, processor and network usage), instead a traditional benchmark that usually relies only the CPU speed. Although this is not obviously the best way, it is a possible way to establish the computational power for the experiments of this work and to determine if changing the population size according the computational power reduces the time of the whole system. It should be considered that the contribution of this work is not the way we have used to calculate these sizes, but compare the algorithm with parameters adapted to their power.
+Our hypothesis consist in validating the following hypothesis: adapting the population size to the computational power of the nodes of a heterogeneous cluster presents an improvement in execution time. In this work, we have used the average number of generations obtained in the HoSi/HeHa configuration for both problems to determine the computational power of the heterogeneous machines. This comparison takes into account all the evolutionary process in a fair manner (proportional to the memory, processor and network usage), instead a traditional benchmark that usually relies only the CPU speed. Although this is not obviously the best way, it is a possible way to establish the computational power for the experiments of this work and to determine if changing the population size according the computational power reduces the time of the whole system. It should be considered that the contribution of this work is not the way we have used to calculate these sizes, but compare the algorithm with parameters adapted to their power.
 
-Thus, we have used the obtained average number of generations in the previous sub-section to set proportionally the sizes in the HeSi/HeHa and HeSi/HoHa configurations, dividing the total number of individuals (1024). Note that, having two nodes with the same processors and memory (HeN1 and HeN2), they have different computational power: this might be produced by different operating systems, virtual machine versions, or number of processes being executed.
+Thus, we have used the obtained average number of generations in the previous sub-section to set proportionally the sizes in the HeSi/HeHa and HeSi/HoHa configurations, dividing the total number of individuals (1024). Note that, having two nodes with the same processors and memory (HeN1 and HeN2), they have different computational power: this may be produced by different operating systems, virtual machine versions, or number of processes being executed.
 
 Table \ref{table:parameters} summarizes all the parameters used in the experiments.
 
@@ -491,8 +488,8 @@ In order to deal with the operating system and architecture heterogeneity, the O
 \section{Results}
 \label{sec:results}
 
-The main objetives of parallel programming are to tackle large computational problems, increase the performance of algorithms in a finite time, or reduce computational time to solve the problem (reaching the optimum). In this work, we focus in the last objective.
-As claimed by the authors in \cite{EVALUATIONPARALLEL}, assessing the performance of a parallel EA by the number of function evaluations required to attain a solution may be misleading. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, so the real algorithm speed could not be reflected correctly. However, the number of evaluations has been included in this section to better understand the results. The total number of generations, and the maximum number of generations required by the faster node in each configuration are also shown. It is difficult to compare the performance of HoHa and HeHa for the same reason: the evaluation time is different in each system (and even in each node). That is, in this work, we are not making the heterogeneous cluster comparable or better than the homogeneous one (because they are, obviously, different).
+The main objectives of parallel programming are to tackle large computational problems, increase the performance of algorithms in a finite time, or reduce computational time to solve the problem (reaching the optimum). In this work, we focus in the last objective.
+As claimed by Alba and Luque in \cite{EVALUATIONPARALLEL}, assessing the performance of a parallel EA by the number of function evaluations required to attain a solution may be misleading. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, so the real algorithm speed could not be reflected correctly. However, the number of evaluations has been included in this section to better understand the results. The total number of generations carried out by all nodes, and the maximum number of generations required by the faster node in each configuration are also shown. It is difficult to compare the performance of HoHa and HeHa for the same reason: the evaluation time is different in each system (and even in each node). That is, in this work, we are not making the heterogeneous cluster comparable or better than the homogeneous one (because they are, obviously, different).
 
 \subsection{MMDP results}
 
@@ -500,10 +497,10 @@ Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. These result
 
  In the HeHa system, adapting the population to the computational
  power of each node makes the algorithm finish significantly earlier,
- and also, needing a lower number of evaluations. On the other hand, in the HoHa system,
+ and also, needing a lower number of evaluations to reach the solution. On the other hand, in the HoHa system,
  setting the same population sizes makes no difference in time and
  evaluations, that is, changing this parameter has no influence in the
- algorithm's performance.  
+ algorithm's performance (p-value=0.52 for time and 0.08 for evaluations).  
 
 \begin{table*}
 \centering
@@ -528,11 +525,11 @@ HeSi/HoHa   & 5411,92 $\pm$15608,81    & 10689,15  $\pm$  30790,7 & 1844908,1 $\
 \centering
 
 \subfigure[Heterogeneous cluster]{
-   \includegraphics[scale =0.35] {images/timeMMDP_Hetero.eps}
+   \includegraphics[scale =0.35] {3a.eps}
    \label{fig:subfig1}
  }
 \subfigure[Homogeneous cluster]{
-   \includegraphics[scale =0.35] {images/timeMMDP_Homo.eps}
+   \includegraphics[scale =0.35] {3b.eps}
    \label{fig:subfig2}
  }
 \caption{Time to obtain the optimum in the MMDP problem (milliseconds).}
@@ -543,11 +540,11 @@ HeSi/HoHa   & 5411,92 $\pm$15608,81    & 10689,15  $\pm$  30790,7 & 1844908,1 $\
 \centering
 
 \subfigure[Heterogeneous cluster]{
-   \includegraphics[scale =0.35] {images/evalsMMDP_Hetero.eps}
+   \includegraphics[scale =0.35] {4a.eps}
    \label{fig:subfig1}
  }
 \subfigure[Homogeneous cluster]{
-   \includegraphics[scale =0.35] {images/evalsMMDP_Homo.eps}
+   \includegraphics[scale =0.35] {4b.eps}
    \label{fig:subfig2}
  }
 \caption{Number of evaluations for MMDP problem.}
@@ -561,14 +558,14 @@ To see the difference of how the evolution is being performed, the average fitne
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=images/heterohard_mmdp_homosize.eps, angle=-90, width = 13cm}
+\epsfig{file=5.eps, angle=-90, width = 13cm}
 \caption{Average fitness in the first 1000 milliseconds of execution of the four nodes of the heterogeneous cluster with the same population sizes (HoSi/HeHa) for the MMDP problem.}
 \label{fig:hosiheha}
 \end{figure}
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=images/heterohard_mmdp_heterosize.eps, angle=-90, width = 13cm} %Era 9
+\epsfig{file=6.eps, angle=-90, width = 13cm} %Era 9
 \caption{Average fitness in the first 1000 milliseconds of execution of the four nodes of the heterogeneous cluster with different population sizes (HeSi/HeHa) for the MMDP problem.}
 \label{fig:hesiheha}
 \end{figure}
@@ -627,11 +624,11 @@ HeSi/HoHa   & 13698,12 $\pm$ 406,85 & 16012,625 $\pm$  482,61 & 895698,2 $\pm$  
 \centering
 
 \subfigure[Heterogeneous cluster]{
-   \includegraphics[scale =0.35] {images/timeONEMAX_Hetero.eps}
+   \includegraphics[scale =0.35] {7a.eps}
    \label{fig:subfig1}
  }
 \subfigure[Homogeneous cluster]{
-   \includegraphics[scale =0.35] {images/timeONEMAX_Homo.eps}
+   \includegraphics[scale =0.35] {7b.eps}
    \label{fig:subfig2}
  }
 \caption{Time to obtain the optimum in the OneMax problem (milliseconds).}
@@ -642,11 +639,11 @@ HeSi/HoHa   & 13698,12 $\pm$ 406,85 & 16012,625 $\pm$  482,61 & 895698,2 $\pm$  
 \centering
 
 \subfigure[Heterogeneous cluster]{
-   \includegraphics[scale =0.35] {images/evalsONEMAX_Hetero.eps}
+   \includegraphics[scale =0.35] {8a.eps}
    \label{fig:subfig1}
  }
 \subfigure[Homogeneous cluster]{
-   \includegraphics[scale =0.35] {images/evalsONEMAX_Homo.eps}
+   \includegraphics[scale =0.35] {8b.eps}
    \label{fig:subfig2}
  }
 \caption{Number of evaluations for OneMax problem.}
@@ -657,14 +654,14 @@ HeSi/HoHa   & 13698,12 $\pm$ 406,85 & 16012,625 $\pm$  482,61 & 895698,2 $\pm$  
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=images/heterohard_onemax_homosize.eps, angle=-90, width = 9cm}
+\epsfig{file=9.eps, angle=-90, width = 13cm}
 \caption{Average fitness in the first 15000 milliseconds of execution of the four nodes of the heterogeneous cluster with the same population sizes (HoSi/HeHa) for the OneMax problem.}
 \label{fig:gensonemaxhomosize}
 \end{figure}
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=images/heterohard_onemax_heterosize.eps, angle=-90, width = 9cm}
+\epsfig{file=10.eps, angle=-90, width = 13cm}
 \caption{Average fitness in the first 15000 milliseconds of execution of the four nodes of the heterogeneous cluster with different population sizes (HeSi/HeHa) for the OneMax problem.}
 \label{fig:gensonemaxheterosize}
 \end{figure}
@@ -693,13 +690,13 @@ HoSi/HoHa vs HeSi/HoHa  & No & Wilcoxon    & 3\e{-8}  & Yes \\ \hline
 
 \subsection{Running time analysis}
 
-This sub-section analyses the time spent by each node of the clusters in every stage of the EA for each configuration. Tables \ref{tab:mmdptimes} and \ref{tab:onemaxtimes} show the average and standard deviation of the time spent in each stage of the algorithm (He=Heterogeneous cluster, Ho=Homogeneous cluster). Figures \ref{fig:MMDPbars} and \ref{fig:ONEMAXbars} graphically compare these results. As it can be seen, the migration is the most time consuming operation in all configurations, being the migration in HeHa more expensive than in HoHa. This happens because we are using the multi-purpose laboratory network to communicate the nodes, instead of the specific one used in the HoHa system. Note that the std. deviation of the migration is larger in the HeHa cluster. In the MMDP problem (Table \ref{tab:mmdptimes}) changing the population size does not affect the migration time, but it affects the rest of the algorithm's stages. However, with larger data communications (individuals of 5000 elements of the OneMax problem), the population size affects the migration time of all nodes. This might be due to the synchronization of migration buffers: if the slowest machine is sending/receiving, deadlocks can be propagated (as it can seen in Figure \ref{fig:gensonemaxhomosize}). 
+This sub-section analyses the time spent by each node of the clusters in every stage of the EA for each configuration. Tables \ref{tab:mmdptimes} and \ref{tab:onemaxtimes} show the average and standard deviation of the time spent in each stage of the algorithm (He=Heterogeneous cluster, Ho=Homogeneous cluster). Figures \ref{fig:MMDPbars} and \ref{fig:ONEMAXbars} graphically compare these results. As it can be seen, the migration is the most time consuming operation in all configurations, being the migration in HeHa more expensive than in HoHa. This happens because we are using the multi-purpose laboratory network to communicate the nodes, instead of the specific one used in the HoHa system. Note that the standard deviation of the migration is larger in the HeHa cluster because the network is having real conditions of traffic during the experiment. In the MMDP problem (Table \ref{tab:mmdptimes}) changing the population size does not affect the migration time, but it affects the rest of the algorithm's stages. However, with larger data communications (individuals of 5000 elements of the OneMax problem), the population size affects the migration time of all nodes. This might be due to the synchronization of migration buffers: if the slowest machine is sending/receiving, bottlenecks can be propagated (as it can seen in Figure \ref{fig:gensonemaxhomosize}). 
 
 Results also show how the stages of the algorithms depends on the node
 of execution. For example, recombination needs more time than mutation
 in both problems only in the node HeN4. The reason might be the
 creation of new objects (memory allocation), which in Java and in
-limited memory (and SWAP access) requires more time than iteration of
+limited memory (and swapping) requires more time than iteration of
 elements previously created (for example, in the mutation). Adapting
 the population size makes the slower node of HeHa behaves in similar
 way than the other nodes (same time in each stage). Moreover, the size
@@ -711,14 +708,14 @@ how the diversity and search guidance is maintained in the whole system.
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=images/mmdpbars.eps, width = 14cm}
+\epsfig{file=11.eps, width = 14cm}
 \caption{Average running time in each stage of the algorithm for the MMDP problem.}
 \label{fig:MMDPbars}
 \end{figure}
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=images/onemaxbars.eps, width = 14cm}
+\epsfig{file=12.eps, width = 14cm}
 \caption{Average running time in each stage of the algorithm for the ONEMAX problem.}
 \label{fig:ONEMAXbars}
 \end{figure}
@@ -732,26 +729,28 @@ how the diversity and search guidance is maintained in the whole system.
 \caption{Times of the stages of the algorithm for the MMDP problem (in ms).}
 \resizebox{14cm}{!}{
 \begin{tabular}{|c|c|c|c|c|c|} \hline
-\multicolumn{6}{|c|}{Homogeneous Size} \\ \hline
+\multicolumn{6}{|c|}{Heterogeneous Cluster} \\ \hline
 Node	& Selection		& Recombination		& Mutation		& Replacement		& Migration	        \\ \hline
-HeN1    & 0,077 $\pm$  0,170 &  0,788  $\pm$ 0,779  & 1,004  $\pm$ 0,187 &  1,648  $\pm$ 20,185 & 82,458  $\pm$ 143,266 \\ \hline
-HeN2    & 0,088 $\pm$  0,190 &  0,907 $\pm$  0,932  & 1,145  $\pm$ 0,425 &  1,579  $\pm$ 17,907 & 76,725  $\pm$ 126,360\\ \hline
-HeN3    & 0,105 $\pm$  0,163 &  1,207 $\pm$  0,927  & 1,374  $\pm$ 0,301 &  2,108  $\pm$ 21,848 & 108,605 $\pm$ 142,633\\ \hline
-HeN4    & 1,165 $\pm$  1,526 &  30,445$\pm$  59,553 & 12,221 $\pm$ 7,412 &  10,978 $\pm$ 57,135 & 84,936  $\pm$ 0,000\\ \hline \hline
-HoN1    & 0,163 $\pm$  0,223 &  1,884 $\pm$  2,386  & 1,591  $\pm$ 0,479 &  2,254  $\pm$ 5,513  & 40,256  $\pm$ 8,726\\ \hline
-HoN2    & 0,151 $\pm$  0,212 &  1,952 $\pm$  2,876  & 1,597  $\pm$ 0,574 &  2,178  $\pm$ 4,922  & 37,110  $\pm$ 6,999\\ \hline
-HoN3    & 0,154 $\pm$  0,206 &  1,990 $\pm$  3,010  & 1,591  $\pm$ 0,577 &  2,215  $\pm$ 4,743  & 36,413  $\pm$ 5,266\\ \hline
-HoN4    & 0,146 $\pm$  0,196 &  1,913 $\pm$  2,697  & 1,651  $\pm$ 1,167 &  2,194  $\pm$ 5,124  & 38,429  $\pm$ 6,192\\ \hline
-\multicolumn{6}{|c|}{Heterogeneous Size} \\ \hline									
+HoSi HeN1    & 0,077 $\pm$  0,170 &  0,788  $\pm$ 0,779  & 1,004  $\pm$ 0,187 &  1,648  $\pm$ 20,185 & 82,458  $\pm$ 143,266 \\ \hline
+HoSi HeN2    & 0,088 $\pm$  0,190 &  0,907 $\pm$  0,932  & 1,145  $\pm$ 0,425 &  1,579  $\pm$ 17,907 & 76,725  $\pm$ 126,360\\ \hline
+HoSi HeN3    & 0,105 $\pm$  0,163 &  1,207 $\pm$  0,927  & 1,374  $\pm$ 0,301 &  2,108  $\pm$ 21,848 & 108,605 $\pm$ 142,633\\ \hline
+HoSi HeN4    & 1,165 $\pm$  1,526 &  30,445$\pm$  59,553 & 12,221 $\pm$ 7,412 &  10,978 $\pm$ 57,135 & 84,936  $\pm$ 0,000\\ \hline \hline
+HeSi HeN1    & 0,067 $\pm$  0,065  & 0,973  $\pm$ 0,403 &  1,411 $\pm$  0,166 &  0,790  $\pm$ 6,266 &  28,081 $\pm$ 42,169 \\ \hline
+HeSi HeN2    & 0,062 $\pm$  0,075  & 0,973  $\pm$ 0,470 &  1,433 $\pm$  0,265 &  0,811  $\pm$ 7,056 &  29,667 $\pm$ 48,702 \\ \hline
+HeSi HeN3    & 0,066 $\pm$  0,108  & 1,104  $\pm$ 0,346 &  1,435 $\pm$  0,296 &  0,937  $\pm$ 7,072 &  40,964 $\pm$ 40,027 \\ \hline
+HeSi HeN4    & 0,109 $\pm$  0,257  & 1,895  $\pm$ 5,611 &  0,913 $\pm$  0,834 &  2,085  $\pm$ 5,626 &  43,880 $\pm$ 7,535 \\ \hline 
+
+
+\multicolumn{6}{|c|}{Homogeneous Cluster} \\ \hline									
 Node	& Selection		& Recombination		& Mutation		& Replacement		& Migration	\\ \hline
-HeN1    & 0,067 $\pm$  0,065  & 0,973  $\pm$ 0,403 &  1,411 $\pm$  0,166 &  0,790  $\pm$ 6,266 &  28,081 $\pm$ 42,169 \\ \hline
-HeN2    & 0,062 $\pm$  0,075  & 0,973  $\pm$ 0,470 &  1,433 $\pm$  0,265 &  0,811  $\pm$ 7,056 &  29,667 $\pm$ 48,702 \\ \hline
-HeN3    & 0,066 $\pm$  0,108  & 1,104  $\pm$ 0,346 &  1,435 $\pm$  0,296 &  0,937  $\pm$ 7,072 &  40,964 $\pm$ 40,027 \\ \hline
-HeN4    & 0,109 $\pm$  0,257  & 1,895  $\pm$ 5,611 &  0,913 $\pm$  0,834 &  2,085  $\pm$ 5,626 &  43,880 $\pm$ 7,535 \\ \hline \hline
-HoN1    & 0,214 $\pm$  0,288  & 2,800  $\pm$ 3,793 &  2,359 $\pm$  0,691 &  2,516  $\pm$ 4,706 &  36,972 $\pm$ 4,214 \\ \hline
-HoN2    & 0,190 $\pm$  0,252  & 2,672  $\pm$ 3,902 &  2,277 $\pm$  0,649 &  2,261  $\pm$ 4,546 &  41,171 $\pm$ 9,672 \\ \hline
-HoN3    & 0,148 $\pm$  0,208  & 2,030  $\pm$ 3,161 &  1,623 $\pm$  0,500 &  2,164  $\pm$ 4,512 &  35,551 $\pm$  6,132 \\ \hline
-HoN4    & 0,045 $\pm$  0,052  & 0,345  $\pm$ 1,121 &  0,217 $\pm$  0,142 &  1,531  $\pm$ 4,856 &  38,106 $\pm$ 9,251 \\ \hline
+HoSi HoN1    & 0,163 $\pm$  0,223 &  1,884 $\pm$  2,386  & 1,591  $\pm$ 0,479 &  2,254  $\pm$ 5,513  & 40,256  $\pm$ 8,726\\ \hline
+HoSi HoN2    & 0,151 $\pm$  0,212 &  1,952 $\pm$  2,876  & 1,597  $\pm$ 0,574 &  2,178  $\pm$ 4,922  & 37,110  $\pm$ 6,999\\ \hline
+HoSi HoN3    & 0,154 $\pm$  0,206 &  1,990 $\pm$  3,010  & 1,591  $\pm$ 0,577 &  2,215  $\pm$ 4,743  & 36,413  $\pm$ 5,266\\ \hline
+HoSi HoN4    & 0,146 $\pm$  0,196 &  1,913 $\pm$  2,697  & 1,651  $\pm$ 1,167 &  2,194  $\pm$ 5,124  & 38,429  $\pm$ 6,192\\ \hline \hline
+HeSi HoN1    & 0,214 $\pm$  0,288  & 2,800  $\pm$ 3,793 &  2,359 $\pm$  0,691 &  2,516  $\pm$ 4,706 &  36,972 $\pm$ 4,214 \\ \hline
+HeSi HoN2    & 0,190 $\pm$  0,252  & 2,672  $\pm$ 3,902 &  2,277 $\pm$  0,649 &  2,261  $\pm$ 4,546 &  41,171 $\pm$ 9,672 \\ \hline
+HeSi HoN3    & 0,148 $\pm$  0,208  & 2,030  $\pm$ 3,161 &  1,623 $\pm$  0,500 &  2,164  $\pm$ 4,512 &  35,551 $\pm$  6,132 \\ \hline
+HeSi HoN4    & 0,045 $\pm$  0,052  & 0,345  $\pm$ 1,121 &  0,217 $\pm$  0,142 &  1,531  $\pm$ 4,856 &  38,106 $\pm$ 9,251 \\ \hline
 \end{tabular}
 }
 \label{tab:mmdptimes}
@@ -769,26 +768,26 @@ HoN4    & 0,045 $\pm$  0,052  & 0,345  $\pm$ 1,121 &  0,217 $\pm$  0,142 &  1,53
 \caption{Times of the stages of the algorithm for the OneMax problem (in ms).}
 \resizebox{14cm}{!}{
 \begin{tabular}{|c|c|c|c|c|c|} \hline
-\multicolumn{6}{|c|}{Homogeneous Size} \\ \hline
+\multicolumn{6}{|c|}{Heterogeneous Cluster} \\ \hline
 Node	& Selection		& Recombination		& Mutation		& Replacement		& Migration	        \\ \hline
-HeN1  &  0,048 $\pm$  0,043  & 18,713 $\pm$ 13,454 & 31,984 $\pm$ 2,104  & 18,375 $\pm$ 197,676 & 1172,986  $\pm$  1108,388 \\ \hline
-HeN2  &  0,052 $\pm$  0,051  & 22,266 $\pm$  22,716 & 33,553 $\pm$ 4,931 &  17,176 $\pm$ 180,580 & 1085,508  $\pm$  995,382 \\ \hline
-HeN3  &  0,091 $\pm$  1,005  & 42,634 $\pm$ 21,621  & 47,674 $\pm$ 0,546 &  26,094 $\pm$ 252,667 & 1708,402 $\pm$   1207,925 \\ \hline
-HeN4  &  0,851  $\pm$ 0,435  & 1491,568 $\pm$ 1185,723 & 344,872$\pm$ 6,634 &  5,655  $\pm$ 16,175 & 154,019 $\pm$0,000 \\ \hline \hline
-HoN1  &  0,091 $\pm$  0,078  & 29,969 $\pm$ 21,459 & 47,445 $\pm$ 2,194 &  2,073 $\pm$  6,970 &  38,782 $\pm$ 40,369 \\ \hline
-HoN2  &  0,093 $\pm$  0,082  & 30,119 $\pm$ 22,029 & 47,247 $\pm$ 2,146 &  2,108 $\pm$  7,440 &  44,303 $\pm$ 42,759 \\ \hline
-HoN3  &  0,089 $\pm$  0,080  & 30,951 $\pm$ 21,904 & 47,103 $\pm$ 2,031 &  2,138 $\pm$  8,006 &  46,107 $\pm$ 47,351 \\ \hline
-HoN4  &  0,098 $\pm$  0,075  & 29,468 $\pm$ 20,876 & 47,086 $\pm$ 1,856 &  2,043 $\pm$  7,491 &  41,458 $\pm$ 44,970 \\ \hline
-\multicolumn{6}{|c|}{Heterogeneous Size} \\ \hline									
+HoSi HeN1  &  0,048 $\pm$  0,043  & 18,713 $\pm$ 13,454 & 31,984 $\pm$ 2,104  & 18,375 $\pm$ 197,676 & 1172,986  $\pm$  1108,388 \\ \hline
+HoSi HeN2  &  0,052 $\pm$  0,051  & 22,266 $\pm$  22,716 & 33,553 $\pm$ 4,931 &  17,176 $\pm$ 180,580 & 1085,508  $\pm$  995,382 \\ \hline
+HoSi HeN3  &  0,091 $\pm$  1,005  & 42,634 $\pm$ 21,621  & 47,674 $\pm$ 0,546 &  26,094 $\pm$ 252,667 & 1708,402 $\pm$   1207,925 \\ \hline
+HoSi HeN4  &  0,851  $\pm$ 0,435  & 1491,568 $\pm$ 1185,723 & 344,872$\pm$ 6,634 &  5,655  $\pm$ 16,175 & 154,019 $\pm$0,000 \\ \hline \hline
+HeSi HeN1 &   0,072 $\pm$  0,063 &  32,917 $\pm$ 26,792 & 49,103 $\pm$ 2,655  & 3,023 $\pm$  27,647 & 163,479 $\pm$157,172 \\ \hline
+HeSi HeN2 &   0,080 $\pm$  0,092 &  43,001 $\pm$ 51,680 & 52,288 $\pm$ 13,210 & 2,527 $\pm$  21,861 & 131,063 $\pm$124,404 \\ \hline
+HeSi HeN3 &   0,057 $\pm$  0,052 &  33,951 $\pm$ 15,063 & 41,375 $\pm$ 1,707  & 3,284 $\pm$  30,170 & 186,467 $\pm$163,906 \\ \hline
+HeSi HeN4 &   0,075 $\pm$  0,107 &  42,443 $\pm$ 88,536 & 16,236 $\pm$ 12,028 & 4,194 $\pm$  33,119 & 131,135 $\pm$144,359 \\ \hline 
+\multicolumn{6}{|c|}{Homogeneous Cluster} \\ \hline									
 Node	& Selection		& Recombination		& Mutation		& Replacement		& Migration	\\ \hline
-HeN1 &   0,072 $\pm$  0,063 &  32,917 $\pm$ 26,792 & 49,103 $\pm$ 2,655  & 3,023 $\pm$  27,647 & 163,479 $\pm$157,172 \\ \hline
-HeN2 &   0,080 $\pm$  0,092 &  43,001 $\pm$ 51,680 & 52,288 $\pm$ 13,210 & 2,527 $\pm$  21,861 & 131,063 $\pm$124,404 \\ \hline
-HeN3 &   0,057 $\pm$  0,052 &  33,951 $\pm$ 15,063 & 41,375 $\pm$ 1,707  & 3,284 $\pm$  30,170 & 186,467 $\pm$163,906 \\ \hline
-HeN4 &   0,075 $\pm$  0,107 &  42,443 $\pm$ 88,536 & 16,236 $\pm$ 12,028 & 4,194 $\pm$  33,119 & 131,135 $\pm$144,359 \\ \hline \hline
-HoN1 &   0,144 $\pm$  0,151 &  56,124 $\pm$ 48,229 & 72,811 $\pm$ 5,177  & 2,424 $\pm$  9,056  & 48,165  $\pm$57,798 \\ \hline
-HoN2 &   0,141 $\pm$  0,152 &  51,226 $\pm$ 41,016 & 70,047 $\pm$ 4,152  & 2,427 $\pm$  10,890 & 57,152  $\pm$74,177 \\ \hline
-HoN3 &   0,086 $\pm$  0,088 &  26,932 $\pm$ 20,460 & 42,963 $\pm$ 3,935  & 2,239 $\pm$  8,658  & 51,014  $\pm$49,648 \\ \hline
-HoN4 &   0,007 $\pm$  0,008 &  1,215  $\pm$ 1,133  & 2,470  $\pm$ 0,098  & 1,553 $\pm$  10,078 & 50,498 $\pm$ 63,983 \\ \hline
+HoSi HoN1  &  0,091 $\pm$  0,078  & 29,969 $\pm$ 21,459 & 47,445 $\pm$ 2,194 &  2,073 $\pm$  6,970 &  38,782 $\pm$ 40,369 \\ \hline
+HoSi HoN2  &  0,093 $\pm$  0,082  & 30,119 $\pm$ 22,029 & 47,247 $\pm$ 2,146 &  2,108 $\pm$  7,440 &  44,303 $\pm$ 42,759 \\ \hline
+HoSi HoN3  &  0,089 $\pm$  0,080  & 30,951 $\pm$ 21,904 & 47,103 $\pm$ 2,031 &  2,138 $\pm$  8,006 &  46,107 $\pm$ 47,351 \\ \hline
+HoSi HoN4  &  0,098 $\pm$  0,075  & 29,468 $\pm$ 20,876 & 47,086 $\pm$ 1,856 &  2,043 $\pm$  7,491 &  41,458 $\pm$ 44,970 \\ \hline \hline
+HeSi HoN1 &   0,144 $\pm$  0,151 &  56,124 $\pm$ 48,229 & 72,811 $\pm$ 5,177  & 2,424 $\pm$  9,056  & 48,165  $\pm$57,798 \\ \hline
+HeSi HoN2 &   0,141 $\pm$  0,152 &  51,226 $\pm$ 41,016 & 70,047 $\pm$ 4,152  & 2,427 $\pm$  10,890 & 57,152  $\pm$74,177 \\ \hline
+HeSi HoN3 &   0,086 $\pm$  0,088 &  26,932 $\pm$ 20,460 & 42,963 $\pm$ 3,935  & 2,239 $\pm$  8,658  & 51,014  $\pm$49,648 \\ \hline
+HeSi HoN4 &   0,007 $\pm$  0,008 &  1,215  $\pm$ 1,133  & 2,470  $\pm$ 0,098  & 1,553 $\pm$  10,078 & 50,498 $\pm$ 63,983 \\ \hline
 \end{tabular}
 }
 \label{tab:onemaxtimes}
@@ -876,9 +875,139 @@ This work has been supported in part by FPU research grant AP2009-2942 and proje
 
 % \end{thebibliography}
 
-\bibliographystyle{plain}
-\bibliography{heterogeneous}
 
+
+
+%\bibliographystyle{plain}
+%\bibliography{heterogeneous}
+\begin{thebibliography}{10}
+
+\bibitem{EVALUATIONPARALLEL}
+E.~Alba and G.~Luque.
+\newblock Evaluation of parallel metaheuristics.
+\newblock In Springer, editor, {\em Parallel Problem Solving from Nature
+  (PPSN)}, volume 4193 of {\em LNCS}, pages 9--14, 2006.
+
+\bibitem{HETEROGENEOUSHARD}
+Enrique Alba, Antonio~J. Nebro, and Jos\'e~M. Troya.
+\newblock Heterogeneous computing and parallel genetic algorithms.
+\newblock {\em Journal of Parallel and Distributed Computing}, 62(9):1362 --
+  1385, 2002.
+
+\bibitem{OPENSCIENCEGRID}
+Mine Altunay, Paul Avery, Kent Blackburn, Brian Bockelman, Michael Ernst, Dan
+  Fraser, Robert Quick, Robert Gardner, Sebastien Goasguen, Tanya Levshina,
+  Miron Livny, John McGee, Doug Olson, Ruth Pordes, Maxim Potekhin, Abhishek
+  Rana, Alain Roy, Chander Sehgal, Igor Sfiligoi, Frank Wuerthwein, and {Open
+  Sci Grid Executive Board}.
+\newblock {A Science Driven Production Cyberinfrastructure-the Open Science
+  Grid}.
+\newblock {\em {Journal of GRID Computing}}, {9}({2, Sp. Iss. SI}):{201--218},
+  {JUN} 2011.
+
+\bibitem{MULTIKULTI}
+Lourdes Araujo and Juan Juli{\'a}n~Merelo Guerv{\'o}s.
+\newblock Diversity through multiculturality: Assessing migrant choice policies
+  in an island model.
+\newblock {\em IEEE Trans. Evolutionary Computation}, 15(4):456--469, 2011.
+
+\bibitem{CLOUD}
+Rajkumar Buyya, Chee~Shin Yeo, Srikumar Venugopal, James Broberg, and Ivona
+  Brandic.
+\newblock Cloud computing and emerging it platforms: Vision, hype, and reality
+  for delivering computing as the 5th utility.
+\newblock {\em Future Gener. Comput. Syst.}, 25:599--616, June 2009.
+
+\bibitem{TUTORIAL}
+Joaqu\'{\i}n Derrac, Salvador Garc\'{\i}a, Daniel Molina, and Francisco
+  Herrera.
+\newblock A practical tutorial on the use of nonparametric statistical tests as
+  a methodology for comparing evolutionary and swarm intelligence algorithms.
+\newblock {\em Swarm and Evolutionary Computation}, 1(1):3--18, 2011.
+
+\bibitem{HYDROCM}
+Juli\'an Dom\'inguez and Enrique Alba.
+\newblock {HydroCM}: A hybrid parallel search model for heterogeneous
+  platforms.
+\newblock In El-Ghazali Talbi, editor, {\em Hybrid Metaheuristics}, volume 434
+  of {\em Studies in Computational Intelligence}, pages 219--235. Springer
+  Berlin Heidelberg, 2013.
+
+\bibitem{PARAMETERTUNING}
+A.~E. Eiben and Selmar~K. Smit.
+\newblock Parameter tuning for configuring and analyzing evolutionary
+  algorithms.
+\newblock {\em Swarm and Evolutionary Computation}, 1(1):19--31, 2011.
+
+\bibitem{GLOBUS}
+I~Foster.
+\newblock {Globus Toolkit version 4: Software for service-oriented systems}.
+\newblock In {Jin, H and Reed, D and Jiang, W}, editor, {\em {Network and
+  Parallel Computing Proceedings}}, volume {3779} of {\em {Lecture Notes in
+  Computer Science}}, pages {2--13}, 2005.
+
+\bibitem{PARALLELIMPLEMENTATION}
+J.F. Garamendi and J.L. Bosque.
+\newblock Parallel implementation of evolutionary strategies on heterogeneous
+  clusters with load balancing.
+\newblock In {\em Parallel and Distributed Processing Symposium, 2006. IPDPS
+  2006. 20th International}, page 8 pp., april 2006.
+
+\bibitem{SOASOCO}
+P.~Garc{\'i}a-S{\'a}nchez, J.~Gonz{\'a}lez, P.A. Castillo, M.G. Arenas, and
+  J.J. Merelo-Guerv{\'o}s.
+\newblock Service oriented evolutionary algorithms.
+\newblock {\em Soft Computing}, 17(6):1059--1075, 2013.
+
+\bibitem{goldberg92massive}
+David~E. Goldberg, Kalyanmoy Deb, and Jeffrey Horn.
+\newblock Massive multimodality, deception, and genetic algorithms.
+\newblock In {R. M\"{a}nner} and B.~Manderick, editors, {\em Parallel Problem
+  Solving from Nature, 2}, pages 37--48, Amsterdam, 1992. Elsevier Science
+  Publishers, B. V.
+
+\bibitem{HETEROGENEOUSPARAMETERS}
+Yiyuan Gong and Alex Fukunaga.
+\newblock Distributed island-model genetic algorithms using heterogeneous
+  parameter settings.
+\newblock In {\em Proceedings of the IEEE Congress on Evolutionary Computation,
+  CEC 2011, New Orleans, LA, USA, 5-8 June, 2011}, pages 820--827. IEEE, 2011.
+
+\bibitem{HETEROGENEOUSTOPOLOGY}
+Yiyuan Gong, Morikazu Nakamura, and Shiro Tamaki.
+\newblock Parallel genetic algorithms on line topology of heterogeneous
+  computing resources.
+\newblock In {\em Proceedings of the 2005 conference on Genetic and
+  evolutionary computation}, GECCO '05, pages 1447--1454, New York, NY, USA,
+  2005. ACM.
+
+\bibitem{PARALLELGRIDHETEROGENEOUS}
+Sergio Nesmachnow, Héctor Cancela, and Enrique Alba.
+\newblock A parallel micro evolutionary algorithm for heterogeneous computing
+  and grid scheduling.
+\newblock {\em Applied Soft Computing}, 12(2):626 -- 639, 2012.
+
+\bibitem{PLATO}
+Andres~J. Ramirez, David~B. Knoester, Betty H.~C. Cheng, and Philip~K.
+  McKinley.
+\newblock Plato: a genetic algorithm approach to run-time reconfiguration in
+  autonomic computing systems.
+\newblock {\em Cluster Computing}, 14(3):229--244, 2011.
+
+\bibitem{HETEROGENEOUSMIGRATION}
+Carolina Salto and Enrique Alba.
+\newblock Designing heterogeneous distributed gas by efficiently self-adapting
+  the migration period.
+\newblock {\em Applied Intelligence}, 36:800--808, 2012.
+
+\bibitem{ONEMAX}
+J.D. Schaffer and L.J. Eshelman.
+\newblock {On Crossover as an Evolutionary Viable Strategy}.
+\newblock In R.K. Belew and L.B. Booker, editors, {\em {Proceedings of the 4th
+  International Conference on Genetic Algorithms}}, pages 61--68. Morgan
+  Kaufmann, 1991.
+
+\end{thebibliography}
 \end{document}
 
 %%
