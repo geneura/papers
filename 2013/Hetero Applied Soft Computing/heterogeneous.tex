@@ -160,7 +160,7 @@ Evolutionary Algorithms \sep Genetic Algorithms \sep Heterogeneous computation \
 \label{sec:intro}
 
 
-Evolutionary Algorithms (EAs) are a general technique for solving optimization and search problems based on the evolution of species and natural selection. These algorithms are formed by a population of possible solutions, called {\em individuals}, that compete using their {\em fitness} (quality of adaptation) with the rest of solutions. Every iteration of the algorithm (or {\em generation}) the population evolves by means of selection and recombination/mutation to create a new set of candidates, until a {\em stop criterion} (e.g. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function describes the problem to solve.
+Evolutionary Algorithms (EAs) are a general technique for solving optimization and search problems based on the evolution of species and natural selection. These algorithms are formed by a population of possible solutions, called {\em individuals}, that compete using their {\em fitness} (quality of adaptation) with the rest of solutions. Every iteration of the algorithm (or {\em generation}) the population evolves by means of selection and recombination/mutation to create a new set of candidates, until a {\em stop criterion} (e.g. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function usually describes the problem to solve.
 
 % Metes muchos the al principio de plural, es incorrecto - JJ - FERGU: Ya veo. Lo cambio en el resto del paper (por ejemplo, en el párrafo de abajo)
 New trends in distributed computing such as Cloud Computing \cite{CLOUD}, GRID
@@ -228,7 +228,7 @@ of parameters for different problems
 
 % enlázalo con párrafo anterior. Un artículo es una historia. Por
 % ejemplo: These proofs have motivated us to propose in this paper... FERGU: Cambiado
-These facts have motivated us to study a combination of both ideas in this paper: dEAs on a heterogeneous set of nodes with different parameter values adapted to each node. In this study, the parameter to adapt to the computational power of each node has been the population size of each island. \textcolor{red}{The population size is a key to obtain good performance in EAs \cite{ShrinkageLaredo09} and it has been studied as a fixed \cite{SizingHarik99} or adaptative parameter during runtime \cite{AdaptiveLobo07}, but without taking into account the computational power of each machine.}
+These facts have motivated us to study a combination of both ideas in this paper: dEAs on a heterogeneous set of nodes with different parameter values adapted to each node. In this study, the parameter to adapt to the computational power of each node has been the population size of each island. \textcolor{red}{The population size is a key to obtain good performance in EAs \cite{ShrinkageLaredo09} and it has been studied as a fixed \cite{SizingHarik99} or adaptive parameter during runtime \cite{AdaptiveLobo07}, but without taking into account the computational power of each machine.}
 
 %Our motivation in this work is to combine both ideas % ¿cuáles ideas?
                                 % a estas altura no se sabe de qué
@@ -403,7 +403,7 @@ Five configurations have been tested:
 \item HoSi/HeHa: Homogeneous Size/Heterogeneous Hardware. The same population size in each island on a heterogeneous cluster.
 \item HeSi/HoHa: Heterogeneous Size/Homogeneous Hardware. Different population sizes in each island on a homogeneous cluster.
 \item HeSi/HeHa: Heterogeneous Size/Heterogeneous Hardware. Different population sizes in each island on a heterogeneous cluster.
-\item \textcolor{red}{AdSi/HeHa: Adaptative Size/Heterogeneous Hardware. Online adaptation of population sizes in each island on a heterogeneous cluster.}
+\item \textcolor{red}{AdSi/HeHa: Adaptive Size/Heterogeneous Hardware. Online adaptation of population sizes in each island on a heterogeneous cluster.}
 \end{itemize}
 
 Two different computational systems have been used: a {\em heterogeneous cluster} and a {\em homogeneous cluster}. The first one is formed by four different computers of our lab with different processors, operating systems and memory size. The latter is a dedicated scientific cluster formed by homogeneous nodes. Table \ref{tabcomputers} shows the features of each system and the name of the nodes.
@@ -455,7 +455,7 @@ Thus, we have used the obtained average number of generations in the previous su
 
 
 
-\subsection{Adaptative Size configuration}
+\subsection{Adaptive Size configuration}
 
 \textcolor{red}{Finally, to validate our hypothesis we propose a third configuration to adapt the population size to the computational power of the nodes of the heterogeneous cluster. In this experiment, the adaptation of the island size to the computational power of the islands is performed during runtime (online).  Each time a node ($N$) receives an individual, it compares their current number of generations ($Gen_{N}$) with the individual's sender (node $N-1$ in the ring). Then, the population size is adapted proportionally to the difference in the number of generations, following the next equation:}
 
@@ -465,7 +465,7 @@ size'_{N}=\dfrac{Gen_{N}}{Gen_{N-1}}size_{N}
 
 \textcolor{red}{If the new size is larger than the actual size the new individuals are added to the population cloning random existent ones. Otherwise, to reduce the size, the worst are removed.}
 
-\textcolor{red}{With this possible online adaptation scheme, each node only requires to receive information of one of the neighbours and not from the whole system. Thus, each node tends to have a number of individuals proportional to their computational power with respect to the other nodes. Experiments in homogeneous cluster do not alter the population sizes, as the number of generations are equal in all nodes during runtime.}
+\textcolor{red}{With this possible online adaptation scheme, each node only requires to receive information of one of the neighbours and not from the whole system. Thus, each node tends to have a number of individuals proportional to their computational power with respect to the other nodes. Experiments in homogeneous cluster do not alter the population sizes, as the number of current generations are equal in all nodes during runtime.}
 
 Table \ref{table:parameters} summarizes all the parameters used in the experiments.
 
@@ -508,7 +508,7 @@ In order to deal with the operating system and architecture heterogeneity (diffe
 \label{sec:results}
 
 The three main objectives of parallel programming are to tackle large computational problems, increase the performance of algorithms in a finite time, or reduce computational time to solve the problem (reaching the optimum). In this work, we focus in the last objective.
-As claimed by Alba and Luque in \cite{EVALUATIONPARALLEL}, assessing the performance of a parallel EA by the number of fitness function evaluations required to attain a solution may be misleading. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, so the real algorithm speed could not be reflected correctly. However, the number of evaluations has been included in this section to better understand the results. The total number of generations carried out by all nodes, and the maximum number of generations required by the faster node in each configuration are also shown. It is difficult to compare the performance of HoHa and HeHa for the same reason: the evaluation time is different in each system (and even in each node). That is, in this work, we are not making the heterogeneous cluster comparable or better in time than the homogeneous one (because they are, obviously, different), \textcolor{red}{but show that the same parameter configuration can improve performance in time in heterogeneous clusters and not have effect in homogeneous ones}.
+As claimed by Alba and Luque in \cite{EVALUATIONPARALLEL}, assessing the performance of a parallel EA by the number of fitness function evaluations required to attain a solution may be misleading. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, so the real algorithm speed could not be reflected correctly. However, the number of evaluations has been included in this section to better understand the results. The total number of generations carried out by all nodes, and the maximum number of generations required by the faster node in each configuration are also shown. It is difficult to compare the performance of HoHa and HeHa for the same reason: the evaluation time is different in each system (and even in each node). That is, in this work, we are not making the heterogeneous cluster comparable or better in time than the homogeneous one (because they are, obviously, different), \textcolor{red}{but show that the same parameter configuration can improve performance in time in heterogeneous clusters and could not have effect in homogeneous ones}.
 
 \subsection{MMDP results}
 
@@ -574,7 +574,7 @@ HeSi/HoHa   & 5411.92 $\pm$15608.81    & 10689.15  $\pm$  30790.7 & 1844908.1 $\
 
 
 
-To see the differences on how the evolution is being performed, the average fitness in each node of HeHa is shown in Figures \ref{fig:hosiheha} and \ref{fig:hesiheha}. As it can be seen, with the HeSi (Figure \ref{fig:hesiheha}), the local optima are overtaken in less time than HoSi (Figure \ref{fig:hosiheha}).  This can be explained because in HeSi, the migration from HeN4 to HeN1 is performed faster, adding more heterogeneity to the whole system. Gaps in the figures correspond to the time expent in the nodes for sending the migrant individual to other nodes (not while they are receiving them). In the HoHa systems, the populations are evolved at the same time, being the average fitness similar in all nodes during all run. % The natural migration period variation from a processor to another is also giving more diversity to the populations that migrating at the same time of the homogeneous
+To see the differences on how the evolution is being performed, the average fitness in each node of HeHa is shown in Figures \ref{fig:hosiheha} and \ref{fig:hesiheha}. As it can be seen, with the HeSi (Figure \ref{fig:hesiheha}), the local optima are overtaken in less time than HoSi (Figure \ref{fig:hosiheha}).  This can be explained because in HeSi, the migration from HeN4 to HeN1 is performed faster, adding more heterogeneity to the whole system. Gaps in the figures correspond to the time spent in the nodes for sending the migrant individual to other nodes (not while they are receiving them). In the HoHa configurations, the populations are evolved at the same time, being the average fitness similar in all nodes during all run. % The natural migration period variation from a processor to another is also giving more diversity to the populations that migrating at the same time of the homogeneous
 
 
 \begin{figure}[htb]
@@ -591,7 +591,7 @@ To see the differences on how the evolution is being performed, the average fitn
 \label{fig:hesiheha}
 \end{figure}
 
-\textcolor{red}{With respect to AdSi/HeHa, results are significantly  equal (p-value 0.139) to HeSi/HeHa (and, therefore, better than HoSi/HeHa).  Average population sizes in each node are shown in Table \ref{table:sizesMMDP}. The proportion of sizes are similar to the proportions in Table \ref{table:generations}. Figure \ref{fig:sizesMMDP} shows all the possible sizes in each node during all the runs. This figure show that the variation of the population sizes lies proportionally to the computational power of each node. The outliers in boxplots are produced during the size changing, as can be seen in Figure \ref{fig:sizesMMDP1ejec}.}
+\textcolor{red}{With respect to AdSi/HeHa, results are significantly  equal (p-value 0.139) to HeSi/HeHa (and, therefore, better than HoSi/HeHa), but this time no previous tuning is required.  Average population sizes in each node are shown in Table \ref{table:sizesMMDP}. The proportion of sizes are similar to the proportions in Table \ref{table:generations}. Figure \ref{fig:sizesMMDP} shows all the possible sizes in each node during all the runs. This figure show that the variation of the population sizes lies proportionally to the computational power of each node. The outliers in boxplots are produced during the size changing, as can be seen in Figure \ref{fig:sizesMMDP1ejec}. N4 is the slower node with difference and its size keeps always near the minimum (16 individuals).}
 
 \begin{figure}[htb]
 \centering
@@ -609,7 +609,7 @@ To see the differences on how the evolution is being performed, the average fitn
 
 \begin{table*}
 \centering{
-\caption{Average population size in each node on the heterogeneous cluster with adaptative size (MMDP).}
+\caption{Average population size in each node on the heterogeneous cluster with adaptive size (MMDP).}
 \begin{tabular}{|c|c|c|c|c|} \hline
 Node        & HeN1     & HeN2      & HeN3     & HeN4   \\ \hline
 Size &  556.31 & 504.30  & 321.15 & 19.81 \\ \hline
@@ -620,12 +620,12 @@ Proportion  & 39.69 &  35.98 & 22.91 & 1.41   \\ \hline
 \end{table*}
 
 
-\textcolor{red}{Summarizing, adapting the population sizes to the computational power of each machine (offline and online) has reduced the time to obtain the optimum. The same fixed values in the homogeneous cluster does not produces a significant decrease of running time, so the improvement is produced by the heterogeneity and not for the different island sizes.}
+\textcolor{red}{Summarizing, adapting the population sizes to the computational power of each machine (offline and online) has reduced the time to obtain the optimum. The same heterogeneous fixed sizes in the homogeneous cluster does not produces a significant decrease of running time, so the improvement is produced by the heterogeneity and not for the different island sizes. Also, the AdSi proposal is not applicable here because there is not differences of generations during runtime.}
 
 
 \subsection{OneMax results}
 
-Results for this problem are shown in Table \ref{tab:onemaxresults} and Figures  \ref{fig:timeOneMax} and \ref{fig:evalsOneMax}. In this case, adapting the population sizes significantly decreases  the running time for solving it in the heterogeneous cluster, but in this case, the number of evaluations is increased (see statistical significance in Table \ref{tab:significanceOneMax}). In the homogeneous system, the effect of changing the population sizes is clearer, and this time the number of evaluations (and therefore, the time) are reduced (both significantly). 
+Results for this problem are shown in Table \ref{tab:onemaxresults} and Figures  \ref{fig:timeOneMax} and \ref{fig:evalsOneMax}. In this case, adapting the population sizes significantly decreases  the running time for solving it in the heterogeneous cluster, but in this case, the number of evaluations is increased (see statistical significance in Table \ref{tab:significanceONEMAX}). In the homogeneous system, the effect of changing the population sizes is clearer, and this time the number of evaluations (and therefore, the time) are reduced (both significantly). 
 
 The efficiency on OneMax problem depends mainly on the ability to mix
 the building-blocks, and less on the genetic diversity and size of the
@@ -719,7 +719,7 @@ HeSi/HoHa   & 13698.12 $\pm$ 406.85 & 16012.625 $\pm$  482.61 & 895698.2 $\pm$  
 \end{figure}
 
 
-\textcolor{red}{In the AdSi/HeHa configuration significantly better results in terms of execution time (and number of evaluations) are also attained. Boxplots of sizes of the populations (in Figure \ref{fig:sizesONEMAX}) also show propotionality to the computational power of each machine. As in MMDP, some oscillations (outlines in boxplots) may appear during the execution (as can be seen in Figure \ref{fig:sizesONEMAX1ejec}).}
+\textcolor{red}{In the AdSi/HeHa configuration significantly better results in terms of execution time (and number of evaluations) are also attained, even more clearly than with HeSi. Average sizes (Table \ref{table:sizesONEMAX}) and boxplots (in Figure \ref{fig:sizesONEMAX}) during all the runs also show proportionality to the computational power of each machine. As in MMDP, some oscillations (outlines in boxplots) may appear during the execution (as can be seen in Figure \ref{fig:sizesONEMAX1ejec}).}
 
 \begin{figure}[htb]
 \centering
@@ -737,13 +737,13 @@ HeSi/HoHa   & 13698.12 $\pm$ 406.85 & 16012.625 $\pm$  482.61 & 895698.2 $\pm$  
 
 \begin{table*}
 \centering{
-\caption{Average population size in each node on the heterogeneous cluster with adaptative size (OneMax).}
+\caption{Average population size in each node on the heterogeneous cluster with adaptive size (OneMax).}
 \begin{tabular}{|c|c|c|c|c|} \hline
 Node        & HeN1     & HeN2      & HeN3     & HeN4   \\ \hline
 Size &   267.09 & 158.63 &  74.20  & 16.29 \\ \hline
 Proportion  &  51.73 &  30.72 &   14.37 &  3.15  \\ \hline
 \end{tabular}
-\label{table:sizesMMDP}
+\label{table:sizesONEMAX}
 }
 \end{table*}
 
@@ -918,7 +918,7 @@ HeSi HoN4 &   0.007 $\pm$  0.008 &  1.215  $\pm$ 1.133  & 2.470  $\pm$ 0.098  & 
 
 In this paper we describe a study on the adaptation of the population size of a distributed EA to the computational power of the different nodes of an heterogeneous cluster. \textcolor{red}{Two adaptation schemes (offline and online) have been tested.}
 
-Results show that adapting the population size to the computational power of each node in the heterogeneous cluster yields significantly
+Results show that adapting (online or offline) the population size to the computational power of each node in the heterogeneous cluster yields significantly
 better results in time than keeping the same parameter in all nodes. This advantage is due to the combination of the heterogeneous parameters with the heterogeneity of the machines. On the contrary, the same (heterogeneous) parameter setting in all islands of the homogeneous cluster could not improve the results than considering the same parameter value in all nodes.
 
 %To obtain a fair parameter configuration,
