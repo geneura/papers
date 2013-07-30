@@ -141,7 +141,7 @@
 
 
 \begin{abstract}
-Distributed algorithms in heterogeneous clusters should take advantage of the resources available and be adapted to them to increase the performance of the system. In distributed Evolutionary Algorithms the population size is a key facto parameter, because directly influences in the iterations necessary to find the solution. In this paper, we present a study on population size adaptation to computational power to reduce execution time on a heterogeneous cluster. Two size adaptation schemes have been tested: an offline and an online parameter setting, and two well-known problems with different characteristics and computational demands (MMDP and OneMax) have been tested. Results show that setting the population size according to the computational power of the nodes in the heterogeneous cluster decreases the time required to obtain the optimum. Meanwhile, these size values could not improve the time in a homogeneous cluster. In addition, a study of the influence of the different population sizes on each stage of the algorithm is presented. This opens a new research line on the adaptation (offline or online) of parameters to the computational power of the devices.
+To increase performance, distributed algorithms on heterogeneous clusters should be adapted to take advantage of the available resources. In distributed Evolutionary Algorithms the population size is a key factor parameter, because it directly influences the iterations necessary to find the solution. In this paper, we present a study to adapt this parameter to computational power of the nodes of a heterogeneous cluster, in order to reduce execution time. Two size adaptation schemes have been proposed: an offline and an online parameter setting, and two well-known problems with different characteristics and computational demands (MMDP and OneMax) have been tested. Results show that setting the population size according to the computational power of the nodes in the heterogeneous cluster decreases the time required to obtain the optimum. Meanwhile, these size values could not improve the time in a homogeneous cluster. In addition, a study of the influence of the different population sizes on each stage of the algorithm is presented. This opens a new research line on the adaptation (offline or online) of parameters to the computational power of the devices.
 
 %Quitado: The total number of individuals is divided taking into account the computational power of each node.
 \end{abstract}
@@ -210,7 +210,7 @@ In distributed EAs a set of nodes executes simultaneously the EA, working with d
 
 
 
-Distributed EAs can be executed in homogeneous clusters with the same parameters in all nodes (homogeneous dEAs), or with different parameters or nodes's features (heterogeneous dEAs).
+Distributed EAs can be executed on homogeneous clusters with the same parameters in all nodes (homogeneous dEAs), or with different parameters or nodes's features (heterogeneous dEAs).
 It  has also been showed \cite{HETEROGENEOUSHARD} that dEAs with the same parameter configuration are even
 more efficient in time and evaluations on heterogeneous hardware configurations than on clusters with
 homogeneous devices. This can be explained by different reasons, such
@@ -285,9 +285,9 @@ In the field of  Evolutionary Computation (EC) there are two different approache
  Computational performance of nodes or network speed can also be
  inherent parameters of an algorithm. In \cite{HETEROGENEOUSHARD},
  Alba et al. compared a distributed Genetic Algorithm (dGA), one of
- the sub-types of EAs, in homogeneous and heterogeneous clusters. % ¿Cómo considera las prestaciones un parámetro este trabajo en particular? - JJ
+ the sub-types of EAs, on homogeneous and heterogeneous clusters. % ¿Cómo considera las prestaciones un parámetro este trabajo en particular? - JJ
  Super-linear performance was obtained in the heterogeneous ones,
- being more efficient than the same algorithm running in homogeneous
+ being more efficient than the same algorithm running on homogeneous
  machines, although the parameter setting was the same in both
  clusters. % Entonces no tiene nada que ver con lo de los parámetros
            % "inherentes". Si tiene que ver, no está explicado. Y en
@@ -590,7 +590,7 @@ size'_{N}=\dfrac{Gen_{N}}{Gen_{N-1}}size_{N}
 
 \textcolor{red}{If the new size is larger than the actual size the new individuals are added to the population cloning random existent ones. Otherwise, in order to reduce the size, the worst are removed.}
 
-\textcolor{red}{With this possible online adaptation scheme, each node only requires to receive information of one of the neighbours and not from the whole system. Thus, each node tends to have a number of individuals proportional to their computational power with respect to the other nodes. Experiments in homogeneous cluster do not alter the population sizes, as the number of current generations are equal in all nodes during runtime.}
+\textcolor{red}{With this possible online adaptation scheme, each node only requires to receive information of one of the neighbours and not from the whole system. Thus, each node tends to have a number of individuals proportional to their computational power with respect to the other nodes. Experiments on homogeneous cluster do not alter the population sizes, as the number of current generations are equal in all nodes during runtime.}
 
 Table \ref{table:parameters} summarizes all the parameters used in the experiments.
 
@@ -633,11 +633,11 @@ In order to deal with the operating system and architecture heterogeneity (diffe
 \label{sec:results}
 
 The three main objectives of parallel programming are to tackle large computational problems, increase the performance of algorithms in a finite time, or reduce computational time to solve the problem (reaching the optimum). In this work, we focus in the last objective.
-As claimed by Alba and Luque in \cite{EVALUATIONPARALLEL}, assessing the performance of a parallel EA by the number of fitness function evaluations required to attain a solution may be misleading. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, so the real algorithm speed could not be reflected correctly. However, the number of evaluations has been included in this section to better understand the results. The total number of generations carried out by all nodes, and the maximum number of generations required by the faster node in each configuration are also shown. It is difficult to compare the performance of HoHa and HeHa for the same reason: the evaluation time is different in each system (and even in each node). That is, in this work, we are not making the heterogeneous cluster comparable or better in time than the homogeneous one (because they are, obviously, different), \textcolor{red}{but show that the same parameter configuration can improve performance in time in heterogeneous clusters and could not have effect in homogeneous ones}.
+As claimed by Alba and Luque in \cite{EVALUATIONPARALLEL}, assessing the performance of a parallel EA by the number of fitness function evaluations required to attain a solution may be misleading. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, so the real algorithm speed could not be reflected correctly. However, the number of evaluations has been included in this section to better understand the results. The total number of generations carried out by all nodes, and the maximum number of generations required by the faster node in each configuration are also shown. It is difficult to compare the performance of HoHa and HeHa for the same reason: the evaluation time is different in each system (and even in each node). That is, in this work, we are not making the heterogeneous cluster comparable or better in time than the homogeneous one (because they are, obviously, different), \textcolor{red}{but show that the same parameter configuration can improve performance in time on heterogeneous clusters and could not have effect on homogeneous ones}.
 
 \subsection{MMDP results}
 
-Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. These results are also shown in the boxplots of Figure \ref{fig:timeMMDP} (time) and Figure \ref{fig:evalsMMDP} (evaluations). Table \ref{tab:significanceMMDP} shows the statistical significance of the results. First, a Kolmogorov-Smirnov test is performed to assess the normality of the distributions. \textcolor{red}{As all distributions are not normal, we use non-parametric tests. To compare between two methods (HoSi and HeSi in the homogeneous cluster) a Wilcoxon test has been applied. For a three methods comparison (HoSi, HeSi and AdSi in heterogeneous cluster) a Kruskal-Wallis test has been used.} %If the results fit a normal distribution, then a Student's T-Test is calculated. Otherwise, the non-parametric Wilcoxon test is applied (see \cite{TUTORIAL} for a tutorial for comparing EAs).
+Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. These results are also shown in the boxplots of Figure \ref{fig:timeMMDP} (time) and Figure \ref{fig:evalsMMDP} (evaluations). Table \ref{tab:significanceMMDP} shows the statistical significance of the results. First, a Kolmogorov-Smirnov test is performed to assess the normality of the distributions. \textcolor{red}{As all distributions are not normal, we use non-parametric tests. To compare between two methods (HoSi and HeSi in the homogeneous cluster) a Wilcoxon test has been applied. For a three methods comparison (HoSi, HeSi and AdSi on heterogeneous cluster) a Kruskal-Wallis test has been used.} %If the results fit a normal distribution, then a Student's T-Test is calculated. Otherwise, the non-parametric Wilcoxon test is applied (see \cite{TUTORIAL} for a tutorial for comparing EAs).
 
  In the HeHa system, adapting offline the population to the computational
  power of each node makes the algorithm finish significantly earlier,
