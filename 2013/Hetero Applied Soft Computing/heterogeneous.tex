@@ -141,7 +141,7 @@
 
 
 \begin{abstract}
-This paper presents a study on population size adaptation in a distributed Evolutionary Algorithm executed on a heterogeneous cluster. \textcolor{red}{Two adaptation schemes have been tested: an offline and an online parameter setting}. Results show that setting the population size according to the computational power in the heterogeneous cluster decreases the time required to obtain the optimum in two well-known problems with different characteristics and computational demands (MMDP and OneMax). Meanwhile the same parameter configuration could not improve the time in a homogeneous cluster. In addition, a study of the influence of the different population sizes on each stage of the algorithm is presented. This opens a new research line on the adaptation (offline or online) of parameters to the computational power of the devices.
+Distributed algorithms in heterogeneous clusters should take advantage of the resources available and be adapted to them to increase the performance of the system. In distributed Evolutionary Algorithms the population size is a key facto parameter, because directly influences in the iterations necessary to find the solution. In this paper, we present a study on population size adaptation to computational power to reduce execution time on a heterogeneous cluster. Two size adaptation schemes have been tested: an offline and an online parameter setting, and two well-known problems with different characteristics and computational demands (MMDP and OneMax) have been tested. Results show that setting the population size according to the computational power of the nodes in the heterogeneous cluster decreases the time required to obtain the optimum. Meanwhile, these size values could not improve the time in a homogeneous cluster. In addition, a study of the influence of the different population sizes on each stage of the algorithm is presented. This opens a new research line on the adaptation (offline or online) of parameters to the computational power of the devices.
 
 %Quitado: The total number of individuals is divided taking into account the computational power of each node.
 \end{abstract}
@@ -159,6 +159,8 @@ Evolutionary Algorithms \sep Genetic Algorithms \sep Heterogeneous computation \
 \section{Introduction}
 \label{sec:intro}
 
+\textcolor{red}{Adapting algorithm parameters to available computational resources leads to an increase of performance \cite{AutomaticallyConfiguringStyles12}. In this paper we have adapted a distributed Evolutionary Algorithm to leverage the capability of a
+   heterogeneous cluster.}
 
 Evolutionary Algorithms (EAs) are a general technique for solving optimization and search problems based on the evolution of species and natural selection. These algorithms are formed by a population of possible solutions, called {\em individuals}, that compete using their {\em fitness} (quality of adaptation) with the rest of solutions. Every iteration of the algorithm (or {\em generation}) the population evolves by means of selection and recombination/mutation to create a new set of candidates, until a {\em stop criterion} (e.g. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function usually describes the problem to solve.
 
@@ -252,16 +254,16 @@ In this work, a heterogeneous distributed system has been used to give an insigh
  \item Can a distributed EA be adapted to leverage the capability of a
    heterogeneous cluster? % Si este es el objetivo principal, deberías
                           % hacer énfasis desde el principio de la
-                          % intro y demás. 
- \item What is the effect of adapting the population size to the computational power, as proposed in this paper? % computational power ==
+                          % intro y demás. FERGU2: Dicho al principio de la intro
+ \item \textcolor{red}{How the adaptation of the population size to the computational power affects the execution time?} % computational power ==
                                 % performance? - JJ FERGU: Reescrita
                                 % la pregunta
    % el efecto sobre qué? ¿El número de evaluaciones el algoritmo? ¿El
-   % tiempo de ejecución? - JJ 
+   % tiempo de ejecución? - JJ FERGU2: Cambiada la pregunta, again
  \item Is there any difference between using the same population sizes in a homogeneous and a heterogeneous cluster?
- \item How is each stage of the algorithm (selection, migration...) affected by the different
+ \item How is each stage of the algorithm (selection, recombination, mutation, replacement and migration) affected by the different
    configurations? % stage? - JJ FERGU: Etapa del algoritmo, Antonio y Jesús me han dicho que lo cambie a stage. Añado los paréntesis para aclararlo
-% no se usan puntos suspensivos en escribura formal. No son fases del algoritmo, son diferentes operadores. 
+% no se usan puntos suspensivos en escribura formal. No son fases del algoritmo, son diferentes operadores. FERGU2: puestas todas
 \end{itemize}
 
 
@@ -305,6 +307,8 @@ In the field of  Evolutionary Computation (EC) there are two different approache
 % también estos
 % http://scholar.google.com/citations?view_op=view_citation&hl=en&user=gFxqc64AAAAJ&cstart=100&pagesize=100&citation_for_view=gFxqc64AAAAJ:lSLTfruPkqcC
 % 
+%FERGU2: el mío sí es asíncrono, lo pone por ahí, pero añado uno de estos a la sección "Framework"
+
 Some authors have expanded this idea % qué idea? La de los algoritmos
                                 % heterogéneos? - JJ
 by adapting the algorithm to be executed: Dom\'inguez et
@@ -621,7 +625,7 @@ Population sizes in HeSi for OneMax & 396,  382, 232 and 14 (from N1 to N4)\\ \h
 \end{table}
 
 \subsection{Framework}
-In order to deal with the operating system and architecture heterogeneity (different operating systems, processors, compilers, etc.), the OSGiLiath framework \cite{SOASOCO}, based in Java, has been used in this work. This is a service-oriented evolutionary framework that automatically configures the services to be used in a local network. In this case, each node offers a migration buffer to accept foreign individuals. Also, in order to reduce bottlenecks in distributed executions, asynchronous communication has been provided to avoid idle time using reception buffers (that is, the algorithm does not wait until new individuals arrive, but the buffers cannot be used again until the reception is done). This kind of communication offers an excellent performance when working with different nodes and operating systems, as demonstrated in \cite{HETEROGENEOUSHARD}. The transmission mechanism is based on ECF Generic server (over TCP)\footnote{\url{http://www.eclipse.org/ecf/}}.  The source code of the algorithms used in this work is available in \url{http://www.osgiliath.org} under a LGPL V3 License. 
+In order to deal with the operating system and architecture heterogeneity (different operating systems, processors, compilers, etc.), the OSGiLiath framework \cite{SOASOCO}, based in Java, has been used in this work. This is a service-oriented evolutionary framework that automatically configures the services to be used in a local network. In this case, each node offers a migration buffer to accept foreign individuals. Also, in order to reduce bottlenecks in distributed executions, asynchronous communication has been provided to avoid idle time using reception buffers (that is, the algorithm does not wait until new individuals arrive, but the buffers cannot be used again until the reception is done). This kind of communication offers an excellent performance when working with different nodes and operating systems, as demonstrated in \cite{HETEROGENEOUSHARD,AsynchronousMerelo08}. The transmission mechanism is based on ECF Generic server (over TCP)\footnote{\url{http://www.eclipse.org/ecf/}}.  The source code of the algorithms used in this work is available in \url{http://www.osgiliath.org} under a LGPL V3 License. 
 
 %%%%%%%%%%%%%%%%%%  Results  %%%%%%%%%%%%%%%%%%%
 
