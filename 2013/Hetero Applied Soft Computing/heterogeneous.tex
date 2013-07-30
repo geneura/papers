@@ -431,6 +431,9 @@ This section presents the parameters and platforms to conduce the experiments.
 The experimentation is centered in a distributed GA. Figure \ref{fig:EA} shows the pseudo-code of the used algorithm. %We have consider the usual set of parameters used in the literature for this type of algorithms. Parameters are described in Table \ref{table:parameters}. 
 The algorithm is steady-state, i.e. every generation the offspring is mixed with the parents and the worst individuals are removed. The used neighborhood topology for migration between islands (nodes) is a ring (see Figure \ref{fig:islands}). The best individual is sent to the neighbour in the ring, after a fixed number of generations in each island. The algorithm stops when the optimum (the solution to the problem) is found.  %Two different parameter configurations have been used. The Homogeneous Size (HoSi) uses 64 individuals per node. In the Heterogeneous Size (HeSi) approach this number is proportional to the average number of generations attained by each node in this first homogeneous size execution.
 
+%Tienes que justificarlo absolutamente todo. ¿Si se usa otro
+%algoritmo, cambiarían los resultados? ¿Por qué se ha usado
+%precisamente este? - JJ
 
 
 \begin{figure}[htb]
@@ -461,7 +464,18 @@ The algorithm is steady-state, i.e. every generation the offspring is mixed with
 
 
 \subsection{Problems}
-The problems to evaluate are the Massively Multimodal Deceptive Problem (MMDP) \cite{goldberg92massive} and the OneMax problem \cite{ONEMAX}. Each one requires different actions/abilities by the GA at the level of population sizing, individual selection and building-blocks mixing. The MMDP
+%No empieces con "the problems to evaluate". Di que los resultados
+%deberían ser más o menos independientes del problema, pero se han
+%elegido estos por tal y cual. Tienes que justificar que con estos es
+%suficientes, para que no te digan el clásico "Prueba otro algoritmo"
+%- JJ
+
+The problems to evaluate are the Massively Multimodal Deceptive
+Problem (MMDP) \cite{goldberg92massive} and the OneMax problem
+\cite{ONEMAX}. Each one requires different actions/abilities by the GA
+at the level of population sizing, individual selection and
+building-blocks mixing. The MMDP
+
  is designed to be difficult for an EA, due to
 its multimodality and deceptiveness. Deceptive problems are functions where low-order building-blocks do not combine to form higher order building-blocks. Instead, low-order building-blocks may mislead the search towards local optima, thus challenging search mechanisms. MMDP it is composed of $k$ subproblems of 6 bits each one ($s_i$). Depending of
 the number of ones (unitation) $s_i$ takes the values shown in Table \ref{table:mmdpvalues}.  
@@ -517,7 +531,12 @@ f_{OneMax}(\vec{x}) = \sum_{i=1}^{N}{x_{i}}
 
 \subsection{Hardware and parameter configurations}
 
-Five configurations have been tested:
+Five configurations have been tested: % ¿Por qué? ¿Cubren el objetivo
+                                % del artículo? Si no, siempre llegará
+                                % el revisor que te diga "Prueba, no
+                                % sé, "migración de poblaciones
+                                % completas" o vaya usté a saber... -
+                                % JJ 
 
 \begin{itemize}
 \item HoSi/HoHa: Homogeneous Size/Homogeneous Hardware. The same population size in each island on a homogeneous cluster.
@@ -553,7 +572,9 @@ In this configuration, each node has 256 individuals (so, the total amount is 10
 
 \begin{table*}
 \centering{
-\caption{Average number of generations in each node when the optimum is found on the heterogeneous cluster with heterogeneous size.}
+\caption{Average number of generations in each node needed to find the
+  optimum on the heterogeneous cluster with heterogeneous size.}
+% Y la desviación? - JJ
 \begin{tabular}{|c|c|c|c|c|} \hline
 Node        & HeN1     & HeN2      & HeN3     & HeN4   \\ \hline
 \multicolumn{5}{|c|}{MMDP problem} \\ \hline
@@ -632,12 +653,17 @@ The three main objectives of parallel programming are to tackle large computatio
 As claimed by Alba and Luque in \cite{EVALUATIONPARALLEL}, assessing the performance of a parallel EA by the number of fitness function evaluations required to attain a solution may be misleading. In our case, for example, the evaluation time is different in each node of the heterogeneous cluster, so the real algorithm speed could not be reflected correctly. However, the number of evaluations has been included in this section to better understand the results. The total number of generations carried out by all nodes, and the maximum number of generations required by the faster node in each configuration are also shown. It is difficult to compare the performance of HoHa and HeHa for the same reason: the evaluation time is different in each system (and even in each node). That is, in this work, we are not making the heterogeneous cluster comparable or better in time than the homogeneous one (because they are, obviously, different), \textcolor{red}{but show that the same parameter configuration can improve performance in time in heterogeneous clusters and could not have effect in homogeneous ones}.
 
 \subsection{MMDP results}
+% No tiene mucho sentido hablar de los resultados de los dos problemas
+% por separado, porque el objetivo no es resolver ese problema, sino
+% probar cómo funciona en algoritmo. Se pueden comentar los dos juntos
+% y se debería hacer - JJ 
 
 Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. These results are also shown in the boxplots of Figure \ref{fig:timeMMDP} (time) and Figure \ref{fig:evalsMMDP} (evaluations). Table \ref{tab:significanceMMDP} shows the statistical significance of the results. First, a Kolmogorov-Smirnov test is performed to assess the normality of the distributions. \textcolor{red}{As all distributions are not normal, we use non-parametric tests. To compare between two methods (HoSi and HeSi in the homogeneous cluster) a Wilcoxon test has been applied. For a three methods comparison (HoSi, HeSi and AdSi in heterogeneous cluster) a Kruskal-Wallis test has been used.} %If the results fit a normal distribution, then a Student's T-Test is calculated. Otherwise, the non-parametric Wilcoxon test is applied (see \cite{TUTORIAL} for a tutorial for comparing EAs).
 
  In the HeHa system, adapting offline the population to the computational
  power of each node makes the algorithm finish significantly earlier,
- and also, needing a lower number of evaluations to reach the solution. On the other hand, in the HoHa system,
+ and need a lower number of evaluations to reach the solution. On the
+ other hand, in the HoHa system, % nunca coma antes de predicado - JJ 
  setting the same population sizes makes no difference in time and
  evaluations, that is, changing this parameter has no influence in the
  algorithm's performance (p-value=0.52 for time and 0.08 for evaluations).
@@ -646,6 +672,9 @@ Table \ref{tab:resultsMMDP} shows the results for the MMDP problem. These result
 \begin{table*}
 \centering
 \caption{Results for the MMDP problem.}
+% Es la desviación típica o el error de la media? Deberías publicar el
+% error de la media, esos números tan grandes (mayores que la media)
+% no tiene sentido - JJ 
 \resizebox{14cm}{!}{
 \begin{tabular}{|c|c|c|c|c|} \hline
 Configuration & Max. generations      & Total generations     &   Total evaluations     & Time (ms) \\ \hline
@@ -674,7 +703,9 @@ HeSi/HoHa   & 5411.92 $\pm$15608.81    & 10689.15  $\pm$  30790.7 & 1844908.1 $\
    \includegraphics[scale =0.35] {3b.eps}
    \label{fig:subfig2}
  }
-\caption{Time to obtain the optimum in the MMDP problem (milliseconds).}
+\caption{Time to obtain the optimum in the MMDP problem
+  (milliseconds).}
+%No se ve nada, deberías usar log-y - JJ 
 \label{fig:timeMMDP}
 \end{figure}
 
@@ -741,8 +772,19 @@ Proportion  & 39.69 &  35.98 & 22.91 & 1.41   \\ \hline
 \end{table*}
 
 
-\textcolor{red}{Summarizing, adapting the population sizes to the computational power of each machine (offline and online) has reduced the time to obtain the optimum. The same heterogeneous fixed sizes in the homogeneous cluster does not produces a significant decrease of running time, so the improvement is produced by the heterogeneity and not for the different island sizes. Also, the AdSi proposal is not applicable here because there are not differences of generations during runtime.}
+\textcolor{red}{Summarizing, adapting the population sizes to the
+  computational power of each machine (offline and online) has reduced
+  the time to obtain the optimum. The same heterogeneous fixed sizes
+  in the homogeneous cluster does not produces a significant decrease
+  of running time, so the improvement is produced by the heterogeneity
+  and not for the different island sizes. Also, the AdSi proposal is
+  not applicable here because there are no differences of generations
+  during runtime.} % no entiendo lo de que no haya "diferencias de
+                   % generaciones" - JJ 
 
+
+% este junto con el anterior y un párrafo al final de los dos a
+% comentar conjuntamente los resultados obtenidos. - JJ
 
 \subsection{OneMax results}
 
@@ -1037,10 +1079,34 @@ HeSi HoN4 &   0.007 $\pm$  0.008 &  1.215  $\pm$ 1.133  & 2.470  $\pm$ 0.098  & 
 %power of different nodes in a heterogeneous cluster (a cluster with different hardware).
 
 
-In this paper we describe a study on the adaptation of the population size of a distributed EA to the computational power of the different nodes of an heterogeneous cluster. \textcolor{red}{Two adaptation schemes (offline and online) have been tested.}
+In this paper we describe a study on the adaptation of the population
+size of a distributed EA to the computational power of the different
+nodes of an heterogeneous cluster. \textcolor{red}{Two adaptation
+  schemes (offline and online) have been tested.} % No. Tratamos de
+                                % probar un objetivo, dilo aquí!!!!!
 
 Results show that adapting (online or offline) the population size to the computational power of each node in the heterogeneous cluster yields significantly
-better results in time than keeping the same parameter in all nodes. This advantage is due to the combination of the heterogeneous parameters with the heterogeneity of the machines. On the contrary, the same (heterogeneous) parameter setting in all islands of the homogeneous cluster could not improve the results than considering the same parameter value in all nodes.
+better results in time than keeping the same parameter in all
+nodes. This advantage is due to the combination of the heterogeneous
+parameters with the heterogeneity of the machines. % o sea, tener
+                                % maquinas heterogéneas y parámetros
+                                % heterogéneos es mejor porque usamos
+                                % parámetros heterogéneos en máquinas
+                                % heterogéneas. Di en qué puede
+                                % influir eso en la mejora de los
+                                % resultados y discute por qué podría
+                                % ser así y propón experimentos para
+                                % probar que efectivamente se trata de
+                                % eso. - JJ
+On the contrary,
+the same (heterogeneous) parameter setting in all islands of the
+homogeneous cluster could not improve the results than considering the
+same parameter value in all nodes. % ¿Y qué más da?  ¿Por qué es esto
+                                % relevante? Di que, por tanto, la
+                                % mejora no se debe al cambio de
+                                % parámetros sólo, sino a la
+                                % combinación entre cambio de
+                                % parámetros y adaptación al nodo - JJ 
 
 %To obtain a fair parameter configuration,
 %this parameter has been obtained proportionally to the attained
