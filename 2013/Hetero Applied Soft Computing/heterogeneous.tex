@@ -284,7 +284,7 @@ In the field of  Evolutionary Computation (EC) there are two different approache
 
 In the area of heterogeneous parameters, but homogeneous hardware, setting a random set of parameters in each node can also increase the performance of a distributed Genetic Algorithm, as explained by Gong and Fukunaga in \cite{HETEROGENEOUSPARAMETERS}. That model outperformed a tuned canonical dGA with the same parameter values in all islands. Finally, adapting the migration rate produced better results than homogeneous periods, as explained by Salto and Alba in \cite{HETEROGENEOUSMIGRATION}. Previous works were only tested in homogeneous clusters.
 
- Our work presents a combination of some of the previous ideas: a set of parameters are adapted \textcolor{red}{(offline and online)} to the computational power of each machine used, and compared in different hardware systems.
+ Our work presents a combination of some of the previous ideas: a parameter (size) is adapted \textcolor{red}{(offline and online)} to the computational power of each machine used, and compared in different hardware systems.
  To our knowledge, there are not works that
  modify parameters of the EA depending of the
  node where the island is being executed. 
@@ -356,12 +356,12 @@ the number of ones (unitation) $s_i$ takes the values shown in Table \ref{table:
 \begin{table}
 
 \centering
-{%\scriptsize
+{\scriptsize
 \caption{ Basic deceptive bipolar function ($s_i$) for MMDP.}
 \label{table:mmdpvalues}
 \begin{tabular}{|c|c|}
 \hline
-\texttt{Unitation}&\texttt{Subfunction value}\\
+Unitation&Subfunction value\\
 \hline
 0 & 1.000000 \\
 \hline
@@ -457,7 +457,7 @@ Proportion  & 38.58   & 37.36   & 22.6   & 1.45 \\ \hline
 
 \subsection{Heterogeneous Size configuration}
 
-Our aim consists in validating the following hypothesis: adapting the population size to the computational power of the nodes of a heterogeneous cluster presents an improvement in execution time. In this work, we have used the average number of generations obtained in the HoSi/HeHa configuration for both problems to determine the computational power of the heterogeneous machines. This comparison takes into account all the evolutionary process in a fair manner (proportional to the memory, processor and network usage), instead a traditional benchmark that usually relies only on the CPU speed. Although this is not obviously the best way, it is a possible way to establish the computational power for the experiments of this work and to determine if changing the population size according the computational power reduces the computing time of the whole approach. It should be considered that the contribution of this work is not the way we have computed these sizes, but compare the algorithm with parameters adapted to their power.
+Our aim consists in validating the following hypothesis: adapting the population size to the computational power of the heterogeneous cluster nodes presents an improvement in execution time. In this work, we have used the average number of generations obtained in the HoSi/HeHa configuration for both problems to determine the computational power of the heterogeneous machines. This comparison takes into account all the evolutionary process in a fair manner (proportional to the memory, processor and network usage), instead a traditional benchmark that usually relies only on the CPU speed. Although this is not obviously the best way, it is a possible way to establish the computational power for the experiments of this work and to determine if changing the population size according the computational power reduces the computing time of the whole approach. It should be considered that the contribution of this work is not the way we have computed these sizes, but compare the algorithm with parameters adapted to their power.
 
 Thus, we have used the obtained average number of generations in the previous sub-section to set proportionally the sizes in the HeSi/HeHa and HeSi/HoHa configurations, by dividing the total number of individuals (1024). Note that, even having two nodes with the same processors and memory (HeN1 and HeN2), they could have different computational power: this may be produced by different operating systems, virtual machine versions, or number of processes being executed (inside a node).
 
@@ -471,7 +471,7 @@ Thus, we have used the obtained average number of generations in the previous su
 size'_{N}=\dfrac{Gen_{N}}{Gen_{N-1}}size_{N}
 \end{equation}
 
-\textcolor{red}{If the new size is larger than the actual size the new individuals are added to the population cloning random existent ones. Otherwise, to reduce the size, the worst are removed.}
+\textcolor{red}{If the new size is larger than the actual size the new individuals are added to the population cloning random existent ones. Otherwise, in order to reduce the size, the worst are removed.}
 
 \textcolor{red}{With this possible online adaptation scheme, each node only requires to receive information of one of the neighbours and not from the whole system. Thus, each node tends to have a number of individuals proportional to their computational power with respect to the other nodes. Experiments in homogeneous cluster do not alter the population sizes, as the number of current generations are equal in all nodes during runtime.}
 
@@ -628,7 +628,7 @@ Proportion  & 39.69 &  35.98 & 22.91 & 1.41   \\ \hline
 \end{table*}
 
 
-\textcolor{red}{Summarizing, adapting the population sizes to the computational power of each machine (offline and online) has reduced the time to obtain the optimum. The same heterogeneous fixed sizes in the homogeneous cluster does not produces a significant decrease of running time, so the improvement is produced by the heterogeneity and not for the different island sizes. Also, the AdSi proposal is not applicable here because there is not differences of generations during runtime.}
+\textcolor{red}{Summarizing, adapting the population sizes to the computational power of each machine (offline and online) has reduced the time to obtain the optimum. The same heterogeneous fixed sizes in the homogeneous cluster does not produces a significant decrease of running time, so the improvement is produced by the heterogeneity and not for the different island sizes. Also, the AdSi proposal is not applicable here because there are not differences of generations during runtime.}
 
 
 \subsection{OneMax results}
