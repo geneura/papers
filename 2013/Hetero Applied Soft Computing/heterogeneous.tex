@@ -276,20 +276,133 @@ Then, the results of the experiments are shown (Section \ref{sec:results}), foll
 %
 \section{State of the art}
 \label{sec:soa}
-%
+
 
 In the field of  Evolutionary Computation (EC) there are two different approaches about the algorithm parameter setting: {\em parameter control} and {\em parameter tuning} \cite{PARAMETERTUNING}. The first one refers to setting up a number of parameters of an Evolutionary Algorithm  and changing these values in running time (online). The parameter tuning consists in establishing a good set of parameters before the run (offline), and do not change them during the execution.
 
- Computational performance of nodes or network speed can also be inherent parameters of an algorithm. In \cite{HETEROGENEOUSHARD}, Alba et al. compared a distributed Genetic Algorithm (dGA), one of the sub-types of EAs, in homogeneous and heterogeneous clusters. Super-linear performance was obtained in the heterogeneous ones, being more efficient than the same algorithm running in homogeneous machines, although the parameter setting was the same in both clusters. Some authors have expanded this idea by adapting the algorithm to be executed: Dom\'inguez et al. \cite{HYDROCM} presented a distributed hybrid meta-heuristic that combines two different EAs: Genetic Algorithms (GAs) and Simulated Annealing (SA). Their system executes the heavy (in computational terms) algorithms (GAs) in faster nodes (computational devices), and simpler meta-heuristics (SA) in slower ones, obtaining better results than other configurations. As in previous works, the parameters were not adapted to the node. Gong et al. in \cite{HETEROGENEOUSTOPOLOGY} studied different configurations of heterogeneous machines for a tree topology. However, the heterogeneity was simulated in a homogeneous cluster with programs to add computational load. Load-balancing was also applied taking into account the computational load of the nodes in the work of Garamendi et al. \cite{PARALLELIMPLEMENTATION}: a small benchmark was executed in all nodes at the beginning of the algorithm in order to distribute individuals of an Evolutionary Strategy (ES). However, there was no communication between the nodes and the algorithm parameters were not adapted. 
+ Computational performance of nodes or network speed can also be
+ inherent parameters of an algorithm. In \cite{HETEROGENEOUSHARD},
+ Alba et al. compared a distributed Genetic Algorithm (dGA), one of
+ the sub-types of EAs, in homogeneous and heterogeneous clusters. % ¿Cómo considera las prestaciones un parámetro este trabajo en particular? - JJ
+ Super-linear performance was obtained in the heterogeneous ones,
+ being more efficient than the same algorithm running in homogeneous
+ machines, although the parameter setting was the same in both
+ clusters. % Entonces no tiene nada que ver con lo de los parámetros
+           % "inherentes". Si tiene que ver, no está explicado. Y en
+           % todo caso este artículo está más en el contexto de "dEA
+           % heterogéneos", que no es algo a lo que has dicho que ibas
+           % a aludir. Si es eso de lo que vas a hablar, podría ser un
+           % ejemplo negativo: "Los DEAs heterogéneos han obtenido
+           % buenos resultados sin necesidad de adaptación de
+           % parámetros". 
+%Tampoco haces ninguna referencia a la asincronía. Tú tienes
+%algoritmos heterogéneos síncronos, mientras que estos me parece
+%recordar que son asíncronos y si hablas de ellos tienes estos dos
+%papers:
+% http://scholar.google.com/citations?view_op=view_citation&hl=en&user=gFxqc64AAAAJ&pagesize=100&citation_for_view=gFxqc64AAAAJ:k8Z6L05lTy4C
+% y
+% http://scholar.google.com/citations?view_op=view_citation&hl=en&user=gFxqc64AAAAJ&pagesize=100&citation_for_view=gFxqc64AAAAJ:9ZlFYXVOiuMC
+% también estos
+% http://scholar.google.com/citations?view_op=view_citation&hl=en&user=gFxqc64AAAAJ&cstart=100&pagesize=100&citation_for_view=gFxqc64AAAAJ:lSLTfruPkqcC
+% 
+Some authors have expanded this idea % qué idea? La de los algoritmos
+                                % heterogéneos? - JJ
+by adapting the algorithm to be executed: Dom\'inguez et
+al. \cite{HYDROCM} presented a distributed hybrid meta-heuristic that
+combines two different EAs: Genetic Algorithms (GAs) and Simulated
+Annealing (SA). Their system executes the heavy (in computational
+terms) algorithms (GAs) in faster nodes (computational devices), and
+simpler meta-heuristics (SA) in slower ones, obtaining better results
+than other configurations. As in previous works, the parameters were
+not adapted to the node. % ni falta que hacía, ya adaptabas el
+                         % algoritmo. En todo caso, no tiene nada que
+                         % ver con el anterior, salvo que es
+                         % heterogéneo - JJ 
+ Gong et al. in \cite{HETEROGENEOUSTOPOLOGY} studied different
+ configurations % configurations de qué? parameter? Algoritmo? de qué?
+                % Tienes que relacionarlo con el anterior, recuerda
+                % "la narrativa" - JJ
+ of heterogeneous machines for a tree topology. % para qué necesitaban
+                                % el árbol? - JJ 
+ However, the heterogeneity was simulated in a homogeneous cluster
+ with programs to add computational load. %eso es irrelevante (como lo
+                                %del árbol) - JJ
+ Load-balancing was also applied taking into account the computational
+ load of the nodes % en ese caso, la carga era una forma de medir con
+                   % precisión las prestaciones de cada uno, algo que
+                   % no se puede hacer tan bien con nodos heterogéneos
+                   % - JJ 
+ in the work of Garamendi et al. \cite{PARALLELIMPLEMENTATION} a small
+ benchmark was executed in all nodes at the beginning of the algorithm
+ in order to distribute individuals of an Evolutionary Strategy
+ (ES). However, there was no communication between the nodes and the
+ algorithm parameters were not adapted.  % Hala, seguimos con "este
+                                % tío hace esto". "Tal como en el
+                                % anterior se conocía la carga
+                                % computacional a base de crearla
+                                % artificialmente (lo que es no
+                                % bueno), el problema de representar
+                                % la capacidad computacional en cada
+                                % nodo se resuelve  por parte de
+                                % Garamendi via..." "nosotros, por
+                                % nuestra parte, haremos... "
+%O mucho mejor. "Uno de los problemas en la adaptación de parámetros
+%en clusters heterogéneos es la representación de la carga
+%computacional. Se puede resolver de varias formas: una, el usar una
+%carga conocida como hizo no sé quién. Otra, usar un benchmark como
+%hizo no sé quién " (y no me creo que este tío haya sido el único). 
+% Además, este artículo tiene toda la pinta de un proyecto fin de
+% carrera y es bastante cutre, aunque apunta a diferentes técnicas de
+% adaptación de carga en clusters heterogéneos que es lo que deberías
+% mirar, en general. 
+% Por ejemplo, tienes este artículo, el primero que sale en "load
+% balancing heterogeneous clusters"
+% http://www.sciencedirect.com/science/article/pii/S0167739X01000589
+% Te dice: "This research addresses techniques by which the size of
+% the task assigned to a processor is a suitable match. Thus, the more
+% powerful processors do more work and the less powerful processors
+% perform less work."
+% Una primera aproximación al "tamaño" de la tarea es cambiar el
+% tamaño de la población, aunque en realidad lo que se cambia es el
+% "tamaño" de la computación necesaria para calcular una
+% generación. Las conclusiones vienen bastante bien para justificar,
+% al menos a priori, este artículo. Mira también lo que dice sobre los
+% resultados dependiendo de la disimilitud de las prestaciones de los
+% nodos - JJ
 
-In the area of heterogeneous parameters, but homogeneous hardware, setting a random set of parameters in each node can also increase the performance of a distributed Genetic Algorithm, as explained by Gong and Fukunaga in \cite{HETEROGENEOUSPARAMETERS}. That model outperformed a tuned canonical dGA with the same parameter values in all islands. Finally, adapting the migration rate produced better results than homogeneous periods, as explained by Salto and Alba in \cite{HETEROGENEOUSMIGRATION}. Previous works were only tested in homogeneous clusters.
+In the area of heterogeneous parameters, but homogeneous hardware,
+setting a random set of parameters in each node can also increase the
+performance of a distributed Genetic Algorithm, as explained by Gong
+and Fukunaga in \cite{HETEROGENEOUSPARAMETERS}. That model
+outperformed a tuned canonical dGA with the same parameter values in
+all islands. Finally, adapting the migration rate produced better
+results than homogeneous periods, as explained by Salto and Alba in
+\cite{HETEROGENEOUSMIGRATION}. Previous works were only tested in
+homogeneous clusters. 
+% Todo esto está bien porque vas a probar lo mismo en el paper, pero
+% ¿por qué diablos lo haces? Si es para establecer una baseline de
+% prestaciones, no hace falta que lo justifiques, porque no es un
+% resultado del paper. Si es para justificar algo, di qué es lo que
+% quieres justificar y como encaja en la estrategia. 
 
- Our work presents a combination of some of the previous ideas: a parameter (size) is adapted \textcolor{red}{(offline and online)} to the computational power of each machine used, and compared in different hardware systems.
- To our knowledge, there are not works that
+
+ Our work presents a combination of some of the previous ideas: % si
+                                % son solo some, ¿para qué presentas
+                                % las otras? ¿Cómo encajan en la
+                                % justificación de tu trabajo?
+                                % Finalmente, lo más importante, ¿cuál
+                                % es el estado del arte sobre el cuál
+                                % vas a probar que has establecido una
+                                % mejora? 
+ a parameter (size) is adapted \textcolor{red}{(offline and online)} to the computational power of each machine used, and compared in different hardware systems.
+ To the best of our knowledge, there are no works that
  modify parameters of the EA depending of the
  node where the island is being executed. 
 % pero explica por qué esa combinación es interesante y puede
-% aprovechar mejor la capacidad computacional del sistema - JJ FERGU: He descomentado el párrafo de To our knowledge y he metido más info
+% aprovechar mejor la capacidad computacional del sistema - JJ FERGU:
+% He descomentado el párrafo de To our knowledge y he metido más info
+% Jolines, si acabas de poner el trabajo del estudiante de la URJC que
+% hace lo mismo!!!! Al menos habrá uno, pero seguro que hay más. 
 
 
 
