@@ -141,7 +141,7 @@
 
 
 \begin{abstract}
-To increase performance, distributed algorithms on heterogeneous clusters should be adapted to take advantage of the available resources. In distributed Evolutionary Algorithms the population size is a key factor parameter, because it directly influences the iterations necessary to find the solution. In this paper, we present a study to adapt this parameter to computational power of the nodes of a heterogeneous cluster, in order to reduce execution time. Two size adaptation schemes have been proposed: an offline and an online parameter setting, and two well-known problems with different characteristics and computational demands (MMDP and OneMax) have been tested. Results show that setting the population size according to the computational power of the nodes in the heterogeneous cluster decreases the time required to obtain the optimum. Meanwhile, these size values could not improve the time in a homogeneous cluster. In addition, a study of the influence of the different population sizes on each stage of the algorithm is presented. This opens a new research line on the adaptation (offline or online) of parameters to the computational power of the devices.
+\textcolor{red}{In order to increase performance, distributed algorithms on heterogeneous clusters should be adapted to take advantage of the available resources. In distributed Evolutionary Algorithms the population size is one of the factors that mainly affects the execution time, because it directly influences the iterations necessary to find the solution. In this paper, we present a study to adapt this parameter to computational power of the nodes of a heterogeneous cluster, in order to reduce execution time. Two size adaptation schemes have been proposed: an offline and an online parameter setting, and two problems with different characteristics and computational demands (MMDP and OneMax) have been tested. Results show that setting the population size according to the computational power of the nodes in the heterogeneous cluster decreases the time and evaluations required to obtain the optimum. Meanwhile, the same set of different size values could not improve the time in a homogeneous cluster, so the improvement is due to the interaction of the different resources with the algorithm. In addition, a study of the influence of the different population sizes on each stage of the algorithm is presented. This opens a new research line on the adaptation (offline or online) of parameters to the computational power of the devices.}
 
 %Quitado: The total number of individuals is divided taking into account the computational power of each node.
 \end{abstract}
@@ -159,8 +159,7 @@ Evolutionary Algorithms \sep Genetic Algorithms \sep Heterogeneous computation \
 \section{Introduction}
 \label{sec:intro}
 
-\textcolor{red}{Adapting algorithm parameters to available computational resources leads to an increase of performance \cite{AutomaticallyConfiguringStyles12}. In this paper we have adapted a distributed Evolutionary Algorithm to leverage the capability of a
-   heterogeneous cluster.}
+\textcolor{red}{Adapting algorithm parameters to available computational resources leads to improved performance \cite{AutomaticallyConfiguringStyles12}. An easy way to take advantage of the available resources is the load balancing \cite{PARALLELIMPLEMENTATION} to distribute workloads across multiple elements. However, assigning equal tasks  to each node on heterogeneous clusters may result in suboptimal performance \cite{LoadBalancingBohn02}. Parameters of an algorithm could also be adapted to increase the performance of the whole system. In this paper we have investigate wether adapt a parameter (population size) of a distributed Evolutionary Algorithm can leverage the capability of a heterogeneous cluster.}
 
 Evolutionary Algorithms (EAs) are a general technique for solving optimization and search problems based on the evolution of species and natural selection. These algorithms are formed by a population of possible solutions, called {\em individuals}, that compete using their {\em fitness} (quality of adaptation) with the rest of solutions. Every iteration of the algorithm (or {\em generation}) the population evolves by means of selection and recombination/mutation to create a new set of candidates, until a {\em stop criterion} (e.g. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function usually describes the problem to solve.
 
@@ -255,7 +254,7 @@ In this work, a heterogeneous distributed system has been used to give an insigh
    heterogeneous cluster? % Si este es el objetivo principal, deberías
                           % hacer énfasis desde el principio de la
                           % intro y demás. FERGU2: Dicho al principio de la intro
- \item \textcolor{red}{How the adaptation of the population size to the computational power affects the execution time?} % computational power ==
+ \item \textcolor{red}{How the adaptation of the population size to the computational power affects the execution time and number of evaluations?} % computational power ==
                                 % performance? - JJ FERGU: Reescrita
                                 % la pregunta
    % el efecto sobre qué? ¿El número de evaluaciones el algoritmo? ¿El
@@ -269,7 +268,7 @@ In this work, a heterogeneous distributed system has been used to give an insigh
 
 The rest of the work is structured as follows: after a presentation of
 the state of
-the art in the parameter adaptation and load-balancing in dEAs, %en qué área? aquilátalo bien y que quede muy clarito - JJ - FERGU: Hecho
+the art in the algorithm parameter adaptation to computational substrate in dEAs, %en qué área? aquilátalo bien y que quede muy clarito - JJ - FERGU: Hecho FERGU2: Y cambiado de nuevo
  we present the developed algorithms and experimental setting (Section \ref{sec:experiments}). 
 Then, the results of the experiments are shown (Section \ref{sec:results}), followed by conclusions and suggestions for future work lines.
 
@@ -280,16 +279,49 @@ Then, the results of the experiments are shown (Section \ref{sec:results}), foll
 \label{sec:soa}
 
 
-In the field of  Evolutionary Computation (EC) there are two different approaches about the algorithm parameter setting: {\em parameter control} and {\em parameter tuning} \cite{PARAMETERTUNING}. The first one refers to setting up a number of parameters of an Evolutionary Algorithm  and changing these values in running time (online). The parameter tuning consists in establishing a good set of parameters before the run (offline), and do not change them during the execution.
 
- Computational performance of nodes or network speed can also be
- inherent parameters of an algorithm. In \cite{HETEROGENEOUSHARD},
+One of the problems in parameter adaptation in heterogeneous clusters is 
+the computational load representation. Usually, an artificial benchmark 
+is used. For example, in the work of Garamendi et al. \cite{PARALLELIMPLEMENTATION} 
+where a small benchmark was executed in all nodes at the beginning of the algorithm
+ in order to distribute individuals of an Evolutionary Strategy
+ (ES). The computational load by artificial benchmarks may not accurately 
+ represent the correct load of the algorithm. In this work, we use the results of 
+ our own algorithm to calibrate the load.
+
+In other works, there are not direct relation with the algorithm parameters and 
+computational resources of the nodes. For example, Dom\'inguez et al. \cite{HYDROCM} 
+divided the available devices in ``faster'' and ``slower'' nodes to create a distributed hybrid 
+meta-heuristic that combines two different EAs: Genetic Algorithms (GAs) and Simulated
+Annealing (SA). Their system executes the heavy (in computational
+terms) algorithms (GAs) in the faster nodes (computational devices), and
+simpler meta-heuristics (SA) in the slower ones, obtaining better results
+than other configurations.  Gong et al. in \cite{HETEROGENEOUSTOPOLOGY} also ordered 
+the nodes by their computational power to test different topology configurations in a distributed EA.
+Appart from order the nodes taking into account 
+only their previously known computational resources, the results of the previous works were not compared in a homogeneous 
+cluster to validate if the adaptation takes advantage of the heterogeneity 
+of the cluster, as proposed in this paper.
+
+The heterogeneous computational performance of nodes or network speed can affect the performance of an algorithm. In \cite{HETEROGENEOUSHARD},
  Alba et al. compared a distributed Genetic Algorithm (dGA), one of
- the sub-types of EAs, on homogeneous and heterogeneous clusters. % ¿Cómo considera las prestaciones un parámetro este trabajo en particular? - JJ
- Super-linear performance was obtained in the heterogeneous ones,
+ the sub-types of EAs, on homogeneous and heterogeneous clusters. % ¿Cómo considera las prestaciones un parámetro este trabajo en particular? - JJ FERGU2: number of iterations
+ Super-linear performance in terms of iterations was obtained in the heterogeneous ones,
  being more efficient than the same algorithm running on homogeneous
- machines, although the parameter setting was the same in both
- clusters. % Entonces no tiene nada que ver con lo de los parámetros
+ machines. However, the parameter setting was the same in both
+ clusters and they not adapted the parameters to the machines used. %FERGU2: comparado
+
+
+%In the field of  Evolutionary Computation (EC) there are two different approaches about the algorithm parameter setting: {\em parameter control} and {\em parameter tuning} \cite{PARAMETERTUNING}. The first one refers to setting up a number of parameters of an Evolutionary Algorithm  and changing these values in running time (online). The parameter tuning consists in establishing a good set of parameters before the run (offline), and do not change them during the execution.
+
+ %Computational performance of nodes or network speed can also be
+ %inherent parameters of an algorithm. In \cite{HETEROGENEOUSHARD},
+ %Alba et al. compared a distributed Genetic Algorithm (dGA), one of
+ %the sub-types of EAs, on homogeneous and heterogeneous clusters. % ¿Cómo considera las prestaciones un parámetro este trabajo en particular? - JJ FERGU2: iterations
+ %Super-linear performance was obtained in the heterogeneous ones,
+ %being more efficient than the same algorithm running on homogeneous
+ %machines, although the parameter setting was the same in both
+ %clusters. % Entonces no tiene nada que ver con lo de los parámetros
            % "inherentes". Si tiene que ver, no está explicado. Y en
            % todo caso este artículo está más en el contexto de "dEA
            % heterogéneos", que no es algo a lo que has dicho que ibas
@@ -307,40 +339,40 @@ In the field of  Evolutionary Computation (EC) there are two different approache
 % también estos
 % http://scholar.google.com/citations?view_op=view_citation&hl=en&user=gFxqc64AAAAJ&cstart=100&pagesize=100&citation_for_view=gFxqc64AAAAJ:lSLTfruPkqcC
 % 
-%FERGU2: el mío sí es asíncrono, lo pone por ahí, pero añado uno de estos a la sección "Framework"
+%FERGU2: el mío sí es asíncrono, lo pone más adelante, pero añado uno de estos a la sección "Framework"
 
-Some authors have expanded this idea % qué idea? La de los algoritmos
+%Some authors have expanded this idea % qué idea? La de los algoritmos FERGU2: Todos estos trabajos han sido reordenados y puestos arriba
                                 % heterogéneos? - JJ
-by adapting the algorithm to be executed: Dom\'inguez et
-al. \cite{HYDROCM} presented a distributed hybrid meta-heuristic that
-combines two different EAs: Genetic Algorithms (GAs) and Simulated
-Annealing (SA). Their system executes the heavy (in computational
-terms) algorithms (GAs) in faster nodes (computational devices), and
-simpler meta-heuristics (SA) in slower ones, obtaining better results
-than other configurations. As in previous works, the parameters were
-not adapted to the node. % ni falta que hacía, ya adaptabas el
+%by adapting the algorithm to be executed: Dom\'inguez et
+%al. \cite{HYDROCM} presented a distributed hybrid meta-heuristic that
+%combines two different EAs: Genetic Algorithms (GAs) and Simulated
+%Annealing (SA). Their system executes the heavy (in computational
+%terms) algorithms (GAs) in faster nodes (computational devices), and
+%simpler meta-heuristics (SA) in slower ones, obtaining better results
+%than other configurations. As in previous works, the parameters were
+%not adapted to the node. % ni falta que hacía, ya adaptabas el
                          % algoritmo. En todo caso, no tiene nada que
                          % ver con el anterior, salvo que es
-                         % heterogéneo - JJ 
- Gong et al. in \cite{HETEROGENEOUSTOPOLOGY} studied different
- configurations % configurations de qué? parameter? Algoritmo? de qué?
+                         % heterogéneo - JJ FERGU2: movido arriba, comparado con lo nuestro.
+ %Gong et al. in \cite{HETEROGENEOUSTOPOLOGY} studied different
+ %configurations % configurations de qué? parameter? Algoritmo? de qué?
                 % Tienes que relacionarlo con el anterior, recuerda
                 % "la narrativa" - JJ
- of heterogeneous machines for a tree topology. % para qué necesitaban
-                                % el árbol? - JJ 
- However, the heterogeneity was simulated in a homogeneous cluster
- with programs to add computational load. %eso es irrelevante (como lo
-                                %del árbol) - JJ
- Load-balancing was also applied taking into account the computational
- load of the nodes % en ese caso, la carga era una forma de medir con
+ %of heterogeneous machines for a tree topology. % para qué necesitaban
+                                % el árbol? - JJ fERGU2: árbol quitado
+ %However, the heterogeneity was simulated in a homogeneous cluster
+ %with programs to add computational load. %eso es irrelevante (como lo
+                                %del árbol) - JJ FERGU2: quitado lo de simulated
+ %Load-balancing was also applied taking into account the computational
+ %load of the nodes % en ese caso, la carga era una forma de medir con
                    % precisión las prestaciones de cada uno, algo que
                    % no se puede hacer tan bien con nodos heterogéneos
                    % - JJ 
- in the work of Garamendi et al. \cite{PARALLELIMPLEMENTATION} a small
- benchmark was executed in all nodes at the beginning of the algorithm
- in order to distribute individuals of an Evolutionary Strategy
- (ES). However, there was no communication between the nodes and the
- algorithm parameters were not adapted.  % Hala, seguimos con "este
+ %in the work of Garamendi et al. \cite{PARALLELIMPLEMENTATION} a small
+ %benchmark was executed in all nodes at the beginning of the algorithm
+ %in order to distribute individuals of an Evolutionary Strategy
+ %(ES). However, there was no communication between the nodes and the
+ %algorithm parameters were not adapted.  % Hala, seguimos con "este
                                 % tío hace esto". "Tal como en el
                                 % anterior se conocía la carga
                                 % computacional a base de crearla
@@ -350,7 +382,7 @@ not adapted to the node. % ni falta que hacía, ya adaptabas el
                                 % nodo se resuelve  por parte de
                                 % Garamendi via..." "nosotros, por
                                 % nuestra parte, haremos... "
-%O mucho mejor. "Uno de los problemas en la adaptación de parámetros
+%O mucho mejor. "Uno de los problemas en la adaptación de parámetros FERGU2: Puesto al principio del SOA
 %en clusters heterogéneos es la representación de la carga
 %computacional. Se puede resolver de varias formas: una, el usar una
 %carga conocida como hizo no sé quién. Otra, usar un benchmark como
@@ -359,14 +391,14 @@ not adapted to the node. % ni falta que hacía, ya adaptabas el
 % carrera y es bastante cutre, aunque apunta a diferentes técnicas de
 % adaptación de carga en clusters heterogéneos que es lo que deberías
 % mirar, en general. 
-% Por ejemplo, tienes este artículo, el primero que sale en "load
+% Por ejemplo, tienes este artículo, el primero que sale en "load FERGU2: Citado y comentado
 % balancing heterogeneous clusters"
 % http://www.sciencedirect.com/science/article/pii/S0167739X01000589
 % Te dice: "This research addresses techniques by which the size of
 % the task assigned to a processor is a suitable match. Thus, the more
 % powerful processors do more work and the less powerful processors
 % perform less work."
-% Una primera aproximación al "tamaño" de la tarea es cambiar el
+% Una primera aproximación al "tamaño" de la tarea es cambiar el FERGU2: esta parte puesta arriba.
 % tamaño de la población, aunque en realidad lo que se cambia es el
 % "tamaño" de la computación necesaria para calcular una
 % generación. Las conclusiones vienen bastante bien para justificar,
