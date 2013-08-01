@@ -159,9 +159,9 @@ Evolutionary Algorithms \sep Genetic Algorithms \sep Heterogeneous computation \
 \section{Introduction}
 \label{sec:intro}
 
-\textcolor{red}{Adapting algorithm parameters to available computational resources leads to improved performance \cite{AutomaticallyConfiguringStyles12}. An easy way to take advantage of the available resources is the load balancing \cite{PARALLELIMPLEMENTATION} to distribute workloads across multiple elements. However, assigning equal tasks  to each node on heterogeneous clusters may result in suboptimal performance \cite{LoadBalancingBohn02}. Parameters of an algorithm could also be adapted to increase the performance of the whole system. In this paper we have investigate wether adapt a parameter (population size) of a distributed Evolutionary Algorithm can leverage the capability of a heterogeneous cluster.}
+\textcolor{red}{Adapting algorithm parameters to available computational resources leads to improved performance \cite{AutomaticallyConfiguringStyles12}. An easy way to take advantage of the available resources is the load balancing \cite{PARALLELIMPLEMENTATION} to distribute workloads across multiple elements. However, assigning equal tasks  to each node on heterogeneous clusters may result in suboptimal performance \cite{LoadBalancingBohn02}. Parameters of an algorithm could also be adapted to increase the performance of the whole system. For example, the population size in Evolutionary Algorithms (EAs) is the key to obtain good performance, because it have effect on the quality of the solution and the time spent during the run \cite{ShrinkageLaredo09}. This parameter has been studied as a fixed \cite{SizingHarik99} or adaptive parameter during runtime \cite{AdaptiveLobo07}, but without taking into account the computational power of each machine in a dEA. In this paper we have investigate whether adapt the population size of the islands of a distributed Evolutionary Algorithm (dEAs) can leverage the capability of a heterogeneous cluster.}
 
-Evolutionary Algorithms (EAs) are a general technique for solving optimization and search problems based on the evolution of species and natural selection. These algorithms are formed by a population of possible solutions, called {\em individuals}, that compete using their {\em fitness} (quality of adaptation) with the rest of solutions. Every iteration of the algorithm (or {\em generation}) the population evolves by means of selection and recombination/mutation to create a new set of candidates, until a {\em stop criterion} (e.g. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function usually describes the problem to solve.
+Evolutionary Algorithms are a general technique for solving optimization and search problems based on the evolution of species and natural selection. These algorithms are formed by a population of possible solutions, called {\em individuals}, that compete using their {\em fitness} (quality of adaptation) with the rest of solutions. Every iteration of the algorithm (or {\em generation}) the population evolves by means of selection and recombination/mutation to create a new set of candidates, until a {\em stop criterion} (e.g. number of generations) is met. Fitness function is a quality function that gives the grade of adaptation of an individual respect the others. This function usually describes the problem to solve.
 
 % Metes muchos the al principio de plural, es incorrecto - JJ - FERGU: Ya veo. Lo cambio en el resto del paper (por ejemplo, en el párrafo de abajo)
 New trends in distributed computing such as Cloud Computing \cite{CLOUD}, GRID
@@ -197,7 +197,7 @@ In distributed EAs a set of nodes executes simultaneously the EA, working with d
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=2.eps, width = 7cm}
+\epsfig{file=1.eps, width = 7cm}
 \caption{Island model scheme using a neighborhood ring topology.}
 \label{fig:islands}
 % Explica qué utilidad tiene en el artículo. FERGU: La cito luego en la sección experimentos
@@ -209,7 +209,7 @@ In distributed EAs a set of nodes executes simultaneously the EA, working with d
 
 
 
-Distributed EAs can be executed on homogeneous clusters with the same parameters in all nodes (homogeneous dEAs), or with different parameters or nodes's features (heterogeneous dEAs).
+Distributed EAs can be executed on homogeneous clusters with the same parameters in all nodes (homogeneous dEAs), or with different parameters or nodes' features (heterogeneous dEAs).
 It  has also been showed \cite{HETEROGENEOUSHARD} that dEAs with the same parameter configuration are even
 more efficient in time and evaluations on heterogeneous hardware configurations than on clusters with
 homogeneous devices. This can be explained by different reasons, such
@@ -230,7 +230,7 @@ of parameters for different problems
 
 % enlázalo con párrafo anterior. Un artículo es una historia. Por
 % ejemplo: These proofs have motivated us to propose in this paper... FERGU: Cambiado
-These facts have motivated us to study a combination of both ideas in this paper: dEAs on a heterogeneous set of nodes with different parameter values adapted to each node. In this study, the parameter to adapt to the computational power of each node has been the population size of each island. \textcolor{red}{The population size is the key to obtain good performance in EAs, because it have effect on the quality of the solution and the time spent during the run \cite{ShrinkageLaredo09}. This parameter has been studied as a fixed \cite{SizingHarik99} or adaptive parameter during runtime \cite{AdaptiveLobo07}, but without taking into account the computational power of each machine in a dEA.}
+These facts have motivated us to study a combination of both ideas in this paper: dEAs on a heterogeneous set of nodes with different parameter values adapted to each node. In this study, the parameter to adapt to the computational power of each node has been the population size of each island.
 
 %Our motivation in this work is to combine both ideas % ¿cuáles ideas?
                                 % a estas altura no se sabe de qué
@@ -278,16 +278,16 @@ Then, the results of the experiments are shown (Section \ref{sec:results}), foll
 \section{State of the art}
 \label{sec:soa}
 
-
-
 One of the problems in parameter adaptation in heterogeneous clusters is 
-the computational load representation. Usually, an artificial benchmark 
-is used. For example, the work of Garamendi et al. \cite{PARALLELIMPLEMENTATION}, 
-where a small benchmark was executed in all nodes at the beginning of the algorithm
- in order to distribute individuals of an Evolutionary Strategy
+the computational load representation. It depends of the algorithm, size of the problem, 
+language, compiler or hardware characteristics, and the results obtained from artificial 
+benchmarks (such as  Linpack \cite{LinpackEndo10}) should not be extolled as identificative 
+of the system performance \cite{LinpackDongarra03}. For example, in the work of Garamendi 
+et al. \cite{PARALLELIMPLEMENTATION},  a small benchmark was executed in all nodes at the beginning
+of the algorithm in order to distribute individuals of an Evolutionary Strategy
  (ES), following a master-slave model. The computational load by artificial benchmarks may not accurately 
- represent the correct load of the algorithm. In this work, we use the results of 
- our own algorithm to calibrate the load.
+ represent the correct load of the algorithm, so, as proposed in this paper, information 
+ about the algorithm itself should be used for calibration.
 
 In other works, there are not direct relation with the algorithm parameters and 
 computational resources of the nodes. For example, Dom\'inguez et al. \cite{HYDROCM} 
@@ -298,7 +298,7 @@ terms) algorithms (GAs) in the faster nodes (computational devices), and
 simpler meta-heuristics (SA) in the slower ones, obtaining better results
 than other configurations.  Gong et al. in \cite{HETEROGENEOUSTOPOLOGY} also ordered 
 the nodes by their computational power to test different topology configurations in a distributed EA.
-Appart from ordering the nodes taking into account 
+Besides from ordering the nodes taking into account 
 only their previously known computational resources, the results of the previous works were not compared in a homogeneous 
 cluster to validate if the adaptation takes advantage of the heterogeneity 
 of the cluster, as proposed in this paper.
@@ -459,7 +459,7 @@ In our work a parameter (size of the populations) of a dEA is adapted \textcolor
 %%%%%%%%%%%%%%%%%%  Experiments  %%%%%%%%%%%%%%%%%%%
 \section{Experimental setup}
 \label{sec:experiments}
-\textcolor{red}{In this section we propose two different parameter adaptation schemes to test if adapting the population to heterogeneous clusters reduces time in a distributed EA. In the field of  Evolutionary Computation (EC) there are two different approaches about the algorithm parameter setting: {\em parameter control} and {\em parameter tuning} \cite{PARAMETERTUNING}. The first one refers to setting up a number of parameters of an Evolutionary Algorithm  and changing these values in running time (online). The parameter tuning consists in establishing a good set of parameters before the run (offline), and do not change them during the execution. For the first approach, a dEA has been executed in the heterogeneous cluster. The obtained results have been used, to distribute the number of individual among the nodes (that is, offline). The same sizes set is used in the homogeneous cluster to validate if the changes in performance are dued to the parameters or the adaptation to the nodes. Finally, an online parameter setting that extract relative information of the performance of the nodes has been tested to validate our approach.}
+\textcolor{red}{In this section we propose two different parameter adaptation schemes to test if adapting the population sizes of a dEA to the nodes of a  heterogeneous clusters reduces time. In the field of  Evolutionary Computation (EC) there are two different approaches about the algorithm parameter setting: {\em parameter control} and {\em parameter tuning} \cite{PARAMETERTUNING}. The first one refers to setting up a number of parameters of an Evolutionary Algorithm  and changing these values in running time (online). The parameter tuning consists in establishing a good set of parameters before the run (offline), and do not change them during the execution. For the first approach, a dEA has been executed in the heterogeneous cluster. The obtained results have been used, to distribute the number of individual among the nodes (that is, offline). The same sizes set is used in the homogeneous cluster to validate if the changes in performance are dued to the parameters or the adaptation to the nodes. Finally, an online parameter setting that extract relative information of the performance of the nodes has been tested to validate our approach.}
 
 
 
@@ -754,14 +754,14 @@ To see the differences on how the evolution is being performed, the average fitn
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=sizesMMDP.eps, width = 9cm}
+\epsfig{file=7.eps, width = 9cm}
 \caption{Boxplots of the population sizes in each node during all the runs for the MMDP problem.}
 \label{fig:sizesMMDP}
 \end{figure}
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=1ejecMMDP.eps, width = 13cm}
+\epsfig{file=8.eps, width = 13cm}
 \caption{Population size in each node during one execution to solve the MMDP problem.}
 \label{fig:sizesMMDP1ejec}
 \end{figure}
@@ -835,11 +835,11 @@ HeSi/HoHa   & 13698.12 $\pm$ 406.85 & 16012.625 $\pm$  482.61 & 895698.2 $\pm$  
 \centering
 
 \subfigure[Heterogeneous cluster]{
-   \includegraphics[scale =0.35] {7a.eps}
+   \includegraphics[scale =0.35] {9a.eps}
    \label{fig:subfig1}
  }
 \subfigure[Homogeneous cluster]{
-   \includegraphics[scale =0.35] {7b.eps}
+   \includegraphics[scale =0.35] {9b.eps}
    \label{fig:subfig2}
  }
 \caption{Time to obtain the optimum in the OneMax problem (milliseconds).}
@@ -850,11 +850,11 @@ HeSi/HoHa   & 13698.12 $\pm$ 406.85 & 16012.625 $\pm$  482.61 & 895698.2 $\pm$  
 \centering
 
 \subfigure[Heterogeneous cluster]{
-   \includegraphics[scale =0.35] {8a.eps}
+   \includegraphics[scale =0.35] {10a.eps}
    \label{fig:subfig1}
  }
 \subfigure[Homogeneous cluster]{
-   \includegraphics[scale =0.35] {8b.eps}
+   \includegraphics[scale =0.35] {10b.eps}
    \label{fig:subfig2}
  }
 \caption{Number of evaluations for OneMax problem.}
@@ -865,14 +865,14 @@ HeSi/HoHa   & 13698.12 $\pm$ 406.85 & 16012.625 $\pm$  482.61 & 895698.2 $\pm$  
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=9.eps, angle=-90, width = 13cm}
+\epsfig{file=11.eps, angle=-90, width = 13cm}
 \caption{Average fitness in the first 15000 milliseconds of execution of the four nodes of the heterogeneous cluster with the same population sizes (HoSi/HeHa) for the OneMax problem.}
 \label{fig:gensonemaxhomosize}
 \end{figure}
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=10.eps, angle=-90, width = 13cm}
+\epsfig{file=12.eps, angle=-90, width = 13cm}
 \caption{Average fitness in the first 15000 milliseconds of execution of the four nodes of the heterogeneous cluster with different population sizes (HeSi/HeHa) for the OneMax problem.}
 \label{fig:gensonemaxheterosize}
 \end{figure}
@@ -882,14 +882,14 @@ HeSi/HoHa   & 13698.12 $\pm$ 406.85 & 16012.625 $\pm$  482.61 & 895698.2 $\pm$  
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=sizesOneMax.eps, width = 9cm}
+\epsfig{file=13.eps, width = 9cm}
 \caption{Boxplots of the population sizes in each node during all the runs for the OneMax problem.}
 \label{fig:sizesONEMAX}
 \end{figure}
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=1ejecOneMax.eps, width = 13cm}
+\epsfig{file=14.eps, width = 13cm}
 \caption{Population size in each node during one execution to solve the OneMax problem.}
 \label{fig:sizesONEMAX1ejec}
 \end{figure}
@@ -979,14 +979,14 @@ how the diversity and search guidance is maintained in the whole system.
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=11.eps, width = 14cm}
+\epsfig{file=15.eps, width = 14cm}
 \caption{Average running time in each stage of the algorithm for the MMDP problem.}
 \label{fig:MMDPbars}
 \end{figure}
 
 \begin{figure}[htb]
 \centering
-\epsfig{file=12.eps, width = 14cm}
+\epsfig{file=16.eps, width = 14cm}
 \caption{Average running time in each stage of the algorithm for the ONEMAX problem.}
 \label{fig:ONEMAXbars}
 \end{figure}
@@ -1088,12 +1088,15 @@ better results in time than keeping the same parameter in all nodes. This advant
 %changing this parameter in homogeneous clusters does not always
 %performs better. 
 
-Moreover, changing the population size affects to stages
+Furthermore, changing the population size affects to stages
 of the algorithm that are independent of the population size, such as
 the migration. The population size adaptation is also affected by the problem to solve.
 
 In this work, we calculate the computational power of each node proportionally 
-to the average number of generations for the homogeneous parameter set. \textcolor{red}{Moreover, a possible way to adapt online the population sizes is performed comparing the current generation with the neighbour generation}. These results are a promising starting for adapting EAs to the
+to the average number of generations for the homogeneous parameter set as an 
+offline parameter setting. \textcolor{red}{Moreover, a possible way to adapt 
+online the population sizes is performed comparing the current generation with
+ the neighbour generation}. These results are a promising starting for adapting EAs to the
 performance of each execution node, using more adequate benchmarks or in a dynamic way. 
 % Falta una discusión sobre si las mejoras se deben exclusivamente al
 % número de evaluaciones o hay algún otro factor ¿menos overhead?
@@ -1103,7 +1106,7 @@ In the future it would be interesting to check the scalability of this
 approach, using more computational nodes and larger problem
 instances. In addition, other parameters such as migration rate or
 crossover probability could be adapted to the execution
-nodes. Different benchmarks will be also used to lead to automatic
+nodes. Other benchmarks to analyse the algorithm will be also used to lead to automatic
 parameter adaptation in runtime (online), with different nodes entering or
 exiting in the topology, or adapting the parameters to the current load of the
 system. 
