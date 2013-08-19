@@ -1,0 +1,86 @@
+
+En la realización del caso de estudio fue implementado, teniendo en cuenta los conceptos seleccionados anteriormente, un proyecto Scala de varias clases. El código se encuentra bajo la licencia AGPL, de código abierto, en la dirección: \url{https://github.com/jalbertcruz/sclEA/tree/book2013}. Sus principales clases y funciones son descritas a continuación.
+
+
+\subsubsection{Clase Reproducer}
+
+Este es la clase que selecciona la subpoblación a reproducir, los padres, realiza el cruzamiento y desencadena las migraciones. Como actor responde a los mensajes {\em evolve}: para realizar una iteración y {\em emigrateBest} para efectuar una emigración. Las funciones con las que logra esto aparecen enumeradas en la Tabla \ref{tb:scl:reproducer}.
+
+\begin{table}
+  \caption{Funciones del módulo reproducer.}\label{tb:scl:reproducer}
+  \centering
+\begin{tabular}{|p{5cm}|p{7cm}|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   \textbf{Función} &  \textbf{Descripción} \\
+  \hline
+  {\tt extractSubpopulation(pTable: HashMap[String, (Int, Int)], n: Int) } & A partir de una {\em ets} y una cantidad, selecciona de la {\em ets} un grupo de cromosomas. \\
+  \hline
+  {\tt bestParent(pop2r: List[(String, Int)]): (String, Int)} & Selecciona de una lista de cromosomas el mejor individuo. \\
+  \hline
+ {\tt selectPop2Reproduce(subpop: List[(String, Int)], parentsCount: Int)} & Selecciona aleatoriamente un conjunto de pares de una lista de cromosomas. \\
+  \hline
+  {\tt crossover(parents: ((String, Int), (String, Int))): (String, String)} & Realización de un cruce y mutación sobre el mismo, a partir de dos cromosomas. \\
+  \hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Clase Evaluator}
+
+Esta es la clase que calcula el fitness: hace periódicas consultas sobre el pool para obtener individuos a los que calcularle el fitness. Está compuesto por el método {\em SatMax/1} (función de evaluación), y por el mensaje {\em eval}, dicho mensaje es el que activa al evaluador para que calcule.
+
+\subsubsection{Clase PoolManager}
+
+Esta es la clase encargada de inicializar el trabajo del pool así como enrutar los mensajes entre los evaluadores. Es el encargado de controlar la finalización del algoritmo una vez se ha encontrado la solución.  Los mensajes a los que responde este actor aparecen enumerados en la Tabla \ref{tb:scl:poolManager}.
+
+\begin{table}
+  \caption{Mensajes a los que responde el actor de la clase PoolManager.}\label{tb:scl:poolManager}
+  \centering
+\begin{tabular}{|p{3cm}|p{7cm}|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   \textbf{Mensaje} &  \textbf{Descripción} \\
+  \hline
+  {\tt evolveDone } & Finalización de una iteración de reproducción. \\
+  \hline
+  {\tt evalDone} & Finalización de una iteración de evaluación. \\
+  \hline
+ {\tt solutionReached} & Obtención de la solución. \\
+  \hline
+  {\tt migration} & Realización de una inmigración. \\
+  \hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Clases auxiliares e interconexión}
+
+Las clases ya descritas contienen toda la lógica del AG, para que sea operativo el software sin embargo, han de incluirse algunos componentes no funcionales.
+
+\vspace{.35cm}
+
+\noindent  Dichos componentes son:
+\begin{description}
+
+  \item[Objetos ExperimentRun y Experiment] -- Encargados de iniciar una corrida del experimento.
+
+  \item[Clase Profiler] -- Análisis del comportamiento: tiempos de ejecución, cantidad de iteraciones, etc.
+
+  \item[Clase Manager] -- Control del inicio y coordinación de la finalización adecuada de cada unidad de ejecución durante la corrida de un experimento.
+
+  \item[Clase Report] -- Control de la secuencia de experimentos y emisión del reporte final resultado de la experimentación.
+
+\end{description}
+
+\noindent Los diferentes módulos interactúan de la siguiente manera durante una sesión de experimentación:
+
+\begin{enumerate}
+
+  \item Configuración de los parámetros: tamaño de población y cromosomas, población inicial, conformación de la topología de las islas. Objetos {\em Experiment} y {\em ExperimentRun}.
+
+  \item Lógica del AG: reproducción, selección de padres, emigraciones, cálculo del fitness. Clases {\em Evaluator} y {\em Reproducer}.
+
+  \item Control del proceso y reportes: enruteo de mensajes entre islas y unidades de ejecución (actores), coordinación de los procesos de finalización de una corrida e inicio de otra, resumen y formateo de salida de los resultados. Clases {\em PoolManager}, {\em Profiler}, {\em Manager} y {\em Report}.
+
+\end{enumerate}

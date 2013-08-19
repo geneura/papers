@@ -1,0 +1,44 @@
+\subsection{Caso de estudio}
+
+Para lograr una buena implementación de un algoritmo es necesario tener en cuenta las características del lenguaje en el que se realizará así como cada concepto constituyente del dominio del problema. Se usará como caso de estudio un AG paralelo híbrido, sobre una topología de isla (ver Figura \ref{fig:topologia}), en la que cada nodo será a su vez un AG concurrente basado en pool.
+
+El problema a utilizar será el {\em SAT-MAX} con instancias de 100 variables tomadas de \cite{Hoos2000}.
+
+%
+%\subsection{Caso de estudio}
+%
+%El objetivo de este trabajo es validar las facilidades de Erlang para implementar AGs, por ello hemos tomado un problema muy sencillo ({\em OneMax}): el simple conteo del número de unos en una cadena binaria, siendo la solución óptima la alcanzada cuando coincide la longitud de la lista con dicha cantidad. Dadas las características de la arquitectura diseñada y la posibilidad de correr nodos Erlang en disímiles dispositivos, la adaptación de este trabajo a otros problemas más complejos solamente requeriría redefinir las funciones de evaluación, cruce y mutación.
+
+\subsection{Arquitectura}
+
+Los componentes del AG paralelo identificados como principales a la hora de diseñar la implementación aparecen listados en la Tabla \ref{agpComp}. Las construcciones de Erlang utilizadas para la modelación son las expuestas en la Tabla \ref{erlComp} y el mapeo realizado es el mostrado en la Tabla \ref{erlAGRelation}.
+
+
+\begin{table}
+  \centering
+  \caption{Componentes del AG paralelo.}\label{agpComp}
+   \begin{tabular}{|p{3cm}|p{5cm}|p{3cm}|}
+   \hline
+   \textbf{Componente AG} & \textbf{Papel} & \textbf{Descripción}\\
+     \hline
+      cromosoma & Representación de la solución al problema. & cadena binaria \\
+     \hline
+      cromosoma evaluado & Par \{cromosoma, fitness\}. & cantidad de valores 1\\
+     \hline
+      población & Conjunto de cromosomas. & lista\\
+     \hline
+     cruzamiento & Relación entre dos cromosomas que da por resultado otros dos nuevos. & función de cruzamiento\\
+     \hline
+      mutación & Modificación de un cromosoma.& función que altera un valor\\
+     \hline
+     selección & Criterio para obtener una sublista a partir de la población. & función de selección\\
+     \hline
+      pool & Población compartida entre las unidades de cálculo en un nodo. & población\\
+     \hline
+      isla & Nodo de la topología. & población\\
+     \hline
+      migración & Evento aleatorio de intercambio de cromosomas. & mensaje\\
+     \hline
+   \end{tabular}
+
+\end{table}
