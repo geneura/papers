@@ -181,9 +181,9 @@ As opossed to this concept, MADE is focused in Artificial No Interactive Drama, 
 
 The generation of interactive dramas can also be based in script structure \cite{ArchitectureYoung04}, where each possibility in the story must be previously defined, so there is a limited number of possible plot combinations. There exist other techniques, not based in plot structure, such as...
 
-On the other side, in non-interactive plot generation systems the user does not take control as the protagonist. For example, in the system presented by Pizzi et al. \cite{pizzi2007interactive} the user can interact with the characters, changing their emotions, but making the user an spectator, rather as an actor. %ESTO NO ME QUEDA TAMPOCO CLARO, SI NO ES INTERACTIVA COMO MODIFICAMOS LOS PERSONAJES?
+On the other side, in non-interactive plot generation systems the user does not take control as the protagonist. For example, in the system presented by Pizzi et al. \cite{pizzi2007interactive} the user can interact with the characters, changing their emotions, but making the user an spectator, rather as an actor. %FERGU: ESTO NO ME QUEDA TAMPOCO CLARO, SI NO ES INTERACTIVA COMO MODIFICAMOS LOS PERSONAJES?
 
-Previous works define the plot as an emergence for the behaviour of the agents that follow a set of rules. In MADE, the agents' behaviour is product of its personality and the environment. That is, the agents does not follow the plot, but they generate the plot itself. %%% ESTO NO LO TENGO MUY CLARO
+Previous works define the plot as an emergence for the behaviour of the agents that follow a set of rules. In MADE, the agents' behaviour is product of its personality and the environment. That is, the agents does not follow the plot, but they generate the plot itself. %%% FERGU: ESTO NO LO TENGO MUY CLARO
 
 Futhermore, the previous works generate plots in worlds with a limited number of characters. This restriction does not exist in MADE, where the number of characters to create is unlimited.
 
@@ -191,6 +191,35 @@ Futhermore, the previous works generate plots in worlds with a limited number of
 %%%%%%%%%%%%%%%%%%  MADE  %%%%%%%%%%%%%%%%%%%
 \section{MADE}
 \label{sec:made}
+
+Following the ideas of the work of Epstein and Axtell \cite{epstein1996growing} an evironment based in {\em Sugarscape} has been developed, with concepts such as food, methabolism and vision. This enviroment, uses the elemenents  by Gershenson \cite{gershenson2005general}: a virtual world, agents who born, grow, interact, reproduce and dead; resources (food), mediators, and relations of rivalry (friction) and cooperation (sinergy). The actions of these agents are parameterized accordign the work of Nairat \cite{nairat2011character}, based in the existence of profiles, and will be maped into a chromosome to be used in a Genetic Algorithm (GA). This system allows the definition of behaviour patterns (or archetypes, and using a multi-objective fitness function to measure the presence of the desired archetypes. %OJO! ESTO QUE HE DICHO ES VERDAD? (Fergu)
+
+%FERGU: Comprobar que hemos mencionado en el SOA los trabajos de Epstein y Gerhenson
+
+\subsection{MADE Environment}
+The MADE enviroment is the one where the agents are placed. Its functions are:
+
+\begin{itemize}
+\item \textbf{Create an initial set of agents:} MADE environment initializes a set of orphan agents, with age 0, and profile sequentially assigned. Thes agents are just born in the MADE environment and must compet or collaborate in order to survive.
+\item \textbf{Position agents in the map:} the environment has a map (initially a squared one), formed by cells that can be occupied by an (and only one) agent. The environment allows to the agents to discover and interact other agents in the neighborhood.
+\item \textbf{Start and control the time:} after create the initial set of agents, the MADE environment start the timer.
+\item \textbf{Execute each agent during a time unit (a day):} A number of iterations is performed in each execution. In each iteration the list of agents is ordered, each agent perform an iteration of its life-cycle, and the dead agents are removed.
+\item \textbf{Perform as an external agent that changes th environment:} In each iteration in the MADE environment food rations are placed in random cells. An agent only can eat if it is over a cell with a ration, so agents could move the other forcibly.
+\item \textbf{Offer services to the agents:} MADE environment allow the agents to check which closer cells have food, are occupied, who agents are in a near position or which positions can they occupy.
+\item \textbf{Decide the profile of the agents:} MADE allows the existence of different agent profiles. A profiles is a set of probabilities which governs the agent's characteristics and behaviour.
+\end{itemize}
+
+The parameters of the MADE environment are:
+\begin{itemize}
+\item Number of agents
+\item Map dimension
+\item Number of rations each day
+\item Number of days
+\item Average NO SE QUE ES ESTO xD
+\end{itemize}
+\subsection{MADE Agent}
+
+
 
 %%%%%%%%%%%%%%%%%%  Genetic Algorithm  %%%%%%%%%%%%%%%%%%%
 \section{Genetic algorithm for the search of emergent archetypes}
