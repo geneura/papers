@@ -1,0 +1,73 @@
+En la realización del caso de estudio fue implementado, teniendo en cuenta los conceptos seleccionados anteriormente, un proyecto Clojure de varios módulos. El código se encuentra bajo la licencia AGPL, de código abierto, en la dirección: \url{https://github.com/jalbertcruz/cljEA/tree/book2013}. Sus principales protocolos y registros son descritos a continuación.
+
+
+\subsubsection{Registro Reproducer}
+
+Este es el módulo que selecciona la subpoblación a reproducir, los padres, realiza el cruzamiento y desencadena las migraciones. Como agente responde a los mensajes {\em evolve}: para realizar una iteración y {\em emigrateBest} para efectuar una emigración. Las funciones con las que logra esto aparecen enumeradas en la Tabla \ref{tb:clj:reproducer}.
+
+\begin{table}
+  \caption{Funciones del módulo reproducer.}\label{tb:clj:reproducer}
+  \centering
+\begin{tabular}{|p{5cm}|p{7cm}|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   \textbf{Función} &  \textbf{Descripción} \\
+  \hline
+  {\tt (defn extractSubpopulation [table n self] } & A partir de una {\em ets} y una cantidad, selecciona de la {\em ets} un grupo de cromosomas. \\
+  \hline
+  {\tt (defn bestParent [pop2r]} & Selecciona de una lista de cromosomas el mejor individuo. \\
+  \hline
+ {\tt (defn selectPop2Reproduce [population n]} & Selecciona aleatoriamente un conjunto de pares de una lista de cromosomas. \\
+  \hline
+  {\tt (defn crossover [Ind1, Ind2]} & Realización de un cruce y mutación sobre el mismo, a partir de dos cromosomas. \\
+  \hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Registro Evaluator}
+
+Esta es la clase que calcula el fitness: hace periódicas consultas sobre el pool para obtener individuos a los que calcularle el fitness. Está compuesto por el método {\em SatMax/1} (función de evaluación), y por el mensaje {\em eval}, dicho mensaje es el que activa al evaluador para que calcule.
+
+\subsubsection{Registro PoolManager}
+
+Este es el módulo encargado de inicializar el trabajo del pool así como enrutar los mensajes entre los evaluadores. Es el encargado de controlar la finalización del algoritmo una vez se ha encontrado la solución.  Los mensajes a los que responde este actor aparecen enumerados en la Tabla \ref{tb:poolManager}.
+
+\begin{table}
+  \caption{Mensajes a los que responde el actor del módulo poolManager.}\label{tb:poolManager}
+  \centering
+\begin{tabular}{|p{3cm}|p{7cm}|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   \textbf{Mensaje} &  \textbf{Descripción} \\
+  \hline
+  {\tt (evolveDone [self pid]) } & Finalización de una iteración de reproducción. \\
+  \hline
+  {\tt (evalDone [self pid])} & Finalización de una iteración de evaluación. \\
+  \hline
+ {\tt  (solutionReachedbyAny [self])} & Obtención de la solución. \\
+  \hline
+  {\tt (migration [self Inds])} & Realización de una inmigración. \\
+  \hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Módulos auxiliares e interconexión}
+
+Las clases ya descritas contienen toda la lógica del AG, para que sea operativo el software sin embargo, han de incluirse algunos componentes no funcionales.
+
+\vspace{.35cm}
+
+\noindent  Dichos componentes son:
+\begin{description}
+
+  \item[experiment/experiment-run] -- Encargados de iniciar una corrida del experimento.
+
+  \item[Registro Profiler] -- Análisis del comportamiento: tiempos de ejecución, cantidad de iteraciones, etc.
+
+  \item[Registro Manager] -- Control del inicio y coordinación de la finalización adecuada de cada unidad de ejecución durante la corrida de un experimento.
+
+  \item[Registro Report] -- Control de la secuencia de experimentos y emisión del reporte final resultado de la experimentación.
+
+\end{description}

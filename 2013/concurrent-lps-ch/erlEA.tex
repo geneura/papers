@@ -1,0 +1,87 @@
+En la realización del caso de estudio fue implementado, teniendo en cuenta los conceptos seleccionados anteriormente, un proyecto Erlang de varios módulos. El código se encuentra bajo la licencia AGPL, de código abierto, en la dirección: \url{https://github.com/jalbertcruz/erlEA/tree/book2013}. Sus principales módulos y funciones son descritos a continuación.
+
+
+\subsubsection{Módulo reproducer}
+
+Este es el módulo que selecciona la subpoblación a reproducir, los padres, realiza el cruzamiento y desencadena las migraciones. Como actor responde a los mensajes {\em evolve}: para realizar una iteración y {\em emigrateBest} para efectuar una emigración. Las funciones con las que logra esto aparecen enumeradas en la Tabla \ref{tb:reproducer}.
+
+\begin{table}
+  \caption{Funciones del módulo reproducer.}\label{tb:reproducer}
+  \centering
+\begin{tabular}{|p{5cm}|p{7cm}|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   \textbf{Función} &  \textbf{Descripción} \\
+  \hline
+  {\tt extractSubpopulation(Table, N) } & A partir de una {\em ets} y una cantidad, selecciona de la {\em ets} un grupo de cromosomas. \\
+  \hline
+  {\tt bestParent(Pop2r)} & Selecciona de una lista de cromosomas el mejor individuo. \\
+  \hline
+ {\tt selectPop2Reproduce(Pop, N)} & Selecciona aleatoriamente un conjunto de pares de una lista de cromosomas. \\
+  \hline
+  {\tt crossover(Ind1, Ind2)} & Realización de un cruce y mutación sobre el mismo, a partir de dos cromosomas. \\
+  \hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Módulo evaluator}
+
+Este es el módulo que calcula el fitness: hace periódicas consultas sobre el pool para obtener individuos a los que calcularle el fitness. Está compuesto por la función {\em SatMax/1} (función de evaluación), y por el mensaje {\em eval}, dicho mensaje es el que activa al evaluador para que calcule.
+
+\subsubsection{Módulo poolManager}
+
+Este es el módulo encargado de inicializar el trabajo del pool así como enrutar los mensajes entre los evaluadores. Es el encargado de controlar la finalización del algoritmo una vez se ha encontrado la solución.  Los mensajes a los que responde este actor aparecen enumerados en la Tabla \ref{tb:poolManager}.
+
+\begin{table}
+  \caption{Mensajes a los que responde el actor del módulo poolManager.}\label{tb:poolManager}
+  \centering
+\begin{tabular}{|p{3cm}|p{7cm}|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   \textbf{Mensaje} &  \textbf{Descripción} \\
+  \hline
+  {\tt evolveDone } & Finalización de una iteración de reproducción. \\
+  \hline
+  {\tt evalDone} & Finalización de una iteración de evaluación. \\
+  \hline
+ {\tt solutionReached} & Obtención de la solución. \\
+  \hline
+  {\tt migration} & Realización de una inmigración. \\
+  \hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Módulos auxiliares e interconexión}
+
+Los módulos ya descritos contienen toda la lógica del AG, faltan sin embargo, para que sea operativo el software, algunos componentes no funcionales.
+
+\vspace{.35cm}
+
+\noindent  Dichos componentes son:
+\begin{description}
+
+  \item[experiment] -- Encargado de iniciar una corrida del experimento.
+
+  \item[configBuilder] -- Especificación de los parámetros de un experimento.
+
+  \item[profiler] -- Análisis del comportamiento: tiempos de ejecución, cantidad de iteraciones, etc.
+
+  \item[manager] -- Control del inicio y coordinación de la finalización adecuada de cada unidad de ejecución durante la corrida de un experimento.
+
+  \item[report] -- Control de la secuencia de experimentos y emisión del reporte final resultado de la experimentación.
+
+\end{description}
+
+\noindent Los diferentes módulos interactúan de la siguiente manera durante una sesión de experimentación:
+
+\begin{enumerate}
+
+  \item Configuración de los parámetros: tamaño de población y cromosomas, población inicial, conformación de la topología de las islas. Módulos {\em experiment} y {\em configBuilder}.
+
+  \item Lógica del AG: reproducción, selección de padres, emigraciones, cálculo del fitness. Módulos {\em evaluator} y {\em reproducer}.
+
+  \item Control del proceso y reportes: enruteo de mensajes entre islas y unidades de ejecución (actores), coordinación de los procesos de finalización de una corrida e inicio de otra, resumen y formateo de salida de los resultados. Módulos {\em poolManager}, {\em profiler}, {\em manager} y {\em report}.
+
+\end{enumerate}

@@ -1,0 +1,53 @@
+
+El diseño fue puesto a prueba con cromosomas de longitud 128, una población de 256 individuos por isla y con evaluadores y reproductores trabajando con bloques de 50 cromosomas. Los experimentos fueron realizados en un ordenador con Windows 8 y 16 Gb de RAM así como con un procesador Core i7. Los resultados obtenidos aparecen en la Tabla \ref{tb:resultados}, correspondiendo a evaluaciones independientes no promediadas cuya condición de parada es la obtención de la solución óptima.
+
+\begin{table}
+  \caption{Resultados de los experimentos.}\label{tb:resultados}
+  \centering
+\begin{tabular}{|>{\centering}p{.55cm}|>{\centering}p{.75cm}|>{\centering}p{2.1cm}|>{\centering}p{2.5cm}|>{\centering}p{2cm}|>{\centering}p{2.55cm}|>{\centering}p{1.35cm}|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  \textbf{No.} & \textbf{Islas} & \textbf{Evaluadores} &
+  \textbf{Reproductores} & \textbf{Migraciones} &
+  \textbf{Reproducciones} & \textbf{Tiempo (s)} \tabularnewline
+  \hline
+  1 & 2 & 5 & 10 & 215 & 416 & 11.62375 \tabularnewline
+  \hline
+  2 & 2 & 10 & 20 & 299 & 629 & 25.3412 \tabularnewline
+  \hline
+  3 & 4 & 5 & 10 & 347 & 664 & 10.672001 \tabularnewline
+  \hline
+  4 & 4 & 10 & 20 & 580 & 1223 & 27.09117 \tabularnewline
+  \hline
+  5 & 8 & 5 & 10 & 862 & 1635 & 16.375004 \tabularnewline
+  \hline
+  6 & 8 & 10 & 20 & 1333 & 2845 & 36.294951 \tabularnewline
+  \hline
+\end{tabular}
+\end{table}
+
+Aunque se trata solo de resultados iniciales, ya se puede ver que el
+escalado no es bueno, siendo en todo caso mejor cuanto
+menor es el número de evaluadores. Sin embargo, también se observa que
+el aumento en el tiempo se debe más al aumento en el número de
+reproducciones que al aumento en el número de islas, obteniendo, por
+ejemplo, en el caso de 8 islas un número de reproducciones superior al
+obtenido para 4 islas con un tiempo un 40\% aproximadamente
+menor. Esto apunta al hecho de que el escalado se debería medir más
+sobre la mejora en la obtención de soluciones que en el tiempo. Sin
+embargo, como se ha comentado en esta primera etapa de la
+investigación nos hemos centrado más en la adaptación del algoritmo
+que en las posibilidades de escalado, que se abordarán como trabajo
+futuro.
+
+Con este trabajo se muestra la simplicidad de implementación de un modelo híbrido de AG, en su versión concurrente, normalmente muy compleja sencillamente por ser concurrente. En la arquitectura las unidades de ejecución fueron mapeadas a actores, las
+estructurales a módulos y las procedurales a funciones; quedando
+claramente identificadas y listas a futuras extensiones.
+
+Como trabajo futuro queda la implementación de un experimento más
+complejo dónde se use además una arquitectura distribuida y
+heterogénea. Dado que el lenguaje tiene de manera nativa el soporte
+para la distribución de procesos y su MV está implementada para
+multitud de plataformas hacer esto sólo conllevaría cambios en las
+funciones que tratan con los cromosomas lográndose un elevado nivel de
+reutilización del diseño.
