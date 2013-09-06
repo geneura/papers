@@ -127,13 +127,21 @@
 \ead{jmerelo@geneura.ugr.es}
 
 \address[fidesol]{Fundaci\'on I+D del Software Libre, Granada, Spain} %Pon lo que quieras aquí
-\address[ugr]{Department of Computer Architecture and Computer Technology and CITIC-UGR, University of Granada, Granada, Spain. Tel: +34958241778. Fax: +34958248993}
+\address[ugr]{Department of Computer Architecture and Computer
+  Technology and CITIC-UGR, University of Granada, Granada,
+  Spain. Tel: +34958241778. Fax: +34958248993} %No estoy yo tan seguro
+                                %de que el teléfono ese funcione todavía...
 
 
 
 \begin{abstract}
 This paper presents a study on ...
 
+
+%Es mejor que empecéis por escribir el abstract, qué es lo que queréis
+%hacer, porque todo el paper va a girar alrededor de eso. Siempre se
+%puede modificar luego si no sale del todo bien, pero lo importante es
+%tenerlo como referencia. 
 \end{abstract}
 
 \begin{keyword}
@@ -154,13 +162,17 @@ In videogames, NPCs (Non Player Characters) are a type of characters that live i
 
 These facts have motivated us to develop a multi-agent system called MADE (Massive Artificial Drama Engine) to model a self-organized virtual world where their elements influences each other, following a cause-effect behaviours in a coherent manner. This system needs to be a suitable environment for the plot of a specific literary work, being also interesting for the player/spectator. A set of probabilities and states are associated to agents' actions, and these probabilities are optimized by means of an Evolutionary Algorithm (EA) to match with a specific literary archetype, defined by the fiction creator. The archetypes are behaviours and patterns universally accepted and present in the collective imaginary \cite{ArchetypesGarry05}, that allows empathize with the characters and immerse yourself in the story (for example, the well-known ``hero'' archetype).
 
-In this work, several experiments have been carried out to give an insight to the following questions:
+In this work, several experiments have been carried out to give an
+insight to the following questions: %No se da "insight" a una
+                                %pregunta: lo dan las respuestas. 
 \begin{itemize}
  \item Is it possible to model a virtual world, inhabited by thousands of characters, with self-generated and interesting plots?
  \item Can different and interesting literary archetypes emerge in this system?
 \end{itemize}
 
-
+% si esto es todo, es muy pobre. En un paper tienes que hacerte
+% preguntas y repsonderlas. Aquí tendría que venir "in this paper we
+% prove that EAs, together with the proper design of a
 The rest of the work is structured as follows: after a presentation of
 the state of
 the art in  the area of interactive fiction
@@ -173,13 +185,24 @@ Then, the results of the experiments are shown (Section \ref{sec:results}), foll
 \section{State of the art}
 \label{sec:soa}
 %
-Por cierto, acabo de ver esto: \cite{StoryTecGobel2008}.
+%Por cierto, acabo de ver esto: \cite{StoryTecGobel2008}.
 
 Auto-generated interactive fiction research is mainly focused in methods to create the process of a story generation \cite{nairat2011character}. Story generation can be divided in two areas: interactive and non-interactive. In the first area, and according to \cite{ReviewArinbjarnar09}, an Interactive Drama is defined in a virtual world where the user has freedom to interact with the NPCs and objects in a dramatically interesting experience, different in each execution, and adapted to the interactions of the user.
 
-As opossed to this concept, MADE is focused in Artificial No Interactive Drama, because its aim is the massive generation of plots for secondary characters, to provide a context for the writer and the player to perceive a virtual world as coherent, detailed and enriched. The story generation (that is, the narrative) is not adressed by MADE, but it has been studied in the systems presents in the survey by Arinbjarnar et al. in \cite{ReviewArinbjarnar09}.
+%Decir qué técnicas utiliza y qué se suele hacer en este caso
 
-The generation of interactive dramas can also be based in script structure \cite{ArchitectureYoung04}, where each possibility in the story must be previously defined, so there is a limited number of possible plot combinations. There exist other techniques, not based in plot structure, such as...
+As opossed to this concept, MADE is focused in Artificial Non Interactive Drama, because its aim is the massive generation of plots for secondary characters, to provide a context for the writer and the player to perceive a virtual world as coherent, detailed and enriched. The story generation (that is, the narrative) is not adressed by MADE, but it has been studied in the systems presents in the survey by Arinbjarnar et al. in \cite{ReviewArinbjarnar09}.
+
+%Decir qué te hace suponer que esto va a ser una buena solución.
+
+The generation of interactive dramas can also be based in script
+structure \cite{ArchitectureYoung04}, where each possibility in the
+story must be previously defined, so there is a limited number of
+possible plot combinations. There exist other techniques, not based in
+plot structure, such as... % Pero esto debería ir antes de la
+                           % descripción de MADE. Lo que digas de MADE
+                           % al final de todo, para expresar el avance
+                           % con respecto al estao del arte actual - JJ
 
 On the other side, in non-interactive plot generation systems the user does not take control as the protagonist. For example, in the system presented by Pizzi et al. \cite{pizzi2007interactive} the user can interact with the characters, changing their emotions, but making the user an spectator, rather as an actor. %FERGU: ESTO NO ME QUEDA TAMPOCO CLARO, SI NO ES INTERACTIVA COMO MODIFICAMOS LOS PERSONAJES?
 
@@ -192,7 +215,9 @@ Futhermore, the previous works generate plots in worlds with a limited number of
 \section{MADE}
 \label{sec:made}
 
-Following the ideas of the work of Epstein and Axtell \cite{epstein1996growing} an evironment based in {\em Sugarscape} has been developed, with concepts such as food, methabolism and vision. This enviroment, uses the elemenents  by Gershenson \cite{gershenson2005general}: a virtual world, agents who born, grow, interact, reproduce and dead; resources (food), mediators, and relations of rivalry (friction) and cooperation (sinergy). The actions of these agents are parameterized accordign the work of Nairat \cite{nairat2011character}, based in the existence of profiles, and will be maped into a chromosome to be used in a Genetic Algorithm (GA). This system allows the definition of behaviour patterns (or archetypes, and using a multi-objective fitness function to measure the presence of the desired archetypes. %OJO! ESTO QUE HE DICHO ES VERDAD? (Fergu)
+% Me parece mal comienzo... ¿Por qué sigues esas ideas, por ejemplo?
+% Tendrías que haberlo dicho en la intro - JJ
+Following the ideas of the work of Epstein and Axtell \cite{epstein1996growing} an environment based in {\em Sugarscape} has been developed, with concepts such as food, methabolism and vision. This enviroment, uses the elemenents  by Gershenson \cite{gershenson2005general}: a virtual world, agents who born, grow, interact, reproduce and dead; resources (food), mediators, and relations of rivalry (friction) and cooperation (sinergy). The actions of these agents are parameterized accordign the work of Nairat \cite{nairat2011character}, based in the existence of profiles, and will be maped into a chromosome to be used in a Genetic Algorithm (GA). This system allows the definition of behaviour patterns (or archetypes, and using a multi-objective fitness function to measure the presence of the desired archetypes. %OJO! ESTO QUE HE DICHO ES VERDAD? (Fergu)
 
 %FERGU: Comprobar que hemos mencionado en el SOA los trabajos de Epstein y Gerhenson
 
