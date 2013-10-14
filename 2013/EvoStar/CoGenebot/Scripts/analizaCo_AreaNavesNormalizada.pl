@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+
+
 my $turno;
 my @p1_planets; my @p1_ships; my  $p1_proc = 0;
 my @p2_planets; my @p2_ships; my  $p2_proc = 0;
@@ -7,6 +9,7 @@ my @p3_planets; my @p3_ships; my  $p3_proc = 0;
 my @p4_planets; my @p4_ships; my  $p4_proc = 0;
 my $leer = 4;
 
+open (LOG, '>>log_analizador.txt'); 
 
 while ($linea=<>){
 		chop($linea);
@@ -155,35 +158,40 @@ while ($linea=<>){
 	}
 }
 
-#foreach(@p1_ships) { print "$_\r\n"; }
+my $p1_ships_area = 0.0;
+my $p2_ships_area = 0.0;
+my $p3_ships_area = 0.0;
+my $p4_ships_area = 0.0;
 
-my $p1_planets_area = 0.0; my $p1_ships_area = 0.0;
-my $p2_planets_area = 0.0; my $p2_ships_area = 0.0;
-my $p3_planets_area = 0.0; my $p3_ships_area = 0.0;
-my $p4_planets_area = 0.0; my $p4_ships_area = 0.0;
-
+print LOG "Turnos;P1;P2;P3;P4";
 for($i = 1; $i< $turno; $i++ ){
-	#print $p1_planets[$i] .";". $p2_planets[$i] .";". $p3_planets[$i] .";". $p4_planets[$i] ."\r\n";
-	print $p1_ships[$i] .";". $p2_ships[$i] .";". $p3_ships[$i] .";". $p4_ships[$i] ."\r\n";
+	print LOG $i . ";". $p1_ships[$i] .";". $p2_ships[$i] .";". $p3_ships[$i] .";". $p4_ships[$i] ."\r\n";
 
 	$p1_ships_area = $p1_ships_area + $p1_ships[$i];
 	$p2_ships_area = $p2_ships_area + $p2_ships[$i];
 	$p3_ships_area = $p3_ships_area + $p3_ships[$i];
 	$p4_ships_area = $p4_ships_area + $p4_ships[$i];
 
-	$p1_planets_area = $p1_planets_area + $p1_planets[$i];
-	$p2_planets_area = $p2_planets_area + $p2_planets[$i];
-	$p3_planets_area = $p3_planets_area + $p3_planets[$i];
-	$p4_planets_area = $p4_planets_area + $p4_planets[$i];
 }
 
-print "=====================================================================\r\n";
-print "P1 - Planetas: ". $p1_planets_area/$turno . " - Naves: " . $p1_ships_area/$turno ."\r\n";
-print "P2 - Planetas: ". $p2_planets_area/$turno . " - Naves: " . $p2_ships_area/$turno ."\r\n";
-print "P3 - Planetas: ". $p3_planets_area/$turno . " - Naves: " . $p3_ships_area/$turno ."\r\n";
-print "P4 - Planetas: ". $p4_planets_area/$turno . " - Naves: " . $p4_ships_area/$turno ."\r\n";
+print " P1\n";
+print $p1_ships_area/$turno;
+print "\n";
 
-print "Size of array is " . scalar @p1_planets;
-print "Size of array is " . scalar @p2_planets;
-print "Size of array is " . scalar @p3_planets;
-print "Size of array is " . scalar @p4_planets;
+print " P2\n";
+print $p2_ships_area/$turno;
+print "\n";
+
+print " P3\n";
+print $p3_ships_area/$turno;
+print "\n";
+
+print " P4\n";
+print $p4_ships_area/$turno;
+print "\n";
+
+
+print LOG "P1\t". $p1_ships_area/$turno . "\t" . $p1_ships_area."\r\n";
+print LOG "P2\t". $p2_ships_area/$turno . "\t" . $p2_ships_area."\r\n";
+print LOG "P3\t". $p3_ships_area/$turno . "\t" . $p3_ships_area."\r\n";
+print LOG "P4\t". $p4_ships_area/$turno . "\t" . $p4_ships_area."\r\n";

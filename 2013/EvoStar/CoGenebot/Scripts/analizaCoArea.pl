@@ -1,8 +1,6 @@
 #!/usr/bin/perl
 
-use Statistics::Regression;
-#use strict;
-#use warnings;
+
 
 my $turno;
 my @p1_planets; my @p1_ships; my  $p1_proc = 0;
@@ -11,6 +9,7 @@ my @p3_planets; my @p3_ships; my  $p3_proc = 0;
 my @p4_planets; my @p4_ships; my  $p4_proc = 0;
 my $leer = 4;
 
+open (LOG, '>>log_analizador.txt'); 
 
 while ($linea=<>){
 		chop($linea);
@@ -20,7 +19,7 @@ while ($linea=<>){
 
 		$p1_proc = 0; $p2_proc = 0; $p3_proc = 0; $p4_proc = 0;
 	
-	#                          $1         $2            $3       $4    $5     $6     $7
+	#                           $1         $2            $3       $4    $5     $6     $7
 	}elsif($linea=~/Player (1|2|3|4): P(1|2|3|4) - (true|false)-(\d*)\/(\d*)-(\d*)\/(\d*)/){
 		if($1 == "1"){
 			if($2 == "1"){
@@ -159,58 +158,40 @@ while ($linea=<>){
 	}
 }
 
-#foreach(@p1_ships) { print "$_\r\n"; }
+my $p1_ships_area = 0.0;
+my $p2_ships_area = 0.0;
+my $p3_ships_area = 0.0;
+my $p4_ships_area = 0.0;
 
-my $p1_planets_area = 0.0; my $p1_ships_area = 0.0;
-my $p2_planets_area = 0.0; my $p2_ships_area = 0.0;
-my $p3_planets_area = 0.0; my $p3_ships_area = 0.0;
-my $p4_planets_area = 0.0; my $p4_ships_area = 0.0;
-
-my $reg1 = Statistics::Regression->new("Title", ["Turno", "Slope"]);
-my $reg2 = Statistics::Regression->new("Title", ["Turno", "Slope"]);
-my $reg3 = Statistics::Regression->new("Title", ["Turno", "Slope"]);
-my $reg4 = Statistics::Regression->new("Title", ["Turno", "Slope"]);
-
+print LOG "Turnos;P1;P2;P3;P4";
 for($i = 1; $i< $turno; $i++ ){
-	#print $p1_planets[$i] .";". $p2_planets[$i] .";". $p3_planets[$i] .";". $p4_planets[$i] ."\r\n";
-	print $p1_ships[$i] .";". $p2_ships[$i] .";". $p3_ships[$i] .";". $p4_ships[$i] ."\r\n";
+	print LOG $i . ";". $p1_ships[$i] .";". $p2_ships[$i] .";". $p3_ships[$i] .";". $p4_ships[$i] ."\r\n";
 
 	$p1_ships_area = $p1_ships_area + $p1_ships[$i];
 	$p2_ships_area = $p2_ships_area + $p2_ships[$i];
 	$p3_ships_area = $p3_ships_area + $p3_ships[$i];
 	$p4_ships_area = $p4_ships_area + $p4_ships[$i];
 
-	$p1_planets_area = $p1_planets_area + $p1_planets[$i];
-	$p2_planets_area = $p2_planets_area + $p2_planets[$i];
-	$p3_planets_area = $p3_planets_area + $p3_planets[$i];
-	$p4_planets_area = $p4_planets_area + $p4_planets[$i];
-
-	$reg1->include( $p1_ships[$i] , [ 1.0 , $i]);
-	$reg2->include( $p2_ships[$i] , [ 1.0 , $i]);
-	$reg3->include( $p3_ships[$i] , [ 1.0 , $i]);
-	$reg4->include( $p4_ships[$i] , [ 1.0 , $i]);
 }
-print "\n";
-print $reg1->theta();
-print "\n";
-print $reg2->theta();
-print "\n";
-print $reg3->theta();
-print "\n";
-print $reg4->theta();
-print "\n";
-$reg1->print();
-$reg2->print();
-$reg3->print();
-$reg4->print();
 
-# print "=====================================================================\r\n";
-# print "P1 - Planetas: ". $p1_planets_area/$turno . " - Naves: " . $p1_ships_area/$turno ."\r\n";
-# print "P2 - Planetas: ". $p2_planets_area/$turno . " - Naves: " . $p2_ships_area/$turno ."\r\n";
-# print "P3 - Planetas: ". $p3_planets_area/$turno . " - Naves: " . $p3_ships_area/$turno ."\r\n";
-# print "P4 - Planetas: ". $p4_planets_area/$turno . " - Naves: " . $p4_ships_area/$turno ."\r\n";
+print " P1\n";
+print $p1_ships_area/$turno;
+print "\n";
 
-# print "Size of array is " . scalar @p1_planets;
-# print "Size of array is " . scalar @p2_planets;
-# print "Size of array is " . scalar @p3_planets;
-# print "Size of array is " . scalar @p4_planets;
+print " P2\n";
+print $p2_ships_area/$turno;
+print "\n";
+
+print " P3\n";
+print $p3_ships_area/$turno;
+print "\n";
+
+print " P4\n";
+print $p4_ships_area/$turno;
+print "\n";
+
+
+print LOG "P1\t". $p1_ships_area/$turno . "\t" . $p1_ships_area."\r\n";
+print LOG "P2\t". $p2_ships_area/$turno . "\t" . $p2_ships_area."\r\n";
+print LOG "P3\t". $p3_ships_area/$turno . "\t" . $p3_ships_area."\r\n";
+print LOG "P4\t". $p4_ships_area/$turno . "\t" . $p4_ships_area."\r\n";
