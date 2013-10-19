@@ -1,0 +1,24 @@
+#!/bin/sh
+
+rm *.aux
+rm *.bbl
+rm *.blg
+rm *.log
+rm *~
+rm *.dvi
+
+latex paper.tex && latex paper.tex &&  latex paper.tex && bibtex paper && latex paper.tex && latex paper.tex && latex paper.tex
+
+
+# dvips paper.dvi -o
+# ps2pdf paper.ps
+
+dvips -o paper.ps -G0 -tletter paper
+ps2pdf paper.ps paper.pdf
+
+rm paper.ps
+rm *.aux
+rm *.blg
+rm *.log
+rm *.dvi
+rm *.idx
