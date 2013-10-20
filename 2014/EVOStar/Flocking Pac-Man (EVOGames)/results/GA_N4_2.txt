@@ -1,0 +1,243 @@
+0	3871.8701621037258	0.00125	50
+1	3694.794751892695	0.00125	50	93
+2	2829.075359395813	0.00125	50	163
+3	2738.953478109152	0.00125	50	217
+4	1889.984568995666	0.00125	50	275
+5	1889.984568995666	0.00125	50	325
+6	1889.984568995666	0.00125	50	369
+7	1889.984568995666	0.00125	50	408
+8	1889.984568995666	0.00125	50	441
+9	1889.984568995666	0.00125	50	474
+10	1889.984568995666	0.00125	50	501
+11	1889.984568995666	0.00125	50	526
+12	1889.984568995666	0.00125	50	551
+13	1855.2629942718036	0.00125	50	573
+14	1855.2629942718036	0.00125	50	598
+15	1574.980598771922	0.005	50	616
+16	1574.980598771922	0.005	50	636
+17	1574.980598771922	0.00125	50	660
+18	1574.980598771922	0.0025	50	678
+19	1574.980598771922	0.01	50	697
+20	1574.980598771922	0.02	50	716
+21	1574.980598771922	0.02	50	739
+22	1574.980598771922	0.02	50	763
+23	1574.980598771922	0.02	50	785
+24	1574.980598771922	0.02	50	808
+25	1574.980598771922	0.00125	50	842
+26	1574.980598771922	0.00125	50	864
+27	1574.980598771922	0.0025	50	881
+28	1574.980598771922	0.005	50	899
+29	1574.980598771922	0.02	50	917
+30	1574.980598771922	0.00125	50	943
+31	1574.980598771922	0.00125	50	964
+32	1574.980598771922	0.00125	50	984
+33	1574.980598771922	0.005	50	1001
+34	1574.980598771922	0.02	50	1018
+35	1574.980598771922	0.00125	50	1044
+36	1574.980598771922	0.00125	50	1067
+37	1574.980598771922	0.005	50	1083
+38	1574.980598771922	0.02	50	1100
+39	1489.1301024609331	0.00125	50	1118
+40	1489.1301024609331	0.0025	50	1135
+41	1489.1301024609331	0.01	50	1151
+42	1489.1301024609331	0.00125	50	1170
+43	1489.1301024609331	0.0025	50	1186
+44	1489.1301024609331	0.0025	50	1204
+45	1489.1301024609331	0.0025	50	1221
+46	1489.1301024609331	0.005	50	1237
+47	1489.1301024609331	0.005	50	1256
+48	1489.1301024609331	0.00125	50	1279
+49	1489.1301024609331	0.005	50	1295
+public GhostStrategy(){
+//Loop on ghost status
+for(GSTATUS gs : GSTATUS.values()){
+EnumMap<ACTOR, StrategyCell> em = new EnumMap<ACTOR, StrategyCell>(ACTOR.class);
+//Loop on game actors
+for(ACTOR a : ACTOR.values()){
+StrategyCell sc = new StrategyCell(4);
+if(gs == GSTATUS.NORMAL && a == ACTOR.PACMAN){
+sc.limit[0] = 79;
+sc.magnitude[0] = 0.9949613877547822;
+sc.limit[1] = 92;
+sc.magnitude[1] = 0.8243635819930967;
+sc.limit[2] = 169;
+sc.magnitude[2] = 0.37836211097650085;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = -0.9617334000133554;
+}
+if(gs == GSTATUS.NORMAL && a == ACTOR.NORMALG){
+sc.limit[0] = 107;
+sc.magnitude[0] = -0.3208367745215954;
+sc.limit[1] = 148;
+sc.magnitude[1] = 0.9156484982406283;
+sc.limit[2] = 172;
+sc.magnitude[2] = -0.315960098313088;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.0;
+}
+if(gs == GSTATUS.NORMAL && a == ACTOR.EDIBLEG){
+sc.limit[0] = 76;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 129;
+sc.magnitude[1] = 0.2194405589491275;
+sc.limit[2] = 134;
+sc.magnitude[2] = -0.3600872186745636;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.0;
+}
+if(gs == GSTATUS.NORMAL && a == ACTOR.BLINKG){
+sc.limit[0] = 123;
+sc.magnitude[0] = -0.46819501381504125;
+sc.limit[1] = 143;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 151;
+sc.magnitude[2] = 0.0;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.44832365359831117;
+}
+if(gs == GSTATUS.NORMAL && a == ACTOR.POWERPILL){
+sc.limit[0] = 69;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 161;
+sc.magnitude[1] = 0.24215761101128563;
+sc.limit[2] = 165;
+sc.magnitude[2] = 0.0;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.0;
+}
+if(gs == GSTATUS.NORMAL && a == ACTOR.PILL){
+sc.limit[0] = 9;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 151;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 168;
+sc.magnitude[2] = 0.0;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.0;
+}
+if(gs == GSTATUS.EDIBLE && a == ACTOR.PACMAN){
+sc.limit[0] = 6;
+sc.magnitude[0] = -0.788969275662947;
+sc.limit[1] = 162;
+sc.magnitude[1] = -0.7432597573402864;
+sc.limit[2] = 172;
+sc.magnitude[2] = -0.17315242840608736;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.0;
+}
+if(gs == GSTATUS.EDIBLE && a == ACTOR.NORMALG){
+sc.limit[0] = 146;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 159;
+sc.magnitude[1] = 0.34679718951362093;
+sc.limit[2] = 173;
+sc.magnitude[2] = 0.5281012712425068;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.6022691848832386;
+}
+if(gs == GSTATUS.EDIBLE && a == ACTOR.EDIBLEG){
+sc.limit[0] = 74;
+sc.magnitude[0] = -0.9159157296935495;
+sc.limit[1] = 138;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 167;
+sc.magnitude[2] = 0.0;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = -0.4534837463936441;
+}
+if(gs == GSTATUS.EDIBLE && a == ACTOR.BLINKG){
+sc.limit[0] = 105;
+sc.magnitude[0] = 0.7133506086088224;
+sc.limit[1] = 150;
+sc.magnitude[1] = 0.8417909874965874;
+sc.limit[2] = 171;
+sc.magnitude[2] = -0.5744763352948197;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.9953444435082474;
+}
+if(gs == GSTATUS.EDIBLE && a == ACTOR.POWERPILL){
+sc.limit[0] = 88;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 128;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 151;
+sc.magnitude[2] = 0.0;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.9806784649780124;
+}
+if(gs == GSTATUS.EDIBLE && a == ACTOR.PILL){
+sc.limit[0] = 22;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 120;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 163;
+sc.magnitude[2] = 0.0;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.0;
+}
+if(gs == GSTATUS.BLINK && a == ACTOR.PACMAN){
+sc.limit[0] = 70;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 105;
+sc.magnitude[1] = -0.6189079259365351;
+sc.limit[2] = 169;
+sc.magnitude[2] = 0.3045623571167613;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = -0.34842901509615065;
+}
+if(gs == GSTATUS.BLINK && a == ACTOR.NORMALG){
+sc.limit[0] = 57;
+sc.magnitude[0] = -0.6300266936626298;
+sc.limit[1] = 65;
+sc.magnitude[1] = 0.19078353700742234;
+sc.limit[2] = 172;
+sc.magnitude[2] = 0.5080335697419078;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = -0.8914888201041737;
+}
+if(gs == GSTATUS.BLINK && a == ACTOR.EDIBLEG){
+sc.limit[0] = 23;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 161;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 171;
+sc.magnitude[2] = 0.0;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.12674787109154717;
+}
+if(gs == GSTATUS.BLINK && a == ACTOR.BLINKG){
+sc.limit[0] = 21;
+sc.magnitude[0] = -0.08580561371895856;
+sc.limit[1] = 139;
+sc.magnitude[1] = -0.8071889106880263;
+sc.limit[2] = 152;
+sc.magnitude[2] = 0.978877005666484;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = -0.8122161370454535;
+}
+if(gs == GSTATUS.BLINK && a == ACTOR.POWERPILL){
+sc.limit[0] = 82;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 162;
+sc.magnitude[1] = -0.19926631877732592;
+sc.limit[2] = 173;
+sc.magnitude[2] = 0.22883458106540744;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.0;
+}
+if(gs == GSTATUS.BLINK && a == ACTOR.PILL){
+sc.limit[0] = 93;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 159;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 171;
+sc.magnitude[2] = 0.0;
+sc.limit[3] = 2147483647;
+sc.magnitude[3] = 0.0;
+}
+em.put(a, sc);
+}
+gsTable.put(gs, em);
+}
+}
+

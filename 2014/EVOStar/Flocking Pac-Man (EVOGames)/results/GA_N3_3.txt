@@ -1,0 +1,207 @@
+0	4207.492162959933	0.00125	50
+1	3111.7115649827006	0.00125	50	117
+2	3111.7115649827006	0.00125	50	201
+3	2411.77147743818	0.00125	50	258
+4	2411.77147743818	0.00125	50	313
+5	2319.957791619125	0.00125	50	356
+6	2245.5852857677028	0.00125	50	392
+7	2245.5852857677028	0.00125	50	414
+8	2245.5852857677028	0.00125	50	439
+9	2245.5852857677028	0.00125	50	459
+10	2245.5852857677028	0.00125	50	480
+11	2136.852166719964	0.0025	50	500
+12	2004.2417921445312	0.005	50	518
+13	2004.2417921445312	0.01	50	536
+14	2004.2417921445312	0.04	50	553
+15	2004.2417921445312	0.00125	50	583
+16	2004.2417921445312	0.005	50	601
+17	1665.6245551363559	0.01	50	618
+18	1665.6245551363559	0.02	50	636
+19	1665.6245551363559	0.04	50	654
+20	1665.6245551363559	0.04	50	682
+21	1665.6245551363559	0.00125	50	707
+22	1665.6245551363559	0.0025	50	725
+23	1665.6245551363559	0.0025	50	747
+24	1665.6245551363559	0.00125	50	771
+25	1665.6245551363559	0.0025	50	787
+26	1665.6245551363559	0.0025	50	805
+27	1665.6245551363559	0.005	50	821
+28	1665.6245551363559	0.005	50	841
+29	1665.6245551363559	0.01	50	856
+30	1665.6245551363559	0.00125	50	874
+31	1665.6245551363559	0.005	50	889
+32	1665.6245551363559	0.01	50	904
+33	1630.4053611338222	0.04	50	918
+34	1630.4053611338222	0.00125	50	938
+35	1630.4053611338222	0.00125	50	954
+36	1630.4053611338222	0.0025	50	969
+37	1630.4053611338222	0.005	50	985
+38	1630.4053611338222	0.005	50	1002
+39	1630.4053611338222	0.01	50	1017
+40	1630.4053611338222	0.01	50	1033
+41	1630.4053611338222	0.01	50	1048
+42	1630.4053611338222	0.00125	50	1068
+43	1630.4053611338222	0.0025	50	1083
+44	1630.4053611338222	0.005	50	1097
+45	1630.4053611338222	0.005	50	1113
+46	1563.9700248019874	0.00125	50	1131
+47	1563.9700248019874	0.005	50	1145
+48	1563.9700248019874	0.00125	50	1167
+49	1563.9700248019874	0.0025	50	1181
+public GhostStrategy(){
+//Loop on ghost status
+for(GSTATUS gs : GSTATUS.values()){
+EnumMap<ACTOR, StrategyCell> em = new EnumMap<ACTOR, StrategyCell>(ACTOR.class);
+//Loop on game actors
+for(ACTOR a : ACTOR.values()){
+StrategyCell sc = new StrategyCell(3);
+if(gs == GSTATUS.NORMAL && a == ACTOR.PACMAN){
+sc.limit[0] = 141;
+sc.magnitude[0] = 0.7701861328116997;
+sc.limit[1] = 162;
+sc.magnitude[1] = 0.35265055239533427;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.0;
+}
+if(gs == GSTATUS.NORMAL && a == ACTOR.NORMALG){
+sc.limit[0] = 27;
+sc.magnitude[0] = -0.3516999812667032;
+sc.limit[1] = 122;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = -0.2815356914654563;
+}
+if(gs == GSTATUS.NORMAL && a == ACTOR.EDIBLEG){
+sc.limit[0] = 22;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 172;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = -0.6728479932482803;
+}
+if(gs == GSTATUS.NORMAL && a == ACTOR.BLINKG){
+sc.limit[0] = 50;
+sc.magnitude[0] = -0.9797040942665984;
+sc.limit[1] = 172;
+sc.magnitude[1] = -0.42045011399373833;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.0;
+}
+if(gs == GSTATUS.NORMAL && a == ACTOR.POWERPILL){
+sc.limit[0] = 87;
+sc.magnitude[0] = 0.16527172394283018;
+sc.limit[1] = 157;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.0;
+}
+if(gs == GSTATUS.NORMAL && a == ACTOR.PILL){
+sc.limit[0] = 45;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 107;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.0;
+}
+if(gs == GSTATUS.EDIBLE && a == ACTOR.PACMAN){
+sc.limit[0] = 110;
+sc.magnitude[0] = -0.5047279718271092;
+sc.limit[1] = 167;
+sc.magnitude[1] = 0.4576422519662334;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.5122546427184831;
+}
+if(gs == GSTATUS.EDIBLE && a == ACTOR.NORMALG){
+sc.limit[0] = 100;
+sc.magnitude[0] = -0.6582440347896864;
+sc.limit[1] = 139;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.0;
+}
+if(gs == GSTATUS.EDIBLE && a == ACTOR.EDIBLEG){
+sc.limit[0] = 98;
+sc.magnitude[0] = -0.8259203820819099;
+sc.limit[1] = 144;
+sc.magnitude[1] = -0.7818185439076343;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.24595710406839966;
+}
+if(gs == GSTATUS.EDIBLE && a == ACTOR.BLINKG){
+sc.limit[0] = 24;
+sc.magnitude[0] = -0.2541668999446488;
+sc.limit[1] = 148;
+sc.magnitude[1] = -0.3319913091567209;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = -0.5326646662384142;
+}
+if(gs == GSTATUS.EDIBLE && a == ACTOR.POWERPILL){
+sc.limit[0] = 7;
+sc.magnitude[0] = 0.6091156130335771;
+sc.limit[1] = 103;
+sc.magnitude[1] = 0.3364568505621096;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.1446160819397979;
+}
+if(gs == GSTATUS.EDIBLE && a == ACTOR.PILL){
+sc.limit[0] = 140;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 160;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.0;
+}
+if(gs == GSTATUS.BLINK && a == ACTOR.PACMAN){
+sc.limit[0] = 53;
+sc.magnitude[0] = -0.29139637984646194;
+sc.limit[1] = 98;
+sc.magnitude[1] = -0.6648430169537548;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = -0.1554744011113821;
+}
+if(gs == GSTATUS.BLINK && a == ACTOR.NORMALG){
+sc.limit[0] = 100;
+sc.magnitude[0] = 0.6882315876827996;
+sc.limit[1] = 127;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.0;
+}
+if(gs == GSTATUS.BLINK && a == ACTOR.EDIBLEG){
+sc.limit[0] = 2;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 161;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.0;
+}
+if(gs == GSTATUS.BLINK && a == ACTOR.BLINKG){
+sc.limit[0] = 10;
+sc.magnitude[0] = -0.19220055073844544;
+sc.limit[1] = 168;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.0;
+}
+if(gs == GSTATUS.BLINK && a == ACTOR.POWERPILL){
+sc.limit[0] = 115;
+sc.magnitude[0] = -0.5485058637749056;
+sc.limit[1] = 156;
+sc.magnitude[1] = -0.036920987647864334;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.0;
+}
+if(gs == GSTATUS.BLINK && a == ACTOR.PILL){
+sc.limit[0] = 38;
+sc.magnitude[0] = 0.0;
+sc.limit[1] = 143;
+sc.magnitude[1] = 0.0;
+sc.limit[2] = 2147483647;
+sc.magnitude[2] = 0.0;
+}
+em.put(a, sc);
+}
+gsTable.put(gs, em);
+}
+}
+
