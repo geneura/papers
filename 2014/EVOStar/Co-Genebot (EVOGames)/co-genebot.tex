@@ -4,7 +4,7 @@
 \usepackage[latin1]{inputenc}
 \usepackage{color}
 \usepackage{longtable}
-\usepackage{multirow}
+%\usepackage{multirow}
 \usepackage[dvips]{graphicx} 
 %\usepackage{amsmath}
 \usepackage{textcomp}
@@ -47,6 +47,7 @@
 \begin{abstract}
 This paper presents an approach based in an evolutionary algorithm (EA), aimed to improve the behavioural parameters which guide the actions of an autonomous agent (bot) inside a real-time strategy game (RTS) named Planet Wars.
 Specifically the work describes a co-evolutionary implementation of a previously presented method, which yielded successful results. Thus, the effects of considering several individuals to be evolved (improved) at the same time in the algorithm are analysed, and them compared with previous approaches and bots.
+% ¿Por qué la coevolución mejora los parámetros? ¿Qué te hace pensar eso? - JJ
 To this end, 4 on 4 matches have been considered, being two of them potential agents (individuals) to evaluate.
 *** The results show that the co-evolutionary scheme performs better with regard the fitness convergence, as it was expected. Moreover, the best bot obtained is a better opponent than our previous `champion', winning against him in XX of YY matches. ***
 \end{abstract}
@@ -58,8 +59,14 @@ To this end, 4 on 4 matches have been considered, being two of them potential ag
 \label{sec:intro}
 %
 
+%En un track de juegos, no puedes empezar justificando la
+%investigación en juegos. Habla de por qué usas coevolución o, si
+%acaso, el interés que puede tener mejorar bots (puede haber gente de
+%juegos de mesa o de cartas) - JJ
 Autonomous agents (or \textit{bots}) in videogames have become very popular in the last years, because they can increase the challenge and lasting appeal of the game, by competing or cooperating with the human player.
-Thus, designing a good behavioural engine for them is one of the main topics of interest in the actual videogame development task.
+Thus, designing a good behavioural engine for them is one of the main
+topics of interest in the actual videogame development task.
+% ¿Qué significa good en este caso? ¿Asesino? - JJ
 They have been widely used in Fisrt Person Shooter games (FPSs) from the nineties, but in this paper we will work with them on a Real-Time Strategy game (RTS).
 RTSs are a sub-genre of strategy-based video games in which the contenders control a set of units and structures distributed in a playing area and combat using them for conquering the scenario or defeating the opponent.
 Command and Conquer\texttrademark,
@@ -74,17 +81,42 @@ Empires\texttrademark~ are some examples of these type of games.
 %but they are made even more so due to their real-time nature (usually addressed by constraining the time that can be used to make a decision) and also for the huge search space (plenty of possible behaviours) that is implicit in its action.
 The RTS considered in the paper in named \textit{Planet Wars}, and it was used a platform in the Google AI Challenge 2010. In this contest, `real time' is sliced in one second \textit{turns}, with players receiving the chance to play sequentially. However, \textit{actions} happen at the \textit{simulated} same time. 
 
-This paper describes a Co-Evolutionary \cite{Coevolution95} approach for improving the decision engine of a bot that plays that RTS. This engine consists in a set of rules previously designed and evolved by the authors in \cite{Genebot_CEC11}, using an usual Genetic Algorithm (GA) \cite{GAs_Goldberg89}. We applied an offline evolution (i.e., not during the match, but prior to the game battles) of the parameters on which the behavioural rules depends.
+% Hala, salto. Pasas de describir qué juego a decir qué haces. Métela
+% poquito a poco: hicimos esto, funcionó regular porque no teníamos
+% más que no sé cuantos oponentes, vamos a hacerlo de esta forma
+% porque no sé quién dijo que era muy guay - JJ 
+This paper describes a Co-Evolutionary \cite{Coevolution95} approach
+for improving % mejorar con respecto a qué? - JJ
+the decision engine of a bot that plays that RTS. This engine consists
+in a set of rules previously designed and evolved by the authors in
+\cite{Genebot_CEC11} % recordad doble ciego, anonimizar - JJ
+, using an regular Genetic Algorithm (GA) \cite{GAs_Goldberg89}. We
+applied an offline evolution (i.e., not during the match, but prior to
+the game battles) of the parameters on which the behavioural rules
+depends. 
 
 The evaluation of the quality (fitness) of each set of rules in the
 population was made by playing the bot against predefined opponents, being a pseudo-stochastic or \textit{noisy} function, since the results for the same individual evaluation may change from time to time, yielding good or bad values depending on the battle events and on the opponent's actions. We have dealt with this noisy nature \cite{genebot-evo12} by means of a reevaluation phase of all the individuals every generation, along with an average calculation of the fitness value of every individual after five combats (in five different an representative maps).
 
-The aim is that the co-evolutionary scheme improves the fitness convergence of the population, since the individuals cooperate in their evolution. Thus, there have been considered four players matches, being two of the contenders the individuals being evolved at a specific generation, and the other two opponents with a fixed AI engine, namely the competition sparring \textit{GoogleBot} in one of the experiments, and our best individual to date, baptised as \textit{Genebot-8}, in the other one.
+The aim is that the co-evolutionary scheme improves the fitness
+convergence of the population, since the individuals cooperate in
+their evolution. % lo uno no se sigue de lo otro, explicar el
+                 % argumento - JJ
+ Thus, we have  considered  matches with four players, with two of the
+ contenders the individuals being evolved at a specific generation,
+ and the other two opponents with a fixed AI engine, namely the
+ competition sparring \textit{GoogleBot} in one of the experiments,
+ and our best individual to date, baptised as \textit{Genebot-8}, in
+ the other one.  
+%Estás explicando la metodología antes de tiempo. Tienes que
+%justificar por qué usas coevolución y qué pistas tienes de que los
+%resultados serían mejores - JJ
 
 %In the experiments, we will show that the set of rules evolve towards better bots, and finally an efficient player is returned by the GA. 
 %In addition, several experiments have been conducted to analyse the issue of the cited \textit{noisy fitness} in this problem.
 %The experiments show its presence, but also the good behaviour of the chosen fitness function to deal with it and yield good individuals even in these conditions. 
 
+% ¿esto por qué lo borras - JJ 
 %The paper is structured as follows: 
 %The next section reviews related approaches to behavioural engine design in similar game-based problems. 
 %Section \ref{sec:planet_wars} addresses the problem by describing the game of Planet Wars.  
@@ -97,26 +129,55 @@ The aim is that the co-evolutionary scheme improves the fitness convergence of t
 \label{sec:stateofart}
 %
 
-Video games have become one of the biggest sectors in the entertainment industry; after the previous phase of searching for the graphical quality perfection, the players now request opponents exhibiting intelligent behaviour, or just human-like behaviours \cite{artifical-stupidity-game-wisdom2-2004}.
+Video games have become one of the biggest sectors in the
+entertainment industry; after the previous phase of searching for the
+graphical quality perfection, the players now request opponents
+exhibiting intelligent behaviour, or just human-like behaviours
+\cite{artifical-stupidity-game-wisdom2-2004}. % irrelevante en el
+                                % contexto. Tienes que empezar
+                                % enmarcando el juego y las técnicas
+                                % usadas: algoritmos genéticos, RTS,
+                                % coevolución aplicado a unos y otros
+                                % - JJ
 
 %Nowadays, the games AI research has followed a different path, mainly starting with the improvement of FPS Bot's AI with Doom\texttrademark~ or
 %Quake\texttrademark~ by the beginning of the 90s; and the most famous environment inside this kind of games, Unreal Tournament \texttrademark~\cite{Agent_Smith_CEC2009,ControllingBot_CEC2010,cooperativebots_CIG2010}.
 
-Most of the researches have been done on relatively simple games such as Super Mario \cite{Togelius_SuperMario}, Pac-Man \cite{Pac-MAnt_CIG2010} or Car Racing Games \cite{CarRacing_Pelta09}, being many bots competitions involving them.
+Most of the researches have been done on relatively simple games such
+as Super Mario \cite{Togelius_SuperMario}, Pac-Man
+\cite{Pac-MAnt_CIG2010} or Car Racing Games \cite{CarRacing_Pelta09},
+being many bots competitions involving them. % Vale, todo el mundo es
+                                % un pringao y usa juegos simples, de
+                                % estas te meten una hostia tus
+                                % compañeros de sesión. Basta con que
+                                % digas simplemente que los RTS tienen
+                                % un enfoque diferente a estos juegos
+                                % - JJ
 
-RTS games show an emergent component \cite{emergence_in_games2008} as a consequence of the cited two level AI, since the units behave in many different (and sometimes unpredictable) ways. This feature can make a RTS game more entertaining for a player, and maybe more interesting for a researcher.
-There are many research problems with regard to the AI for RTSs, including planning in an uncertain world with incomplete information; learning; opponent modelling and spatial and temporal reasoning \cite{hongchoCIG2005}.
+RTS games show an emergent component \cite{emergence_in_games2008} as a consequence of the cited two level AI, since the units behave in many different (and sometimes unpredictable) ways. This feature can make a RTS game more entertaining for a player and maybe more interesting for a researcher.
+There are many research problems with regard to the AI for RTSs,
+including planning in an uncertain world with incomplete information;
+learning; opponent modelling and spatial and temporal reasoning
+\cite{hongchoCIG2005}. 
 
-However, the reality in the industry is that in most of the RTS games, the bot is basically controlled by a fixed script that has been previously programmed (following a finite state machines or a decision tree, for instance).
+However, the reality in the industry is that in most of the RTS games,
+the bot is  controlled by a fixed script that has been previously
+programmed (following a finite state machines or a decision tree, for
+instance). % tampoco me sirve a estas alturas. Hay miles de trabajos
+           % de RTS- CI Justifica las técnicas usadas, no que vayas a
+           % usar ese tipo de juego - JJ
 Once the user has learnt how such a game will react, the game
 becomes less interesting to play. In order to improve the users' gaming
-experience, some authors such as Falke et al. \cite{falke2003} proposed a learning classifier system that can be used to equip the computer with
+experience, some authors such as Falke et al. \cite{falke2003} proposed a learning classifier system that can be used to endow the computer with
 dynamically-changing strategies that respond to the user's strategies,
-thus greatly extending the games playability. 
+thus greatly extending the games playability. % Vale, seguimos
+                                % justificando el uso de CI en juegos
+                                % en un congreso de CI en juegos. - JJ
 %Moreover, some authors have research the implementation of a human-like AI \cite{weber2011-humanlevelAI}.
 
 In addition, in many RTS games, traditional artificial intelligence techniques fail to play at a human level because of the vast search spaces that they entail \cite{Aha05learningtowin}. In this sense, Ontano et at. \cite{ontanon2007} proposed to extract behavioural knowledge from expert demonstrations in form of individual cases. This knowledge could be reused via a case-based behaviour
-generator that proposed advanced behaviours to achieve specific goals. 
+generator that proposed advanced behaviours to achieve specific
+goals. %Irrelevante para el trabajo - JJ 
 
 %In this line there are several works dealing with the case-base reasoning such as Baumgarten et al. \cite{Baumgarten-combiningAImethods} that combines some AI techniques, or Palma et al. \cite{Palma-behaviortrees} who apply behaviour trees.
 
@@ -126,10 +187,29 @@ generator that proposed advanced behaviours to achieve specific goals.
 %\cite{avery2010coevolving}. However, the problem is how tactics are
 %constrained and parametrised and how the overall score is computed. 
 
+% Las carencias de estrategias tradicionales han llevado a... Un
+% artículo es una narrativa, una historia, escríbelo como tal - JJ
 Evolutionary algorithms have been widely used in this field, %\cite{Ponsen_EvLearn_RTS,Su-EAs_StrategySel09}, 
-but they involve considerable computational cost and thus are not frequently used in on-line games. In fact, the most successful proposals for using EAs in games correspond to off-line applications \cite{offline-evolutionary-learning}, that is, the EA works (for instance, to improve the operational rules that guide the bot's actions) while the game is not being played, and the results or improvements can be used later during  the game. Through offline evolutionary learning, the quality of bots' intelligence in commercial games can be improved, and this has been proven to be more effective than opponent-based scripts.
+but they involve considerable computational cost and thus are not
+frequently used in on-line games. In fact, the most successful
+proposals for using EAs in games correspond to off-line applications
+\cite{offline-evolutionary-learning}, that is, the EA works (for
+instance, to improve the operational rules that guide the bot's
+actions) while the game is not being played, and the results or
+improvements can be used later during  the game. Through offline
+evolutionary learning, the quality of bots' intelligence in commercial
+games can be improved, and this has been proven to be more effective
+than opponent-based scripts.
+% ¿Eso es todo?  ¿Nada de RTS en juegos? Mira review de otros trabajos
+% anteriores donde nos meten caña por eso, menciona RTSs que los hay
+% a puñados. JJ
 
-This way, in the present work, an offline GA is applied to a parametrised tactic (set of behaviour model rules) inside the Planet Wars game (a basic RTS), in order to build the decision engine of a bot for that game, which will be considered later in the online matches.
+This way, in the present work, an offline GA is applied to a
+parametrised tactic (set of behaviour model rules) inside the Planet
+Wars game (a basic RTS), in order to build the decision engine of a
+bot for that game, which will be considered later in the online
+matches.
+% Esto es de otro, ¿no? - JJ
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM DESCRIPTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -153,7 +233,8 @@ The objective of the game is to defeat all the starships in the opponent's plane
 There are two strong constraints (set by the competition rules) which determine the possible methods to apply to design a bot: a simulated turn takes \textit{just one second}, and the bot is \textit{not allowed to store any kind of information} about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map).
 Therefore, the goal in this paper is to design a function that, according to the state of the map in each simulated turn (input) returns a set of actions to perform in order to fight the enemy, conquer its resources, and, ultimately, win the game. 
 
-For more details, the reader is invited to revise the cited webs and our previous work \cite{Genebot_CEC11}.
+For more details, the reader is invited to revise the cited webs and
+our previous work \cite{Genebot_CEC11}. % ¡¡¡¡Doble ciego!!!!! - JJ
 
 %Each planet has some properties: \textit{X and Y Coordinates}, \textit{Owner's PlayerID}, \textit{Number of Starships} and \textit{Growth Rate}. Players send fleets to conquer other planets (or to reinforce its own), and every \textit{fleet} also has a set of properties: \textit{Owner's PlayerID}, \textit{Number of Starships}, \textit{Source PlanetID}, \textit{Destination PlanetID}, \textit{Total Trip Length}, and \textit{Number of turns remaining until arrival}. A simulated turn is one-second long.
 %
@@ -180,9 +261,17 @@ For more details, the reader is invited to revise the cited webs and our previou
 \label{sec:genebot}
 %
 
-The competition restrictions strongly limit the design and implementation possibilities for a bot, since many algorithms are based on a memory of solutions or on the assignment of payoffs to previous actions in order to 
+The competition restrictions strongly limit the design and
+implementation possibilities for a bot, since many algorithms are
+based on a memory of solutions or on the assignment of payoffs to
+previous actions in order to  
 improve future behaviour. Moreover most of them are quite expensive in
-running time. Due to these reasons, there was defined a set of rules which models the on-line (during the game) bot's AI. The rules have been formulated through exhaustive experimentation, and are strongly dependent on some parameters, which ultimately determine the behaviour of the bot. 
+terms of 
+running time. Due to these reasons,  a set of rules which models the
+on-line (during the game) bot's AI was defined. The rules have been
+formulated through exhaustive experimentation, and are strongly
+dependent on some parameters, which ultimately determine the behaviour
+of the bot.  
 
 Anyway, there is only one type of action: move starships from one
 planet to another; but the nature of this movement will be different
@@ -192,10 +281,15 @@ lies in choosing which planet creates a fleet to send forth, how
 many starships will be included in it and what will the target
 be. 
 
-Three type of bots are going to be tested in this paper, all of them previously introduced in our previous work \cite{Genebot_CEC11}\footnote{The source code of all these bots can be found at: forja.rediris.es/svn/geneura/Google-Ai2010}.
+Three type of bots are going to be tested in this paper, all of them
+previously introduced in our previous work
+\cite{Genebot_CEC11}\footnote{The source code of all these bots can be
+  found at: forja.rediris.es/svn/geneura/Google-Ai2010}. % ¡¡¡¡¡Doble
+                                % ciego!!!! - JJ
 
 The first one is \textit{\textbf{GoogleBot}}, the basic bot provided by Google for testing our own. It is quite simple, since it has been designed for working well independently of the map configuration, so it may be able to defeat bots that are optimised for a particular kind of map. It just choose a planet as a base (the one with most of its starships) and a target chosen by calculating the ratio between the growth rate and the number of ships for all enemy and neutral planets. It wastes the rest of time until the attack has finished.
 
+% llámalo foobot - JJ
 The second bot is known as \textit{\textbf{AresBot}}, and it was defined as the first approach for solving the problem. It models a new hand-coded strategy better than the one scripted in the GoogleBot. So, several rules were created based on the experience of a human player.
 As a summary, this bot tries to firstly find a \textit{base planet} depending on a score function, the rest of its planets are considered as \textit{colonies}.
 Then, it determines which \textit{target planet} to attack or to
@@ -216,9 +310,12 @@ The internal flow of AresBot's behaviour with these states is shown in Figure
   GeneBot. The parameters that will be evolved are highlighted.} 
 \label{figura:diagram}
 \end{figure*}
-%
-It can be seen in that figure a set of seven parameters (weights, probabilities and amounts to add or subtract) which has been included in the rules that model the bot's behaviour. These parameters have been adjusted by hand, and they totally determine the behaviour of the bot. Their values and meaning can be consulted in the previous work \cite{Genebot_CEC11}.
-As stated in that paper, their values are applied in expressions used by the bot to take decisions. For instance, the function considered to select the \textit{target planet}.
+% Has puesto figure en minúsculas. A Antonio Mora vas! - JJ
+Figure \ref{figura:diagram} shows a set of seven parameters (weights, probabilities and amounts to add or subtract) which has been included in the rules that model the bot's behaviour. These parameters have been adjusted by hand, and they totally determine the behaviour of the bot. Their values and meaning can be consulted in the previous work \cite{Genebot_CEC11}.
+As stated in that paper, their values are applied in expressions used
+by the bot to take decisions. For instance, the function considered to
+select the \textit{target planet}. % Yo no abusaría de referencias al
+                                % otro trabajo - JJ 
 
 This bot already had a behaviour more complex than GoogleBot, and was
 able to beat it in 99 out of 100 maps; however, it needed lots of
@@ -242,6 +339,8 @@ The performance of the bot is reflected in two values: \textit{the number of tur
 Thus the \textit{fitness} associated to an individual (or bot in this case) could be considered as the minimum aggregated number of turns needed for winning the five battles.
 %Finally, in case of a complete draw (same value for LT and WT), zero
 %is returned. 
+% Si ya estamos a 12 páginas, me parece que os vais a tener que
+% ventilar la mitad de las páginas estas - JJ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CO-EVOLUTION  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
