@@ -95,7 +95,7 @@ University of Granada, Spain. \\
 
 \begin{abstract}
 This paper proposes the design and improvement of an autonomous agent based in a mixture between behavioural models (Finite State Machines, FSMs) and evolutionary methods (Genetic Algorithms in this case), consisting in the consideration of FSMs as part of the individuals to evolve. This leads to finally obtain a so-called \textit{bot}, which is able to autonomously complete different scenarios on a simulator of Super Mario Bros. game. The bot should follow \textit{Gameplay} track rules of the international Mario AI Championship.
-Mono- and multi-seed approaches (evaluation in one play or multiple plays respectively) have been analysed, considering the machine resources consumption, which turns in a bottleneck in some experiments. However, the methods yield agents which can finish levels of different difficulties successfully, and which play much better than an expert human player. These agents would have an excellent performance in they would participate in this competition track.
+Mono- and multi-seed approaches (evaluation in one play or multiple plays respectively) have been analysed, considering the machine resources consumption, which turns in a bottleneck in some experiments. However, the methods yield agents which can finish levels of different difficulties successfully, and which play much better than an expert human player. According to the results and considering the competition's restrictions and objectives, these agents would have enough performance to participate in this competition track.
 \keywords{Videogames \and Super Mario Bros \and Artificial Intelligence \and \and Genetic Algorithms \and Finite State Machines \and Autonomous Agents \and Non Player Characters \and Bots}
 % \PACS{PACS code1 \and PACS code2 \and more}
 % \subclass{MSC code1 \and MSC code2 \and more}
@@ -230,7 +230,7 @@ The action to perform depends, of course, of the scenery characteristics around 
 %one for enemies who die by a fireball/jump/Koopa shell, other for those who only die by a fireball, others which only die jumping on them, and finally others which just die by a Koopa shell.
 %
 \begin{itemize}
-\item Enemies who can die by a fireball strike or if Mario jumps on them and crushes them or if Mario is carrying a koopa shell and throws it at the enemies: Goomba, Goomba Windged, Green Koopa, Red Koopa, Koopa Windged Green, Red Koopa Windged.
+\item Enemies who can die by a fireball strike or if Mario jumps on them and crushes them or if Mario is carrying a koopa shell and throws it at the enemies: Goomba, Goomba Winged, Green Koopa, Red Koopa, Koopa Winged Green, Red Koopa Winged.
 
 \item Enemies who only die by a fireball strike: carnivorous flowers that appear in the pipes.
 
@@ -370,7 +370,7 @@ Two different schemes have been implemented:
     \item \textit{multi-seed}: Every individual is tested in 30 levels (with the same difficulty) generated randomly using different seeds, playing again until pass, die or get stacked. The fitness is computed considering the results of all the plays for an individual. The aim of this scheme is: 1) avoid the usual noise \cite{noisyfitness_EVO2012} present in this type of problems (videogames), i.e. it tries to get a fair valuation for an individual, since the same configuration could represent an agent which is very good sometimes and quite bad some others, due to the stochasticity of every play (regarding the agent's behaviour); and 2) get individuals prepared to a wide set of situations in every level and difficulty, since 30 levels should present a high amount of different scenarios and configurations.
 \end{itemize}
 
-Thus, there is a \textit{generic fitness} which has as restriction completely finish the level to be set to positive. On the contrary, individuals that have not finished the level start from the lowest fitness possible and their negativity is reduced according the behaviour during the level run. This generic fitness is a weighted aggregation, similar to the one implemented inside the simulator to assign the score, and which is based in the next values:
+Thus, there is a \textit{generic fitness} which has as restriction completely finish the level to be set to positive. On the contrary, individuals that have not finished the level start from the lowest fitness possible and their negativity is reduced according to the behaviour during the level run. This generic fitness is a weighted aggregation, similar to the one implemented inside the simulator to assign the score, and which is based in the next values:
 \begin{itemize}
 \item {\em marioWinner}: is set to 1 if the agent finish the level.
 \item {\em marioSize}: 0 if the agent is small, 1 if it is Big, and 2 if it is Fire.
@@ -386,7 +386,7 @@ Thus, there is a \textit{generic fitness} which has as restriction completely fi
 \item {\em causeOfDeath}: in case the agent is dead, this value is also taken into account in the fitness computation.
 \end{itemize}
 
-This fitness is considered as the result of the evaluation for the individuals in the mono-seed approach, meanwhile multi-seed considers a {\em hierarchical fitness}, where the population is ordered according the next criteria: 
+This fitness is considered as the result of the evaluation for the individuals in the mono-seed approach, meanwhile multi-seed considers a {\em hierarchical fitness}, where the population is ordered according to the next criteria: 
 First, taking into account the percentage of levels where the individuals have been stacked or fallen from a cliff. Then, they are ordered considering the average percentage of levels completed. Finally, the individuals are ordered by the average generic fitness obtained in the levels.
 
 The considered operators in the GA are described in the following paragraphs. 
@@ -546,7 +546,9 @@ Some examples of the obtained evolved FSM-based agents can be seen in action (in
     \item \textit{Difficulty level 12 (stacked)}: \url{http://www.youtube.com/watch?v=zNGfBApX7sk}
 \end{itemize}
 
-The last one was evolved for some generations (not all the desired) in that level of difficulty, due to the commented problems, so it cannot complete this hard level in the simulator. However, as it can be seen, it is quite good in the first part of the play. Thus, if we could finish the complete evolution process in this difficulty level we think the agent could complete any possible level.
+The last one was evolved for some generations (not all the desired) in that level of difficulty, due to the commented problems, so it cannot complete this hard level in the simulator. However, as it can be seen, it is quite good in the first part of the play. Thus, if the complete evolutionary process could be finished in this difficulty level, and following the tendency, the obtained agent would pass almost any scenario. The reason that leads us to think this way is that difficulty level 12 presents a huge amount of situations to cover a wide part of the input space.
+
+ the complete evolution process in this difficulty level we think the agent could complete any possible level.
 
 %LT -> Tipo de escenario. Escenario 0: superficie, escenario 1: subterráneo, escenario 2: castillo
 %LD -> Dificultad del nivel. Valores entre 0 y 12
