@@ -6,6 +6,7 @@
 \usepackage{listings}
 \usepackage{rotating}
 \usepackage{subfig}
+\usepackage{algorithmic}
 
 %%%%
 
@@ -41,29 +42,29 @@ showstringspaces=false
 
 
 % first the title is needed
-\title{Comparing different migration policies in a noisy fitness problem: an study in Evolutionary Robotics}
+\title{Difference of tree maximum depth in Genetic Programming to generate competitive agents for RTS games}
 
 % a short form should be given in case it is too long for the running head
-\titlerunning{MADE: A Massive BLABLABLA}
-\author{R.H. Garc\'ia-Ortega\inst{1}, P. Garc\'ia-S\'anchez\inst{2} and J.J. Merelo\inst{2}}
+\titlerunning{Difference of tree maximum depth in GP to generate competitive agents for RTS games}
+\author{P. Garc\'ia-S\'anchez, A. Fern\'andez-Ares, A. M. Mora, P. A. Castillo and J.J. Merelo}
 
 %
 
-\authorrunning{R.H. Garc\'ia-Ortega et al.}
+\authorrunning{P. Garc\'ia-S\'anchez et al.}
 
 % (feature abused for this document to repeat the title also on left hand pages)
 % the affiliations are given next; don't give your e-mail address
 % unless you accept that it will be published
 
-\institute{Fundaci\'on I+D del Software Libre, Granada, Spain \and Dept. of Computer Architecture and Technology, University of Granada, Spain 
+\institute{Dept. of Computer Architecture and Technology and CITIC-UGR, University of Granada, Spain 
 \mailsa}
 
 
 
 
-\toctitle{BLABLABLA}
+%\toctitle{BLABLABLA}
 %ES ANONIMO????
-\tocauthor{Authors' Instructions}
+%\tocauthor{Authors' Instructions}
 \maketitle
 
 
@@ -106,33 +107,13 @@ The rest of the work is structured as follows: after the state of the art, the d
 
 
 
-\section{MADE}
-\label{sec:made}
+
 
 \section{Proposed Agent}
+\label{sec:agent}
 
-In each turn, the next algorithm is executed:
-\begin{figure}[htb]
-\begin{algorithmic}
-\STATE tree $\gets$ ReadTree
-\COMMENT Do Turns
-\LOOP
-	
-	\STATE calculateGlobalPlanets()
-	\COMMENT (for example Base, Enemy Base...)
-	\STATE calculateGlobalRatios ()
-	\COMMENT (for example myPlanetEnemyRatio, myShipsEnemyRatio...)
-		\FOR{each Planet: p}
-			\STATE calculateLocalPlanets (p)
-			\COMMENT (for example NearestNeutralPlanet)
-			\STATE calculateLocalRatios (p)
-			\COMMENT (for example actualMyShipsRatio)
-			\STATE executeTree(p,tree)
-\ENDLOOP
-\end{algorithmic}
-\caption{Pseudocode of the proposed agent. The tree is fixed during all the agent's execution}
-\label{fig:pseudo}
-\end{figure}
+The proposed agent receives a tree to execute
+
 
 The generated tree is a binary-tree of expressions formed by two different types of nodes:
 
@@ -169,6 +150,42 @@ The decission list is next:
 
 
 \end{itemize}
+
+In each turn, the loop presented in Figure \ref{fig:pseudo} is executed.
+\begin{figure}[htb]
+\begin{algorithmic}
+\STATE tree $\gets$ ReadTree()
+
+\COMMENT {In each turn}
+\LOOP
+	
+	\STATE calculateGlobalPlanets()
+	\COMMENT{for example Base, Enemy Base...}
+	\STATE calculateGlobalRatios ()
+	\COMMENT {for example myPlanetEnemyRatio, myShipsEnemyRatio...}
+		\FOR{each Planet: p}
+			\STATE calculateLocalPlanets (p)
+			\COMMENT{for example NearestNeutralPlanet to planet p}
+			\STATE calculateLocalRatios (p)
+			\COMMENT{for example actualMyShipsRatio}
+			\STATE executeTree(p,tree)
+			\COMMENT{Send a percentage of the ships to another planet}
+		\ENDFOR
+\ENDLOOP
+\end{algorithmic}
+\caption{Pseudocode of the proposed agent. The tree is fixed during all the agent's execution}
+\label{fig:pseudo}
+\end{figure}
+
+\section{Experimental Setup}
+
+To generate the tree we have used a Genetic Programming Algorithm with the parameters.
+
+The fitness used is defined
+
+The selected bot to confront is GeneBot, proposed in our previous work \cite{Mora2012Genebot}.
+
+\section{Results}
 
 \section{Conclusions}
 \label{sec:conclusion}
