@@ -109,13 +109,72 @@ The rest of the work is structured as follows: after the state of the art, the d
 \section{MADE}
 \label{sec:made}
 
-\section{Extraction of WHATEVER using Evolutionary Algorithms}
+\section{Proposed Agent}
+
+In each turn, the next algorithm is executed:
+\begin{figure}[htb]
+\begin{algorithmic}
+\STATE tree $\gets$ ReadTree
+\COMMENT Do Turns
+\LOOP
+	
+	\STATE calculateGlobalPlanets()
+	\COMMENT (for example Base, Enemy Base...)
+	\STATE calculateGlobalRatios ()
+	\COMMENT (for example myPlanetEnemyRatio, myShipsEnemyRatio...)
+		\FOR{each Planet: p}
+			\STATE calculateLocalPlanets (p)
+			\COMMENT (for example NearestNeutralPlanet)
+			\STATE calculateLocalRatios (p)
+			\COMMENT (for example actualMyShipsRatio)
+			\STATE executeTree(p,tree)
+\ENDLOOP
+\end{algorithmic}
+\caption{Pseudocode of the proposed agent. The tree is fixed during all the agent's execution}
+\label{fig:pseudo}
+\end{figure}
+
+The generated tree is a binary-tree of expressions formed by two different types of nodes:
+
+\begin{itemize}
+\item {\em Decission}: a logical expression formed by a variable, a less than operator ($<$), and a number between 0 and 1.
+\item {\em Action}: the leaves of the the tree. Each decission calls an method that indicates to which planet send a percentage of available ships (from 0 to 1) from the planet that executes the tree.
+\end{itemize}
+
+The different variables for the decissions are:
+
+\begin{itemize}
+\item {\em myShipsEnemyRatio}: Ratio between the player's ships and enemy's ships.
+\item {\em myShipsLandedFlyingRatio}: Ratio between the player's landed and flying ships.
+\item {\em myPlanetEnemyRatio}: Ratio between the number of player's planets and the enemy's ones.
+\item {\em myPlanetsTotalRatio}: Ration between the number of player's planet and total planets (neutrals and enemy included)-
+\item {\em actualMyShipsRatio}: Ratio between the number of ships in the specific planet that evaluates the tree and player's total ships.
+\item {\em actualLandedFlyingRatio}: Ratio between the number of ships landed and flying from the specific planet that evaluates the tree and player's total ships.
+\end{itemize}
+
+The decission list is next:
+
+\begin{itemize}
+\item {\em Attack Nearest (Neutral|Enemy|NotMy) Planet}: The objective is the nearest planet.
+\item {\em Attack Weakest (Neutral|Enemy|NotMy) Planet}: The objective is the planet with less ships.
+\item {\em Attack Wealthest (Neutral|Enemy|NotMy) Planet}: The objective is the planet with higher lower rate.
+\item {\em Attack Beneficious (Neutral|Enemy|NotMy) Planet}: The objective is the planet more beneficious, that is the one with growth rate divided by the number of ships.
+\item {\em Attack Quickest (Neutral|Enemy|NotMy) Planet}: The objective is the planet with higher facility to conquest: the lowest product between the distance from the planet that executes the tree and the number of the ships in the objective planet.
+\item {\em Attack (Neutral|Enemy|NotMy) Base}: The objective is the planet with more ships (that is, the base).
+\item {\em  Attack Random Planet}.
+\item {\em Reinforce Nearest Planet}: Reinforce the nearest player's planet to the planet that executes the tree.
+\item {\em Reinforce Base}: Reinforce the player's planet with higher number of ships.
+\item {\em Reinforce Wealthest Planet}: Reinforce the player's planet with higher grown rate.
+\item {\em Do nothing}.
+
+
+\end{itemize}
 
 \section{Conclusions}
 \label{sec:conclusion}
 
 \bibliographystyle{splncs}
-\bibliography{made}
+\bibliography{gpbot}
 
 \end{document}
 
