@@ -42,12 +42,18 @@ showstringspaces=false
 
 
 % first the title is needed
-\title{Difference of tree maximum depth in Genetic Programming to generate competitive agents for RTS games}
+\title{Difference of tree maximum depth in Genetic Programming to
+  generate competitive agents for RTS games}
+% Ein? No entiendo nada. ¿Quieres vender la diferencia de profundidad
+% máxima?  - JJ
 
 % a short form should be given in case it is too long for the running head
 \titlerunning{Difference of tree maximum depth in GP to generate competitive agents for RTS games}
-\author{P. Garc\'ia-S\'anchez, A. Fern\'andez-Ares, A. M. Mora, P. A. Castillo and J.J. Merelo}
+\author{P. Garc\'ia-S\'anchez, A. Fern\'andez-Ares, A. M. Mora,
+  P. A. Castillo and J.J. Merelo}
 
+%Doble ciego!!!!! - JJ
+ 
 %
 
 \authorrunning{P. Garc\'ia-S\'anchez et al.}
@@ -64,13 +70,19 @@ showstringspaces=false
 
 %\toctitle{BLABLABLA}
 %ES ANONIMO????
+% SÍ! - JJ
 %\tocauthor{Authors' Instructions}
 \maketitle
 
 
 \begin{abstract}
 
-This work presents the results obtained from comparing ... Results show that 
+This work presents the results obtained from comparing ... Results
+show that 
+
+% Por eso es por lo que tenéis que escribir el abstract antes que
+% nada; para afinar el título y tener claro qué es lo qeu queréis
+% probar. 
 
 \end{abstract}
 
@@ -90,7 +102,11 @@ Real Time Simulators (RTS) are a type of videogame that...
 
 
 
-In this work we use Genetic Programming to obtain agents that play Planet Wars game. We try to solve the next questions:
+In this work we use Genetic Programming to obtain agents that play
+Planet Wars game. We try to solve the next questions: % Breve
+                                % explicación de GP, no es un congreso
+                                % exclusivo de eso y no es tan
+                                % conocido como GA en general - JJ
 
 \begin{itemize}
 \item Can a tree-generated behaviour of an agent defeat a hand-coded one whose parameters have been also optimized?
@@ -105,22 +121,47 @@ The rest of the work is structured as follows: after the state of the art, the d
 \section{State of the art}
 \label{sec:soa}
 
-RTS games  (see \cite{Lara2013surey} for a survey).
+RTS games  (see \cite{Lara2013surey} for a survey). %surey o survey ?
+                                %- JJ
 
-Evolutionary Algorithms have been widely used in computational intelligence in RTS games \cite{Lara2013surey}. For example, for parameter optimization \cite{}, learning \cite{Kenneth2005neuroevolution} or content generation \cite{Mahlmann2012MapGeneration}. 
+Among other techniques, evolutionary Algorithms have been widely used in computational intelligence in RTS games \cite{Lara2013surey}. For example, for parameter optimization \cite{}, learning \cite{Kenneth2005neuroevolution} or content generation \cite{Mahlmann2012MapGeneration}. 
 
-One of the most used games for study computational intelligence in RTS is {\em Planet Wars} \cite{Lara2013mapgenerator,Mora2012Genebot,FernandezAres2012adaptive} because it is a simple RTS that defines a ... Although it has been described in previous works, we summarize saying that the objective of the player is to conquer enemy and neutral planets in a space-like simulator. Each player has planets that produce ships depending of a growth-rate and the player must send this ships to other planets (literally, crashing towards the planet) to conquer them. A player win if is the owner of all the planets. As requirements, each second a decission has to be made (turn), and no memory about the previous turns must be used. Figure \ref{fig:planets} show a screen capture of the game.
+One of the most used games for study computational intelligence in RTS
+is {\em Planet Wars}
+\cite{Lara2013mapgenerator,Mora2012Genebot,FernandezAres2012adaptive}
+% Recordad doble ciego - JJ
+ because it is a simple RTS that defines a ... %esto no corresponde al
+                                %estado del arte, sino a la
+                                %introducción - JJ
+ Although it has been described in previous works, we summarize saying that the objective of the player is to conquer enemy and neutral planets in a space-like simulator. Each player has planets that produce ships depending of a growth-rate and the player must send this ships to other planets (literally, crashing towards the planet) to conquer them. A player win if is the owner of all the planets. As requirements, each second a decission has to be made (turn), and no memory about the previous turns must be used. Figure \ref{fig:planets} show a screen capture of the game.
 
-We have experimented with this game in previous works. For example, in \cite{Mora2012Genebot} a hand-code strategy was optimized placing the parameters of the agent rules in a Genetic Algorithm. The hard-coded tree had a depth of 3 levels. Results showed a good performance confronting with other bots provided by the Google AI Challenge. In our next work \cite{FernandezAres2012adaptive} we improved this agent optimizing in different types of maps and selecting the set of optimized parameters depending of the map where the game was taking place, using a tree of 5 levels. These results outperformed the previous version of the bot with 87\% of victories.
+We have experimented with this game in previous works. For example, in
+\cite{Mora2012Genebot} a hand-coded strategy was optimized using a
+genetic algorithm for the strategy rates and percentages. The
+hard-coded tree had a depth of 3 levels. % ein????? - JJ
+  Results showed a good performance confronting with other bots
+  provided by the Google AI Challenge. In our next work
+  \cite{FernandezAres2012adaptive} we improved this agent optimizing
+  in different types of maps and selecting the set of optimized
+  parameters depending of the map where the game was taking place,
+  using a tree of 5 levels. These results outperformed the previous
+  version of the bot with 87\% of victories. % DOBLE CIEGO!!!! - jj
 
-In this paper we use Genetic Programming to create the decission tree, instead using our own gaming experience to model it, and compare this agent with the two presented before. Genetic Programming has also used in other kind of games, such as First Person Shoothers (FPS) \cite{Esparcia2013GPunreal}.
+In this paper we use Genetic Programming to create the decission tree,
+instead OF using our own gaming experience to model it, and compare
+this agent with the two presented before. Genetic Programming has also
+used in other kind of games, such as First Person Shoothers (FPS)
+\cite{Esparcia2013GPunreal}. % POR FAVOR, meted a Paloma a bordo para
+                             % que revise el inglés - JJ
+                             % 
 
 
 \section{Proposed Agent}
 \label{sec:agent}
 
 
-The proposed agent receives a tree to be executed. The generated tree is a binary-tree of expressions formed by two different types of nodes:
+The proposed agent receives a tree to be executed. The generated tree
+is a binary tree of expressions formed by two different types of nodes:
 
 \begin{itemize}
 \item {\em Decission}: a logical expression formed by a variable, a less than operator ($<$), and a number between 0 and 1.
@@ -139,7 +180,8 @@ The different variables for the decissions are:
 \end{itemize}
 
 The decission list is:
-
+% ¿De dónde habéis sacado esto? También tienen una cierta estrategia
+% presupuesta: que hay que elegir objetivos, por ejemplo - JJ
 \begin{itemize}
 \item {\em Attack Nearest (Neutral|Enemy|NotMy) Planet}: The objective is the nearest planet.
 \item {\em Attack Weakest (Neutral|Enemy|NotMy) Planet}: The objective is the planet with less ships.
