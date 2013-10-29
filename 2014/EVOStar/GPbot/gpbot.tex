@@ -28,7 +28,7 @@
 \noindent\keywordname\enspace\ignorespaces#1}
 
 \lstset{
-basicstyle=\ttfamily \scriptsize,
+basicstyle=\ttfamily, %\scriptsize, QUITAR LA COMA DE TTFAMILY SI DESCOMENTAS
 language=c++,
 frame=single,
 stringstyle=\ttfamily,
@@ -112,10 +112,7 @@ The rest of the work is structured as follows: after the state of the art, the d
 \section{Proposed Agent}
 \label{sec:agent}
 
-The proposed agent receives a tree to execute
-
-
-The generated tree is a binary-tree of expressions formed by two different types of nodes:
+The proposed agent receives a tree to be executed. The generated tree is a binary-tree of expressions formed by two different types of nodes:
 
 \begin{itemize}
 \item {\em Decission}: a logical expression formed by a variable, a less than operator ($<$), and a number between 0 and 1.
@@ -133,7 +130,7 @@ The different variables for the decissions are:
 \item {\em actualLandedFlyingRatio}: Ratio between the number of ships landed and flying from the specific planet that evaluates the tree and player's total ships.
 \end{itemize}
 
-The decission list is next:
+The decission list is:
 
 \begin{itemize}
 \item {\em Attack Nearest (Neutral|Enemy|NotMy) Planet}: The objective is the nearest planet.
@@ -150,6 +147,24 @@ The decission list is next:
 
 
 \end{itemize}
+
+An example of a possible tree is shown in Figure \ref{fig:java}.
+
+\begin{figure}[tb] 
+\begin{center}
+\begin{lstlisting}
+if(myShipsLandedFlyingRatio<0.796)
+	if(actualMyShipsRatio<0.201)
+		attackWeakestNeutralPlanet(0.481);
+	else
+		attackNearestEnemyPlanet(0.913);
+else
+	attackNearestEnemyPlanet(0.819);
+\end{lstlisting}
+\end{center}
+\caption{Example of a generated Java tree.}
+\label{fig:java}
+\end{figure}
 
 In each turn, the loop presented in Figure \ref{fig:pseudo} is executed.
 \begin{figure}[htb]
@@ -177,13 +192,16 @@ In each turn, the loop presented in Figure \ref{fig:pseudo} is executed.
 \label{fig:pseudo}
 \end{figure}
 
+
+
+
 \section{Experimental Setup}
 
 To generate the tree we have used a Genetic Programming Algorithm with the parameters.
 
-The fitness used is defined
+The fitness used is 
 
-The selected bot to confront is GeneBot, proposed in our previous work \cite{Mora2012Genebot}.
+The selected bot to confront is {\em GeneBot}, proposed in our previous work \cite{Mora2012Genebot}. This bot was trained using a GA to optimize the 8 parameters that conforms a set of hand-made rules.
 
 \section{Results}
 
