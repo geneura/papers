@@ -86,31 +86,39 @@ This work presents the results obtained from comparing ... Results show that
 \section{Introduction}
 \noindent 
 
-Blablalba
+Real Time Simulators (RTS) are a type of videogame that... 
 
 
 
+In this work we use Genetic Programming to obtain agents that play Planet Wars game. We try to solve the next questions:
 
-With the previous result we try to answer the next questions:
 \begin{itemize}
-\item ?
-\item ?
-\item ?
+\item Can a tree-generated behaviour of an agent defeat a hand-coded one whose parameters have been also optimized?
+\item Can this agent beats a more complicated oponent that is adapted to the environment?
+\item How does the maximum depth affects the results?
 \end{itemize}
 
-The rest of the work is structured as follows: after the state of the art, the developed system is presented in Section \ref{sec:made}. Then, the experiments conduced with the EA are showed (Section \ref{sec:results}). Finally, conclusions and future works are discussed.
+The rest of the work is structured as follows: after the state of the art, the description of our agent is presented in Section \ref{sec:agent}. Then, the experimental setup conduced with the EA are showed (Section \ref{sec:experiments}). Finally, results, conclusions and future works are discussed.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%SEC SOA
 \section{State of the art}
 \label{sec:soa}
 
+RTS games  (see \cite{Lara2013surey} for a survey).
 
+Evolutionary Algorithms have been widely used in computational intelligence in RTS games \cite{Lara2013surey}. For example, for parameter optimization \cite{}, learning \cite{Kenneth2005neuroevolution} or content generation \cite{Mahlmann2012MapGeneration}. 
 
+One of the most used games for study computational intelligence in RTS is {\em Planet Wars} \cite{Lara2013mapgenerator,Mora2012Genebot,FernandezAres2012adaptive} because it is a simple RTS that defines a ... Although it has been described in previous works, we summarize saying that the objective of the player is to conquer enemy and neutral planets in a space-like simulator. Each player has planets that produce ships depending of a growth-rate and the player must send this ships to other planets (literally, crashing towards the planet) to conquer them. A player win if is the owner of all the planets. As requirements, each second a decission has to be made (turn), and no memory about the previous turns must be used. Figure \ref{fig:planets} show a screen capture of the game.
+
+We have experimented with this game in previous works. For example, in \cite{Mora2012Genebot} a hand-code strategy was optimized placing the parameters of the agent rules in a Genetic Algorithm. The hard-coded tree had a depth of 3 levels. Results showed a good performance confronting with other bots provided by the Google AI Challenge. In our next work \cite{FernandezAres2012adaptive} we improved this agent optimizing in different types of maps and selecting the set of optimized parameters depending of the map where the game was taking place, using a tree of 5 levels. These results outperformed the previous version of the bot with 87\% of victories.
+
+In this paper we use Genetic Programming to create the decission tree, instead using our own gaming experience to model it, and compare this agent with the two presented before. Genetic Programming has also used in other kind of games, such as First Person Shoothers (FPS) \cite{Esparcia2013GPunreal}.
 
 
 \section{Proposed Agent}
 \label{sec:agent}
+
 
 The proposed agent receives a tree to be executed. The generated tree is a binary-tree of expressions formed by two different types of nodes:
 
@@ -175,16 +183,16 @@ In each turn, the loop presented in Figure \ref{fig:pseudo} is executed.
 \LOOP
 	
 	\STATE calculateGlobalPlanets()
-	\COMMENT{for example Base, Enemy Base...}
+	\COMMENT{{\em for example Base, Enemy Base...}}
 	\STATE calculateGlobalRatios ()
-	\COMMENT {for example myPlanetEnemyRatio, myShipsEnemyRatio...}
+	\COMMENT {{\em for example myPlanetEnemyRatio, myShipsEnemyRatio...}}
 		\FOR{each Planet: p}
 			\STATE calculateLocalPlanets (p)
-			\COMMENT{for example NearestNeutralPlanet to planet p}
+			\COMMENT{{\em for example NearestNeutralPlanet to planet p}}
 			\STATE calculateLocalRatios (p)
-			\COMMENT{for example actualMyShipsRatio}
+			\COMMENT{{\em for example actualMyShipsRatio}}
 			\STATE executeTree(p,tree)
-			\COMMENT{Send a percentage of the ships to another planet}
+			\COMMENT{{\em Send a percentage of the ships to another planet}}
 		\ENDFOR
 \ENDLOOP
 \end{algorithmic}
@@ -202,6 +210,8 @@ To generate the tree we have used a Genetic Programming Algorithm with the param
 The fitness used is 
 
 The selected bot to confront is {\em GeneBot}, proposed in our previous work \cite{Mora2012Genebot}. This bot was trained using a GA to optimize the 8 parameters that conforms a set of hand-made rules.
+
+The used framework is OSGiLiath, a service-oriented evolutionary framework. The generated tree is compiled in real-time and injected in the agent's code using Java CAssist library. All the source code used is available under a LGPL V3 License in \url{http://www.osgiliath.org}.
 
 \section{Results}
 
