@@ -6,7 +6,7 @@
 \usepackage{listings}
 \usepackage{rotating}
 \usepackage{subfig}
-\usepackage{algorithmic}
+\usepackage[boxed]{algorithm2e}
 
 %%%%
 
@@ -45,14 +45,14 @@ showstringspaces=false
 \title{Difference of tree maximum depth in Genetic Programming to
   generate competitive agents for RTS games}
 % Ein? No entiendo nada. ¿Quieres vender la diferencia de profundidad
-% máxima?  - JJ
+% máxima?  - JJ FERGU: Inicialmente, y sin tener resultados todavía
 
 % a short form should be given in case it is too long for the running head
 \titlerunning{Difference of tree maximum depth in GP to generate competitive agents for RTS games}
 \author{P. Garc\'ia-S\'anchez, A. Fern\'andez-Ares, A. M. Mora,
   P. A. Castillo and J.J. Merelo}
 
-%Doble ciego!!!!! - JJ
+%Doble ciego!!!!! - JJ FERGU: Lo sé, es para ver quien participa.
  
 %
 
@@ -70,7 +70,7 @@ showstringspaces=false
 
 %\toctitle{BLABLABLA}
 %ES ANONIMO????
-% SÍ! - JJ
+% SÍ! - JJ FERGU: que ya lo sabía, esto es del primer Evostar que envié hace mil años y conserva los comentarios que escribí xDD
 %\tocauthor{Authors' Instructions}
 \maketitle
 
@@ -82,17 +82,20 @@ show that
 
 % Por eso es por lo que tenéis que escribir el abstract antes que
 % nada; para afinar el título y tener claro qué es lo qeu queréis
-% probar. 
+% probar. FERGU: Si empiezo a escribir el artículo sin tener resultados tendré que esperar que las ejecuciones terminen para decir algo... Por ahora estoy escribiendo al principio el SOA y la descripción de lo que se está ejecutando, a falta de que termine.
 
 \end{abstract}
 
 
 % En el GPBot tienes que hacer énfasis en que las estrategias probadas
 % hasta ahora en este juego son tan buenas como la estrategia original
-% que parametrizan; GPBot te permite no sólo conseguir estrategias
+% que parametrizan; 
+% FERGU: No me he enterado de esto
+% GPBot te permite no sólo conseguir estrategias
 % mejores, sino descubrirlas. En los resultados tienes que hacer
 % énfasis no sólo en lo obtenido, sino también en qué significan las
 % estrategias, cómo juegan; tendrás que ponerlas a jugar a ver qué pasa.
+% FERGU: esa era la idea, pero hasta que no terminen las 4 ejecuciones que están ejecutandose que duran 4 días...
 
 
 \section{Introduction}
@@ -102,12 +105,33 @@ Real Time Simulators (RTS) are a type of videogame that...
 
 
 
-In this work we use Genetic Programming to obtain agents that play
-Planet Wars game. We try to solve the next questions: % Breve
+One of the most used games for study computational intelligence in RTS
+is {\em Planet Wars}
+\cite{Lara2013mapgenerator,Mora2012Genebot,FernandezAres2012adaptive}
+% Recordad doble ciego - JJ
+ because it is a simple RTS that defines a ... %esto no corresponde al
+                                %estado del arte, sino a la
+                                %introducción - JJ FERGU: OK, movido arriba
+ Although it has been described in previous works, we summarize saying that the objective of the player is to conquer enemy and neutral planets in a space-like simulator. Each player has planets that produce ships depending of a growth-rate and the player must send this ships to other planets (literally, crashing towards the planet) to conquer them. A player win if is the owner of all the planets. As requirements, each second a decission has to be made (turn), and no memory about the previous turns must be used. Figure \ref{fig:naves} show a screen capture of the game. 
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.8]{naves.eps}
+\end{center} 
+\caption{Example of execution of the Player Wars game. White planets and ships are owned by the player and dark gray ones are controlled by the enemy. Clear gray are neutral planets (not invaded).}
+\label{fig:naves}
+\end{figure}
+
+
+In this work we use Genetic Programming (GP) to obtain agents that play
+Planet Wars game. The objective of GP is to create functions or programs to solve determined problems. Individual representation is usually in form of a tree, formed by operators (or {\em primitives}) and variables ({\em terminals}). These sets are usually fixed and known. The genome size is, therefore, variable, but the maximum size (depth) of the individuals is usually fixed, to avoid high evaluation costs. GP has been used to evolve LISP (LISt Processing) programs \cite{Koza1990Tools}, or XSLT (eXtensible Stylesheet Language Transformations) scripts \cite{Garcia2008XSLT}, among others.
+
+% Breve
                                 % explicación de GP, no es un congreso
                                 % exclusivo de eso y no es tan
                                 % conocido como GA en general - JJ
-
+                                % FERGU: OK 
+We try to solve the next questions: 
 \begin{itemize}
 \item Can a tree-generated behaviour of an agent defeat a hand-coded one whose parameters have been also optimized?
 \item Can this agent beats a more complicated oponent that is adapted to the environment?
@@ -121,39 +145,29 @@ The rest of the work is structured as follows: after the state of the art, the d
 \section{State of the art}
 \label{sec:soa}
 
-RTS games  (see \cite{Lara2013surey} for a survey). %surey o survey ?
-                                %- JJ
+RTS games  (see \cite{Lara2013review} for a survey). %surey o survey ? FERGU: no lo había metido aun en el bibtex, cambio a review
 
-Among other techniques, evolutionary Algorithms have been widely used in computational intelligence in RTS games \cite{Lara2013surey}. For example, for parameter optimization \cite{}, learning \cite{Kenneth2005neuroevolution} or content generation \cite{Mahlmann2012MapGeneration}. 
+Among other techniques, Evolutionary Algorithms (EAs) have been widely used in computational intelligence in RTS games \cite{Lara2013review}. For example, for parameter optimization \cite{Esparcia10FPS}, learning \cite{Kenneth2005neuroevolution} or content generation \cite{Mahlmann2012MapGeneration}. 
 
-One of the most used games for study computational intelligence in RTS
-is {\em Planet Wars}
-\cite{Lara2013mapgenerator,Mora2012Genebot,FernandezAres2012adaptive}
-% Recordad doble ciego - JJ
- because it is a simple RTS that defines a ... %esto no corresponde al
-                                %estado del arte, sino a la
-                                %introducción - JJ
- Although it has been described in previous works, we summarize saying that the objective of the player is to conquer enemy and neutral planets in a space-like simulator. Each player has planets that produce ships depending of a growth-rate and the player must send this ships to other planets (literally, crashing towards the planet) to conquer them. A player win if is the owner of all the planets. As requirements, each second a decission has to be made (turn), and no memory about the previous turns must be used. Figure \ref{fig:planets} show a screen capture of the game.
+One of these types, Genetic Programming, has been proved as a good tool for developing strategies in games achieving results comparable to human, or human-based, competitors \cite{Sipper2007gameplaying}, and achieving higher ranking than solvers produced by other techniques or even beating high-ranking humans \cite{Elyasaf2012FreeCell}. GP has also been used in different kind of games, such as board-games \cite{Benbassat2012Reversi}, or (in principle) simpler games such as Ms. Pac-Man \cite{Brandstetter2012PacMan} and Spoof \cite{Wittkamp2007spoof} and even in modern video-games such as First Person Shoothers (FPS) (for example, Unreal \cite{Esparcia2013GPunreal}).
 
-We have experimented with this game in previous works. For example, in
-\cite{Mora2012Genebot} a hand-coded strategy was optimized using a
-genetic algorithm for the strategy rates and percentages. The
-hard-coded tree had a depth of 3 levels. % ein????? - JJ
+%We have experimented with this game in previous works. 
+Planet Wars, the game we are going to use in this work, has been used as experimental environment in other works. For example, in
+\cite{Mora2012Genebot} the authors programmed the behaviour of a bot with a decission tree of 3 levels. Then, the values of these rules were optimized using a genetic algorithm to tune the strategy rates and percentages.  % ein????? - JJ - FERGU: re-escrito.
   Results showed a good performance confronting with other bots
-  provided by the Google AI Challenge. In our next work
-  \cite{FernandezAres2012adaptive} we improved this agent optimizing
+  provided by the Google AI Challenge. %In our next work
+  In their next work
+  \cite{FernandezAres2012adaptive} they improved this agent optimizing
   in different types of maps and selecting the set of optimized
   parameters depending of the map where the game was taking place,
   using a tree of 5 levels. These results outperformed the previous
-  version of the bot with 87\% of victories. % DOBLE CIEGO!!!! - jj
+  version of the bot with 87\% of victories. % DOBLE CIEGO!!!! - jj - FERGU: que yaaaaa xD
 
 In this paper we use Genetic Programming to create the decission tree,
-instead OF using our own gaming experience to model it, and compare
-this agent with the two presented before. Genetic Programming has also
-used in other kind of games, such as First Person Shoothers (FPS)
-\cite{Esparcia2013GPunreal}. % POR FAVOR, meted a Paloma a bordo para
+instead of using our own gaming experience to model it, and compare
+this agent with the two presented before.  % POR FAVOR, meted a Paloma a bordo para
                              % que revise el inglés - JJ
-                             % 
+
 
 
 \section{Proposed Agent}
@@ -164,8 +178,8 @@ The proposed agent receives a tree to be executed. The generated tree
 is a binary tree of expressions formed by two different types of nodes:
 
 \begin{itemize}
-\item {\em Decission}: a logical expression formed by a variable, a less than operator ($<$), and a number between 0 and 1.
-\item {\em Action}: the leaves of the the tree. Each decission calls an method that indicates to which planet send a percentage of available ships (from 0 to 1) from the planet that executes the tree.
+\item {\em Decission}: a logical expression formed by a variable, a less than operator ($<$), and a number between 0 and 1. They are the equivalent to the ``primitives'' in the field of GP.
+\item {\em Action}: the leaves of the the tree (therefore, the ``terminals''). Each decission is the name of the method to call that indicates to which planet send a percentage of available ships (from 0 to 1) from the planet that executes the tree. 
 \end{itemize}
 
 The different variables for the decissions are:
@@ -173,7 +187,7 @@ The different variables for the decissions are:
 \begin{itemize}
 \item {\em myShipsEnemyRatio}: Ratio between the player's ships and enemy's ships.
 \item {\em myShipsLandedFlyingRatio}: Ratio between the player's landed and flying ships.
-\item {\em myPlanetEnemyRatio}: Ratio between the number of player's planets and the enemy's ones.
+\item {\em myPlanetsEnemyRatio}: Ratio between the number of player's planets and the enemy's ones.
 \item {\em myPlanetsTotalRatio}: Ration between the number of player's planet and total planets (neutrals and enemy included)-
 \item {\em actualMyShipsRatio}: Ratio between the number of ships in the specific planet that evaluates the tree and player's total ships.
 \item {\em actualLandedFlyingRatio}: Ratio between the number of ships landed and flying from the specific planet that evaluates the tree and player's total ships.
@@ -181,7 +195,7 @@ The different variables for the decissions are:
 
 The decission list is:
 % ¿De dónde habéis sacado esto? También tienen una cierta estrategia
-% presupuesta: que hay que elegir objetivos, por ejemplo - JJ
+% presupuesta: que hay que elegir objetivos, por ejemplo - JJ FERGU: me lo he inventado yo, son las decisiones que puede tomar el bot
 \begin{itemize}
 \item {\em Attack Nearest (Neutral|Enemy|NotMy) Planet}: The objective is the nearest planet.
 \item {\em Attack Weakest (Neutral|Enemy|NotMy) Planet}: The objective is the planet with less ships.
@@ -198,7 +212,7 @@ The decission list is:
 
 \end{itemize}
 
-An example of a possible tree is shown in Figure \ref{fig:java}.
+An example of a possible tree is shown in Figure \ref{fig:java}. This example tree has a total of 5 nodes, with 2 decissions and 3 actions, and a depth of 3 levels.
 
 \begin{figure}[tb] 
 \begin{center}
@@ -216,41 +230,82 @@ else
 \label{fig:java}
 \end{figure}
 
-In each turn, the loop presented in Figure \ref{fig:pseudo} is executed.
-\begin{figure}[htb]
-\begin{algorithmic}
-\STATE tree $\gets$ ReadTree()
+The bot behaviour is explained in Algorithm \ref{alg:turn}.
 
-\COMMENT {In each turn}
-\LOOP
+\begin{algorithm}
+\SetAlgoLined
+%\KwData{this text}
+%\KwResult{how to write algorithm with \LaTeX2e }
+
+\emph{At the beginning of the execution the agent receives the tree}\;
+tree$\leftarrow$ readTree()\;
+\While{game not finished}{
+	\tcp{starts the turn}
+	calculateGlobalPlanets();\tcp{e.g. Base or Enemy Base}\
+	calculateGlobalRatios();\tcp{e.g. myPlanetsEnemyRatio}\
+	\ForEach{p in PlayerPlanets}{
+		calculateLocalPlanets(p);\tcp{e.g. NearestNeutralPlanet to p}\
+		calculateLocalRatios(p);\tcp{e.g actualMyShipsRatio}\
+		executeTree(p,tree);\tcp{Send a percentage of ships to destination}\
+	}
 	
-	\STATE calculateGlobalPlanets()
-	\COMMENT{{\em for example Base, Enemy Base...}}
-	\STATE calculateGlobalRatios ()
-	\COMMENT {{\em for example myPlanetEnemyRatio, myShipsEnemyRatio...}}
-		\FOR{each Planet: p}
-			\STATE calculateLocalPlanets (p)
-			\COMMENT{{\em for example NearestNeutralPlanet to planet p}}
-			\STATE calculateLocalRatios (p)
-			\COMMENT{{\em for example actualMyShipsRatio}}
-			\STATE executeTree(p,tree)
-			\COMMENT{{\em Send a percentage of the ships to another planet}}
-		\ENDFOR
-\ENDLOOP
-\end{algorithmic}
+}
+
 \caption{Pseudocode of the proposed agent. The tree is fixed during all the agent's execution}
-\label{fig:pseudo}
-\end{figure}
+\label{alg:turn}
+\end{algorithm}
+
+
+
+
+%\COMMENT {In each turn}
+%\LOOP
+	
+%	\STATE calculateGlobalPlanets()
+%	\COMMENT{{\em for example Base, Enemy Base...}}
+%	\STATE calculateGlobalRatios ()
+%	\COMMENT {{\em for example myPlanetEnemyRatio, myShipsEnemyRatio...}}
+%		\FOR{each Planet: p}
+%			\STATE calculateLocalPlanets (p)
+%			\COMMENT{{\em for example NearestNeutralPlanet to planet p}}
+%			\STATE calculateLocalRatios (p)
+%			\COMMENT{{\em for example actualMyShipsRatio}}
+%			\STATE executeTree(p,tree)
+%			\COMMENT{{\em Send a percentage of the ships to another planet}}
+%		\ENDFOR
+%\ENDLOOP
 
 
 
 
 \section{Experimental Setup}
 
-To generate the tree we have used a Genetic Programming Algorithm with the parameters.
+To generate the tree we have used a Genetic Programming Algorithm. Evolutionary operators used are the sub-tree crossover and 1-node mutation. The reason is that other researchers have used these operators obtaining good results \cite{Esparcia2013GPunreal}. In our case the mutation randomly changes the decission of a node or mutate the value with an step-size of 0.25.
 
 The fitness used is 
 
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+{\em Parameter Name} & {\em Value} \\\hline
+Population size & 32 \\\hline
+Crossover type & Sub-tree crossover \\ \hline
+Crossover rate & 0.5\\ \hline
+Mutation  & 1-node mutation\\ \hline
+Mutation step-size & 0.25 \\ \hline
+Selection & 2-tournament \\ \hline
+Replacement & Steady-state\\ \hline
+Stop criterion & 50 generations \\ \hline
+Maximum Tree Depth & 3, XXX and unlimited \\ \hline
+Runs per configuration & 30 \\ \hline
+Evaluation & Playing versus Genebot and ExGenebot \\ \hline
+Maps used in each evaluation & \\ \hline
+\end{tabular}
+\caption{Parameters used in the experiments.}
+\label{tab:parameters}
+\end{center}
+\end{table}
 The selected bot to confront is {\em GeneBot}, proposed in our previous work \cite{Mora2012Genebot}. This bot was trained using a GA to optimize the 8 parameters that conforms a set of hand-made rules.
 
 The used framework is OSGiLiath, a service-oriented evolutionary framework. The generated tree is compiled in real-time and injected in the agent's code using Java CAssist library. All the source code used is available under a LGPL V3 License in \url{http://www.osgiliath.org}.
