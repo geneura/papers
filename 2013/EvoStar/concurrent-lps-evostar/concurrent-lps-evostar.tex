@@ -1,0 +1,150 @@
+\documentclass[a4paper]{llncs}
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx,epsfig}
+
+%%%%
+
+\usepackage{courier}
+\usepackage{color}
+\usepackage{alltt}
+\usepackage{verbatim}
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+
+\usepackage{array}
+
+\usepackage{url}
+
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+\renewcommand{\floatpagefraction}{0.9}
+
+\begin{document}
+
+% first the title is needed
+\title{Adapting parallel evolutionary algorithms to concurrent and functional paradigms}
+
+%\author{J. Albert-Cruz\inst{1}, J.J. Merelo\inst{2}, L. Acevedo-Martínez\inst{1}}
+\author{A. N. Onymous\inst{1}}
+
+\titlerunning{Adapting evolutionary algorithms to concurrent languages}
+
+%\authorrunning{J. Albert Cruz et al.}
+
+% \institute{
+% Centro de Estudios de Matem\'atica Computacional, Universidad de Ciencias Inform\'aticas, Cuba
+% \and Dept. Arquitectura y Tecnología de los Computadores, Universidad de Granada, España \\ jalbert@uci.cu}
+
+\institute{Anonymity institution, http://anonimi.ty}
+
+%\tocauthor{Authors' Instructions}
+
+\maketitle
+
+\begin{abstract}
+The current multi-core microprocessor's architecture challenge the entire software industry, to take advantage of them is necessary a parallel implementation of every simple program. Concurrent programming is hard; to use programming languages with built-in concurrent concepts is one way to face that. This work describes the design and implementation of an evolutionary computation model using the concurrent and functional paradigms of programming in the languages Erlang, Scala y Clojure. This article shows the advantages of these paradigms in order to implement a hybrid parallel genetic algorithm with an island topology. Some design decisions are analyzed and the results of the solution of a case study are showed.
+\end{abstract}
+
+\keywords{Evolutionary Algorithms, Functional Languages, Concurrent Languages, Implementation, Modeling}
+
+
+\section{Introduction}
+\label{sec:intro}
+    \input{intro}
+
+\section{Paradigms}
+\label{sec:paradigmas}
+
+Developing correct software quickly is a never ending goal in the
+software industry. Novel solutions that try to make a difference
+providing new abstraction tools outside the main stream of
+programming languages have been
+proposed to pursue this goal;  these can be divided into two main
+fields: the functional and the concurrent. Functional languages have been
+available for a long time, in the shape of LISP, which was introduced
+in the fifties, 
+nevertheless their use has been limited mainly due to the inefficiency of
+their compilers or interpreters. Currently these situations have
+changed, the problems with efficiency solved and their newfound advantages have promoted the
+inclusions of several functional concepts in modern and mainstream
+languages, C\# for example, or even the creation of new ones
+such as Clojure, which excels among the emergent languages with the
+concurrent paradigm togethe with Go, Scala, Haskell and Erlang
+\cite{DiPierro:2012:CMP}; they have built-in programming constructs
+for managing concurrency simplifying its use.
+
+% Ahora ¿qué? Introduce el resto de la sección. Yo suprimiría las
+% subsecciones también.
+
+
+\subsection{Concurrent programming}
+    \input{progConcurrente}
+
+\subsection{Functional programming}
+    \input{progFuncional}
+
+\section{Multi-paradigms emergent languages}
+\label{sec:emergentes}
+    \input{lengEmergentesIntro}
+
+%\subsection{Lenguaje Erlang}
+%    \input{erlang}
+%
+%\subsection{Lenguaje Scala}
+%    \input{scala}
+%
+%\subsection{Lenguaje Clojure}
+%    \input{clojure}
+
+\section{A functional-concurrent approach to GAs}
+\label{sec:design}
+    \input{disenno}
+
+\section{Implementations}
+\label{sec:impl}
+    \input{implIntro}
+
+\subsection{Erlang modeling}
+    \input{erlangDesign}
+
+\subsection{Library erlEA}
+    \input{erlEA}
+
+\subsection{Scala modeling}
+    \input{scalaDesign}
+
+\subsection{Library sclEA}
+    \input{sclEA}
+
+\subsection{Clojure modeling}
+    \input{clojureDesign}
+
+\subsection{Library cljEA}
+    \input{cljEA}
+
+\section{Case study application}
+\label{sec:results}
+    \input{results}
+
+\section{Conclusions}
+\label{sec:conclusions}
+    \input{conclusions}
+
+
+%ACKNOWLEDGMENTS are optional
+%\section{Agradecimientos}
+%
+%Este trabajo se está desarrollando gracias a la financiación de  los proyectos EvOrq (P08-TIC-3903), CANUBE (CEI2013-P-14) y ANYSELF (TIN2011-28627-C04-02). Es también respaldado por el Programa de Doctorado de la AUIP y por el proyecto 83 del Campus CEI BioTIC.
+
+
+\bibliographystyle{splncs}
+\bibliography{osgiliath,geneura,referencias,erlang-ae-model}
+
+\end{document}
+

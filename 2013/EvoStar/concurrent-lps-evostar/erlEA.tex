@@ -1,0 +1,33 @@
+
+We developed a library in Erlang following the previous design concepts and it was put in test with the case study. The code is open, under AGPL license, at \url{https://github.com/jalbertcruz/erlEA/tree/evostar2014}. The main modules are briefly described in this section.
+
+\subsubsection{Reproducer module}
+
+This module select the subpopulation and parents for reproduction, it does the crossover and activate migrations. As actor respond to {\em evolve} and {\em emigrateBest} messages, for iteration and migration operations.
+
+\subsubsection{Evaluator module}
+
+This module consults the pool constantly looking for no-evaluated individuals. It is compound by the function {\em evaluate/1} (general evaluation function), and the activation message: {\em evaluate}.
+
+\subsubsection{PoolManager module}
+
+This module initialize the pool’s workers (evaluators and reproducers) and decide the message’s routes among them.
+
+\subsubsection{Auxiliar modules}
+
+The previous modules contain the GA’s logic, nevertheless it’s necessary others nonfunctional components. The auxiliary modules used are:
+\vspace{.35cm}
+
+\begin{description}
+
+  \item[experimentRun and experiment] -- Experiments initialization and execution.
+
+  \item[problem] -- Experiment’s parameters specification.
+
+  \item[profiler] -- Execution statistics: execution time, number of iterations, etc.
+
+  \item[islandManager] -- Pools coordination, start and finalization controls.
+
+  \item[manager] -- Multi-experiments control and final report emission.
+
+\end{description} 
