@@ -1,0 +1,625 @@
+\documentclass{llncs}
+\usepackage{graphics}
+\usepackage[dvips]{epsfig}
+\usepackage[latin1]{inputenc}
+\usepackage{color}
+\usepackage{longtable}
+%\usepackage{multirow}
+\usepackage[dvips]{graphicx} 
+%\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{url}
+
+\newcommand{\tab}{\hspace{20mm}}
+
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+
+%#\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%#    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+%\hyphenation{}
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   TITLE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Co-Evolutionary Optimization of Autonomous Agents in a Real-Time Strategy Game}
+% autonomous por qué? Por qué no simplemente playing?
+
+\titlerunning{Co-Evolutionary Optimization of Bots in an RTS}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   AUTHORS   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\author{A. Fernández-Ares \and A.M. Mora \and  J.J. Merelo \and \\ P. García-Sánchez \and P.A. Castillo}
+%\authorrunning{A. Fernández-Ares. et al.}
+%
+%\institute{Departamento de Arquitectura y Tecnolog\'{\i}a de Computadores.\\
+%Universidad de Granada (Spain)\\
+%\email{antares.es@gmail.com}, \\ \email{\{amorag,jmerelo,pgarcia,pedro\}@geneura.ugr.es}
+%}
+
+\maketitle
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   ABSTRACT   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{abstract}
+This paper presents an approach based in an evolutionary algorithm
+(EA), aimed to improve the behavioural parameters which guide the
+actions of an autonomous agent (bot) inside a real-time strategy game
+(RTS) named Planet Wars. % eso lo harías si se tratara simplemente de
+                         % un algoritmo evolutivo, pero tienes que
+                         % hablar de un algoritmo co-evolutivo - JJ
+Specifically the work describes a co-evolutionary implementation of a previously presented method, which yielded successful results. Thus, the effects of considering several individuals to be evolved (improved) at the same time in the algorithm are analysed, and them compared with previous approaches and bots.
+% ¿Por qué la coevolución mejora los parámetros? ¿Qué te hace pensar eso? - JJ
+To this end, 4 on 4 matches have been considered, being two of them potential agents (individuals) to evaluate.
+*** The results show that the co-evolutionary scheme performs better
+with regard the fitness convergence, as it was expected. Moreover, the
+best bot obtained is a better opponent than our previous `champion',
+winning against him in XX of YY matches. ***
+% ¡no uséis with regard! - JJ
+\end{abstract}
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   INTRODUCTION   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Introduction}
+\label{sec:intro}
+%
+
+%En un track de juegos, no puedes empezar justificando la
+%investigación en juegos. Habla de por qué usas coevolución o, si
+%acaso, el interés que puede tener mejorar bots (puede haber gente de
+%juegos de mesa o de cartas) - JJ
+Autonomous agents (or \textit{bots}) in videogames have become very popular in the last years, because they can increase the challenge and lasting appeal of the game, by competing or cooperating with the human player.
+Thus, designing a good behavioural engine for them is one of the main
+topics of interest in the actual videogame development task.
+% ¿Qué significa good en este caso? ¿Asesino? - JJ
+They have been widely used in Fisrt Person Shooter games (FPSs) from the nineties, but in this paper we will work with them on a Real-Time Strategy game (RTS).
+RTSs are a sub-genre of strategy-based video games in which the contenders control a set of units and structures distributed in a playing area and combat using them for conquering the scenario or defeating the opponent.
+Command and Conquer\texttrademark,
+Starcraft\texttrademark, Warcraft\texttrademark~ and Age of
+Empires\texttrademark~ are some examples of these type of games.   
+
+%RTS games often employ two levels of AI: the
+%first one, makes decisions on the set of units (workers, soldiers, machines,
+%vehicles or even buildings); the second level is devoted to every one of
+%these small units. These two level of actions, which can be considered
+%{\em strategical} and {\em tactical}, make them inherently difficult;
+%but they are made even more so due to their real-time nature (usually addressed by constraining the time that can be used to make a decision) and also for the huge search space (plenty of possible behaviours) that is implicit in its action.
+The RTS considered in the paper in named \textit{Planet Wars}, and it was used a platform in the Google AI Challenge 2010. In this contest, `real time' is sliced in one second \textit{turns}, with players receiving the chance to play sequentially. However, \textit{actions} happen at the \textit{simulated} same time. 
+
+% Hala, salto. Pasas de describir qué juego a decir qué haces. Métela
+% poquito a poco: hicimos esto, funcionó regular porque no teníamos
+% más que no sé cuantos oponentes, vamos a hacerlo de esta forma
+% porque no sé quién dijo que era muy guay - JJ 
+This paper describes a Co-Evolutionary \cite{Coevolution95} approach
+for improving % mejorar con respecto a qué? - JJ
+the decision engine of a bot that plays that RTS. This engine consists
+in a set of rules previously designed and evolved by the authors in
+\cite{Genebot_CEC11} % recordad doble ciego, anonimizar - JJ
+, using an regular Genetic Algorithm (GA) \cite{GAs_Goldberg89}. We
+applied an offline evolution (i.e., not during the match, but prior to
+the game battles) of the parameters on which the behavioural rules
+depends. 
+
+The evaluation of the quality (fitness) of each set of rules in the
+population was made by playing the bot against predefined opponents, being a pseudo-stochastic or \textit{noisy} function, since the results for the same individual evaluation may change from time to time, yielding good or bad values depending on the battle events and on the opponent's actions. We have dealt with this noisy nature \cite{genebot-evo12} by means of a reevaluation phase of all the individuals every generation, along with an average calculation of the fitness value of every individual after five combats (in five different an representative maps).
+
+The aim is that the co-evolutionary scheme improves the fitness
+convergence of the population, since the individuals cooperate in
+their evolution. % lo uno no se sigue de lo otro, explicar el
+                 % argumento - JJ
+ Thus, we have  considered  matches with four players, with two of the
+ contenders the individuals being evolved at a specific generation,
+ and the other two opponents with a fixed AI engine, namely the
+ competition sparring \textit{GoogleBot} in one of the experiments,
+ and our best individual to date, baptised as \textit{Genebot-8}, in
+ the other one.  
+%Estás explicando la metodología antes de tiempo. Tienes que
+%justificar por qué usas coevolución y qué pistas tienes de que los
+%resultados serían mejores - JJ
+
+%In the experiments, we will show that the set of rules evolve towards better bots, and finally an efficient player is returned by the GA. 
+%In addition, several experiments have been conducted to analyse the issue of the cited \textit{noisy fitness} in this problem.
+%The experiments show its presence, but also the good behaviour of the chosen fitness function to deal with it and yield good individuals even in these conditions. 
+
+% ¿esto por qué lo borras - JJ 
+%The paper is structured as follows: 
+%The next section reviews related approaches to behavioural engine design in similar game-based problems. 
+%Section \ref{sec:planet_wars} addresses the problem by describing the game of Planet Wars.  
+%Section \ref{sec:genebot} presents the proposed method, termed {GeneBot}, starting from the initial approach, and the GA used to evolve the behaviour. 
+%The experiments and results are described and discussed in Section \ref{sec:experiments}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{State of the Art}
+\label{sec:stateofart}
+%
+
+Video games have become one of the biggest sectors in the
+entertainment industry; after the previous phase of searching for the
+graphical quality perfection, the players now request opponents
+exhibiting intelligent behaviour, or just human-like behaviours
+\cite{artifical-stupidity-game-wisdom2-2004}. % irrelevante en el
+                                % contexto. Tienes que empezar
+                                % enmarcando el juego y las técnicas
+                                % usadas: algoritmos genéticos, RTS,
+                                % coevolución aplicado a unos y otros
+                                % - JJ
+
+%Nowadays, the games AI research has followed a different path, mainly starting with the improvement of FPS Bot's AI with Doom\texttrademark~ or
+%Quake\texttrademark~ by the beginning of the 90s; and the most famous environment inside this kind of games, Unreal Tournament \texttrademark~\cite{Agent_Smith_CEC2009,ControllingBot_CEC2010,cooperativebots_CIG2010}.
+
+Most of the researches have been done on relatively simple games such
+as Super Mario \cite{Togelius_SuperMario}, Pac-Man
+\cite{Pac-MAnt_CIG2010} or Car Racing Games \cite{CarRacing_Pelta09},
+being many bots competitions involving them. % Vale, todo el mundo es
+                                % un pringao y usa juegos simples, de
+                                % estas te meten una hostia tus
+                                % compañeros de sesión. Basta con que
+                                % digas simplemente que los RTS tienen
+                                % un enfoque diferente a estos juegos
+                                % - JJ
+
+RTS games show an emergent component \cite{emergence_in_games2008} as a consequence of the cited two level AI, since the units behave in many different (and sometimes unpredictable) ways. This feature can make a RTS game more entertaining for a player and maybe more interesting for a researcher.
+There are many research problems with regard to the AI for RTSs,
+including planning in an uncertain world with incomplete information;
+learning; opponent modelling and spatial and temporal reasoning
+\cite{hongchoCIG2005}. 
+
+However, the reality in the industry is that in most of the RTS games,
+the bot is  controlled by a fixed script that has been previously
+programmed (following a finite state machines or a decision tree, for
+instance). % tampoco me sirve a estas alturas. Hay miles de trabajos
+           % de RTS- CI Justifica las técnicas usadas, no que vayas a
+           % usar ese tipo de juego - JJ
+Once the user has learnt how such a game will react, the game
+becomes less interesting to play. In order to improve the users' gaming
+experience, some authors such as Falke et al. \cite{falke2003} proposed a learning classifier system that can be used to endow the computer with
+dynamically-changing strategies that respond to the user's strategies,
+thus greatly extending the games playability. % Vale, seguimos
+                                % justificando el uso de CI en juegos
+                                % en un congreso de CI en juegos. - JJ
+%Moreover, some authors have research the implementation of a human-like AI \cite{weber2011-humanlevelAI}.
+
+In addition, in many RTS games, traditional artificial intelligence techniques fail to play at a human level because of the vast search spaces that they entail \cite{Aha05learningtowin}. In this sense, Ontano et at. \cite{ontanon2007} proposed to extract behavioural knowledge from expert demonstrations in form of individual cases. This knowledge could be reused via a case-based behaviour
+generator that proposed advanced behaviours to achieve specific
+goals. %Irrelevante para el trabajo - JJ 
+
+%In this line there are several works dealing with the case-base reasoning such as Baumgarten et al. \cite{Baumgarten-combiningAImethods} that combines some AI techniques, or Palma et al. \cite{Palma-behaviortrees} who apply behaviour trees.
+
+%Recently a number of soft-computing techniques and algorithms, such as co-evolutionary algorithms \cite{co-evol-rts2006} or multi-agent based methods \cite{HagelbackJ09}, just to cite a few, have already been applied to handle these problems in the implementation of RTS games. For instance, there are many benefits attempting to build adaptive learning AI systems which may exist at multiple levels of the game hierarchy, and which co-evolve over time. 
+%In these cases, co-evolving strategies might be not only opponents but also partners coperating at different levels \cite{Livingstone05}.
+%Other authors propose using co-evolution for evolving team tactics
+%\cite{avery2010coevolving}. However, the problem is how tactics are
+%constrained and parametrised and how the overall score is computed. 
+
+% Las carencias de estrategias tradicionales han llevado a... Un
+% artículo es una narrativa, una historia, escríbelo como tal - JJ
+Evolutionary algorithms have been widely used in this field, %\cite{Ponsen_EvLearn_RTS,Su-EAs_StrategySel09}, 
+but they involve considerable computational cost and thus are not
+frequently used in on-line games. In fact, the most successful
+proposals for using EAs in games correspond to off-line applications
+\cite{offline-evolutionary-learning}, that is, the EA works (for
+instance, to improve the operational rules that guide the bot's
+actions) while the game is not being played, and the results or
+improvements can be used later during  the game. Through offline
+evolutionary learning, the quality of bots' intelligence in commercial
+games can be improved, and this has been proven to be more effective
+than opponent-based scripts.
+% ¿Eso es todo?  ¿Nada de RTS en juegos? Mira review de otros trabajos
+% anteriores donde nos meten caña por eso, menciona RTSs que los hay
+% a puñados. JJ
+
+This way, in the present work, an offline GA is applied to a
+parametrised tactic (set of behaviour model rules) inside the Planet
+Wars game (a basic RTS), in order to build the decision engine of a
+bot for that game, which will be considered later in the online
+matches.
+% Esto es de otro, ¿no? - JJ
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM DESCRIPTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{The Planet Wars Game}
+\label{sec:planet_wars}
+
+It is a simplified version of the game Galcon, aimed at performing bot's fights which was used as base for the Google AI Challenge 2010 (GAIC)\footnote{http://ai-contest.com}.
+
+\begin{figure}[ht]
+\begin{center}
+  \epsfig{file=./imagenes/naves.eps,width=6cm}
+\end{center}
+\caption{Simulated screen shot of an early stage of a run in Planet Wars. White planets belong to the player (blue colour in the game), dark grey belong to the opponent (red in the game), and light grey planets belong to no player. The triangles are fleets, and the numbers (in planets and triangles) represent the starships. The planet size means growth rate of the amount of starships in it (the bigger, the higher).}
+\label{figura:PlanetWars1}
+\end{figure}
+
+A Planet Wars match takes place on a map (see Figure \ref{figura:PlanetWars1}) that contains several planets (neutral or owned), each one of them with a number assigned to it that represents the quantity of starships that the planet is currently hosting. 
+%At a given time step, each planet hosts a specific quantity of starships that may belong to the player, the opponent or may be neutral (i.e., they belong to no player). Ownership is represented by a colour, being blue the colour assigned to the player, red to the enemy and grey to neutral starships. In addition, each planet has a growth rate that indicates how many starships are generated during each round action and then added to the fleet of the player that owns the planet. 
+The objective of the game is to defeat all the starships in the opponent's planets. Although Planet Wars is a RTS game, this implementation has transformed it into a turn-based game, in which each player has a maximum number of turns to accomplish the objective. At the end of the match (after 200 actions, in Google's Challenge), the winner is the player owning more starships. 
+
+There are two strong constraints (set by the competition rules) which determine the possible methods to apply to design a bot: a simulated turn takes \textit{just one second}, and the bot is \textit{not allowed to store any kind of information} about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map).
+Therefore, the goal in this paper is to design a function that, according to the state of the map in each simulated turn (input) returns a set of actions to perform in order to fight the enemy, conquer its resources, and, ultimately, win the game. 
+
+For more details, the reader is invited to revise the cited webs and
+our previous work \cite{Genebot_CEC11}. % ¡¡¡¡Doble ciego!!!!! - JJ
+
+%Each planet has some properties: \textit{X and Y Coordinates}, \textit{Owner's PlayerID}, \textit{Number of Starships} and \textit{Growth Rate}. Players send fleets to conquer other planets (or to reinforce its own), and every \textit{fleet} also has a set of properties: \textit{Owner's PlayerID}, \textit{Number of Starships}, \textit{Source PlanetID}, \textit{Destination PlanetID}, \textit{Total Trip Length}, and \textit{Number of turns remaining until arrival}. A simulated turn is one-second long.
+%
+%Another particularity of the problem is that the bot is not allowed to store any kind of information about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map). In short, every one-second time step, the bot must deal with an unknown map and must choose where to send fleets or starships, departing from one of the player's planets, towards other planet in the map. The fleets may need more than one time step to reach destination. When a fleet reaches a planet, it fights against the enemy's forces assigned to that planet (losing one starship for each one of opponent's starships on the planet) and, in the case its fleet outnumbers the enemy's units, the player takes control of the planet. If the planet already belongs to
+%the player, then the incoming units are added to the current fleet. In
+%each time-step, the forces in the planets owned by the players (i.e.,
+%every planet except the neutral ones) are increased according to each
+%planet's growth rate.  
+
+%Therefore, the goal in this paper is to initially design and then
+%evolve a function that, according to the state of the map in each
+%simulated turn (input) returns a set of actions to perform in order to
+%fight the enemy, conquer its resources, and, ultimately, win the
+%game. 
+
+%These constraints make it difficult to implement an on-line approach, that is,
+%an evolutionary algorithm that is started and yields a result at each
+%turn. Therefore, the proposed EA (a GA, in this case), is executed before the game and, once a satisfactory bot is found, the solution (the bot's set of rules) is to sent to play the Challenge.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  GENETIC BOT  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{First Evolutionary Approach for the Planet Wars Game}
+\label{sec:genebot}
+%
+
+The competition restrictions strongly limit the design and
+implementation possibilities for a bot, since many algorithms are
+based on a memory of solutions or on the assignment of payoffs to
+previous actions in order to  
+improve future behaviour. Moreover most of them are quite expensive in
+terms of 
+running time. Due to these reasons,  a set of rules which models the
+on-line (during the game) bot's AI was defined. The rules have been
+formulated through exhaustive experimentation, and are strongly
+dependent on some parameters, which ultimately determine the behaviour
+of the bot.  
+
+Anyway, there is only one type of action: move starships from one
+planet to another; but the nature of this movement will be different
+depending on whether the target planet belongs to oneself or the
+enemy. As the action itself is very simple, the difficulty
+lies in choosing which planet creates a fleet to send forth, how
+many starships will be included in it and what will the target
+be. 
+
+Three type of bots are going to be tested in this paper, all of them
+previously introduced in our previous work
+\cite{Genebot_CEC11}\footnote{The source code of all these bots can be
+  found at: forja.rediris.es/svn/geneura/Google-Ai2010}. % ¡¡¡¡¡Doble
+                                % ciego!!!! - JJ
+
+The first one is \textit{\textbf{GoogleBot}}, the basic bot provided by Google for testing our own. It is quite simple, since it has been designed for working well independently of the map configuration, so it may be able to defeat bots that are optimised for a particular kind of map. It just choose a planet as a base (the one with most of its starships) and a target chosen by calculating the ratio between the growth rate and the number of ships for all enemy and neutral planets. It wastes the rest of time until the attack has finished.
+
+% llámalo foobot - JJ
+The second bot is known as \textit{\textbf{AresBot}}, and it was defined as the first approach for solving the problem. It models a new hand-coded strategy better than the one scripted in the GoogleBot. So, several rules were created based on the experience of a human player.
+As a summary, this bot tries to firstly find a \textit{base planet} depending on a score function, the rest of its planets are considered as \textit{colonies}.
+Then, it determines which \textit{target planet} to attack or to
+reinforce, if it already belongs to it in the next turns (since it can take some turns to get to that planet). 
+%If the planet to attack is neutral, the action is known as \textit{expansion}; 
+%however, if the planet is occupied by the enemy, the action is called
+%\textit{conquest}. 
+The base planet is also reinforced with starships coming from colonies; this action is called {\em tithe}.
+Furthermore, colonies that are closer to the target than to the base also send fleets to attack the target instead of reinforcing the base. 
+The internal flow of AresBot's behaviour with these states is shown in Figure
+\ref{figura:diagram}. 
+%
+\begin{figure*}[ht]
+\begin{center}
+  \epsfig{file=imagenes/diagrama1.eps,width=9.2cm}
+\end{center}
+\caption{Diagram of states governing the behaviour of AresBot and
+  GeneBot. The parameters that will be evolved are highlighted.} 
+\label{figura:diagram}
+\end{figure*}
+% Has puesto figure en minúsculas. A Antonio Mora vas! - JJ
+Figure \ref{figura:diagram} shows a set of seven parameters (weights, probabilities and amounts to add or subtract) which has been included in the rules that model the bot's behaviour. These parameters have been adjusted by hand, and they totally determine the behaviour of the bot. Their values and meaning can be consulted in the previous work \cite{Genebot_CEC11}.
+As stated in that paper, their values are applied in expressions used
+by the bot to take decisions. For instance, the function considered to
+select the \textit{target planet}. % Yo no abusaría de referencias al
+                                % otro trabajo - JJ 
+
+This bot already had a behaviour more complex than GoogleBot, and was
+able to beat it in 99 out of 100 maps; however, it needed lots of
+turns to do that; this means that faster bots or those that developed
+a strategy quite fast would be able to beat it quite easily. That is
+why we decided to perform a systematic exploration of the values for
+the parameters shown above, in order to find a bot that is able to
+compete successfully (to a certain point) in the google AI challenge.
+
+The third bot is an evolutionary approach, called \textit{\textbf{GeneBot}}, and it performs an offline AresBot's parameter set optimisation (by means of a GA).
+The objective is to find the parameter values that maximise the efficiency of the bot's behaviour. 
+The proposed GA uses a floating point array to codify the parameters, and follows a \textit{generational} scheme with \textit{elitism} (the best solution always survives). The genetic operators include a \textit{BLX-$\alpha$} crossover \cite{Herrera03ataxonomy}, very common in this kind of chromosome codification to maintain the diversity, and a \textit{gene mutator} which mutates the value of a random gene by adding or subtracting a random quantity in the $[0,1]$ interval. 
+The \textit{selection mechanism} implements a \textit{2-tournament}. 
+Some other mechanisms were considered (such as roulette wheel), but eventually the best results were obtained for this one, which represents the lowest selective pressure. The elitism has been implemented by replacing a random individual in the next population with the global best at the moment. The worst is not replaced in order to preserve diversity in the population.
+
+The evaluation of one individual is performed by setting the correspondent values in the chromosome as the parameters for GeneBot's behaviour, and placing the bot inside \textit{five different maps} to fight against a GoogleBot. These maps were chosen for its significance and represent a wide range of situations: bases in the middle and planets close to them, few and spread planets, planets in the corners, bases in the corners, both planets and bases in the corners. The aim is to explore several possibilities in the optimisation process so, if the bot is able to beat GoogleBot in all of them, it would have a high probability of succeeding in the majority of `real' battles. The bots then fight five matches (one in each map). The result of every match is non-deterministic, since it depends on the opponent's actions and the map configuration, conforming a \textit{noisy fitness} function, so the main objective of using these different maps is dealing with it, i.e. we try to test the bot in several situations, searching for a good behaviour in all of them, but including the possibility of yielding bad results in any map (by chance). In addition, there is a reevaluation of all the individuals every generation, including those who
+remain from the previous one, i.e. the elite.
+These are mechanisms implemented in order to avoid in part the noisy nature of the fitness function, trying to obtain a real (or reliable) evaluation of every individual.
+
+The performance of the bot is reflected in two values: \textit{the number of turns} that the bot has needed to win in each arena, and the second is \textit{the number of games that the bot has lost}. In every generation the bots are ranked considering this last value; in case of coincidence, then the number of turns value is also considered, so the best bot is the one that has won every single game or the one that needs less turns to win. 
+Thus the \textit{fitness} associated to an individual (or bot in this case) could be considered as the minimum aggregated number of turns needed for winning the five battles.
+%Finally, in case of a complete draw (same value for LT and WT), zero
+%is returned. 
+% Si ya estamos a 12 páginas, me parece que os vais a tener que
+% ventilar la mitad de las páginas estas - JJ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CO-EVOLUTION  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Co-Evolutionary Approach}
+\label{sec:co-genebot}
+%
+
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   EXPERIMENTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Experiments and Results}
+\label{sec:experiments}
+
+In order to test the GA proposed in previous section, several experiments and studies have been conducted. These are different from those performed in the previous work \cite{Genebot_CEC11}, being more complete in the first step (parameter optimisation), and analysing the pseudo-stochastic fitness function, and the value of the dealing mechanisms for avoiding it.
+
+First of all, the (heuristically found) parameter values used in the algorithm can be seen in Table \ref{tab:ga-params}.
+%
+\begin{table}[htp]
+\centering
+{\scriptsize
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textit{Num. Generations} & \textit{Num. Individuals} & \textit{Crossover prob.} & \textit{$\alpha$} & \textit{Mutation prob.} & \textit{Replacement policy} \\
+\hline
+100 & 200 & 0.6 &  0.5 & 0.02 & 2-elitism\\
+\hline
+\end{tabular}
+}
+\caption{Parameter setting considered in the Genetic Algorithm.
+\label{tab:ga-params} }
+
+\end{table}
+%
+%Each operator have an application rate or probability (0.6 for crossover and 0.02 for mutation). These values were set according to what is usual in the literature and tuned up by systematic experimentation.
+%
+15 runs have been performed in the optimisation of the AresBot's behaviour parameter, in order to calculate average results with a certain statistical confidence.
+Due to the high computational cost of the evaluation of one individual (around 40 seconds each battle), a single run of the GA takes around two days with this configuration.
+The previously commented evaluation is performed by playing in 5 representative maps, but besides, Google provides 100 example/test maps to check the bots, so they will be used to evaluate the value of the bots once they (their parameters) have been evolved.
+The following sections describe each one of the studies developed for demonstrating the value of the presented method and also the correct performance of the noisy fitness function.
+
+% ------------------------------------------------------------------------------
+
+\subsection{Parameter optimisation}
+
+In the first experiment, the parameters which determine the bot's behaviour have been evolved (or improved) by means of a GA, obtaining the so-called GeneBot.
+The algorithm yields the evolved values shown in Table \ref{tab:tabla_valores}.
+
+\begin{table}[ht]
+\centering
+{\scriptsize
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+           & $tithe_{perc}$ & $tithe_{prob}$ & $\omega_{NS-DIS}$ & $\omega_{GR}$ & $pool_{perc}$  & $support_{perc}$ & $support_{prob}$ \\
+\hline
+AresBot &        0.1 &        0.5 &          1 &          1 &          0.25 &        0.5 &        0.9 \\
+\hline
+GeneBot (Best) &      0.018 &     0.008&      0.509 &  0.233 & 0.733 &      0.589 &      0.974 \\
+\hline
+GeneBot (Average) &      0.174 &     0.097&      0.472 &      0.364 &        0.657 &  0.524 & 0.599 \\
+& $\pm$0.168 & $\pm$0.079 & $\pm$0.218 & $\pm$0.177 & $\pm$0.179 & $\pm$0.258 & $\pm$0.178 \\
+\hline 
+\end{tabular}
+}
+%
+\caption{Initial behaviour parameter values of the original bot
+  (AresBot), and the optimised values (evolved by a GA) for the best
+  bot and the average obtained using the evolutionary algorithm (GeneBot).
+\label{tab:tabla_valores} }
+\end{table}
+
+Looking at Table \ref{tab:tabla_valores} the evolution of the parameters can be seen. If we analyse the new values for the best bot of all the 15 executions, yielded in run number 8, it can be seen that the best results are obtained by strategies where colonies have a low probability of sending tithe, $tithe_{prob}$, to the base planet (only 0.008 or 0.09 in average value). In addition, those tithes send ($tithe_{perc}$) just a few of the hosted starships, which probably implies that colonies should be left on its own to defend themselves, instead of supplying the base planet. 
+On the other hand, the probability for a planet to send starships to attack another planet, $support_{prob}$, is quite high (0.97 or 0.59 in average), and the proportion of units sent, $support_{perc}$, is also elevated, showing that it is more important to attack with all the available starships than wait for
+reinforcements. Related to this property is the fact that, when attacking a target planet, the base also sends ($pool_{perc}$) a large number of extra starships (73.3\% or 65.7\% in average of the hosted ships). 
+Finally, to define the target planet to attack, the number of starships hosted in the planet, $\omega_{NS-DIS}$, is much more important than the growth range $\omega_{GR}$, but also considering the distance as an important value to take into account.  
+
+In order to analyse the value of these bots, a massive battle against AresBot has been conducted. The best bot in every run is confronted against it in 100 battles (one in each of the example maps provided by Google in the competition pack). Table \ref{tab:victorias} shows the percentage of battles won by each bot. It can be seen that the best individual is the one of execution 8, i.e. the one considered as the best in the previous experiment (meaning a robust result). In addition, the improvement of the best bots with regard to AresBot can be noticed, since all of them win at least 82 out of 100 matches.
+%
+%\begin{figure}[ht]
+%\begin{center}
+%  \epsfig{file=imags/relacion_fitness.eps,width=7cm}
+%\end{center}
+%\caption{Fitness of the best individuals against AresBot in 100 battles.}
+%\label{fig:fitness_mejores}
+%\end{figure}
+%
+%
+%\begin{figure}[ht]
+%\begin{center}
+%  \epsfig{file=imagenes/relacion_victorias_bots_cada_ejecucion.eps,width=7cm}
+%\end{center}
+%\caption{Winning percentage of the best individuals against AresBot in 100 battles.}
+%\label{fig:victorias}
+%\end{figure}
+%
+
+\begin{table}[ht]
+\centering
+{\scriptsize
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|}
+\hline
+        & E1 & E2 & E3 & E4 & E5 & E6 & E7 & E8 & E9 & E10 & E11 & E12 & E13 & E14 & E15 \\
+\hline
+Winning Percentage & 90 & 82 & 87 & 83 & 98 & 85 & 98 & \textbf{99} & 98 & 94 & 91 & 89 & 90 & 98 & 84\\
+\hline 
+\end{tabular}
+}
+%
+\caption{Winning percentage of the best individuals against AresBot in 100 battles.
+\label{tab:victorias} }
+\end{table}
+
+One fact to take into account in this work is that even as this solution looks like a simple GA (since it just evolves seven parameters) for a simple problem, it becomes more complicated due to the noisiness and complex fitness landscape; that is, small variations in parameter values may imply completely different behaviours, and thus, big changes in the battle outcome. This fitness nature is studied in the next section.
+
+% ------------------------------------------------------------------------------
+
+\subsection{Noisy Fitness study} %Esto es el selling point del
+                                 %trabajo, debería incluirse en el
+                                 %título de la sección - JJ
+% Me gusta más Experiments and results, ya hemos dicho antes que uno de los estudios será este (el otro también es nuevo, que conste).
+
+A good design of the fitness function is a key factor in any EA for getting success. It has to model the value of every individual. % Jolines, como va a ser un "key factor", si es imprescindible!!!
+% Si, me equivoqué al escribirlo - Antonio
+In a pseudo-stochastic environment (the victory or defeat depends on the opponent's actions) as is this, it is important to test the stability of the evaluation function, i.e. check if the fitness value is representative of the individual quality, or if it has been yielded by chance.
+In order to avoid this random factor a re-evaluation of the fittest individuals has been implemented, even if they survive for the next generation, testing continuously them in combat. In addition (and as previously commented), the fitness function performs 5 matches in 5 representative maps for calculating an aggregated number of turns, which ensures (in part) strongly penalising an individual if it gets a bad results. % Pero explica qué se hace con la evaluación repetida. ¿Se saca media? ¿Te quedas con la última? - JJ
+% Se hace la suma de los turnos. Lo aclaré un poco más en la nueva versión - Antonio
+
+%*** As stated, the number of turns required by a bot to win in a map is the most important factor of the two measured by the fitness, since in the first turns the two opponents (bots) handle the same number of starships, so getting an advantage in a few turns implies the bot knows what to do, and it is able to accrue many more ships (by conquering ship-growing planets) fast.
+ 
+%If it takes plenty of turns, the actions of the bot have some room for improvement, and it would even be possible (if the enemy is slightly better than the one issued by Google as a baseline) to be defeated. 
+%That is why the number of turns is considered when assigning the fitness to the bot; 
+%*** So the faster it is able to beat the test bot, the better chance it will have to defeat any enemy bot.
+
+The first study in this line is the evolution of fitness along the generations. Since the algorithm is a GA, it would be expected that the fitness is improved (on average) in every generation. It is shown in Figure \ref{figura:fitnessevolution}, where it can be seen that as the evolution progresses (number of generations increases), the  aggregate number of turns needed to win on five maps decreases (on average) on the three cases; however, since the result of every combat, and thus the fitness is pseudo-stochastic, it can increase from one generation to the next (it oscillates more than usual in GAs).
+
+\begin{figure}[ht]
+\begin{center}
+  \epsfig{file=./imagenes/tendencia.eps,width=7.6cm}
+\end{center}
+\caption{The graphs show the complete execution of the best bot (best execution), the distribution of the best individuals in every run (best of all executions), and the average of the best bots in 15 runs. }  
+\label{figura:fitnessevolution}
+\end{figure}
+
+%The graphs show how fitness tends to improve, that is, how the number of turns required for winning decreases with the number of generations. Such behaviour is even clearer when looking at the line that shows the average values (the light grey one).
+%Even so, there are decrements in all the functions, since the outcome of
+%games has a random component which is reflected in the fitness value.
+%This evolution is expected when dealing with a GA.
+
+%------------
+
+The second study tries to show the fitness tendency or stability, that is, if a bot is considered as a good one (low aggregated number of turns), it would be desirable that its associated fitness remains being good in almost all the battles, and the other way round if the bot is considered as a bad one (high aggregated number of turns). 
+We are interested in knowing whether the fitness we are considering actually reflects the ability of the bot in beating other bots. It could be considered as a measure to determine if the algorithm is robust. 
+
+Figure \ref{fig:estabilidadfitness} shows the fitness associated to two different GeneBots when fighting against the GoogleBot 100 times (battles) in the 5 representative maps.
+Both of them have been chosen randomly among all the bots in the 15 runs, selecting one with a good fitness value (578 turns), called \textit{Promising Bot}, and another bot with a bad fitness value (2057 turns), called \textit{Unpromising Bot}. 
+
+%\begin{figure*}[ht]
+%\begin{center}
+%  \epsfig{file=./imagenes/winnerbot.eps,width=11cm}
+%  \epsfig{file=./imagenes/loserbot.eps,width=11cm}
+%\end{center}
+%\caption{Fitness tendency of two different and random individuals
+%  (bots) in 100 different battles, everyone composed by 5 matches in the representative maps, against the GoogleBot. 
+% Aclara esto: son 5 batallas en 100 diferentes mapas? No debería poner entonces Map# en vez de Battles? - JJ
+% No, son 100 batallas , cada una de 5 enfrentamientos en 5 mapas diferentes. Lo pone en el texto y lo que contado aquí - Antonio 
+%The upper one is a very \textit{good} bot, \textit{WinnerBot} , according to the main term of its fitness function (the aggregated number of turns). The lower graph corresponds to a  bot considered as \textit{bad}, \textit{LoserBot}, considering its high aggregated number of turns consumed in the battles. 
+% Por qué? - JJ
+% Lo había puesto en el texto, pero ya lo añadido aquí también - Antonio
+% A victory is considered is the bot wins in the 5 matches.}
+%\label{figura:fitnesstendency}
+% Jolines, explica el eje horizontal y vertical. El eje horizontal es
+% el número de batallas? ¡y no uses un gráfico excel capturado! -
+% Además, será "wins" y "loses", ¿no? - JJ
+% Corregido. No es capturado, creo, lo imprimió Antares - Antonio
+% Pues que lo vuelva a hacer, porque está bastante mal... Además, más
+% que Battles será "Battle #", o sea que en el número uno está el
+% resultado de la primera batalla y así sucesivamente, ¿no? Aclara
+% también si una batalla incluye 5 mapas o qué es lo que incluye - JJ
+% Aclarado, las reharemos para la versión final, que no nos da tiempo pa esta - Antonio
+%\end{figure*}
+
+\begin{figure}[ht]
+\begin{center}
+  \epsfig{file=./imagenes/winnerbot.eps,width=6.12cm}
+  \epsfig{file=./imagenes/loserbot.eps,width=5.65cm}
+\end{center}
+\caption{Fitness tendency of two different and random individuals
+  (bots) in 100 different battles (evaluations), everyone composed by 5 matches in the representative maps, against the GoogleBot.}
+\label{fig:estabilidadfitness}
+\end{figure}
+%
+
+As it can be seen, both bots maintain their level of fitness in almost every battle, winning most of them in the first case, and losing the majority in the second case. In addition, both of them win and lose battles in the expected frequency, appearing some outlier results due to the pseudo-stochastic nature of the fights.
+
+% ------------------------------------------------------------------------------
+
+\subsection{GeneBots Fighting}
+
+Finally, a study concerning the behaviour of several GeneBots (the best in every execution) has been conducted to establish the validity of the fitness choice (better fitness means better bot). To do this, battles of 5 matches (in the 5 representative maps) have been performed. The winner in each battle is the bot who wins 3 out of 5 combats. Figure \ref{fig:GBvsGB} shows the results, along with the fitness value for each bot.
+%
+\begin{figure}[ht]
+\begin{center}
+  \epsfig{file=imagenes/relacion_fitness.eps,width=7.1cm}
+  \epsfig{file=imagenes/botvsbot2.eps,width=5cm}
+\end{center}
+\caption{Battles results between each pair of bots (the best in every execution). The winner in 3 out of 5 matches is marked (black for B1 victory and grey for B2 victory). The associated fitness to each bot (in its corresponding execution) is shown on the left graph.}
+\label{fig:GBvsGB}
+\end{figure}
+%
+
+The results demonstrate that individuals with lower fitness can hardly win to the fittest ones and the other way round, as it is desirable. 
+However, it also proves the \textit{noisy} nature of fitness, with a non-zero chance of the worst bot beating the best one.
+% ¿Eso es lo que querías probar? ¿Y cómo se soluciona?
+% Si, eso demuestra que los bots son buenos y que el GA funciona (con su tratamiento del fitness ruidoso)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Conclusions and Future Work}
+\label{sec:conclusions}
+
+This paper shows how Genetic Algorithms (GAs) can be applied to the design of one autonomous player (bot) for playing Planet Wars game, which held the Google AI Challenge 2010. It have been proved that Genetic Algorithms (GeneBot) can improve the efficiency of a hand-coded bot (AresBot), winning more battles in a lower number of turns. 
+
+Besides, from looking at the parameters that have been evolved, we can
+draw some conclusions to improve overall strategy of hand-designed
+bots; results show that it is important to attack planets with almost
+all available starships, instead of keeping them for future attacks, or that the number of ships in a planet and its distance to it, are two criteria to decide
+the next target planet, much more important than the growing rate. 
+% Tenéis que sacar conclusiones sobre la forma en que habéis manejado
+% el fitness ruidoso, que es el tema del paper!!! - JJ
+% Hecho (debajo) - Antonio
+
+In addition, the presence of noisy fitness (the evaluation of one individual may strongly vary from one generation to the next) has been addressed by performing several battles in each evaluation, in addition to a re-evaluation of all the individuals in each generation. This subject has been studied in several experiments, concluding that the proposed algorithm yields results which have a good deal with it, being quite robust.
+
+%In general, the improvement to the original AresBot offered by the
+%algorithm could seem small from the purely numeric point of view; the
+%best GeneBot is able to win some more maps where AresBot was beaten,
+%and the aggregate number of turns is just a 10\% better. However, it
+%has been demonstrated in the experimental section that this small
+%advantage confers some leverage to win more battles, which in turn,
+%will increase its ranking in the Google AI challenge. This indicates
+%that an evolutionary algorithm holds a lot of promise in optimising
+%any kind of behaviour, even a parametrised behaviour such as the one
+%programmed in GeneBot; at the same time, it also shows that when the
+%search space is constrained by restricting it to a single strategy, no
+%big improvements should be expected. 
+
+% Yo creo que el párrafo este habría que quitarlo, ya lo hemos puesto
+% varias veces y además lo que presentamos aquí salió después del
+% concurso - JJ
+%The described bot (GeneBot) finished 1454 in the contest, winning nine matches
+%and losing seven, which placed it amongst the top-30\% bots, meaning
+%that the evolutionary approach for fine-tuning the parameters is at
+%least promising for these types of problems. Although the approach is
+%limited by the strategy itself, it is a good improvement over the
+%original AresBot which started in a position below 2000 (to be later
+%replaced by this version, since only one submission was admitted). 
+
+As future work, we intend apply some other techniques (such as Genetic Programming or Learning Classifier Systems) for defining the initial set of rules which limit the improving range of the bot by means of GAs.
+In the evolutionary algorithm front, several improvements might be attempted. For the time being, the bot is optimised  against a single opponent; instead, several opponents might be tried, or even other individuals from the same population, in a co-evolutionary approach. Another option will be to change the bot from a single optimised strategy to a set of strategies and rules that can be chosen also using an evolutionary algorithm. Finally, a multi-objective EA will be able to explore the search space more efficiently, although in fact the most important factor is the overall number of turns needed to win.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   ACKNOWLEDGEMENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Acknowledgements}
+
+This paper has been funded in part by projects P08-TIC-03903 (Andalusian Regional Government), TIN2011-28627-C04-02 (Spanish Ministry of Science and Innovation), and project 83 (CANUBE) awarded by the CEI-BioTIC UGR.
+
+\bibliographystyle{splncs}
+\bibliography{genebot}
+
+
+\end{document}

@@ -39,6 +39,8 @@ showstringspaces=false
  %\pagestyle{empty} %ESTO QUITA LOS NUMEROS DE PAGINA
 \mainmatter  % start of an individual contribution
 
+% DUDAS DE LA MUERTE, A VER QUIEN ME RESPONDE:
+% DIFERENCIAS ENTRE BOT Y AGENT
 
 
 % first the title is needed
@@ -48,7 +50,7 @@ showstringspaces=false
 % máxima?  - JJ FERGU: Inicialmente, y sin tener resultados todavía
 
 % a short form should be given in case it is too long for the running head
-\titlerunning{Difference of tree maximum depth in GP to generate competitive agents for RTS games}
+\titlerunning{Difference of tree maximum depth in GP for RTS games}
 \author{P. Garc\'ia-S\'anchez, A. Fern\'andez-Ares, A. M. Mora,
   P. A. Castillo and J.J. Merelo}
 
@@ -279,10 +281,16 @@ tree$\leftarrow$ readTree()\;
 
 
 \section{Experimental Setup}
+\label{sec:experiments}
 
-To generate the tree we have used a Genetic Programming Algorithm. Evolutionary operators used are the sub-tree crossover and 1-node mutation. The reason is that other researchers have used these operators obtaining good results \cite{Esparcia2013GPunreal}. In our case the mutation randomly changes the decission of a node or mutate the value with an step-size of 0.25.
+To generate the tree we have used a Genetic Programming Algorithm. Evolutionary operators used are the sub-tree crossover and 1-node mutation. The choice is suggested by other researchers that have used these operators obtaining good results \cite{Esparcia2013GPunreal}. In our case the mutation randomly changes the decission of a node or mutate the value with an step-size of 0.25. Each configuration is executed 30 times, with a population of 32 individuals and a 2-tournament selector for a pool of 16 parents.
 
-The fitness used is 
+To test each individual during the evolution a battle with a previously created bot is performed in 5 different (but representative) maps provided by Google. The fitness used is a hierarchichal one previously used by other researchers in \cite{Mora2012Genebot}. In our case, an individual is better than another if it wins in more maps. In case of equality of victories, then the individual with more turns to be defeated (i.e. it is stronger) is considered better. The maximum fitness is, therefore 5 victories and 0 turns. Also, as proposed by \cite{Mora2012Genebot}, and due to the noisy fitness effect, in every generation all individuals are re-evaluated.
+
+
+Two publicly available bots have been chosen for our experiments\footnote{Both can be downloaded from \url{http://github.com/METEAQUILAURL}}. The first bot to confront is {\em GeneBot}, proposed in the work \cite{Mora2012Genebot}. This bot was trained using a GA to optimize the 8 parameters that conforms a set of hand-made rules. The other chosen bot is an advanced version of the previous one, called {\em ExGenebot} presented in \cite{FernandezAres2012adaptive}. This bot outperformed Genebot widely. ExGenebot bot analyses the distribution of the planets of the map to chose a previously optimized set of parameters. 
+
+After executing our algorithm without tree limitation in depth we also have executed with the lower and average levels obtained for the best individuals: 3 and 7, respectively, to study if this number has any effect in the results.   Table \ref{tab:parameters} summarizes all the parameters used.
 
 \begin{table}
 \begin{center}
@@ -297,23 +305,110 @@ Mutation step-size & 0.25 \\ \hline
 Selection & 2-tournament \\ \hline
 Replacement & Steady-state\\ \hline
 Stop criterion & 50 generations \\ \hline
-Maximum Tree Depth & 3, XXX and unlimited \\ \hline
+Maximum Tree Depth & 3, 7 and unlimited \\ \hline
 Runs per configuration & 30 \\ \hline
-Evaluation & Playing versus Genebot and ExGenebot \\ \hline
+Evaluation & Playing versus Genebot \cite{Mora2012Genebot} and ExGenebot \cite{FernandezAres2012adaptive} \\ \hline
 Maps used in each evaluation & \\ \hline
 \end{tabular}
 \caption{Parameters used in the experiments.}
 \label{tab:parameters}
 \end{center}
 \end{table}
-The selected bot to confront is {\em GeneBot}, proposed in our previous work \cite{Mora2012Genebot}. This bot was trained using a GA to optimize the 8 parameters that conforms a set of hand-made rules.
 
-The used framework is OSGiLiath, a service-oriented evolutionary framework. The generated tree is compiled in real-time and injected in the agent's code using Java CAssist library. All the source code used is available under a LGPL V3 License in \url{http://www.osgiliath.org}.
+After all the executions we have evaluated all the obtained best individuals in all runs confronting to the bots in a larger set of maps (the 100 maps provided by Google) to study the behaviour of the algorithm and how good are the obtained bots in maps that have not been used for training.
+
+The used framework is OSGiLiath, a service-oriented evolutionary framework. The generated tree is compiled in real-time and injected in the agent's code using Java CAssist library. All the source code used in this work is available under a LGPL V3 License in \url{http://www.osgiliath.org}.
 
 \section{Results}
 
+Table \ref{tab:results} summarizes all the obtained results of the execution of our EA. This table also shows the average age, depth and number of nodes of the best individuals obtained and also the average population at the end of the run. The average turns columns are calculated only taking into account the individuals with lower victories than 5, because this number is 0 if they have win the five battles.
+
+%\begin{table*}
+%\centering{\scriptsize
+%\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|} \hline
+%  & \multicolumn{2}{|c|}{Best Fitness (avg.)} & \multicolumn{2}{|c|}{Average Fitness (avg.)} & \multicolumn{2}{|c|}{Depth} & \multicolumn{2}{|c|}{Nodes} & \multicolumn{2}{|c|}{Age} \\ \hline
+%\multicolumn{11}{|c|}{Versus Genebot} \\ \hline
+%Depth & Victories & Turns   & Victories & Turns   & Best & Population & Best  & Population  & Best   & Population \\ \hline
+%3      & 4.933 $\pm$ 0.25    & 244.5 $\pm$  54.44 & 4.486 $\pm$ 0.52  & 130.77  $\pm$ 95.81 &   3  $\pm$ 0 & 3          $\pm$ 0 & 7  $\pm$ 0 & 7        $\pm$ 0 & 8.133 $\pm$ 3.95 & 4.297  $\pm$ 3.027  \\ \hline
+%Unlimited & 4,9 $\pm$ 0.30   & 266,667 $\pm$ 40.42 & 4,711  $\pm$ 0.45  &190,346 $\pm$102.92 & 6,933 $\pm$ 4.05 & 7,353  $\pm$ 3.11   & 22,133 $\pm$ 22.21&  21,418 $\pm$ 13.81   & 5,066 $\pm$ 2.11 & 3,0927 $\pm$ 1.27 \\ \hline
+
+%\multicolumn{11}{|c|}{Versus ExGenebot} \\ \hline
+%3 & 4.133 $\pm$ 0.50 & 221.625 $\pm$ 54.43 &  3.541 $\pm$ 0.34  & 200.086 $\pm$ 50.79 & 3 $\pm$ 0 & 3 $\pm$ 0 & 7 $\pm$ 0 & 7 $\pm$ 0 & 4.266 $\pm$  5.01 & 3.706 $\pm$ 0.58 \\ \hline
+%7 & 4.2 $\pm$ 0.48  & 163.667  $\pm$ 106.38  & 3.689  $\pm$ 0.37  & 184.076  $\pm$ 57.02  & 5.2 $\pm$ 1.84 & 5.216  $\pm$ 0.92  & 12.6  $\pm$ 6.44  & 13.05  $\pm$ 3.92   & 4.133  $\pm$ 4.26  & 3.727 $\pm$ 0.62 \\ \hline
+%Unlimited & 4.4 $\pm$ 0.56 & 123.533 $\pm$ 112.79 & 4.043 $\pm$ 0.38 & 159.094 $\pm$ 61.84 & 6.966 $\pm$ 4.44 & 6.522 $\pm$ 1.91 & 18.466 $\pm$ 15.46 &  16.337 $\pm$ 7.67 &  4.7 $\pm$ 4.72 & 3.889 $\pm$ 0.71  \\ \hline
+
+
+%\end{tabular}
+%\caption{Average results obtained from each configuration. Each one has been tested 30 times.}
+%\label{tabcomputers}
+%}
+%\end{table*}
+
+\begin{table*}
+\centering{\scriptsize
+\begin{tabular}{|c|c|c|c|c|} \hline
+\multicolumn{5}{|c|}{Versus Genebot} \\ \hline
+    \multicolumn{2}{|c|}{}    &  Depth 3                & Depth 7                &    Unlimited  Depth    \\ \hline  
+Best Fitness  & Victories     &   4.933$\pm$ 0.25       &                        &    4,9     $\pm$ 0.30  \\ \hline  
+              & Turns         &  244.5 $\pm$  54.44     &                        &    266,667 $\pm$ 40.42 \\ \hline  
+Population Ave. Fitness  & Victories     &   4.486$\pm$ 0.52       &                        &    4,711   $\pm$ 0.45  \\ \hline  
+              & Turns         &  130.77$\pm$ 95.81      &                        &    190,346 $\pm$ 102.92\\ \hline  
+Depth         & Best          &  3     $\pm$ 0          &                        &    6,933   $\pm$ 4.05  \\ \hline  
+              & Population    &  3  $\pm$ 0             &                        &    7,353   $\pm$ 3.11  \\ \hline  
+Nodes         & Best          &  7     $\pm$ 0          &                        &    22,133  $\pm$ 22.21 \\ \hline  
+              & Population    &  7     $\pm$ 0          &                        &    21,418  $\pm$ 13.81 \\ \hline  
+Age           & Best          &  8.133 $\pm$ 3.95       &                        &    5,066   $\pm$ 2.11  \\ \hline  
+              & Population    &  4.297 $\pm$ 3.027      &                        &    3,092   $\pm$ 1.27  \\ \hline
+   \multicolumn{5}{|c|}{Versus ExGenebot} \\ \hline             
+ \multicolumn{2}{|c|}{}        &  Depth 3                & Depth     7            &   Unlimited Depth     \\ \hline  
+Best Fitness  & Victories     &   4.133   $\pm$ 0.50    & 4.2      $\pm$ 0.48    &   \textbf{4.4}     $\pm$ 0.56  \\ \hline 
+              & Turns          &  221.625 $\pm$ 54.43   & 163.667  $\pm$ 106.38  &   123.533 $\pm$ 112.79\\ \hline 
+Population Ave. Fitness  & Victories      &  3.541   $\pm$ 0.34    & 3.689    $\pm$ 0.37    &   \textbf{4.043}   $\pm$ 0.38  \\ \hline 
+              & Turns          &  200.086 $\pm$ 50.79   & 184.076  $\pm$ 57.02   &   159.094 $\pm$ 61.84 \\ \hline  
+Depth         & Best           &  3       $\pm$ 0       & 5.2      $\pm$ 1.84    &   6.966   $\pm$ 4.44  \\ \hline 
+              & Population     &  3       $\pm$ 0       & 5.216    $\pm$ 0.92    &   6.522   $\pm$ 1.91  \\ \hline 
+Nodes         & Best           &  7       $\pm$ 0       & 12.6     $\pm$ 6.44    &   18.466  $\pm$ 15.46 \\ \hline  
+              & Population     &  7       $\pm$ 0       & 13.05    $\pm$ 3.92    &   16.337  $\pm$ 7.67  \\ \hline 
+Age           & Best           &  4.266   $\pm$ 5.01    & 4.133    $\pm$ 4.26    &   \textbf{4.7}     $\pm$ 4.72  \\ \hline 
+              & Population     &  3.706   $\pm$ 0.58    & 3.727    $\pm$ 0.62    &   \textbf{3.889}   $\pm$ 0.71  \\ \hline  
+
+
+\end{tabular}
+\caption{Average results obtained from each configuration. Each one has been tested 30 times.}
+\label{tab:results}
+}
+\end{table*}
+
+The second experiment results are shown in Table \ref{tab:allmaps}. In this experiment we have confronted the 30 bots obtained in each configuration again with Genebot and ExGenebot but in the 100 maps provided by Google. This table shows how the bots obtained using GP wins more times. It can be seen that it is dificult to beat the adapatative bot, because it is using a map-detection mechanism. BLABLABLA. Note that, confronting with ExGenebot, even obtaining individuals with maximum fitness (5 victories) that have been kept in the population several generations cannot be representative of a extremely good bot in a wider set of maps. 
+
+\begin{table*}
+\centering{\scriptsize
+\begin{tabular}{|c|c|c|c|c|c|c|} \hline
+                         
+Configuration     &    Average maps won  &    Average turns     \\ \hline
+                   \multicolumn{3}{|c|}{Versus Genebot}    \\ \hline
+ Depth 3          &                      &                 \\ \hline
+ Depth 7          &                      &                 \\ \hline
+ Unlimited Depth  &                      &                 \\ \hline
+       \multicolumn{3}{|c|}{Versus ExGenebot}                         \\ \hline              
+ Depth 3          &   52.367 $\pm$ 13.39 & 9565.667 $\pm$ 5833.60 \\ \hline
+ Depth 7          &   58.867 $\pm$ 7.35  & 7389.535 $\pm$ 3574.26 \\ \hline
+ Unlimited Depth  &   56 $\pm$ 11.52     & 8247.967 $\pm$ 4133.72 \\ \hline 
+
+\end{tabular}
+
+
+\caption{Results confronting the 30 best bots attained from each configuration in the 100 maps each.}
+\label{tab:allmaps}
+}
+\end{table*}
+ 
 \section{Conclusions}
 \label{sec:conclusion}
+
+This work presents a Genetic Programming algorithm that generates agents for playing Planet Wars game. A number of possible actions to perform and decission variables have been presented. We have used two competitive bots available in the literature (Genebot and ExGenebot) to use to set the fitness of the generated individuals. Three different tree maximum depths have been used: 3, 7 an unlimited. Results show that best individuals outperforms these agents during the evolution in all configurations. We also have tested our agents with a larger set of maps not used for evaluation, obtaining results equivalent or betters that the previous agents.
+
+In future work, other rules will be added to our algorithm (for example, the ones that analyse the map, as the ExGenebot does). Other games used in the area of computational intelligence in videogames, such as Unreal or SuperMario will be tested.
 
 \bibliographystyle{splncs}
 \bibliography{gpbot}
