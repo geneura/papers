@@ -11,12 +11,12 @@
 % Máximo 6 páginas. No lo toques con xemacs
 
 % paper title: Must keep \ \\ \LARGE\bf in it to leave enough margin.
-\title{Revisiting volunteer browsed-based computing}
+\title{Revisiting volunteer browser-based computing}
 
-\author{S. E. Veral \inst{1} \and A. U. Thors \inst{2}}
-\institute{ U. Here 
+\author{V.M. Rivas \inst{1} \and J.J. Merelo \inst{2}}
+\institute{ U. Ja\'en (Spain)
 \and
-R. U. There}
+U. Granada (Spain)}
 % \author{Juan Juli\'an Merelo-Guerv\'os, Pedro A. Castillo, JLJ Laredo,
 % A. Mora García}
 % % avoiding spaces at the end of the author lines is not a problem with
@@ -140,7 +140,7 @@ distributed computing paradigms. % esto es más bien viejo, habría que
 
 
 This paper presents performance measurements on the jsEO ({\em
-  JavaScript Evolving Objects}, pronounce it yi-see-oh) system, which uses PHP and
+  JavaScript Evolving Objects}, pronounce it yi-see-oh) system, which uses PHP 
  (on the server) and Javascript on the client. The genetic algorithm is carried out  on the clients,
 with the server used  for interchange of information among
 them. We will perform several experimentes in which clients donate
@@ -240,6 +240,10 @@ least as a possibility.
 The rest of the paper is organized as follows: experimental setup is described next,  experiments and results are shown in section 
 \ref{sec:exp} and discussed in \ref{sec:conc}, along with future lines
 of work. 
+
+\section{The jsEO library}
+\label{sec:jseo}
+In order to provide a modular, flexible, and object-oriented library, jsEO has been programmed in Javascript language, making use of the inheritance provided by the Mootools framework. Like their predecessors EO (written in C++) and JEO (written in Java), jsEO is based on the keypoint that any object that can be attached some kind of fitness value is a potential candidate to be evolved.
 
 \section{Methodology and Experimental Setup}
 \label{sec:method}
@@ -363,6 +367,36 @@ experiment, to check what kind of performance can be expected in that
 kind of setups. 
 
 
+
+----
+Enviado a JJ
+
+Título:
+Developing an object-oriented library in Javascript to build modular and flexible cross-platform evolutionary algorithms 
+
+Aims
+Prove that it can be created a Javascript library for evolutionary algorithms, that is object-oriented and, thus, modular and easily extensible.
+Prove that this library can be used to execute evolutionary algorithms in web browsers. This allows to solve problems in the client side, but also to collaborate among many clients (if possible) to find better solutions by means of indidivuals migatrion using AJAX technology.
+
+Methodology:
+Consisted in
+1) Creating the basic classes from which the rest will derivate: jsEO, jsEOIndividual, jsEOPopulation, jsEOOperator, jsEOAlgorithm
+2) Derivating more specific classes, such as mutation and crossover operarators, as well as different kinds of individuals (e.g., bit-strings and float-strings).
+3) Instantiating specifics objects to evaluate the library using the 256-royal road funcion, and a 128-terms equation.
+4) Executing the experiments by means of simple web page access from many different devices (i.e., different microprocessors, operating systems, web browsers, amount of memory, or bandwidths among others).
+
+
+
+
+De forma un poco más detallada:
+1.1 Crear una biblioteca orientada a objetos con una clase básica: jsEO. Un objeto jsEO tiene asociado un fitness y, en base a dicho fitness, puede ser comparado con otro objeto jsEO.
+1.2 A partir de dicho objeto derivar individuos (jsEOIndividual) que disponen de un cromosoma. Dicho cromosoma puede ser descodificado y evaluado obteniendo el correspondiente fitness.
+1.3 Los individuos pueden ser agrupados en poblaciones (jsEOPopulation) las cuales pueden ser ordenadas por fitness.
+1.4 Implementar la clase operador (jsEOOperator) que permita operar tanto sobre como poblaciones como sobre individuos
+1.5. Finalmente, crear objetos algoritmos (jsEOAlgorithm) evolutivos los cuales puedan ser contener una población, un conjunto de operadores y una serie ordenada de instrucciones que permitan hacer evolucionar la población mediante la aplicación de los operadores.
+
+2.1 Se definen un conjunto de operadores concretos, como el selector por torneo (jsEOTournament) o sobre individuos (como jsEOCrossOver). Dichos operadores permiten generar nuevas poblaciones a partir de las ya existentes realizando modificaciones en los individuos. 
+2.2. Entre dichos operadores se ha definido uno que tansfiere un individuo de la población al servidor (jsEOSendIndividual), y otro que solicita al servidor que le envíe el individuo que tiene almacenado ((jsEOSendIndividual).
 
 \section*{Acknowledgements}
 
