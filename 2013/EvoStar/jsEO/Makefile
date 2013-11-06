@@ -4,9 +4,12 @@
 
 TEX = $(wildcard *.tex)
 BN = $(basename $(TEX))
+DVI = $(TEX:.tex=.dvi)
 PDF = $(TEX:.tex=.pdf)
 
 ###############################################################################
+
+default: $(DVI)
 
 all: $(PDF)
 
@@ -14,19 +17,22 @@ auto:
 	while true; do nice $(MAKE); sleep 1; done
 
 clean:
-	$(RM) $(BN).{aux,bbl,blg,dvi,log,nav,out,pdf,snm,toc} WARNINGS core.* *~
+	$(RM) $(BN).{aux,bbl,blg,dvi,log,nav,out,pdf,snm,toc} WARNINGS *~
 
 ###############################################################################
 
-.PHONY: all auto clean
+.PHONY: all auto clean default
 
 ###############################################################################
 
-%.pdf: %.tex
-	pdflatex $<
+%.dvi: %.tex
+	latex $<
 	BIBINPUTS=../../../../biblio bibtex $*
-	pdflatex $<
-	pdflatex $<
+	latex $<
+	latex $<
+
+%.pdf: %.dvi
+	dvipdf $<
 
 ###############################################################################
 
