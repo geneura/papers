@@ -3,7 +3,6 @@
 ###############################################################################
 
 TEX = $(wildcard *.tex)
-BIB = $(wildcard ../../../../biblio/*.bib)
 BN = $(basename $(TEX))
 PDF = $(TEX:.tex=.pdf)
 
@@ -23,9 +22,9 @@ clean:
 
 ###############################################################################
 
-%.pdf: %.tex $(BIB)
+%.pdf: %.tex
 	pdflatex $<
-	bibtex $*
+	BIBINPUTS=../../../../biblio bibtex $*
 	pdflatex $<
 	pdflatex $<
 
