@@ -2,37 +2,45 @@
 # Makefile
 ###############################################################################
 
-TEX = $(wildcard *.tex)
-BN = $(basename $(TEX))
-DVI = $(TEX:.tex=.dvi)
-PDF = $(TEX:.tex=.pdf)
+SRC = $(wildcard *.tex)
+BN = $(basename $(SRC))
+
+TEX = latex -file-line-error -interaction=nonstopmode
+BIB = BIBINPUTS=../../../../biblio bibtex
 
 ###############################################################################
 
-default: $(DVI)
+default: $(BN).dvi
 
-all: $(PDF)
+all: $(BN).pdf
 
 auto:
 	while true; do nice $(MAKE); sleep 1; done
 
 clean:
-	$(RM) $(BN).{aux,bbl,blg,dvi,log,nav,out,pdf,snm,toc} WARNINGS *~
+	$(RM) $(BN).{aux,bbl,blg,dvi,log,nav,out,pdf,ps,snm,toc} WARNINGS *~ .*~
 
 ###############################################################################
 
-.PHONY: all auto clean default
+.PHONY: all auto clean
 
 ###############################################################################
 
 %.dvi: %.tex
-	latex $<
-	BIBINPUTS=../../../../biblio bibtex $*
-	latex $<
-	latex $<
+	$(TEX) $<
+	while grep "Rerun to get cross-references right" $*.log; do $(TEX) $<; done
+	$(BIB) $*
+	$(TEX) $<
 
-%.pdf: %.dvi
-	dvipdf $<
+%.ps: %.dvi 
+	dvips -Ppdf $*
+
+%.pdf: %.ps
+	ps2pdf $<
+
+###############################################################################
+
+.PRECIOUS: %.aux %.bbl %.bib %.blg %.dvi %.log
 
 ###############################################################################
 
