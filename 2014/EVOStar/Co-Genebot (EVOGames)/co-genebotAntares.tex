@@ -17,7 +17,7 @@
 % o88o  o888o 888oo88   o88o    88  
 
 
- _   _  ____    _____  ________      _______  _____         _____  
+% _   _  ____    _____  ________      _______  _____         _____  
 % | \ | |/ __ \  |  __ \|  ____\ \    / /_   _|/ ____|  /\   |  __ \ 
 % |  \| | |  | | | |__) | |__   \ \  / /  | | | (___   /  \  | |__) |
 % | . ` | |  | | |  _  /|  __|   \ \/ /   | |  \___ \ / /\ \ |  _  / 
@@ -49,6 +49,10 @@
 \usepackage{textcomp}
 \usepackage{url}
 \usepackage{algpseudocode}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\captionsetup{compatibility=false}
 
 \newcommand{\tab}{\hspace{20mm}}
 
@@ -103,13 +107,13 @@ without previous knowledge (where the 4 bots belong to the population) and with
 (2 bots of the population versus 2 previously studied with good results bots).
 
 For the fitness, 3 methods are studied: one based in turns and result position,
-and another two based in the survey of the percentage of ships that belong each bot in each turn of the battle.
+and another two based in the survey of the percentage of ships that belong each bot in each turn of the battle, using linear regression and area calculus. 
 
 In this paper we set several goals for the uses of the co-evolution:
 reduce the time needed for training in behavior with a huge time of evaluation,
 improve best bots for used in 4 on 4 battles,
 studies the significant different between the training with and without previous knowledge
-and finally studies many fitness for co-evaluations.
+and finally studies alternatives fitness for co-evaluations.
 
 \end{abstract}
 
@@ -297,8 +301,9 @@ matches.
 We work with a simplified version of the game Galcon, aimed at performing bot's fights which was used as base for the Google AI Challenge 2010 (GAIC)\footnote{http://ai-contest.com}.
 
 \begin{figure}[ht]
+\tiny
 \begin{center}
-  \epsfig{file=./imagenes/naves.eps,width=6cm}
+  \epsfig{file=./imagenes/naves.eps,width=4cm}
 \end{center}
 \caption{Simulated screen shot of an early stage of a run in Planet Wars. White planets belong to the player (blue colour in the game), dark grey belong to the opponent (red in the game), and light grey planets belong to no player. The triangles are fleets, and the numbers (in planets and triangles) represent the starships. The planet size means growth rate of the amount of starships in it (the bigger, the higher).}
 \label{figura:PlanetWars1}
@@ -306,35 +311,42 @@ We work with a simplified version of the game Galcon, aimed at performing bot's 
 
 A Planet Wars match takes place on a map (see Figure \ref{figura:PlanetWars1}) that contains several planets (neutral, enemies or owned), each one of them with a number assigned to it that represents the quantity of starships that the planet is currently hosting. 
 
-The aim of the game is to defeat all the starships in the opponent's planets. Although Planet Wars is a RTS game, this implementation has transformed it into a turn-based game, in which each player has a maximum number of turns to accomplish the objective. At the end of the match the winner is the player owning more starships. 
+The aim of the game is to defeat all the starships in the opponent's planets. Although Planet Wars is a RTS game, this implementation has transformed it into a turn-based game, in which each player has a maximum number of turns to accomplish the objective. At the end of the match the winner is the player live, or owning more starships if more than one survives. 
 
 There are two strong constraints which determine the possible methods to apply to design
 a bot: a simulated turn takes \textit{just one second}, and the bot is \textit{not allowed to store any kind of information} about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map).
 
-Therefore, the goal in this paper is to design a function that, according to the state of the map in each simulated turn (input) returns a set of actions to perform in order to fight the enemy, conquer its resources, and, ultimately, win the game. In the original game, only two bots are faced but in this paper we studies what happen when we simulated 4 on 4 battles, it's mean, when 4 bots fight in the same map.
+Therefore, the goal in this paper is to study the improve of a bot, ---------- according to the state of the map in each simulated turn (input) returns a set of actions to perform in order to fight the enemy, conquer its resources, and, ultimately, win the game. In the original game, only two bots are faced but in this paper we studies what happen when we simulated 4 on 4 battles, it's mean, when 4 bots fight in the same map.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CO-EVOLUTION  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-\section{Co-Evolutionary Approach}
+\section{Cooperative and Competitive Evolution: Co-evolution}
 \label{sec:co-genebot}
 
-We will resort to an generational co-evolutionary algorithm, 
+%Añadir referencias de Maribel:
 
-One of the major problems we found in the use of EAs for training bots for this behavior was the huge time needed for the evaluation, because we have to simulated fulls battles, in several maps. In addition, we are forced to use re-evaluation between generations, when dealing with a noise and stochastic problem.
+There are two types of co-evolutions, attend of the interaction between the individuals of the population: cooperative and competitive. In this paper, we will describe and co-evolutionary algorithm that have the two sides.
 
-Theoretically, the use of a co-evolution allow reduce the number of simulations needed because it evaluates the population in "groups". That's, if we have a population of 100 individuals, in a classic GA we need make 100 evaluations, once for each individual, for each generation. In co-evolution case, for example, if we are using 2 bots of the population for the co-evolution we only need 50 evaluations. It's likely that 4-simulations will take more time that a 2-simulation, but the question is if the time taken for a "4-simulations" is less that the time taken for two "2-simulation". In that case, the co-evolution will decrease the time needed for the training.
+For one hand, we will simulated 4 on 4 battles were severals bots will fight for the same goal: win the battle. That means that the bots will compete against each other. Also, the individuals are competing in the GA for perpetuate their species.
+
+For other hand, the cooperative side come because the 4 on 4 battle is {$all\ versus\ all$}, so a single individual may have help of the others for {$kill$} and thirty. But beware, it's totally sure that at the end, can be only one. In addition, in the GA the individuals are sharing {$knowledge$}, because they are {$living$} (and fighting) together. If the population is each time better, and the new individuals are {$born$} of these population, the new individuals will be better and better.
+
+One of the major problems we found in the use of EAs for training bots for this behavior was the huge time needed for the evaluation, because we have to simulated fulls battles, in several maps, several times causes we are forced to use re-evaluation between generations, when dealing with a noise and stochastic problem like this.
+
+Theoretically, the use of a co-evolution allow reduce the number of simulations needed, because it evaluates the population in {$groups$}. That's, if we have a population of 100 individuals, in a classic GA we need make 100 evaluations, once for each individual, for each generation. In co-evolution case, for example, if we are using 2 bots of the population for the co-evolution we only need 50 evaluations for our Co-GA. It's likely that 4-simulations will take more time that a 2-simulation, but the question is if the time taken for a {$4-simulations$} is less that the time taken for two {$2-simulation$}. In that case, the co-evolution will decrease the time needed for the training.
 
 The use of 2 individuals or 4 individuals of the population for the  will depend of the use (or not) of previous knowledge. 
 
 \subsection{Previous Knowledge vs Auto-generated Knowledge}
 \label{sec:knowledge}
 
-We have a best training bot, which has proved its worth in 1vs1 battles. The question is: can we use our previous knowledge for improve (faster) better bots in a similar problem? Or maybe, it's best don't use previous knowledge and allow fight versus individuals of the population that theoretically (as the bases of the GAs) will be better and better in each generation? For answer this question, we will make two types of co-evolutions.
+We have a best training bot, which has proved its worth in 1vs1 battles. The question is: can we use our previous knowledge for improve (faster) better bots in a similar problem? Or maybe, it's best don't use previous knowledge and allow fight versus individuals of the population that theoretically (as the bases of the GAs) will be better and better in each generation? To answer this question, we will make two types of experiments.
 
 \subsubsection{Co-evolution with previous Knowledge}
+\label{sec:knowledge:previous}
 
-In this case, we will simulated battles between two individuals of the population versus two of our best bots (in 1vs1). We expected that our co-bots can learn the bases of our best bots, and improve for be better in 4 on 4 battles. It's desirable that this type of co-evolution prize bots that at least can win in a battled of our best bots.
+In this case, we will simulated battles between two individuals of the population versus two of our best bots (in 1vs1 contest). We expected that our co-bots can learn the bases of our best bots, and improve for be better in 4 on 4 battles. It's desirable that this type of co-evolution prize bots that at least can win in a battled of our best bots.
 
 Talcking about the time needed for the execution, we don't expected an huge reduction of the time needed for the training of the bots. It's something that we will try to get in the next co-evolution method.
 
@@ -345,87 +357,95 @@ Talcking about the time, we expected that this method reduce the time needed nea
 
 \subsection{Fitness}
 
-In our previous works, we evaluated a single bot of the population versus always the same bot (an reference-bot). For fitness function, the bot was evaluated several times (in different maps). The fitness function was defined depending of the result of the battle (if the bot win all his battles or lose in someone) and the numbers of turns needed for end the game. For two bots of the population (A and B) the fitness is defined like show in Fig.\ref{fig:fitness_clasico}
+In our previous works, we evaluated a single bot of the population versus always the same bot (an reference-bot). For fitness function, the bot was evaluated several times (in different maps). The fitness function was defined depending of the result of the battle (if the bot win all his battles or lose in someone) and the numbers of turns needed for end the game. For two bots of the population (A and B) the fitness is defined like show in Fig.\ref{fig:fitness_turns_positions} \subref{fig:fitness_turns_positions:2}
 
-\begin{figure}
-\begin{algorithmic}
-\State{$A,B\in Population $}
-\If {A WINs always}
-    \If{B LOSEs some battle}
-        \State A is better than B
-    \ElsIf{A take less turns than B}
-        \State A is better than B
-    \Else
-        \State B is better than A
-    \EndIf
-\Else
-     \If{B WINs always}
-        \State B is better than A
-    \ElsIf{A take less turns than B}
-        \State B is better than A
-    \Else
-        \State A is better than B
-    \EndIf
-\EndIf
-\end{algorithmic}
-\caption{Fitness used in battles of 2 bots}
-\label{fig:fitness_clasico}
-\end{figure}
-
-This fitness works well for battles between two bots, and our first fitness proposed is an natural evolution of this fitness for 4 bots battles.
+This fitness works well for battles between 1vs1 bots, and our first fitness proposed is an natural evolution of this fitness for 4 on 4 bots battles.
 
 %However it'snt prepared for battles between 4 bots. For example, 2 bots that in their battleds finish in third place, it's best the one that take more turns or the other? The answer to this question, it's that depends of the other bots. Of course, all the fitness 
 
 \subsubsection{Fitness based in Position-turns}
 
-This fitness it's an natural evolution of the previous fitness, applied to 4 bots battles. Again, the evaluations are in several maps. In this case, we studie the position (1th,2th,..) of the bot in the 4-battle and the number of turns. For a bot that wins all the battles (it's 1th in all the battles) we call the sum of the numbers of turns {$ferocity$}, and in previous works we found that a bot that wins in less turns it's best that other that takes more turns (even if the both wins). In other case, the sum of turns is call {$sturdy$} and oposite to the {$ferocity$}, it's desirable a bot that take more turns in be defeated.
+This fitness it's an natural evolution of the previous fitness, applied to 4 bots battles. Again, the evaluations are in several maps. In this case, we studies the position (1th, 2th,..) of the bot in the 4-battle and the number of turns. For a bot that wins all the battles (it's 1th in all the battles) we call the sum of the numbers of turns {$ferocity$}, and in previous works we found that a bot that wins in less turns it's best that other that takes more turns (even if the both wins). In other case, the sum of turns is call {$sturdy$} and oposite to the {$ferocity$}, it's desirable a bot that take more turns in be defeated.
 
-\begin{figure}
+
+\begin{figure}[h]
+\tiny
+\begin{subfigure}[!]{0.5\textwidth}
 \begin{algorithmic}
-\State{$A,B\in Population $}
-\If {A average position $<$ B average position}
-    \State A is better than B
-\ElsIf{A average position $>$ B average position}
-    \State B is better than A
-\Else
-    \If{A,B is always 1th}
-        \If{A take less turns than B}
-            \State A is better than B
+        \State{$A,B\in Population $}
+        \If {A WINs always}
+            \If{B LOSEs some battle}
+                \State A is better than B
+            \ElsIf{A take less turns than B}
+                \State A is better than B
+            \Else
+                \State B is better than A
+            \EndIf
         \Else
-            \State B is better than A
+             \If{B WINs always}
+                \State B is better than A
+            \ElsIf{A take less turns than B}
+                \State B is better than A
+            \Else
+                \State A is better than B
+            \EndIf
         \EndIf
-    \Else
-        \If{A take less turns than B}
+        \end{algorithmic}
+        \label{fig:fitness_turns_positions:2}
+\caption{Fitness used in battles of 2 bots}
+\end{subfigure}
+\begin{subfigure}[!]{0.5\textwidth}
+    \begin{algorithmic}
+        \State{$A,B\in Population $}
+        \If {A average position $<$ B average position}
+            \State A is better than B
+        \ElsIf{A average position $>$ B average position}
             \State B is better than A
         \Else
-            \State A is better than B
+            \If{A,B is always 1th}
+                \If{A take less turns than B}
+                    \State A is better than B
+                \Else
+                    \State B is better than A
+                \EndIf
+            \Else
+                \If{A take less turns than B}
+                    \State B is better than A
+                \Else
+                    \State A is better than B
+                \EndIf
+            \EndIf
         \EndIf
-    \EndIf
-\EndIf
-\end{algorithmic}
-\caption{Fitness used in battles of 4 bots based in turns and results}
-\label{fig:fitness_co_clasico}
+    \end{algorithmic}
+    \label{fig:fitness_turns_positions:co}
+\caption{Fitness used in battles of 4 bots}
+\end{subfigure}
+\label{fig:fitness_turns_positions}
+\caption{Fitness based in turns and positions}
 \end{figure}
 
+The principal problem in the previous fitness, it's that there we are using two independents variables. That is why, we try to found a fitness that resume the goodness of our bot in a single number. %Describir ventajas de que un solo fitness, puede ser operado (sumado).
 
+In this fitness, we are only interesting in the final result: position and turn. We aren't student how the bot reach it. In the next fitness, we use another metric to define the goodness of the bots. The percentage of the ships that in each turn belong to each player. 
 
-The principal problem in the previous fitness, it's that there we are using two independents variables. In this case, we try to found a fitness that resume the goodness of our bot in a single number. %Describir ventajas de que un solo fitness, puede ser operado (sumado).
+For study of the ships, we taken from the simulation how many ships belong to each player in each turn, normalized at total ships in game for that turn. For each player, we have a {$cloud$} different like in Fig.\ref{figura:nubecita}
 
-In this fitness, we are only interesting in the final result: position and turn. We aren't student how the bot reach it. In the nexts fitness, we use another metric to define the goodness of the bots. The percentage of the ships that in each turn belong to each player.
-
-\begin{figure}
+\begin{figure}[h]
 \begin{center}
-  \epsfig{file=imagenes/nubecita.eps,width=9.2cm}
+  \epsfig{file=imagenes/nubecita.eps,width=4cm}
 \end{center}
 \caption{Representation of the number if ships of each bot in each turn} 
 \label{figura:nubecita}
 \end{figure}
 
+Below, see two alternatives to deal with this cloud of points.
+
 \subsubsection{Fitness based in Slope}
 
-For this fitness, we use the leats squares regression analysis for resume the cloud of points to a simple rect. The rect is represented as {$y = \alpha \times x + \beta $} where, {$\alpha$} and {$\beta$} are calculated as show the Fig. \ref{equation:LeatsSqueares}:
+For this fitness, we use the least squares regression analysis for resume the cloud of points to a simple line. A line is represented as {$y = \alpha \times x + \beta $} where, {$\alpha$} and {$\beta$} are calculated as show the Fig. \ref{equation:LeatsSqueares} according to least squares regression:
 
-\begin{figure}
+\begin{figure}[h]
+\begin{subfigure}[H]{0.4\textwidth}
     \begin{equation}
         \alpha = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X_{i}})(Y_{i} - \bar{Y_{i}})}{\sum_{i=1}^{n}(X_{i} - \bar{X_{i}})^{2}}
     \end{equation}
@@ -434,30 +454,44 @@ For this fitness, we use the leats squares regression analysis for resume the cl
     \end{equation}
     \caption{Leats squares regression}
     \label{equation:LeatsSqueares}
-\end{figure}
-
-\begin{figure}
+\end{subfigure}
+\begin{subfigure}[H]{0.8\textwidth}
 \begin{center}
-  \epsfig{file=imagenes/nubecita_pendiente.eps,width=9.2cm}
+  \epsfig{file=imagenes/nubecita_pendiente.eps,width=1\textwidth}
 \end{center}
 \caption{Representation of the number if ships of each bot in each turn} 
 \label{figura:nubecita}
+\end{subfigure}
 \end{figure}
 
-For our fitness, we take the slope of the rect: {$\alpha$}. We can see if the bot win, {$\alpha>0$} and if loses, {$\alpha<0$} . However,  
+We can establish an theoretical maximal an minimal values for this fitness. An hypothetical bot win in the first turn, will have an slope of {$1$}, so this is the maximal value of our fitness. For other hand, an bot that lose in the first turn, will have an slope of {$-1$}. In addition, looking at the slope, we can know if the bot {$WINs$} ({$slope>0$}) or {$LOSEs$} {$slope<0$}. Finally, we can establish that the steeper the slope, the better or the worse the bot, depending on whether it is negative or positive.
 
-How we are using several evaluations in different maps, 
-
+How we are using several evaluations in different maps, we have to operate with this fitness. In this case we will sum the slope of all the evaluations.
 
 \subsection{Fitness bases in Integral-Area}
-
 \label{sec:fitness}
 
+In these fitness, we used the integral of the curve for calculate the area between the curve and the x-axis. This {$area$} is normalized to the number of turns, representing the average percentage of ships along the battle for each player.
 
-For the co-evolution of the bots 
+\begin{figure}[h]
+\begin{subfigure}[H]{0.4\textwidth}
+    \begin{equation}
+        area=\frac{\int_{0}^{t}\%ships(x)dx}{t}
+    \end{equation}
+    \caption{Calculus of the area}
+    \label{equation:LeatsSqueares}
+\end{subfigure}
+\begin{subfigure}[H]{0.8\textwidth}
+\begin{center}
+  \epsfig{file=imagenes/nubecita_integral.eps,width=1\textwidth}
+\end{center}
+\caption{Area under the curve} 
+\label{figura:nubecita}
+\end{subfigure}
+\end{figure}
 
-%Maribel- No me he enterado todavía qué se co-evoluciona, como interactuan los individuos de las especies? cada cuanto interactúan? es coevolución competitiva o cooperativa?
-%
+As before, we can establish an theoretical maximal an minimal values for this fitness. An hypothetical bot win in the first turn, will have an area closer to {$1$}, so this is the maximal value of our fitness. For other hand, an bot that lose in the first turn, will have an area near to {$0$}. In this case, we can't know by the fitness if the bot win or lose the battle. In this scope, we are loosing information.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   EXPERIMENTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Experiments and Results}
