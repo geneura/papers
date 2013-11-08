@@ -16,10 +16,13 @@
 \usepackage[latin1]{inputenc}
 %\usepackage[spanish]{babel}
 
+
 %%
 
 \usepackage{url}
-\urldef{\mailsa}\path|pgarcia@atc.ugr.es|
+\urldef{\mailsa}\path|rhgarcia@fidesol.org|
+\urldef{\mailsb}\path|pgarcia@atc.ugr.es|
+\urldef{\mailsc}\path|jjmerelo@atc.ugr.es|
 
 
 
@@ -64,7 +67,7 @@ showstringspaces=false
 % unless you accept that it will be published
 
 \institute{Fundaci\'on I+D del Software Libre, Granada, Spain \and Dept. of Computer Architecture and Technology, University of Granada, Spain 
-\mailsa}
+\mailsa, \mailsb, \mailsc\\}
 
 
 \toctitle{BLABLABLA}
@@ -122,7 +125,6 @@ In this work, several experiments have been carried out to answer following ques
  \item Could the personality of the agents be parametrized to obtain different behaviours? 
  \item How many profiles (groups of parameters that define a personality) are necessary to generate emergent quality sub-plots?
  \item Could a Genetic Algorithm be used to find the fittest parameter values that allow the creation of this kind of sub-plots?
-
 \end{itemize}
 
 % (JJ): si esto es todo, es muy pobre. En un paper tienes que hacerte
@@ -132,7 +134,7 @@ In this work, several experiments have been carried out to answer following ques
 
 In this paper we prove that EAs, together with a proper design of literary patterns, can be used to find the parameters that promote the generation of drama plots and sub-plots in a multi agent based environment.\\
 
-The rest of the work is structured as follows: after the state of the art, the developed system is presented in Section \ref{sec:made}. Then, the experiments conduced with the EA are showed (Section \ref{sec:results}). Finally, conclusions and future works are discussed.
+The rest of the work is structured as follows: after the state of the art, the developed system is presented in Section \ref{sec:made}. Then, the experiments conduced with the EA are showed (Section \ref{experimentalsetup} \ref{sec:results}). Finally, conclusions and future works are discussed.
 
 % -----------------------------------------------------------------------------
 % SEC SOA
@@ -146,9 +148,6 @@ Auto-generated interactive fiction research is mainly focused in methods to crea
 
 % (JJ): Decir qué técnicas utiliza y qué se suele hacer en este caso
 
-As opposed to this concept, MADE is focused in Artificial Non Interactive Drama, because its aim is the massive generation of plots for secondary characters, to provide a context for the writer and the player to perceive a virtual world as coherent, detailed and enriched. The story generation (that is, the narrative) is not addressed by MADE, but it has been studied in the systems presents in the survey by Arinbjarnar et al. in \cite{ReviewArinbjarnar09}.
-
-% (JJ): Decir qué te hace suponer que esto va a ser una buena solución.
 
 The generation of interactive dramas can also be based in script
 structure \cite{ArchitectureYoung04}, where each possibility in the
@@ -161,14 +160,23 @@ plot structure, such as...
 % al final de todo, para expresar el avance
 % con respecto al estao del arte actual - JJ
 
-% (Rubén): TODO  
+% (Rubén): Done!
 
 On the other side, in non-interactive plot generation systems the user does not take control as the protagonist. For example, in the system presented by Pizzi et al. \cite{pizzi2007interactive} the user can interact with the characters, changing their emotions, but making the user an spectator, rather as an actor.
 
 % (FERGU): ESTO NO ME QUEDA TAMPOCO CLARO, SI NO ES INTERACTIVA COMO MODIFICAMOS LOS PERSONAJES?
 % (Rubén): TODO 
 
-Previous works define the plot as an emergence for the behaviour of the agents that follow a set of rules. In MADE, the agents' behaviour is product of its personality and the environment. That is, the agents does not follow the plot, but they generate the plot itself. %%% FERGU: ESTO NO LO TENGO MUY CLARO
+
+As opposed to those concepts, MADE is focused in Artificial Non Interactive Drama, because its aim is the massive generation of plots for secondary characters, to provide a context for the writer and the player to perceive a virtual world as coherent, detailed and enriched. The story generation (that is, the narrative) is not addressed by MADE, but it has been studied in the systems presents in the survey by Arinbjarnar et al. in \cite{ReviewArinbjarnar09}.
+
+% (JJ): Decir qué te hace suponer que esto va a ser una buena solución.
+
+
+Previous works define the plot as an emergence for the behaviour of the agents that follow a set of rules. In MADE, the agents' behaviour is product of its personality and the environment. That is, the agents does not follow the plot, but they generate the plot itself. 
+
+% (FERGU): ESTO NO LO TENGO MUY CLARO
+% (Rubén): Así es, bien explicado.
 
 Futhermore, the previous works generate plots in worlds with a limited number of characters. This restriction does not exist in MADE, where the number of characters to create is unlimited.
 
@@ -195,19 +203,22 @@ Following the ideas of the work of Epstein and Axtell \cite{epstein1996growing} 
 \section{The MADE Environment}
 \label{sec:made}
 
-The MADE enviroment is the one where the agents are placed. Its functions are:
+The MADE enviroment is a virtual place where different agents play their artificial lives. Its functions are:
 
 \begin{itemize}
-\item \textbf{Create an initial set of agents:} MADE environment initializes a set of orphan agents, with age 0, and profile sequentially assigned. Thes agents are just born in the MADE environment and must compet or collaborate in order to survive.
-\item \textbf{Position agents in the map:} the environment has a map (initially a squared one), formed by cells that can be occupied by an (and only one) agent. The environment allows to the agents to discover and interact other agents in the neighborhood.
-\item \textbf{Start and control the time:} after create the initial set of agents, the MADE environment start the timer.
-\item \textbf{Execute each agent during a time unit (a day):} A number of iterations is performed in each execution. In each iteration the list of agents is ordered, each agent perform an iteration of its life-cycle, and the dead agents are removed.
+\item \textbf{Create an initial set of agents:} MADE environment initializes a set of just born orphan agents, each with a profile sequentially assigned. These agents must compete or collaborate in order to survive.
+\item \textbf{Place agents in the map:} the environment has a squared map, formed by cells that can be occupied by one (and only one) agent. The environment allows the agents to discover and interact with other agents in the neighbourhood.
+\item \textbf{Start and control the time:} after the creation of the initial set of agents, the MADE environment starts the timer, day by day until a maximum date is reached.
+\item \textbf{Execute each agent during a time unit (a day):} In each iteration the list of agents is randomly reordered, and after that following the new order, each agent perform an iteration of its life-cycle, and the dead agents are removed from the grid.
 \item \textbf{Perform as an external agent that changes th environment:} In each iteration in the MADE environment food rations are placed in random cells. An agent only can eat if it is over a cell with a ration, so agents could move the other forcibly.
-\item \textbf{Offer services to the agents:} MADE environment allow the agents to check which closer cells have food, are occupied, who agents are in a near position or which positions can they occupy.
-\item \textbf{Decide the profile of the agents:} MADE allows the existence of different agent profiles. A profiles is a set of probabilities which governs the agent's characteristics and behaviour.
+\item \textbf{Offer services to the agents:} MADE environment allow the agents to check which closer cells have food, are occupied, who agents are in a near position or which positions can be occupied.
+\item \textbf{Decide the profile of the agents:} MADE allows the existence of different agent profiles. A profile is a set of characteristics which governs the agent's behaviour.
 \end{itemize}
 
-The parameters of the MADE environment are:
+The MADE environment can be parametrized:
+
+% (Rubén): TODO parámetros de un entorno MADE
+
 \begin{itemize}
 \item Number of agents
 \item Map dimension
@@ -220,14 +231,114 @@ The parameters of the MADE environment are:
 \subsection{MADE Agent}
 
 
+% (Rubén): TODO Poner un diagrama de la muerte (sacar del papel)
+
 
 % -----------------------------------------------------------------------------
 % SEC EA
+% \section{Extraction of WHATEVER using Evolutionary Algorithms}
+% \label{sec:ea}
+% (Rubén): Voy a hablar del uso de algoritmos evolutivos en la siguiente sección
 
-\section{Extraction of WHATEVER using Evolutionary Algorithms}
-\label{sec:ea}
+% -----------------------------------------------------------------------------
+% SEC EXPERIMENTALSETUP
+
+\section{Experimental set-up}
+\label{sec:experimentalsetup}
+
+% (Rubén): TODO, decir que todo puede descargarse y probarse de github
 
 
+% -----------------------------------------------------------------------------
+% SEC RESULTS
+\section{Results and discussion}
+\label{sec:results}
+
+\subsection{Experiment 1: Natality control archetype}
+
+% (Rubén): TODO explicar
+
+Figure~\ref{fig:exp1_30ex} shows the average of the best fitness and the average of the average fitness for 30 executions of each configurations. Every test has been proved from 1 to 5 profiles.
+The evolution of the best fitness for each number of profiles is shown in Figure~\ref{fig:exp1_evolution}.
+
+\begin{table}
+\begin{center}
+\caption{Results for 30 executions of each configuration for 1 to 5 profiles}
+\begin{tabular}{lllll}
+\hline\noalign{\smallskip}
+\parbox[t]{2cm}{Number of\\ profiles} 
+& \parbox[t]{2cm}{Best fitness\\(average) *} 
+& \parbox[t]{2cm}{Standard\\deviation}
+& \parbox[t]{2cm}{Average\\fitness **}
+& \parbox[t]{2cm}{Standard\\deviation}\\
+\noalign{\smallskip}
+\hline
+\noalign{\smallskip}
+% (Rubén): TODO valores de verdad, que no es poco
+1 & a.aa & a.aa & a.aa & a.aa \\
+2 & a.aa & a.aa & a.aa & a.aa \\
+3 & a.aa & a.aa & a.aa & a.aa \\
+4 & a.aa & a.aa & a.aa & a.aa \\
+5 & a.aa & a.aa & a.aa & a.aa \\
+\hline
+\end{tabular}
+\\
+\** Average of the best fitness in the last generation of each execution \\
+% Es decir, coges el mejor fitness de cada ejecucion (tendras 30 por cada 
+% numero de perfiles) y sacas la media
+\*** Average of the average fitness in the last generation of each execution \\
+% Igual, pero la media del fitness medio en la última generación.
+% Vamos, lo copias de la hoja de cálculo, lo que está en negrita.
+\end{center}
+\label{fig:exp1_30ex}
+\end{table}
+
+% (Rubén): TODO Boxplots
+
+% (Rubén): TODO Poner la figura 2
+
+\subsection{Experiment 2: Revenge archetype}
+
+% (Rubén): TODO explicar
+
+Figure~\ref{fig:exp2_30ex} shows the average of the best fitness and the average of the average fitness for 30 executions of each configurations. Every test has been proved from 1 to 5 profiles.
+The evolution of the best fitness for each number of profiles is shown in Figure~\ref{fig:exp2_evolution}.
+
+\begin{table}
+\begin{center}
+\caption{Results for 30 executions of each configuration for 1 to 5 profiles}
+\begin{tabular}{lllll}
+\hline\noalign{\smallskip}
+\parbox[t]{2cm}{Number of\\ profiles} 
+& \parbox[t]{2cm}{Best fitness\\(average) *} 
+& \parbox[t]{2cm}{Standard\\deviation}
+& \parbox[t]{2cm}{Average\\fitness **}
+& \parbox[t]{2cm}{Standard\\deviation}\\
+\noalign{\smallskip}
+\hline
+\noalign{\smallskip}
+% (Rubén): TODO valores de verdad, que no es poco
+1 & a.aa & a.aa & a.aa & a.aa \\
+2 & a.aa & a.aa & a.aa & a.aa \\
+3 & a.aa & a.aa & a.aa & a.aa \\
+4 & a.aa & a.aa & a.aa & a.aa \\
+5 & a.aa & a.aa & a.aa & a.aa \\
+\hline
+\end{tabular}
+\\
+\** Average of the best fitness in the last generation of each execution \\
+% Es decir, coges el mejor fitness de cada ejecucion (tendras 30 por cada 
+% numero de perfiles) y sacas la media
+\*** Average of the average fitness in the last generation of each execution \\
+% Igual, pero la media del fitness medio en la última generación.
+% Vamos, lo copias de la hoja de cálculo, lo que está en negrita.
+\end{center}
+\label{fig:exp2_30ex}
+\end{table}
+
+% (Rubén): TODO Boxplots
+
+% (Rubén): TODO Poner la figura 2
 
 % -----------------------------------------------------------------------------
 % SEC CONCLUSIONS
@@ -236,13 +347,14 @@ The parameters of the MADE environment are:
 \label{sec:conclusion}
 
 
+% -----------------------------------------------------------------------------
+% SEC ACKNOWLEGGEMENTS
 
 \section*{Acknowledgements}
 This work has been supported in part by FPU research grant AP2009-2942 and projects EvOrq (TIC-3903), CANUBE (CEI2013-P-14) and ANYSELF (TIN2011-28627-C04-02).
 
 % (Rubén): Me parece bien poner en los agradecimientos la beca FPU y el resto 
-% de proyectos de ATC. Por otro lado no tengo intención de poner a Fidesol, que
-% aquí tampoco me parece que tenga nada que ver.
+% de proyectos de ATC. Por otro lado no se si poener a Fidesol.
 
 \bibliographystyle{splncs}
 \bibliography{made}
