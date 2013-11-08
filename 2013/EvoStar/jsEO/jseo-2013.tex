@@ -253,9 +253,9 @@ Fig.~\ref{fig:jsEO-str} shows the class diagram of the library. As can be seen, 
 
 In order to build algorithms, operators have to be defined. Any operator gets a population as input parameter and also returns a population; thus, it is designed for both operators affecting only one individual, as well as operators acting over a whole population.
 
-Once defined the initial core set of abstract classes (except for jsEOPopulation), concrete classes has been derivated in order to implement the standard Genetic Algorithm (jsEOGA), that uses de tournament selector in order to create subpopulations to which mutators and crossover operators can be applied in order to make them evolve.
+Once defined the initial core set of abstract classes (except for jsEOPopulation), concrete classes has been derived in order to implement the Standard Genetic Algorithm (jsEOGA), that uses the tournament selector in order to create subpopulations to which mutator and crossover operators can be applied in order to make them evolve.
 
-Two special operators have been implemented in order to solve problems in a cooperative environment. The first one, jsEOSendIndividual, is intended to send the chromosome and fitness of the best individual to a server where it is stored in case it is best solution found up to the moment. The second one, jsEOGetIndividual makes exactly the opposite: it asks the server for the individual being stored and includes it as a new individual in the population. The comunication between the client and ther serves is done using AJAX technology, and made in an asynchonus way when sending the individual to the server, but in a synchronus way in te case of the jsEOGetIndividual. Currently, the server has been programmed in PHP and stores data in a row file, in order to ease the implementantion on anyone's server. Every synchronized problem executed with jsEO has to be assigned an unic identifier so that the server can discriminate every task when receiving and sending individuals to the clients.
+Two special operators have been implemented in order to solve problems in a cooperative environment. The first one, jsEOSendIndividual, is intended to send the chromosome and fitness of the best individual to a server where it is stored in case it is best solution found up to the moment. The second one, jsEOGetIndividual makes exactly the opposite: it asks the server for the individual being stored and includes it as a new individual in the population. The communication between the client and the server is done using AJAX technology, and made in an asynchronous way when sending the individual to the server, but in a synchronous way in the case of the jsEOGetIndividual. Currently, the server has been programmed in PHP and stores data in a row file, in order to ease the implementation on anyone's server. Every synchronized problem executed with jsEO has to be assigned an unique identifier so that the server can discriminate every task when receiving and sending individuals to the clients.
 
 \begin{figure}
 \centering
@@ -265,19 +265,19 @@ $x_i$ and $x_j$ (\textit{left and right}) lead to the same summed estimate
 at $x_s$. This shows a figure consisting of different types of
 lines. Elements of the figure described in the caption should be set in
 italics, in parentheses, as shown in this sample caption.}
-\label{fig:example}
+\label{fig:jsEO-str}
 \end{figure}
 
 \section{Methodology and Experimental Setup}
 \label{sec:method}
-The experiments designed to the test jsEO include two problems, being the first the 256-bit Royal Road function, while the second is solving a 128-terms linear equation. In others words, the first one is related to a bit-string chromosome problem, while the second deals with vector of floats. Both problems have been executed as synchronized tasks, and are available at http://jseo.vrivas.es. Currently, synchronizing is quite constrained since it is done by means of AJAX connections to a server, whitout allowing to perform requests from pages hosted on a different one. 
+The experiments designed to the test jsEO include two problems, being the first the 256-bit Royal Road function, while the second is solving a 128-terms linear equation. In others words, the first one is related to a bit-string chromosome problem, while the second deals with vector of floats. Both problems have been executed as synchronized tasks, and are available at http://jseo.vrivas.es. Currently, synchronizing is quite constrained since it is done by means of AJAX connections to a server, without allowing to perform requests from pages hosted on a different one. 
 
-Asking for collaboration to run the experiments was done publishing some messages in social nets as Facebook and Twitter, as well as sending an email to a group of about 70 computer-scientist professionals. From a potential target of more than 500 people, every experiment has been voluntarily executed ?? times (although many users did excute it more than once).
+Asking for collaboration to run the experiments was done publishing some messages in social nets as Facebook and Twitter, as well as sending an email to a group of about 70 computer-scientist professionals. From a potential target of more than 500 people, every experiment has been voluntarily executed ?? times (although many users did execute it more than once).
 
 The user who wanted to participate in the experiments only had to
 The algorithm runs on the client for a fixed number of generations
  running parameters are set from the server and are downloaded from
-it along with the webpage from which the experiment is run. A preset
+it along with the web page from which the experiment is run. A preset
 number of generations is run on the client, after with a request is
 made to the server with the best individual in the last
 generation. The algorithm stops and waits for the answer from the
@@ -287,7 +287,7 @@ is incorporated in the client population, which starts again to run.
 Several clients acting at the same time make requests asynchronously,
 using the facilities of the standard Apache web server. The server is
 thus used as a clearinghouse for interchange of information among the
-different clients; however, there's no explicit comunication or
+different clients; however, there's no explicit communication or
 topology among the different nodes running the genetic
 algorithm. Besides, the fact that the server always contain the best
 individuals generated so far guarantees that the best solution (with a
@@ -301,7 +301,7 @@ Clients leave the experiment by the expeditive method of surfing away
 to another page or closing the web browser; in tabbed browsers (most
 browsers nowadays), a tab (or several) can run the experiment while
 the browser is available for other tasks. When the experiment has been
-running for a predeterminad number of evaluations (which were set, for
+running for a predetermined number of evaluations (which were set, for
 this experiment, to 750000), all clients get a message to stop
 running, and change their user interface to a message offering them to
 reload the (new) experiment and start all over again. 
@@ -310,7 +310,7 @@ checks the database for the number of individuals evaluated, and
 resets the experiment by incrementing the experiment ID by one and
 eliminating the population. Thus, experiments can run unchecked on a
 server while this {\sf watchgad} daemons is running. 
-Several additional utilities are also provided via several webpages,
+Several additional utilities are also provided via several web pages,
 that inform on the state of the experiment, or allow to set the GA
 parameters. 
 Experimental subjects were gathered by several methods: sending it via
@@ -321,7 +321,7 @@ for the experiment as a Google Plus or Facebook post, as a Twitter
 The experiment consisted in optimizing the  256-bits Royal Road
 function, and each instance consisted in a maximum of 750000
 evaluations (which were barely enough to find the solution). The
-algorithm was steady state (with incorporation of the inmigrant every 20
+algorithm was steady state (with incorporation of the immigrant every 20
 generations), with rank-based selection and substitution; every
 generation, 50\% of the population was generated, substituting the
 worst 50\% individuals. Crossover priority was set to 80\%, and
