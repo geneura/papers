@@ -5,12 +5,10 @@
 SRC = $(wildcard *.tex)
 BSN = $(basename $(SRC))
 
-TEX = pdflatex -file-line-error -interaction=nonstopmode
 BIB = BIBINPUTS=../../../../biblio bibtex
+TEX = pdflatex -file-line-error -interaction=nonstopmode
 
 ###############################################################################
-
-default: $(BSN).dvi
 
 all: $(BSN).pdf
 
@@ -34,6 +32,7 @@ clean:
 
 %.aux : %.tex
 	$(TEX) $<
+	while grep "Rerun to get cross-references right" $*.log; do $(TEX) $<; done
 
 %.bib : %.tex
 	$(TEX) $<
