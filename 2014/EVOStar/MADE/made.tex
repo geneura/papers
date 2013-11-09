@@ -220,19 +220,40 @@ The MADE environment can be parametrized:
 % (Rubén): TODO parámetros de un entorno MADE
 
 \begin{itemize}
-\item Number of agents
-\item Map dimension
-\item Number of rations each day
-\item Number of days
-\item Average NO SE QUE ES ESTO xD
+\item Number of agents initially placed
+\item Map square grid dimension
+\item Number of rations randomly placed in the grid each day
+\item Duration (in virtual days) of the environment execution
+% (FERGU): \item Average NO SE QUE ES ESTO xD
+% (Rubén): Normal, porque fue fallo mío incluirlo como un parámetro del entorno. Es el número de veces que se ejecuta un entorno para obtener la media del fitness (por eso de que las ejecuciones pueden ser bastante estocásticas). Quito el parámetro de esta parte.
 \end{itemize}
 
 
 \subsection{MADE Agent}
+A MADE Agent lives in a MADE Environment, occupies a cell in the grid, moves around looking for food or mate and interacts with other agents.
+
+A very simple agent has been designed for this study: a virtual rat. We have modelled 4 states for it (be alive, be hungry, look for mate and be pregnant), 7 actions (move, eat, attack, defend, escape, find mate and have offspring) and parameters that define its characteristics and probabilities to perform actions depending on the state. It's important to remark that no "feelings" and no memory have been modelled in the MADE agent.
+
+Figure~\ref{fig:madeAgent} illustrates the nature of a MADE Agent.
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.6]{img/madeAgent.pdf}
+\caption{Actions and states modelled in the MADE Agent.}
+\label{fig:madeAgent}}
+\end{center}
+\end{figure}
+
+The life cycle of a MADE Agent illustrated in Figure~\ref{fig:lifecycle} represents on day in it's life. Every decision made by the agent is based on it's state and it's characteristics (probabilities to perform different actions).
+
+% (Rubén): TODO explicar el ciclo de vida de un agente made
+
+% (Rubén): TODO ¿citar todas las características de un agente made? Sólo si hay hueco, creo
 
 
-% (Rubén): TODO Poner un diagrama de la muerte (sacar del papel)
+\subsection{MADE Execution}
 
+Every agent has a diary that stores all the relevant events in it's life in a simple format. Each line of the log indicates the day, the event in a short readable format and some extra information. Every agent's diary in the MADE Environment in coherent with all others' diaries. Many plots are being created, with a structured format that can be read by game engines or natural language processors, but, given the simplicity of the modelled agents, the stories could be seen by the reader as non-interesting. In the next section we propose a method based on EA to let the author of a story promote different behaviours in the MADE agents that could be seen as literary archetypes (usually associated with human feelings and high level cognitive and memory abilities).
 
 % -----------------------------------------------------------------------------
 % SEC EA
@@ -245,6 +266,8 @@ The MADE environment can be parametrized:
 
 \section{Experimental set-up}
 \label{sec:experimentalsetup}
+
+Since a MADE
 
 % (Rubén): TODO, decir que todo puede descargarse y probarse de github
 
