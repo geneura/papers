@@ -215,7 +215,7 @@ The MADE enviroment is a virtual place where different agents play their artific
 \item \textbf{Decide the profile of the agents:} MADE allows the existence of different agent profiles. A profile is a set of characteristics which governs the agent's behaviour.
 \end{itemize}
 
-The MADE environment can be parametrized:
+The MADE environment can be configured by using the following parameters:
 
 % (Rubén): TODO parámetros de un entorno MADE
 
@@ -238,9 +238,9 @@ Figure~\ref{fig:madeAgent} illustrates the nature of a MADE Agent.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.6]{img/madeAgent.pdf}
+\includegraphics[scale=0.65]{img/madeAgent.pdf}
 \caption{Actions and states modelled in the MADE Agent.}
-\label{fig:madeAgent}}
+\label{fig:madeAgent}
 \end{center}
 \end{figure}
 
@@ -250,7 +250,7 @@ The life cycle of a MADE Agent illustrated in Figure~\ref{fig:life_cycle} repres
 \begin{center}
 \includegraphics[scale=0.32]{img/life_cycle.pdf}
 \caption{MADE Agent's life cycle}
-\label{fig:life_cicle}}
+\label{fig:life_cicle}
 \end{center}
 \end{figure}
 
@@ -275,17 +275,51 @@ Every agent has a diary that stores all the relevant events in it's life in a si
 
 The MADE Agent is created using 12 parameters that define its base features and probabilities to make the decisions presented in the life cycle. The execution of an agent is dynamic, and depends on the internal probabilities and states but also on the neighbourhood, and the map configuration. Even so, we can say that these initial parameters define in some way the possible situations where the agent could be involved.
 
-Thanks to the agents' diaries, we can know every event (internal and external) of their lives, and evaluate their interest. In this work, we have implemented a method based in regular expressions with backreferences. The proposed technique annotates every agent whose diary matches a complex regular expression able to find emerging high level behaviours, not implemented in the life cycle. 
+Thanks to the agents' diaries, we can know every event (internal and external) of their lives, and evaluate their interest. In this work, we have implemented a method based in regular expressions with backreferences. The proposed technique puts annotations in every agent whose diary matches a complex regular expression able to find emerging high level behaviours, not implemented in the life cycle. 
 
-% (Rubén): TODO For example, we could define that a 
+In this proposal, the parameters used to define an agent will be mapped to a chromosome, and a Genetic Algorithm will be used to evolve the solution. The fitness function will be expressed in terms of:
 
+\begin{itemize}
+\item \textbf{Regular expressions applied to the diary of each agent in the environment:} An agent is tagged when a regular expression matches its diary.
+% (Rubén): quitaré este: \item{A condition on the number of agents tagged:} The tag increments the fitness if the condition is true.
+\item \textbf{A numeric function over the number of tagged agents for each archetype:} the fitness of the solution is increments with the returning value.
+\end{itemize}
 
-% (Rubén): TODO ... Nuestra propuesta consiste en mapear los parámetros a un cromosoma y evolucionar la solución mediante un GA utilizando como fitness el número de agentes de la ejecución de entorno made que muestran los comportamientos deseados definidos por los patrones a alto nivel.
+The concept of agent profile in introduced to assign different parameters to different agents. If only one profile is used, all the agents will be created with the same parameters, evolved by the Genetic Algorithm. If more profiles are used, they will be assigned to the agents in order of appearance in a loop. Our assumption is that some archetypes could emerge using one profile and other will need more (those that require two roles clearly differentiated). The more profiles are used, the harder the solution converge, since the number of alleles of the chromosome are multiplied by the number of profiles.
 
+The Genetic algorithm will use the parameters described in the Table~\ref{ga_parameters}.
 
+\begin{table}
+\begin{center}
+\caption{Parametrization of the Genetic Algorithm}
+\begin{tabular}{p{3cm}p{7cm}}
+\hline\noalign{\smallskip}
+\noalign{\smallskip}
+Parameter & Value \\
+\hline
+\noalign{\smallskip}
+Codification & 12 alleles per profile\\
+Fitness function & Average of 10 executions. Patterns are defined in sections~\ref{sec:setup_exp1} and \ref{sec:setup_exp2}\\
+Natural selector & Original Rate: 0.9 \\
+Crossover operator & Rate: 35\% \\
+Mutation operator & Desired Rate: 12 \\
+Stop condition & 100 executions\\
+\hline
+\end{tabular}
+
+\end{center}
+\label{fig:ga_parameters}
+\end{table}
+
+% (Rubén): TODO Poner los valores
+
+\subsection{Experiment 1: Natality control archetype}
+\label{sec:setup_exp1}
 
 % (Rubén): TODO, decir que todo puede descargarse y probarse de github
 
+\subsection{Experiment 2: Revenge archetype}
+\label{sec:setup_exp2}
 
 % -----------------------------------------------------------------------------
 % SEC RESULTS
