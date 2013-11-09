@@ -287,7 +287,8 @@ In this proposal, the parameters used to define an agent will be mapped to a chr
 
 The concept of agent profile in introduced to assign different parameters to different agents. If only one profile is used, all the agents will be created with the same parameters, evolved by the Genetic Algorithm. If more profiles are used, they will be assigned to the agents in order of appearance in a loop. Our assumption is that some archetypes could emerge using one profile and other will need more (those that require two roles clearly differentiated). The more profiles are used, the harder the solution converge, since the number of alleles of the chromosome are multiplied by the number of profiles.
 
-The Genetic algorithm will use the parameters described in the Table~\ref{ga_parameters}.
+This work will perform a study about the number of profiles (parameters that define the personality of a character) needed to create two emergent groups of archetypes: "natality control" and "revenge".
+The Genetic algorithm will use the parameters described in the Table~\ref{ga_parameters}. 
 
 \begin{table}
 \begin{center}
@@ -304,23 +305,44 @@ Natural selector & Original Rate: 0.9 \\
 Crossover operator & Rate: 35\% \\
 Mutation operator & Desired Rate: 12 \\
 Stop condition & 100 executions\\
+Generations & 30\\
+Population size & 30 \\
 \hline
 \end{tabular}
+
 
 \end{center}
 \label{fig:ga_parameters}
 \end{table}
 
-% (Rubén): TODO Poner los valores
 
 \subsection{Experiment 1: Natality control archetype}
 \label{sec:setup_exp1}
 
-% (Rubén): TODO, decir que todo puede descargarse y probarse de github
+This experiment agglutinate different sample archetypes where many factors must be taken into account. It will be used to answer the following questions:\\
+
+Given a map size, an initial population and the rate of food available per day, what values are optimal to:
+\begin{itemize}
+\item Assure that, after 1000 virtual days, the alive population will be the 30\% of the total population.
+\item Emerge the \textit{downtrodden} archetype in the 15\% of the population. An agent will be considered as a \textit{downtrodden} or \textit{defender} if it has been attacked at least two times and has defended the position.
+\item Emerge the \textit{warrior} archetype in the 15\% of the population. An agent will be considered as a \textit{warrior} if it has satisfactory attacked at least five times. 
+\item Emerge the \textit{helpless} archetype in the 15\% of the population. An agent will be considered as a \textit{helpless}  if it has been attacked at least ten times and hasn't defended the position.
+\item Emerge the \textit{bad warrior} archetype in the 15\% of the population. An agent will be considered as a \textit{bad warrior}  if it has unsatisfactory attacked at least ten times.
+\end{itemize}
+
+% (Rubén) TODO: ¿Es interesante poner las expresiones regulares?
 
 \subsection{Experiment 2: Revenge archetype}
 \label{sec:setup_exp2}
 
+This experiment will be used for a more complex memory based behaviour:\\
+
+Given a map size, an initial population and the rate of food available per day, what values are optimal to:
+\begin{itemize}
+\item Emerge the \textit{revenge} archetype in as many agents as possible after 1000 days.  An agent (a) will be considered as a \textit{revenger} if it has been attacked by other agent (b) and after that, in a moment in its life, it has satisfactory attacked the agent b, in revenge.
+\end{itemize}
+
+% (Rubén) TODO: ¿Es interesante poner las expresiones regulares?
 % -----------------------------------------------------------------------------
 % SEC RESULTS
 \section{Results and discussion}
@@ -424,9 +446,6 @@ The evolution of the best fitness for each number of profiles is shown in Figure
 
 \section*{Acknowledgements}
 This work has been supported in part by FPU research grant AP2009-2942 and projects EvOrq (TIC-3903), CANUBE (CEI2013-P-14) and ANYSELF (TIN2011-28627-C04-02).
-
-% (Rubén): Me parece bien poner en los agradecimientos la beca FPU y el resto 
-% de proyectos de ATC. Por otro lado no se si poener a Fidesol.
 
 \bibliographystyle{splncs}
 \bibliography{made}
