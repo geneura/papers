@@ -79,34 +79,16 @@ Universidad de Granada, Granada, Spain}
 %\toctitle{Lecture Notes in Computer Science}
 \maketitle
 
-
 \begin{abstract}
-The abstract should summarize the contents of the paper and should
-contain at least 70 and at most 150 words. It should be written using the
-\emph{abstract} environment.
-\end{abstract}
-
-\begin{abstract}
-In this paper we present a new distributed
- evolutionary computation system that uses the computational capabilities of the
- web browser. Using 
-Asynchronous JavaScript and JSON (JavaScript Object Notation, a
- serialization protocol) allows anybody with a web browser to participate in experiments with little effort, or none at all. Since, in
-this case, computing becomes a social activity and is inherently
-impredictable, in this
- paper we will explore the performance of this kind of virtual
- computer by solving simple problems such as the
- Royal Road function and an equation and analysing how many machines and evaluations
-it yields. We will also examine possible performance bottlenecks
- and how to solve them, and, finally, issue some advice on how to set
- up this kind of experiments to maximize turnout and, thus,
- performance. This paper attempts to reproduce results of older papers
- using modern browsers and all kind of devices that, nowadays, have
- JavaScript integrated in the browser, and is a complete rewrite of
- the code using the popular MooTools library. % \cite{MooTools}. % sólo se menciona aquí...
-% Algo sobre los resultados
-\keywords{We would like to encourage you to list your keywords within
-the abstract section}
+This paper introduces a new distributed evolutionary computation system that uses the computational capabilities of the web browser. Using Asynchronous JavaScript allows anybody with a web browser
+to participate in evolutionary experiments with little or none effort. Since, in
+this case, computing becomes a social activity and is inherently unpredictable, in this paper we will explore the performance of this kind of virtual computer by solving two simple problems, such as the Royal Road function and a 128-terms equation, and analysing how many machines and evaluations it yields. We will also examine possible performance bottlenecks
+and how to solve them, and, finally, issue some advice on how to setup
+this kind of experiments to maximize turnout and, thus, performance.
+This paper attempts to reproduce results of older papers using modern
+browsers and all kind of devices that, nowadays, have JavaScript integrated in the browser, and is a complete rewrite of the code using the popular MooTools library. 
+Results show that the system allows the rapid development of evolutionary algorithms, suited for different chromosomes representations and problems, that can be simultaneously executed in many different operating systems and web browsers, sharing the best solutions previously found.
+\keywords{Web browser-based computation, Javascript library, asynchronous communication}
 \end{abstract}
 
 % no key words
@@ -114,6 +96,7 @@ the abstract section}
 \section{Introduction and state of the art}
 \label{sec:intro}
 % no \PARstart
+Javascript language was introduced in Netscape Navigator in 1995, rapidly adopted by Microsoft's web browsers, and standardized for first time by ECMA International in 1997, with the name of ECMAScript. This interpreted language gave web navigators (but also e-mail clients) the power to perform some kind of computation apart from the needed to render HTML code.
 Application--level networks (ALNs), are configured as a set of
 clients/servers ({\em servents}) that
 can provide their spare CPU cycles by means of a downloadable
@@ -300,46 +283,42 @@ of work.
 
 \section{The jsEO library}
 \label{sec:jseo}
-In order to provide a modular, flexible, and object-oriented library, jsEO has been programmed in JavaScript language, making use of the inheritance provided by the MooTools framework (\url{http://mootools,net}). Like their predecessors EO (written in C++) and JEO (written in Java), jsEO is based on the key-point that any object that can be attached some kind of fitness value and is a potential candidate to be evolved. The jsEO library can de downloaded from http://github.com/vrivas/jsEO and is been developed under the GNU GPLv2 license.
+In order to provide a modular, flexible, and object-oriented library, jsEO has been programmed in JavaScript language, making use of the inheritance provided by the MooTools framework (\url{http://mootools,net}). Like their predecessors EO (written in C++) and JEO (written in Java), jsEO is based on the key-point that any object that can be attached some kind of fitness value is a potential candidate to be evolved. The jsEO library can de downloaded from \url{http://github.com/vrivas/jsEO} and it is being developed under the GNU GPLv2 license.
 
-JavaScript's main advantage is that can be executed in most (if not any) web browsers. This allows programs written in this language to be executed in millions of computers, and other devices like smartphones and tablets, among many others. JavaScript was mainly designed to operate on the Document Object Model (DOM) browsers generate for every web page they load, thus, content, structure and format style can be dynamically changed while a web page is being visited.
+JavaScript's main advantage is that can be executed in most (if not any) web browsers. This allows programs written in this language to be executed in millions of computers, and other devices like smartphones and tablets. JavaScript was mainly designed to operate on the Document Object Model (DOM) browsers generate for every web page they load, thus, content, structure and format style can be dynamically changed while a web page is being visited.
 
 On the other hand, JavaScript's main drawbacks come from the fact that it is interpreted, not compiled, (i.e., slower than desired), it has no access to every resource of the device (e.g. file systems,  memory, or output devices), and that its execution can be stopped by web-browsers if it is consuming too many resources.
 
-Fig.~\ref{fig:jsEO-str} shows the class diagram of the library. As can be seen, there exist some abstract class which define the general structure of any evolutionary solution to a given problem. Main class is jsEO, which represents any object to which a fitness can be assigned, and, consequently, that can be compared with any other. Starting from jsEO class, class jsEOIndividual can be derived representing any object that contains a chromosome and, therefore, can be evaluated by means of a fitness function. A jsEOPopulation is an aggregation of individuals; it can be used to add, replace or remove individuals, can be sorted, and can be also asked to return a subset of individuals.
+Fig.~\ref{fig:jsEO-class-diagram} shows the class diagram of the library. As can be seen, there exist some abstract class which define the general structure of any evolutionary solution to a given problem. Main class is \textit{jsEO}, which represents any object to which a fitness can be assigned, and, consequently, that can be compared with any other. Starting from \textit{jsEO} class, class \textit{jsEOIndividual} can be derived representing any object that contains a chromosome and, therefore, can be evaluated by means of a fitness function. A \textit{jsEOPopulation} is an aggregation of individuals; it can be used to add, replace or remove individuals, can be sorted, and can be also asked to return a subset of individuals.
 
-In order to build algorithms, operators have to be defined. Any operator gets a population as input parameter and also returns a population; thus, it is designed for both operators affecting only one individual, as well as operators acting over a whole population.
+In order to build algorithms, operators have to be defined. Any operator inherits from \textit{jsEOOperator}, gets a population as input parameter, and also returns a population; thus, it is designed for both operators affecting only one individual and operators acting over a whole population.
 
-Once defined the initial core set of abstract classes (except for jsEOPopulation), concrete classes has been derived in order to implement the Standard Genetic Algorithm (jsEOGA), that uses the tournament selector in order to create subpopulations to which mutator and crossover operators can be applied in order to make them evolve.
+Once defined the initial core set of abstract classes (except for \textit{jsEOPopulation}), concrete classes has been derived in order to implement the Standard Genetic Algorithm (\textit{jsEOGA}), that uses the tournament selector in order to create sub-populations to which mutator and crossover operators can be applied in order to make them evolve.
 
-Two special operators have been implemented in order to solve problems in a cooperative environment. The first one, jsEOSendIndividual, is intended to send the chromosome and fitness of the best individual to a server where it is stored in case it is best solution found up to the moment. The second one, jsEOGetIndividual makes exactly the opposite: it asks the server for the individual being stored and includes it as a new individual in the population. The communication between the client and the server is done using AJAX technology, and made in an asynchronous way when sending the individual to the server, but in a synchronous way in the case of the jsEOGetIndividual. Currently, the server has been programmed in PHP and stores data in a row file, in order to ease the implementation on anyone's server. Every synchronized problem executed with jsEO has to be assigned an unique identifier so that the server can discriminate every task when receiving and sending individuals to the clients.
+Two special operators have been implemented in order to solve problems in a cooperative environment. The first one, \textit{jsEOSendIndividual}, is intended to send the chromosome and fitness of the best individual to a server where it is stored in case it is best solution found up to the moment. The second one, \textit{jsEOGetIndividual}, makes exactly the opposite: it asks the server for the individual being stored and includes it as a new individual in the population. The communication between the client and the server is done using AJAX technology, and made in an asynchronous way when sending the individual to the server, but in a synchronous way in the case of the \textit{jsEOGetIndividual}. Currently, the server has been programmed in PHP and stores data in a row file, in order to ease the implementation on anyone's server. Every synchronized problem executed with jsEO has to be assigned an unique identifier so that the server can discriminate every task when receiving and sending individuals to the clients.
 
 \begin{figure}
 \centering
 \includegraphics[height=10cm]{class-diagram}
-\caption{One kernel at $x_s$ (\emph{dotted kernel}) or two kernels at
-$x_i$ and $x_j$ (\textit{left and right}) lead to the same summed estimate
-at $x_s$. This shows a figure consisting of different types of
-lines. Elements of the figure described in the caption should be set in
-italics, in parentheses, as shown in this sample caption.}
-\label{fig:jsEO-str}
+\caption{Class diagram of jsEO. The core package include some abstract classes (\textit{jsEO, jsEOIndividual}, \textit{jsEOAlgorithm}, and \textit{jsEOOperator}) that make easier to develop new evolutionary algorithms by means of inheritance.}
+\label{fig:jsEO-class-diagram}
 \end{figure}
 
 
 \section{Methodology and Experimental Setup}
 \label{sec:method}
-The experiments designed to the test jsEO include two problems, being the first the 256-bit Royal Road function, while the second is solving a 128-terms linear equation. In others words, the first one is related to a bit-string chromosome problem, while the second deals with vector of floats. Both problems have been executed as synchronized tasks, and are available at http://jseo.vrivas.es. Currently, synchronizing is quite constrained since it is done by means of AJAX connections to a server, without allowing to perform requests from pages hosted on a different one. 
+The experiments designed to the test jsEO include two problems, being the first the 256-bit Royal Road function, while the second is solving a 128-terms linear equation. In others words, the first one is related to a bit-string chromosome problem, while the second deals with vector of floats. Both problems have been executed as synchronized tasks, and are available at \url{http://jseo.vrivas.es}. Currently, synchronizing is quite constrained since it is done by means of AJAX connections to a server, without allowing to perform requests from pages hosted on a different one. 
 
 Asking for collaboration to run the experiments was done publishing some messages in social nets as Facebook and Twitter, as well as sending an email to a group of about 70 computer-scientist professionals. The user who wanted to participate in the experiments only had to load in his/her browser a web file containing a brief description of the problem and the Javascript library, and the chosen problem was automatically executed. Users were able to select the problem they wanted to execute, to execute it as many time as desired, to change the problem at any moment, and, of course, to stop the execution by closing the browser or loading a new web page.
 
-In order to execute every problem, two new classes were derived from class jsEOGA, the first one to deal with bit-string chromosomes, the second one to make evolve vector of floats. The jsEOGA is a steady state algorithm, with rank-based selection, and elimination of the worst individuals after joining the current population of every generation with the new individuals created by means of operators. The algorithm stopped after a given number of generations (table~\ref{tb:params} shows the parameters used), and incorporated operators for crossover and mutation. In the case of real problem, mutation consist on changing values for new random ones. After every generation, best individual was send to the server. On the other hand, requesting an individual to the server was done randomly according to the application rate of the corresponding jsEOGetIndividual operator. Finally, two different evaluation functions were used, one per problem. In the case of 256-bit Royal Road function, the fitness corresponds to the number of "1111" or "0000" sequences found in the 256-length bit-string. In the case of 128-terms equation, the fitness was the inverse of the value obtained when evaluating eq.\ref{eq:128-term} with the 128 real values composing every chromosome.
+In order to execute every problem, two new classes were derived from class \textit{jsEOGA}, the first one to deal with bit-string chromosomes, the second one to make evolve vector of floats. The \textit{jsEOGA} is a steady state algorithm, with rank-based selection, and elimination of the worst individuals after joining the current population of every generation with the new individuals created by means of operators. The algorithm stopped after a given number of generations (table~\ref{tb:params} shows the parameters used), and incorporated operators for crossover and mutation. In the case of real problem, mutation consist on changing values for new random ones. After every generation, best individual was send to the server. On the other hand, requesting an individual to the server was done randomly according to the application rate of the corresponding \textit{jsEOGetIndividual} operator. Finally, two different evaluation functions were used, one per problem. In the case of 256-bit Royal Road function, the fitness corresponds to the number of "1111" or "0000" sequences found in the 256-length bit-string. In the case of 128-terms equation, the fitness was the inverse of the value obtained when evaluating eq.\ref{eq:128-term} with the 128 real values composing every chromosome.
 
-Since both problems have been executed in a synchronous way, the best solution can be found in the server, but also in many clients as this individual is sent to the browser as soon as the jsEOGetInvididual operator is selected to operate.
+Since both problems have been executed in a synchronous way, the best solution can be found in the server, but also in many clients as this individual is sent to the browser as soon as the \textit{jsEOGetInvididual} operator is selected to operate.
 
 
 
 \begin{table}
-\caption{Parameters used to run the experiments}
+\caption{Parameters used to run the experiments, as in{\cite{jj}}}
 \begin{center}
 \begin{tabular}{l@{\quad}rl}
 \hline
@@ -348,11 +327,11 @@ Since both problems have been executed in a synchronous way, the best solution c
 \hline\rule{0pt}{12pt}
 Population size & 500 & \\
 Tournament size & 2 & \\
-Operator crossover's rate & 0.47 & \\
-Operator mutation's rate & 0.47 & \\
-Operator requesting individual's rate & 0.06 & \\
-Number of genes affected by mutation & $50\%$ &\\
-Invididuals replaced in every generation & $50\%$ & \\
+Operator crossover's rate & 0.73 & \\
+Operator mutation's rate & 0.18 & \\
+Operator requesting individual's rate & 0.09 & \\
+Number of genes affected by mutation & $1\%$ &\\
+Individuals replaced in every generation & $50\%$ & \\
 Range for new random real values && \\
 (only for the 128-term equation problem) & $(-10,10)$ & \\[2pt]
 \hline
@@ -370,11 +349,27 @@ Range for new random real values && \\
 \section{Experimental results}
 \label{sec:exp}
 
-After two days of volunteers executing the algorithms, some results can be drawn gathering data from the web server's log file (in this case, Apache log). The log file has been analysed using the well-known Webalizer\footnote{Webalizer can be obtained from http://www.webalizer.org/} application.
+After two days of volunteers executing the algorithms, some results can be drawn gathering data from the web server's log file (in this case, Apache log). The log file has been analysed using the free version of WebLog Expert application\footnote{WebLog Expert can be obtained from \url{http://www.weblogexpert.com/}}, and the well-known Webalizer application\footnote{Webalize can be obtained from \url{http://www.webalizer.com}}.
 
-From a potential target of users of more than 500 people, the 128-terms equation has been executed 344 times by 262 different visitors, while the 256-bit Royal Road function has been executed 431 times by 336 visitors, along 24 hours. The algorithms have been executed in up to 128 different combinations of web browser and operating system, any of them in many different versions. Web browser include Safari, Firefox, Chrome, Internet Explorer and also native browsers for smartphones and tablets. Operating systems include Windows, Linux, MacOS, and Android.
+From a potential target of users of more than 500 people, the 128-terms equation has been executed 304 times by 231 different visitors, while the 256-bit Royal Road function has been executed 359 times by 279 visitors. Most of this visits (i.e., executions) were done along a period of approximately 24 hours, but no references about time consumed by every execution have been registered. The algorithms have been executed in up to 128 different combinations of web browser and operating system, any of them in many different versions. As shown in tables \ref{tb:browsers} and \ref{tb:operating-systems}, Web browser include Safari, Firefox, Chrome, Internet Explorer, and also native browsers for smartphones and tablets; while operating systems include Windows, Linux, MacOS, and Android.
 
-As can be seen in table~\ref{tb:params}, population was composed by $500$ individuals, and $50\%$ were replaced in every generation, this means that in every execution $13,000$ individuals were evaluated. Consequently, the currently available solutions in the server have been found after $4,472,000$ evaluations in the case of the 128-terms equation, and $5,603,000$ evaluations for the 256-bit Royal Road function. The solution found for the bit-string problems is composed by 93 characters "1", followed by 32 characters "0"; its fitness is 122. For the real codified problem, the solution yields a fitness of $38620.59$, which corresponds to a value of $2.71E-05$ when evaluating the equation being solved.
+\begin{figure}
+\centering
+\includegraphics[height=5cm]{Most_Used_Browsers}
+\caption{Summary of browsers used to run the experiments. For any of the browsers, many different versions have been used. For instance, up to 4 different versions of Internet Explorer were found.}
+\label{fig:jsEO-str}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[height=5cm]{Most_Used_Operating_Systems}
+\caption{Set of operating systems that have been used by users visiting the pages containing the experiments. The figures corresponding to Windows include 8 different versions, including the one for phones.
+}
+\label{fig:jsEO-str}
+\end{figure}
+
+As can be seen in table~\ref{tb:params}, population was composed by $500$ individuals, and $50\%$ were replaced in every generation, this means that in every execution $13,000$ individuals were evaluated. Consequently, the currently available solutions in the server have been found after $3,952,000$ evaluations in the case of the 128-terms equation, and $4,667,000$ evaluations for the 256-bit Royal Road function. The solution found for the bit-string problems is composed by 176 characters "0", and 80 characters "1", being  its fitness 232. For the real codified problem, the solution yields a fitness of $300,909.09$, which corresponds to a value of $3.32E-06$ when evaluating the equation being solved.
 
 \section{Conclusions, discussion and future work}
 \label{sec:conc}
@@ -411,38 +406,6 @@ the impact of servers of varying performance and workload on overall
 performance. Eventually, we will also try to perform a {\em sneaky}
 experiment, to check what kind of performance can be expected in that
 kind of setups. 
-
-
-
-----
-Enviado a JJ
-
-Título:
-Developing an object-oriented library in JavaScript to build modular and flexible cross-platform evolutionary algorithms 
-
-Aims
-Prove that it can be created a JavaScript library for evolutionary algorithms, that is object-oriented and, thus, modular and easily extensible.
-Prove that this library can be used to execute evolutionary algorithms in web browsers. This allows to solve problems in the client side, but also to collaborate among many clients (if possible) to find better solutions by means of indidivuals migatrion using AJAX technology.
-
-Methodology:
-Consisted in
-1) Creating the basic classes from which the rest will derivate: jsEO, jsEOIndividual, jsEOPopulation, jsEOOperator, jsEOAlgorithm
-2) Derivating more specific classes, such as mutation and crossover operarators, as well as different kinds of individuals (e.g., bit-strings and float-strings).
-3) Instantiating specifics objects to evaluate the library using the 256-royal road funcion, and a 128-terms equation.
-4) Executing the experiments by means of simple web page access from many different devices (i.e., different microprocessors, operating systems, web browsers, amount of memory, or bandwidths among others).
-
-
-
-
-De forma un poco más detallada:
-1.1 Crear una biblioteca orientada a objetos con una clase básica: jsEO. Un objeto jsEO tiene asociado un fitness y, en base a dicho fitness, puede ser comparado con otro objeto jsEO.
-1.2 A partir de dicho objeto derivar individuos (jsEOIndividual) que disponen de un cromosoma. Dicho cromosoma puede ser descodificado y evaluado obteniendo el correspondiente fitness.
-1.3 Los individuos pueden ser agrupados en poblaciones (jsEOPopulation) las cuales pueden ser ordenadas por fitness.
-1.4 Implementar la clase operador (jsEOOperator) que permita operar tanto sobre como poblaciones como sobre individuos
-1.5. Finalmente, crear objetos algoritmos (jsEOAlgorithm) evolutivos los cuales puedan ser contener una población, un conjunto de operadores y una serie ordenada de instrucciones que permitan hacer evolucionar la población mediante la aplicación de los operadores.
-
-2.1 Se definen un conjunto de operadores concretos, como el selector por torneo (jsEOTournament) o sobre individuos (como jsEOCrossOver). Dichos operadores permiten generar nuevas poblaciones a partir de las ya existentes realizando modificaciones en los individuos. 
-2.2. Entre dichos operadores se ha definido uno que tansfiere un individuo de la población al servidor (jsEOSendIndividual), y otro que solicita al servidor que le envíe el individuo que tiene almacenado ((jsEOSendIndividual).
 
 \section*{Acknowledgements}
 
