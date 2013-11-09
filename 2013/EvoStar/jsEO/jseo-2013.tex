@@ -1,35 +1,90 @@
-\documentclass{llncs}
-% If the IEEEtran.cls has not been installed into the LaTeX system files, 
-% manually specify the path to it: e.g.,
-% \documentclass[conference]{../sty/IEEEtran} 
+%%%%%%%%%%%%%%%%%%%%%%% file typeinst.tex %%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This is the LaTeX source for the instructions to authors using
+% the LaTeX document class 'llncs.cls' for contributions to
+% the Lecture Notes in Computer Sciences series.
+% http://www.springer.com/lncs       Springer Heidelberg 2006/05/04
+%
+% It may be used as a template for your own input - copy it
+% to a new file with a new name and use it as the basis
+% for your article.
+%
+% NB: the document class 'llncs' has its own and detailed documentation, see
+% ftp://ftp.springer.de/data/pubftp/pub/tex/latex/llncs/latex2e/llncsdoc.pdf
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{graphicx,times,amsmath} % Add all your packages here
+
+\documentclass[runningheads,a4paper]{llncs}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+
 \usepackage{url}
-\usepackage{subfigure}
+\urldef{\mailsa}\path|{alfred.hofmann, ursula.barth, ingrid.haas, frank.holzwarth,|
+\urldef{\mailsb}\path|anna.kramer, leonie.kunz, christine.reiss, nicole.sator,|
+\urldef{\mailsc}\path|erika.siebert-cole, peter.strasser, lncs}@springer.com|    
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
 
 \begin{document}
-% Máximo 6 páginas. No lo toques con xemacs
 
-% paper title: Must keep \ \\ \LARGE\bf in it to leave enough margin.
-\title{Revisiting volunteer browser-based computing}
+\mainmatter  % start of an individual contribution
 
-\author{V.M. Rivas \inst{1} \and J.J. Merelo \inst{2}}
-\institute{ U. Ja\'en (Spain)
+% first the title is needed
+\title{Developing an object-oriented library in JavaScript to build modular and flexible cross-platform evolutionary algorithms}
+
+%\title{Lecture Notes in Computer Science:\\Authors' Instructions
+%for the Preparation\\of Camera-Ready
+%Contributions\\to LNCS/LNAI/LNBI Proceedings}
+
+% a short form should be given in case it is too long for the running head
+\titlerunning{Developing an object-oriented library in JavaScript}
+
+% the name(s) of the author(s) follow(s) next
+%
+% NB: Chinese authors should write their first names(s) in front of
+% their surnames. This ensures that the names appear correctly in
+% the running heads and the author index.
+%
+
+\author{V\'{\i}ctor M. Rivas\inst{1} \and Juan Juli\'{a}n Merelo\inst{2}}
+%
+%%%% modified list of authors for the TOC (add the affiliations)
+\tocauthor{V\'{\i}ctor M. Rivas (Universidad de Ja\'{e}n),
+Juan Juli\'{a}n Merelo (Universidad de Granada)}
+%
+\institute{Universidad de Ja\'{e}n, Ja\'{e}n, Spain,\\
+%\email{},\\ WWW home page:\texttt{}
 \and
-U. Granada (Spain)}
-% \author{Juan Juli\'an Merelo-Guerv\'os, Pedro A. Castillo, JLJ Laredo,
-% A. Mora García}
-% % avoiding spaces at the end of the author lines is not a problem with
-% % conference papers because we don't use \thanks or \IEEEmembership
-% % use only for invited papers
-% %\specialpapernotice{(Invited Paper)}
-% \institute{Departamento de Arquitectura y 
-% Tecnología de Computadores\\
-% ETS Ingeniería Informática y Telecomunicaciones\\
-% University of Granada (Spain)\\
-% email: {\sf jj@merelo.net}}
-% make the title area
+Universidad de Granada, Granada, Spain}
+
+
+
+%
+\authorrunning{V.M. Rivas et al.}
+% (feature abused for this document to repeat the title also on left hand pages)
+
+% the affiliations are given next; don't give your e-mail address
+% unless you accept that it will be published
+
+%
+% NB: a more complex sample for affiliations and the mapping to the
+% corresponding authors can be found in the file "llncs.dem"
+% (search for the string "\mainmatter" where a contribution starts).
+% "llncs.dem" accompanies the document class "llncs.cls".
+%
+
+%\toctitle{Lecture Notes in Computer Science}
 \maketitle
+
+
+\begin{abstract}
+The abstract should summarize the contents of the paper and should
+contain at least 70 and at most 150 words. It should be written using the
+\emph{abstract} environment.
+\end{abstract}
 
 \begin{abstract}
 In this paper we present a new distributed
@@ -41,15 +96,17 @@ this case, computing becomes a social activity and is inherently
 impredictable, in this
  paper we will explore the performance of this kind of virtual
  computer by solving simple problems such as the
- Royal Road function and an equation and analyzing how many machines and evaluations
+ Royal Road function and an equation and analysing how many machines and evaluations
 it yields. We will also examine possible performance bottlenecks
  and how to solve them, and, finally, issue some advice on how to set
  up this kind of experiments to maximize turnout and, thus,
  performance. This paper attempts to reproduce results of older papers
- using modern browsers and all kind of devices that, nowadays, hava
+ using modern browsers and all kind of devices that, nowadays, have
  JavaScript integrated in the browser, and is a complete rewrite of
  the code using the popular MooTools library. % \cite{MooTools}. % sólo se menciona aquí...
 % Algo sobre los resultados
+\keywords{We would like to encourage you to list your keywords within
+the abstract section}
 \end{abstract}
 
 % no key words
@@ -63,7 +120,7 @@ can provide their spare CPU cycles by means of a downloadable
 application, establishing a distributed computation network which can
 provide ad hoc computational power. Some ALNs
 like SETI@Home have been quite successful \cite{david-seti:home},
-creating a virtual computer that has proccesed a good amount of
+creating a virtual computer that has processed a good amount of
 teraflops, while other 
 experiments such as Popular Power (and most others, in fact) have not\cite{DBLP:conf/p2p/2005lncs}. 
 
@@ -72,7 +129,7 @@ of use: we believe that the best way to obtain the participation of as
 many users as possible is to make it as very simple. In particular, it
 will be easier if they do not need to download a special application
 (such as a screen-saver) to participate, as is needed in BOINC, the
-sucessor to SETI@Home. For this reason, we are exploring the use of
+successor to SETI@Home. For this reason, we are exploring the use of
 applications that are commonly installed in the user's computer, such
 as the web browser, which is available even in PDAs and some cellular
 phones\footnote{Whose computing power are similar to four-year-old
@@ -96,7 +153,7 @@ finally, its integration with the browser is more awkward than the
 seamless integration that JavaScript offers. In any case, most things
 said here for JavaScript also apply to these and other plugins.
 
-By itself, an interpreted languaje is not enough for creating a
+By itself, an interpreted language is not enough for creating a
 metacomputer if there is no way to convey information back from the
 client to the server in a seamless way. The ability to use the virtual
 machine included in browsers for distributed computing appeared with
@@ -143,7 +200,7 @@ This paper presents performance measurements on the jsEO ({\em
   JavaScript Evolving Objects}, pronounce it yi-see-oh) system, which uses PHP 
  (on the server) and JavaScript on the client. The genetic algorithm is carried out  on the clients,
 with the server used  for interchange of information among
-them. We will perform several experimentes in which clients donate
+them. We will perform several experiments in which clients donate
 computing power by just loading a web page to find out what kind of
 performance we can expect from this kind of setup, from the number of
 machines available to the number of evaluations each one of them
@@ -162,7 +219,7 @@ better solutions in fewer time obtaining, in some cases, superlinear
 accelerations~\cite{cantu-paz:migration-policies}. Of course, with a suitable work division method, many other algorithms
 could be adapted to browser-based distributed computation; however, in
 this paper will solve only genetic algorithms, and concentrate on raw
-performance, rather than algorithmic behavior. 
+performance, rather than algorithmic behaviour. 
 
 Browser based computation falls within the ream of the so called  {\em volunteer
 computing}~\cite{sarmenta-bayanihan,hpvc} systems are
@@ -243,7 +300,7 @@ of work.
 
 \section{The jsEO library}
 \label{sec:jseo}
-In order to provide a modular, flexible, and object-oriented library, jsEO has been programmed in JavaScript language, making use of the inheritance provided by the MooTools framework (\url{http://mootools,net}). Like their predecessors EO (written in C++) and JEO (written in Java), jsEO is based on the keypoint that any object that can be attached some kind of fitness value and is a potential candidate to be evolved. The jsEO library can de downloaded from http://github.com/vrivas/jsEO and is been developed under the GNU GPLv2 license.
+In order to provide a modular, flexible, and object-oriented library, jsEO has been programmed in JavaScript language, making use of the inheritance provided by the MooTools framework (\url{http://mootools,net}). Like their predecessors EO (written in C++) and JEO (written in Java), jsEO is based on the key-point that any object that can be attached some kind of fitness value and is a potential candidate to be evolved. The jsEO library can de downloaded from http://github.com/vrivas/jsEO and is been developed under the GNU GPLv2 license.
 
 JavaScript's main advantage is that can be executed in most (if not any) web browsers. This allows programs written in this language to be executed in millions of computers, and other devices like smartphones and tablets, among many others. JavaScript was mainly designed to operate on the Document Object Model (DOM) browsers generate for every web page they load, thus, content, structure and format style can be dynamically changed while a web page is being visited.
 
@@ -259,7 +316,7 @@ Two special operators have been implemented in order to solve problems in a coop
 
 \begin{figure}
 \centering
-\includegraphics[height=10cm]{class-diagram.jpg}
+\includegraphics[height=10cm]{class-diagram}
 \caption{One kernel at $x_s$ (\emph{dotted kernel}) or two kernels at
 $x_i$ and $x_j$ (\textit{left and right}) lead to the same summed estimate
 at $x_s$. This shows a figure consisting of different types of
@@ -268,87 +325,56 @@ italics, in parentheses, as shown in this sample caption.}
 \label{fig:jsEO-str}
 \end{figure}
 
+
 \section{Methodology and Experimental Setup}
 \label{sec:method}
 The experiments designed to the test jsEO include two problems, being the first the 256-bit Royal Road function, while the second is solving a 128-terms linear equation. In others words, the first one is related to a bit-string chromosome problem, while the second deals with vector of floats. Both problems have been executed as synchronized tasks, and are available at http://jseo.vrivas.es. Currently, synchronizing is quite constrained since it is done by means of AJAX connections to a server, without allowing to perform requests from pages hosted on a different one. 
 
-Asking for collaboration to run the experiments was done publishing some messages in social nets as Facebook and Twitter, as well as sending an email to a group of about 70 computer-scientist professionals. From a potential target of more than 500 people, every experiment has been voluntarily executed ?? times (although many users did execute it more than once).
+Asking for collaboration to run the experiments was done publishing some messages in social nets as Facebook and Twitter, as well as sending an email to a group of about 70 computer-scientist professionals. The user who wanted to participate in the experiments only had to load in his/her browser a web file containing a brief description of the problem and the Javascript library, and the chosen problem was automatically executed. Users were able to select the problem they wanted to execute, to execute it as many time as desired, to change the problem at any moment, and, of course, to stop the execution by closing the browser or loading a new web page.
 
-The user who wanted to participate in the experiments only had to
-The algorithm runs on the client for a fixed number of generations
- running parameters are set from the server and are downloaded from
-it along with the web page from which the experiment is run. A preset
-number of generations is run on the client, after with a request is
-made to the server with the best individual in the last
-generation. The algorithm stops and waits for the answer from the
-server. The server receives the request, stores it in a database, and
-sends back the best individual stored in the server. This individual
-is incorporated in the client population, which starts again to run. 
-Several clients acting at the same time make requests asynchronously,
-using the facilities of the standard Apache web server. The server is
-thus used as a clearinghouse for interchange of information among the
-different clients; however, there's no explicit communication or
-topology among the different nodes running the genetic
-algorithm. Besides, the fact that the server always contain the best
-individuals generated so far guarantees that the best solution (with a
-fixed number of evaluations resolution) available so far is always
-kept. The server also sends back the number of generations the
-client should run; which is usually the same number as before, but
-turns to 0, thus stopping the client, when the stopping condition is
-met. 
+In order to execute every problem, two new classes were derived from class jsEOGA, the first one to deal with bit-string chromosomes, the second one to make evolve vector of floats. The jsEOGA is a steady state algorithm, with rank-based selection, and elimination of the worst individuals after joining the current population of every generation with the new individuals created by means of operators. The algorithm stopped after a given number of generations (table~\ref{tb:params} shows the parameters used), and incorporated operators for crossover and mutation. In the case of real problem, mutation consist on changing values for new random ones. After every generation, best individual was send to the server. On the other hand, requesting an individual to the server was done randomly according to the application rate of the corresponding jsEOGetIndividual operator. Finally, two different evaluation functions were used, one per problem. In the case of 256-bit Royal Road function, the fitness corresponds to the number of "1111" or "0000" sequences found in the 256-length bit-string. In the case of 128-terms equation, the fitness was the inverse of the value obtained when evaluating eq.\ref{eq:128-term} with the 128 real values composing every chromosome.
 
-Clients leave the experiment by the expeditive method of surfing away
-to another page or closing the web browser; in tabbed browsers (most
-browsers nowadays), a tab (or several) can run the experiment while
-the browser is available for other tasks. When the experiment has been
-running for a predetermined number of evaluations (which were set, for
-this experiment, to 750000), all clients get a message to stop
-running, and change their user interface to a message offering them to
-reload the (new) experiment and start all over again. 
-Besides, there is a {\em watching} daemon running on the server which
-checks the database for the number of individuals evaluated, and
-resets the experiment by incrementing the experiment ID by one and
-eliminating the population. Thus, experiments can run unchecked on a
-server while this {\sf watchgad} daemons is running. 
-Several additional utilities are also provided via several web pages,
-that inform on the state of the experiment, or allow to set the GA
-parameters. 
-Experimental subjects were gathered by several methods: sending it via
-email to department and project coworkers, using the URL
-for the experiment as a Google Plus or Facebook post, as a Twitter
-(\url{http://twitter.com}) message, as a blog post,.
+Since both problems have been executed in a synchronous way, the best solution can be found in the server, but also in many clients as this individual is sent to the browser as soon as the jsEOGetInvididual operator is selected to operate.
 
-The experiment consisted in optimizing the  256-bits Royal Road
-function, and each instance consisted in a maximum of 750000
-evaluations (which were barely enough to find the solution). The
-algorithm was steady state (with incorporation of the immigrant every 20
-generations), with rank-based selection and substitution; every
-generation, 50\% of the population was generated, substituting the
-worst 50\% individuals. Crossover priority was set to 80\%, and
-mutation  to 20\%, changing 1\% of the bits. However, these settings
-will have no influence on performance, other than the fact that, if
-the solution is found before the end of the experiment, the users will
-get bored and change to a new page\footnote{And this is just an example of how
-social factors in this kind of experiments affect performance}.
 
-Data was gathered from two different sources: the watcher-daemon logs,
-which mainly gave data about the number of individuals evaluated and
-the time needed for each experiment, and the Apache daemon log; the
-relevant lines were extracted just by using {\sf grep}. It should be
-noted that the server was not running exclusively the experiment, but
-doing it along with the usual tasks. The server was a 700-MHz, 1
-Gigabyte-RAM machine, with the database in another dual processor,
-450-MHz machine. Both machines were running obsolete RedHat 7.x and
-9.x Linux operating systems\footnote{Both machines host our group web
-  server and home pages; we thought it was better to run the
-  experiment in our standard setup instead of a dedicated
-  setup}. 
 
-Results of the experiment will be commented in the next section.
+\begin{table}
+\caption{Parameters used to run the experiments}
+\begin{center}
+\begin{tabular}{l@{\quad}rl}
+\hline
+\multicolumn{1}{l}{\rule{0pt}{12pt}
+                   Parameter}&\multicolumn{2}{l}{Value}\\[2pt]
+\hline\rule{0pt}{12pt}
+Population size & 500 & \\
+Tournament size & 2 & \\
+Operator crossover's rate & 0.47 & \\
+Operator mutation's rate & 0.47 & \\
+Operator requesting individual's rate & 0.06 & \\
+Number of genes affected by mutation & $50\%$ &\\
+Invididuals replaced in every generation & $50\%$ & \\
+Range for new random real values && \\
+(only for the 128-term equation problem) & $(-10,10)$ & \\[2pt]
+\hline
+
+\end{tabular}
+\label{tb:params}
+\end{center}
+\end{table}
+
+  	
+
+
+
 
 \section{Experimental results}
 \label{sec:exp}
 
+After two days of volunteers executing the algorithms, some results can be drawn gathering data from the web server's log file (in this case, Apache log). The log file has been analysed using the well-known Webalizer\footnote{Webalizer can be obtained from http://www.webalizer.org/} application.
+
+From a potential target of users of more than 500 people, the 128-terms equation has been executed 344 times by 262 different visitors, while the 256-bit Royal Road function has been executed 431 times by 336 visitors, along 24 hours. The algorithms have been executed in up to 128 different combinations of web browser and operating system, any of them in many different versions. Web browser include Safari, Firefox, Chrome, Internet Explorer and also native browsers for smartphones and tablets. Operating systems include Windows, Linux, MacOS, and Android.
+
+As can be seen in table~\ref{tb:params}, population was composed by $500$ individuals, and $50\%$ were replaced in every generation, this means that in every execution $13,000$ individuals were evaluated. Consequently, the currently available solutions in the server have been found after $4,472,000$ evaluations in the case of the 128-terms equation, and $5,603,000$ evaluations for the 256-bit Royal Road function. The solution found for the bit-string problems is composed by 93 characters "1", followed by 32 characters "0"; its fitness is 122. For the real codified problem, the solution yields a fitness of $38620.59$, which corresponds to a value of $2.71E-05$ when evaluating the equation being solved.
 
 \section{Conclusions, discussion and future work}
 \label{sec:conc}
