@@ -96,82 +96,26 @@ Results show that the system allows the rapid development of evolutionary algori
 \section{Introduction and state of the art}
 \label{sec:intro}
 % no \PARstart
-Javascript language was introduced in Netscape Navigator in 1995, rapidly adopted by Microsoft's web browsers, and standardized for first time by ECMA International in 1997, with the name of ECMAScript. This interpreted language gave web navigators (but also e-mail clients) the power to perform some kind of computation apart from the needed to render HTML code.
-Application--level networks (ALNs), are configured as a set of
-clients/servers ({\em servents}) that
-can provide their spare CPU cycles by means of a downloadable
-application, establishing a distributed computation network which can
-provide ad hoc computational power. Some ALNs
-like SETI@Home have been quite successful \cite{david-seti:home},
-creating a virtual computer that has processed a good amount of
-teraflops, while other 
-experiments such as Popular Power (and most others, in fact) have not\cite{DBLP:conf/p2p/2005lncs}. 
+The Javascript language~\cite{js:reference} was introduced in Netscape Navigator in 1995, rapidly adopted by Microsoft's web browsers, and first standardized  by ECMA International in 1997, with the name of ECMAScript. This interpreted language gives web navigators (and in fact, many other applications relaying on web engines, like email clients) the power to perform some kind of computation apart from the needed to render HTML code. Despite being a language mainly devoted to operate over the Document Object Model (DOM) of a web page, it contains all the necessary elements to be considered a general purpose language, with some limitations mostly related to input/output devices and file system access.
 
-The key feature of these application--level networks is the simplicity
-of use: we believe that the best way to obtain the participation of as
-many users as possible is to make it as very simple. In particular, it
-will be easier if they do not need to download a special application
-(such as a screen-saver) to participate, as is needed in BOINC, the
-successor to SETI@Home. For this reason, we are exploring the use of
-applications that are commonly installed in the user's computer, such
-as the web browser, which is available even in PDAs and some cellular
-phones\footnote{Whose computing power are similar to four-year-old
-desktop machines}.  Moreover, most browsers natively include a
-JavaScript
-interpreter~\cite{js:reference} or
-virtual machine. JavaScript is an interpreted language\footnote{which
-has nothing to do with Java, other than the name and its C inherited syntax},
-initially proposed by Netscape, and later adopted as an
-ECMA standard \cite{ECMA-262}.  In this
-way, most browsers are compatible, at least at a language level (not
-always at the level of browser objects, where there exists a
-reasonable compatibility, anyway). Most browser also include elements
-such as a Java virtual machine and a Flash plugin, which, with
-ActionScript, has more or less the same capabilities. However, there
-are several disadvantages to these: they might or might not be present
-(they are not {\em native}), they are {\em noisy} in the sense that,
-since they act as plugins, their execution can be noted by the
-user, their programs are more heavyweight than simple text code, and,
-finally, its integration with the browser is more awkward than the
-seamless integration that JavaScript offers. In any case, most things
-said here for JavaScript also apply to these and other plugins.
+Javascript offers some good features that can be used for evolutionary computation. First one is related to the interpreter itself, as most applications nowadays run into web browsers; this gives Javascript the opportunity to build web applications that incorporate evolutionary solutions as desktop ones can do. The second one concerns the intrinsic communicative nature of browsers, i.e., that they are mainly designed to act as clients that send and receives data from web servers. This makes easier the task of running any kind of algorithms in a collaborative way, using many and different hardware and software platforms. In this sense, web browsers turn into the clients of application--level networks (ALNs), which are configured as a set of
+clients/servers ({\em servents}), usually providing their CPU cycles by means of a downloadable
+application, and establishing a distributed computation network which can
+provide ad hoc computational power. SETI@Home is a best well-known ALN which was quite successful \cite{david-seti:home}, as it was able to
+create a virtual computer that processed a high amount of
+teraflops. 
 
-By itself, an interpreted language is not enough for creating a
-metacomputer if there is no way to convey information back from the
-client to the server in a seamless way. The ability to use the virtual
-machine included in browsers for distributed computing appeared with
-the {\sf XmlHttpRequest} object, which allows asynchronous petitions to the
-server, in what has been called AJAX, Asynchronous JavaScript and
-XML~\cite{wiki:AJAX}. AJAX is just one of the possible ways to
-perform asynchronous client-server communication, the others being
-AJAJ (Asynchronous JavaScript and JSON), and {\em remoting} using
-applets or embedded objects. However, it is quite popular, and a wide
-user base and documentation is available for it, using any of these
-asynchronous client/server communication protocols. The traditional client/server model becomes then
-more egalitarian, or closer to a peer to peer model, since a
-bidirectional communication line appears: the browser can make calls to the
-server, do some computation and later send the results to the server.
 
-AJAX (and AJAJ, which differ only in the way the communication is
-serialized) works as follows: the {\sf XmlHttpRequest} is provided 
-with a request to the server and a pointer to a {\em callback} function. 
-The request generates an event, which is asynchronously activated when a
-reply is received  making use of the
- {\em callback} function. 
-Following this approach the browser is not locked, providing a way to
-program applications that are similar to  the ones used at the
-desktop, in the sense that they do not have to wait for the
-application response to be loaded
-and rendered on the screen every time a request is made. It also means
-that a the user clicking on the {\sf Submit} button is no longer
-needed to initiate communication with the server; any JavaScript
-thread can do so, with the constraint that the only server they can
-communicate with is the one that hosts the page the script is included
-in. On the other side, this provides a way to use the browser for application
-level networks that create distributed computing systems,
-since the request-response loop does not need the user participation in a
-fashion very similar  to any other distributed computing application;
-these ALN can be controlled from the server with any programming
+Usability is also a key feature of these ALN, i.e., its simplicity
+of use that turns to be the best way to obtain the participation of as
+many users as possible. In this sense, the use of browsers has many advantages. For instance, users do not have to download any special application (even being a simple screen-saver, as is needed in BOINC, the successor to SETI@Home). Furthermore, users, no matter their technical knowledge, are used to deal with browser's interface, i.e, links, forms, layouts, timeouts. In this sense, using the browser to run this kind of applications do not differ to the way people currently read the newspaper or do the shopping.
+
+In order to create a metacomputer, the existence of an interpreted language in the client like Javascript is only a part of the solution. The other part consist on having an easy, effective way to send and retrieve information from the server in a seamless way. There exist some techniques that allow this kind of communication: AJAX (Asynchronous JavaScript and
+XML~\cite{wiki:AJAX}), AJAJ (Asynchronous JavaScript and JSON), and {\em remoting} using
+applets or embedded objects. Currently, AJAX and AJAJ are widely used since they can be natively executed by web browsers without using external plugins. As can be seen, they only differ in the way the communication is serialized, as AJAX one uses XML\cite{} to encode both request parameters and data being retrieved, while AJAJ uses JSON. Nevertheless, both of them works using the same basis: an {\sf XmlHttpRequest} object is created  containing a request to the server, and a reference to a {\em callback} function. 
+As the request is being processed, it generates a series of events that can be asynchronously handled by means of the {\em callback} function, which can also access the data returned by the server.
+Both AJAX and AJAJ provide the ways to use the browser for APLs that create distributed computing systems, since this request-response iterative process does not need to interact with humans, as usually happens in any others distributed computing application;
+in fact, this allows to control these APLs from the server with any programming
 language. Of course, it can also be combined with other distributed
 programming frameworks based on OpenGrid~\cite{ogsa} or other
 distributed computing paradigms. % esto es más bien viejo, habría que
