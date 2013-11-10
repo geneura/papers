@@ -99,11 +99,15 @@ Results show that the system allows the rapid development of evolutionary algori
 The Javascript language~\cite{js:reference} was introduced in Netscape Navigator in 1995, rapidly adopted by Microsoft's web browsers, and first standardized  by ECMA International in 1997, with the name of ECMAScript. This interpreted language gives web navigators (and in fact, many other applications relaying on web engines, like email clients) the power to perform some kind of computation apart from the needed to render HTML code. Despite being a language mainly devoted to operate over the Document Object Model (DOM) of a web page, it contains all the necessary elements to be considered a general purpose language, with some limitations mostly related to input/output devices and file system access.
 
 Javascript offers some good features that can be used for evolutionary computation. First one is related to the interpreter itself, as most applications nowadays run into web browsers; this gives Javascript the opportunity to build web applications that incorporate evolutionary solutions as desktop ones can do. The second one concerns the intrinsic communicative nature of browsers, i.e., that they are mainly designed to act as clients that send and receives data from web servers. This makes easier the task of running any kind of algorithms in a collaborative way, using many and different hardware and software platforms. In this sense, web browsers turn into the clients of application--level networks (ALNs), which are configured as a set of
-clients/servers ({\em servents}), usually providing their CPU cycles by means of a downloadable
-application, and establishing a distributed computation network which can
-provide ad hoc computational power. SETI@Home is a best well-known ALN which was quite successful \cite{david-seti:home}, as it was able to
+clients/servers ({\em servents}), and browser based computation can be considered as belonging to the so called  {\em volunteer computing}~\cite{sarmenta-bayanihan,hpvc}. Volunteer users provide their CPU cycles by means of a downloadable application, so that a distributed computation network which can
+provide ad hoc computational power is established. SETI@Home is a best well-known ALN which was quite successful \cite{david-seti:home}, as it was able to
 create a virtual computer that processed a high amount of
-teraflops. 
+teraflops.  Some companies related to volunteer computing, such as Popular Power and
+others ~\cite{Cappello}, did some experimentation with Java based
+clients, but none has had commercial success. Volunteer computing has
+been previously used in evolutionary computation, using
+frameworks such as DREAM \cite{LNCS2439:ID197:pp665}, which includes a
+Java-based virtual machine; peer to peer (P2P) examples also exist, as  GOLEM@Home, and G2-P2P \cite{G2-P2P}, in an attempt to eliminar bottlenecks produced by the servers.
 
 
 Usability is also a key feature of these ALN, i.e., its simplicity
@@ -113,14 +117,11 @@ many users as possible. In this sense, the use of browsers has many advantages. 
 In order to create a metacomputer, the existence of an interpreted language in the client like Javascript is only a part of the solution. The other part consist on having an easy, effective way to send and retrieve information from the server in a seamless way. There exist some techniques that allow this kind of communication: AJAX (Asynchronous JavaScript and
 XML~\cite{wiki:AJAX}), AJAJ (Asynchronous JavaScript and JSON), and {\em remoting} using
 applets or embedded objects. Currently, AJAX and AJAJ are widely used since they can be natively executed by web browsers without using external plugins. As can be seen, they only differ in the way the communication is serialized, as AJAX one uses XML\cite{} to encode both request parameters and data being retrieved, while AJAJ uses JSON. Nevertheless, both of them works using the same basis: an {\sf XmlHttpRequest} object is created  containing a request to the server, and a reference to a {\em callback} function. 
-As the request is being processed, it generates a series of events that can be asynchronously handled by means of the {\em callback} function, which can also access the data returned by the server.
+As the request is being processed, it generates a series of events that can be asynchronously handled by the {\em callback} function, which can also access the data returned by the server.
 Both AJAX and AJAJ provide the ways to use the browser for APLs that create distributed computing systems, since this request-response iterative process does not need to interact with humans, as usually happens in any others distributed computing application;
-in fact, this allows to control these APLs from the server with any programming
+in fact, it even allows to control these APLs from the server with any programming
 language. Of course, it can also be combined with other distributed
-programming frameworks based on OpenGrid~\cite{ogsa} or other
-distributed computing paradigms. % esto es más bien viejo, habría que
-                                % actualizarlo con nubes y cosas así y
-                                % últimos trabajos nuestros
+programming frameworks, as OSGiLiath~\cite{DBLP:journals/soco/Garcia-SanchezGCAG13}, a service oriented architecture for evolutionary algorithm 
 
 
 This paper presents performance measurements on the jsEO ({\em
@@ -135,51 +136,8 @@ usually performs; as we will show, this kind of setup is ready to take more
 computing-intensive experiments without the need of an expensive server or cluster
 setup. 
 
-Evolutionary computation is quite adequate for this
-kind of distributed environment for several reasons: it is a population based method,
-so computation can be distributed among nodes (via distribution of
-population) in many different ways;
-besides, some works suggest that there are synergies among evolutionary
-algorithms and parallelization: isolated populations that are
-connected only eventually avoid the loss of diversity and produce
-better solutions in fewer time obtaining, in some cases, superlinear
-accelerations~\cite{cantu-paz:migration-policies}. Of course, with a suitable work division method, many other algorithms
-could be adapted to browser-based distributed computation; however, in
-this paper will solve only genetic algorithms, and concentrate on raw
-performance, rather than algorithmic behaviour. 
-
-Browser based computation falls within the ream of the so called  {\em volunteer
-computing}~\cite{sarmenta-bayanihan,hpvc} systems are
-application-level networks set up so that different people
-can donate resources for a joint computing  effort.
-The best known project is SETI@home\footnote{See
-\url{http://setiathome.berkeley.edu/} for downloading the software  and some
-reports.}, which, from the user's point of view, is a screen-saver which has to be
-downloaded and installed; when the user's CPU is not busy it performs
-several signal analysis operations.
-Some companies related to volunteer computing, such as Popular Power (and
-others; they are referenced,
-for example, in~\cite{Cappello}) did some experimentation with Java based
-clients, but none has had commercial success; on the other hand, the
-SETI@Home program has been open-sourced and extended as the BOINC
-(Berkeley Open Infrastructure for Network Computing) 
-framework \cite{boinc_grid04}. This kind of volunteer computing has
-been adapted to evolutionary computation in several occasions, using
-frameworks such as DREAM \cite{LNCS2439:ID197:pp665}, which includes a
-Java-based virtual machine, GOLEM@Home and G2-P2P \cite{G2-P2P}. Both approaches
-acknowledge that to achieve massive scalability, a peer to peer (P2P)
-approach is advisable, since it eliminates bottlenecks and single
-points of failure. 
-
-There are mainly two problems in this kind of networks: first of all,
-it is important not to abuse volunteers CPU resources; secondly, a
-sufficient number of users is needed in order to be able to do the
-required computation, which can be a problem on its own if there are
-too many of them, bringing the network, or at least the
-solution-collecting node, to its knees. A third problem is that
-performance prediction is difficult when neither the number of
-participants nor their individual node performances are known in
-advance.
+Evolutionary computation, being population based method, is suited for this
+kind of distributed environment since computation can be distributed among nodes. This can be done both distributing different data portions to every node, or distributing the number of individuals and allowing migration ~\cite{cantu-paz:migration-policies}. 
 
 In any case, we believe that the best way to obtain a good amount of
 users is to make it easy for them to participate, using technologies
