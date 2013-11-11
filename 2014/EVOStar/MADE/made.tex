@@ -347,22 +347,28 @@ For this work, two sample groups of archetypes (or scenes)  have been chosen: Th
 
 The Experiment 1, ``Natality control archetype'', aggregates different sample archetypes where many factors must be taken into account.  It tries to find what number of profiles and values are optimal to:
 \begin{itemize}
-\item Ensure that, after 1000 virtual days, the alive population will be the 30\% of the total population. This is called a \textit{global archetype}.
-\item Emerge the \textit{downtrodden} archetype in the 15\% of the
+\item Ensure that, after 1000 virtual days, the alive population will be the 60\% of the total population. This is called a \textit{global archetype}.
+\item Emerge the \textit{downtrodden} archetype in the 22\% of the
   population. An agent will be considered as a \textit{downtrodden} or
   \textit{defender} if it has been attacked at least two times and has
   defended the position. 
 % (JJ): Tienes que justificar todos estos números. 
 % (Rubén): ok
-\item Emerge the \textit{warrior} archetype the 15\% of the population. An agent will be considered as a \textit{warrior} if it has satisfactory attacked at least five times. 
-\item Emerge the \textit{helpless} archetype the 15\% of the population. An agent will be considered as a \textit{helpless}  if it has been attacked at least ten times and hasn't defended the position.
-\item Emerge the \textit{bad warrior} archetype the 15\% of the population. An agent will be considered as a \textit{bad warrior}  if it has unsatisfactory attacked at least ten times.
+\item Emerge the \textit{warrior} archetype the 22\% of the population. An agent will be considered as a \textit{warrior} if it has satisfactory attacked at least five times. 
+\item Emerge the \textit{helpless} archetype the 22\% of the population. An agent will be considered as a \textit{helpless}  if it has been attacked at least ten times and hasn't defended the position.
+\item Emerge the \textit{bad warrior} archetype the 22\% of the population. An agent will be considered as a \textit{bad warrior}  if it has unsatisfactory attacked at least ten times.
 \end{itemize}
-These values have been used because they model an interesting literary scene. 
+We used the presented values because they model an interesting literary scene.
+
+To model this group of archetypes we have defined the fitness function as follows:
+If the exact percentage of agents are tagged with one archetype defined, 1 point is added to the fitness. The maximum is therefore, 5 points. However, all the archetypes use a normal distribution. For example, for the first archetype (``growing population''), the maximum value (1) is obtained when the 60\% percent of the population is alive, and the normal distribution begins in the 30\% and ends in the 90\%. For the rest of the archetypes, 1 point is added if the 22'5\% of the population is tagged with each one of the archetypes, and each normal distribution begins in the 8\% and ends in the 30\%.
 
 % (Rubén) TODO: ¿Es interesante poner las expresiones regulares?
 
 The experiment 2, ``Revenge archetype'', is performed to make more complex memory based behaviour emerge between two characters:  It tries to find what number of profiles and values are optimal to make \textit{revenge} archetype emerge in as many agents as possible after 1000 days.  An agent (a) will be considered as a \textit{revenger} if it has been attacked by other agent (b) and after that, in a moment in its life, it has satisfactory attacked the agent b, in revenge. The value of the days is set to 1000 because is a duration long enough to make the archetype emerge.
+
+We have defined the fitness function of this experiment as follows:
+For each agent, if the agent's log matches the archetype, it adds 1 point to the fitness. Therefore, the goal is to recreate an environment where most agents revenge.
 
 % (Rubén) TODO: ¿Es interesante poner las expresiones regulares?
 % -----------------------------------------------------------------------------
