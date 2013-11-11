@@ -82,12 +82,12 @@ Universidad de Granada, Granada, Spain}
 \begin{abstract}
 This paper introduces a new distributed evolutionary computation system that uses the computational capabilities of the web browser. Using Asynchronous JavaScript allows anybody with a web browser
 to participate in evolutionary experiments with little or none effort. Since, in
-this case, computing becomes a social activity and is inherently unpredictable, in this paper we will explore the performance of this kind of virtual computer by solving two simple problems, such as the Royal Road function and a 128-terms equation, and analysing how many machines and evaluations it yields. We will also examine possible performance bottlenecks
+this case, computing becomes a social activity and is inherently unpredictable, in this paper we explore the performance of this kind of virtual computer by solving two simple problems, such as the Royal Road function and a 128-terms equation, and analysing how many machines and evaluations it yields. We have also examined possible performance bottlenecks
 and how to solve them, and, finally, issue some advice on how to setup
 this kind of experiments to maximize turnout and, thus, performance.
 This paper attempts to reproduce results of older papers using modern
 browsers and all kind of devices that, nowadays, have JavaScript integrated in the browser, and is a complete rewrite of the code using the popular MooTools library. 
-Results show that the system allows the rapid development of evolutionary algorithms, suited for different chromosomes representations and problems, that can be simultaneously executed in many different operating systems and web browsers, sharing the best solutions previously found.
+Results showed that the system allows the rapid development of evolutionary algorithms, suited for different chromosomes representations and problems, that can be simultaneously executed in many different operating systems and web browsers, sharing the best solutions previously founded.
 \keywords{Web browser-based computation, Javascript library, asynchronous communication}
 \end{abstract}
 
@@ -108,16 +108,16 @@ others ~\cite{Cappello}, did some experimentation with Java based
 clients, but none has had commercial success. Volunteer computing has
 been previously used in evolutionary computation, using
 frameworks such as DREAM \cite{LNCS2439:ID197:pp665}, which includes a
-Java-based virtual machine; peer to peer (P2P) examples also exist, as  GOLEM@Home, and G2-P2P \cite{G2-P2P}, in an attempt to eliminar bottlenecks produced by the servers.
+Java-based virtual machine; peer to peer (P2P) examples also exist, as  GOLEM@Home, and G2-P2P \cite{G2-P2P}, in an attempt to remove bottlenecks produced by the servers.
 
 
 Usability is also a key feature of these ALN, i.e., its simplicity
 of use that turns to be the best way to obtain the participation of as
-many users as possible. In this sense, the use of browsers has many advantages. For instance, users do not have to download any special application (even being a simple screen-saver, as is needed in BOINC, the successor to SETI@Home). Furthermore, users, no matter their technical knowledge, are used to deal with browser's interface, i.e, links, forms, layouts, or timeouts. In this sense, using the browser to run this kind of applications do not differ to the way people currently read the newspaper or do the shopping.
+many users as possible. In this sense, the use of browsers has many advantages. For instance, users do not have to download any special application (even being a simple screen-saver, as is needed in BOINC, the successor to SETI@Home). Furthermore, users, no matter their technical knowledge, are used to deal with browser's interface, i.e, links, forms, layouts, or timeouts. In this sense, using the browser to run this kind of applications do not differ from the way people currently read the newspaper or do the shopping.
 
-In order to create a metacomputer, the existence of an interpreted language in the client like Javascript is only a part of the solution. The other part consist on having an easy, effective way to send and retrieve information from the server in a seamless way. There exist some techniques that allow this kind of communication: AJAX (Asynchronous JavaScript and
+In order to create a metacomputer, the existence of an interpreted language in the client like Javascript is only a part of the solution. The other part consists on having an easy, effective way to send and retrieve information from the server in a seamless way. There exist some techniques that allow this kind of communication: AJAX (Asynchronous JavaScript and
 XML~\cite{brinzarea2010ajax}), AJAJ (Asynchronous JavaScript and JSON), and {\em remoting} using
-applets or embedded objects. Currently, AJAX and AJAJ are widely used since they can be natively executed by web browsers without using external plugins. As can be seen, they only differ in the way the communication is serialized, as AJAX uses XML\cite{goldberg2009xml} to encode both request parameters and data being retrieved, while AJAJ uses JSON. Nevertheless, both of them works using the same basis: an {\sf XmlHttpRequest} object is created  containing a request to the server, and a reference to a {\em callback} function. 
+applets or embedded objects. Currently, AJAX and AJAJ are widely used since they can be natively executed by web browsers without using external plugins, and they only differ in the way the communication is serialized, as AJAX uses XML\cite{goldberg2009xml} to encode both request parameters and data being retrieved, while AJAJ uses JSON. Nevertheless, both works using the same rules: an {\sf XmlHttpRequest} object is created  containing a request to the server, and a reference to a {\em callback} function. 
 As the request is being processed, it generates a series of events that can be asynchronously handled by the {\em callback} function, which can also access the data returned by the server.
 Both AJAX and AJAJ provide the ways to use the browser for APLs that create distributed computing systems, since this request-response iterative process does not need to interact with humans, as usually happens in any others distributed computing application.
 In fact, it even allows to control these APLs from the server with any programming
@@ -130,15 +130,18 @@ This paper presents performance measurements on the jsEO ({\em
  (on the server) and JavaScript on the client. Evolutionary computation, being population based method, is suited for this
 kind of distributed environment since computation can be distributed among nodes. This can be done both distributing different data portions to every node, or distributing the number of individuals and allowing migration ~\cite{cantu-paz:migration-policies}. In the case of jsEO, the genetic algorithm is carried out  on the clients,
 with the server used  for interchange of individuals among
-them. A similar approach was used by our research group in \cite{agajaj} as a proof of concept, but without establishing an object-oriented hierarchy, so that new evolutionary algorithms, operators, and/or problems could be developed in an easy, and modular way.
-Thus, in this work we will perform several experiments in which clients donate
+them. A similar approach was done in \cite{agajaj} as a proof of concept, but without establishing an object-oriented hierarchy, so that new evolutionary algorithms, operators, and/or problems could be developed in an easy, and modular way.
+% la frase anterior, yo la quitaría porque parece que el hecho de que ya lo hayamos hecho antes, justifica que los algoritmos y los problemas se desarrollen de forma sencilla y modular.
+Thus, in this work we have performed several experiments in which clients donate
 computing power by just loading a web page to find out what kind of
 performance we can expect from this kind of setup, from the number of
 machines available to the number of evaluations each one of them
-usually performs; as we will show, this kind of setup is ready to take more
+usually performs; the results demonstrate that this kind of setup is ready to take more
 computing-intensive experiments without the need of an expensive server or cluster
 setup. 
 
+
+% la verdad es que creo que se le podía haber sacado más partido al hecho de que funcione en todas las plataformas, es decir, en el título incluyes la palabra platform, pero después en la intro y en la siguiente sección (jsEO library) creo que podías haber dedicado un párrafo a elogiar el hecho de que al estar hecho el cliente con html5 (si es que es así) puede cargarse en cualquier navegador de cualquier plataforma (movil, tablet, ipad, pd, portatil, etc, etc) eso te puede servir para destacar una buena característica o feature :-)
 
 
 The rest of the paper is organized as follows: the jsEO library is described next;  methodology and experimental setup can be read  in section \ref{sec:method}, while experiments and results are shown in section 
@@ -154,23 +157,23 @@ On the other hand, JavaScript's main drawbacks come from the fact that it is int
 
 Fig.~\ref{fig:jsEO-class-diagram} shows the class diagram of the library. As can be seen, there exist some abstract class which define the general structure of any evolutionary solution to a given problem. Main class is \textit{jsEO}, which represents any object to which a fitness can be assigned, and, consequently, that can be compared with any other. Starting from \textit{jsEO} class, class \textit{jsEOIndividual} can be derived representing any object that contains a chromosome and, therefore, can be evaluated by means of a fitness function. A \textit{jsEOPopulation} is an aggregation of individuals; it can be used to add, replace or remove individuals, can be sorted, and can be also asked to return a subset of individuals.
 
-In order to build algorithms, operators have to be defined. Any operator inherits from \textit{jsEOOperator}, gets a population as input parameter, and also returns a population; thus, it is designed for both operators affecting only one individual and operators acting over a whole population.
+In order to build algorithms, operators have to be defined. Any operator inherits from \textit{jsEOOperator}, gets a population as input parameter, and returns a population; thus, it is designed for both operators affecting only one individual and operators acting over a whole population.
 
 Once defined the initial core set of abstract classes (except for \textit{jsEOPopulation}), concrete classes has been derived in order to implement the Standard Genetic Algorithm (\textit{jsEOGA}), that uses the tournament selector in order to create sub-populations to which mutator and crossover operators can be applied in order to make them evolve.
 
-Two special operators have been implemented in order to solve problems in a cooperative environment. The first one, \textit{jsEOSendIndividual}, is intended to send the chromosome and fitness of the best individual to a server where it is stored in case it is best solution found up to the moment. The second one, \textit{jsEOGetIndividual}, makes exactly the opposite: it asks the server for the individual being stored and includes it as a new individual in the population. The communication between the client and the server is done using AJAX technology, and made in an asynchronous way when sending the individual to the server, but in a synchronous way in the case of the \textit{jsEOGetIndividual}. Currently, the server has been programmed in PHP and stores data in a row file, in order to ease the implementation on anyone's server. Every synchronized problem executed with jsEO has to be assigned an unique identifier so that the server can discriminate every task when receiving and sending individuals to the clients.
+Two special operators have been implemented in order to solve problems in a cooperative environment. The first one, \textit{jsEOSendIndividual}, is intended to send the chromosome and fitness of the best individual to a server where it is stored in case it is best solution found up to the moment. The second one, \textit{jsEOGetIndividual}, makes exactly the opposite: it asks the server for the individual being stored and includes it as a new individual in the population. The communication between the client and the server is done using AJAX technology, and made in an asynchronous way when sending the individual to the server, but in a synchronous way in the case of the \textit{jsEOGetIndividual}. Currently, the server has been programmed in PHP and stores data in a row file, in order to ease the implementation on anyone's server. Every synchronized problem executed with jsEO has to be assigned a unique identifier so that the server can discriminate every task when receiving and sending individuals to the clients.
 
 \begin{figure}
 \centering
 \includegraphics[height=10cm]{class-diagram}
-\caption{Class diagram of jsEO. The core package include some abstract classes (\textit{jsEO, jsEOIndividual}, \textit{jsEOAlgorithm}, and \textit{jsEOOperator}) that make easier to develop new evolutionary algorithms by means of inheritance.}
+\caption{Class diagram of jsEO. The core package includes some abstract classes (\textit{jsEO, jsEOIndividual}, \textit{jsEOAlgorithm}, and \textit{jsEOOperator}) that make easier to develop new evolutionary algorithms by means of inheritance.}
 \label{fig:jsEO-class-diagram}
 \end{figure}
 
 
 \section{Methodology and Experimental Setup}
 \label{sec:method}
-The experiments designed to the test jsEO include two problems, being the first the 256-bit Royal Road function, while the second is solving a 128-terms linear equation. In others words, the first one is related to a bit-string chromosome problem, while the second deals with vector of floats. Both problems have been executed as synchronized tasks, and are available at \url{http://jseo.vrivas.es}. Currently, synchronizing is quite constrained since it is done by means of AJAX connections to a server, without allowing to perform requests from pages hosted on a different one. 
+The experiments designed to test jsEO include two problems, being the first the 256-bit Royal Road function, while the second is solving a 128-terms linear equation. In others words, the first one uses a bit-string chromosome problem, while the second, a vector of floats. Both problems have been executed as synchronized tasks, and are available at \url{http://jseo.vrivas.es}. Currently, synchronizing is quite constrained since it is done by means of AJAX connections to a server, without allowing to perform requests from pages hosted on a different one. 
 
 Asking for collaboration to run the experiments was done publishing some messages in social nets as Facebook and Twitter, as well as sending an email to a group of about 70 computer-scientist professionals. The user who wanted to participate in the experiments only had to load in his/her browser a web file containing a brief description of the problem and the Javascript library, and the chosen problem was automatically executed. Users were able to select the problem they wanted to execute, to execute it as many time as desired, to change the problem at any moment, and, of course, to stop the execution by closing the browser or loading a new web page.
 
