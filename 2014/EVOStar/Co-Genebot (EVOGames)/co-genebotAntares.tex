@@ -1,41 +1,4 @@
-% oooo   oooo  ooooooo   
-%  8888o  88 o888   888o 
-%  88 888o88 888     888 
-%  88   8888 888o   o888 
-% o88o    88   88ooo88   
-                       
-% oooooooooo  ooooooooooo ooooo  oooo ooooo  oooooooo8      o      oooooooooo  
-%  888    888  888    88   888    88   888  888            888      888    888 
-%  888oooo88   888ooo8      888  88    888   888oooooo    8  88     888oooo88  
-%  888  88o    888    oo     88888     888          888  8oooo88    888  88o   
-% o888o  88o8 o888ooo8888     888     o888o o88oooo888 o88o  o888o o888o  88o8 
-                                                                             
-%      o    ooooo  oooo oooo   oooo 
-%     888    888    88   8888o  88  
-%    8  88   888    88   88 888o88  
-%   8oooo88  888    88   88   8888  
-% o88o  o888o 888oo88   o88o    88  
-
-
-% _   _  ____    _____  ________      _______  _____         _____  
-% | \ | |/ __ \  |  __ \|  ____\ \    / /_   _|/ ____|  /\   |  __ \ 
-% |  \| | |  | | | |__) | |__   \ \  / /  | | | (___   /  \  | |__) |
-% | . ` | |  | | |  _  /|  __|   \ \/ /   | |  \___ \ / /\ \ |  _  / 
-% | |\  | |__| | | | \ \| |____   \  /   _| |_ ____) / ____ \| | \ \ 
-% |_| \_|\____/  |_|  \_\______|   \/   |_____|_____/_/    \_\_|  \_\
-                                                                   
-                                                                   
-%          _    _ _   _ 
-%     /\  | |  | | \ | |
-%    /  \ | |  | |  \| |
-%   / /\ \| |  | | . ` |
-%  / ____ \ |__| | |\  |
-% /_/    \_\____/|_| \_|
-                                  
-
-%Pos eso, que aún no os pongáis a revisar y esas cosas :)
-
-
+%Se abre la veda. Sin piedad con él paper!
 
 \documentclass{llncs}
 \usepackage{graphics}
@@ -123,6 +86,12 @@ and finally studies alternatives fitness for co-evaluations.
 \section{Introduction}
 \label{sec:intro}
 %
+
+
+
+
+
+
 
 %En un track de juegos, no puedes empezar justificando la
 %investigación en juegos. Habla de por qué usas coevolución o, si
@@ -359,12 +328,11 @@ Talcking about the time, this method would reduce the time needed near to 50\% t
 
 In previous works, it's evaluated a single bot of the population versus always the same bot (an reference-bot). For fitness function, the bot was evaluated several times (in different maps). The fitness function was defined depending of the result of the battle (if the bot wins all his battles or loses in someone) and the numbers of turns needed for end the game. For two bots A and B the fitness is defined like show in Fig.\ref{fig:fitness_turns_positions} \subref{fig:fitness_turns_positions:2}. 
 
-This fitness works well for 1vs1 battles, and the first fitness proposed is an natural evolution of this fitness applied to 4 on 4 bots battles.
+%This fitness works well for 1vs1 battles, and the first fitness proposed is an natural evolution of this fitness applied to 4 on 4 bots battles.
 
-\subsubsection{Fitness based in Position-turns}
+\subsubsection{Fitness based in Position and turns}
 
-This fitness it's an natural evolution of the previous fitness, applied to 4 bots battles. Again, the evaluations are in several maps. In this case, we studies the position (1th, 2th,..) of the bot in the 4-battle and the number of turns. For a bot that wins all the battles (it's 1th in all the battles) we call the sum of the numbers of turns {$ferocity$}, and in previous works we found that a bot that wins in less turns it's best that other that takes more turns (even if the both wins). In other case, the sum of turns is call {$sturdy$} and oposite to the {$ferocity$}, it's desirable a bot that take more turns in be defeated.
-
+This fitness it's an natural evolution of the previous, applied to 4 bots battles. Again, the evaluations are in several maps. In this case, it's studied the position ($1^{th}$, $2^{th}$,..) of the bot in the 4-battle and the number of turns. For a bot that wins all the battles (it's $1^{th}$ in all) it's call {$ferocity$} to the sum turns, in previous works was found that a bot that wins in less turns it's best that other that takes more turns in win too. In other case, the sum of turns it's call {$sturdy$}, and opposite to the {$ferocity$}, it's desirable a bot that take more turns in be defeated. In fig\ref{fig:fitness_turns_positions}(\subref{fig:fitness_turns_positions:2})there are an formal description of this fitness.
 
 \begin{figure}[h]
 \tiny
@@ -400,7 +368,7 @@ This fitness it's an natural evolution of the previous fitness, applied to 4 bot
         \ElsIf{A average position $>$ B average position}
             \State B is better than A
         \Else
-            \If{A,B is always 1th}
+            \If{A,B is always $1^{th}$}
                 \If{A take less turns than B}
                     \State A is better than B
                 \Else
@@ -422,11 +390,9 @@ This fitness it's an natural evolution of the previous fitness, applied to 4 bot
 \caption{Fitness based in turns and positions}
 \end{figure}
 
-The principal problem in the previous fitness, it's that there we are using two independents variables. That is why, we try to found a fitness that resume the goodness of our bot in a single number. %Describir ventajas de que un solo fitness, puede ser operado (sumado).
+In this fitness, we are only interesting in the final result: position and turn. We aren't student how the bot reach it. However, two variables are involved in the calculation of the fitness. That difficult the operation with severals evaluations, because the fitness can't be easily sum o averaged. In the next fitness, it's used another metric to define the goodness of the bots. The percentage of the ships that in each turn belong to each player. 
 
-In this fitness, we are only interesting in the final result: position and turn. We aren't student how the bot reach it. In the next fitness, we use another metric to define the goodness of the bots. The percentage of the ships that in each turn belong to each player. 
-
-For study of the ships, we taken from the simulation how many ships belong to each player in each turn, normalized at total ships in game for that turn. For each player, we have a {$cloud$} different like in Fig.\ref{figura:nubecita}
+For study the ships, it's taken from the simulation how many ships belong to each player in each turn, normalized at total ships in game for that turn (including neutrals ships in neutral planets). For each player, we have a {$cloud$} different like in Fig.\ref{figura:nubecita}. Below, see two alternatives to deal with this cloud of points for the fitness function: using slopes and areas.
 
 \begin{figure}[h]
 \begin{center}
@@ -436,11 +402,9 @@ For study of the ships, we taken from the simulation how many ships belong to ea
 \label{figura:nubecita}
 \end{figure}
 
-Below, see two alternatives to deal with this cloud of points.
-
 \subsubsection{Fitness based in Slope}
 
-For this fitness, we use the least squares regression analysis for resume the cloud of points to a simple line. A line is represented as {$y = \alpha \times x + \beta $} where, {$\alpha$} and {$\beta$} are calculated as show the Fig. \ref{equation:LeatsSqueares} according to least squares regression:
+For this fitness, it's used the least squares regression analysis for resume the cloud of points to a simple line. A line is represented as {$y = \alpha \times x + \beta $}, where {$\alpha$} and {$\beta$} are calculated as show the Fig. \ref{equation:LeatsSqueares} according to least squares regression. For each bot in the simulation it's calculated $\alpha$, that it's also call $slope$. This $slope$ it's the fitness defined for each bot for that simulation.
 
 \begin{figure}[h]
 \begin{subfigure}[H]{0.4\textwidth}
@@ -462,14 +426,14 @@ For this fitness, we use the least squares regression analysis for resume the cl
 \end{subfigure}
 \end{figure}
 
-We can establish an theoretical maximal an minimal values for this fitness. An hypothetical bot win in the first turn, will have an slope of {$1$}, so this is the maximal value of our fitness. For other hand, an bot that lose in the first turn, will have an slope of {$-1$}. In addition, looking at the slope, we can know if the bot {$WINs$} ({$slope>0$}) or {$LOSEs$} {$slope<0$}. Finally, we can establish that the steeper the slope, the better or the worse the bot, depending on whether it is negative or positive.
+Can be establish an theoretical maximal an minimal values for this fitness. An hypothetical bot that wins in the first turn, will have an slope of {$1$}, so this is the maximal value of our fitness. For other hand, an bot that loses in the first turn, will have an slope of {$-1$}. In addition, looking at the slope, can be known if the bot {$WINs$} ({$slope>0$}) or {$LOSEs$} {$slope<0$}. Finally, can be determined that when the slope was greater (and therefore closer to the maximum) should be better the bot.
 
-How we are using several evaluations in different maps, we have to operate with this fitness. In this case we will sum the slope of all the evaluations.
+Several evaluations in different maps was using, so it's need operate with fitness. In that case, only sum the slope of all the evaluations of the bot.
 
-\subsection{Fitness bases in Integral-Area}
+\subsection{Fitness bases in Area}
 \label{sec:fitness}
 
-In these fitness, we used the integral of the curve for calculate the area between the curve and the x-axis. This {$area$} is normalized to the number of turns, representing the average percentage of ships along the battle for each player.
+In these fitness, it's used the integral of the curve for calculate the area between it and the x-axis. This {$area$} is normalized to the number of turns, representing the average percentage of ships along the battle for each player. In the Fig\subref{equation:LeatsSqueares}
 
 \begin{figure}[h]
 \begin{subfigure}[H]{0.4\textwidth}
@@ -483,12 +447,12 @@ In these fitness, we used the integral of the curve for calculate the area betwe
 \begin{center}
   \epsfig{file=imagenes/nubecita_integral.eps,width=1\textwidth}
 \end{center}
-\caption{Area under the curve} 
+\caption{Example of area under the curve} 
 \label{figura:nubecita}
 \end{subfigure}
 \end{figure}
 
-As before, we can establish an theoretical maximal an minimal values for this fitness. An hypothetical bot win in the first turn, will have an area closer to {$1$}, so this is the maximal value of our fitness. For other hand, an bot that lose in the first turn, will have an area near to {$0$}. In this case, we can't know by the fitness if the bot win or lose the battle. In this scope, we are loosing information.
+As before, can be established an theoretical maximal an minimal values for this fitness. An hypothetical bot that wins in the first turn, will have an area closer to {$1$}, so this is the maximal value of the fitness. Furthermore, an bot that loses in the first turn, will have an area near to {$0$}. In this case, can't be know by the fitness if the bot wins or loses the battle. In this scope, we are losing information.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   EXPERIMENTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
