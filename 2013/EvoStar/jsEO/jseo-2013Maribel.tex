@@ -175,9 +175,11 @@ Two special operators have been implemented in order to solve problems in a coop
 \label{sec:method}
 The experiments designed to test jsEO include two problems, being the first the 256-bit Royal Road function, while the second is solving a 128-terms linear equation. In others words, the first one uses a bit-string chromosome problem, while the second, a vector of floats. Both problems have been executed as synchronized tasks, and are available at \url{http://jseo.vrivas.es}. Currently, synchronizing is quite constrained since it is done by means of AJAX connections to a server, without allowing to perform requests from pages hosted on a different one. 
 
-Asking for collaboration to run the experiments was done publishing some messages in social nets as Facebook and Twitter, as well as sending an email to a group of about 70 computer-scientist professionals. The user who wanted to participate in the experiments only had to load in his/her browser a web file containing a brief description of the problem and the Javascript library, and the chosen problem was automatically executed. Users were able to select the problem they wanted to execute, to execute it as many time as desired, to change the problem at any moment, and, of course, to stop the execution by closing the browser or loading a new web page.
+Asking for collaboration to run the experiments was done publishing some messages in social nets as Facebook and Twitter, as well as sending an email to a group of about 70 computer-scientist professionals. The user who wanted to participate in the experiments only had to load in his/her browser a web file containing a brief description of the problem and the Javascript library, and the chosen problem was automatically executed. Users were able to select the problem they wanted to execute, to execute it as many time as desired, to change the previously selected problem at any moment, and, of course, to stop the execution by closing the browser or loading a new web page.
 
-In order to execute every problem, two new classes were derived from class \textit{jsEOGA}, the first one to deal with bit-string chromosomes, the second one to make evolve vector of floats. The \textit{jsEOGA} is a steady state algorithm, with rank-based selection, and elimination of the worst individuals after joining the current population of every generation with the new individuals created by means of operators. The algorithm stopped after a given number of generations (table~\ref{tb:params} shows the parameters used), and incorporated operators for crossover and mutation. In the case of real problem, mutation consist on changing values for new random ones. After every generation, best individual was send to the server. On the other hand, requesting an individual to the server was done randomly according to the application rate of the corresponding \textit{jsEOGetIndividual} operator. Finally, two different evaluation functions were used, one per problem. In the case of 256-bit Royal Road function, the fitness corresponds to the number of "1111" or "0000" sequences found in the 256-length bit-string. In the case of 128-terms equation, the fitness was the inverse of the value obtained when evaluating a linear equation with 128 real values in the range $(-10,10)$ composing every chromosome. The exact solution is the one containing the terms in table \ref{tb:128-terms}.
+In order to execute every problem, two new classes were derived from class \textit{jsEOGA}, the first one to deal with bit-string chromosomes, the second one to make evolve vector of floats. The \textit{jsEOGA} is a steady state algorithm, with rank-based selection, and elimination of the worst individuals after joining the current population of every generation with the new individuals created by means of operators. The algorithm stopped after a given number of generations (table~\ref{tb:params} shows the parameters used), and incorporated operators for crossover and mutation. 
+
+In the case of second problem, mutation consist on changing values for new random ones (always in a fixed range). After every generation, best individual was sent to the server. On the other hand, requesting an individual to the server was done randomly according to the application rate of the corresponding \textit{jsEOGetIndividual} operator. Finally, two different evaluation functions were used, one per problem. In the case of 256-bit Royal Road function, the fitness corresponds to the number of "1111" or "0000" sequences found in the 256-length bit-string. In the case of 128-terms equation, the fitness was the inverse of the value obtained when evaluating a linear equation with 128 real values in the range $(-10,10)$ composing every chromosome. The exact solution is the one containing the terms in table \ref{tb:128-terms}.
 
 
 \begin{table}
@@ -248,7 +250,8 @@ Range for new random real values && \\
 
 After two days of volunteers executing the algorithms, some results can be drawn gathering data from the web server's log file (in this case, Apache log). The log file has been analysed using the free version of WebLog Expert application\footnote{WebLog Expert can be obtained from \url{http://www.weblogexpert.com/}}, and the well-known Webalizer application\footnote{Webalize can be obtained from \url{http://www.webalizer.com}}.
 
-From a potential target of users of more than 500 people, the 128-terms equation has been executed 304 times by 231 different visitors, while the 256-bit Royal Road function has been executed 359 times by 279 visitors. Most of this visits (i.e., executions) were done along a period of approximately 24 hours, but no references about time consumed by every execution have been registered. The algorithms have been executed in up to 128 different combinations of web browser and operating system, any of them in many different versions. As shown in figures \ref{fig:browsers} and \ref{fig:operating-systems}, Web browser include Safari, Firefox, Chrome, Internet Explorer, and also native browsers for smartphones and tablets; while operating systems include Windows, Linux, MacOS, and Android.
+From a potential target of users of more than 500 people, the 128-terms equation has been executed 304 times by 231 different visitors, while the 256-bit Royal Road function has been executed 359 times by 279 visitors. Most of this visits (i.e., executions) were done along a period of approximately 24 hours, but no references about time consumed by every execution have been registered. The algorithms have been executed in up to 128 different combinations of web browser and operating system, any of them in many different versions. As shown in figures \ref{fig:browsers} and \ref{fig:operating-systems}, Web browser include Safari, Firefox, Chrome, Internet Explorer, and % el also es redundante
+native browsers for smartphones and tablets; while operating systems include Windows, Linux, MacOS, and Android.
 
 \begin{figure}
 \centering
@@ -271,11 +274,13 @@ As can be seen in table~\ref{tb:params}, population was composed by $500$ indivi
 \section{Conclusions, discussion and future work}
 \label{sec:conc}
 
-While in previous papers  we proved that
-this kind of AJAX based, volunteer, and potentially sneaky,
-computation could be used profitably for performing genetic algorithm
-experiments, in this paper we have proved that, 
-without an expensive or far-fetched setup, it can achieve high
+%While in previous papers  we proved that
+%this kind of AJAX based, volunteer, and potentially sneaky,
+%computation could be used profitably for performing genetic algorithm
+%experiments,
+% Yo no empezaría las conclusiones hablando de lo que ya habíamos hecho antes, sino de lo que hago en este paper.
+In this paper we have proved that, 
+without an expensive or far-fetched setup, volunteer computation can achieve high
 performance, equivalent, at most, to several computers of average
 performance. The code used to perform the experiment is publicly
 available and is modular so that creating different experiments is
@@ -284,8 +289,8 @@ the GA parameters accordingly.
 
 The experiments have proved that there is a good amount of
 computational power that can be easily tapped and used for
-evolutionary computation experiments, however, the nature of jsEO
-constrains also the way users donate computing power, as well as the
+evolutionary computation experiments, nevertheless, the nature of jsEO
+constrains, the way users donate computing power, as well as the
 number of clients available for an experiment. In this paper we have
 found some figures, which will undoubtedly vary for other experiments;
 however, the general shape of the curves will probably be the same,
@@ -298,7 +303,7 @@ immigrants as soon as possible, which are incorporated into the
 population? Or is it better to create new client populations based on
 existing populations? What is really the algorithmic contribution of
 new clients? These issues will be explored as future work. 
-We will also try to measure the limits of this technology, and test
+We will also measure the limits of this technology, and test
 the impact of servers of varying performance and workload on overall
 performance. Eventually, we will also try to perform a {\em sneaky}
 experiment, to check what kind of performance can be expected in that
