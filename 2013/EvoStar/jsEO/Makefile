@@ -3,22 +3,20 @@
 ###############################################################################
 
 SRC = $(wildcard *.tex)
-BN = $(basename $(SRC))
+BSN = $(basename $(SRC))
 
-TEX = latex -file-line-error -interaction=nonstopmode
 BIB = BIBINPUTS=../../../../biblio bibtex
+TEX = pdflatex -file-line-error -interaction=nonstopmode
 
 ###############################################################################
 
-default: $(BN).dvi
-
-all: $(BN).pdf
+all: $(BSN).pdf
 
 auto:
 	while true; do nice $(MAKE); sleep 1; done
 
 clean:
-	$(RM) $(BN).{aux,bbl,blg,dvi,log,nav,out,pdf,ps,snm,toc} WARNINGS *~ .*~
+	$(RM) $(BSN).{aux,bbl,bib,blg,dvi,log,nav,out,pdf,ps,snm,toc} WARNINGS *~
 
 ###############################################################################
 
@@ -26,17 +24,18 @@ clean:
 
 ###############################################################################
 
-%.dvi: %.tex
+%.pdf : %.tex %.bbl %.blg
+	$(TEX) $<
+
+%.bbl %.blg : %.aux %.bib
+	$(BIB) $*
+
+%.aux : %.tex
 	$(TEX) $<
 	while grep "Rerun to get cross-references right" $*.log; do $(TEX) $<; done
-	$(BIB) $*
+
+%.bib : %.tex
 	$(TEX) $<
-
-%.ps: %.dvi 
-	dvips -Ppdf $*
-
-%.pdf: %.ps
-	ps2pdf $<
 
 ###############################################################################
 

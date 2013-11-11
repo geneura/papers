@@ -1,55 +1,87 @@
-\documentclass{llncs}
-% If the IEEEtran.cls has not been installed into the LaTeX system files, 
-% manually specify the path to it: e.g.,
-% \documentclass[conference]{../sty/IEEEtran} 
+%%%%%%%%%%%%%%%%%%%%%%% file typeinst.tex %%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This is the LaTeX source for the instructions to authors using
+% the LaTeX document class 'llncs.cls' for contributions to
+% the Lecture Notes in Computer Sciences series.
+% http://www.springer.com/lncs       Springer Heidelberg 2006/05/04
+%
+% It may be used as a template for your own input - copy it
+% to a new file with a new name and use it as the basis
+% for your article.
+%
+% NB: the document class 'llncs' has its own and detailed documentation, see
+% ftp://ftp.springer.de/data/pubftp/pub/tex/latex/llncs/latex2e/llncsdoc.pdf
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{graphicx,times,amsmath} % Add all your packages here
+
+\documentclass[runningheads,a4paper]{llncs}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+\usepackage{amsmath}
 \usepackage{url}
-\usepackage{subfigure}
+\urldef{\mailsa}\path|{alfred.hofmann, ursula.barth, ingrid.haas, frank.holzwarth,|
+\urldef{\mailsb}\path|anna.kramer, leonie.kunz, christine.reiss, nicole.sator,|
+\urldef{\mailsc}\path|erika.siebert-cole, peter.strasser, lncs}@springer.com|    
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
 
 \begin{document}
-% Máximo 6 páginas. No lo toques con xemacs
 
-% paper title: Must keep \ \\ \LARGE\bf in it to leave enough margin.
-\title{Revisiting volunteer browser-based computing}
+\mainmatter  % start of an individual contribution
 
-\author{V.M. Rivas \inst{1} \and J.J. Merelo \inst{2}}
-\institute{ U. Ja\'en (Spain)
-\and
-U. Granada (Spain)}
-% \author{Juan Juli\'an Merelo-Guerv\'os, Pedro A. Castillo, JLJ Laredo,
-% A. Mora García}
-% % avoiding spaces at the end of the author lines is not a problem with
-% % conference papers because we don't use \thanks or \IEEEmembership
-% % use only for invited papers
-% %\specialpapernotice{(Invited Paper)}
-% \institute{Departamento de Arquitectura y 
-% Tecnología de Computadores\\
-% ETS Ingeniería Informática y Telecomunicaciones\\
-% University of Granada (Spain)\\
-% email: {\sf jj@merelo.net}}
-% make the title area
+% first the title is needed
+\title{Developing an object-oriented library in JavaScript to build modular and flexible cross-platform evolutionary algorithms}
+
+%\title{Lecture Notes in Computer Science:\\Authors' Instructions
+%for the Preparation\\of Camera-Ready
+%Contributions\\to LNCS/LNAI/LNBI Proceedings}
+
+% a short form should be given in case it is too long for the running head
+\titlerunning{Object-oriented JavaScript library to build cross-platform EA}
+% the name(s) of the author(s) follow(s) next
+%
+% NB: Chinese authors should write their first names(s) in front of
+% their surnames. This ensures that the names appear correctly in
+% the running heads and the author index.
+%
+
+\author{Hidden for double blind review}
+%
+%%%% modified list of authors for the TOC (add the affiliations)
+\tocauthor{Hidden for double review}
+%
+\institute{Hidden for double review}
+
+
+
+%
+\authorrunning{HIdden for double blind review}
+% (feature abused for this document to repeat the title also on left hand pages)
+
+% the affiliations are given next; don't give your e-mail address
+% unless you accept that it will be published
+
+%
+% NB: a more complex sample for affiliations and the mapping to the
+% corresponding authors can be found in the file "llncs.dem"
+% (search for the string "\mainmatter" where a contribution starts).
+% "llncs.dem" accompanies the document class "llncs.cls".
+%
+
+%\toctitle{Lecture Notes in Computer Science}
 \maketitle
 
 \begin{abstract}
-In this paper we present a new distributed
- evolutionary computation system that uses the computational capabilities of the
- web browser. Using 
-Asynchronous Javascript and JSON (Javascript Object Notation, a
- serialization protocol) allows anybody with a web browser to participate in experiments with little effort, or none at all. Since, in
-this case, computing becomes a social activity and is inherently
-impredictable, in this
- paper we will explore the performance of this kind of virtual
- computer by solving simple problems such as the
- Royal Road function and an equation and analyzing how many machines and evaluations
-it yields. We will also examine possible performance bottlenecks
- and how to solve them, and, finally, issue some advice on how to set
- up this kind of experiments to maximize turnout and, thus,
- performance. This paper attempts to reproduce results of older papers
- using modern browsers and all kind of devices that, nowadays, hava
- JavaScript integrated in the browser, and is a complete rewrite of
- the code using the popular MOOTools library. % \cite{mootools}. % sólo se menciona aquí...
-% Algo sobre los resultados
+This paper introduces a new distributed evolutionary computation system that uses the computational capabilities of the web browser. Using Asynchronous JavaScript allows anybody with a web browser
+to participate in evolutionary experiments with little or none effort. Since, in
+this case, computing becomes a social activity and is inherently unpredictable, in this paper we  explore the performance of this kind of virtual computer by solving two simple problems, such as the Royal Road function and a 128-terms equation, and analysing how many machines and evaluations it yields. 
+This paper attempts to reproduce results of older papers using modern
+browsers and all kind of devices that, nowadays, have JavaScript integrated in the browser, and is a complete rewrite of the code using the popular MooTools library. 
+Results show that the system allows the rapid development of evolutionary algorithms, suited for different chromosomes representations and problems, that can be simultaneously executed in many different operating systems and web browsers, sharing the best solutions previously found.
+\keywords{Web browser-based computation, Javascript library, asynchronous communication, cross-platform evolutionary algorithms	}
 \end{abstract}
 
 % no key words
@@ -57,287 +89,183 @@ it yields. We will also examine possible performance bottlenecks
 \section{Introduction and state of the art}
 \label{sec:intro}
 % no \PARstart
-Application--level networks (ALNs), are configured as a set of
-clients/servers ({\em servents}) that
-can provide their spare CPU cycles by means of a downloadable
-application, establishing a distributed computation network which can
-provide ad hoc computational power. Some ALNs
-like SETI@Home have been quite successful \cite{david-seti:home},
-creating a virtual computer that has proccesed a good amount of
-teraflops, while other 
-experiments such as Popular Power (and most others, in fact) have not\cite{DBLP:conf/p2p/2005lncs}. 
+The Javascript language~\cite{javascript} was introduced in Netscape Navigator in 1995, rapidly adopted by Microsoft's web browsers, and first standardized  by ECMA International in 1997, with the name of ECMAScript. This interpreted language gives web navigators (and in fact, many other applications relaying on web engines, like email clients) the power to perform some kind of computation apart from the needed to render HTML code. Despite being a language mainly devoted to operate over the Document Object Model (DOM) of a web page, it contains all the necessary elements to be considered a general purpose language, with some limitations mostly related to input/output devices and file system access.
 
-The key feature of these application--level networks is the simplicity
-of use: we believe that the best way to obtain the participation of as
-many users as possible is to make it as very simple. In particular, it
-will be easier if they do not need to download a special application
-(such as a screen-saver) to participate, as is needed in BOINC, the
-sucessor to SETI@Home. For this reason, we are exploring the use of
-applications that are commonly installed in the user's computer, such
-as the web browser, which is available even in PDAs and some cellular
-phones\footnote{Whose computing power are similar to four-year-old
-desktop machines}.  Moreover, most browsers natively include a
-JavaScript
-interpreter~\cite{js:reference} or
-virtual machine. JavaScript is an interpreted language\footnote{which
-has nothing to do with Java, other than the name and its C inherited syntax},
-initially proposed by Netscape, and later adopted as an
-ECMA standard \cite{ECMA-262}.  In this
-way, most browsers are compatible, at least at a language level (not
-always at the level of browser objects, where there exists a
-reasonable compatibility, anyway). Most browser also include elements
-such as a Java virtual machine and a Flash plugin, which, with
-ActionScript, has more or less the same capabilities. However, there
-are several disadvantages to these: they might or might not be present
-(they are not {\em native}), they are {\em noisy} in the sense that,
-since they act as plugins, their execution can be noted by the
-user, their programs are more heavyweight than simple text code, and,
-finally, its integration with the browser is more awkward than the
-seamless integration that JavaScript offers. In any case, most things
-said here for JavaScript also apply to these and other plugins.
+Javascript offers some good features that can be used for evolutionary computation. First one is related to the interpreter itself, as most applications nowadays run into web browsers; this gives Javascript the opportunity to build web applications that incorporate evolutionary solutions as desktop ones can do. Furthermore, as browsers can be found in most operating systems and devices (from expensive computers to cheap smartphones and tablets), cross-platform interoperability can be yielded with minimum or not effort at all. The second one concerns the intrinsic communicative nature of browsers, i.e., that they are mainly designed to act as clients that send and receives data from web servers. This makes easier the task of running any kind of algorithms in a collaborative way, using many and different hardware and software platforms. 
 
-By itself, an interpreted languaje is not enough for creating a
-metacomputer if there is no way to convey information back from the
-client to the server in a seamless way. The ability to use the virtual
-machine included in browsers for distributed computing appeared with
-the {\sf XmlHttpRequest} object, which allows asynchronous petitions to the
-server, in what has been called AJAX, Asynchronous JavaScript and
-XML~\cite{wiki:AJAX}. AJAX is just one of the possible ways to
-perform asynchronous client-server communication, the others being
-AJAJ (Asynchronous Javascript and JSON), and {\em remoting} using
-applets or embedded objects. However, it is quite popular, and a wide
-user base and documentation is available for it, using any of these
-asynchronous client/server communication protocols. The traditional client/server model becomes then
-more egalitarian, or closer to a peer to peer model, since a
-bidirectional communication line appears: the browser can make calls to the
-server, do some computation and later send the results to the server.
+The communicative aspect of web browsers turn them into the clients of application--level networks (ALNs), which are configured as a set of
+clients/servers ({\em servents}). Browser based computation can be then considered as belonging to the so called  {\em volunteer computing}~\cite{sarmenta-bayanihan,hpvc} where volunteer users lend their CPU cycles by means of a downloadable application, and a distributed computation network providing ad hoc computational power is established. SETI@Home is the most well-known ALN, being quite successful \cite{david-seti:home}, it was able to	
+create a virtual computer that processed a high amount of
+teraflops.  Some companies related to volunteer computing, such as Popular Power and
+others ~\cite{Cappello}, did some experimentation with Java based
+clients, but none has had commercial success. Volunteer computing has
+been previously used in evolutionary computation, using
+frameworks such as DREAM \cite{LNCS2439:ID197:pp665}, which includes a
+Java-based virtual machine; peer to peer (P2P) examples also exist, as  GOLEM@Home, and G2-P2P \cite{G2-P2P}, in an attempt to avoid bottlenecks produced by the servers.
 
-AJAX (and AJAJ, which differ only in the way the communication is
-serialized) works as follows: the {\sf XmlHttpRequest} is provided 
-with a request to the server and a pointer to a {\em callback} function. 
-The request generates an event, which is asynchronously activated when a
-reply is received  making use of the
- {\em callback} function. 
-Following this approach the browser is not locked, providing a way to
-program applications that are similar to  the ones used at the
-desktop, in the sense that they do not have to wait for the
-application response to be loaded
-and rendered on the screen every time a request is made. It also means
-that a the user clicking on the {\sf Submit} button is no longer
-needed to initiate communication with the server; any JavaScript
-thread can do so, with the constraint that the only server they can
-communicate with is the one that hosts the page the script is included
-in. On the other side, this provides a way to use the browser for application
-level networks that create distributed computing systems,
-since the request-response loop does not need the user participation in a
-fashion very similar  to any other distributed computing application;
-these ALN can be controlled from the server with any programming
+
+Usability is also a key feature of these ALN, i.e., its simplicity
+of use that turns to be the best way to obtain the participation of as
+many users as possible. In this sense, the use of browsers has many advantages. For instance, users do not have to download any special application (even being a simple screen-saver, as is needed in BOINC, the successor to SETI@Home). Furthermore, users, no matter their technical knowledge, are used to deal with browser's interface, i.e, links, forms, layouts, or timeouts. In this sense, using the browser to run this kind of applications do not differ from the way people currently read the newspaper or do the shopping.
+
+In order to create a metacomputer, the existence of an interpreted language in the client like Javascript is only a part of the solution. The other part consists on having an easy, effective way to send and retrieve information from the server in a seamless way. There exist some techniques that allow this kind of communication: AJAX (Asynchronous JavaScript and
+XML~\cite{brinzarea2010ajax}), AJAJ (Asynchronous JavaScript and JSON), and {\em remoting} using
+applets or embedded objects. Currently, AJAX and AJAJ are widely used since they can be natively executed by web browsers without using external plugins. As can be seen, they only differ in the way the communication is serialized, as AJAX uses XML\cite{goldberg2009xml} to encode both request parameters and data being retrieved, while AJAJ uses JSON. 
+
+Both AJAX and AJAJ work using the same basis: an {\sf XmlHttpRequest} object is created  containing a request to the server, and a reference to a {\em callback} function. 
+As the request is being processed, it generates a series of events that can be asynchronously handled by the {\em callback} function, which can also access the data returned by the server.
+Both AJAX and AJAJ provide the ways to use the browser for APLs that create distributed computing systems, since this request-response iterative process does not need to interact with humans, as usually happens in any others distributed computing application.
+In fact, it even allows to control these APLs from the server with any programming
 language. Of course, it can also be combined with other distributed
-programming frameworks based on OpenGrid~\cite{ogsa} or other
-distributed computing paradigms. % esto es más bien viejo, habría que
-                                % actualizarlo con nubes y cosas así y
-                                % últimos trabajos nuestros
+programming frameworks, as OSGiLiath~\cite{DBLP:journals/soco/Garcia-SanchezGCAG13}, a service oriented architecture for evolutionary algorithms.
 
 
 This paper presents performance measurements on the jsEO ({\em
   JavaScript Evolving Objects}, pronounce it yi-see-oh) system, which uses PHP 
- (on the server) and Javascript on the client. The genetic algorithm is carried out  on the clients,
-with the server used  for interchange of information among
-them. We will perform several experimentes in which clients donate
+ (on the server) and JavaScript on the client. Evolutionary computation, being population based method, is suited for this
+kind of distributed environment since computation can be distributed among nodes. This can be done both distributing different data portions to every node, or distributing the number of individuals and allowing migration ~\cite{cantu-paz:migration-policies}. In the case of jsEO, the genetic algorithm is carried out  on the clients,
+with the server used  for interchange of individuals among
+them. A similar approach was used in \cite{agajaj} as a proof of concept, but without establishing an object-oriented hierarchy, so that new evolutionary algorithms, operators, and/or problems could be developed in an easy, and modular way.
+
+In this work, we have performed some experiments in which clients donate
 computing power by just loading a web page to find out what kind of
 performance we can expect from this kind of setup, from the number of
 machines available to the number of evaluations each one of them
-usually performs; as we will show, this kind of setup is ready to take more
+usually performs; the results demonstrate this kind of setup is ready to take more
 computing-intensive experiments without the need of an expensive server or cluster
 setup. 
 
-Evolutionary computation is quite adequate for this
-kind of distributed environment for several reasons: it is a population based method,
-so computation can be distributed among nodes (via distribution of
-population) in many different ways;
-besides, some works suggest that there are synergies among evolutionary
-algorithms and parallelization: isolated populations that are
-connected only eventually avoid the loss of diversity and produce
-better solutions in fewer time obtaining, in some cases, superlinear
-accelerations~\cite{cantu-paz:migration-policies}. Of course, with a suitable work division method, many other algorithms
-could be adapted to browser-based distributed computation; however, in
-this paper will solve only genetic algorithms, and concentrate on raw
-performance, rather than algorithmic behavior. 
 
-Browser based computatin falls within the ream of the so called  {\em volunteer
-computing}~\cite{sarmenta-bayanihan,hpvc} systems are
-application-level networks set up so that different people
-can donate resources for a joint computing  effort.
-The best known project is SETI@home\footnote{See
-\url{http://setiathome.berkeley.edu/} for downloading the software  and some
-reports.}, which, from the user's point of view, is a screen-saver which has to be
-downloaded and installed; when the user's CPU is not busy it performs
-several signal analysis operations.
-Some companies related to volunteer computing, such as Popular Power (and
-others; they are referenced,
-for example, in~\cite{Cappello}) did some experimentation with Java based
-clients, but none has had commercial success; on the other hand, the
-SETI@Home program has been open-sourced and extended as the BOINC
-(Berkeley Open Infrastructure for Network Computing) 
-framework \cite{boinc_grid04}. This kind of volunteer computing has
-been adapted to evolutionary computation in several ocasions, using
-frameworks such as DREAM \cite{LNCS2439:ID197:pp665}, which includes a
-Java-based virtual machine, GOLEM@Home and G2-P2P \cite{G2-P2P}. Both approaches
-acknowledge that to achieve massive scalability, a peer to peer (P2P)
-approach is advisable, since it eliminates bottlenecks and single
-points of failure. 
 
-There are mainly two problems in this kind of networks: first of all,
-it is important not to abuse volunteers CPU resources; secondly, a
-sufficient number of users is needed in order to be able to do the
-required computation, which can be a problem on its own if there are
-too many of them, bringing the network, or at least the
-solution-collecting node, to its knees. A third problem is that
-performance prediction is difficult when neither the number of
-participants nor their individual node performances are known in
-advance.
-
-In any case, we believe that the best way to obtain a good amount of
-users is to make it easy for them to participate, using technologies
-available in their computers, as the browser is. In fact, some
-suggestions were published (for example, the one of Jim Culbert in his
-weblog \cite{ajax:dc}, and in some mailing lists), and, besides our
-own \cite{gecco07:workshop:dcor}, there have been some recent papers
-and reports on similar setups. For instance, W. Langdon has been
-running for some time an interactive evolution experiment using
-Javascript in the browser \cite{langdon:2005:metas}, which was mainly
-intended for achieving high diversity in a fractal snowflake design
-than high performance. Even more recently, Klein and Spector
-\cite{unwitting-ec} present a system based on the Push3 language,
-which is compiled to JavaScript in the browser. This system would be
-the closest to what we are presenting in this paper. 
-
-The proposed approach could also be considered as {\em parasitic
-computing} since, as stated in Section~\ref{sec:intro}, the only
-participation from the user will be to load a web page and click on a
-button; in fact, any AJAX-based could use these resources without his
-acquiescence (and, in any case, it would be desirable to run without
-causing much trouble).  The concept was introduced by Barab\'asi
-in~\cite{Barabasi2001Parasitic}, and followed by others (for instance,
-Kohring in \cite{kohring-2003-14}).  In that work they proposed to use
-the Internet routers to compute a {\em checksum} by means of a set of
-specially crafted packets, whose aggregated result would be used to
-solve the SAT problem. Anyway, although the concept is interesting,
-there seems not to be a continuation for this work (at least openly),
-probably due to its inherent dangers (as analyzed in a paper by Lam et
-al.  \cite{puppetnets}).
-
-The virtual machine embedded into the browser provides a way to easily
-do that kind of  sneaky/parasitic computing, but JavaScript faces the
-handicap of being an interpreted language, which means that the efficiency of different
-implementations varies wildly. Moreover, it is not optimized for
-numerical computation but for object tree 
-management (the so called DOM, document
-object model) and strings.
-Nevertheless its wide availability makes us think about considering it, at
-least as a possibility. 
-
-The rest of the paper is organized as follows: experimental setup is described next,  experiments and results are shown in section 
-\ref{sec:exp} and discussed in \ref{sec:conc}, along with future lines
-of work. 
+The rest of the paper is organized as follows: the jsEO library is described next;  methodology and experimental setup can be read  in section \ref{sec:method}, while experiments and results are shown in section 
+\ref{sec:exp}; finally, discussion, along with future lines work, are exposed in section \ref{sec:conc}.
 
 \section{The jsEO library}
 \label{sec:jseo}
-In order to provide a modular, flexible, and object-oriented library, jsEO has been programmed in Javascript language, making use of the inheritance provided by the Mootools framework. Like their predecessors EO (written in C++) and JEO (written in Java), jsEO is based on the keypoint that any object that can be attached some kind of fitness value is a potential candidate to be evolved.
+In order to provide a modular, flexible, and object-oriented library, jsEO has been programmed in JavaScript language, making use of the inheritance provided by the MooTools framework (\url{http://mootools,net}). Like their predecessors EO (written in C++) and JEO (written in Java), jsEO is based on the key-point that any object that can be attached some kind of fitness value is a potential candidate to be evolved. The jsEO library can de downloaded from \url{http://github.com/vrivas/jsEO} and it is being developed under the GNU GPLv2 license.
+
+JavaScript's main advantage is that can be executed in most (if not any) web browsers. This allows programs written in this language to be executed in millions of computers, and other devices like smartphones and tablets. JavaScript was mainly designed to operate on the Document Object Model (DOM) browsers generate for every web page they load, thus, content, structure and format style can be dynamically changed while a web page is being visited.
+
+On the other hand, JavaScript's main drawbacks come from the fact that it is interpreted, not compiled, (i.e., slower than desired), it has no access to every resource of the device (e.g. file systems,  memory, or output devices), and that its execution can be stopped by web-browsers if it is consuming too many resources.
+
+Fig.~\ref{fig:jsEO-class-diagram} shows the class diagram of the library. As can be seen, there exist some abstract class which define the general structure of any evolutionary solution to a given problem. Main class is \textit{jsEO}, which represents any object to which a fitness can be assigned, and, consequently, that can be compared with any other. Starting from \textit{jsEO} class, class \textit{jsEOIndividual} can be derived representing any object that contains a chromosome and, therefore, can be evaluated by means of a fitness function. A \textit{jsEOPopulation} is an aggregation of individuals; it can be used to add, replace or remove individuals, can be sorted, and can be also asked to return a subset of individuals.
+
+In order to build algorithms, operators have to be defined. Any operator inherits from \textit{jsEOOperator}, gets a population as input parameter, and returns a population; thus, it is designed for both operators affecting only one individual and operators acting over a whole population.
+
+Once defined the initial core set of abstract classes (except for \textit{jsEOPopulation}), concrete classes has been derived in order to implement the Standard Genetic Algorithm (\textit{jsEOGA}). This algorithm uses the tournament selector to create sub-populations to which mutator and crossover operators can be applied so that they are made to evolve.
+
+Two special operators have been implemented in order to solve problems in a cooperative environment. The first one, \textit{jsEOSendIndividual}, is intended to send the chromosome and fitness of the best individual to a server where it is stored in case it is best solution found up to the moment. The second one, \textit{jsEOGetIndividual}, makes exactly the opposite: it asks the server for the individual being stored and includes it as a new individual in the population. The communication between the client and the server is done using AJAX technology, and made in an asynchronous way when sending the individual to the server, but in a synchronous way in the case of the \textit{jsEOGetIndividual}. Currently, the server has been programmed in PHP and stores data in a row file, in order to ease the implementation on anyone's server. Every synchronized problem executed with jsEO has to be assigned a unique identifier so that the server can discriminate every task when receiving and sending individuals to the clients.
+
+\begin{figure}
+\centering
+\includegraphics[height=10cm]{class-diagram}
+\caption{Class diagram of jsEO. The core package includes some abstract classes (\textit{jsEO, jsEOIndividual}, \textit{jsEOAlgorithm}, and \textit{jsEOOperator}) that make easier to develop new evolutionary algorithms by means of inheritance.}
+\label{fig:jsEO-class-diagram}
+\end{figure}
+
 
 \section{Methodology and Experimental Setup}
 \label{sec:method}
+The experiments designed to test jsEO include two problems, being the first the 256-bit Royal Road function, while the second is solving a 128-terms linear equation. In others words, the first one is related to a bit-string chromosome problem, while the second deals with vector of floats. Both problems have been executed as synchronized tasks, and are available at \url{http://jseo.vrivas.es}. Currently, synchronizing is quite constrained since it is done by means of AJAX connections to a server, without allowing to perform requests from pages hosted on a different one. 
 
-For this experiments we have designed a client-server program written
-in PHP (server-side) and Javascript (client-side), communicating
-using JSON via the {\sf XMLHttpRequest} object. This object requires
-than the website and the AJAX requests are served from the same host,
-which is a constraint. Code for both is available, under the GPL, from
-\url{https://hidden.for.doubleblin.nd}.
+Asking for collaboration to run the experiments was done publishing some messages in social nets as Facebook and Twitter, as well as sending an email to a group of about 70 computer-scientist professionals. The user who wanted to participate in the experiments only had to load in his/her browser a web file containing a brief description of the problem and the Javascript library, and the chosen problem was automatically executed. Users were able to select the problem they wanted to execute, to execute it as many time as desired, to change the problem at any moment, and, of course, to stop the execution by closing the browser or loading a new web page.
 
-The algorithm runs on the client for a fixed number of generations
- running parameters are set from the server and are downloaded from
-it along with the webpage from which the experiment is run. A preset
-number of generations is run on the client, after with a request is
-made to the server with the best individual in the last
-generation. The algorithm stops and waits for the answer from the
-server. The server receives the request, stores it in a database, and
-sends back the best individual stored in the server. This individual
-is incorporated in the client population, which starts again to run. 
-Several clients acting at the same time make requests asynchronously,
-using the facilities of the standard Apache web server. The server is
-thus used as a clearinghouse for interchange of information among the
-different clients; however, there's no explicit comunication or
-topology among the different nodes running the genetic
-algorithm. Besides, the fact that the server always contain the best
-individuals generated so far guarantees that the best solution (with a
-fixed number of evaluations resolution) available so far is always
-kept. The server also sends back the number of generations the
-client should run; which is usually the same number as before, but
-turns to 0, thus stopping the client, when the stopping condition is
-met. 
+In order to execute every problem, two new classes were derived from class \textit{jsEOGA}, the first one to deal with bit-string chromosomes, the second one to make evolve vector of floats. The \textit{jsEOGA} is a steady state algorithm, with rank-based selection, and elimination of the worst individuals after joining the current population of every generation with the new individuals created by means of operators. The algorithm stopped after a given number of generations (table~\ref{tb:params} shows the parameters used), and incorporated operators for crossover and mutation. In the case of real problem, mutation consist on changing values for new random ones. After every generation, best individual was sent to the server. On the other hand, requesting an individual to the server was done randomly according to the application rate of the corresponding \textit{jsEOGetIndividual} operator. Finally, two different evaluation functions were used, one per problem. In the case of 256-bit Royal Road function, the fitness corresponds to the number of "1111" or "0000" sequences found in the 256-length bit-string. In the case of 128-terms equation, the fitness was the inverse of the value obtained when evaluating a linear equation with 128 real values in the range $(-10,10)$ composing every chromosome. The exact solution is the one containing the terms in table \ref{tb:128-terms}.
 
-Clients leave the experiment by the expeditive method of surfing away
-to another page or closing the web browser; in tabbed browsers (most
-browsers nowadays), a tab (or several) can run the experiment while
-the browser is available for other tasks. When the experiment has been
-running for a predeterminad number of evaluations (which were set, for
-this experiment, to 750000), all clients get a message to stop
-running, and change their user interface to a message offering them to
-reload the (new) experiment and start all over again. 
-Besides, there is a {\em watching} daemon running on the server which
-checks the database for the number of individuals evaluated, and
-resets the experiment by incrementing the experiment ID by one and
-eliminating the population. Thus, experiments can run unchecked on a
-server while this {\sf watchgad} daemons is running. 
-Several additional utilities are also provided via several webpages,
-that inform on the state of the experiment, or allow to set the GA
-parameters. 
-Experimental subjects were gathered by several methods: sending it via
-email to department and project coworkers, using the URL
-for the experiment as a Google Plus or Facebook post, as a Twitter
-(\url{http://twitter.com}) message, as a blog post,.
 
-The experiment consisted in optimizing the  256-bits Royal Road
-function, and each instance consisted in a maximum of 750000
-evaluations (which were barely enough to find the solution). The
-algorithm was steady state (with incorporation of the inmigrant every 20
-generations), with rank-based selection and substitution; every
-generation, 50\% of the population was generated, substituting the
-worst 50\% individuals. Crossover priority was set to 80\%, and
-mutation  to 20\%, changing 1\% of the bits. However, these settings
-will have no influence on performance, other than the fact that, if
-the solution is found before the end of the experiment, the users will
-get bored and change to a new page\footnote{And this is just an example of how
-social factors in this kind of experiments affect performance}.
+\begin{table}
+\caption{The 128 terms composing the second test problem.}
+\begin{center}
+\begin{tabular}{lrrrrrrrr}
+\hline
+\hline\rule{0pt}{12pt}
+$x_{0}$ to $x_{7}$ & $-7.156$ & $2.229$ & $-5.535$ & $-4.618$ & $6.902$ & $-3.912$ & $7.246$ & $-9.204$ \\ 
+$x_{8}$ to $x_{15}$ & $8.919$ & $5.979$ & $9.348$ & $9.444$ & $8.353$ & $5.018$ & $4.606$ & $0.961$ \\ 
+$x_{16}$ to $x_{23}$ & $7.225$ & $1.903$ & $1.452$ & $-5.583$ & $-9.210$ & $4.003$ & $-2.308$ & $-9.555$ \\ 
+$x_{24}$ to $x_{31}$ & $5.903$ & $-3.676$ & $-9.837$ & $-5.272$ & $3.882$ & $-5.365$ & $8.509$ & $-8.524$\\ 
+$x_{32}$ to $x_{39}$ & $5.927$ & $-5.617$ & $8.877$ & $6.647$ & $6.081$ & $0.921$ & $5.566$ & $-7.609$ \\ 
+$x_{40}$ to $x_{47}$ & $-0.804$ & $-8.849$ & $6.493$ & $-3.435$ & $9.561$ & $1.836$ & $-8.239$ & $4.165$\\ 
+$x_{48}$ to $x_{55}$ & $-0.434$ & $5.654$ & $-6.245$ & $-8.889$ & $-2.784$ & $2.473$ & $1.843$ & $-4.917$\\ 
+$x_{56}$ to $x_{63}$ & $-3.704$ & $0.405$ & $5.132$ & $2.956$ & $-6.344$ & $8.843$ & $2.651$ & $-0.127$ \\ 
+$x_{64}$ to $x_{71}$ & $-5.662$ & $-5.994$ & $-8.043$ & $1.111$ & $-2.832$ & $-3.571$ & $-5.677$ & $-5.370$ \\ 
+$x_{72}$ to $x_{79}$ & $-9.045$ & $-0.591$ & $7.523$ & $-0.441$ & $4.587$ & $7.550$ & $-4.303$ & $-6.137$ \\ 
+$x_{80}$ to $x_{87}$ & $3.080$ & $5.412$ & $9.824$ & $3.046$ & $6.025$ & $-2.371$ & $2.083$ & $-9.011$ \\ 
+$x_{88}$ to $x_{95}$ & $4.910$ & $3.966$ & $-7.329$ & $-6.136$ & $-8.572$ & $-4.568$ & $8.636$ & $8.604$ \\ 
+$x_{96}$ to $x_{103}$ & $0.157$ & $-9.133$ & $0.860$ & $8.441$ & $-4.106$ & $7.366$ & $-2.493$ & $9.860$ \\ 
+$x_{104}$ to $x_{111}$ & $-1.570$ & $-7.574$ & $-9.881$ & $-2.417$ & $-4.276$ & $0.906$ & $-8.008$ & $7.272$ \\ 
+$x_{112}$ to $x_{119}$ & $-9.818$ & $-4.328$ & $-2.490$ & $9.182$ & $-7.859$ & $7.229$ & $5.884$ & $-9.712$ \\ 
+$x_{120}$ to $x_{127}$ & $-0.302$ & $4.695$ & $-6.982$ & $-2.770$ & $4.645$ & $8.147$ & $1.214$ & $-2.052$\\
+\hline
 
-Data was gathered from two different sources: the watcher-daemon logs,
-which mainly gave data about the number of individuals evaluated and
-the time needed for each experiment, and the Apache daemon log; the
-relevant lines were extracted just by using {\sf grep}. It should be
-noted that the server was not running exclusively the experiment, but
-doing it along with the usual tasks. The server was a 700-MHz, 1
-Gigabyte-RAM machine, with the database in another dual processor,
-450-MHz machine. Both machines were running obsolete RedHat 7.x and
-9.x Linux operating systems\footnote{Both machines host our group web
-  server and home pages; we thought it was better to run the
-  experiment in our standard setup instead of a dedicated
-  setup}. 
+\end{tabular}
+\label{tb:128-terms}
+\end{center}
+\end{table}
 
-Results of the experiment will be commented in the next section.
+	
+Since both problems have been executed in a synchronous way, the best solution can be found in the server, but also in many clients as this individual is sent to the browser as soon as the \textit{jsEOGetInvididual} operator is selected to operate.
+
+
+
+\begin{table}
+\caption{Parameters used to run the experiments, as in{\cite{agajaj}}}
+\begin{center}
+\begin{tabular}{l@{\quad}rl}
+\hline
+\multicolumn{1}{l}{\rule{0pt}{12pt}
+                   Parameter}&\multicolumn{2}{l}{Value}\\[2pt]
+\hline\rule{0pt}{12pt}
+Population size & 500 & \\
+Tournament size & 2 & \\
+Operator crossover's rate & 0.73 & \\
+Operator mutation's rate & 0.18 & \\
+Operator requesting individual's rate & 0.09 & \\
+Number of genes affected by mutation & $1\%$ &\\
+Individuals replaced in every generation & $50\%$ & \\
+Range for new random real values && \\
+(only for the 128-term equation problem) & $(-10,10)$ & \\[2pt]
+\hline
+
+\end{tabular}
+\label{tb:params}
+\end{center}
+\end{table}
+
+  	
+
+
+
 
 \section{Experimental results}
 \label{sec:exp}
 
+After two days of volunteers executing the algorithms, some results can be drawn gathering data from the web server's log file (in this case, Apache log). The log file has been analysed using the free version of WebLog Expert application\footnote{WebLog Expert can be obtained from \url{http://www.weblogexpert.com/}}, and the well-known Webalizer application\footnote{Webalize can be obtained from \url{http://www.webalizer.com}}.
+
+From a potential target of users of more than 500 people, the 128-terms equation has been executed 304 times by 231 different visitors, while the 256-bit Royal Road function has been executed 359 times by 279 visitors. Most of this visits (i.e., executions) were done along a period of approximately 24 hours, but no references about time consumed by every execution have been registered. The algorithms have been executed in up to 128 different combinations of web browser and operating system, any of them in many different versions. As shown in figures \ref{fig:browsers} and \ref{fig:operating-systems}, Web browser include Safari, Firefox, Chrome, Internet Explorer, and native browsers for smartphones and tablets; while operating systems include Windows, Linux, MacOS, and Android.
+
+\begin{figure}
+\centering
+\includegraphics[height=5cm]{Most_Used_Browsers}
+\caption{Summary of browsers used to run the experiments. For any of the browsers, many different versions have been used. For instance, up to 4 different versions of Internet Explorer were found.}
+\label{fig:browsers}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[height=5cm]{Most_Used_Operating_Systems}
+\caption{Set of operating systems that have been used by users visiting the pages containing the experiments. The figures corresponding to Windows include 8 different versions, including the one for phones.
+}
+\label{fig:operating-systems}
+\end{figure}
+
+As can be seen in table~\ref{tb:params}, population was composed by $500$ individuals, and $50\%$ were replaced in every generation, this means that in every execution $13,000$ individuals were evaluated. Consequently, the currently available solutions in the server have been found after $3,952,000$ evaluations in the case of the 128-terms equation, and $4,667,000$ evaluations for the 256-bit Royal Road function. The solution found for the bit-string problems is composed by 176 characters "0", and 80 characters "1", being  its fitness 232. For the real codified problem, the solution yields a fitness of $300,909.09$, which corresponds to a value of $3.32E-06$ when evaluating the equation being solved.
 
 \section{Conclusions, discussion and future work}
 \label{sec:conc}
 
-While in previous papers  we proved that
-this kind of AJAX based, volunteer, and potentially sneaky,
-computation could be used profitably for performing genetic algorithm
-experiments, in this paper we have proved that, 
-without an expensive or far-fetched setup, it can achieve high
+In this paper we have proved that, 
+without an expensive or far-fetched setup, volunteer computation can achieve high
 performance, equivalent, at most, to several computers of average
 performance. The code used to perform the experiment is publicly
 available and is modular so that creating different experiments is
@@ -360,50 +288,19 @@ immigrants as soon as possible, which are incorporated into the
 population? Or is it better to create new client populations based on
 existing populations? What is really the algorithmic contribution of
 new clients? These issues will be explored as future work. 
-We will also try to measure the limits of this technology, and test
+We will also measure the limits of this technology, and test
 the impact of servers of varying performance and workload on overall
 performance. Eventually, we will also try to perform a {\em sneaky}
 experiment, to check what kind of performance can be expected in that
 kind of setups. 
-
-
-
-----
-Enviado a JJ
-
-Título:
-Developing an object-oriented library in Javascript to build modular and flexible cross-platform evolutionary algorithms 
-
-Aims
-Prove that it can be created a Javascript library for evolutionary algorithms, that is object-oriented and, thus, modular and easily extensible.
-Prove that this library can be used to execute evolutionary algorithms in web browsers. This allows to solve problems in the client side, but also to collaborate among many clients (if possible) to find better solutions by means of indidivuals migatrion using AJAX technology.
-
-Methodology:
-Consisted in
-1) Creating the basic classes from which the rest will derivate: jsEO, jsEOIndividual, jsEOPopulation, jsEOOperator, jsEOAlgorithm
-2) Derivating more specific classes, such as mutation and crossover operarators, as well as different kinds of individuals (e.g., bit-strings and float-strings).
-3) Instantiating specifics objects to evaluate the library using the 256-royal road funcion, and a 128-terms equation.
-4) Executing the experiments by means of simple web page access from many different devices (i.e., different microprocessors, operating systems, web browsers, amount of memory, or bandwidths among others).
-
-
-
-
-De forma un poco más detallada:
-1.1 Crear una biblioteca orientada a objetos con una clase básica: jsEO. Un objeto jsEO tiene asociado un fitness y, en base a dicho fitness, puede ser comparado con otro objeto jsEO.
-1.2 A partir de dicho objeto derivar individuos (jsEOIndividual) que disponen de un cromosoma. Dicho cromosoma puede ser descodificado y evaluado obteniendo el correspondiente fitness.
-1.3 Los individuos pueden ser agrupados en poblaciones (jsEOPopulation) las cuales pueden ser ordenadas por fitness.
-1.4 Implementar la clase operador (jsEOOperator) que permita operar tanto sobre como poblaciones como sobre individuos
-1.5. Finalmente, crear objetos algoritmos (jsEOAlgorithm) evolutivos los cuales puedan ser contener una población, un conjunto de operadores y una serie ordenada de instrucciones que permitan hacer evolucionar la población mediante la aplicación de los operadores.
-
-2.1 Se definen un conjunto de operadores concretos, como el selector por torneo (jsEOTournament) o sobre individuos (como jsEOCrossOver). Dichos operadores permiten generar nuevas poblaciones a partir de las ya existentes realizando modificaciones en los individuos. 
-2.2. Entre dichos operadores se ha definido uno que tansfiere un individuo de la población al servidor (jsEOSendIndividual), y otro que solicita al servidor que le envíe el individuo que tiene almacenado ((jsEOSendIndividual).
 
 \section*{Acknowledgements}
 
 Hidden for double-blind review
 
 \bibliographystyle{unsrt}
-\bibliography{evostar2007,GA-general,geneura,ror-js,volunteer}
+\bibliography{evostar2007,GA-general,geneura,ror-js,volunteer,web-ajax-xml-javascript}
+
 
 % that's all folks
 \end{document}
