@@ -1,7 +1,7 @@
 
 All used languages have functional and concurrent built-in features, with the first ones supporting the second ones. Erlang and Scala’s implementations are based in the actor pattern for doing parallel computation. Clojure on the other hand works with the agent concept, a similar model with simplified ways of reading the involved information.
 
-To communicate modules we used language’s dependent (different) data types. The message's structure was tuples for Erlang and Scala, and for agents it was necessary to encapsulate functions on protocols (Clojure variants of Java interfaces). For sharing individuals (the pool) we used functionals consult/modification data structures: hash-like for Scala/Clojure and the {\em ets} module in Erlang’s case. The data was encoded with compound data strucures : lists, vectors, tuples, records, etc. The Table \ref{tb:res:comp} summarizes the differences between the languages.
+To communicate modules we used language’s dependent (different) data types. The message's structure was tuples for Erlang and Scala, and for agents it was necessary to encapsulate functions on protocols (Clojure variants of Java interfaces). For sharing individuals (the pool) we used functionals consult/modification data structures: hash-like for Scala/Clojure and the {\em ets} module in Erlang’s case. The data was encoded with compound data structures: lists, vectors, tuples, records, etc. The Table \ref{tb:res:comp} summarizes the differences between the languages.
 
 \begin{table}
   \caption{Language's comparisons.}\label{tb:res:comp}
@@ -22,76 +22,37 @@ To communicate modules we used language’s dependent (different) data types. Th
     \hline
     Compound data & tupla & tupla/objeto & record/vector \tabularnewline
     \hline
-    Runtime environment & Erlang VM& Java VM& Java VM \tabularnewline
+    Runtime environment & Erlang VM & Java VM & Java VM \tabularnewline
     \hline
   \end{tabular}
 
 \end{table}
 
-%\subsection{Resultados numéricos}\label{resNum}
 
-%El diseño fue puesto a prueba con cromosomas de longitud 100, una población de 1024 individuos por isla (usándose 2 islas) y con 25 evaluadores y 10 reproductores trabajando con bloques de 50 cromosomas. Los experimentos fueron realizados en un ordenador portátil con Windows 8, 16 GB de RAM y un procesador Core i7.
-%
-%Los resultados obtenidos aparecen a continuación, en la Tabla \ref{tb:resFitness}, correspondiendo a evaluaciones independientes promediadas cuya condición de parada es la obtención de un fitness de 395. Los resultados de las ejecuciones (promedios) usando como condición de parada la ejecución de 5000 evaluaciones aparecen en la Tabla \ref{tb:resEvaluations}.
-%
-%\begin{table}
-%  \caption{Resultados de los experimentos por fitness.}\label{tb:resFitness}
-%  \centering
-%\begin{tabular}{
-%|>{\centering}p{1.6cm}|>{\centering}p{2cm}|
-%>{\centering}p{2.55cm}|>{\centering}p{2.5cm}|}
-%  \hline
-%  \textbf{Lenguaje} & \textbf{Migraciones} & \textbf{Evaluaciones} & \textbf{Tiempo (ms)} \tabularnewline
-%  \hline
-%  \input{resFitness}
-%\end{tabular}
-%\end{table}
-%
-%\begin{table}
-%  \caption{Resultados de los experimentos por cantidad de evaluaciones.}\label{tb:resEvaluations}
-%  \centering
-%\begin{tabular}{
-%|>{\centering}p{1.6cm}|>{\centering}p{2cm}|>{\centering}p{2.5cm}|}
-%  \hline
-%  \textbf{Lenguaje} & \textbf{Migraciones} &
-%  \textbf{Tiempo (ms)} \tabularnewline
-%  \hline
-%  \input{resEvaluations}
-%\end{tabular}
-%\end{table}
-%
-%Con el objetivo de hacer un análisis de speedup\footnote{En su traducción \emph{aceleración}, medida de la ganancia en velocidad al usar más procesadores.} acorde lo expuesto en \cite{Alba02parallelevolutionary}
-%%o de \cite{Barr1993}
-%se hizo también una implementación secuencial usando las mismas estructuras de datos e implementaciones de operadores. Por speedup entenderemos la razón entre $E[T_1]$ (promedio de tiempos de ejecución de la implementación secuencial) y $E[T_m]$ (promedio de tiempos de ejecución de la implementación paralela en $m$ procesadores), teniendo presente que en la arquitectura diseñada se encuentra hecha una paralelización de fases del algoritmo por lo que se realiza mucha más comunicación (con el correspondiente recargo) que la ocurrida en el caso descrito en \cite{Alba02parallelevolutionary}.
-%
-%En las tablas \ref{tb:resSpeedupFitness} y \ref{tb:resSpeedupEvaluations} mostradas a continuación aparecen los resultados de speedup para nuestro caso
-%(70 % OJO, cambiar si cambiamos el experimento
-%unidades de ejecución en el caso paralelo).
-%
-%\begin{table}
-%  \caption{Speedup de los experimentos con parada por valor de fitness.}\label{tb:resSpeedupFitness}
-%  \centering
-%
-%\begin{tabular}{|>{\centering}p{1.6cm}|>{\centering}p{1.5cm}|>{\centering}p{1.5cm}|>{\centering}p{1.5cm}|}
-%  \hline
-%   & \textbf{$E[T_1]$} & \textbf{$E[T_m]$} &  \textbf{speedup} \tabularnewline
-%  \hline
-%  \input{resSpeedupFitness}
-%\end{tabular}
-%
-%\end{table}
-%
-%\begin{table}
-%  \caption{Speedup de los experimentos con parada por cantidad de evaluaciones.}\label{tb:resSpeedupEvaluations}
-%  \centering
-%
-%\begin{tabular}{|>{\centering}p{1.6cm}|>{\centering}p{1.5cm}|>{\centering}p{1.5cm}|>{\centering}p{1.5cm}|}
-%  \hline
-%   & \textbf{$E[T_1]$} & \textbf{$E[T_m]$} &  \textbf{speedup} \tabularnewline
-%  \hline
-%  \input{resSpeedupEvaluations}
-%\end{tabular}
-%
-%\end{table}
+\simpleEntry{Results}
 
+The design was tested with a population of 1024 individuals on each island (it was used 2 islands), doing 5000 evaluations on a laptop dual-core i7 with Windows 8 and 16 Gb of RAM. In order to find the betters combinations of evaluators/reproducers was tested several of them for each technology, in all the combinations the number of evaluators is greater than the reproducers because the fitness function is more computational intensive than the reproduction execution. It was used the average of 10 runs for each combinations.
 
+For a speedup analysis, using the \cite{Alba02parallelevolutionary} ideas, it was made a sequential implementation with the same data structures and operator's implementations. Speedup is the ratio between $E[T_1]$ (sequential implementation average time) and $E[T_m]$ (parallel implementation average time in $m$ processors).
+
+\begin{table}
+  \caption{Experiment results for the best parallel time (time in miliseconds).}\label{tb:resAll}
+  \centering
+\begin{tabular}{|>{\centering}p{1.6cm}|>{\centering}p{2cm}|
+>{\centering}p{2.55cm}|>{\centering}p{2.5cm}|
+>{\centering}p{2.55cm}|>{\centering}p{2.5cm}|}
+  \hline
+  \textbf{Language} & \textbf{Parallel time} & \textbf{Workers combination} & \textbf{Sequential time} & \textbf{Relative speedup} & \textbf{Speedup}\tabularnewline
+  \hline
+  Erlang & 2920.4 & 25 evaluators, 1 reproducer & 8143.3 & 2.7884 & 0.5656 \tabularnewline
+  \hline
+  Clojure & 1791 & 10 evaluators, 1 reproducer & 3466.7 & 1.9356 & 0.9222 \tabularnewline
+  \hline
+  Scala & 593.4  &  6 evaluators, 1 reproducer & 1651.8 & 2.7836 & 2.7836 \tabularnewline
+  \hline
+\end{tabular}
+\end{table}
+
+The results showed in Table \ref{tb:resAll} indicate for each language the best time for the parallel implementation, the combination of evaluators/reproducers in which the parallel variant was obtain, the time for the sequential implementation, an speedup calculated in relation to his sequential time and the real speedup (relative to the best sequential time, Scala's in this case).
+
+Each worker (evaluators and reproducers) is an unit of execution and in the hardware used only 4 units at most can run in parallel. It is important to note the differences in the technologies and the case of Erlang, this language had the worst performance but it's runtime is able to scheduled 52 actors in the best case.
