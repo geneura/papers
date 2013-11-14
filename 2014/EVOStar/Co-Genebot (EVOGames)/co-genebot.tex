@@ -289,27 +289,30 @@ which has proved its worth in 1vs1 battles. The question is if can be used the p
 In this case, battles between two individuals of the population versus two of the best bots (in 1vs1 contest) have been simulated. %Maribel, la frase anterior, no tenía sujeto 
 It is expected that the co-bots were able to learn the bases of the best bots, and improve for be better in 4 on 4 battles. It is desirable for this  co-evolution approach the algorithm rewards bots that at least won in a battle with the previous best bots. %Maribel, he cambiado la frase entera, había mucho lio y algún fallo, espero no haber cambiado el sentido, así que revisalo 
 
-Regarding the execution time of this approach, we did not expect a great time reduction during the training os the bots, although it was desirable. 
+Regarding the execution time of this approach, we did not expect a great time reduction during the training of the bots, although it was desirable. 
 %Maribel, cambio esta frase sin dar tanta vuelta. Talcking about the time needed for the execution, it's not expected an huge reduction of the time needed for the training of the bots, but it's desirable that happen. It's something that will be increased in the next co-evolution method.
 
 \subsubsection{Co-evolution with Auto-generated Knowledge}
 
 In this case, battles with four individuals of the population were tested. %will be simulated battles between four individuals of the population. 
-For this approach the knowledge the bot gets when it fights in previous battles is included into the individual, but the bots were improving for being better versus bots every time betters (because it's expected that the population will better in each generation). %Maribel, el will no tiene sentido, habla en pasado o en presente, no en futuro, es algo que ya está hecho no que se va ha hacer.
+For this approach the knowledge in included into the individual when it fights in previous battles, but the bots were improving for being better versus bots every generation improved (because the population is expected to be better in each generation). %Maribel, el will no tiene sentido, habla en pasado o en presente, no en futuro, es algo que ya está hecho no que se va ha hacer.
 %Maribel, de verdad que no entiendo lo que quieres decir en la última frase, la frase no tiene muchos pies ni muchas cabezas, o yo no entiendo nada de nada.
 
-Regarding the execution time of this approach,  we expect to reduce the needed time by $50\%$ respecto to the previous approach, because it reduces the number of evaluation to the half.
+Regarding the execution time of this approach,  we expect to reduce the needed time by $50\%$ respect to the previous approach, because it reduces the number of evaluations to the half.
 %Maribel, reescribo esto: Talcking about the time, this method would reduce the time needed near to 50\% that the previous method, because it reduced the number of evaluations to the half.
 
 \subsection{Fitness}
 
-In previous works, a bot is evaluated always versus the same bot (an reference-bot). For fitness function, the bot was evaluated several times (in different maps). The fitness function was defined depending of the result of the battle (if the bot wins all his battles or loses in someone) and the numbers of turns needed for end the game. For two bots A and B the fitness is defined like show in Fig.\ref{fig:fitness_turns_positions} \subref{fig:fitness_turns_positions:2}. 
+In previous works, a bot is evaluated always versus the same bot (an reference-bot). For fitness function, the bot is evaluated several times (in different maps). The fitness function is defined depending of the result of the battle (if the bot wins all its battles or loses in someone) and the numbers of turns needed for ending the game. For two bots, A and B the fitness is defined as the figure \ref{fig:fitness_turns_positions} shows \subref{fig:fitness_turns_positions:2}. 
 
 %This fitness works well for 1vs1 battles, and the first fitness proposed is an natural evolution of this fitness applied to 4 on 4 bots battles.
 
 \subsubsection{Fitness based in Position and turns}
 
-This fitness it's an natural evolution of the previous, applied to 4 bots battles. Again, the evaluations are in several maps. In this case, it's studied the position ($1^{th}$, $2^{th}$,..) of the bot in the 4-battle and the number of turns. For a bot that wins all the battles (it's $1^{th}$ in all) it's call {$ferocity$} to the sum turns, in previous works was found that a bot that wins in less turns it's best that other that takes more turns in win too. In other case, the sum of turns it's call {$sturdy$}, and opposite to the {$ferocity$}, it's desirable a bot that take more turns in be defeated. In fig\ref{fig:fitness_turns_positions}(\subref{fig:fitness_turns_positions:2})there are an formal description of this fitness.
+This fitness is the natural evolution of the previous one, applied to 4 bots battles. Again, the evaluations are done with several maps. In this case, both the position ($1^{th}$, $2^{th}$,..) of the bot in the 4-battle and the number of used turns, are included into the study. % Maribel, la siguiente frase no se entiende, la voy a intentar reescribir, revisala por si cambio el sentido de algo.
+%For a bot that wins all the battles (it's $1^{th}$ in all) it's call {$ferocity$} to the sum turns, in previous works was found that a bot that wins in less turns it's best that other that takes more turns in win too. 
+We set the feature ferocity to each bot that wins all its battles. This ferocity  feature is included into the fitness as the sum of turns the bot need to win. This sum can be used to select the best bot when more than one wins all its battles because a bot that wins with less turns is better than other that wins all its battles but with more turns. 
+In other cases, the sum of turns is called {$sturdy$}, and opposite to the {$ferocity$}, it is desirable a bot that take more turns in be defeated. In fig\ref{fig:fitness_turns_positions}(\subref{fig:fitness_turns_positions:2})there are an formal description of this fitness.
 
 \begin{figure}[h]
 \tiny
@@ -367,21 +370,22 @@ This fitness it's an natural evolution of the previous, applied to 4 bots battle
 \caption{Fitness based in turns and positions}
 \end{figure}
 
-In this fitness, we are only interesting in the final result: position and turn. We aren't student how the bot reach it. However, two variables are involved in the calculation of the fitness. That difficult the operation with severals evaluations, because the fitness can't be easily sum o averaged. In the next fitness, it's used another metric to define the goodness of the bots. The percentage of the ships that in each turn belong to each player. 
+In this fitness, we are only interesting in the final result: position and turn. We do not include into the analysis how the bot reach it. However, two variables are involved in the calculation of the fitness. Both variables make difficult the operation with severals evaluations, because the fitness is not possible to sum o average easyly. In the next fitness, it's used another metric to define the goodness of the bots. The percentage of the ships that in each turn belong to each player. 
 
-For study the ships, it's taken from the simulation how many ships belong to each player in each turn, normalized at total ships in game for that turn (including neutrals ships in neutral planets). For each player, we have a {$cloud$} different like in Fig.\ref{figura:nubecita}. Below, see two alternatives to deal with this cloud of points for the fitness function: using slopes and areas.
+For study the ships, we read from the simulation how many ships belong to each player in each turn, normalized at total ships in game for that turn (including neutrals ships in neutral planets). For each player, we have a different {$cloud$} like in Fig.\ref{figura:nubecita}. Below, see two alternatives to deal with this cloud of points for the fitness function: using slopes and areas.
 
 \begin{figure}[h]
 \begin{center}
   \epsfig{file=imagenes/nubecita.eps,width=4cm}
 \end{center}
-\caption{Representation of the number if ships of each bot in each turn} 
+\caption{Representation of the number of ships of each bot in each turn} 
 \label{figura:nubecita}
 \end{figure}
 
 \subsubsection{Fitness based in Slope}
 
-For this fitness, it's used the least squares regression analysis for resume the cloud of points to a simple line. A line is represented as {$y = \alpha \times x + \beta $}, where {$\alpha$} and {$\beta$} are calculated as show the Fig. \ref{equation:LeatsSqueares} according to least squares regression. For each bot in the simulation it's calculated $\alpha$, that it's also call $slope$. This $slope$ it's the fitness defined for each bot for that simulation.
+For this fitness,  squares regression analysis for resume the cloud of points to a simple line, is calculated. A line is represented as {$y = \alpha \times x + \beta $}, where {$\alpha$} and {$\beta$} are calculated as show the Fig. \ref{equation:LeatsSqueares} according to least squares regression. For each bot in the simulation we calculate $\alpha$, ($slope$). This $slope$ is the fitness for each bot for that simulation.
+%Maribel, he cambiado todos los it's que no sé por qué los pones y he simplificado las frases
 
 \begin{figure}[h]
 \begin{subfigure}[H]{0.4\textwidth}
@@ -398,19 +402,21 @@ For this fitness, it's used the least squares regression analysis for resume the
 \begin{center}
   \epsfig{file=imagenes/nubecita_pendiente.eps,width=1\textwidth}
 \end{center}
-\caption{Representation of the number if ships of each bot in each turn} 
+\caption{Representation of the number of ships of each bot in each turn} %Maribel, cambio if por of
 \label{figura:nubecita}
 \end{subfigure}
 \end{figure}
 
-Can be establish an theoretical maximal an minimal values for this fitness. An hypothetical bot that wins in the first turn, will have an slope of {$1$}, so this is the maximal value of our fitness. For other hand, an bot that loses in the first turn, will have an slope of {$-1$}. In addition, looking at the slope, can be known if the bot {$WINs$} ({$slope>0$}) or {$LOSEs$} {$slope<0$}. Finally, can be determined that when the slope was greater (and therefore closer to the maximum) should be better the bot.
+A %Maribel, sin n
+theoretical maximum an minimum values is fixed for this fitness. An optimum bot that wins in the first turn, has an slope of {$1$}, so this is the maximum value of our fitness. In the other hand, a bot that loses in the first turn,  has an slope of {$-1$}. In addition, if we calculate the $slope$, we know if the bot {$WINs$} ({$slope>0$}) or {$LOSEs$} {$slope<0$}. Finally, the bot with the closer to the maximum $slope$ should be the best is each turn or battle. %maribel he cambiado entera la frase anterior porque  no se entendía nada
 
-Several evaluations in different maps was using, so it's need operate with fitness. In that case, only sum the slope of all the evaluations of the bot.
+%Several evaluations in different maps was using, so it's need operate with fitness. In that case, only sum the slope of all the evaluations of the bot. Maribel, esto ya lo has dicho antes y además lía más la cosa así que lo he eliminado. Además expresiones como "was using" están mal, qué quieres decir? fue usando? eso en inglés no se dice.
 
 \subsection{Fitness bases in Area}
 \label{sec:fitness}
 
-In these fitness, it's used the integral of the curve for calculate the area between it and the x-axis. This {$area$} is normalized to the number of turns, representing the average percentage of ships along the battle for each player. In the Fig\subref{equation:LeatsSqueares}
+For this case, the integral of the curve of the bot's live-line is used for calculate the area that is included into the fitness. This {$area$} is normalized to the number of turns, representing the average percentage of ships along the battle for each player. In the Fig\subref{equation:LeatsSqueares}
+%Maribel, simplifico mucho la primera frase, porque ya todo el mundo debería saber que la integral es el área entre una curva y el eje x.
 
 \begin{figure}[h]
 \begin{subfigure}[H]{0.4\textwidth}
@@ -424,12 +430,14 @@ In these fitness, it's used the integral of the curve for calculate the area bet
 \begin{center}
   \epsfig{file=imagenes/nubecita_integral.eps,width=1\textwidth}
 \end{center}
-\caption{Example of area under the curve} 
+\caption{Example of area under the live-line curve.} 
 \label{figura:nubecita}
 \end{subfigure}
 \end{figure}
 
-As before, can be established an theoretical maximal an minimal values for this fitness. An hypothetical bot that wins in the first turn, will have an area closer to {$1$}, so this is the maximal value of the fitness. Furthermore, an bot that loses in the first turn, will have an area near to {$0$}. In this case, can't be know by the fitness if the bot wins or loses the battle. In this scope, we are losing information.
+As in the previous case, a theoretical maximum and minimum values are fixed for this fitness. if an optimal bot wins in the first turn, the area of each live-line is close to {$1$}, so this is the maximum value of the fitness. Furthermore, if a bot loses in the first turn, its live-line area is close to {$0$}. In this case, we do not extract addicional information related with which bot wins the battle, because the area of the live-line is not related with the winner of the battle. In this scope, we are losing some information.
+
+% Maribel, he corregido-reescrito todo el párrafo anterior
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   EXPERIMENTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
