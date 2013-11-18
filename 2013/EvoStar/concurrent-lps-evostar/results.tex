@@ -31,28 +31,30 @@ To communicate modules we used language’s dependent (different) data types. Th
 
 \simpleEntry{Results}
 
-The design was tested with a population of 1024 individuals on each island (it was used 2 islands), doing 5000 evaluations on a laptop dual-core i7 with Windows 8 and 16 Gb of RAM. In order to find the betters combinations of evaluators/reproducers was tested several of them for each technology, in all the combinations the number of evaluators is greater than the reproducers because the fitness function is more computational intensive than the reproduction execution. It was used the average of 10 runs for each combinations.
+The design was tested with a population of 1024 individuals on each island (it was used 2 islands), doing 5000 evaluations on a laptop dual-core i7 with Windows 8 and 16 Gb of RAM. In order to find the betters combinations of evaluators/reproducers was tested several of them for each technology (evaluators = $1..30$ and reproducers = $1..10$), in all the combinations the number of evaluators is greater than the reproducers because the fitness function is more computational intensive than the reproduction execution. It was used 10 runs for each combinations and later was deleted the times with more dispersion until the standard deviation remains in 5 \%.
 
-For a speedup analysis, using the \cite{Alba02parallelevolutionary} ideas, it was made a sequential implementation with the same data structures and operator's implementations. Speedup is the ratio between $E[T_1]$ (sequential implementation average time) and $E[T_m]$ (parallel implementation average time in $m$ processors).
+For a speedup analysis, using the ideas presented in \cite{Alba02parallelevolutionary}, it was made a sequential implementation with the same data structures and operator's implementations. Speedup is the ratio between $E[T_1]$ (sequential implementation average time) and $E[T_m]$ (parallel implementation average time in $m$ processors), the expected value is $m=4$ in this case (the number of logical processors in the hardware used).
 
 \begin{table}
-  \caption{Experiment results for the best parallel time (time in miliseconds).}\label{tb:resAll}
+  \caption{Experiment results for the minimum parallel time of all combinations tested (time in miliseconds).}\label{tb:resAll}
   \centering
-\begin{tabular}{|>{\centering}p{1.6cm}|>{\centering}p{2cm}|
->{\centering}p{2.55cm}|>{\centering}p{2.5cm}|
->{\centering}p{2.55cm}|>{\centering}p{2.5cm}|}
+\begin{tabular}{|>{\centering}p{1.6cm}|>{\centering}p{1.5cm}|
+>{\centering}p{1.6cm}|>{\centering}p{2.1cm}|>{\centering}p{1.7cm}|
+>{\centering}p{1.45cm}|>{\centering}p{1.45cm}|}
   \hline
-  \textbf{Language} & \textbf{Parallel time} & \textbf{Workers combination} & \textbf{Sequential time} & \textbf{Relative speedup} & \textbf{Speedup}\tabularnewline
+  \textbf{Language} & \textbf{Parallel time} & \textbf{Standard deviation} & \textbf{Workers combination} & \textbf{Sequential time} & \textbf{Relative speedup} & \textbf{Speedup}\tabularnewline
   \hline
-  Erlang & 2920.4 & 25 evaluators, 1 reproducer & 8143.3 & 2.7884 & 0.5656 \tabularnewline
+  Erlang & 2920.4 & 126.4422 & 25 evaluators, 1 reproducer & 8143.3 & 2.7884 & 0.5519 \tabularnewline
   \hline
-  Clojure & 1791 & 10 evaluators, 1 reproducer & 3466.7 & 1.9356 & 0.9222 \tabularnewline
+  Clojure & 1734.6666 & 28.3235 & 10 evaluators, 1 reproducer & 3340.2222 & 1.9255 & 0.9292 \tabularnewline
   \hline
-  Scala & 593.4  &  6 evaluators, 1 reproducer & 1651.8 & 2.7836 & 2.7836 \tabularnewline
+  Scala & 563 & 24.3156 & 6 evaluators, 1 reproducer & 1651.8 & 2.8632 & 2.8632 \tabularnewline
   \hline
 \end{tabular}
 \end{table}
 
-The results showed in Table \ref{tb:resAll} indicate for each language the best time for the parallel implementation, the combination of evaluators/reproducers in which the parallel variant was obtain, the time for the sequential implementation, an speedup calculated in relation to his sequential time and the real speedup (relative to the best sequential time, Scala's in this case).
+The results showed in Table \ref{tb:resAll} indicate for each language the best time for the parallel implementation, the combination of evaluators/reproducers in which the parallel variant was obtain, the time for the sequential implementation, a relative speedup (calculated in relation to his sequential time) and the speedup (relative to the best sequential time, Scala's in this case). Each worker (evaluators and reproducers) is an unit of execution and in the hardware used only 4 units (at most) can run at the same time.
 
-Each worker (evaluators and reproducers) is an unit of execution and in the hardware used only 4 units at most can run in parallel. It is important to note the differences in the technologies and the case of Erlang, this language had the worst performance but it's runtime is able to scheduled 52 actors in the best case.
+Erlang is the language with the worst execution time; but it's runtime, in the best case, was able to schedule 52 units of execution (far more than the others). Also the speedup obtained relative to his sequential time are very good, this two facts point to a posible good scalability. Clojure's performance is medium, with a speedup close to $1$.
+
+Scala is the language with the best results, even when it's runtime are the same of Clojure's, his models of computation and concurrency (in particular his balance between mutable and immutable state) allow a better behaviour of the concurrent algorithms. Again is important to note the quality of the concurrent abstractions made by all this technologies in which the number of logical units of executions are greater than the number of the physical ones. 
