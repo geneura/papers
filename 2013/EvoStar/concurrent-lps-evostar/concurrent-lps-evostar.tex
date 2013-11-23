@@ -1,6 +1,5 @@
 \documentclass[a4paper]{llncs}
 \usepackage{amssymb}
-\setcounter{tocdepth}{3}
 \usepackage{graphicx,epsfig}
 
 %%%%
@@ -15,6 +14,9 @@
 \usepackage{array}
 
 \usepackage{url}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
 
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
 \noindent\keywordname\enspace\ignorespaces#1}
@@ -55,7 +57,28 @@
 \maketitle
 
 \begin{abstract}
-The current multi-core microprocessor's architecture challenges the entire software industry, to take advantage of them is necessary a parallel implementation of every simple program. Concurrent programming is hard; to use programming languages with built-in concurrent concepts is one way to face that. This work describes the design and implementation of an evolutionary computation model using the concurrent and functional paradigms of programming in the languages Erlang, Scala and Clojure. This article shows the advantages of these paradigms in order to implement a hybrid parallel genetic algorithm with an island topology. Some design decisions are analyzed and the results of the solution of a case study are showed.
+The architecture of current multi-core microprocessors  challenges the
+entire software industry, since to take advantage of them  a parallel
+implementation of every simgle program would be needed. Concurrent
+programming tackles this challenge by using programming languages with
+built-in concurrent concepts. The same problem applies to sequential,
+or even paralelly sequential, evolutionary algorithms, that is why in
+this work we describe the design and implementation of an evolutionary
+computation model using the concurrent and functional paradigms of
+programming in the languages Erlang, Scala and Clojure. This article
+shows the advantages of these paradigms in order to implement a hybrid
+% hybrid de qué y qué ? 
+% No has dicho nada de functional, sólo de concurrent. ¿Por qué
+% functional? ¿Es una mejor forma de trabajar con programas
+% concurrentes o sólo la complica? - JJ
+parallel genetic algorithm with an island topology. Some design
+decisions are analyzed and the results of the solution of a case study
+are shown. We conclude that this adaptation is possible and it might
+lead to new insights in the evolutionary computation area, but
+different languages differ in its baseline speed and scaling
+performance, with Erlang being the most scalable but Scala being the
+fastest. 
+
 \end{abstract}
 
 %En general, el abstract es poco fluido, son frases que no están muy conectadas entre sí.
@@ -69,14 +92,38 @@ The current multi-core microprocessor's architecture challenges the entire softw
 
 \section{State of the art}
 \label{sec:stateArt}
-New parallel platforms are identified like new trends in pGAs\cite{Luque2011}, however only hardware is considered and software platforms remains practically unexplored since \cite{Santos2002}. There is only one serious work \cite{Sher2013} done with a concurrent language (in the neuroevolution field) and a concept test with a simple architecture in \cite{AmandaBienz2011}.
+
+New parallel platforms are identified as new trends in
+pGAs \cite{Luque2011}, however only hardware is considered and software
+platforms remains practically unexplored since
+\cite{Santos2002}. There is only one serious work \cite{Sher2013} done
+with a concurrent language (in the neuroevolution field) and a concept
+test with a simple architecture in \cite{AmandaBienz2011}.  Next we
+will give an overview of the different concurrent and functional
+programming paradigms, before presenting our approach to them in the
+next section
 
 \simpleEntry{Paradigms}
 \label{sec:paradigmas}
 
-Developing correct software quickly is a never ending goal in the software industry. Novel solutions that try to make a difference providing new abstraction tools outside the mainstream of programming languages have been proposed to pursue this goal; these can be divided into two main fields: the functional and the concurrent.
+Developing correct software quickly and efficiently is a never ending
+goal in the software industry. Novel solutions that try to make a
+difference providing new abstraction tools outside the mainstream of
+programming languages have been proposed to pursue this goal; these
+can be divided into two main fields: the functional and the
+concurrent. 
 
-Functional languages have been available for a long time, in the shape of LISP, which was introduced in the fifties, nevertheless their use has been limited mainly due to the inefficiency of their compilers or interpreters. Currently these situations have changed, the problems with efficiency are solved and their newfound advantages have promoted the inclusions of several functional concepts in modern and mainstream languages. C\# for example, or even the creation of new ones such as Clojure, which excels among the emergent languages with the concurrent paradigm together with Go, Scala, Haskell and Erlang \cite{DiPierro:2012:CMP}; they have built-in programming constructs for managing concurrency simplifying its use.
+Functional languages have been available for a long time, in the shape
+of LISP, which was introduced in the fifties, nevertheless their use
+has been limited mainly due to the inefficiency of their compilers or
+interpreters. Currently these situations have changed, the problems
+with efficiency are solved and their newly found advantages have
+promoted the inclusions of several functional concepts in modern and
+mainstream languages. C\# for example, or even the creation of new
+ones such as Clojure, which excels among the emergent languages with
+the concurrent paradigm together with Go, Scala, Haskell and Erlang
+\cite{DiPierro:2012:CMP}; they have built-in programming constructs
+for managing concurrency simplifying its use. 
 
 \simpleEntry{Concurrent programming}
     \input{progConcurrente}
