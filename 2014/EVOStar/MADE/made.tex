@@ -235,9 +235,17 @@ The MADE environment can be configured by using the following parameters (and it
 \subsection{MADE Agent}
 A MADE Agent lives in a MADE Environment, occupies a cell in the grid, moves around looking for food or mate and interacts with other agents.
 
-A very simple agent has been designed for this study: a virtual rat. We have modelled 4 states for it (be alive, be hungry, look for mate and be pregnant), 7 actions (move, eat, attack, defend, escape, find mate and have offspring) and parameters that define its characteristics and probabilities to perform actions depending on the state. It's important to remark that no ``feelings'' and no ``memory'' have been modelled in the MADE agent for this study.
-
-Figure~\ref{fig:madeAgent} illustrates the nature of a MADE Agent.
+%En un trabajo no se describe lo que se ha hecho, sino una
+%metodología. Deberías justificar estos estados y las acciones. ¿Se
+%pueden poner las que quieras? - JJ
+A very simple agent has been designed for this study: a virtual
+rat. We have modelled 4 states for it (be alive, be hungry, look for
+mate and be pregnant), 7 actions (move, eat, attack, defend, escape,
+find mate and have offspring) and parameters that define its
+characteristics and probabilities to perform actions depending on the
+state. It's important to remark that no ``feelings'' and no ``memory''
+have been modelled in the MADE agent for this study. This is
+illustrated in Figure~\ref{fig:madeAgent}
 
 \begin{figure}
 \begin{center}
@@ -247,7 +255,14 @@ Figure~\ref{fig:madeAgent} illustrates the nature of a MADE Agent.
 \end{center}
 \end{figure}
 
-The life cycle of a MADE Agent illustrated in Figure~\ref{fig:lifecycle} represents on day in its life. Every decision made by the agent is based on its state and its characteristics (probabilities to perform different actions).
+The life cycle of a MADE Agent illustrated in
+Figure~\ref{fig:lifecycle} represents on day in its life. Every
+decision made by the agent is based on its state and its
+characteristics (probabilities to perform different actions). % Los
+                                % agentes son un FSM entonces, ¿no?
+                                % Cita los papers en los que hablamos
+                                % de FSM para Mario o Unreal, por ejemplo.
+                                % ¿Esto es fijo? - JJ
 
 \begin{figure}
 \begin{center}
@@ -265,7 +280,14 @@ The life cycle of a MADE Agent illustrated in Figure~\ref{fig:lifecycle} represe
 
 % (RubÃ©n): TODO No se cÃ³mo mejorarlo...
 
-% Cámbialo por un algoritmo. Ocupa demasiado espacio y no se ve nada. 
+% Cámbialo por un algoritmo. Ocupa demasiado espacio y no se ve nada.
+% O bien dibújalo como un autómata de estados finitos en vez de un
+% diagrama de flujo. Un redondón por estado y flechas de transición -
+% Además, me da la impresión de que estás mezclando estados de un
+% bicho (pregnancy) con los de otro (a partir del nacimiento). Si es
+% así, más que pregnancy deberías llamarlo "embryo" (y, sinceramente,
+% no sé si merece la pena mencionarlo aquí y qué interés puede tener)
+% JJ  
 
 
 The MADE Agent is created using twelve parameters, that define its
@@ -287,7 +309,11 @@ Every agent has a log or log that stores all the relevant events in its life in 
 \section{Experimental setup}
 \label{sec:experimentalsetup}
 
-Thanks to the agents' logs, we can know every event (internal and external) of their lives, and evaluate their interest. In this work, we have implemented a method based in regular expressions with backreferences. The proposed technique puts annotations in every agent whose log matches a complex regular expression able to find emerging high level behaviours, not implemented in the life-cycle. 
+Thanks to the agents' logs, we can know every event (internal and
+external) of their lives, and evaluate their interest.  % interest in
+                                % what? Quieres decir si son
+                                % interesantes? - JJ
+In this work, we have implemented a method based in regular expressions with backreferences. The proposed technique puts annotations in every agent whose log matches a complex regular expression able to find emerging high level behaviours, not implemented in the life-cycle. 
 
 In this proposal, the parameters used to define an agent, mentioned in Section~\ref{sec:made}, are mapped into a chromosome, and a Genetic Algorithm is used to evolve the solution. The fitness function is expressed in terms of:
 
@@ -297,6 +323,8 @@ In this proposal, the parameters used to define an agent, mentioned in Section~\
 \end{itemize}
 
 Different number of profiles (from 1 to 5) have been used to assign
+% ¿Qué son los perfiles? No lo has definido en ningún sitio. Deberías
+% ponerlo también en el abstract si es tan importante - JJ
 different parameters to different agents. If only one profile is used
 in a run, all the agents are created with the same parameters, evolved
 by the Genetic Algorithm. If more profiles are used, they are assigned
@@ -334,24 +362,48 @@ Population size & 30 \\
 
 % (JJ): Por quÃ© has elegido estos experimentos y no otros? - JJ
 % (RubÃ©n): Done
+% No del todo... lee abajo - JJ
 
-For this work, two sample groups of archetypes (or scenes)  have been chosen: The first one is called ``natality control'' and its goal is to model a global archetype (population growth) and four individual memory based archetypes (\textit{downtrodden}, \textit{helpless}, \textit{warrior} and \textit{bad warrior}). The second scene is called ``revenge'' and its goal is to model an individual complex memory based behaviour between two characters (\textit{revenge}).
+For this work, two sample groups of archetypes (or scenes)  have been
+chosen: % why only two and why _these_ two? - JJ
+The first one is called ``natality control'' and its goal is to model
+a global archetype (population growth) and four individual memory
+based archetypes (\textit{downtrodden}, \textit{helpless},
+\textit{warrior} and \textit{bad warrior}; these are related to their
+attack and defense behaviors). % Defínelos, hombre o di
+                                % algo de ellos, como "identified
+                                % by". ¿Se supone que el lector
+                                % sabe lo que son? ¿Qué tiene que ver
+                                % la natalidad con los guerreros? - JJ
+ The second scene is called
+``revenge'' and its goal is to model an individual complex memory
+based behaviour between two characters (\textit{revenge}). 
 
 
 The Experiment 1, ``Natality control archetype'', aggregates different sample archetypes where many factors must be taken into account.  It tries to find what number of profiles and values are optimal to:
 \begin{itemize}
 \item Ensure that, after 1000 virtual days, the  population that is
   still alive will be the 60\% of the total population. This is called a \textit{global archetype}.
-\item Emergence of the \textit{downtrodden} archetype in the 22\% of
+\item Emergence of the \textit{downtrodden} archetype in a 22\% of
   the % Corregido este, corrige tú los otros. No sé si se puede
       % hablar de emergencia, puesto que lo has puesto tú a güevo - JJ
   population. An agent will be considered as a \textit{downtrodden} or
   \textit{defender} if it has been attacked at least two times and has
   defended the position. 
 
-\item Emerge the \textit{warrior} archetype the 22\% of the population. An agent will be considered as a \textit{warrior} if it has satisfactory attacked at least five times. 
-\item Emerge the \textit{helpless} archetype the 22\% of the population. An agent will be considered as a \textit{helpless}  if it has been attacked at least ten times and hasn't defended the position.
-\item Emerge the \textit{bad warrior} archetype the 22\% of the population. An agent will be considered as a \textit{bad warrior}  if it has unsatisfactory attacked at least ten times.
+\item Emerge the \textit{warrior} archetype in a 22\% of the
+  population. An agent will be considered as a \textit{warrior} if it
+  has satisfactorily % qué significa eso? - JJ
+ attacked at least five times. 
+\item Emerge the \textit{helpless} archetype in a 22\% of the
+  population. An agent will be considered as a \textit{helpless}  if
+  it has been attacked at least ten times and hasn't defended the
+  position. 
+\item Emerge the \textit{bad warrior} archetype in a 22\% of the
+  population. An agent will be considered as a \textit{bad warrior}
+  if it has unsatisfactorily attacked at least ten times. % En casi
+                                % todos sitios has usado satisfactory
+                                % en vez de satisfactorily - JJ
 \end{itemize}
 We have used the presented values to define this scene because, as our opinion, they model an interesting literary scene.
 
@@ -490,9 +542,40 @@ The results of the second experiment (``revenge'') are shown in Table~\ref{fig:e
 \section{Conclusions}
 \label{sec:conclusion}
 
-This work presents the MADE environment, a self-organized multi-agent system to model complex societies. This system can be used to study emergent behaviours for literary purposes, for example, to extract interesting plots for NPCs in videogames. In this work we have used the MADE environment to establish the number of profiles (sets of personality parameters) necessary to emerge two different global archetypes: ``natality control'' and ``revenge''. We have used a Genetic Algorithm to optimize the parameters of these profiles using as a fitness a function that model the two desired global archetypes. Results show that in the first archetype the number of profiles must be at least two, because it is necessary that different behaviours (local archetypes) emerge. On the contrary, on the second experiment, using only one profile is the best configuration, because the purpose was to emerge only one archetype ({\em avenger}). If the number of profiles is increased worse results are obtained.
+This work presents the MADE environment, % no se presenta un entorno,
+                                % se presenta los resultados obtenidos
+                                % por él - JJ
+ a self-organized multi-agent
+system to model complex societies which can be used to study
+emergent behaviours for literary purposes; for example, to extract
+interesting plots for NPCs in videogames. In this paper we have used
+the MADE environment to establish the number of profiles (sets of
+personality parameters) necessary to emerge two different global
+archetypes: ``natality control'' and ``revenge'' % which have been
+                                % chosen because...
+. We have used a
+Genetic Algorithm to optimize the parameters of these profiles using
+as a fitness a function that model the two desired global
+archetypes. Results show that in the first archetype the number of
+profiles must be at least two, because it is necessary that different
+behaviours (local archetypes) emerge. On the contrary, on the second
+experiment, using only one profile is the best configuration, because
+the purpose was to emerge only one archetype ({\em avenger}). If the
+number of profiles is increased worse results are obtained. % This
+                                % implies that... No queda claro la
+                                % significancia del experimento. Si yo
+                                % quiero usarlo para mi juego, ¿qué
+                                % hago? ¿Y si quiero escribir una
+                                % novela? 
 
-In future works, more complex agents will be used, with different rules to be modelled. For example, we plan to model more human behaviours such as love or envy, to generate interesting plots such as wars, weddings, or family crimes. Different fitnesses will be used, for example, taking into account human opinions to establish the interestingness of a generated plot. Also, this system will be tested into an existent and well-known game, such as Skyrim\texttrademark, whose AI engine is publicly available for players and researchers.
+In future works, more complex agents will be used, with different
+rules to be modelled. For example, we plan to model more human
+behaviours such as love or envy, to generate interesting plots such as
+wars, weddings, or family crimes. Different fitnesses will be used,
+for example, taking into account human opinions to establish the
+interestingness of a generated plot. Also, this system will be tested
+into an existent and well-known game, such as Skyrim\texttrademark,
+whose AI engine is publicly available for players and researchers. 
 
 % -----------------------------------------------------------------------------
 % SEC ACKNOWLEGGEMENTS
