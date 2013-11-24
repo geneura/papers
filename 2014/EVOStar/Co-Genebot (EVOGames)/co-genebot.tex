@@ -85,6 +85,7 @@ The competition consisted in develop the best bot regarding the number of matche
 Our first approach in this field was the so-called \textit{FooBot} 
 % Antonio - Poner FooBot en lugar de GeneBoten todo el artículo
 % maribel, pongo FooBot porque era lo que había sugerido J y porque ya lo he cambiado arriba en el abstract 
+% Antonio (again) - ¿Por qué FooBot? Yo dejaría más claro que no se pone el nombre para que sea anónimo => ANONYMOUSBot, por ejemplo
 \cite{Genebot_CEC11}, 
 % Antonio - Anonimizar esta referencia y las demás que haya nuestras
 which is an evolutionary approach for the improvement of a bot's decision engine. It consists in a set of parametrised rules that model the behaviour of the bot, and which was defined by an expert human player. Then, a Genetic Algorithm (GA) \cite{GAs_Goldberg89} was applied offline (not during the game) for evolving these parameters. 
@@ -103,7 +104,7 @@ The fitness of the individuals is usually calculated using some individuals of o
 \item \textit{Cooperative co-evolutionary algorithms} \cite{Potter_cooperative_coevolution}, where the aim is to find individuals from which better environment can be constructed. The fitness of an individual depends on its ability to cooperate in solving the target problem with individuals from other species.
 \end{itemize}
 
-In this work, both types have been implemented since the evolution is performed following two different shapes for the four contenders in every match (in the evaluation step):  on one approach two of the contenders are individuals being evolved at a specific generation, and the other two opponents with a fixed AI engine. On the other approach, four different players corresponding to four individuals being evolved are considered. These are respectively baptised as \textit{previously knowledge-based} approach and \textit{non-previously-knowledge-based} one.
+In this work, both types have been implemented since the evolution is performed following two different shapes for the four contenders in every match (in the evaluation step):  on one approach two of the contenders are individuals being evolved at a specific generation, and the other two opponents with a fixed Artificial Intelligence (AI) engine. On the other approach, four different players corresponding to four individuals being evolved are considered. These are respectively baptised as \textit{previously knowledge-based} approach and \textit{non-previously-knowledge-based} one.
 % Antonio - mira si te molan los nombres y úsalos o mejor si te inventas otros más chulos (y los usas)
 So, according to the previous taxonomy, both algorithms are competitive in the fitness calculation step and cooperative regarding the problem solving (find the best agents for this type of battles).
 
@@ -115,7 +116,7 @@ Moreover, three different fitness functions are also tested in the work, having 
 All of them consider the final results of every individual (bot) after the aforementioned five matches (on average).
 %Maribel, si te refieres a los cinco juegos en cinco mapas diferentes, podrías aclararlo en la frase anterior también, no estaría de más.
 
-Several experiments have been conducted analizing the robustness of the different fitness functions, and the influence and performance of the previous knowledge consideration (or not) in the evolution. 
+Several experiments have been conducted analyzing the robustness of the different fitness functions, and the influence and performance of the previous knowledge consideration (or not) in the evolution. 
 % Antonio - Lo mismo, completa un poco esto con los análisis que has hecho. ;)
 
 
@@ -132,92 +133,25 @@ Several experiments have been conducted analizing the robustness of the differen
 \label{sec:stateofart}
 %
 
-Video games have become one of the biggest sectors in the
-entertainment industry; after the previous phase of searching for the
-graphical quality perfection, the players now request opponents
-exhibiting intelligent behaviour, or just human-like behaviours
-\cite{artifical-stupidity-game-wisdom2-2004}. % irrelevante en el
-                                % contexto. Tienes que empezar
-                                % enmarcando el juego y las tÃ©cnicas
-                                % usadas: algoritmos genÃ©ticos, RTS,
-                                % coevoluciÃ³n aplicado a unos y otros
-                                % - JJ
+Evolutionary Computation (EC) has been widely applied in the videogames area, including the RTS games, in different issues, such as: automated tactics generation \cite{Ponsen_EvLearn_RTS}, decision making improvement \cite{Su-EAs_StrategySel09}, or parameter optimisation in behavioural engines \cite{cooperativebots_CIG2010,Genebot-IWANN2011}.
+This work is enclosed in the latter category, since it considers a set of rules, initially defined by an expert, which model a bot's AI in the RTS Planet Wars.
+These rules are optimised regarding the set of  parameters which determine how the bot behaves. This kind of improvement was previously performed by the authors in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012} by means of off-line (before the game) Evolutionary Algorithms.
+In the present paper the optimisation have been performed using a Co-Evolutionary approach. 
 
-%Nowadays, the games AI research has followed a different path, mainly starting with the improvement of FPS Bot's AI with Doom\texttrademark~ or
-%Quake\texttrademark~ by the beginning of the 90s; and the most famous environment inside this kind of games, Unreal Tournament \texttrademark~\cite{Agent_Smith_CEC2009,ControllingBot_CEC2010,cooperativebots_CIG2010}.
+Co-Evolutionary Algorithms (CEAs) have been previously used in this scope, initially regarding puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
+The first work proposed a very simple hillclimbing algorithm to evolve a population of neural networks, playing among them as rivals, in a competitive co-evolutionary approach. The latter paper presented a co-evolutionary learning approach which performed well once the EA was correctly tuned, moreover, this method yields better players to solve small Go boards since every individual is evaluated against a diverse population of rivals.
+In the same line, there are some other works in the card games area, such as \cite{Thompson_Poker2008}, aimed to create Poker agents, considering a co-evolution process in which the players are part of the learning process. This meant a difficult process to get robust strategies, due to the variation in opponents, but the results shown to fit with some recommended strategies according experts.
+The aim of the present work is to conduct a study implementing a similar co-evolutionary approach, being competitive in the fitness calculation, but cooperative since all the opponents are also part of the same learning process (same population).
 
-Most of the researches have been done on relatively simple games such
-as Super Mario \cite{Togelius_SuperMario}, Pac-Man
-\cite{Pac-MAnt_CIG2010} or Car Racing Games \cite{CarRacing_Pelta09},
-being many bots competitions involving them. % Vale, todo el mundo es
-                                % un pringao y usa juegos simples, de
-                                % estas te meten una hostia tus
-                                % compaÃ±eros de sesiÃ³n. Basta con que
-                                % digas simplemente que los RTS tienen
-                                % un enfoque diferente a estos juegos
-                                % - JJ
+In recent years, this type of EAs has been also applied to videogames, enclosed in the Computational Intelligence (CI) branch of AI.
+For instance Togelius et al. \cite{Togelius_Cars2007} studied the co-evolution effects of some populations in car racing controllers, comparing the performance of a single population against various, implementing both generational and a steady-state approaches. Avery and Michalewicz introduced in \cite{Avery_Human2008} a co-evolutionary algorithm (for the game TEMPO) which used humans as rivals for the individuals in the evolutionary process. 
+Cook et al. \cite{Cook_Platforming2012} presented a cooperative co-evolutionary approach for the automated design of levels in simple platform games. And recently Cardona et al. \cite{Cardona_MSPacman2013} studied the performance of a competitive algorithm for the simultaneous evolution of controllers to both Ms. PacMan and the Ghost Team which has to chase her.
 
-RTS games show an emergent component \cite{emergence_in_games2008} as a consequence of the cited two level AI, since the units behave in many  % maribel- Many different es redundante, pon sÃ³lo many 
-(and sometimes unpredictable) ways. This feature can make a RTS game more entertaining for a player and maybe more interesting for a researcher.
-There are many research problems with regard to the AI for RTSs, % Maribel, no uses with regard, pon regarding
-including planning in an uncertain world with incomplete information;
-learning; opponent modelling and spatial and temporal reasoning
-\cite{hongchoCIG2005}. 
+Regarding the RTS scope, there are also several related works, such as the study by Livingstone \cite{Livinstone_RTS2005}, who compared several AI-modelling approaches for RTS games, and proposed a framework to create new models by means of co-evolutionary methods. He considered two levels of learning in a hierarchical AI model (inside an own-created RTS), evolving at the same time different partners in different strategic levels, so it was a cooperative approach. It is different to the one proposed here, since in the present work the co-evolution occurs at the same level for all the individuals. The work by Smith et al. \cite{Smith_RTS_SpatialTactics2010} presents an analysis on how a co-evolutionary algorithm can be used for improving students' playing tactics in RTS games. Other authors proposed using co-evolution for evolving team tactics \cite{Avery_RTS_Team2010}. However, the problem is how tactics are constrained and parametrised and how the overall score is computed. 
+Nogueira et al. \cite{Nogueira_HoF2013} considered in a recent publication the use of a Hall of Fame as a set of rivals (in the evaluation function) inside a co-evolutionary algorithm to create autonomous agents for the RTS RobotWars.
 
-However, the reality in the industry is that in most of the RTS games,
-the bot is  controlled by a fixed script that has been previously
-programmed (following a finite state machines or a decision tree, for
-instance). % tampoco me sirve a estas alturas. Hay miles de trabajos
-           % de RTS- CI Justifica las tÃ©cnicas usadas, no que vayas a
-           % usar ese tipo de juego - JJ
-Once the user has learnt how such a game will react, the game
-becomes less interesting to play. In order to improve the users' gaming
-experience, some authors such as Falke et al. \cite{falke2003} proposed a learning classifier system that can be used to endow the computer with
-dynamically-changing %Maribel- por quÃ© le pones el guiÃ³n, quitaselo, dice lo mismo y esa palabra no existe como tal
-strategies that respond to the user's strategies,
-thus greatly extending the games playability. % Vale, seguimos
-                                % justificando el uso de CI en juegos
-                                % en un congreso de CI en juegos. - JJ
-%Moreover, some authors have research the implementation of a human-like AI \cite{weber2011-humanlevelAI}.
+The latter is an approach based in a self-learning algorithm as the one we are proposing, but focused in a subset of individuals (the elite) which can have a negative effect in the generalisation factor or the bots' knowledge. We have tested our method considering different rivals, in different studies. One of them is a previously optimized (and good-performing) bot, in order to deal with the so-called previous knowledge (Section \ref{sec:knowledge:previous}).
 
-In addition, in many RTS games, traditional artificial intelligence techniques fail to play at a human level because of the vast search spaces that they entail \cite{Aha05learningtowin}. In this sense, Ontano et at. \cite{ontanon2007} proposed to extract behavioural knowledge from expert demonstrations in form of individual cases. This knowledge could be reused via a case-based behaviour
-generator that proposed advanced behaviours to achieve specific
-goals. %Irrelevante para el trabajo - JJ 
-
-%In this line there are several works dealing with the case-base reasoning such as Baumgarten et al. \cite{Baumgarten-combiningAImethods} that combines some AI techniques, or Palma et al. \cite{Palma-behaviortrees} who apply behaviour trees.
-
-%Recently a number of soft-computing techniques and algorithms, such as co-evolutionary algorithms \cite{co-evol-rts2006} or multi-agent based methods \cite{HagelbackJ09}, just to cite a few, have already been applied to handle these problems in the implementation of RTS games. For instance, there are many benefits attempting to build adaptive learning AI systems which may exist at multiple levels of the game hierarchy, and which co-evolve over time. 
-%In these cases, co-evolving strategies might be not only opponents but also partners coperating at different levels \cite{Livingstone05}.
-%Other authors propose using co-evolution for evolving team tactics
-%\cite{avery2010coevolving}. However, the problem is how tactics are
-%constrained and parametrised and how the overall score is computed. 
-
-% Las carencias de estrategias tradicionales han llevado a... Un
-% artÃ­culo es una narrativa, una historia, escrÃ­belo como tal - JJ
-Evolutionary algorithms have been widely used in this field, %\cite{Ponsen_EvLearn_RTS,Su-EAs_StrategySel09}, 
-but they involve considerable computational cost and thus are not
-frequently used in on-line games. In fact, the most successful
-proposals for using EAs in games correspond to off-line applications
-\cite{offline-evolutionary-learning}, that is, the EA works (for
-instance, to improve the operational rules that guide the bot's
-actions) while the game is not being played, and the results or
-improvements can be used later during  the game. Through offline
-evolutionary learning, the quality of bots' intelligence in commercial
-games can be improved, and this has been proven to be more effective
-than opponent-based scripts.
-% Â¿Eso es todo?  Â¿Nada de RTS en juegos? Mira review de otros trabajos
-% anteriores donde nos meten caÃ±a por eso, menciona RTSs que los hay
-% a puÃ±ados. JJ
-
-This way, in the present work, an offline GA is applied to a
-parametrised tactic (set of behaviour model rules) inside the Planet
-Wars game (a basic RTS), in order to build the decision engine of a
-bot for that game, which will be considered later in the online
-matches.
-% Esto es de otro, Â¿no? - JJ
-
-
-%Maribel: Este artículo va de juegos y de coevolución. Hay estado del arte de juegos, pero poco de coevolución, pero apúntatelo para el siguiente.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM DESCRIPTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -451,6 +385,9 @@ As in the previous case, a theoretical maximum and minimum values are fixed for 
 \label{sec:conclusions}
 
 
+Future Work:
+
+Considerar el Hall of Fame \cite{Nogueira_HoF2013} (evaluar contra los X mejores individuos)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   ACKNOWLEDGEMENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
