@@ -153,13 +153,56 @@ The rest of the paper is organized as follows: the jsEO library is described nex
 
 \section{The jsEO library}
 \label{sec:jseo}
-In order to provide a modular, flexible, and object-oriented library, jsEO has been programmed in JavaScript language, making use of the inheritance provided by the MooTools framework (\url{http://mootools,net}). According to pre-existing libraries like EO (written in C++) and JEO (written in Java), jsEO is based on the key-point that any object that can be attached some kind of fitness value is a potential candidate to be evolved. The jsEO library can de downloaded from \url{http://goo.gl/WqTDyM} and it is being developed under the GNU GPLv2 license.
+In order to provide a modular, flexible, and object-oriented library,
+jsEO has been programmed in JavaScript language, making use of the
+inheritance provided by the MooTools framework, available from
+\url{http://mootools.net}.  % deberías al menos mencionar otros
+                            % frameworks como stackJS y por qué has
+                            % elegido este. No me vale "porque es el
+                            % que conozco" - JJ
+Following the {\em evolving objects}
+methodology, and in the same fashion as pre-existing
+libraries like EO (written in C++) \cite{EO:FEA2000} and JEO (written
+in Java) \cite{maribel:jp2001}, 
+jsEO is based on the key point that any object that can be attached
+some kind of fitness value is a potential candidate for evolution. The
+jsEO library can de downloaded from 
+%\url{http://goo.gl/WqTDyM}  % Hay que anonimizar los trabajos - JJ
+\url{anonymo.us/url}
+and it
+is being developed under the GNU GPLv2 license. 
 
-JavaScript's main advantage is that can be executed in most (if not any) web browsers. This allows programs written in this language to be executed in millions of computers, and other devices like smartphones and tablets. JavaScript was mainly designed to operate on the Document Object Model (DOM) browsers generate for every web page they load, thus, content, structure and format style can be dynamically changed while a web page is being visited.
+The main advantage of JavaScript  is that its virtual machine is
+included  in most (if not all) web browsers. This allows programs
+written in this language to be executed in billions of computers and
+other devices like smartphones and tablets. JavaScript was initially 
+designed to operate on the Document Object Model (DOM) browsers
+generate for every web page they load; thus, content, structure and
+format style can be dynamically changed while a web page is being
+visited; however, nowadays the JavaScript standard (ECMAscript) is
+implemented in many different environments, from standalone
+interpreters to systems such as the NoSQL database CouchDB. 
 
-On the other hand, JavaScript's main drawbacks come from the fact that it is interpreted, not compiled, (i.e., slower than desired), it has no access to every resource of the device (e.g. file systems,  memory, or output devices), and that its execution can be stopped by web-browsers if it is consuming too many resources.
+On the other hand, the main drawbacks of JavaScript  arise from the fact that
+it is interpreted, not compiled, (i.e., slower than desired), it has
+no access to every resource of the device (e.g. file systems,  memory,
+or output devices), and that its execution can be stopped by
+web-browsers if it is consuming too many resources; in fact, most
+browsers put a limit to coninuous execution of scripts and will issue
+a warning if that happens, as was noted by
+\cite{gecco07:workshop:dcor}. 
 
-Fig.~\ref{fig:jsEO-class-diagram} shows the class diagram of the library. As can be seen, there exist some abstract class which define the general structure of any evolutionary solution to a given problem. Main class is \textit{jsEO}, which represents any object to which a fitness can be assigned, and, consequently, that can be compared with any other. Starting from \textit{jsEO} class, class \textit{jsEOIndividual} can be derived representing any object that contains a chromosome and, therefore, can be evaluated by means of a fitness function. A \textit{jsEOPopulation} is an aggregation of individuals; it can be used to add, replace or remove individuals, can be sorted, and can be also asked to return a subset of individuals.
+Fig.~\ref{fig:jsEO-class-diagram} shows the class diagram of the
+library. As can be seen, there exist some abstract class which define
+the general structure of any evolutionary solution to a given
+problem. Main class is \textit{jsEO}, which represents any object to
+which a fitness can be assigned, and, consequently, that can be
+compared with any other. Starting from \textit{jsEO} class, class
+\textit{jsEOIndividual} can be derived representing any object that
+contains a chromosome and, therefore, can be evaluated by means of a
+fitness function. A \textit{jsEOPopulation} is an aggregation of
+individuals; it can be used to add, replace or remove individuals, can
+be sorted, and can be also asked to return a subset of individuals. 
 
 In order to build algorithms, operators have to be defined. Any operator inherits from \textit{jsEOOperator}, gets a population as input parameter, and returns a population; thus, it is designed for both operators affecting only one individual and operators acting over a whole population.
 
