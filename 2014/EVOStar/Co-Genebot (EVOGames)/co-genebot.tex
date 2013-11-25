@@ -101,15 +101,15 @@ Co-evolutionary algorithms (CEA) \cite{Paredis_CEA} are those which consider dif
 
 The fitness of the individuals is usually calculated using some individuals of other populations, according to the dependencies between species (interactions among populations). Depending on these interactions the CEAs are classified in:
 \begin{itemize}
+\vspace{-0.13in}
 \item \textit{Competitive co-evolutionary algorithms} \cite{Rosin_competitive_coevolution}, where the fitness of an individual depends on competition with other individuals from other species.
 \item \textit{Cooperative co-evolutionary algorithms} \cite{Potter_cooperative_coevolution}, where the aim is to find individuals from which better environment can be constructed. The fitness of an individual depends on its ability to cooperate in solving the target problem with individuals from other species.
+\vspace{-0.13in}
 \end{itemize}
 
 In this work, both types have been implemented since the evolution is performed following two different shapes for the four contenders in every match (in the evaluation step):  on one approach two of the contenders are individuals being evolved at a specific generation, and the other two opponents with a fixed Artificial Intelligence (AI) engine. On the other approach, four different players corresponding to four individuals being evolved are considered. These are respectively baptised as \textit{previously knowledge-based} approach and \textit{non-previously-knowledge-based} one.
 % Antonio - mira si te molan los nombres y úsalos o mejor si te inventas otros más chulos (y los usas)
-So, according to the previous taxonomy, both algorithms are competitive in the fitness calculation step and cooperative regarding the problem solving (find the best agents for this type of battles).
-
-The aim of using co-evolution is mainly to reduce the computational time, since a set of individuals are evaluated at a time (two or four, depending on the approach).
+So, according to the previous taxonomy, both algorithms are competitive in the fitness calculation step and cooperative regarding the problem solving (find the best agents for this type of battles).The aim of using co-evolution is mainly to reduce the computational time, since a set of individuals are evaluated at a time (two or four, depending on the approach).
 
 Moreover, three different fitness functions are also tested in the work, having three different types: one based in the bot's position and number of turns; another one based in the computation of a linear regression based on the percentage of ships with respect to the total; and the last calculating the integral of the function which represents these numbers.
 % Antonio - explica esto mejor, que no me acuerdo bien y tengo la cabeza loca a estas horas... :_(
@@ -238,7 +238,7 @@ Regarding the execution time of this approach,  we expect to reduce the needed t
 
 \subsection{Fitness}
 
-In previous works, a bot is evaluated always versus the same bot (an reference-bot). For fitness function, the bot is evaluated several times (in different maps). The fitness function is defined depending of the result of the battle (if the bot wins all its battles or loses in someone) and the numbers of turns needed for ending the game. For two bots, A and B the fitness is defined as the figure \ref{fig:fitness_turns_positions} shows \subref{fig:fitness_turns_positions:2}. 
+In previous works, a bot is evaluated always versus the same bot (an reference-bot). For fitness function, the bot is evaluated several times (in different maps). The fitness function is defined depending of the result of the battle (if the bot wins all its battles or loses in someone) and the numbers of turns needed for ending the game. For two bots, A and B the fitness is defined as the Fig.\ref{fig:fitness_turns_positions} shows. 
 
 %This fitness works well for 1vs1 battles, and the first fitness proposed is an natural evolution of this fitness applied to 4 on 4 bots battles.
 
@@ -247,7 +247,7 @@ In previous works, a bot is evaluated always versus the same bot (an reference-b
 This fitness is the natural evolution of the previous one, applied to 4 bots battles. Again, the evaluations are done with several maps. In this case, both the position ($1^{th}$, $2^{th}$,..) of the bot in the 4-battle and the number of used turns, are included into the study. % Maribel, la siguiente frase no se entiende, la voy a intentar reescribir, revisala por si cambio el sentido de algo.
 %For a bot that wins all the battles (it's $1^{th}$ in all) it's call {$ferocity$} to the sum turns, in previous works was found that a bot that wins in less turns it's best that other that takes more turns in win too. 
 We set the feature ferocity to each bot that wins all its battles. This ferocity  feature is included into the fitness as the sum of turns the bot need to win. This sum can be used to select the best bot when more than one wins all its battles because a bot that wins with less turns is better than other that wins all its battles but with more turns. 
-In other cases, the sum of turns is called {$sturdy$}, and opposite to the {$ferocity$}, it is desirable a bot that take more turns in be defeated. In fig\ref{fig:fitness_turns_positions}(\subref{fig:fitness_turns_positions:2})there are an formal description of this fitness.
+In other cases, the sum of turns is called {$sturdy$}, and opposite to the {$ferocity$}, it is desirable a bot that take more turns in be defeated. In Fig.\ref{fig:fitness_turns_positions:2} there are an formal description of this fitness.
 
 \begin{figure}[h]
 \tiny
@@ -272,8 +272,8 @@ In other cases, the sum of turns is called {$sturdy$}, and opposite to the {$fer
             \EndIf
         \EndIf
         \end{algorithmic}
+        \caption{Fitness used in battles of 2 bots}
         \label{fig:fitness_turns_positions:2}
-\caption{Fitness used in battles of 2 bots}
 \end{subfigure}
 \begin{subfigure}[!]{0.5\textwidth}
     \begin{algorithmic}
@@ -301,8 +301,8 @@ In other cases, the sum of turns is called {$sturdy$}, and opposite to the {$fer
     \label{fig:fitness_turns_positions:co}
 \caption{Fitness used in battles of 4 bots}
 \end{subfigure}
-\label{fig:fitness_turns_positions}
 \caption{Fitness based in turns and positions}
+\label{fig:fitness_turns_positions}
 \end{figure}
 
 In this fitness, we are only interesting in the final result: position and turn. We do not include into the analysis how the bot reach it. However, two variables are involved in the calculation of the fitness. Both variables make difficult the operation with severals evaluations, because the fitness is not possible to sum o average easyly. In the next fitness, it's used another metric to define the goodness of the bots. The percentage of the ships that in each turn belong to each player. 
@@ -323,7 +323,10 @@ For this fitness,  squares regression analysis for resume the cloud of points to
 %Maribel, he cambiado todos los it's que no sé por qué los pones y he simplificado las frases
 
 \begin{figure}[h]
+\centering
+\hspace*{-1in}
 \begin{subfigure}[H]{0.4\textwidth}
+	\large
     \begin{equation}
         \alpha = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X_{i}})(Y_{i} - \bar{Y_{i}})}{\sum_{i=1}^{n}(X_{i} - \bar{X_{i}})^{2}}
     \end{equation}
@@ -333,13 +336,16 @@ For this fitness,  squares regression analysis for resume the cloud of points to
     \caption{Leats squares regression}
     \label{equation:LeatsSqueares}
 \end{subfigure}
-\begin{subfigure}[H]{0.8\textwidth}
+\hfill
+\hspace*{0.2in}
+\begin{subfigure}[H]{0.7\textwidth}
 \begin{center}
-  \epsfig{file=imagenes/nubecita_pendiente.eps,width=1\textwidth}
+  \epsfig{file=imagenes/nubecita_pendiente.eps,width=1.1\textwidth}
 \end{center}
-\caption{Representation of the number of ships of each bot in each turn} %Maribel, cambio if por of
+\caption{Number of ships of each bot in each turn} %Maribel, cambio if por of
 \label{figura:nubecita:pendiente}
 \end{subfigure}
+\caption{Fitness based in slope}
 \end{figure}
 
 A %Maribel, sin n
@@ -350,27 +356,31 @@ theoretical maximum an minimum values is fixed for this fitness. An optimum bot 
 \subsection{Fitness bases in Area}
 \label{sec:fitness}
 
-For this case, the integral of the curve of the bot's live-line is used for calculate the area that is included into the fitness. This {$area$} is normalized to the number of turns, representing the average percentage of ships along the battle for each player. In the Fig\subref{equation:LeatsSqueares}
+For this case, the integral of the curve of the bot's live-line is used for calculate the area that is included into the fitness. This {$area$} is normalized to the number of turns, representing the average percentage of ships along the battle for each player.
 %Maribel, simplifico mucho la primera frase, porque ya todo el mundo debería saber que la integral es el área entre una curva y el eje x.
 
 \begin{figure}[h]
+\centering
+\hspace*{-1in}
 \begin{subfigure}[H]{0.4\textwidth}
+	\large
     \begin{equation}
         area=\frac{\int_{0}^{t}\%ships(x)dx}{t}
     \end{equation}
     \caption{Calculus of the area}
-    \label{equation:LeatsSqueares}
+    \label{equation:area}
 \end{subfigure}
-\begin{subfigure}[H]{0.8\textwidth}
+\begin{subfigure}[H]{0.6\textwidth}
 \begin{center}
-  \epsfig{file=imagenes/nubecita_integral.eps,width=1\textwidth}
+  \epsfig{file=imagenes/nubecita_integral.eps,width=0.6\textwidth}
 \end{center}
 \caption{Example of area under the live-line curve.} 
-\label{figura:nubecita}
+\label{figura:nubecita:area}
 \end{subfigure}
+\caption{Fitness based in area}
 \end{figure}
 
-As in the previous case, a theoretical maximum and minimum values are fixed for this fitness. if an optimal bot wins in the first turn, the area of each live-line is close to {$1$}, so this is the maximum value of the fitness. Furthermore, if a bot loses in the first turn, its live-line area is close to {$0$}. In this case, we do not extract addicional information related with which bot wins the battle, because the area of the live-line is not related with the winner of the battle. In this scope, we are losing some information.
+As in the previous case, a theoretical maximum and minimum values are fixed for this fitness. if an optimal bot wins in the first turn, the area of each live-line is close to {$1$}, so this is the maximum value of the fitness. Furthermore, if a bot loses in the first turn, its live-line area is close to {$0$}. In this case, we do not extract additional information related with which bot wins the battle, because the area of the live-line is not related with the winner of the battle. In this scope, we are losing some information.
 
 % Maribel, he corregido-reescrito todo el párrafo anterior
 
@@ -382,6 +392,7 @@ As in the previous case, a theoretical maximum and minimum values are fixed for 
 Different experiments are development to studies each part of this paper. The principal experiment is improve bots using the co-evolutionary algorithm. The parameters uses in the Co-GA are show in table in Fig.\ref{tabla:GA} . For each previously presented method, at least 3\footnote{GA generally requires more executions, but executions are costly in time in our problem.} executions of the Co-GA.
 
 \begin{figure}
+\centering
 \begin{tabular}{|c | c | c | c | c | c |}
 \hline
 Population Size & Generations & Crossover Factor & Mutation Factor & Elitism & Nts \\
@@ -395,12 +406,12 @@ Population Size & Generations & Crossover Factor & Mutation Factor & Elitism & N
 
 In addition, the time used for the evaluation in each generation was measure to compare the time needed for the GA. As you can see in Fig.\ref{figura:tiempos} the coevolution is faster than a simple GA, decreasing the time near to the half in the case of the previously-knowledge fitness, and a quarter in the autogenerated-knowledge fitness. 
 
-\begin{figure}[ht]
+\begin{figure}[h!t]
 \tiny
 \begin{center}
   \epsfig{file=./imagenes/tiempos_segundos.eps,width=7cm}
 \end{center}
-\caption{Generation average time of execution to each fitness and knowledge method.}
+\caption{Generation average time of execution.}
 \label{figura:tiempos}
 \end{figure}
 
@@ -410,26 +421,27 @@ In autogenerated knowledge fitness (Fig.\ref{estudio:fitness:auto}) can be obser
 
 However in the case of previously knowledge (Fig.\ref{estudio:fitness:previous}) in first generations a slight improvement in average fitness are observed. This may be because (on average) more and more individuals able to beat the bot used for prior knowledge exist.
 
-\begin{figure}[H]
-    \advance\leftskip-4cm
-    \begin{subfigure}[H]{0.6\textwidth}
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[H]{0.45\textwidth}
         \begin{center}
-            \epsfig{file=imagenes/2G-turnos_all.eps,width=1\textwidth}
-            \epsfig{file=imagenes/2G-pendiente_all.eps,width=1\textwidth}
-            \epsfig{file=imagenes/2G-area_all.eps,width=1\textwidth}
+            \epsfig{file=imagenes/2G-turnos_all.eps,width=1\textwidth, trim = 10mm 40mm 10mm 40mm, clip}
+            \epsfig{file=imagenes/2G-pendiente_all.eps,width=1\textwidth, trim = 10mm 40mm 10mm 40mm, clip}
+            \epsfig{file=imagenes/2G-area_all.eps,width=1\textwidth, trim = 10mm 40mm 10mm 40mm, clip}
         \end{center}
         \caption{Methods with previous knowledge: Turns/Position, slope \& area}
         \label{estudio:fitness:previous}
     \end{subfigure}
-    \begin{subfigure}[H]{0.6\textwidth}
+    \begin{subfigure}[H]{0.45\textwidth}
         \begin{center}
-            \epsfig{file=imagenes/4G-turnos_all.eps,width=1\textwidth}
-            \epsfig{file=imagenes/4G-pendiente_all.eps,width=1\textwidth}
-            \epsfig{file=imagenes/4G-area_all.eps,width=1\textwidth}
+            \epsfig{file=imagenes/4G-turnos_all.eps,width=1\textwidth, trim = 10mm 40mm 10mm 40mm, clip}
+            \epsfig{file=imagenes/4G-pendiente_all.eps,width=1\textwidth, trim = 10mm 40mm 10mm 40mm, clip}
+            \epsfig{file=imagenes/4G-area_all.eps,width=1\textwidth, trim = 10mm 40mm 10mm 40mm, clip}
         \end{center}
         \caption{Methods with autogenerate knowledge: Turns/Position, slope \& area}
         \label{estudio:fitness:auto}
     \end{subfigure}
+    \caption{Best, worse, average and standard deviation for fitness in each generation.}
     \label{estudio:fitness}
 \end{figure}
 
@@ -448,44 +460,44 @@ The next step is to study which of the methods creates a more competitive bot. F
 %\label{figura:tiempos}
 %\end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h!]
 \tiny
 \begin{center}
   \includegraphics[width=0.7\textwidth]{"imagenes/super_tabla"}
   \epsfig{file=imagenes/contra_3_genebots_grafica.eps,width=7cm}
 \end{center}
-\caption{Place finish in 500 simulations against 3 very tough opponents for each method.}
+\caption{500 simulations against 3 very tough opponents for each method.}
 \label{figura:supertest}
 \end{figure}
  
 To study whether the bots actually achieved by the turn-based fitness are less competitive, we conducted a simulation pitting three bots fitness achieved by each without crossing methods of knowledge. In Fig.\ref{figure:comparativa:fitness} can be show that the fitness based in turns/positions is actually much worse than the other methods.
 
-\begin{figure}[H]
-    \advance\leftskip-4cm
-    \begin{subfigure}[H]{0.6\textwidth}
+\begin{figure}[h!]
+    \advance\leftskip-2.5cm
+    \begin{subfigure}[H]{0.7\textwidth}
         \begin{center}
             \epsfig{file=imagenes/comparativa_fitness_separados.eps,width=1\textwidth}
         \end{center}
         \caption{With knowledge separately }
         \label{figure:comparativa:fitness:separados}
     \end{subfigure}
-    \begin{subfigure}[H]{0.6\textwidth}
+    \begin{subfigure}[H]{0.7\textwidth}
         \begin{center}
             \epsfig{file=imagenes/comparativa_fitness_total.eps,width=1\textwidth}
         \end{center}
         \caption{Total}
-        \label{figure:comparativa:fitness:separados}
+        \label{figure:comparativa:fitness:total}
     \end{subfigure}
+    \caption{Battle between best bot of each fitness methods in same knowledge type.}
     \label{figure:comparativa:fitness}
-    \caption{Best bot of each fitness execution, versus other fitness methods in same knowledge type}
 \end{figure}
 
 Finally, the top four bots found are tested. This simulation is done by performing clashes between them. Fig.\ref{figura:todos_contra_todos} shows how the bots are evenly matched in strength. However, there is a subtle predominance of bots trained with slope based fitness. Similarly, bots trained with prior knowledge, perform better than those with self-generated knowledge.
 
-\begin{figure}[H]
+\begin{figure}[h!]
 \tiny
 \begin{center}
-  \includegraphics[width=0.85\textwidth]{"imagenes/todos_contra_todos"}
+  \includegraphics[width=0.85\textwidth, trim = 1mm 0mm 0mm 1mm, clip]{"imagenes/todos_contra_todos"}
 \end{center}
 \caption{Results of 500 simulations faced the best bots obtained.}
 \label{figura:todos_contra_todos}
@@ -510,10 +522,10 @@ or the study of fitness suggested in other similar environments.
 Finally, it would be interesting to study If at an CO-GA algorithm as the one discussed in this paper needs a fitness function. Opting instead to use the co-evolution to solve the crossover and propagation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   ACKNOWLEDGEMENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\section*{Acknowledgements}
 
-\section*{Acknowledgements}
-
-This paper has been funded in part by projects P08-TIC-03903 (Andalusian Regional Government), TIN2011-28627-C04-02 (Spanish Ministry of Science and Innovation), and project 83 (CANUBE) awarded by the CEI-BioTIC UGR.
+%This paper has been funded in part by projects P08-TIC-03903 (Andalusian Regional Government), TIN2011-28627-C04-02 (Spanish Ministry of Science and Innovation), and project 83 (CANUBE) awarded by the CEI-BioTIC UGR.
 
 \bibliographystyle{splncs}
 \bibliography{genebot}
