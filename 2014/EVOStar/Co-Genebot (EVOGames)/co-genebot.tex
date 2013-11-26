@@ -392,7 +392,8 @@ The values of the different battles are summed to compute the global $slope$. Th
 \subsection{Fitness based in Area.}
 \label{sec:fitness}
 
-In this case, the integral of the curve of the bot's live-line is used for calculating the area that is `covered' by the fitness cloud of points (see Equation \ref{eq:area}). This {$area$} is normalized considering the number of turns, and thus it represents the average percentage of ships during the battle for each player. An example is shown in Fig. \ref{figura:nubecita:area}.
+In this case, the integral of the curve of the bot's live-line is used for calculating the area that is `covered' by the fitness cloud of points (see Equation \ref{eq:area}). This {$area$} is normalized considering the number of turns, and thus it represents the average percentage of ships during the battle for each player. 
+%An example is shown in Fig. \ref{figura:nubecita:area}.
 
 \begin{equation}
         area=\frac{\int_{0}^{t}\%ships(x)dx}{t}
@@ -435,10 +436,10 @@ As in previous case, maximum and minimum values has been set for this fitness. I
 \section{Experiments and Results}
 \label{sec:experiments}
 
-Several experiments have been conducted in order to study different issues of the proposed approaches, but having in mind that the main objective is the improvement of bots using a co-evolutionary algorithm. The set of parameters considered in the Co-GA are show in table in Fig.\ref{tabla:GA}. 
+Several experiments have been conducted in order to study different issues of the proposed approaches, but having in mind that the main objective is the improvement of bots using a co-evolutionary algorithm. The set of parameters considered in the Co-GA is shown in Table \ref{tabla:GA}. 
 For each one of the presented approaches (combinations of fitness functions and knowledge-related methods), ten executions of the Co-GA have been performed.
 
-\begin{figure}
+\begin{table}
 \centering
 \begin{tabular}{|c | c | c | c | c | c |}
 \hline
@@ -447,9 +448,9 @@ Population Size & Generations & Crossover prob. & Mutation prob. & Elitism & Tou
 100 & 200 & 0.6 & 0.1 & 20 & 2 \\
 \hline
 \end{tabular}
-\caption{Table with the parameters used in the GA.}
+\caption{Table with the parameters used in the Co-GA.}
 \label{tabla:GA}
-\end{figure}
+\end{table}
 
 As a first set of results, the average time consumed in the run of every generation is plotted in Fig. \ref{figura:tiempos}. The values are, as expected, reduced in a half in the previous knowledge approach (2 individuals per evaluation), and in 3/4 in the auto-generated knowledge (4 individuals per evaluation). This could be non-surprising results, but there should be considered than the original method evaluated 1 vs 1 battles, which are usually finished in less time than 4 vs 4 matches.
 
@@ -460,11 +461,11 @@ As a first set of results, the average time consumed in the run of every generat
 \begin{center}
   \epsfig{file=./imagenes/tiempos_segundos.eps,width=6cm}
 \end{center}
-\caption{Average time of execution (secs)}
+\caption{Average time per generation (secs)}
 \label{figura:tiempos}
 \end{figure}
 
-The second analysis concerns the fitness evolution. To this end the best, worst, and average (with standard deviation) fitness values are studied.
+The second analysis concerns the fitness evolution. To this end the best, worst, median and average (with standard deviation) fitness values are studied.
 In Fig. \ref{estudio:fitness} it can be seen the corresponding values to the best execution in every case, i.e. that of the 10 runs which obtained the considered as the best bot.
 
 In auto-generated knowledge fitness (Fig.\ref{estudio:fitness:auto}) it can be observed an homogeneous distribution throughout the generations, because the individuals are learning all of all, so the differences among them remain equal (in some limits) along the whole evolutionary process. That figure shows a high variability (or oscillations) in the best fitness graph, due to the rivals (in evaluation) are included in the learning process, so the population is not adapted to a common behavioural pattern, but every individual must learn to compete against (potentially) N-1 different bots. This means that the best individual varies frequently.
@@ -481,7 +482,7 @@ Anyway, the noisy nature of the fitness function due to the problem itself \cite
             \epsfig{file=imagenes/2G-pendiente_all.eps,width=1\textwidth, trim = 10mm 40mm 10mm 40mm, clip}
             \epsfig{file=imagenes/2G-area_all.eps,width=1\textwidth, trim = 10mm 40mm 10mm 40mm, clip}
         \end{center}
-        \caption{Methods with previous knowledge: from top to down Turns/Position, Slope \& Area}
+        \caption{Methods with previous knowledge: from top to down Turns/Position, Slope and Area}
         \label{estudio:fitness:previous}
     \end{subfigure}
     \begin{subfigure}[H]{0.49\textwidth}
@@ -490,7 +491,7 @@ Anyway, the noisy nature of the fitness function due to the problem itself \cite
             \epsfig{file=imagenes/4G-pendiente_all.eps,width=1\textwidth, trim = 10mm 40mm 10mm 40mm, clip}
             \epsfig{file=imagenes/4G-area_all.eps,width=1\textwidth, trim = 10mm 40mm 10mm 40mm, clip}
         \end{center}
-        \caption{Methods with auto-generated knowledge: from top to down Turns/Position, Slope \& Area}
+        \caption{Methods with auto-generated knowledge: from top to down Turns/Position, Slope and Area}
         \label{estudio:fitness:auto}
     \end{subfigure}
     \caption{Best, worst, average, median and Std.Dev for fitness in every generation.}
@@ -501,7 +502,7 @@ Next a comparison between the methods has been performed. However, since the fit
 
 First a fool bot (GoogleBot) has been chosen to simulate 400 battles. In these battles, every bot obtained by Co-GA has to fight against 3 of these bots. The results have been excellent, with 100\% of victories of the Co-Bots against them.
 
-Then, a tough set of rivals has been considered, being 3 of the best bots previously obtained in other work, namely three ANONYMOUSBots. 500 battles against them have been simulated, and the results are shown in Fig.\ref{figura:supertest}. The best average results are obtained for the Co-Bots obtained using previous knowledge, since they were trained to deal with at least two of them during the evolution. However, the scenario here is quite different since there is another ANONYMOUSBot as rival. As a general result, in both cases, the worst performance is achieved considering turns/position based fitness.
+Then, a tough set of rivals has been considered, being three copies of the best bot previously obtained in other work, namely three ANONYMOUSBots. 500 battles against them have been simulated, and the results are shown in Fig.\ref{figura:supertest}. The best average results are obtained for the Co-Bots obtained using previous knowledge, since they were trained to deal with at least two of them during the evolution. However, the scenario here is quite different since there is another ANONYMOUSBot as rival. As a general result, in both cases, the worst performance is achieved considering turns/position based fitness.
 
 %\begin{figure}[H]
 %\tiny
@@ -519,11 +520,12 @@ Then, a tough set of rivals has been considered, being 3 of the best bots previo
   %\includegraphics[width=0.7\textwidth]{"imagenes/super_tabla.eps"}
   \epsfig{file=imagenes/contra_3_genebots_grafica.eps,width=7cm}
 \end{center}
-\caption{500 simulations against 3 ANONYMOUSBots for each method.}
+\caption{Results (positions) of 500 4 vs 4 battles between 3 ANONYMOUSBots and a bot per each method.}
 \label{figura:supertest}
 \end{figure}
  
-To study whether the bots actually achieved by the turn-based fitness are less competitive, we conducted a simulation pitting three bots achieved by each approach without crossing methods of knowledge. In Fig.\ref{figure:comparativa:fitness} can be seen that the fitness based in turns/positions is actually much worse than the other methods.
+To study whether the bots actually achieved by the turn-based fitness are really less competitive, we have conducted a simulation (3 vs 3) matching the three bots achieved by the three fitness methods using, separately per knowledge approach. Fig.\ref{figure:comparativa:fitness:separados} shows the results for each knowledge method. It is complemented with the summed results plotted in Fig.\ref{figure:comparativa:fitness:total}, which shows the sum per fitness method (for the two knowledge approaches).
+As it can be seen the bots obtained with the fitness based in turns/positions perform clearly worse than the others.
 
 \begin{figure}[h!]
     \advance\leftskip-2.5cm
@@ -531,21 +533,21 @@ To study whether the bots actually achieved by the turn-based fitness are less c
         \begin{center}
             \epsfig{file=imagenes/comparativa_fitness_separados.eps,width=1\textwidth}
         \end{center}
-        \caption{With knowledge separately }
+        \caption{Results (positions) per knowledge approach}
         \label{figure:comparativa:fitness:separados}
     \end{subfigure}
     \begin{subfigure}[H]{0.7\textwidth}
         \begin{center}
             \epsfig{file=imagenes/comparativa_fitness_total.eps,width=1\textwidth}
         \end{center}
-        \caption{Total}
+        \caption{Total sum of results (same positions) per fitness method, considering both knowledge approches}
         \label{figure:comparativa:fitness:total}
     \end{subfigure}
-    \caption{Results of the battles between the bots obtained with the same knowledge type.}
+    \caption{Results of 1000 3 vs 3 battles between the obtained bots.}
     \label{figure:comparativa:fitness}
 \end{figure}
 
-Finally, the top four of the yielded bots are tested. This experiment has been conducted by doing 500 battles between them. Fig.\ref{figura:todos_contra_todos} shows how the bots have performed and their position in the battles. As it can be seen Slope-based Co-Bots are better than Area-based ones. Similarly, bots trained with previous knowledge, perform better than those with auto-generated knowledge.
+Finally, the top four of the yielded bots are tested in 500 battles between them. There is one bot per fitness function, without considering the turn-based ones (since they are worse).  Fig.\ref{figura:todos_contra_todos} shows how the bots have performed and their position in the battles. As it can be seen Slope-based Co-Bots are better than Area-based ones. Similarly, bots trained with previous knowledge, perform better than those with auto-generated knowledge.
 
 \begin{figure}[h!]
 \tiny
@@ -553,7 +555,7 @@ Finally, the top four of the yielded bots are tested. This experiment has been c
   \epsfig{file=imagenes/todos_contra_todos.eps,width=0.85\textwidth, trim = 1mm 0mm 0mm 1mm, clip}
   %\includegraphics[width=0.85\textwidth, trim = 1mm 0mm 0mm 1mm, clip]{"imagenes/todos_contra_todos.eps"}
 \end{center}
-\caption{Results of 500 simulations matching the four best bots obtained (one per approach).}
+\caption{Results (positions) of 500 4 vs 4 battles matching the four best bots obtained (one per approach).}
 \label{figura:todos_contra_todos}
 \end{figure}
 
