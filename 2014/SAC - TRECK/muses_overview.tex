@@ -222,17 +222,17 @@ MUSES system will work as presented in Figure \ref{fig:system_overview}. The use
 %\end{figure}
 
 
-%\begin{figure}[ht]
-%\centering
-%\epsfig{file=system_overview2.eps, scale=0.15}
-%\caption{MUSES system overview.\label{fig:system_overview}}
-%\end{figure}
-
-\begin{figure}[ht]
+\begin{figure*}[ht]
 \centering
-\epsfig{file=system_overview.eps, scale=0.45}
+\epsfig{file=system_overview2.eps, scale=0.22}
 \caption{MUSES system overview.\label{fig:system_overview}}
-\end{figure}
+\end{figure*}
+
+%\begin{figure*}[ht]
+%\centering
+%\epsfig{file=system_overview.eps, scale=0.5}
+%\caption{MUSES system overview.\label{fig:system_overview}}
+%\end{figure*}
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%   SYSTEM ARCHITECTURE   %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -248,9 +248,9 @@ MUSES system will work as presented in Figure \ref{fig:system_overview}. The use
 \end{figure*}
 
 
-The defined MUSES architecture is shown in Figure \ref{fig:client_server_architecture}. As it can be seen it is a \textit{client/server} approach in which the \textit{client} program will be installed in every user's mobile or portable device, independently of the platform (operating system and type of device). The \textit{server} side would be installed in the corporate SOC. Both sides are connected through a secure channel (using HTTPS) over Internet.
+The defined MUSES architecture is shown in Figure \ref{fig:client_server_architecture}. It is a \textit{client/server} approach in which the \textit{client} program will be installed in every user's mobile or portable device, independently of the platform (operating system and type of device). The \textit{server} side would be installed in the corporate SOC. Both sides are connected through a secure channel (using HTTPS) over Internet.
 
-The rationale for this decision is based in two main reasons: 1) there is needed a high computational power in order to perform the event correlation and self-adaptation processes, so a quite powerful machine should be used (server); 2) there are two clearly separated parts in the system, namely the users (client) and the enterprise (server).
+The rationale for this decision is based on two main reasons: 1) there is need for a high computational power in order to perform the event correlation and self-adaptation processes, so a quite powerful machine should be used (server); 2) there are two clearly separated parts in the system, namely the users (client) and the enterprise (server).
 
 There are two working modes for every device in the system: online and offline. In the \textit{online} mode the device can connect with the MUSES server, so it can request the server to make a decision. On the other hand, in \textit{offline} mode the server cannot be reached by the device (there is not an available connection between them), so all the decisions should be made locally. Anyway, in this mode, the gathered information by the sensors in the device will be stored for later submission to the server side (when a connection is available), in order to be processed in the knowledge refinement process.
 
@@ -263,11 +263,11 @@ In that figure the high-level components in each part are shown. They are descri
 
 Figure \ref{fig:client_submodules} shows the client architecture in detail, including the second-level components, and the information flows labelled as `Info XX'.
 
-\begin{figure}
+\begin{figure*}[ht]
 \centering
-\epsfig{file=client_submodules.eps, scale=0.33}
+\epsfig{file=client_submodules.eps, scale=0.5}
 \caption{MUSES Client Architecture (Submodules).\label{fig:client_submodules}}
-\end{figure}
+\end{figure*}
 
 There are three main components in this side:
 \begin{itemize}
@@ -277,7 +277,7 @@ There are three main components in this side:
 \end{itemize}
 
 The rest of the components are: the \textit{MUSES User Interface (UI)}, the application through which the user interacts with the system; and the \textit{Connection Manager} which controls the communications between client and server sides. 
-In addition, there are two types of applications considered in this system: on the one hand the \textit{MUSES Aware App}, which is an application adapted to MUSES can directly interact with it (monitoring and acting). This application must be implemented using the MUSES API (Application Program Interface)\footnote{The MUSES API will be defined in the project, so for every application desired to be MUSES Aware, it should be implemented using this.}. On the other hand the \textit{Non MUSES Aware App} is that which MUSES cannot directly interact with. Usually it will be accessed through the operating system (OS).
+In addition, there are two types of applications considered in this system: on the one hand the \textit{MUSES Aware App}, which is an application adapted to MUSES, so the system can directly interact with it (monitoring and acting). This application must be implemented using the MUSES API (Application Program Interface)\footnote{The MUSES API will be defined in the project, so for every application desired to be MUSES Aware, it should be implemented using this.}. On the other hand the \textit{Non MUSES Aware App} is that which MUSES cannot directly interact with. Usually it will be accessed through the operating system (OS).
 
 
 % ----------------------------------------------
@@ -287,18 +287,18 @@ In addition, there are two types of applications considered in this system: on t
 
 The server architecture can be seen in detail (at sub-module level) in Figure \ref{fig:server_submodules}, including as previously the information flows.
 
-\begin{figure}
+\begin{figure*}[ht]
 \centering
-\epsfig{file=server_submodules.eps, scale=0.35}
+\epsfig{file=server_submodules.eps, scale=0.5}
 \caption{MUSES Server Architecture (Submodules).\label{fig:server_submodules}}
-\end{figure}
+\end{figure*}
 
 
 As in the client, there are three main components:
 \begin{itemize}
-	 \item \textit{System Database}: it stores all the information that the system will manage, including authentication data, enterprise security policies, assets' values, user-related information (trust, context), events data and, of course, security rules to apply (regarding the security policies).
+	 \item \textit{System Database}: it stores all the information that the system will manage, including authentication data, enterprise security policies, assets' values, user-related information (trust, context), events data, and, of course, security rules to apply (regarding the security policies).
 
-	 \item \textit{Continuous Real-Time Event Processor (MusCRTEP)}: this component is the core of the MUSES system with respect the decision making process. It includes an \textit{Event Processor}, the module in charge of performing the event correlation process \cite{EventProcessing_Luckham12,SurveyEventCorrelation_Tiffany02}, gathering the set of occurred events and doing a rule-based threat identification. The output of this module is taken by the \textit{RT2AE}, which also considering information such as trust data and profiles, assets' values, user reputation or opportunity, performs a risk and trust analysis task \cite{RT2AE_SOTICS13}, and extracts the set of potential rules to consider in the analysed situation. Then, these rules are transformed into decisions (or Device Policies) by the \textit{Policy Selector}, that are submitted to those devices to which they apply by the \textit{Policy Transmitter}.
+	 \item \textit{Continuous Real-Time Event Processor (MusCRTEP)}: this component is the core of the MUSES system with respect to the decision making process. It includes an \textit{Event Processor}, the module in charge of performing the event correlation process \cite{EventProcessing_Luckham02,SurveyEventCorrelation_Tiffany02,EventProcessing_Luckham12}, gathering the set of occurred events and doing a rule-based threat identification. The output of this module is taken by the \textit{RT2AE}, which also considering information such as trust data and profiles, assets' values, user reputation, or opportunity, performs a risk and trust analysis task \cite{RT2AE_SOTICS13}, and extracts the set of potential rules to consider in the analysed situation. Then, these rules are transformed into decisions (or Device Policies) by the \textit{Policy Selector}, that are submitted to those devices to which they apply by the \textit{Policy Transmitter}.
 
 	 \item \textit{Knowledge Refinement System (MusKRS)}: this module is in charge of analysing the information stored in the system database, identifying relevant data, such as important patterns, key features, or security incidents. These are later processed for tuning up the existing set of rules or for inferring new ones. 
 %All this process is repeated asynchronously (sometimes a day, for instance) in order to adapt the security rules to new situations (predict user's behaviour).
@@ -306,7 +306,7 @@ As in the client, there are three main components:
 
 There are some other components, namely: the \textit{Security Policies/Risk Management} tool, that lets the company's chief security officer (CSO) to define and manage Security Policies and Rules in a friendly way. It also lets the management of risk-related information, useful for the RT2AE process, such as the assets' values. The \textit{Privacy Enhancing System} which is a module aimed to fit with the legal compliance of the system regarding the user's data anonymisation. The \textit{User, Context, Event Data Receiver} is devoted to receive data from the device side (events, user-related, etc) and to distribute them among the components (storing in the database, and requesting the Event Processor to start the correlation task). Finally, there is another \textit{Connection Manager} which controls the communication with the device side.
 
-As previously stated, one of the main features of the presented system will be the self-adaptation (to the user and context) of the set of security rules. To this end, the MusKRS's task will be run asynchronously to the system working. This process is composed by two steps: first, a Data Mining procedure \cite{DataMining_Lee01} will be performed, considering the whole amount of historic information mainly regarding user's behaviour and context. Some methods such as Clustering \cite{Clustering_Jain99} (grouping data), Pattern Recognition \cite{PatternMining_Han07} (usual situations identification), or Feature Selection \cite{FeatureSelection_Guyon03} (main variables/values in the data) will be applied. The second step consist in a refinement and inference process, performed by means of Machine Learning \cite{MachineLearning_Bishop06} and Computational Intelligence techniques. Regarding the latter, some methods will be used, such as Evolutionary or Genetic Algorithms \cite{EAs_Back96,GAs_Goldberg89} for parameters/values optimisation; or Genetic Programming \cite{GP_Koza92} for the modification of security rules.
+As previously stated, one of the main features of the presented system will be the self-adaptation (to the user and context) of the set of security rules. To this end, the MusKRS's task will be run asynchronously to the system working. This process is composed by two steps: first, a Data Mining procedure \cite{DataMining_Lee01} will be performed, considering the whole amount of historic information mainly regarding user's behaviour and context. Some methods such as Clustering \cite{Clustering_Jain99,Clustering_Xu05} (grouping data), Pattern Recognition \cite{PatternMining_Han07} (usual situations identification), or Feature Selection \cite{FeatureSelection_Guyon03} (main variables/values in the data) will be applied. The second step consists in a refinement and inference process, performed by means of Machine Learning \cite{MachineLearning_Bishop06} and Computational Intelligence techniques. Regarding the latter, some methods will be used, such as Evolutionary or Genetic Algorithms \cite{EAs_Back96,GAs_Goldberg89} for parameters/values optimisation; or Genetic Programming \cite{GP_Koza92} for the modification of security rules.
 
 Thus the set of rules will be adapted to every user in the system, updating some of the existing and creating new ones (always respecting the corporate security policies).
 Moreover, some predictive models will be also obtained applying other soft computing techniques, so the user's potentially dangerous behaviour will be anticipated.
@@ -353,7 +353,7 @@ Moreover, some predictive models will be also obtained applying other soft compu
 
 There exist in the market some products similar to MUSES, included in the so-called Software-as-a-Service (SaaS). The most extended are the IBM's \textit{Hosted Mobile Device Security Management} solution \cite{IBM_tool}, 
 Sophos's \textit{Mobile Control} software solution \cite{Sophos_tool}, 
-and the \textit{Bring Your Own Device Solution} \cite{Good_tool} of Good Technology. There are other two important products: one exclusive for Samsung devices, the \textit{KNOX} system \cite{Samsung_tool}, based on separate environments (personal and corporate, for instance), and one exclusive for Blackberry smartphones, the so called \textit{Blackberry Balance} \cite{Blackberry_tool}.
+and the \textit{Bring Your Own Device Solution} \cite{Good_tool} of Good Technology. There are other two important products: one exclusive for Samsung devices, the \textit{KNOX} system \cite{Samsung_tool}, based on separate environments (personal and corporate, for instance), and one exclusive for Blackberry smartphones, the so-called \textit{Blackberry Balance} \cite{Blackberry_tool}.
 
 The main differences with MUSES, is that it will be also a free, open-source, platform independent solution. This is an important advantage because all the existing tools take into account only smartphones and tablets, but MUSES covers laptops and company PCs too (normally servers). Moreover the companies need specific operating system and server (like Windows Server, for instance). Other big plus of the MUSES system is its new feature of self-adaptiveness. MUSES is able to adapt to changes, either regarding corporate security policies, newly discovered vulnerabilities or threats, different environments of use, or user profiles. 
 
@@ -366,7 +366,7 @@ Though these are clearly advantages of MUSES over the aforementioned products, t
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
 This work has been supported by the MUSES European project (FP7-318508).
-
+\\\\
 %
 % The following two commands are all you need in the
 % initial runs of your .tex file to
