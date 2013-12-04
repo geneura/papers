@@ -62,7 +62,7 @@ In this scenario several solutions have arisen in order to manage the corporate 
 MUSES will analyse the users' behaviour and predict, using computational intelligence methods, risky or dangerous actions regarding both an event correlation and a risk and trust analysis engines. The system will be able to learn from the past user's behaviour, and react in a non-intrusive way to the potentially dangerous sequence of actions that he or she is conducting at any time.
 
 The rest of the paper is organized as follows. First, some background situation about corporate secure networks is presented in Section \ref{sec:preliminaryconcepts}, explaining how BYOD affects to them. Then, some solutions from different companies are detailed in Section \ref{sec:toolsreview}, being specified for each one if the correspondent tool is available or, if not, the approximate release date. Some solutions are focused only in smartphones, while others are thought for laptops; also some are for a certain platform, but others remain multiplatform. 
-Then, in Section \ref{sec:muses}, the Multiplatform End-Point Security System is presented. Its advantages and benefits in the comparison with the other solutions are commented in Section \ref{sec:comparison}.
+Then, in Section \ref{sec:muses}, the Multiplatform Endpoint Security System is presented. Its advantages and benefits in the comparison with the other solutions are commented in Section \ref{sec:comparison}.
 Finally, the conclusions are discussed in Section \ref{sec:conclusions}.
 
 
@@ -74,7 +74,7 @@ Finally, the conclusions are discussed in Section \ref{sec:conclusions}.
 \section{Preliminary concepts and background about enterprise security}
 \label{sec:preliminaryconcepts}
 
-Until these days, enterprises used to follow a static Security Policy devoted to controlling a certain structure\cite{BYOD13}, where the Information Assets and the devices were purchased and maintained by the company. Now that corporate networks are becoming dynamic for being adapted to the BYOD philosophy, there is an additional risk because the devices that the employees use are not always company-owned. A needed security policy, or more accurately, an Information Security Policy should deal with the way of protecting a certain organization's information against a security breach. Though there are standards, such as ISO27002 or Security Forum's Standard of Good Practice, and many guidelines \cite{SecPol09}, an Information Security Policy is built depending on the characteristics of the community/organisation that they are built for.
+Until these days, enterprises used to follow a static Security Policy devoted to controlling a certain structure \cite{BYOD13}, where the Information Assets and the devices were purchased and maintained by the company. Now that corporate networks are becoming dynamic for being adapted to the BYOD philosophy, there is an additional risk because the devices that the employees use are not always company-owned. A needed security policy, or in this case, an Information Security Policy (ISP from now on) should deal with the way of protecting a certain organization's information against a security breach. Though there are standards, such as ISO27002 or Security Forum's Standard of Good Practice\footnote{https://www.securityforum.org}, and many guidelines \cite{SecPol09}, an ISP is built depending on the characteristics of the community/organisation that they are built for.
 
 On the other hand, employee-owned devices like smartphones, they are not just for work purposes anymore. As the name says, smartphones are more than simple old cell phones, and people who use them in their works have the possibility of maintaining a good balance between work and private life. For this reason, the risk of uncontrolled devices accessing to corporate access in unsafe conditions, due to the number of risky applications, is bigger.
 
@@ -82,7 +82,9 @@ Normally, enterprise network architecture was being adapted to cope with externa
 
 Thus now, more things should be considered than the usual ones when designing a company's network architecture. In Figure \ref{fig:proposed_diagram} there is a proposal which can be used for the beginning of the study of solutions that may secure such a dynamic environment. It includes the possibility of having employee-owned mobile (smartphones and tablets) and portable (laptops) devices, and also the opportunity that the employees have of connecting these devices either from inside or outside the company premises. Moreover, company's information assets are constantly accessed under these conditions, considering that an information asset means every \textit{piece of information} that has a \textit{value} (cost depending on the risk of being lost or leaked) for the company, and that can be from files with sensitive information to certain mails, or even company applications.
 
-The other 
+The other issue to cope with is the elaboration of a good ISP, understandable for every user of the company, and more importantly, non intrusive for them. A lot of researchers have studied the natural tendency of employees to comply with the ISP \cite{SecPolComp07,SecPolComp10,SecPolComp12}, reaching conclusions such as the employees compliance with the security policies increases educating/training them in information security awareness\cite{SecPolComp09}, and decreases applying too much sanctions when a misuse or abuse occurs\cite{SecPolPenalty09}. For each tool in Section \ref{sec:toolsreview} it is specified if the developers have taken into account the construction of ISPs, or even if they give some guidelines for building them.
+
+This situation leads to a need of protecting the organisation's side, but also the users' side, making non-interfering easy-to-follow ISPs and leaving them to use their devices for personal purposes while working whithout putting organisation's information assets under risk. The compliance of these requirement would compose an End-to-End Security Solution (protecting both enterprise and employee), which is the motivation for the development of the tools reviewed and, as presented in Section \ref{sec:muses}, is the aim of the MUSES project.
 
 \begin{figure}
 	\begin{center}
@@ -130,58 +132,26 @@ Now that BYOD philosophy is a trend, a number of tools have been designed specif
 
 One of the first companies who supported the BYOD model was IBM in 2011 \cite{IBM_tool}, as they recognized the increase of employees who brang their personal smartphones or tablets into the workplace. To help organizations\cite{ibm11} embrace both company and employee owned mobile devices (as said, this practise is part of the BYOD model) in a security-rich environment, IBM developed a mobile device security management solution. For IBM, a mobile security strategy should focus on several key areas.
 
-On one hand, the organization should identify which business data the strategy will allow to be stored and processed on which mobile devices. This helps determine what needs to be protected and to what degree. Then, because different mobile platforms have different native security mechanisms, the organization needs to define which mobile device platforms will be allowed in the business environment and, thus, need to be supported in the mobile security strategy and plan. Also there is need to decide the responsibility for mobile security management work, whether using the current IT security team to handle mobile devices, or outsourcing to a managed security service provider. And no matter what the mobile environment, a number of mobile security policies and best-practise procedures need to be put in place and should also be identified in the company's mobile security strategic plan.
+On one hand, the organization should identify which business data the strategy will allow to be stored and processed on which mobile devices. This helps determine what needs to be protected and to what degree. Then, because different mobile platforms have different native security mechanisms, the organization needs to define which mobile device platforms will be allowed in the business environment and, thus, need to be supported in the mobile security strategy and plan. Also there is need to decide the responsibility for mobile security management work, whether using the current IT security team to handle mobile devices, or outsourcing to a managed security service provider. And no matter what the mobile environment, a number of mobile ISP and best-practise procedures need to be put in place and should also be identified in the company's mobile security strategic plan.
 
-Taking into account these considerations, IBM developed a framework that specifies security domains and levels for applying various security technologies. When applied to mobile devices, the framework suggests the following security controls, with actual requirements varying by deployment. The features of this framework depend on the asset to be protected.
+Taking into account these considerations, IBM developed a framework that specifies security domains and levels for applying various security technologies. When applied to mobile devices (not portable, so that laptops are not considered), the features of this framework depend on the asset to be protected:
 
-\begin{table}
-	\caption{IBM Hosted Mobile Device Security Management framework}
-	\label{tab:IBMframework}
-	\begin{tabular}{ p{11cm} }
-		\hline
-		\textbf{Identity and access}\\
-		\hline
-		Enforce strong passwords to access the device.\\
-		Use site authentication or two-factor user authentication to help increase the trustworthiness between a user and a website.\\
-		If VPN access to corporate intranet is allowed, include capability to control what IP addresses can be accessed and when re-authentication is required for accessing critical resources.\\
-		\hline
-		\textbf{Data protection}\\
-		\hline
-		Encrypt business data stored on the device and during transmission.\\
-		Include capability to wipe data locally and remotely.\\
-		Set timeout to lock the device when it is not used.\\
-		Periodically back up data on the device so data restore is possible after the lost device has been recovered.\\
-		Include capability to locate or lockout the device remotely.\\
-		\hline
-		\textbf{Application security}\\
-		\hline
-		Download business applications from controlled locations.\\
-		Run certified business applications only.\\
-		Monitor installed applications and remove those identified to be untrustworthy or malicious.\\
-		\hline
-		\textbf{Fundamental integrity control}\\
-		\hline
-		Run antimalware software to detect malware on storage and in memory.\\
-		Run a personal firewall to filter inbound and outbound traffic.\\
-		Integrate with the company's VPN gateway so a device's security posture becomes a dependency for intranet access.\\
-		\hline
-		\textbf{Governance and compliance}\\
-		\hline
-		Incorporate mobile security into the company's overall risk management program.\\
-		Run a personal firewall to filter inbound and outbound traffic.\\
-		Include mobile devices in the company's periodic security audit.\\
-		\hline
-	\end{tabular}
-\end{table}
+\begin{description}
+	\item[Identity and access] Not only the use of strong passwords when accesing the devices, but also supply two way authentication and VPN access control, by supervising the authorised IP addresses and adding re-authentication for accessing resources with high value.
+	\item[Data protection] Data security stored in the devices, related to profesional life, is encrypted, also during the transmission. Moreover, when a device is lost, data can be removed remotely, and the device located or locked out (locking out a device is also made after a modifiable timeout). Finally, back ups are performed periodically once the device has been recovered.
+	\item[Application security] This is related to the requirement of being connected from a controlled location for authorising the download of business applications, and those applications must be certified (also the currently running on the device). Actually, IBM's tool can monitor and remove applications which are identified as untrustwothy or unsafe.
+	\item[Fundamental integrity control] Running both antimalware software and personal firewall, and making the result of these tests as dependency for VPN's intranet access. 
+	\item[Governance and compliance] Taking into consideration the mobile security as an important point in the overall risk management program of the company, and extend the periodic security audits to mobile devices too.
+\end{description}
 
-Regarding IBM hosted mobile device security solution's architecture, the solution is built on a sound client-server architecture in which the server centrally controls and manages security policies and settings for various security features. The client would be installed on the mobile device and regularly communicate with the server to enforce policies, execute commands and report status. Also, IBM's solution contains reporting and analysis capabilities, with information that helps the company to support policy and regulation compliance, recognize the mobile threat landscape and evaluate the solution's effectiveness in countering threats.
+Regarding IBM hosted mobile device security solution's architecture, the solution is built on a sound client-server architecture in which the server centrally controls and manages security policies and settings for various security features. The client would be installed on the mobile device and regularly communicate with the server to enforce policies, execute commands and report status. Also, IBM's solution contains reporting and analysis capabilities, with information that helps the company to support ISP compliance, recognize the mobile threat landscape and evaluate the solution's effectiveness in countering threats.
 
 %----------------------------------------------------------------------------
 
 \subsection{Sophos Mobile Control}
 \label{subsec:sophos}
 
-Sophos is a company founded in 1985 focused on IT security and data protection for businesses. Their ``Mobile Device Management'' main product is Sophos Mobile Control. It is oriented to IT administration for mobile devices, trying to offer to the users the possibility of choosing the delivery model to suit their needs, i.e., between on-premise and Software as a Service (SaaS).
+Sophos is a company founded in 1985 focused on IT security and data protection for businesses. Their ``Mobile Device Management'' main product \cite{Sophos_tool} is Sophos Mobile Control. It is oriented to IT administration for mobile devices, trying to offer to the users the possibility of choosing the delivery model to suit their needs, i.e., between on-premise and Software as a Service (SaaS).
 
 The tool offers the possibility of managing all workers and co-workers smartphones and tablets from a single-based console. The console monitors the devices throughout their full lifecycle: from the initial set up and enrolment, right through to decommissioning. Other features are similar to IBM's product, adding some new like being able to connect to an existing user directory using Lightweight Directory Access Control (LDAP)\footnote{LDAP is an application protocol for accessing and maintaining distributed directory information services over an Internet Protocol (IP) network.}.
 	
@@ -203,7 +173,7 @@ Then, the Enterprise App Store in Sophos Mobile Control allows the company to su
 \subsection{Samsung's Knox Mobile Security Suite}
 \label{subsec:samsungknox}
 
-As part of its SAFE (Samsung for enterprise) brand, Samsung revealed at the Barcelona Mobile World Congress 2013 the Knox application, which will be available on his next Galaxy smartphone generation.
+As part of its SAFE (Samsung for enterprise) brand, Samsung revealed at the Barcelona Mobile World Congress 2013 the Knox application \cite{Samsung_tool}, which will be available on his next Galaxy smartphone generation.
 The main feature of this security package is the use of different containers for the business and the personal side. Each one even has its own set of wallpapers, in order to be more evident for the user. Figure \ref{fig:img_knox_01} shows the architecture followed by the application.
 To enter the business side, it will be necessary to introduce a password. Nevertheless, no passwords will be required for the business applications anymore. The applications approved by the company IT department must meet Samsung's security standards and allow single sign-on. There will be over 338 IT policies that can be access via the Knox API. Also, Knox allows different VPNs for individual apps.
 Regarding the information protection methods, data files saved by applications of each environment are encrypted with AES 256-bit algorithm, in such manner the container and only the container can access these files. In the same way, the user won't be able to share data between the two environments, i.e. there will be separate contact lists and the user cannot send a contact from one side to the other. Also, if the user copies data to the clipboard in the Knox container, it won't be there in the personal container. Other features of this tool are the following:
@@ -227,7 +197,7 @@ Regarding the information protection methods, data files saved by applications o
 \subsection{Good's Bring Your Own Device solution}
 \label{subsec:goodsbyod}
 
-Good Technology is a company that was founded in 1996 in California. The philosophy followed by Good is similar to Samsung's Knox one: to create a secure container that places an unreachable partition between personal and business data to protect email and other programs. The solutions that they offer are similar than the previous ones. They have focused in mobile (not laptops) devices, though they support a number of OSs, and in separarting personal and company data. A Good's secure Network Operations Center (NOC) is introduced for dealing with the unauthorised devices, or providing access to secure collaboration solutions (email, PIM, calendar), intranet, and in-house or third-party mobile applications. Finally, Good offers best practice recommendations to help the company's BYOD policies such as reimbursements and stipends. There is a document available at Good's webpage\footnote{\url{http://www1.good.com/mobility-management-solutions/bring-your-own-device}} which contains a number of questions about security policies and how to cope them all.
+Good Technology is a company that was founded in 1996 in California. The philosophy followed by Good is similar to Samsung's Knox one: to create a secure container that places an unreachable partition between personal and business data to protect email and other programs. The solutions that they offer \cite{Good_tool} are similar than the previous ones. They have focused in mobile (not laptops) devices, though they support a number of OSs, and in separarting personal and company data. A Good's secure Network Operations Center (NOC) is introduced for dealing with the unauthorised devices, or providing access to secure collaboration solutions (email, PIM, calendar), intranet, and in-house or third-party mobile applications. Finally, Good offers best practice recommendations to help the company's BYOD policies such as reimbursements and stipends. There is a document available at Good's webpage\footnote{\url{http://www1.good.com/mobility-management-solutions/bring-your-own-device}} which contains a number of questions about Information Security Policies and how to cope them all.
 
 %----------------------------------------------------------------------------
 
@@ -316,7 +286,7 @@ In addition, the existing products are mostly policy-based, but MUSES takes its 
 \section{Conclusions}
 \label{sec:conclusions}
 
-In this work, there were presented many tools that prove how information security in the enterprise is adapting to this emergent philosophy of BYOD. For each one, the main features and working environments were detailed. Also it was shown, by the introduction to MUSES project, how the European Community is specially aware about that and is developing a free solution for managing employees privacy, and securing companies' assets in this changing environment.
+In this work, there were presented many tools that prove how information security in the enterprise is adapting to this emergent philosophy of BYOD. For each one, the main features and working environments were detailed. Also it was shown, by the introduction to MUSES project, how the European Community is specially aware about that and is developing a free solution for managing employees privacy, and securing companies' assets in this changing environment. The paper has been written through a vast literature review; the tools were not possible to be tested because, in the first place, all of them but MUSES are neither free nor open source and, secondly, some of them has not been released yet, such as the Samsung Knox (release delayed to the end of 2013) or MUSES, which first prototype is still under development.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%  ACKNOWLEDGEMENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -340,7 +310,7 @@ http://www.machinetomachinemagazine.com/2012/12/05/docomo-to-launch-global-m2m-p
 The Radicati Group Inc., report \emph{Microsoft Office 365 - Analysis and Forecast, 2012-2016}. June 2012. 
 
 \bibitem{BYOD13}
-Sandy Bacik, \emph{Security Implications of Bring Your Own Device, IT Consumerization, and Managing User Choices}, in Information Security Management Handbook, Sixth Edition, Volume 7, pp. 133--142, 2013.
+Sandy Bacik, \emph{Security Implications of Bring Your Own Device, IT Consumerization, and Managing User Choices}, in Information Security Management Handbook, Sixth Edition, Volume 7, pp. 133-142, 2013.
 
 \bibitem{ibm11}
 I-Lung Kao, \emph{IBM Security Services. Securing mobile devices in the business environment}, IBM, 2011.
@@ -354,6 +324,23 @@ Network Security Using Attack Graphs}. Project Report IA-2. Lincoln Laboratory, 
 
 \bibitem{SecPol09}
 Charles Cresson Wood and Dave Lineman. \emph{Information Security Policies Made Easy Version 11}. Information Shield, Inc. 2009.
+
+\bibitem{SecPolComp12}
+Al-Omari, A., El-Gayar, O., Deokar, A., and Walters, J. \emph{Security Policy Compliance: User Acceptance Perspective}. 45th Hawaii International
+Conference on System Sciences (pp. 3317-3326). IEEE, 2012.
+
+\bibitem{SecPolComp10}
+Bulgurcu, B., Cavusoglu, H., and Benbasat, I. \emph{Information security policy compliance: an empirical study of rationality-based beliefs and information security awareness}. MIS Quarterly, 34(3), 523–548. 2010.
+
+\bibitem{SecPolComp07}
+M. Siponen, S. Pahnila, and A. Mahmood. \emph{Employees’ adherence to information security policies: an empirical study}. In IFIP International Federation for Information Processing, Volume 232, New Approaches for Security, Privacy and Trust in Complex Environments pp. 133-144, 2007.
+
+\bibitem{SecPolComp09}
+R. S. Shaw, C. C. Chen, A. L. Harris, and H.-J. Huang. \emph{The impact of information richness on information security 
+awareness training effectiveness}. Computers \& Education, vol. 52, pp. 92-100, 2009.
+
+\bibitem{SecPolPenalty09}
+T. Herath and H. R. Rao. \emph{Protection motivation and deterrence: a framework for security policy compliance in organisations}. European Journal of Information Systems, vol. 18, pp. 106-125, 2009.
 
 \bibitem{Adams_Users05}
 A.~Adams and A.~Sasse.
