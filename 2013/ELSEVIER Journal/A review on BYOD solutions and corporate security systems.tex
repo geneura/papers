@@ -9,6 +9,8 @@
 \usepackage{url}
 \usepackage[english]{babel}
 
+%Usa nombres más cortos y sin espacios para ficheros, dan menos problemas. También faltaba un fichero .bst, que he añadido. 
+
 \begin{document}
 
 \begin{frontmatter}
@@ -16,7 +18,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   TITLE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{A Review on Corporate Security Solutions. A Comparison with a User-Centric and Self-Adaptive System}
-
+% review on o review of? - JJ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   AUTHORS   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \author{P. de las Cuevas, A.M. Mora, J.J. Merelo}
@@ -32,7 +34,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   ABSTRACT   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \begin{abstract} 
-Enterprises, and their Chief Security Officers (CSOs) particularly, want to be sure that their Security Policies are complied. This goal turned hard to achieve since employees are able to use their own devices (laptops, smartphones, and tablets) at work, or at home but for work purposes. As this is part of the Bring Your Own Device (BYOD) philosophy and is being adopted by many companies everyday, a number of solutions have arisen in order to adapt it securely. In this paper, the most relevant solutions are presented, describing their main features. In addition a novel system being developed inside the European Project MUSES (Multiplatform Usable Endpoint Security), is also introduced and compared with these existing solution. This system is able to cope with security issues regarding the enterprise security policies, but is a user-centric tool, which considers system user's behaviour in order to adapt or even increase the defined set of security rules. MUSES applies machine learning and computational intelligence techniques in order to do this, and also is able to predict future security incidences produced by these users.
+Enterprises, and particularly their Chief Security Officers (CSOs), want to make sure that their Security Policies are complied. % fulfilled? Met? - JJ
+ This goal has become hard to achieve since employees are able to use their own devices (laptops, smartphones, and tablets) at work, or at home but for work purposes. Since this is part of the Bring Your Own Device (BYOD) philosophy and is being adopted by many companies every day, a number of solutions have arisen in order to adapt it securely. In this paper, the most relevant solutions are presented, describing their main features. In addition a novel system being developed inside the European Project MUSES (Multiplatform Usable Endpoint Security), is also introduced and compared with these existing solution. % No puedes comparar soluciones existentes con soluciones propuestas hasta que no haya un prototipo. Debes dejar claro esto o te lo van a echar en cara - JJ
+ This system is able to cope with security issues regarding the enterprise security policies, but is a user-centric tool, which considers system user's behaviour in order to adapt or even increase the defined set of security rules. MUSES applies machine learning and computational intelligence techniques in order to do this, and also is able to predict future security incidences produced by these users. % ¿applies en presente o will apply en el futuro? Si haces "claims" tienes que probarlos - JJ
 \end{abstract}
 
 %
@@ -52,26 +56,94 @@ Corporate mobile security \sep End-to-end security solutions \sep User-centric s
 \section{Introduction}
 \label{sec:intro}
 
-The way on how data has been stored and accessed in the companies has completely changed along the years. The use of owned servers being accessed by desktop PCs (and maybe laptops) from inside the company facilities has been transformed into the distribution of these data among a number of machines, even not all belonging to the company, and working over the famous Cloud Computing environment. Besides, being stored in the cloud or not, data are being consulted and modified through a wide amount of devices, some of them owned by the company's users. This is the so-called Bring Your Own Device (BYOD) philosophy. It is becoming highly successful due to the impact that portable devices (such as smartphones and tablets) are having in the market.
-Data security and privacy are key factors for a company, thus, to protect them, it is usual to define Organisational Security Policies. Their definition is nowadays a very difficult problem, since the BYOD tendency means that several factors must be considered \cite{Opp_Security11}, most of them previously ignored or non considered in security systems, for instance the current mixture between personal and professional information in these devices (the user could navigate inside social networks where there could be friends and also company partners or clients).
+The way how data has been stored and accessed in the companies has
+completely changed over the last few years. %Pruébalo. Debes tratar de
+                                %probar todas las afirmaciones que
+                                %incluyas - JJ 
+ The use of company-owned servers being accessed from desktop PCs (and
+ maybe laptops) from within the company facilities has been
+ transformed into the distribution of these data among a number of
+ machines, even not all belonging to the company, and % este and es de
+                                % "the distribution", así que no
+                                % puedes usar un gerundio - JJ
+working over the famous Cloud Computing environment. Besides, being
+stored in the cloud or not, data are %data es colectivo, por tanto
+                                %singular, aunque también se puede
+                                %usar are
+                                %http://www.theguardian.com/news/datablog/2010/jul/16/data-plural-singular
+                                %- JJ
+ being consulted and modified through a wide amount of devices, some
+ of them owned by the company's users. This is the so-called Bring
+ Your Own Device (BYOD) philosophy. It is becoming highly successful
+ due to the impact that portable devices (such as smartphones and
+ tablets) are having in the market. % no references so far: bad - JJ
+Data security and privacy are key factors for a company, thus, to
+protect them, it is usual to define Organisational Security
+Policies. Their definition is nowadays a very difficult problem, since
+the BYOD tendency %No lo has definido - JJ
+ means that several factors must be considered \cite{Opp_Security11}, most of them previously ignored or non considered in security systems, for instance the current mixture between personal and professional information in these devices (the user could navigate inside social networks where there could be friends and also company partners or clients).
 
-In this scenario several solutions have arisen in order to manage the corporate security. Some solutions are focused only in smartphones, while others are thought for laptops; also some are implemented for a certain platform, but others consider multiplatform. However most of them try to be non-intrusive (regarding the users' personal data), friendly and easy to use. 
-
+In this scenario several solutions have arisen in order to manage the
+corporate security. Some of them are focused only on smartphones, while others are thought for laptops; also some are implemented for a certain platform, but others consider multiplatform. However most of them try to be non-intrusive (regarding the users' personal data), friendly and easy to use. 
 This paper presents an overview of the main solutions, describing their features, advantages and flaws. 
 
-Moreover, it has been demonstrated that people are the main hazard regarding the company security \cite{Adams_Users05}, so in this situation, some monitorization and security-aimed applications are arising, aiming to cope with the concept of seamless working experience on different devices. 
+Moreover, % moreover qué? La última frase se refiere a lo que hace
+          % este trabajo - JJ
+it has been demonstrated that people are the main hazard regarding the company security \cite{Adams_Users05}, so in this situation, some monitorization and security-aimed applications are arising, aiming to cope with the concept of seamless working experience on different devices. 
 This concept is a methodology of work which allows users to start/continue a working session over multiple devices and locations without any significant loss of data. This new situation has a big impact from the point of view of the security \cite{Schu_SecPatterns05}, since the company's data borders have changed in the last years so now the users can access significant data from outside the enterprise, and possibly through a non absolutely secure channel.
 
-Thus, this work also introduces a novel (still in development) system named MUSES, from Multiplatform Usable Endpoint Security, which is a device-independent end-to end user-centric tool, based in a set of security rules defined as specifications of the Company Security Policies, but with the capability of `learning' from the user's past behaviour and adapt, even inferring new ones, the set of rules in order to deal with potential future security incidents due to the user's. Then will react, in a non-intrusive way, to the potentially dangerous sequence of actions (events) that he or she is conducting at any time.
+Thus, this work also introduces a novel (still in development) system
+named MUSES, from Multiplatform Usable Endpoint Security, which is a
+device-independent end-to end user-centric tool, based in a set of
+security rules defined as specifications of the Company Security
+Policies, but with the capability of `learning' from the user's past
+behaviour and adapt, even inferring new ones, the set of rules in
+order to deal with potential future security incidents due to the
+user's. Then will react, in a non-intrusive way, to the potentially
+dangerous sequence of actions (events) that he or she is conducting at
+any time. % lo de he or she deberías quitártelo de enmedio. O usas he
+          % o she, aclarando al principio lo que quieres hacer - JJ
 
-To this end MUSES will analyse the users' behaviour by means of Data Mining (DM) techniques \cite{DataMining_Lee01} and Machine Learning (ML) methods \cite{MachineLearning_Bishop06}, extracting a set of patterns which will be later processed by means of Computational Intelligence (CI) algorithms \cite{}.
+To this end MUSES will analyse the users' behaviour by means of Data
+Mining (DM) techniques \cite{DataMining_Lee01} and Machine Learning
+(ML) methods \cite{MachineLearning_Bishop06}, extracting a set of
+patterns which will be later processed by means of Computational
+Intelligence (CI) algorithms \cite{}. % trabajo futuro no debe estar
+                                % en la intro. Lo que quieras o no
+                                % quieras hacer no prueba nada - JJ
 
-MUSES will include some important modules in the loop, such as an Event Processor, which performs an event correlation task \cite{SurveyEventCorrelation_Tiffany02}, matching occurred events with rules to deal with them and extracting threads that a Real-Time Risk and Trust Analysis Engine (RT2AE) \cite{RT2AE_SOTICS13} will process (along with other trust data and profiles), to select the best subset.
+MUSES will include some important modules in the loop, such as an
+Event Processor, which performs an event correlation task
+\cite{SurveyEventCorrelation_Tiffany02}, matching occurred events with
+rules to deal with them and extracting threads that a Real-Time Risk
+and Trust Analysis Engine (RT2AE) \cite{RT2AE_SOTICS13} will process
+(along with other trust data and profiles), to select the best
+subset. % ¿Es un overview o un "position paper"? Si vas a hablar de
+        % muses también debes decirlo en el título.  JJ
 
-In the paper a comparison between the rest of solutions and MUSES is also conducted, focusing on the advances beyond the state of the art that this novel system (being developed inside an European Project of the same name) will bring. 
+In the paper a comparison between the rest of solutions and MUSES is
+also conducted, focusing on the advances beyond the state of the art
+that this novel system (being developed inside an European Project of
+the same name) will bring.  % en esta comparación Muses falla una
+                            % característica básica: "existencia". Yo
+                            % lo incluiría como trabajo futuro
+                            % solamente en vez de hacer tanto
+                            % énfasis. 
 
-The rest of the paper is organized as follows. First, some background situation about enterprise security is presented in Section \ref{sec:preliminaryconcepts}, explaining how BYOD philosophy affects it. Then, some solutions from different companies are detailed in Section \ref{sec:toolsreview}, even if they are still in development.  
-Then, in Section \ref{sec:muses}, the Multiplatform Endpoint Security System is presented. Its advantages and benefits in comparison with the other solutions are commented in Section \ref{sec:comparison}.
+The rest of the paper is organized as follows. First, some background
+situation about enterprise security is presented in Section
+\ref{sec:preliminaryconcepts}, explaining how BYOD philosophy affects
+it. % "it" sería "background" en este caso. Si no te refieres a él
+    % simplemente pon el sustantivo entero - JJ
+Then, some solutions from different companies are detailed in Section
+\ref{sec:toolsreview}, even if they are still in development.   % no
+                                % cualifiques esto. "Present and near
+                                % future", por ejemplo. 
+Then, in Section \ref{sec:muses}, the Multiplatform Endpoint Security
+System is presented. Its advantages and benefits in comparison with
+the other solutions are commented in Section
+\ref{sec:comparison}. %Siendo que muses no existe, yo no le dedicaría
+                      %una sección aparte - JJ
 Finally, the conclusions are discussed in Section \ref{sec:conclusions}.
 
 
@@ -83,7 +155,8 @@ Finally, the conclusions are discussed in Section \ref{sec:conclusions}.
 \section{Preliminary concepts and background about enterprise security}
 \label{sec:preliminaryconcepts}
 
-Until these days, enterprises used to follow a static Security Policy devoted to controlling a certain structure \cite{BYOD13}, where the Information Assets and the devices were purchased and maintained by the company. Now that corporate networks are becoming dynamic for being adapted to the BYOD philosophy, there is an additional risk because the devices that the employees use are not always company-owned. A needed security policy, or in this case, an Information Security Policy (ISP from now on) should deal with the way of protecting a certain organization's information against a security breach. Though there are standards, such as the ISO27002 or the Security Forum's Standard of Good Practice\footnote{https://www.securityforum.org}, and many guidelines \cite{SecPol09}; an ISP is built depending on the characteristics of the community/organisation that they are built for.
+Until these days, %cuáles días? - JJ
+ enterprises used to follow a static Security Policy devoted to controlling a certain structure \cite{BYOD13}, where the Information Assets and the devices were purchased and maintained by the company. Now that corporate networks are becoming dynamic for being adapted to the BYOD philosophy, there is an additional risk because the devices that the employees use are not always company-owned. A needed security policy, or in this case, an Information Security Policy (ISP from now on) should deal with the way of protecting a certain organization's information against a security breach. Though there are standards, such as the ISO27002 or the Security Forum's Standard of Good Practice\footnote{https://www.securityforum.org}, and many guidelines \cite{SecPol09}; an ISP is built depending on the characteristics of the community/organisation that they are built for.
 
 On the other hand, employee-owned devices like smartphones, are not just for work purposes anymore. As the name says, smartphones are more than simple old cellular phones, and people who use them in their works have the possibility of maintaining a good balance between work and private life. For this reason, the risk of uncontrolled devices accessing to corporate access in unsafe conditions, due to the number of risky applications is bigger.
 
@@ -114,7 +187,8 @@ This situation leads to a need of protecting the organisation's side, but also t
 Now that BYOD philosophy is becoming a tendency, a number of tools appeared by now, and others are under development but expected to be released soon. They were specifically designed for Chief Security Officers (CSOs) and Chief Information Security Officers (CISOs) to secure, monitor, and act over spartphones and other personal mobile or portable devices, when they become too risky. Some of those tools have influenced the development of the MUSES system  itself (Section \ref{sec:muses}). The present section introduces the mentioned products, as they can be considered related to the MUSES objectives.
 
 % Don't completely like the intro for being too focused to MUSES.
-
+% Aparte, ya hay algún trabajo e informes publicados por Muses, igual
+% sería conveniente citarlos - JJ
 %----------------------------------------------------------------------------
 
 \subsection{IBM Hosted Mobile Device Security Management}
@@ -183,7 +257,28 @@ It is important to take into account that if an enterprise decides to deploy thi
 \subsection{Good's Bring Your Own Device solution}
 \label{subsec:goodsbyod}
 
-Good Technology is a company that was founded in 1996 in California. The philosophy followed by Good is similar to Samsung's Knox one: to create a secure container that places an unreachable partition between personal and business data in order to protect company's assets. The solutions that they offer \cite{Good_tool} are similar than the previous ones. They have focused in mobile (not laptops) devices, though they support a different of Operating Systems (OSs), and in separating personal and company data. A Good's secure Network Operations Center (NOC) is introduced for dealing with the unauthorised devices, or for providing access to secure collaboration solutions (email, PIM, calendar), intranet, and in-house or third-party mobile applications. Finally, Good offers best practise recommendations to help the company's BYOD policies such as reimbursements and stipends. There is a document available at Good's webpage\footnote{\url{http://www1.good.com/mobility-management-solutions/bring-your-own-device}} which contains several questions about Information Security Policies and how to cope with all of them.
+Good Technology is a company that was founded in 1996 in
+California. %irrelevante - JJ
+ The philosophy followed by Good's solution is similar to Samsung's
+ Knox one: to create a secure container that places an unreachable
+ partition between personal and business data in order to protect
+ company's assets. The solutions that they offer \cite{Good_tool} are
+ similar than the previous ones. They have focused in mobile (not
+ laptops) devices, though they support a different of Operating
+ Systems (OSs), and in separating personal and company data. A Good's
+ secure Network Operations Center (NOC) is introduced for dealing with
+ the unauthorised devices, or for providing access to secure
+ collaboration solutions (email, PIM, calendar), intranet, and
+ in-house or third-party mobile applications. Finally, Good offers
+ best practise recommendations to help the company's BYOD policies
+ such as reimbursements and stipends. There is a document available at
+ Good's
+ webpage\footnote{\url{http://www1.good.com/mobility-management-solutions/bring-your-own-device}}
+ which contains several questions about Information Security Policies
+ and how to cope with all of them. %Los contenedores son soluciones de
+                                %virtualización. Igual sería
+                                %interesante que introdujeras estas
+                                %solucones en general - JJ
 
 %----------------------------------------------------------------------------
 
