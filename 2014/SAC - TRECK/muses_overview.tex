@@ -65,7 +65,7 @@
 \crdata{978-1-4503-2469-4/14/03}  % Allows default copyright data (X-XXXXX-XX-X/XX/XX) to be over-ridden.
 % --- End of Author Metadata ---
 
-\title{MUSES: A corporate user-centric system which applies computational intelligence methods}
+\title{MUSES: A corporate user-centric system which applies computational intelligence methods} % Using the present for something that does not exist yet is dangerous - JJ 
 %\subtitle{[Poster paper]}
 %
 % You need the command \numberofauthors to handle the 'placement
@@ -172,8 +172,25 @@ Z. Hodaie\\
 
 \maketitle
 \begin{abstract}
-This work presents the description of the architecture of a novel enterprise security system, still in development, which can prevent and deal with the security flaws derived from the users in a company. Thus, the Multiplatform Usable Endpoint Security system (MUSES) considers diverse factors such as the information distribution, the type of accesses, the context where the users are, the category of users, or the mix between personal and private data, among others.
-This system includes an event correlator and a risk and trust analysis engine to perform the decision process. MUSES follows a set of defined security rules, according to the enterprise security policies, but it is able to self-adapt the decisions and even create new security rules depending on the user behaviour, the specific device, and the situation or context. To this aim MUSES applies machine learning and computational intelligence techniques which can also be used to predict potential unsafe or dangerous user's behaviour.
+This work presents the description % == describes - JJ
+ of the architecture of a novel enterprise security system, still in
+ development, which can % can or will be able? - JJ
+ prevent and deal with the security flaws % flaws == defects. Better
+                                % isues - JJ
+derived from the users in a company. Thus, the Multiplatform Usable
+Endpoint Security system (MUSES) considers diverse factors such as the
+distribution of information, the type of accesses, the context where
+the users are, the category of users or the mix % mix? - JJ
+between personal and private data, among others.
+This system includes an event correlator and a risk and trust analysis
+engine to perform the decision process. MUSES follows a set of defined
+security rules, according to the enterprise security policies, but it
+is able to self-adapt the decisions and even create new security rules
+depending on the user behaviour, the specific device, and the
+situation or context. To this aim MUSES applies % intends to apply - JJ
+ machine learning and computational intelligence techniques which can
+ also be used to predict potential unsafe or dangerous user's
+ behaviour. % how do you know this will work? - JJ
 \end{abstract}
 
 %A category including the fourth, optional field follows...
@@ -191,16 +208,65 @@ This system includes an event correlator and a risk and trust analysis engine to
 \section{Introduction}
 \label{sec:intro}
 
-Some years ago, company data were stored in own servers which were accessed by the employees or users by means of desktop or portable computers. Nowadays it is frequent that these data are distributed among multiple machines, even not all belonging to the company, and being consulted and modified through a wide amount of devices, some of them owned by the company's users. This is the so-called Bring Your Own Device (BYOD) philosophy. It is becoming highly successful due to the impact that smartphones and tablets are having in the market.
-Data security and privacy are key factors for a company, thus, to protect them, it is usual to define Organisational Security Policies. Their definition is nowadays a very difficult problem, since the BYOD tendency means that several factors must be considered \cite{Opp_Security11}, most of them previously ignored or non-considered in the security systems, for instance the current mixture between personal and professional information in these devices (the user could navigate inside social networks where there could be friends and also company partners or clients).
+Some years ago, company data were stored in company-owned servers
+which were accessed by the employees or users by means of desktop or
+portable computers. % This is the same as in Paloma's paper. You have
+                    % to qualify this. Who claims that? -JJ
+ Nowadays it is frequent that these data are distributed among
+ multiple machines, even not all belonging to the company, and being
+ consulted and modified through a wide amount of devices, some of them
+ owned by the employees.  %reference - JJ
+This is the so-called Bring Your Own Device (BYOD) philosophy. % reference - JJ
+It is becoming highly successful due to the impact that smartphones
+and tablets  are having in the market. % reference
+Data security % shouldn't this be "information security"? Also --
+              % reference - JJ
+and privacy are key factors for a company, thus, to protect them, it
+is usual to define Organisational Security Policies. % definition -JJ
+Their definition is nowadays a very difficult problem, % sez who?
+                                % Reference - JJ
+since the BYOD tendency means that several factors must be considered
+\cite{Opp_Security11}, most of them previously ignored or
+non-considered in the security systems, for instance the current
+mixture between personal and professional information in these devices
+(the user could surf social networks where there could be friends and
+also company partners or clients). % so what? - JJ
 
-Moreover, it has been demonstrated that people are the main hazard regarding the company security \cite{Adams_Users05}, so in this situation, some monitorization and security-aimed applications are arising. Most of them try to be non-intrusive (regarding the users' personal data), friendly and easy to manage.
+Moreover, it has been demonstrated that people are the main hazard
+regarding the company security \cite{Adams_Users05}, % this reference
+                                % is from before smartphones were
+                                % available - JJ
+so in this situation, some monitorization and security-aimed
+applications are arising. Most of them try to be non-intrusive
+(regarding the users' personal data), friendly and easy to manage. % so what? - JJ
 
-This work presents the general architecture of one of these systems, named MUSES, Multiplatform Usable Endpoint Security system. It is being implemented inside an European Project and will provide a device independent, user-centric, and self-adaptive corporate security system, able to cope with the concept of seamless working experience on different devices. This concept is a methodology of work which allows users to start/continue a working session over multiple devices and locations without any significant loss of data. This new situation has a big impact from the point of view of the security \cite{Schu_SecPatterns05}, since the company's data borders have changed in the last years so now the users can access significant data from outside the enterprise, and possibly through a non absolutely secure channel.
+This work presents the general architecture of one of these systems,
+named MUSES, Multiplatform Usable Endpoint Security system. % which is
+                                % better than the state of the art
+                                % why? - JJ
+It is being implemented by an European Project and will provide a
+device independent, user-centric, and self-adaptive corporate security
+system, able to cope with the concept of seamless working experience
+on different devices. This concept % is it your concept? - JJ
+ is a working methodology  which
+allows users to start/continue a working session over multiple devices
+and locations without any significant loss of data. This new situation
+has a big impact from the point of view of the security
+\cite{Schu_SecPatterns05}, since the company's data borders have
+changed in the last years % data borders? - JJ 
+so now the users can access significant data
+from outside the enterprise, and possibly through a non absolutely
+secure channel. % this should go _before_ you introduce MUSES - JJ
 
 In this scenario MUSES will analyse the users' behaviour and predict, using computational intelligence methods, risky or dangerous actions regarding both an event correlation and a risk and trust analysis engines. The system will be able to learn from the past user's behaviour, and react in a non-intrusive way to the potentially dangerous sequence of actions that he or she is conducting at any time.
 
-The rest of the paper is organised as follows: next section gives a brief overview on the MUSES system initial proposal. Then, the designed architecture is deeply described in Section \ref{sec:architecture}. Finally, in Section \ref{sec:advantages} MUSES features are compared with other existing products, giving an idea on its advantages, along with the advances beyond the state of the art that this system aims to.
+The rest of the paper is organised as follows: next section gives a
+brief overview on the initial proposal of the MUSES system. Then, the
+designed architecture is described in depth in Section
+\ref{sec:architecture}. Finally, in Section \ref{sec:advantages} MUSES
+features are compared with other existing products, giving an idea on
+its advantages, along with the advances beyond the state of the art
+that this system aims to. 
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%   SYSTEM OVERVIEW   %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -208,8 +274,11 @@ The rest of the paper is organised as follows: next section gives a brief overvi
 \section{System initial overview}
 \label{sec:system}
 
-MUSES system will work as presented in Figure \ref{fig:system_overview}. The user interacts with the devices, own or corporate, through the MUSES graphical interface and inside his or her own context (situation, connection, status). This application includes two modules, a \textit{controller} and an \textit{actuator}. The first one monitorizes the environment (context) and the user's behaviour, translating his/her actions into a sequence of events. These events, along with the patterns defining the user's conduct, are processed by the system in real-time by means of a Risk and Trust Analysis Engine (RT2AE) and an Event Correlation module. Then, a decision is taken in the corporate security operations centre (SOC) side, considering the RT2AE output and the set of security rules adapted to that specific user and context. The corresponding feedback is communicated to the user through the \textit{actuator}, which is also in charge of triggering the recommended actions to stop the user's or application's doings, in case it is required.
+MUSES system will work as presented in Figure
+\ref{fig:system_overview}. The user interacts with the his own or
+corporate devices through the MUSES graphical interface and inside his or her own context (situation, connection, status). This application includes two modules, a \textit{controller} and an \textit{actuator}. The first one monitorizes the environment (context) and the user's behaviour, translating his/her actions into a sequence of events. These events, along with the patterns defining the user's conduct, are processed by the system in real-time by means of a Risk and Trust Analysis Engine (RT2AE) and an Event Correlation module. Then, a decision is taken in the corporate security operations centre (SOC) side, considering the RT2AE output and the set of security rules adapted to that specific user and context. The corresponding feedback is communicated to the user through the \textit{actuator}, which is also in charge of triggering the recommended actions to stop the user's or application's doings, in case it is required.
 
+% just one paragraph? - JJ
 
 %This client contains a \textit{monitorization module}, which gathers the performed sequence of events and user context information; a \textit{controller module} in charge of take some light decisions considering the server response to the current situation (it will also take the control in case the device cannot connect with the server). The device controller will trigger the \textit{actuator} if necessary. This module will provide the user with some feedback, and will interact with the applications being monitorized if recommended or required.
 %
@@ -348,20 +417,46 @@ Moreover, some predictive models will be also obtained applying other soft compu
 %
 \section{MUSES Advantages}
 \label{sec:advantages}
+% Maybe advance beyond the state of the art - JJ
 
 %Inside corporate security, and because of the introduction in the companies of the Bring Your Own Device (BYOD) philosophy, many projects and products have raised to cover this new situation. MUSES is one of these projects, thus the products that have influenced it and which form a solid State of the Art in BYOD security are going to be presented.
 
-There exist in the market some products similar to MUSES, included in the so-called Software-as-a-Service (SaaS). The most extended are the IBM's \textit{Hosted Mobile Device Security Management} solution \cite{IBM_tool}, 
+There exist in the market some products similar to MUSES, % what's the
+                                % name of the product category? - JJ
+usually
+marketed as Software-as-a-Service (SaaS). The most extended % sez who?
+                                % - JJ
+ are the IBM's \textit{Hosted Mobile Device Security Management}
+ solution \cite{IBM_tool}, 
+% Found this paper that cits this solution "Novo, Tatiana
+% Silva. "Segurança da informação no uso de smartphones em ambiente
+% corporativo." (2013)." Should check it out - JJ
 Sophos's \textit{Mobile Control} software solution \cite{Sophos_tool}, 
+% This is mentioned also here: http://arxiv.org/abs/1304.0076 Should
+% check it out and include in the bibliography  This paper (or thesis,
+% or whatever) is also relevant Mylonas, Alexios. "Security and
+% Privacy in Ubiquitous Computing: The Smartphone Model and Paradigm."
+% - JJ
 and the \textit{Bring Your Own Device Solution} \cite{Good_tool} of Good Technology. There are other two important products: one exclusive for Samsung devices, the \textit{KNOX} system \cite{Samsung_tool}, based on separate environments (personal and corporate, for instance), and one exclusive for Blackberry smartphones, the so-called \textit{Blackberry Balance} \cite{Blackberry_tool}.
 
-The main differences with MUSES, is that it will be also a free, open-source, platform independent solution. This is an important advantage because all the existing tools take into account only smartphones and tablets, but MUSES covers laptops and company PCs too (normally servers). Moreover the companies need specific operating system and server (like Windows Server, for instance). Other big plus of the MUSES system is its new feature of self-adaptiveness. MUSES is able to adapt to changes, either regarding corporate security policies, newly discovered vulnerabilities or threats, different environments of use, or user profiles. 
+The main differences with MUSES, is that it will be also a free,
+open-source, platform independent solution. This is an important
+advantage because all the existing tools take into account only
+smartphones and tablets, but MUSES covers laptops and company PCs too
+(normally servers). Moreover the companies need specific operating
+system and server (like Windows Server, for instance). % need them for
+                                % what? - JJ
+Other big plus of the MUSES system is its new feature of self-adaptiveness. MUSES is able to adapt to changes, either regarding corporate security policies, newly discovered vulnerabilities or threats, different environments of use, or user profiles. 
 
 The existing products are mostly policy-based, but MUSES takes its decisions not only considering policies, but also based on the terminals/users context (location, connected networks and so on), to really understand the real danger of a specific action.
 
-Moreover, MUSES has the feature of having two connection modes, depending on the client being able to connect with the server or not, which favours a real-time decision making process.
+Moreover, MUSES has the feature of having two connection modes,
+depending on the client being able to connect with the server or not,
+which favours a real-time decision making process. % which modes? - JJ
 
-Though these are clearly advantages of MUSES over the aforementioned products, they also establish a progress beyond the state of the art. Other issues that MUSES aims to progress on are related to risk and trust data analysis, human-computer interaction (or HCI), device monitoring, and legal compliance. First, as mentioned previously, it will implement a self-adaptive event correlation, including a novel hybrid technique of rule refinement and rule adjustment extracting relevant information from processing huge amounts of data. Then, the project defines a new approach to risk management taking into account threats (with their costs) as well as the innovative concept of opportunity, i.e. the following beneficial outcome from a situation on which, for instance, a user is able to work while waiting at the airport if risk is low enough. About HCI and usability of mobile devices, this will set up a significant advance in the state of the art because of the novelty of the BYOD philosophy, and trying to look for individual differences among the users in susceptibility to persuasive strategies for secure behaviour. Regarding device monitoring, MUSES will also take into account the so-called context observation, by which private or professional scenarios will be detected, or predicted, based on advanced machine learning techniques. Finally, the project is concerned about legal compliance in regards of Information Security Policies, so that it will contribute to the proposal for the EU Data Protection: legal binding force and legal certainty of company policies, and end-user responsibility.
+Though these are clear advantages of MUSES over the aforementioned
+products, they %they? who? - JJ
+ also establish a progress beyond the state of the art. Other issues that MUSES aims to progress on are related to risk and trust data analysis, human-computer interaction (or HCI), device monitoring, and legal compliance. First, as mentioned previously, it will implement a self-adaptive event correlation, including a novel hybrid technique of rule refinement and rule adjustment extracting relevant information from processing huge amounts of data. Then, the project defines a new approach to risk management taking into account threats (with their costs) as well as the innovative concept of opportunity, i.e. the following beneficial outcome from a situation on which, for instance, a user is able to work while waiting at the airport if risk is low enough. About HCI and usability of mobile devices, this will set up a significant advance in the state of the art because of the novelty of the BYOD philosophy, and trying to look for individual differences among the users in susceptibility to persuasive strategies for secure behaviour. Regarding device monitoring, MUSES will also take into account the so-called context observation, by which private or professional scenarios will be detected, or predicted, based on advanced machine learning techniques. Finally, the project is concerned about legal compliance in regards of Information Security Policies, so that it will contribute to the proposal for the EU Data Protection: legal binding force and legal certainty of company policies, and end-user responsibility.
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
