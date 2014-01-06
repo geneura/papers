@@ -12,30 +12,6 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% First comes an example EPS file -- just ignore it and
-% proceed on the \documentclass line
-% your LaTeX will extract the file if required
-\begin{filecontents*}{example.eps}
-%!PS-Adobe-3.0 EPSF-3.0
-%%BoundingBox: 19 19 221 221
-%%CreationDate: Mon Sep 29 1997
-%%Creator: programmed by hand (JK)
-%%EndComments
-gsave
-newpath
-  20 20 moveto
-  20 220 lineto
-  220 220 lineto
-  220 20 lineto
-closepath
-2 setlinewidth
-gsave
-  .4 setgray fill
-grestore
-stroke
-grestore
-\end{filecontents*}
-%
 \RequirePackage{fix-cm}
 %
 %\documentclass{svjour3}                     % onecolumn (standard format)
@@ -68,7 +44,7 @@ grestore
 \title{Creating Autonomous Agents for Playing Super Mario Bros Game by Means of Evolutionary Finite State Machines}
 %\subtitle{Do you have a subtitle?\\ If so, write it here}
 
-\titlerunning{Creating Autonomous Agents for Super Mario Game with Evolutionary FSMs}        % if too long for running head
+\titlerunning{Creating  Agents for Super Mario with Evolutionary FSMs}        % if too long for running head
 
 \author{A.M. Mora \and  J.J. Merelo \and P. García-Sánchez \and P.A. Castillo \and M.S. Rodríguez-Domingo \and R.M. Hidalgo-Bermúdez}
 
@@ -94,8 +70,26 @@ University of Granada, Spain. \\
 \maketitle
 
 \begin{abstract}
-This paper proposes the design and improvement of an autonomous agent based in a mixture between behavioural models (Finite State Machines, FSMs) and evolutionary methods (Genetic Algorithms in this case), consisting on the consideration of FSMs as part of the individuals to evolve. This leads to finally obtain a so-called \textit{bot}, which is able to autonomously complete different scenarios on a simulator of Super Mario Bros. game. The bot should follow \textit{Gameplay} track rules of the international Mario AI Championship.
-Mono- and multi-seed approaches (evaluation in one play or multiple plays respectively) have been analysed, considering the machine resources consumption, which turns in a bottleneck in some experiments. However, the methods yield agents which can finish several stages of different difficulty successfully, and which play much better than an expert human player. According to the results and considering the competition's restrictions and objectives, these agents would have enough performance to participate in this competition track.
+This paper shows the design and improvement of an autonomous agent
+based in a using evolutionary methods to improve behavioural models
+(Finite State Machines, FSMs), which are part of the individuals to
+evolve. This leads to the obtention of a so-called \textit{bot} that
+follows the \textit{Gameplay} track
+rules of the international Mario AI Championship and
+is able to autonomously complete different scenarios on a simulator of
+Super Mario Bros. game. Mono- and multi-seed approaches (evaluation in
+one play or multiple plays respectively) have been analysed, % ¿por
+                                % qué? - JJ
+considering the machine resources consumption, which turns in a
+bottleneck in some experiments. However, the methods yield agents
+which can finish several stages of different difficulty successfully,
+and playing much better than an expert human player. % quién lo dice?
+                                % - JJ
+According to
+the results and considering the competition's restrictions and
+objectives, these agents would have enough performance to participate
+in this competition track. % un "would have" no cabe en un
+                           % abstract. Di resultados "reales" - JJ
 \keywords{Videogames \and Super Mario Bros \and Artificial Intelligence \and \and Genetic Algorithms \and Finite State Machines \and Autonomous Agents \and Non Player Characters \and Bots}
 % \PACS{PACS code1 \and PACS code2 \and more}
 % \subclass{MSC code1 \and MSC code2 \and more}
@@ -107,24 +101,79 @@ Mono- and multi-seed approaches (evaluation in one play or multiple plays respec
 \section{Introduction}
 \label{sec:intro}
 
-Videogames have considerably evolved from their original concept to the complex technological products that they have become, creating a massive industry and market as important as the cinematographic one. Thus, in recent years, most of the game development has been focused on the technical part (graphics and sound), leaving the Artificial Intelligence (AI) aside. However, nowadays artificial intelligence (specifically Computational Intelligence, CI) is becoming more relevant, since videogames players are requesting for opponents which mean a real challenge, and so provide a better gaming experience. This is leading to new research lines on how to create non-playing characters with adapted and unpredictable behaviour, i.e. more human-like in some sense.
+Videogames have considerably evolved from their original concept to
+the complex technological products  they are nowadays, creating along
+the way a massive industry and market as important as the
+cinematographic one. However, in recent years, most  game development
+has been focused on the technical part (graphics and sound), leaving
+the Artificial Intelligence (AI) aside.  % Por favor, tratad de citar
+                                % todas las afirmaciones que hagáis,
+                                % sobre todo si soportan vuestro
+                                % método - JJ
+However, nowadays artificial intelligence (specifically Computational
+Intelligence, CI)  % ¿hay una diferencia? ¿Hay inteligencia artificial
+                   % que no es computacional? - JJ
+is becoming more relevant, since videogames players are requesting for
+opponents which mean a real challenge, and so provide a better gaming
+experience. This is leading to new research lines on how to create
+non-playing characters with adapted and unpredictable behaviour,
+i.e. more human-like in some sense. 
 
-Going back to the first modern video games, and focusing on one of the most prolific characters, in 1981 Shigeru Miyamoto\footnote{Designer and producer of Nintendo Ltd., and winner of the 2012 Príncipe de Asturias Prize in Humanities and Communication} created Donkey Kong, in which a plumber named Jumpman tries to rescue his girlfriend from a gorilla. This character was evolved, and in 1983 (thanks again to Miyamoto) Mario Bros. games series appeared. The most famous was platform game Super Mario Bros., which was launched in arcade and also in the Nintendo's home console NES. Several other sequels have been published, including the blockbuster Super Mario World in the 90s, which had a great improvement in graphics, sound and playability.
+Going back to the first modern video games, and focusing on one of the
+most prolific characters, in 1981 Shigeru Miyamoto\footnote{Designer
+  and producer of Nintendo Ltd., and winner of the 2012 Príncipe de
+  Asturias Prize in Humanities and Communication} created Donkey Kong,
+in which a plumber named Jumpman tries to rescue his girlfriend from a
+gorilla. This character  evolved, and in 1983 (thanks again to
+Miyamoto) Mario Bros. games series appeared. The most famous was the
+platform game Super Mario Bros., which was launched for arcade
+machines and also in the Nintendo's home console NES. Several  sequels
+have been published, including the blockbuster Super Mario World in
+the 90s, which included great improvement in graphics, sound and
+playability. %deberías citar algo, aunque fuera la wikipedia - JJ
 
-All these games present the plumber Mario who must rescue the princess of the Mushroom Kingdom, Peach, kidnapped by the king of the koopas, Bowser. The gameplay consists in moving across lateral platforming levels (stages), trying to avoid different types of enemies and obstacles and using some items, such as mushrooms (Mario grows) or fire flowers (Mario can shot fireballs).
+All these games present the plumber Mario who must rescue the princess
+of the Mushroom Kingdom, Peach, kidnapped by the king of the koopas,
+Bowser. The gameplay consists in moving across lateral platforming
+levels (stages), trying to avoid different types of enemies and
+obstacles and using some items, such as mushrooms (which make Mario) or
+fire flowers (that endow Mario with the power of shooting fireballs).
 
-Videogames have become one of the most extended research areas regarding the Artificial Intelligence (AI) field, yielding the so-called Computational Intelligence (CI) branch. Several games have become extended frameworks for study new techniques and algorithms in these scopes, such as Quake \cite{laird2001using}, Unreal \cite{Agent_Smith_CEC2009,cooperativebots_CIG2010}, Pac-Man \cite{Pac-MAnt_CIG2010,MTCS_PacMan}, Starcraft \cite{starcraft_bayesianmodel,potfields_starcraft} and, of course, the commented Super Mario Bros. \cite{SuperMario_playerexperience,SuperMario_Togelius,SuperMario_rulebased,SuperMario_levelgeneration}.
+% Enlaza cada párrafo con los anteriores. ¿Qué tiene que ver esto con
+% lo anterior? Algo así como "Dada su popularidad, no es extraño
+% que..." Aunque este párrafo seguiría mejor al de "Videogames are" y
+% no al anterior - JJ
+Videogames have become one of the most extended research areas 
+%regarding % ya echaba yo de menos un regarding - JJ
+in the Artificial Intelligence (AI) field, yielding the so-called
+Computational Intelligence (CI) branch. Several games have become
+extended frameworks for study new techniques and algorithms in these
+scopes, such as Quake \cite{laird2001using}, Unreal
+\cite{Agent_Smith_CEC2009,cooperativebots_CIG2010}, Pac-Man
+\cite{Pac-MAnt_CIG2010,MTCS_PacMan}, Starcraft
+\cite{starcraft_bayesianmodel,potfields_starcraft} and, of course, the
+commented Super Mario
+Bros. \cite{SuperMario_playerexperience,SuperMario_Togelius,SuperMario_rulebased,SuperMario_levelgeneration}. 
 
-Thus, there exists a framework developed for the latter called \textit{Mario AI}, a modified version of the game known as Infinite Mario Bros.\footnote{\url{http://www.mojang.com/notch/mario/}}, an open source application where the researchers can implement, for instance interactive and autonomous behavioural routines (or agents), using the set of functions and variables which it offers.
+Thus, there exists a framework developed for the latter called
+\textit{Mario AI}, a modified version of the game known as Infinite
+Mario Bros.\footnote{Which is available from \url{http://www.mojang.com/notch/mario/}}, an open source application where the researchers can implement, for instance interactive and autonomous behavioural routines (or agents), using the set of functions and variables which it offers.
 Moreover, there is an additional motivation for the scientific community to perform these studies, which is the competition \textit{Mario AI Championship}\footnote{\url{http://www.marioai.org/}}, held three times a year, inside several famous CI conferences and workshops. There are some tracks in it: Learning, Level generation, Turing test, and Gameplay.
 The latter is devoted to create an autonomous agent, also called \textit{bot}, which must perform the best as possible in automatically playing and pass sequential levels (stages) with a growing difficulty.
 
-This work is enclosed in this track, and presents different approaches of autonomous agents, which follow the behaviour modelled by means of a Finite State Machine (FSM) \cite{FSM_Booth}. This behavioural engines are generated as part of the individuals in the population of an Evolutionary Algorithm (EA) \cite{EAs_Back96}, starting from simple states and combining them to create wide sets of outputs in every state. Thus, this is a shape of evolutionary FSMs, which is, to our knowledge, a novel approach inside this scope.
+This work is enclosed in this latter track, and presents different approaches of autonomous agents, which follow the behaviour modelled by means of a Finite State Machine (FSM) \cite{FSM_Booth}. This behavioural engines are generated as part of the individuals in the population of an Evolutionary Algorithm (EA) \cite{EAs_Back96}, starting from simple states and combining them to create wide sets of outputs in every state. Thus, this is a shape of evolutionary FSMs, which is, to our knowledge, a novel approach inside this scope.
 
 This EA, a Genetic Algorithm (GA) \cite{GAs_Goldberg89}, has been applied offline (not during game), as have been done in many CI researches in the videogames scope \cite{evolutionary_learning-offline,Mora_Unrealbot_EVO2010,ControllingBot_CEC2010,Genebot_CEC11}.
 Two different approaches have been considered, mainly experimenting with different evaluation schemes: \textit{mono-seed evaluation}, in which every individual plays just one level/stage and just one time; and \textit{multi-seed evaluation}, which considers 30 plays in 30 different stages (generated with a different randomisation seed).
 
-The approaches have been widely tested and analysed, getting an optimal set of parameters for the EA and thus, very competent agents in a number of difficulty levels, which could participate successfully in the competition. However, these approaches (much more i the case of multi-seed) demand a high amount of computation resources and machine memory, which means it is not possible to optimise in any difficulty level, due to the huge amount of inputs, rules and outputs to consider in the evolution.
+The approaches have been widely tested and analysed, getting an
+optimal set of parameters for the EA and thus, very competent agents
+in a number of difficulty levels, which could participate successfully
+in the competition. However, these approaches (much more i the case of
+multi-seed) demand a high amount of computation resources and machine
+memory, which means it is not possible to optimise in any difficulty
+level, due to the huge amount of inputs, rules and outputs to consider
+in the evolution. 
 
 The rest of the paper is organised as follows. Next section presents some preliminary concepts and background of the work. Section \ref{sec:environment} defines the problem itself, describing the Infinite Mario Bros. platform, along with the competition rules, regarding the main features that the agent must consider and its constraints. Then, Section \ref{sec:FSMagent} introduces the agents' approaches which will be analysed in the paper, along with the set of experiments conducted to perform this analysis in Section \ref{sec:experiments}. Finally, Section \ref{sec:conclusions} describes the reached conclusions and proposes some future lines of work.
 
@@ -158,15 +207,40 @@ As stated, the ``best'' parts of the chromosomes (or building-blocks) are guaran
 %After the evaluation of the offspring population the algorithm starts the replacement of the old population, following a specific policy. Generational replacement, for instance, replaces the old population by the offspring. A steady-state strategy, on the other hand, will replace a fraction (typically, two individuals) of the old population by the best individuals in the offspring population. Normally, an $e$-elitism strategy is used, i.e., the best $e$ chromosomes from the old population are copied without mutation to the new population. The remaining individuals are selected according to any method. 
 %This process goes on until a stop criterion is met. Then, the best individual in the population is retrieved as a possible solution to the problem. 
 
-EAs have been applied in a wide range of optimisation problems, including in recent years (10 years ago) their application in videogames area \cite{optimalRTS,tactics_evolutionary_learning,SuperMario_Togelius,Agent_Smith_CEC2009,cooperativebots_CIG2010}. The problem is they usually involve considerable computational cost and thus they are not frequently used in real-time. There is a proposal of use of EAs online (during the game) by Fernández et al. \cite{EVO_online_AFernandez}, which applied these algorithms in an action game for pathfinding tasks, but it is quite difficult to use them for more complex computations in real-time.
-Thus, the most successful proposals for using EAs in games correspond to offline applications \cite{evolutionary_learning-offline,Mora_Unrealbot_EVO2010,Genebot_CEC11}, that is, the EA works (for instance, to improve the operational rules that guide the bot's actions) while the game is not being played (before it), and the results or improvements can be used later during the game. Through offline evolutionary learning, the quality of bots' intelligence in commercial games can be improved, and this has been proven to be more effective than opponent-based scripts.
+EAs have been applied in a wide range of optimisation problems,
+including, more recently, videogames
+\cite{optimalRTS,tactics_evolutionary_learning,SuperMario_Togelius,Agent_Smith_CEC2009,cooperativebots_CIG2010}. The
+problem % ¿con qué? - JJ
+is they usually involve considerable computational cost % they
+                                % quienes? - JJ
+ and thus they are not frequently used in real-time. % ¿real-time?
+                                % ¿Por qué es un problema? - JJ
+ There is a proposal of use of EAs online (during the game) by Fernández et al. \cite{EVO_online_AFernandez}, which applied these algorithms in an action game for pathfinding tasks, but it is quite difficult to use them for more complex computations in real-time.
+Thus, the most successful proposals for using EAs in games correspond
+to methods that apply the evolutionary algorithm offline
+\cite{evolutionary_learning-offline,Mora_Unrealbot_EVO2010,Genebot_CEC11},
+that is, the EA works (for instance, to improve the operational rules
+that guide the bot's actions) while the game is not being played
+(before it), and the results or improvements can be used later during
+the game. Through offline evolutionary learning, the quality of bots'
+intelligence in commercial games can be improved, and this has been
+proven to be more effective than opponent-based scripts. % Si eso es
+                                % un problema, ¿por qué lo usas tú
+                                % también? - JJ
 This way, in this work, an offline EA is applied to a parametrised behavioural model for a Super Mario agent, in order to improve its decision engine, which will be used later during game.
 
 %----------------------------------------------------------------------------
 \subsection{Finite State Machines}
 \label{subsec:FSMs}
 
-A Finite State Machine (FSM) \cite{FSM_Booth} or Finite State Automaton is a computational model which represents a set of \textit{states} and connections between them. Every connection correspond to a \textit{transition} from one state to another one, depending on the state inputs and the so-called transition function.
+A Finite State Machine (FSM) \cite{FSM_Booth} or Finite State
+Automaton is a computational model which represents a set of
+\textit{states} and connections between them. Every connection
+correspond to a \textit{transition} from one state to another one,
+depending on the state inputs and the so-called transition
+function. There is usually an initial state, where the model starts
+working, and a final state, which is the final output of the
+automaton. 
 
 \begin{figure}[ht]
 \begin{center}
@@ -176,16 +250,24 @@ A Finite State Machine (FSM) \cite{FSM_Booth} or Finite State Automaton is a com
 \end{center}
 \end{figure}
 
-It is represented as a directed graph (see Figure \ref{fig:example_fsm}), where the states are nodes labelled with a name, and the transitions are edges with an associated value representing the input that should be received to move between states through this transition. The graph can be connected at different degrees (is not always fully connected), depending on the possible transitions to model.
+A FSM is usually represented as a directed graph (see Figure
+\ref{fig:example_fsm}), where the states are nodes labelled with a
+name, and the transitions are edges with an associated value
+representing the input that should be received to move between states
+through this transition. The graph can be connected at different
+degrees (is not always fully connected), depending on the possible
+transitions to model. 
 
-There is usually an initial state, where the model starts working, and a final state, which is the final output of the automaton.
-
-FSMs were initially designed to recognise regular and formal languages, but nowadays they are used as a powerful behaviour modelling tool inside videogames, i.e., the AI of an autonomous character can be defined by means of a FSM. 
+FSMs were initially designed to recognise regular and formal
+languages, but nowadays they are used as a powerful behaviour
+modelling tool inside videogames, i.e., the AI of an autonomous
+character can be defined by means of a FSM.  % nowadays ¿cuando? Se
+                                % usan desde el principio - JJ
 They are based in \textit{sensors}, which receive environmental inputs and \textit{actuators}, which perform the response actions to these inputs. In the FSM model, the possible values received by the sensors are set in the edges of the graph (as transitions), meanwhile the actuators' actions happen in every state.
 Several videogames have implemented this technique \cite{Fu_FSM_Games,Nareyek_FSM_Games}, from Pac-Man (modelling the ghosts' behaviour) to Unreal Tournament series, which is one of the best considered games regarding its Bots (agents) AI.
 Also the authors have previously researched in the evolution of FSM-Based behavioural models \cite{FSMBot_GECCO2010}, but in the scope of the Unreal Tournament game.
 
-In the present work, the behavioural model for our Mario agent has been implemented by means of a FSM, since it can easily model (or simulate) the behaviour of an expert player.
+In the present work the behavioural model for our Mario agent has been implemented by means of a FSM, since it can easily model (or simulate) the behaviour of an expert player.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%  ENVIRONMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -194,13 +276,22 @@ In the present work, the behavioural model for our Mario agent has been implemen
 \label{sec:environment}
 
 %---------------------------------------------------------------------
+% Una intro a esta sección - JJ
 
 \subsection{The Environment}
 \label{subsec:environment}
 
 The game consists in moving the character, Mario, through bi-dimensional levels (stages). He can move left and right, down (crouch), run (letting the button pushed), jump and shoot fireballs (when in ``fire'' mode).
 
-The main goal is complete the stage, whereas secondary goals could be  killing enemies and collecting coins or other items. These items may be hidden and may cause Mario to change his status (for instance a fire flower placed `inside' a block). The difficulty of the game lies in the presence of cliffs/gaps and enemies. Mario loses power (i.e., his status goes down one level) when touched by an enemy, and dies if he falls off a cliff or if he is touched in the smaller status. Figure \ref{fig:mario_environment} (left) shows a screen capture of the game.
+The main goal is to complete the stage, whereas secondary goals could
+be  killing enemies and collecting coins or other items. These items
+may be hidden and may cause Mario to change his status (for instance a
+fire flower placed `inside' a block). The difficulty of the game lies
+in the presence of cliffs/gaps and enemies. Mario loses power (i.e.,
+his status goes down one level) when touched by an enemy, and dies if
+he falls off a cliff or if he is touched in the smaller status. Figure
+\ref{fig:mario_environment} (left) shows a screen capture of the
+game. 
 
 \begin{figure}
 \begin{center}
@@ -246,7 +337,8 @@ The proposed agents follow the rules of the Mario AI Championship\footnote{\url{
 Specifically, Mario AI is a simulator, a version of Infinite Mario Bros., which is available in open source and make it easier for the competitors to implement their algorithms, using a set of classes, variables and high-level functions.
 It includes a wide support for implementing autonomous agents to control Mario character using AI techniques.
 
-The competition consists of four categories: 
+The competition consists of four categories: % ¿esto no lo has dicho
+                                % antes ya? - JJ
 \begin{itemize}
     \item Gameplay: looking for the best Mario agent (bot), i.e. the one who can pass a higher amount of stages with growing difficulty.
     \item Learning: the agent must learn to play a particular stage in a limited time.
@@ -351,7 +443,10 @@ Depending on an input, the state changes (or remains), so the transition is deci
 
 In order to deal with this enormous set of situations, these have been simplified, considering a vector/string in which some situations have been converted into `fuzzy' values; for instance enemies' positions with respect to Mario are stored as \textit{right}, \textit{right-top}, \textit{right-down}, and so on, in a shape of cardinal points. The distances are also considered as `fuzzy' being \textit{close}, \textit{near}, \textit{medium}, \textit{far}, etc. Thus, these values are taken just as simpler references, instead of having absolute floating point positions.
 
-The agents will manage input strings, which are sets of values being $true$ \textit{(1)} if a specific situation has happened.
+The agents will manage input strings, which are sets of values being
+$true$ \textit{(1)} if a specific situation has happened. % Frases no
+                                % hacen párrafos. Engánchalo donde
+                                % corresponda - JJ
 
 Even though there could be a wide number of different inputs, which grows with the difficulty of the stage to be passed by the agent to obtain; i.e. there are more enemies and gaps, for instance, in difficult stages than in easier ones.
 
@@ -439,14 +534,18 @@ Considering this generic fitness function, the evolved agents will be improved t
 In addition, since the obtained agents have been evolved considering a big amount of situations (inputs), they will be very competent in solving almost any stage of the same difficulty level to the one for which they were optimised, above all the multi-seed solutions, which were evolved using a set of different stages every generation. 
 So, taking into account these facts, the evolved individuals could be considered as versatile agents: able to complete every stage (in the same difficulty), and also maximize the most common score functions in platforming games, and specifically in Super Mario Bros. videogames: remaining time and (sometimes) number of collected coins.
 
-The applied GA operators are described in the following paragraphs. 
+The GA operators that have been applied are described next % Pero esta
+                                % frase sobra - JJ. 
 The {\em selection mechanism} takes into account a population ordering regarding the fitness. Thus it is considered as the result of the individuals' evaluation in the mono-seed approach, meanwhile multi-seed considers a {\em hierarchical fitness} ordering, where the population is ordered according to the next criteria: 
 First, taking into account the percentage of stages where the individuals have been stacked or fallen from a cliff. Then, they are ordered considering the average percentage of stages completed. Finally, the individuals are ordered by the average generic fitness obtained in the stages.
 
 The reason for this selection is that, according to several previous experimentation with other approaches (such as the most successful before), it is quite common that a very good individual in one stage (with a very high generic fitness value), falls down or gets stacked in the following stage.
 Thus, the less worse individuals are chosen.
 
-The selection then considers as parents, on one side the best individual, and on the other side a percentage of the best ones. They are selected by tournament according to their fitness, generic or hierarchical, depending on the approach. Thus, when comparing two individuals in the multi-seed scheme, three values are considered in cascade: percentage of stages where the agent has been stacked or fallen in a gap, percentage of stages completed, and generic fitness.
+The selection then considers as parents, on one side the best
+individual,  % ¿qué lado? ¿Porqué os habéis inventado un GA en vez de
+             % usar uno estándar? - JJ
+and on the other side a percentage of the best ones. They are selected by tournament according to their fitness, generic or hierarchical, depending on the approach. Thus, when comparing two individuals in the multi-seed scheme, three values are considered in cascade: percentage of stages where the agent has been stacked or fallen in a gap, percentage of stages completed, and generic fitness.
 %The percentage of individuals to consider as parents follows two different schemes: in mono-seed it is low at the beginning and will be increased when the number of generations grows (to improve the convergence in the final generations); in multi-seed it is constant.
 
 {\em Crossover} is performed considering the best individual of the present generation as one of the parents, and one of the individuals with positive fitness as the other parent. They generate a number of descendents which depends on the percentage of population to complete with the crossover. If there are not enough parents, we select the `less worse' individuals of those with negative fitness.
@@ -468,10 +567,18 @@ As an initial step it was performed a hard fine-tuning stage (through systematic
 
 In addition, in the experiments a wide analysis on the influence of these parameters was done, due to the difficulties that the algorithms found from difficulty level 5 onwards, as will be described in the next paragraphs.
 
-It is important to remark that a single play of an agent could spend around 40-50 seconds on average (it depends on the stage length and difficulty level), because it must be played in real-time, not simulated. This fact means that a single evaluation for one individual in the multi-seed approach (30 plays) could take around 25 minutes in some stages. 
+It is important to remark that a single run of an agent could spend around 40-50 seconds on average (it depends on the stage length and difficulty level), since it must be played in real-time, not simulated. This fact means that a single evaluation for one individual in the multi-seed approach (30 games) could take around 25 minutes in some stages. 
 
 Moreover, when the experiments were conducted, it could be noticed that the most difficult stages strongly limited the algorithmic behaviour of the approaches, making it hard to converge and even ending the execution abruptly.
-In addition to the high computational cost (one run may take several days), the huge size (in memory terms) of the structure that stores the individuals' FSM, can make the program finish due to a lack of memory. This structure grows exponentially during the run (new inputs and outputs are added to the tables in crossovers), so in difficulty levels higher than 4, the program frequently crashes.
+In addition to the high computational cost (one run may take several
+days), the huge size (in memory terms) of the structure that stores
+the individuals' FSM, can make the program crash due to a lack of
+memory. This structure grows exponentially during the run (new inputs
+and outputs are added to the tables in crossovers), so in difficulty
+levels higher than 4, the program frequently crashes. % ¿Se ha
+                                % solucionado? ¿Es una restricción en
+                                % la ejecución? ¿Lo dejas ahí como un
+                                % cliffhanger? - JJ
 
 
 % -------------------------------------------------------------------
@@ -553,8 +660,12 @@ However their behaviour is quite bad when the stage (generation seed) or the dif
 % -------------------------------------------------------------------
 \subsection{Multi-seed approach}
 
-Due to the problems of previous experiments, multi-seed study was conducted on a better computer, an Intel Core i7-920 processor with 32GB RAM. However the memory problem still remained. 
-Thus, as a first improvement the number of states where reduced to 12, by deleting those considered as non-useful (in Table \ref{tab:FSMstates}): State 8 (no action is done) and State 11 (Mario jumps and crouch, since this action could be considered as the less useful).
+Due to the problems of previous experiments, multi-seed study was conducted on a better computer, an Intel Core i7-920 processor with 32GB RAM; however, the memory problem still remained. 
+Thus, as a first improvement the number of states where reduced to 12,
+by deleting those considered as non-useful (in Table
+\ref{tab:FSMstates}): State 8 (no action is done) and State 11 (Mario
+jumps and crouch, since this action could be considered as the less
+useful). %Esto deberías describirlo donde hablas del FSM. 
 With this change, it was possible to evolve competent agents from difficulty levels 0 to 4, which are, in turn, enough for the Gameplay competition.
 
 As previously stated, in this approach, every individual is evaluated in 30 different stages, with different random seeds and stage type (exterior, subterranean or castle), but with the same length and associated difficulty.
@@ -635,7 +746,10 @@ Since this is a novel research scope for the authors, several future lines of wo
 %We definitely think that if it is possible to completely evolve a population of agents with the multi-seed scheme, the best of them might complete any stage.
 Moreover, some other algorithmic proposals should be tested, such as a reduction in the number of individuals in the population, along with a change in the selection, crossover and mutation mechanisms to control the required balance between exploration and exploitation in GAs.
 
-Once the machine resources problem is solved, the next step could be the comparison between the obtained solutions with any of the existent methods, both online methods like A* approaches, and offline, such as rule-based systems.
+Once the machine resources problem is solved, the next step could be
+the comparison between the obtained solutions with any of the existent
+methods, both online methods like A* approaches, and offline, such as
+rule-based systems.  % párrafos de una frase... - JJ
 
 Another line of research could be the consideration of a high-level expert knowledge in the FSM. For instance each state should be based in principles proposed by \cite{SuperMario_rulebased}. That means the agents should be not designed according a fixed set of states, but the specific necessities that it should solve in every situation. This solution could reduce the search space and increase the possibility to solve harder stages.
 
