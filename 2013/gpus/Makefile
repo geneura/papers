@@ -22,6 +22,13 @@ auto:
 clean:
 	$(RM) $(BBL) $(DVI) $(PDF) *.aux *.blg *.log *~
 
+warning: clean
+	$(MAKE) | grep '^Warning--' | sort | uniq > /tmp/output.txt
+	while read i; do \
+		echo "$$i --> $$(grep -l -m 1 -n $${i/* /} $(BIB))"; \
+	done < /tmp/output.txt
+	$(RM) /tmp/output.txt
+
 ###############################################################################
 
 %.dvi:	%.tex $(BIB) $(BST) $(CLS) $(EPS) $(STY)
@@ -35,6 +42,10 @@ clean:
 
 %.pdf:	%.dvi
 	dvipdf $*
+
+###############################################################################
+
+.PRECIOUS: $(DVI)
 
 ###############################################################################
 
