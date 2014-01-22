@@ -78,10 +78,10 @@ General-purpose computing on graphics processing units (GPGPU) is the technique 
 \end{figure}
 
 GPUs are specialized stream processors, initially useful for rendering graphics applications. Typically, a GPU is able to perform graphics manipulations at a much higher speed than a general purpose CPU, since the graphics processor is specifically designed to handle certain primitive operations which occur frequently in graphics applications. Internally, the GPU contains a number of small processors that are used to perform calculations. 
-Depending on the power of a GPU, the number of threads that can be executed in parallel on such devices is currently in the order of hundreds and it is expected to multiply in a few years. Nowadays, developers can write (easily) their own high-level programs on GPU. Due to the wide availability, programmability, and high-performance of these consumer-level GPUs, they are cost-effective for, not just game playing, but also scientific computing.
-Now, GPUs are exposed to the programmer as a set of general-purpose shared-memory SIMD (Single Instruction Multiple Data) multi-core processors (see Figure \ref{figure:openclfigure2small}). This makes these architectures well suited to run large computational problems, such as those from bioinformatics area. 
+Depending on the power of a GPU, the number of threads that can be executed in parallel on such devices is currently in the order of hundreds to thousands and it is expected to multiply in a few years. Nowadays, developers can write (easily) their own high-level programs on GPU. Due to the wide availability, programmability, and high-performance of these consumer-level GPUs, they are cost-effective for, not just game playing, but also scientific computing.
+Now, GPUs are exposed to the programmer as a set of general-purpose shared-memory Single Instruction Multiple Data (SIMD) multi-core processors (see Figure \ref{figure:openclfigure2small}). This makes these architectures well suited to run large computational problems, such as those from bioinformatic area. 
 
-Then, the goal of this article is to review the use of GPUs to solve bioinformatics problems, explaining the general approach to using a GPU and given an overview of currently available software systems.
+Then, the goal of this article is to review the use of GPUs to solve bioinformatic problems, explaining the general approach to using a GPU and given an overview of currently available software systems.
 
 To this end, the rest of this paper is structured as follows: Section \ref{sec:parall_and_GPUs} presents GPUs as highly parallel devices architectures.
 Section \ref{sec:programming} gives a background on the different higher level programming languages used to profit GPUs. Finally, Section \ref{sec:bioinfor_apps} reviews different bioinspired approaches using GPUs, followed by a brief conclusion (Section \ref{sec:conclusions}).
@@ -91,13 +91,13 @@ Section \ref{sec:programming} gives a background on the different higher level p
 \label{sec:parall_and_GPUs}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Moore's Law describes a long-term trend in the history of computing hardware: the number of transistors that can be placed inexpensively on an integrated circuit has doubled approximately every two years. The trend has continued for more than half a century and is not expected to stop (theoretically until not too many years above 2015). On 2005 Gordon Moore stated in an interview that his law cannot be sustained indefinitely because transistors would eventually reach the limits of miniaturization at atomic levels. Maybe it is time for Koomey's Law \cite{10.1109/MAHC.2010.28} to replace Moore's Law. Koomey says that energy efficiency is doubled every 18 months. For fixed computing load, the amount of battery you need will fall by a factor of two every year and a half.
+Moore's Law describes a long-term trend in the history of computing hardware: the number of transistors that can be placed inexpensively on an integrated circuit has doubled approximately every two years. The trend has continued for more than half a century and is not expected to stop, theoretically until not too many years above 2015. On 2005 Gordon Moore stated in an interview that his law cannot be sustained indefinitely because transistors would eventually reach the limits of miniaturization at atomic levels. Maybe it is time for Koomey's Law \cite{10.1109/MAHC.2010.28} to replace Moore's Law. Koomey says that energy efficiency is doubled every 18 months. For fixed computing load, the amount of battery you need will fall by a factor of two every year and a half.
 
 Parallel computation has recently become necessary to take full advantage of the gains allowed by Moore's law. For years, processor makers consistently delivered increases in clock rates and instruction-level parallelism, so that single-threaded code is executed faster on newer processors with no modification. Now, to manage CPU power dissipation, processor makers favor multi-core chip designs, and software has to be written in a multi-threaded or multi-process manner to take full advantage of the hardware.
 
 Graphics processors have rapidly matured over the last years, leaving behind their roots as fixed function accelerators, and growing into almost general purpose computational devices for highly parallel workloads. Some of the earliest academic work about GPUs as computational devices date back to University of Washington in 2002 \cite{Thompson:2002:UMG:774861.774894} and Stanford in 2004 \cite{Buck:2004:BGS:1015706.1015800}. 
 
-GPUs are similar to multi-core CPUs but with two main differences (see Figure \ref{figure:captura2paperCEC}). CPUs are made for speedup and GPUs for throughput. CPUs try to improve the execution of a single instruction stream while GPUs take the opposite route obtaining benefits from massively threaded streams of instructions and/or data (SIMD). The second difference is how threads are scheduled. The operating system schedule threads over different cores of a CPU in a pre-emptive fashion. GPUs have dedicated hardware for the cooperative scheduling of threads.
+GPUs are similar to multi-core CPUs but with two main differences (see Figure \ref{figure:captura2paperCEC}). CPUs are made for speedup and GPUs for throughput. CPUs try to improve the execution of a single instruction stream while GPUs take the opposite route obtaining benefits from massively threaded streams of instructions and/or data. The second difference is how threads are scheduled. The operating system schedule threads over different cores of a CPU in a preemptive fashion. GPUs have dedicated hardware for the cooperative scheduling of threads.
 
 \begin{figure}[ht]
 \centerline{\epsfig{file=captura2paperCEC.eps,width=10cm}}
@@ -105,44 +105,48 @@ GPUs are similar to multi-core CPUs but with two main differences (see Figure \r
 \label{figure:captura2paperCEC}
 \end{figure}
 
-Physically GPUs are huge in comparison with CPUs, see Table \ref{fig:cpugpu}. Latest microprocessors from the two main vendors, AMD \cite{amd} and Intel \cite{intel}, have about 1 billion transistors. Latest GPUs from AMD and NVIDIA \cite{nvidia} are about 3 billion transistors. CPUs draw 130W at most, a limit established by the cost of commodity heat sink and fan. GPUs have increase power consumption and currently are in the neighborhood of 300W. This can be possible with the use of exotic cooling solutions. CPUs are built with the finest technology, read best lithography, while GPUs are made with budget in mind in more common and older processes.
+Physically GPUs used to be huge in comparison with CPUs, see Table \ref{fig:cpugpu}. Latest microprocessors from the two main vendors, AMD \cite{amd} and Intel \cite{intel}, have about 1 billion transistors. Latest GPUs from AMD and NVIDIA \cite{nvidia} are about 3 billion transistors. CPUs draw 130W at most, a limit established by the cost of commodity heat sink and fan. GPUs have increase power consumption and currently are in the neighborhood of 300W. This can be possible with the use of exotic cooling solutions. CPUs are built with the finest technology, read best lithography, while GPUs are made with budget in mind in more common and older processes.
 
 No standard terminology can be found in the world of graphics hardware.
 Every company have a very different set of words to refer to the same underlying objects and principles. Many authors try to alleviate this lack of standard terms calling 'shader core' to an Intel Execution Unit (EU), an AMD Single Instruction Multiple Data (SIMD) or an NVIDIA Streaming Multiprocessors (SM). Any of these refer to a single processor core inside of the GPU that can fetch, decode, issue and execute several instructions. The shader core is composed of several 'execution units' or EU that can execute an individual vector operation equivalent to an Advanced Vector Extensions (AVX) or Streaming SIMD Extensions (SSE) instruction. AMD call this kind of EU streaming processor (SP), while NVIDIA uses the term CUDA core. Table \ref{fig:cpugpu} compares several existing CPUs, GPUs and Accelerated Processing Units (APUs), taking into account these terms and their meaning.
+
+Traditionally CPUs and GPUs has been separated. Now the trend is to integrate both into a single chip for cost efficiency reasons. Only top models remain as discrete devices. Some of this are top models from Intel Core i7 family and best discrete GPUs from  NVIDIA and AMD, like GeForce GTX 690 and Radeon HD 7990.
 
 \begin{table}[h]
 \tbl{CPU, GPU and APU comparison of the best professional and commodity desktop hardware available nowadays. A slash is used in APUs to separate CPU/GPU parts.\label{fig:cpugpu}}
 {
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \hline
-manufacturer           & transistor & die      & shader & clock      & memory    & GFLOPS     & TDP & price   \\
-\&                     & count      & size     & cores  & rate       & bandwidth & (single    &     &         \\
-model                  & (million)  & ($mm^2$) & (ALUs) & (GHZ)      & (GB/s)    & precision) & (W) & (\euro) \\
+manufacturer           & transistor    & die          & shader        & clock      & memory       & GFLOPS          & TDP & price   \\
+\&                     & count         & size         & cores         & rate       & bandwidth    & (single         &     &         \\
+model                  & (million)     & ($mm^2$)     & (ALUs)        & (GHZ)      & (GB/s)       & precision)      & (W) & (\euro) \\
 \hline
 \hline
-AMD Phenom II X6 1100T & 758        & 258      & 6      & 2.6-3.7    & 15.6     & 57.39 & 125 & 175 \\
+AMD Phenom II X6 1100T & 758           & 258          & 6             & 2.6-3.7    & 15.6         & 57.39           & 125 & 175     \\
 \hline
-Intel Core i7 990X     & 1170       & 240      & 6      & 3.46-3.73  & 24.5     & 107.58 & 130 & 950 \\
-\hline
-\hline
-AMD A8-3850            & 758        & 258      & 4/400  & 2.9/0.6    & 29.8     & 355    & 100  & 135 \\
-\hline
-Intel Core i7 2600K    & 995        & 216      & 4/48   & 3.4/0.85 & 24.5  & 129.6 & 95  & 317 \\
+Intel Core i7 990X     & 1170          & 240          & 6             & 3.46-3.73  & 24.5         & 107.58          & 130 & 950     \\
 \hline
 \hline
-AMD Radeon HD 6970     & 2640       & 389      & 1536   & 0.88       & 176    & 2703 & 250 & 350 \\
+AMD A8-3850            & 758           & 258          & 4/400         & 2.9/0.6    & 29.8         & 355             & 100 & 135     \\
 \hline
-NVIDIA GeForce GTX 580 & 3000       & 520      & 512    & 1.544      & 192.4  & 1581.1 & 244 & 450 \\
-\hline
-\hline
-AMD FirePro S9000      &         4310  &         352  &         1792  & 0.900 &         264  &         3230    & 225 & 2100 \\
-\hline
-AMD FirePro S10000     & $2\times4310$ & $2\times352$ & $2\times1792$ & 0.825 & $2\times240$ & $2\times2956.8$ & 375 & 3000 \\
-\hline
-NVIDIA Tesla G20X      & 7100          & 550          & 2688          & 0.732 & 250          & 3950            & 235 & $>2700$ \\
+Intel Core i7 2600K    & 995           & 216          & 4/48          & 3.4/0.85   & 24.5         & 129.6           & 95  & 317     \\
 \hline
 \hline
-Intel Xeon Phi 5100P   & $\approx5000$ & $\approx600$ & 60            & 1053  & 320          & 2020            & 225 &  2200 \\
+AMD Radeon HD 6970     & 2640          & 389          & 1536          & 0.88       & 176          & 2703            & 250 & 350     \\
+\hline
+NVIDIA GeForce GTX 580 & 3000          & 520          & 512           & 1.544      & 192.4        & 1581.1          & 244 & 450     \\
+\hline
+\hline
+AMD FirePro S9000      & 4310          & 352          & 1792          & 0.900      & 264          & 3230            & 225 & 2100    \\
+\hline
+AMD FirePro S10000     & $2\times4310$ & $2\times352$ & $2\times1792$ & 0.825      & $2\times240$ & $2\times2956.8$ & 375 & 3000    \\
+\hline
+NVIDIA Tesla G20X      & 7100          & 550          & 2688          & 0.732      & 250          & 3950            & 235 & $>2700$ \\
+\hline
+\hline
+Intel Xeon Phi 5100P   & $\approx5000$ & $\approx600$ & 60            & 1053       & 320          & 2020            & 225 &  2200   \\
+\hline
+Intel Xeon Phi KNL     & $>5000$       & $\approx700$ & 72            & 1053       & 320          & 3225.6          & 300 &  2200   \\
 \hline
 
 \end{tabular}
