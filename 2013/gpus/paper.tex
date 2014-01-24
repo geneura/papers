@@ -110,8 +110,6 @@ Physically GPUs used to be huge in comparison with CPUs, see Table \ref{fig:cpug
 No standard terminology can be found in the world of graphics hardware.
 Every company have a very different set of words to refer to the same underlying objects and principles. Many authors try to alleviate this lack of standard terms calling 'shader core' to an Intel Execution Unit (EU), an AMD Single Instruction Multiple Data (SIMD) or an NVIDIA Streaming Multiprocessors (SM). Any of these refer to a single processor core inside of the GPU that can fetch, decode, issue and execute several instructions. The shader core is composed of several 'execution units' or EU that can execute an individual vector operation equivalent to an Advanced Vector Extensions (AVX) or Streaming SIMD Extensions (SSE) instruction. AMD call this kind of EU streaming processor (SP), while NVIDIA uses the term CUDA core. Table \ref{fig:cpugpu} compares several existing CPUs, GPUs and Accelerated Processing Units (APUs), taking into account these terms and their meaning.
 
-Traditionally CPUs and GPUs has been separated. Now the trend is to integrate both into a single chip for cost efficiency reasons. Only top models remain as discrete devices. Some of this are top models from Intel Core i7 family and best discrete GPUs from  NVIDIA and AMD, like GeForce GTX 690 and Radeon HD 7990.
-
 \begin{table}[h]
 \tbl{CPU, GPU and APU comparison of the best professional and commodity desktop hardware available nowadays. A slash is used in APUs to separate CPU/GPU parts.\label{fig:cpugpu}}
 {
@@ -141,12 +139,16 @@ AMD FirePro S9000      & 4310          & 352          & 1792          & 0.900   
 \hline
 AMD FirePro S10000     & $2\times4310$ & $2\times352$ & $2\times1792$ & 0.825      & $2\times240$ & $2\times2956.8$ & 375 & 3000    \\
 \hline
-NVIDIA Tesla G20X      & 7100          & 550          & 2688          & 0.732      & 250          & 3950            & 235 & $>2700$ \\
+NVIDIA QUADRO K6000    & 7100          & 550          & 2688          & 0.732      & 250          & 3950            & 235 & $\approx2700$ \\
 \hline
 \hline
-Intel Xeon Phi 5100P   & $\approx5000$ & $\approx600$ & 60            & 1053       & 320          & 2020            & 225 &  2200   \\
+NVIDIA Tesla K20X      & 7100          & 550          & 2688          & 0.732      & 250          & 3950            & 235 & $\approx2700$ \\
 \hline
-Intel Xeon Phi KNL     & $>5000$       & $\approx700$ & 72            & 1053       & 320          & 3225.6          & 300 &  2200   \\
+NVIDIA Tesla K40       & 7100          & $\approx550$ & 2886          & 0.745      & 288          & 5364            & 235 & $\approx4000$ \\
+\hline
+Intel Xeon Phi 5100P   & $\approx5000$ & $\approx600$ & 60            & 1.053      & 320          & 2020            & 225 &  2200   \\
+\hline
+Intel Xeon Phi KNL     & $>5000$       & $\approx700$ & 72            & 1.053      & 320          & 3225.6          & 300 &  2200   \\
 \hline
 
 \end{tabular}
@@ -155,10 +157,11 @@ Intel Xeon Phi KNL     & $>5000$       & $\approx700$ & 72            & 1053    
 
 Nowadays NVIDIA has the best single chip GPU card with superior performance in some workloads and AMD the best card with two GPU chips. Both makers takes different compromises in the design of theirs GPUs. AMD has more execution units but its memory hierarchy is weaker. This way software bounded by memory bandwidth or with strong ordering inter-dependencies prefers NVIDIA hardware. On the other side, loads capped by pure ALU execution power use to be faster on AMD hardware.
 
-Recently, CPU with an integrated GPU have appeared. AMD and Intel have just started selling this kind of combined processor and graphics card. The term Accelerated Processing Unit has been coined for this kind of chips. The architectural names are Llano for AMD and Sandy Bridge for Intel. Many reviews state that AMD's CPU cores are slower than Intel's ones but their GPU is faster. 
-Which combination is better is not an easy question to answer. It must be backed by specific benchmarks, or better, the real application that we want it to run.
+Traditionally CPUs and GPUs has been separated. Now the trend is to integrate both into a single chip for cost efficiency reasons. Only top models remain as discrete devices. Some of this are top models from Intel's Core i7 or AMD's Opteron 6300 familys. Also best discrete GPUs from NVIDIA and AMD, like consumer GeForce GTX 690 and Radeon HD 7990 and professional line QUADRO K6000 and Radeon FirePro S10000.
 
-Over time the use of GPUs has passed from odd to common in our systems. Actually, several time consuming processes has been parallelized inside our operating systems such as web page rendering. However, the speedup that graphics hardware can bring to us is not free, as each application to be accelerated must be rewritten (parallelized). 
+Recently, CPU with an integrated GPU have appeared. AMD and Intel have just started selling this kind of combined processor and graphics card. The term Accelerated Processing Unit has been coined for this kind of chips. The architectural names are Llano for AMD and Sandy Bridge for Intel. Many reviews state that AMD's CPU cores are slower than Intel's ones but their GPU is faster. Which combination is better is not an easy question to answer. It must be backed by specific benchmarks, or better, the real application that we want it to run.
+
+Over time the use of GPUs has passed from odd to common in our systems. Actually, several time consuming processes has been parallelized inside our operating systems such as web page rendering. However, the speedup that graphics hardware can bring to us is not free, as each application to be accelerated must be rewritten to take advantage of the GPU.
 
 Figure \ref{fig:gk110}a shows the internals of latest NVIDIA Kepler GK110 architecture. There can be a maximum of 15 SMX units and every one of this has 192 single precision CUDA cores. The six squares on the sides are memory interfaces for a total bus width of 384 bits. It is capable of a maximum bandwidth of 250GB/s connected to GDDR5 memory chips. Figure \ref{fig:gk110}b shows a disclosed SMX unit with its 192 CUDA cores. The maximum theoretical throughput in simple precision is 3950GFLOPS.
 
