@@ -63,7 +63,7 @@
 
 \title{Fighting to Survive: Evolving RTS Bots without Evaluation}
 
-\subtitle{[Abstract]}
+%\subtitle{[Abstract]}
 %\titlenote{A full version of this paper is available as
 %\textit{Author's Guide to Preparing ACM SIG Proceedings Using
 %\LaTeX$2_\epsilon$\ and BibTeX} at
@@ -206,7 +206,7 @@
 \maketitle
 
 \begin{abstract}
-This paper proposes an evolutionary algorithm based in the fight between individuals, implemented as a selection mechanism. Thus only the winners will survive (pass to the next generation), so the evaluation and fitness calculation needs are omitted. This algorithm has been designed as an optimization method for the parameters of the behavioural engine of bots for the RTS game Planet Wars. So, the fights consist in real battles (inside the game) between different rivals. There are two objectives: first, better deal with the noisy nature of the fitness function (the evaluation for the same individual may vary from one time to another, due to the stochastic component of the combats); and second, obtain more general bots than those evolved considering a specific opponent, which eventually are optimized to fight against it, and so, they are specialized bots. 
+This paper proposes an evolutionary algorithm based in the fight between individuals, implemented as a selection mechanism. Thus only the winners will survive (pass to the next generation), so the evaluation and fitness calculation needs are omitted. This algorithm has been designed as an optimization method for the parameters of the behavioural engine of bots for the RTS game Planet Wars. So, the fights consist in real battles (inside the game) between different rivals. There are two objectives: first, to better deal with the noisy nature of the fitness function (the evaluation for the same individual may vary from one time to another, due to the stochastic component of the combats); and second, to obtain more general bots than those evolved considering a specific opponent, which are optimized to fight against it, and so, they are specialized bots. 
 In addition, avoiding the evaluation step ideally will reduce the algorithm time consumption.
 Four different approaches are proposed and compared, namely steady state and generational implementations, each of them considering 1 vs 1 and 1 vs 3 bots combats. They implement different exploration versus exploitation tradeoffs in order to decide the best balance between these factors. 
 \end{abstract}
@@ -269,25 +269,39 @@ The latter is an approach based in a self-learning algorithm as the one we are p
 \section{Problem Description}
 \label{sec:problemDescription}
 
-In this paper we works with a simplified version of the game Galcon, aimed at performing bot's fights which was used as base for the Google AI Challenge 2010 (GAIC)\footnote{http://ai-contest.com}.
+The game used here as testbed is a simplified version of the game Galcon, which models turn-based space battles between two to four contenders. It was considered as base for the Google AI Challenge 2010 (GAIC)\footnote{http://planetwars.aichallenge.org/}.
 
 \begin{figure}[ht]
 \tiny
 \begin{center}
-  \epsfig{file=./imags/naves.eps,width=4cm}
+  \epsfig{file=./imags/naves.eps,width=6cm}
 \end{center}
-\caption{Simulated screen shot of an early stage of a run in Planet Wars. White planets belong to the player (blue colour in the game), dark grey belong to the opponent (red in the game), and light grey planets belong to no player. The triangles are fleets, and the numbers (in planets and triangles) represent the ships. The planet size means growth rate of the amount of ships in it (the bigger, the higher).}
+\caption{Simulated screenshot of an early stage of a 1 vs 1 match in Planet Wars. White planets belong to the player (blue colour in the game), dark grey belong to the opponent (red in the game), and light grey planets belong to no player. The triangles are fleets, and the numbers (in planets and triangles) represent the ships. The planet size models the growth rate of the amount of ships in it (the bigger, the higher).}
 \label{figura:PlanetWars1}
 \end{figure}
 
 A Planet Wars match takes place on a map (see Fig. \ref{figura:PlanetWars1}) that contains several planets (neutral, enemies or owned), each one of them with a number assigned to it that represents the quantity of ships that the planet is currently hosting. 
 
-The aim of the game is to defeat all the ships in the opponent's planets. Although Planet Wars is a RTS game, this implementation has transformed it into a turn-based game, in which each player has a maximum number of turns to accomplish the objective. At the end of the match, the winner is the player that remains alive, or that which owns more ships if more than one survives. 
+The aim of the game is to defeat all the ships in the opponent's planets. Although Planet Wars is a RTS game, this implementation has transformed it into a turn-based game, in which each player has a maximum number of turns to accomplish the objective. At the end of the match, the winner is the player that remains alive, or that who owns more ships if more than one survives. 
 
-There are two strong constraints which determine the possible methods to apply to design
-a bot: a simulated turn takes \textit{just one second}, and the bot is \textit{not allowed to store any kind of information} about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map).
+The problem in this paper is to create a bot's AI in order to win the game, i.e. able to defeat every possible opponent in a 1 vs 1 or 1 vs 3 match (four independent bots fighting in the same map).
+The bot must react according to the state of the map in each simulated turn (input), returning a set of actions to perform in order to fight the enemy, conquering its resources, and, ultimately, wining the game. 
 
-Therefore, the aim in this paper is to study the improvement of a bot according to the state of the map in each simulated turn (input), returning a set of actions to perform in order to fight the enemy, conquering its resources, and, ultimately, wining the game. In the original game, only two bots are faced but in this paper it is studied what happen when we simulate 4 on 4 battles, i.e., when 4 bots are fighting in the same map.
+There are two strong constraints which determine the possible methods to apply to design a bot: a simulated turn takes \textit{just one second}, and the bot is \textit{not allowed to store any kind of information} about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map).
+
+We start from a designed bot's AI \cite{Genebot_CEC11}, named ANONYMOUSBOT. It was defined from scratch (by an expert player), so it consists in a predefined set of behavioural rules. These rules depend on a set of parameters, which model thresholds, probabilities and weights, and which in turn, define how the bot will behave.
+The set of states and parameters that the bot will consider can be seen in Figure \ref{fig:diagram}. 
+%
+\begin{figure*}[ht]
+\begin{center}
+  \epsfig{file=imags/diagram.eps,width=12cm}
+\end{center}
+\caption{Diagram of states governing the behaviour of AnonymousBot, with the parameters to be evolved highlighted. There are weights ($w$), probabilities ($prob$), and percentages ($perc$).} 
+\label{fig:diagram}
+\end{figure*}
+
+Thus, the aim in this paper is to study the improvement of that set of behavioural parameters by means of some novel (in this scope) evolutionary approaches, based in the survival to evolve. These will be described in the following section.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   SURVIVAL BOT  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
