@@ -1,3 +1,11 @@
+%TODO GENERAL, hablar de arquetipos jungianos y de jung. No entremos en psicología pero lo usamos.
+%TODO Hablar del paper que decía el señor con alto expertise
+%TODO Revisar y cerrar todos los comentarios
+%TODO Es importante remarcar que esto no es una receta, es una guía
+%TODO podría ser interesante hacer un grafo que relacione todos los conceptos
+%TODO terminos: setting, plot, archetype, behavior, backstory, 
+%TODO Cada paso explicado en la metodología debe tener un ejemplo
+
 \documentclass{sig-alternate}
 \usepackage[latin1]{inputenc}
 \usepackage{graphicx}        % standard LaTeX graphics tool
@@ -192,7 +200,7 @@ The rest of the work is structured as follows: after the state of the art, the d
 \label{sec:soa}
 
 % (JJ2013): Por cierto, acabo de ver esto: \cite{StoryTecGobel2008}.
-% (RubÃÂÃÂ©n): TODO
+%TODO
 
 Auto-generated interactive fiction research is mainly focused in
 methods to create the process of a story generation
@@ -253,14 +261,14 @@ obtain a plot (solution) where two characters interact in a creative way.
 According to the taxonomy described by Togelius et al. \cite{Togelius2011}, the present work
 with MADE can be seen has a \textit{procedural content generator} (\textit{PGC})
 mainly related to \textit{optional content}, with \textit{stochastic generation}
-and modelled as a \textit{generate-and-test} algorithm (search based) that
+and modeled as a \textit{generate-and-test} algorithm (search based) that
 performs the optimizations of the process during the game development (\textit{offline}).
 
 %The current experiment allows the definition of behaviour patterns (or
 %archetypes, and using a weighted fitness function to measure
 %the presence of the desired archetypes.
 
-
+%TODO: presentar la metodología del párrafo siguiente
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   METHODOLOGY   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -269,17 +277,64 @@ performs the optimizations of the process during the game development (\textit{o
 \section{Methodology}
 \label{sec:methodology}
 
-\subsection{Define agent}
+%TODO Objetivos de la metodología
+%TODO Secciones de la metodología
 
-\subsection{Define literary setting}
+\subsection{Modeling of the agent}
 
-\subsection{Define GA}
+\subsubsection{Agent as a finite state machine}
+
+%TODO Que es un agente -> una simplificación de un personaje
+%TODO Se modela como una máquina de estados
+%TODO Genera un lenguaje
+%TODO fecha, verbo, objeto directo, objeto indirecto
+%TODO ¿Almacena su log personal?
+%TODO Interpretable por un humano o una máquina?
+%TODO Describe la vida del personaje
+
+\subsubsection{The agents' execution environment}
+
+%TODO Es un proceso estocástico
+%TODO turno para ejecutarse
+%TODO Intercomunicación con otros agentes
+
+\subsubsection{Modeling the life cycle}
+
+%TODO Selección de la unidad de tiempo
+%TODO Variabilidad en la ejecución del agente y directrices estáticas
+%TODO Definición de parámetros de ejecución
+%TODO Parámetros base y parámetros perfílicos, si esa palabra tiene algún sentido en algún universo.
+
+\subsection{Definition of the literary setting}
+
+%TODO Qué se desea
+%TODO Expresar cada arquetipo en base al lenguaje generado 
+%TODO Genérico
+%TODO Etiquetar agentes y entorno según arquetipos y tropos
+%TODO el agente es independiente del setting. El setting sólo tiene en cuenta el lenguaje generado
+
+\subsection{Definition of the GA}
+
+%TODO Selección de un GA
+%TODO mapear los parámetros a un cromosoma
+%TODO Definir la función de fitness sobre el lenguaje que modela la ambientación 
+%TODO - Función sobre lenguaje generado que permite marcar a los agentes
+%TODO - Función sobre el nº de agnetes que cumplen un marcado, para puntuar la solución
+%TODO Definir nº de perfiles (por qué)
 
 \subsection{Instantiate parameters and execute}
 
+%TODO Dar valores
+%TODO Lanzar GA
+%TODO Obtener el mejor fitness
+%TODO Lanzar una ejecución del entorno
+
 \subsection{Convert results to literary language}
 
-
+%TODO Exportar los logs de los agentes, sus características y sus etiquetas
+%TODO Intepretar la historia de un agente, junto al arquetipo aporta explicaciones
+%TODO Buscar agente que cumpla una condición
+%TODO Navegación entre agentes. Apoyo al proceso creativo
 
 % -----------------------------------------------------------------------------
 % SEC APPLY
@@ -299,7 +354,7 @@ The MADE environment is a virtual place where different agents play their artifi
 % (JJ2013): Sequentially de quÃÂ¯ÃÂ¿ÃÂ½ secuencia? - JJ2013
 % (RubÃÂÃÂ©n): TODO
  These agents must compete or collaborate in order to survive.
-\item \textbf{Place agents in the map:} the environment has a squared map, formed by cells that can be occupied by one (and only one) agent. The environment allows the agents to discover and interact with other agents in the neighbourhood.
+\item \textbf{Place agents in the map:} the environment has a squared map, formed by cells that can be occupied by one (and only one) agent. The environment allows the agents to discover and interact with other agents in the neighborhood.
 \item \textbf{Start and control the time:} after the creation of the initial set of agents, the MADE environment starts the timer, day by day until a maximum date is reached.
 \item \textbf{Execute each agent during a time unit (a day):} In each iteration the list of agents is randomly reordered, and after that following the new order, each agent perform an iteration of its life-cycle, and the dead agents are removed from the grid.
 \item \textbf{Perform as an external agent that changes th environment:} In each iteration in the MADE environment, food rations are placed in random cells. An agent only can eat if it is over a cell with a ration, so agents could move the other forcibly.
@@ -307,7 +362,7 @@ The MADE environment is a virtual place where different agents play their artifi
 \item \textbf{Decide the profile of the agents:} MADE allows the existence of different agent profiles, as previously said. A {\em profile} is a set of characteristics which governs the agent's behaviour.
 \end{itemize}
 
-The MADE environment can be configured by using the following parameters (and its values by default): Number of agents initially placed (15), map square grid dimension (10), number of rations randomly placed in the grid each day (10) and duration in virtual days of the  execution of the environment (1000). Those parameters can affect directly to the behaviour of the agents.
+The MADE environment can be configured by using the following parameters (and its values by default): Number of agents initially placed (15), map square grid dimension (10), number of rations randomly placed in the grid each day (10) and duration in virtual days of the  execution of the environment (1000). Those parameters can affect directly to the behavior of the agents.
 
 % (JJ2013): Usas un estilo demasiado conciso. Di quÃÂ¯ÃÂ¿ÃÂ½ hace cada uno de esos
 % parÃÂ¯ÃÂ¿ÃÂ½metros, cÃÂ¯ÃÂ¿ÃÂ½mo se meten (fichero de configuraciÃÂ¯ÃÂ¿ÃÂ½n o como sea), por
@@ -325,7 +380,7 @@ The design of a MADE Agent has some restrictions:
 \begin{itemize}
 \item An array of parameters (probabilities represented as real numbers between 0 and 1) should be provided in its initialization. These parameters should be used by the agent in its day-by-day decisions.
 \item Every action or event is subject to be logged for later analysis.
-\item As a result of some iterations of the agent's day-based life cycle, the agent should present the behaviour of a \textit{living thing}, that is born, eats, grows, reacts, reproduces and dies.  
+\item As a result of some iterations of the agent's day-based life cycle, the agent should present the behavior of a \textit{living thing}, that is born, eats, grows, reacts, reproduces and dies.  
 \end{itemize}
 
 A very simple agent has been designed for this study: a virtual
@@ -398,7 +453,7 @@ The MADE Agent is created using twelve parameters, that define its
 base features and probabilities to make the decisions presented in the
 state diagram in Figure \ref{fig:fsm}. The execution of an
 agent is dynamic, and depends on the internal probabilities and states
-but also on the neighbourhood, and the map configuration. Even so, we
+but also on the neighborhood, and the map configuration. Even so, we
 can say that these initial parameters define in some way the possible
 situations where the agent could be involved.
 
