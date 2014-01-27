@@ -306,10 +306,13 @@ Thus, the aim in this paper is to study the improvement of that set of behaviour
 \label{sec:stateofart}
 %
 
-Evolutionary Computation (EC) has been widely applied in the videogames area, including the RTS games, in different issues, such as: automated tactics generation \cite{Ponsen_EvLearn_RTS}, decision making improvement \cite{Su-EAs_StrategySel09}, or parameter optimisation in behavioural engines \cite{cooperativebots_CIG2010,Genebot-IWANN2011}.
+Evolutionary Computation (EC) has been applied in a wide variety of issues inside the videogames scope. One of the most profiting areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011}.
 This work is enclosed in the latter category, since it considers a set of rules, initially defined by an expert, which model a bot's AI in the RTS Planet Wars.
-These rules are optimised regarding the set of  parameters which determine how the bot behaves. This kind of improvement was previously performed by the authors in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012} by means of off-line (before the game) Evolutionary Algorithms.
-In the present paper the optimisation have been performed using a Co-Evolutionary approach. 
+These rules are optimised regarding the set of  parameters which determine how the bot behaves. This kind of improvement was previously performed by the authors in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms.
+
+In the present paper the optimisation have been performed using a survival-based evolutionary approach. This can be considered as a co-evolutionary method in which the individuals (bots) fight in game battles in order to decide who survives and moves to the next generation.
+
+***TRABAJOS DE ESTO***
 
 Co-Evolutionary Algorithms (CEAs) have been previously used in this scope, initially regarding puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
 The first work proposed a very simple hillclimbing algorithm to evolve a population of neural networks, playing among them as rivals, in a competitive co-evolutionary approach. The latter paper presented a co-evolutionary learning approach which performed well once the EA was correctly tuned, moreover, this method yields better players to solve small Go boards since every individual is evaluated against a diverse population of rivals.
@@ -331,21 +334,56 @@ The latter is an approach based in a self-learning algorithm as the one we are p
 \section{Survival Bots}
 \label{sec:survival_bots}
 
+***\\
+Contar la idea general:
+	- sustituir la evaluación y el fitness
+	- selección en base a supervivencia (y quizá a antigüedad)
+	- eliminación del ruido
+	- pormenores: 
+		   . 5 combates en 5 escenarios representativos
+			. rival dentro de la misma población (auto-aprendizaje???)
+***\\
+
+*** tipos de codificación, operadores ($BLX-\alpha$) ***
 
 A shape of co-evolution. They compete but the whole population (offspring) is improved.
 
-Approaches:
+***All these approaches are novel, at least in the application to the present problem. The third one is completely new.***
 
 % ------------------------------------------------------------------
 %
 \subsection{Steady-State Survival}
 \label{subsec:steady-state}
 
+This is an implementation based in the classical Steady-State EA approach \cite{Genitor_whitley}. In it, the majority of the population remains the same in the following generation, and just a small subset of individuals are substituted (usually just the worst).
+This method aimed to increase the exploitation factor in the EA, since just the worst individuals in the population are substituted by fitter ones.
+
+Thus, the proposed approach follows this idea and just performs two battles per generation. The contenders are selected $RANDOMLY$ from all the population.
+The best bot in 5 matches is the winner in each battle. Then, both winners are the parents for the two new individuals (offspring).
+The new individuals must fight against two other random bots trying to be included in the new population.
+
+This approach presents a higher stochastic component than the original, due to the lack of a fitness value which can value every individual with a simple number. The random selection of all the individuals increases the diversity in the algorithm run, which, in turn, could be a key factor in this problem resolution,$AS WILL BE DEMONSTRATED IN THE EXPERIMENTS$.
 
 % ------------------------------------------------------------------
 %
 \subsection{Generational Survival}
 \label{subsec:generational}
+
+In this approach, as in the initial proposal \cite{GAs_Goldberg89}, half of the population is substituted every generation, having a big diversification and thus exploration factor.
+In the proposed algorithm, the individuals are grouped randomly in pairs, conducting 1 vs 1 battles. The winners (half of the population) will be the parents of the next offspring.
+Then, applying the $BLX-\alpha$ crossover, the rest of the population is generated (two descendents per couple). The parents are grouped again randomly, increasing this way the diversity/exploration of the algorithm.
+
+% ------------------------------------------------------------------
+%
+\subsection{Survival Arena}
+\label{subsec:arena}
+
+This is a novel proposal in which the individuals (bots) are continuously fighting in an arena (pool).
+Everyone counts with a number of life points which they lose when they are defeated in a match.
+
+When a new individual is needed (parent), it is selected from this pool, according to its current score ($OR REMAINING LIFE POINTS$).
+
+***ventajas de este método***
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   EXPERIMENTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
