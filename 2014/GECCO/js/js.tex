@@ -11,37 +11,57 @@
 % --- End of Author Metadata ---
 
 \title{Assessing different architectures for evolutionary algorithms in JavaScript}
-\subtitle{Abstract}
+\subtitle{}
 
 \author{
+% \alignauthor
+% J.J. Merelo, Pedro Castillo, Antonio Mora\\
+%        \affaddr{University of Granada}\\
+%        \affaddr{GeNeura, Department of Computer Architecture and Technology, ETSIIT + CITIC}\\
+%        \affaddr{18071 - Granada}\\
+%        \email{jmerelo,pedro,amorag@geneura.ugr.es}
+% \alignauthor
+% Anna I. Esparcia-Alcï¿½zar\\
+% \affaddr{S2 Grupo}\\
+% \email{aesparcia@s2grupo.es}
+% \alignauthor
+% Vï¿½ctor Rivas-Santos\\
+% \affaddr{Universidad de Jaï¿½n}\\
+% \email{vrivas@ujaen.es}
 \alignauthor
-J.J. Merelo, Pedro Castillo, Antonio Mora\\
-       \affaddr{University of Granada}\\
-       \affaddr{GeNeura, Department of Computer Architecture and Technology, ETSIIT + CITIC}\\
-       \affaddr{18071 - Granada}\\
-       \email{jmerelo,pedro,amorag@geneura.ugr.es}
+Three wise guys\\
+       \affaddr{University of Miskatonic}\\
+       \affaddr{Wise affairs dep}\\
+       \affaddr{Metropolis}\\
+       \email{some.good.e@mails.com}
 \alignauthor
-Anna I. Esparcia-Alcázar\\
-\affaddr{S2 Grupo}\\
-\email{aesparcia@s2grupo.es}
+Another author\\
+\affaddr{Adrress}\\
+\email{e@ma.il}
 \alignauthor
-Víctor Rivas-Santos\\
-\affaddr{Universidad de Jaén}\\
-\email{vrivas@ujaen.es}
+Last one\\
+\affaddr{Science Institute}\\
+\email{last@o.ne}
 }
 
 \maketitle
-\begin{abstract}
-After almost fifteen years, JavaScript has finally risen as a popular
+\begin{abstract}After almost fifteen years, JavaScript has finally risen as a popular
 language for implementing all kind of applications, from server-based
-to rich Internet Applications. Its features are also interesting for
-implementing evolutionary algorithm frameworks that encompass both
-tiers (client and server), but, besides, they allow a change in paradigm that goes beyond
-the canonical evolutionary algorithm. In this paper we will experiment
-with different architectures, implementations and evolutionary
-algorithms to assess which ones offer the most advantages in terms of
-performance, scalability and ease of use for the computer
-scientist. All code used in this paper has been released as open source.
+to rich Internet Applications. Its features are interesting for
+implementing evolutionary algorithm frameworks 
+% Maribel, y por quÃ©? 
+that encompass both
+tiers, but, besides, they allow a change in paradigm that goes beyond
+the canonical evolutionary algorithm. 
+%Maribel, muchos frameworks van mÃ¡s allÃ¡ del algoritmo genÃ©tico canÃ³nico, pero esto no pasa porque estÃ©n hechos en javascript
+In this paper we will experiment
+with different architectures
+% Maribel, Â¿Cuales?, una arquitectura diferente no es un sistema operativo diferente 
+implementations and evolutionary
+algorithms to assess which ones offers most advantages in terms of
+performance, scalability and ease of use 
+% Maribel, lo de la facilidad de uso no hay forma de medirlo a no ser que sea tu propia intuiciÃ³n o experiencia y no vale a no ser que hayas usado otros lenguajes y otras herramientas
+for the computer scientist. All implementations  have been released as open source.
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -54,13 +74,66 @@ scientist. All code used in this paper has been released as open source.
 \section{Introduction}
 
 JavaScript was introduced in 1998 as a browser-oriented language by
-Netscape. 
+Netscape \cite{flanagan1998javascript}; it was quickly adopted, in
+several versions, by the rest of the existing browsers (Internet
+Explorer, Opera and the offspring of Netscape, Mozilla and then
+Firefox). It became a standard by the European Association for
+Standardizing Information and Communication Systems in 1999
+\cite{ecma1999262}. However, it was for a long time considered just a
+language for the browser, and in fact most books on JS
+\cite{goodman2007javascript} start by
+telling you how to embed your scripts in the browser HTML code.
+
+As such as a embedded language, Javascript is an interpreted language
+that uses classes and objects, uses functions as first-rate types and
+is dynamic and weakly typed-checked (a variable can chenge its type during
+its lifetime, but whatever type it has needs to be explicitly coerced
+to other type in some contexts, but not in all). These features make
+it an ideal language for quick prototyping and productive
+programming. 
+
+However, the graduation of JS to a full-fledged language did not arrive until the first years of
+this century with the introduction of command-line interpreters such
+as SpiderMonkey or Rhino \cite{mikkonen2007using}, but it was not
+until Google's introduction of the V8 \cite{richards2010analysis}
+interpreter and its adoption by  {\tt node.js} that it started to
+become what it is now, one of the most popular development languages
+\cite{ogrady14:ranking}.
+
+What we propose in this paper is to measure different ways of
+implementing distributed evolutionary algorithms using Javascript. It
+has already been proved that implementation matters
+\cite{DBLP:conf/iwann/MereloRACML11}, and it does so since the
+evolutionary framework must be translated to a particular language in
+a way that goes with its grain and not in the way that is more easily
+translated from C or Java, but also because it offers new ways of
+implementing evolutionary algorithms.
+
+The experiments proposed in this paper have been released under an
+open source license and are available right now (address withheld for
+anonymous review). They offer a glimpse into the different
+possibilities of programming using Javascript, but at the same time
+show the kind of performace we should expect from them and what it
+wins from parallel oepration. In doing so, our intention is to prove
+that the translation of the usual distributed evolutionary paradigm
+into this new language is valid, but also which option offers the best
+performance in terms of scalability and number of evaluations needed
+to reach the solution.
+
+The rest of the paper is organized as follows: next we describe the
+state of the art in new implementations of evolutonary algorithms and
+past implementations using different JavaScript interpreters. The
+algorithm that has been adapted to JS is described next along with the
+experimental setup; finally results are presented and its implications
+discussed in the last section of the paper. 
+
+ 
 
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
 
-%Este trabajo se está desarrollando gracias a la financiación de  los
+%Este trabajo se estï¿½ desarrollando gracias a la financiaciï¿½n de  los
 %proyectos CANUBE (CEI2013-P-14) y ANYSELF (TIN2011-28627-C04-02). 
 
 %
@@ -68,6 +141,6 @@ Netscape.
 % initial runs of your .tex file to
 % produce the bibliography for the citations in your paper.
 \bibliographystyle{abbrv}
-\bibliography{geneura}  % sigproc.bib is the name of the Bibliography in this case
+\bibliography{geneura,javascript}  % sigproc.bib is the name of the Bibliography in this case
 
 \end{document}
