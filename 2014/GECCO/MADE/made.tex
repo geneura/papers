@@ -375,9 +375,8 @@ The key of the use of agents to create background for characters relies in the f
 For this reason, some actions should be statically defined and other have to depend on initialization variables. We define two kind of variables:
 
 \begin{itemize}
-
-\item{Base variables}: Those that are intrinsically defined by the nature of the conceptual agent. For example, if we are modeling a simplification of a person the average life expectancy could take values from 70 to 85 years. An agent that lives 100 years would be unusual, and an agent that lives 200 years shouldn't be possible.
-\item{Searchable variables}: Those used to increment or decrement the base values in the established limits or those that are used directly as probabilities to make decisions.
+\item \textbf{Base variables}: Those that are intrinsically defined by the nature of the conceptual agent. For example, if we are modeling a simplification of a person the average life expectancy could take values from 70 to 85 years. An agent that lives 100 years would be unusual, and an agent that lives 200 years shouldn't be possible.
+\item \textbf{Searchable variables}: Those used to increment or decrement the base values in the established limits or those that are used directly as probabilities to make decisions.
 \end{itemize}\\
 
 %TODO diagrama del concepto de variable base y variable configurable
@@ -387,23 +386,43 @@ and, in the Execution step, obtain a configuration that promote the apparition o
 
 \subsubsection{Modeling of the literary setting}
 
-The setting of the history 
+%TODO tener en cuenta a lo largo del texto que actions tb pueden ser predicates
 
-%TODO Qué se desea
-%TODO Expresar cada arquetipo en base al lenguaje generado 
-%TODO Genérico
-%TODO Etiquetar agentes y entorno según arquetipos y tropos
-%TODO el agente es independiente del setting. El setting sólo tiene en cuenta el lenguaje generado
+The setting of a story is defined as historical moment in time and geographic location in which it takes place, and helps initiate the main backdrop and mood for a story.
+Conceptually, the setting of a story is, in this methodology, independent from the agent design, but has to agree with it in the selected language: 
+The agent generates actions in a previously defined language with a clear semantic interpretation. On the other hand, the setting is compound of criteria over patterns for this language and the social networks derived from its usage In other words, the agents create backstories and the settings matches specifics patterns inside these backstories.\\
 
+\textit{For Example, if we have a medieval storytelling setting and we have defined a language where the actions ``love'', ``hate'', ``attack'', ``defend'', ``win'' y ``lose'' are used, we could try to find classic 
+%TODO citar de donde he sacado que son clásicos
+archetypes like the ``villain'' and the ``hero''. A villain could be a character that hate many others, attacks them and win. A hero could be a character is loved by many people, that eventually defends them and that attacks to the villain. Moreover, if the mood of the story is sentimental, we could be interested in a ``heartbreak and reencounter'' archetype, where two characters are in love, after that they hate each other and after that they fall in love again.}\\
+
+In our methodology, an archetype is designed as a function that receives the backstory of an agent, processes it, tries to find patterns and interpret the social network related to the agent and returns true if the agent matches the behavior. 
+%TODO dibujo intuitivo: la ambientación te ofrece una función cuya entrada los los agentes
+The complexity of the agent is not evaluated, just the result of its execution in this environment. It's important to remark that the agent has to be modeled to play a normal life (stereotype), and that the archetypes work as high level behaviors not directly implemented.
+
+A setting can be seen as a function over the agents that matches an archetype. If the archetypes emerge in the desired way, the setting function would return high values.
+
+In the next section, we'll explain the mechanism that will optimize the agent's searchable features to obtain backstories coherent with the mood of the setting.
 
 \subsection{Definition of the GA characteristics}
 
-%TODO Selección de un GA
-%TODO mapear los parámetros a un cromosoma
-%TODO Definir la función de fitness sobre el lenguaje que modela la ambientación 
-%TODO - Función sobre lenguaje generado que permite marcar a los agentes
-%TODO - Función sobre el nº de agnetes que cumplen un marcado, para puntuar la solución
-%TODO Definir nº de perfiles (por qué)
+The Genetic Algorithm needs:
+\begin{itemize}
+\item a chromosome that codes the solution.
+\item a fitness function to evaluate each chromosome.
+\end{itemize}
+
+The codification of the chromosome is simple: Given an agent, we map the searchable variables to an array of values. This array of values can be the chromosome.\\
+
+The fitness function of a chromosome is the result of calculating the average of the application of the setting function over \textit{n} executions of the environment with defined base variables (where n is the minimum number that reduces the error and has to be calculated empirically).
+
+%TODO dibujo aquí
+
+At this point, it's important to remark the possibility of using different profiles. In this context, a profile is a set of variables assigned to an agent. If two agents have different profiles, their behaviour in the face of the same inputs can be different. in the chromosome, the use of n profiles means a chromosome size equal to the number of searchable variables multiplied by n 
+
+Intuitively, increasing the number of profiles will lead to richer backgrounds, but \textit{a priori}, since the system is complex, it's impossible to say which number of profiles will lead to the fittest solution. Moreover, it's important to remark that the bigger the chromosome is, the slowly the solution converge.
+
+%TODO revisar todos los pasos y poner explćitamente que si no funciona bien hay que volver patrás
 
 \subsection{Instantiation}
 
