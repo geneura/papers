@@ -23,13 +23,6 @@ auto:
 clean:
 	$(RM) $(BBL) $(BLG) $(DVI) $(PDF) *.aux *.log *~
 
-#warning: clean
-#	$(MAKE) | grep '^Warning--' | sort | uniq > /tmp/output.txt
-#	while read i; do \
-#		echo "$$i --> $$(grep -l -m 1 -n $${i/* /} $(BIB))"; \
-#	done < /tmp/output.txt
-#	$(RM) /tmp/output.txt
-
 warning: $(BLG)
 	while read i; do \
 		[ "$${i:0:7}" = "Warning" ] && echo "$$i --> $$(grep -l -m 1 -n $${i/* /} $(BIB))"; \
