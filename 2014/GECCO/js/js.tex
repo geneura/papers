@@ -1,50 +1,3 @@
-% This is "sig-alternate.tex" V2.0 May 2012
-% This file should be compiled with V2.5 of "sig-alternate.cls" May 2012
-%
-% This example file demonstrates the use of the 'sig-alternate.cls'
-% V2.5 LaTeX2e document class file. It is for those submitting
-% articles to ACM Conference Proceedings WHO DO NOT WISH TO
-% STRICTLY ADHERE TO THE SIGS (PUBS-BOARD-ENDORSED) STYLE.
-% The 'sig-alternate.cls' file will produce a similar-looking,
-% albeit, 'tighter' paper resulting in, invariably, fewer pages.
-%
-% ----------------------------------------------------------------------------------------------------------------
-% This .tex file (and associated .cls V2.5) produces:
-%       1) The Permission Statement
-%       2) The Conference (location) Info information
-%       3) The Copyright Line with ACM data
-%       4) NO page numbers
-%
-% as against the acm_proc_article-sp.cls file which
-% DOES NOT produce 1) thru' 3) above.
-%
-% Using 'sig-alternate.cls' you have control, however, from within
-% the source .tex file, over both the CopyrightYear
-% (defaulted to 200X) and the ACM Copyright Data
-% (defaulted to X-XXXXX-XX-X/XX/XX).
-% e.g.
-% \CopyrightYear{2007} will cause 2007 to appear in the copyright line.
-% \crdata{0-12345-67-8/90/12} will cause 0-12345-67-8/90/12 to appear in the copyright line.
-%
-% ---------------------------------------------------------------------------------------------------------------
-% This .tex source is an example which *does* use
-% the .bib file (from which the .bbl file % is produced).
-% REMEMBER HOWEVER: After having produced the .bbl file,
-% and prior to final submission, you *NEED* to 'insert'
-% your .bbl file into your source .tex file so as to provide
-% ONE 'self-contained' source file.
-%
-% ================= IF YOU HAVE QUESTIONS =======================
-% Questions regarding the SIGS styles, SIGS policies and
-% procedures, Conferences etc. should be sent to
-% Adrienne Griscti (griscti@acm.org)
-%
-% Technical questions _only_ to
-% Gerald Murray (murray@hq.acm.org)
-% ===============================================================
-%
-% For tracking purposes - this is V2.0 - May 2012
-
 \documentclass{sig-alternate}
 \usepackage[latin1]{inputenc}
 
@@ -58,48 +11,37 @@
 % --- End of Author Metadata ---
 
 \title{Assessing different architectures for evolutionary algorithms in JavaScript}
-\subtitle{Abstract}
-%
-% You need the command \numberofauthors to handle the 'placement
-% and alignment' of the authors beneath the title.
-%
-% For aesthetic reasons, we recommend 'three authors at a time'
-% i.e. three 'name/affiliation blocks' be placed beneath the title.
-%
-% NOTE: You are NOT restricted in how many 'rows' of
-% "name/affiliations" may appear. We just ask that you restrict
-% the number of 'columns' to three.
-%
-% Because of the available 'opening page real-estate'
-% we ask you to refrain from putting more than six authors
-% (two rows with three columns) beneath the article title.
-% More than six makes the first-page appear very cluttered indeed.
-%
-% Use the \alignauthor commands to handle the names
-% and affiliations for an 'aesthetic maximum' of six authors.
-% Add names, affiliations, addresses for
-% the seventh etc. author(s) as the argument for the
-% \additionalauthors command.
-% These 'additional authors' will be output/set for you
-% without further effort on your part as the last section in
-% the body of your article BEFORE References or any Appendices.
+\subtitle{}
 
-\numberofauthors{3}
 \author{
+% \alignauthor
+% J.J. Merelo, Pedro Castillo, Antonio Mora\\
+%        \affaddr{University of Granada}\\
+%        \affaddr{GeNeura, Department of Computer Architecture and Technology, ETSIIT + CITIC}\\
+%        \affaddr{18071 - Granada}\\
+%        \email{jmerelo,pedro,amorag@geneura.ugr.es}
+% \alignauthor
+% Anna I. Esparcia-Alc�zar\\
+% \affaddr{S2 Grupo}\\
+% \email{aesparcia@s2grupo.es}
+% \alignauthor
+% V�ctor Rivas-Santos\\
+% \affaddr{Universidad de Ja�n}\\
+% \email{vrivas@ujaen.es}
 \alignauthor
-J.J. Merelo, Pedro Castillo, Antonio Mora\\
-       \affaddr{University of Granada}\\
-       \affaddr{GeNeura, Department of Computer Architecture and Technology, ETSIIT + CITIC}\\
-       \affaddr{18071 - Granada}\\
-       \email{jmerelo,pedro,amorag@geneura.ugr.es}
+Three wise guys\\
+       \affaddr{University of Miskatonic}\\
+       \affaddr{Wise affairs dep}\\
+       \affaddr{Metropolis}\\
+       \email{some.good.e@mails.com}
 \alignauthor
-Anna I. Esparcia-Alc�zar\\
-\affaddr{S2 Grupo}\\
-\email{aesparcia@s2grupo.es}
+Another author\\
+\affaddr{Adrress}\\
+\email{e@ma.il}
 \alignauthor
-V�ctor Rivas-Santos\\
-\affaddr{Universidad de Ja�n}\\
-\email{vrivas@ujaen.es}
+Last one\\
+\affaddr{Science Institute}\\
+\email{last@o.ne}
 }
 
 \maketitle
@@ -132,7 +74,60 @@ for the computer scientist. All implementations  have been released as open sour
 \section{Introduction}
 
 JavaScript was introduced in 1998 as a browser-oriented language by
-Netscape. 
+Netscape \cite{flanagan1998javascript}; it was quickly adopted, in
+several versions, by the rest of the existing browsers (Internet
+Explorer, Opera and the offspring of Netscape, Mozilla and then
+Firefox). It became a standard by the European Association for
+Standardizing Information and Communication Systems in 1999
+\cite{ecma1999262}. However, it was for a long time considered just a
+language for the browser, and in fact most books on JS
+\cite{goodman2007javascript} start by
+telling you how to embed your scripts in the browser HTML code.
+
+As such as a embedded language, Javascript is an interpreted language
+that uses classes and objects, uses functions as first-rate types and
+is dynamic and weakly typed-checked (a variable can chenge its type during
+its lifetime, but whatever type it has needs to be explicitly coerced
+to other type in some contexts, but not in all). These features make
+it an ideal language for quick prototyping and productive
+programming. 
+
+However, the graduation of JS to a full-fledged language did not arrive until the first years of
+this century with the introduction of command-line interpreters such
+as SpiderMonkey or Rhino \cite{mikkonen2007using}, but it was not
+until Google's introduction of the V8 \cite{richards2010analysis}
+interpreter and its adoption by  {\tt node.js} that it started to
+become what it is now, one of the most popular development languages
+\cite{ogrady14:ranking}.
+
+What we propose in this paper is to measure different ways of
+implementing distributed evolutionary algorithms using Javascript. It
+has already been proved that implementation matters
+\cite{DBLP:conf/iwann/MereloRACML11}, and it does so since the
+evolutionary framework must be translated to a particular language in
+a way that goes with its grain and not in the way that is more easily
+translated from C or Java, but also because it offers new ways of
+implementing evolutionary algorithms.
+
+The experiments proposed in this paper have been released under an
+open source license and are available right now (address withheld for
+anonymous review). They offer a glimpse into the different
+possibilities of programming using Javascript, but at the same time
+show the kind of performace we should expect from them and what it
+wins from parallel oepration. In doing so, our intention is to prove
+that the translation of the usual distributed evolutionary paradigm
+into this new language is valid, but also which option offers the best
+performance in terms of scalability and number of evaluations needed
+to reach the solution.
+
+The rest of the paper is organized as follows: next we describe the
+state of the art in new implementations of evolutonary algorithms and
+past implementations using different JavaScript interpreters. The
+algorithm that has been adapted to JS is described next along with the
+experimental setup; finally results are presented and its implications
+discussed in the last section of the paper. 
+
+ 
 
 
 %ACKNOWLEDGMENTS are optional
@@ -146,6 +141,6 @@ Netscape.
 % initial runs of your .tex file to
 % produce the bibliography for the citations in your paper.
 \bibliographystyle{abbrv}
-\bibliography{geneura}  % sigproc.bib is the name of the Bibliography in this case
+\bibliography{geneura,javascript}  % sigproc.bib is the name of the Bibliography in this case
 
 \end{document}
