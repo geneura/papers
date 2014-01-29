@@ -105,7 +105,7 @@ GPUs are similar to multi-core CPUs but with two main differences (see Figure \r
 \label{figure:captura2paperCEC}
 \end{figure}
 
-Physically GPUs used to be huge in comparison with CPUs, see Table \ref{fig:cpugpu}. Latest microprocessors from the two main vendors, AMD \cite{amd} and Intel \cite{intel}, have about 1 billion transistors. Latest GPUs from AMD and NVIDIA \cite{nvidia} are about 3 billion transistors. CPUs draw 130W at most, a limit established by the cost of commodity heat sink and fan. GPUs have increase power consumption and currently are in the neighborhood of 300W. This can be possible with the use of exotic cooling solutions. CPUs are built with the finest technology, read best lithography, while GPUs are made with budget in mind in more common and older processes.
+Physically GPUs used to be huge in comparison with CPUs, see Table \ref{fig:cpugpu}. Latest microprocessors from the two main vendors, AMD \cite{amd} and Intel \cite{intel}, are over 1 billion transistors. Latest GPUs from AMD and NVIDIA \cite{nvidia} are over 4 billion transistors. CPUs draw 130W at most, a limit established by the cost of commodity heat sink and fan. GPUs have increase power consumption and currently are in the neighborhood of 300W. This can be possible with the use of exotic cooling solutions. CPUs are built with the finest technology, read best lithography, while GPUs are made with budget in mind in more common and older processes.
 
 No standard terminology can be found in the world of graphics hardware.
 Every company have a very different set of words to refer to the same underlying objects and principles. Many authors try to alleviate this lack of standard terms calling 'shader core' to an Intel Execution Unit (EU), an AMD Single Instruction Multiple Data (SIMD) or an NVIDIA Streaming Multiprocessors (SM). Any of these refer to a single processor core inside of the GPU that can fetch, decode, issue and execute several instructions. The shader core is composed of several 'execution units' or EU that can execute an individual vector operation equivalent to an Advanced Vector Extensions (AVX) or Streaming SIMD Extensions (SSE) instruction. AMD call this kind of EU streaming processor (SP), while NVIDIA uses the term CUDA core. Table \ref{fig:cpugpu} compares several existing CPUs, GPUs and Accelerated Processing Units (APUs), taking into account these terms and their meaning.
@@ -115,8 +115,8 @@ Every company have a very different set of words to refer to the same underlying
 {
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \hline
-manufacturer           & estimated     & die          & (shader)      & clock rate & memory       & GFLOPS          & TDP & price   \\
-\&                     & transistors   & area         & cores         & (GHz)      & bandwidth    & (single         &     &         \\
+manufacturer           & estimated     & die          & (shader)      & clock rate & memory       & GFLOPS          & TDP & approx. \\
+\&                     & transistors   & area         & cores         & (GHz)      & bandwidth    & (single         &     & price   \\
 model                  & (billions)    & ($mm^2$)     & CPU[/GPU]     & CPU[/GPU]  & (GB/s)       & precision)      & (W) & (\$)    \\
 \hline
 \hline
@@ -130,32 +130,26 @@ AMD A10-7850K          & 2.41          & 245          & 4/512         & 3.7/0.72
 Intel Core i7 4770K    & 1.4           & 177          & 4/20          & 3.9/1.25   & 21.33        & 177             & 84  & 339     \\
 \hline
 \hline
-AMD Radeon HD 6970     & 2.64          & 389          & 1536          & 0.88       & 176          & 2703            & 250 & 350     \\
+AMD Radeon HD 7990     & $2\times4.3$  & $2\times352$ & $2\times2048$ & 0.95       & $2\times288$ & 8200            & 375 & 700     \\
 \hline
-NVIDIA GeForce GTX 580 & 3             & 520          & 512           & 1.544      & 192.4        & 1581.1          & 244 & 450     \\
-\hline
-\hline
-AMD FirePro S9000      & 4.31          & 352          & 1792          & 0.900      & 264          & 3230            & 225 & 2100    \\
-\hline
-AMD FirePro S10000     & $2\times4.31$ & $2\times352$ & $2\times1792$ & 0.825      & $2\times240$ & $2\times2956.8$ & 375 & 3000    \\
-\hline
-NVIDIA QUADRO K6000    & 7.1           & 550          & 2688          & 0.732      & 250          & 3950            & 235 & $\approx2700$ \\
+NVIDIA GeForce GTX 790 & $2\times7.1$  & $2\times561$ & $2\times2496$ & 0.8        & $2\times336$ & 8000            & 350 & 1000    \\
 \hline
 \hline
-NVIDIA Tesla K20X      & 7.1           & 550          & 2688          & 0.732      & 250          & 3950            & 235 & $\approx2700$ \\
+AMD FirePro S10000     & $2\times4.3$  & $2\times352$ & $2\times1792$ & 0.825      & $2\times240$ & $2\times2956.8$ & 375 & 3000    \\
 \hline
-NVIDIA Tesla K40       & 7.1           & $\approx550$ & 2886          & 0.745      & 288          & 5364            & 235 & $\approx4000$ \\
+NVIDIA QUADRO K6000    & 7.1           & 561          & 2880          & 0.9        & 288          & 3950            & 225 & 3000    \\
 \hline
-Intel Xeon Phi 5100P   & $\approx5$    & $\approx600$ & 60            & 1.053      & 320          & 2020            & 225 &  2200   \\
 \hline
-Intel Xeon Phi KNL     & $>5$          & $\approx700$ & 72            & 1.053      & 320          & 3225.6          & 300 &  2200   \\
+NVIDIA Tesla K40       & 7.1           & 561          & 2886          & 0.745      & 288          & 5364            & 235 & 4000    \\
+\hline
+Intel Xeon Phi 5100P   & 5             & 600          & 60            & 1.053      & 320          & 2020            & 225 & 2200    \\
 \hline
 
 \end{tabular}
 }
 \end{table}
 
-Nowadays NVIDIA has the best single chip GPU card with superior performance in some workloads and AMD the best card with two GPU chips. Both makers takes different compromises in the design of theirs GPUs. AMD has more execution units but its memory hierarchy is weaker. This way software bounded by memory bandwidth or with strong ordering inter-dependencies prefers NVIDIA hardware. On the other side, loads capped by pure ALU execution power use to be faster on AMD hardware.
+Nowadays NVIDIA has the best single chip GPU discrete card with superior performance in some workloads and AMD the best card with two GPU chips. Both makers takes different compromises in the design of theirs GPUs. AMD has more execution units but its memory hierarchy is weaker. This way software bounded by memory bandwidth or with strong ordering inter-dependencies prefers NVIDIA hardware. On the other side, loads capped by pure ALU execution power use to be faster on AMD hardware.
 
 Traditionally CPUs and GPUs has been separated. Now the trend is to integrate both into a single chip for cost efficiency reasons. Only top models remain as discrete devices. Some of this are top models from Intel's Core i7 or AMD's Opteron 6300 familys. Also best discrete GPUs from NVIDIA and AMD, like consumer GeForce GTX 690 and Radeon HD 7990 and professional line QUADRO K6000 and Radeon FirePro S10000.
 
@@ -210,6 +204,8 @@ OpenCL aimed to became the OpenGL of heterogeneous computing for parallel applic
 
 Most companies support OpenCL across their products. Apart from AMD and NVIDIA we can use it on graphic hardware from S3 and VIA. Also IBM has a version of OpenCL for PowerPC and CELL processors. Intel started to offer support from the APU architecture Ivy Bridge and GPUs. Embedded world is also interested in OpenCL. Imagination Technologies offer support for the SGX545 graphics core. As does Samsung with their ARM based microprocessors.
 
+To make life easier for potential users many libraries are appearing. One significant example are STL like extensions for the C++ language. In \cite{doi:10.1137/120903683} we can read a comparison of several modern C++ libraries providing high-level interfaces for programming multi- and many-core architectures on top of CUDA and OpenCL.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Execution Model}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -236,7 +232,7 @@ Unlike traditional computation, arbitrary communication within a kernel is stron
 \subsection{Memory Model}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The memory model defines how data is stored and communicated within a device and between the device and the CPU. The memory model can be seen in Figure \ref{figure:memory}. DirectCompute, CUDA and OpenCL share the same four memory types (with different terminology):
+The memory model defines how data is stored and communicated within a device and between the device and the CPU. The memory model can be seen in Figure \ref{figure:memory}. DirectCompute, CUDA and OpenCL share the same four memory types but employ different terminology:
 
 \begin{figure}
 \centerline{\epsfig{file=memory.eps,width=9cm}}
@@ -251,6 +247,7 @@ The memory model defines how data is stored and communicated within a device and
 \item Local memory: is accessible to a single work-group for reads and writes and is inaccessible for the CPU host. It is intended for shared variables and communication between work-items and is shared between a limited number of work-items.
 \end{itemize} 
 
+Unfortunately many times we have to pass data from CPU to GPU before a serious calculation can be done. Also after that, CPU must gather results from the GPU. Too much data passing can ruin speedups so they should be minimized if it can't be avoided.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Bioinpired Methods on GPUs}
