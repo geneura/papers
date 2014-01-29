@@ -618,9 +618,59 @@ increase the generation gap with the number of processes; even so, it
 brings errors which crash the clients in some cases; for the most
 part, we have been able to solve them. 
 
+\begin{figure}[htb]
+\centering
+   \includegraphics[scale=0.4]{par-pool-time-pop.png}
+\caption{Average time, in milliseconds, for successful runs. Black,
+  solid represents the previously mentioned P2P architecture, while
+  the light, dashed line represents the pool-based, single-server
+  architecture. }
+\label{fig:p:time}
+\end{figure}
+%
+\begin{figure}[htb]
+\centering
+   \includegraphics[scale=0.4]{par-pool-hits-pop.png}
+\caption{Number of successful runs out of 30. Black, solid line
+  corresponds to the P2P architecture, light-colored, dashed
+corresponds to the single-server architecture.}
+\label{fig:p:hits}
+\end{figure}
 
 
+In general and from the point of view of the operating system load, no
+great change is observed with the addition of one process ($n$ client
+processes + server) to the pool; if there is any time difference, it
+should not be attributed to increased OS load or, for that matter, for
+the small changes in the application architecture done. Even if the
+P2P applications do a single request (a GET) and this one performs two
+(first a PUT and then a GET), it probably cancels out with the fact
+that the P2P processes must also {\em respond} to requests from time
+to time. In fact, what we observe in the comparison of both types of
+architectures in Figure \ref{fig:p:time} is that there is a difference
+for the smallest number of processes and the biggest number of
+processes but they go in different directions, so it is difficult to
+say if, in general, there is any difference (there is none for
+$p=64,128$ and what is its origin. 
 
+But a more dramatic change of scenario is shown in Figure
+\ref{fig:p:hits}, which shows that the success rate increases
+dramatically, although decreasingly so with the increasing population;
+this is only to be expected since, in fact, success rate increased
+with the population in the P2P architecture. This makes, from the
+algorithmic point of view, a better alternative of this pool-based
+architecture. Since, time-wise, there is no big difference, we have to
+conclude that, in general and despite server-overload errors, using a
+pool-based architecture for asynchronous parallel evolutionary
+algorithms is a better option than either a single-population
+architecture or a peer-based architecture. 
+
+This conclusion is reached on top of the fact that JavaScript, its
+implementation in node.js, and the simple library we are presenting in
+this paper, are valid platforms for performing distributed computation
+experiments, since they allow to create rapid prototypes to
+concentrate on system architecture and the solution of problems via
+evolutionary algorithms. 
 
 
 
