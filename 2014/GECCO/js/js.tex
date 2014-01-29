@@ -47,27 +47,21 @@ Last one\\
 }
 
 \maketitle
-\begin{abstract}After almost fifteen years, JavaScript has finally risen as a popular
+\begin{abstract}After more than fifteen years, JavaScript has finally risen as a popular
 language for implementing all kind of applications, from server-based
-to rich Internet Applications. Its features are interesting for
+to rich Internet Applications. The fact that it is implemented in the browser and in server-side tools makes it interesting for
 % Antonio - qué features en concreto?, al menos nómbralas
-implementing evolutionary algorithm frameworks 
-% Maribel, y por quÃ©? 
+designing evolutionary algorithm frameworks 
 that encompass both
 tiers, but besides, they allow a change in paradigm that goes beyond
 the canonical evolutionary algorithm. 
 %Maribel, muchos frameworks van mÃ¡s allÃ¡ del algoritmo genÃ©tico canÃ³nico, pero esto no pasa porque estÃ©n hechos en javascript
 % Antonio - qué cambio en concreto?
 In this paper we will experiment
-with different architectures
-% Maribel, Â¿Cuales?, una arquitectura diferente no es un sistema operativo diferente 
-% Antonio - nombra las arquitecturas, impementaciones, etc
-implementations and evolutionary
-algorithms to assess which ones offer most advantages in terms of
+with different architectures, client-server and peer to peer to assess which ones offer most advantages in terms of
 performance, scalability and ease of use 
-% Maribel, lo de la facilidad de uso no hay forma de medirlo a no ser que sea tu propia intuiciÃ³n o experiencia y no vale a no ser que hayas usado otros lenguajes y otras herramientas
-for the computer scientist. All implementations  have been released as open source.
-% Antonio - una línea de conclusiones
+for the computer scientist. All implementations  have been released as open source, and besides showing that the concept of working with evolutionary algorithms in JavaScript can be done efficiently, we prove that a master-slave parallel architecture offers the best combination of time and algorithmic improvements in a parallel evolutionary algorithm that leverages JavaScript implementation features.
+
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -75,8 +69,7 @@ for the computer scientist. All implementations  have been released as open sour
 %A category including the fourth, optional field follows...
 \category{D.2.8}{Software Engineering}{Metrics}[complexity measures, performance measures]
 
-\keywords{Javascript, ...}
-% Antonio - faltan palabras clave
+\keywords{Javascript, node.js, parallel evolutionary algorithms, asynchronous evolution}
 
 \section{Introduction}
 
@@ -107,7 +100,7 @@ interpreter and its adoption by  {\tt node.js} that it started to
 become what it is now, one of the most popular development languages
 \cite{ogrady14:ranking}. At the same time, it is the only language of
 which it can be said that it is truly ubiquitous; every
-internet-connected device has at least one interpreter
+Internet-connected device has at least one interpreter
 \cite{crockford:javascript} (often as a browser), but you can find it
 also as the language of choice of the Gnome user-interface in Linux,
 CouchDB object database, in many Platform-as-a-service products such
@@ -211,7 +204,7 @@ information mediated by a server. This was implemented in different
 ways, \cite{gecco07:workshop:dcor,klein2007unwitting,agajaj}. These
 initial experiments mainly revealed that the usual ways of
 distributing evolutionary algorithms (farming out evaluation or using
-synchronous islands) were not suitable to an ephemerous client that
+synchronous islands) were not suitable to an ephemeral client that
 could enter a particular experiment at any time. It was clear also
 that new paradigms, based on using {\em pools} of resources and
 dealing with them asymmetrically could also be better suited to this
@@ -228,7 +221,7 @@ cloud computing environment, but that an assessment of its performance
 in different situations, frameworks and methodologies might be in
 order. This is what we will carry out in this paper via different
 implementations mainly done in the asynchronous JS interpreter {\tt
-  node.js}.
+  node.js}; what this asynchrony means will be explained next. 
 % Antonio - ¿qué significa que sea asincrono?
 
 \section{An evolutionary algorithm in {\tt node.js}}
@@ -331,7 +324,7 @@ into account is that longish computational stretches must be divided
 into more {\em atomic} chunks so that input-output events can happen
 between them; however, this concerns mainly the design of library {\em
   clients}, not the library itself. Thus, an open source library for
-Node has been released  
+Node, which is introduced in this paper, has been released  
 % Antonio - se ha hecho para este artículo como contribución del mismo, ¿no?
 % Si es así habría que destacarlo más. ;)
 so that it can be used with the Node package
@@ -635,7 +628,7 @@ total population for all nodes equal to 512, with this population
 divided among processes. However, since all the requests are done to a
 single process its event queue saturates very fast which led us to
 increase the generational gap with the number of processes; even so, it
-brings errors which crash the clients in some cases (they have been solved for the most part). 
+brings errors which crash the clients in some cases.
 % Antonio - si se han solucionado los problemas yo no lo comentaría. ;)
 
 \begin{figure}[htb]
@@ -691,7 +684,7 @@ implementation in {\tt node.js}, and the simple library we are presenting in
 this paper, are valid platforms for performing distributed computation
 experiments, since they allow to create rapid prototypes to
 concentrate on system architecture and the solution of problems via
-evolutionary algorithms. 
+evolutionary algorithms. In an unconstrained environment, Javascript will probably be slower than Java or C++, although its speed is on par (and may beat) other scripting languages. However, in an environment such as a multi-tier architecture that includes rich internet applications (with an UI written in JavaScript in the browser) or even mobile applications (which can easily be done in JavaScript via the PhoneGap framework or simply HTML5 in any browser) JavaScript can offer an excellent performance and even algorithmic advantages in parallel evolutionary algorithms, as we have proved in this paper. 
 
 % Antonio - Creo hay que darle más bombo a esto porque el objetivo del trabajo parecía ser que ofrecía una alternativa MEJOR a lo que ya hay, es decir, mejor que las implementaciones de EAs en C y Java por ejemplo, pero eso no se comenta, sólo se dice que JavaScript ofrece una implementación VÁLIDA... queda un poco flojo en ese sentido. :-(
 
@@ -772,7 +765,7 @@ to test, including these \begin{itemize}
   more possibilities.
 \end{itemize}
 
-We should emphasise too that this research has been carried out in an
+We should emphasize too that this research has been carried out in an
 open science fashion by publishing, as soon as they are produced, all
 results on a public server whose address is withheld at this point in
 the evaluation on the paper. We have made sure that these results are
