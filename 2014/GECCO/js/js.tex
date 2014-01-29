@@ -1,6 +1,7 @@
 \documentclass{sig-alternate}
 \usepackage[latin1]{inputenc}
 \usepackage{url}
+\usepackage{listings}
 
 \begin{document}
 %
@@ -236,6 +237,103 @@ the asynchronous I/O features that make it different from other JS
 interpreters such as SpiderMonkey or Rhino and, in fact, closer to the
 event-driven programming that is usual in browsers.
 
+From the point of view of parallel evolutionary algorithms, which will
+have to do input/output operations to interact with the rest of the
+islands, this
+basically means that this pattern
+\begin{lstlisting}
+generate_population();
+do {
+  single_generation();
+  if (time_to_migrate()) {
+    migrate_out();
+    migrate_in();
+  }
+} until evolution_end();
+\end{lstlisting}
+will not work as expected. The main problem is that all input/output
+operations will create events in the implicit event loop, which will
+generate callbacks once the request has been completed. Code shown
+above will work, but will {\em never} have time to process the events
+and thus migrations, either in or out, will never take place (or
+rather, inbound requests will be made but not processed and outbound
+requests will actually be made, but if the client on the other side
+works in the same way, it will never be processed). So, instead of
+this sequential loop, a long-lasting loop must be done this way in
+Node \cite{nodejs:patterns}:
+\begin{lstlisting}
+generate_population();
+do_evolution();
+
+function do_evolution(){
+  single_generation();
+  if (time_to_migrate()) {
+    migrate_out();
+    migrate_in();
+  }
+  if ( !evolution_end() ) {
+    do_after_callbacks( do_evolution());
+  }
+}
+\end{lstlisting}
+
+This is not only a way of writing the programs using different patterns,
+it also a different way of understanding the program sequence. In a
+synchronous framework, the first pseudo-code should be expected to behave
+in this way:
+\begin{lstlisting}
+Generation 1
+Generation 2
+...
+Generation 20
+Migration-out
+Migration-in
+\end{lstlisting}
+
+However, what we will find in an evolutionary algorithm in Node
+programmed as above will be something like
+\begin{lstlisting}
+Generation 1
+Generation 2
+...
+Generation 20
+Request-Migration-out
+Reguest-Migration-in
+...
+Generation 22
+Migration-in taking place
+...
+Generation 27
+Migration-out taking place
+\end{lstlisting}
+Asynchronous programming not only means that events will be happening
+at an undeterminate time in the future, but also that they might take
+place out of sequence; in fact the sequence might very well be
+\begin{lstlisting}
+Migration-in 2 taking place
+...
+Migration-out 0 taking place
+...
+Migration-in 1 taking place
+\end{lstlisting}
+
+When designing an evolutionary library that can be used in the browser
+{\em and} in Node, however, one of the main things that must be taken
+into account is that longish computational stretches must be divided
+into more {\em atomic} chunks so that input-output events can happen
+between them; however, this concerns mainly the design of library {\em
+  clients}, not the library itself. Thus, an open source library for
+Node has been released  so that it can be used with the Node package
+manager, installed with it and used in any Node program (the name and
+URL have been withheld for anonymous review).
+
+The library has been intended mainly as a proof of concept, including
+the bare minimum to run an evolutionary algorithm: a single mutation
+and crossover operators, tournament selection and a few test
+functions, including the Trap function, that has been selected for
+making the experiments in this paper. 
+
+
 
 
 %ACKNOWLEDGMENTS are optional
@@ -249,6 +347,6 @@ event-driven programming that is usual in browsers.
 % initial runs of your .tex file to
 % produce the bibliography for the citations in your paper.
 \bibliographystyle{abbrv}
-\bibliography{geneura,javascript}  % sigproc.bib is the name of the Bibliography in this case
+\bibliography{geneura,javascript,ror-js}  % sigproc.bib is the name of the Bibliography in this case
 
 \end{document}
