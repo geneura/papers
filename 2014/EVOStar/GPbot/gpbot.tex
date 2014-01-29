@@ -54,26 +54,22 @@ showstringspaces=false
 
 % a short form should be given in case it is too long for the running head
 \titlerunning{Tree depth influence in GP for generation of agents for RTS}
-\author{Dr. Who and Dr. Jones and Dr. Evil}%P. Garc\'ia-S\'anchez, A. Fern\'andez-Ares, A. M. Mora, P. A. Castillo and J.J. Merelo}
+\author{P. Garc\'ia-S\'anchez, A. Fern\'andez-Ares, A. M. Mora, P. A. Castillo, J. Gonz\'alez and J.J. Merelo}
 
 %Doble ciego!!!!! - JJ FERGU: Lo sé, es para ver quien participa.
  
 %
 
-%\authorrunning{P. Garc\'ia-S\'anchez et al.}
-\authorrunning{Secret}
+\authorrunning{P. Garc\'ia-S\'anchez et al.}
+
 % (feature abused for this document to repeat the title also on left hand pages)
 % the affiliations are given next; don't give your e-mail address
 % unless you accept that it will be published
 
-%\institute{Dept. of Computer Architecture and Technology and CITIC-UGR, University of Granada, Spain 
-%\mailsa}
+\institute{Dept. of Computer Architecture and Technology and CITIC-UGR, University of Granada, Spain 
+\mailsa}
 
 
-%\toctitle{BLABLABLA}
-%ES ANONIMO????
-% SÍ! - JJ FERGU: que ya lo sabía, esto es del primer Evostar que envié hace mil años y conserva los comentarios que escribí xDD
-%\tocauthor{Authors' Instructions}
 \maketitle
 
 
@@ -111,7 +107,7 @@ The {\em Planet Wars} game, presented under the Google AI Challenge 2010\footnot
 %esto no corresponde al
                                 %estado del arte, sino a la
                                 %introducción - JJ FERGU: OK, movido arriba
- Although this game has been described in previous works \cite{Lara2013mapgenerator,Mora2012Genebot,FernandezAres2012adaptive}, we summarize saying that the objective of the player is to conquer enemy and neutral planets in a space-like simulator. Each player has planets (resources) that produce ships (units) depending of a growth-rate. The player must send these ships to other planets (literally, crashing towards the planet) to conquer them. A player win if he is the owner of all the planets. As requirements, only one second is the limit to calculate next actions (this time windows is called {\em turn}\footnote{Although in this work we are using this term, note that the game is always performed in real time.}), and no memory about the previous turns must be used.  Figure \ref{fig:naves} shows a screen capture of the game. 
+ Although this game has been described in previous works \cite{Lara2013mapgenerator,Mora2012Genebot,FernandezAres2012adaptive}, we summarize saying that the objective of the player is to conquer enemy and neutral planets in a space-like simulator. Each player has planets (resources) that produce ships (units) depending on a growth-rate. The player must send these ships to other planets (literally, crashing towards the planet) to conquer them. A player win if he is the owner of all the planets. As requirements, only one second is the limit to calculate next actions (this time window is called {\em turn}\footnote{Although in this work we are using this term, note that the game is always performed in real time.}), and no memory about the previous turns must be used.  Figure \ref{fig:naves} shows a screen capture of the game. 
 
 \begin{figure}
 \begin{center}
@@ -134,10 +130,10 @@ We try to solve the next questions:
 \begin{itemize}
 \item Can a tree-generated behaviour of an agent defeat an agent hand-coded by a player with experience and whose parameters have been also optimized?
 \item Can this agent beats a more complicated opponent that is adapted to the environment?
-\item How does the maximum depth affects the results?
+\item How does the maximum depth affect the results?
 \end{itemize}
 
-The rest of the work is structured as follows: after the state of the art, the description of our agent is presented in Section \ref{sec:agent}. Then, the experimental setup conduced with the EA are showed (Section \ref{sec:experiments}). Finally, results, conclusions and future works are discussed.
+The rest of the work is structured as follows: after the state of the art, the description of our agent is presented in Section \ref{sec:agent}. Then, the experimental setup conduced with the GP are showed (Section \ref{sec:experiments}). Finally, results, conclusions and future works are discussed.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%SEC SOA
@@ -314,7 +310,7 @@ Maps used in each evaluation & map76.txt map69.txt map7.txt map11.txt map26.txt 
 
 After all the executions we have evaluated the obtained best individuals in all runs confronting to the bots in a larger set of maps (the 100 maps provided by Google) to study the behaviour of the algorithm and how good are the obtained bots in maps that have not been used for training.
 
-%The used framework is OSGiLiath, a service-oriented evolutionary framework. The generated tree is compiled in real-time and injected in the agent's code using Javassist library. All the source code used in this work is available under a LGPL V3 License in \url{http://www.osgiliath.org}.
+The used framework is OSGiLiath, a service-oriented evolutionary framework \cite{Garcia13Service}. The generated tree is compiled in real-time and injected in the agent's code using Javassist library. All the source code used in this work is available under a LGPL V3 License in \url{http://www.osgiliath.org}.
 
 \section{Results}
 
@@ -364,9 +360,9 @@ Tables \ref{tab:resultsGenebot} and \ref{tab:resultsExpgenebot} summarize all th
 }
 \end{table*}
 
-As can be seen, versus Genebot, the average population fitness is nearest to the optimum than versus Exp-Genebot, even with the lowest depth. Highest permanence in the population is also with the depth of 3 levels. On the contrary, confronting with Exp-Genebot the configuration with unlimited depth achieves better results. This make sense because more decisions should be taken because the enemy can be different in each map.
+As can be seen, versus Genebot, the average population fitness is nearest to the optimum than versus Exp-Genebot, even with the lowest depth. Highest performance in the population is also with the depth of 3 levels. On the contrary, confronting with Exp-Genebot the configuration with unlimited depth achieves better results. This make sense because more decisions should be taken because the enemy can be different in each map.
 
-In the second experiment, we have confronted the 30 bots obtained in each configuration again with Genebot and Exp-Genebot, but in the 100 maps provided by Google. This has been used to validate if the obtained individuals of our method can be competitive in terms of quality in maps not used for evaluation. Results are shown in Table \ref{tab:allmaps} and boxplots in Figure \ref{fig:victories}. It can be seen that in average, the bots produced by our algorithm perform equal or better than the best obtained by the previous authors. Note that, even obtaining individuals with maximum fitness (5 victories) that have been kept in the population several generations (as presented before in Tables \ref{tab:resultsGenebot} and \ref{tab:resultsExpgenebot}) cannot be representative of a extremely good bot in a wider set of maps that have not been used for training. As the distributions are not normal, a Kruskal-Wallis test has been used, obtaining significant differences in turns for the experiment versus Genebot (p-value = 0.0028) and victories in Exp-genebot (p-value = 0.02681). Therefore, there are differences using a maximum depth in the generation of bots. In both configurations, the trees created with 7 levels of depth as maximum have obtained the better results.
+In the second experiment, we have confronted the 30 bots obtained in each configuration again with Genebot and Exp-Genebot, but in the 100 maps provided by Google. This has been used to validate if the obtained individuals of our method can be competitive in terms of quality in maps not used for evaluation. Results are shown in Table \ref{tab:allmaps} and boxplots in Figure \ref{fig:victories}. It can be seen that in average, the bots produced by our algorithm perform equal or better than the best obtained by the previous authors. Note that, even obtaining individuals with maximum fitness (5 victories) that have been kept in the population several generations (as presented before in Tables \ref{tab:resultsGenebot} and \ref{tab:resultsExpgenebot}) cannot be representative of a extremely good bot in a wider set of maps that have not been used for training. As the distributions are not normalized, a Kruskal-Wallis test has been used, obtaining significant differences in turns for the experiment versus Genebot (p-value = 0.0028) and victories in Exp-genebot (p-value = 0.02681). Therefore, there are differences using a maximum depth in the generation of bots. In both configurations, the trees created with 7 levels of depth as maximum have obtained the better results.
 
 To explain why results versus Genebot (a weaker bot than Exp-Genebot) are slightly worse than versus Exp-Genebot, even when the best individuals produced by the GP have higher fitness, we have to analyse how the best individual and the population are being evolved. Figure \ref{fig:gens} shows that best individual using Genebot reaches the optimal before Exp-Genebot, and also the average population converges quicker. This could lead to over-specialization: that is, the generated bots are over-trained to win in the five maps, and because re-evaluation these individuals are still changing after they have reached the optimal.
 
@@ -428,8 +424,8 @@ This work presents a Genetic Programming algorithm that generates agents for pla
 
 In future work, other rules will be added to our algorithm (for example, the ones that analyse the map, as the Exp-Genebot does) and different enemies will be used. Other games used in the area of computational intelligence in videogames, such as Unreal\texttrademark~ or Super Mario\texttrademark~ will be tested.
 
-%\section*{Acknowledgements}
-%This work has been supported in part by FPU research grant AP2009-2942 and projects EvOrq (TIC-3903), CANUBE (CEI2013-P-14) and ANYSELF (TIN2011-28627-C04-02).
+\section*{Acknowledgements}
+This work has been supported in part by FPU research grant AP2009-2942 and projects EvOrq (TIC-3903), CANUBE (CEI2013-P-14) and ANYSELF (TIN2011-28627-C04-02).
 
 \bibliographystyle{splncs}
 \bibliography{gpbot}
