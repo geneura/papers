@@ -672,10 +672,96 @@ experiments, since they allow to create rapid prototypes to
 concentrate on system architecture and the solution of problems via
 evolutionary algorithms. 
 
+\section{Conclusions}
+
+In this paper we set to prove the worth of a node.js-based distributed
+evolutionary algorithm. Node.js is a emerging platform which is
+receiving a lot of intereste in the open source and enterprise arena,
+but not so much in the scientific community so our intention was to
+introduce it to the evolutionary computation communyti by proving its
+value as a platform for EC experiments. A basic EC library has been
+created and released and is available to the scientific community. The
+library can be expanded and, being open source, can be adapted and
+suited to the needs of any particular user; due to the expansion of
+the JavaScript and node.js community, it should be increasingly easy
+to find people interested and skilled enough to work in evolutionary
+algorithms using JS and node.js, and, from the other end, it could get
+the node.js community interested in our area, which might prove the
+source of interesting problems that can be dealt with from the point
+of view of metaheuristics.
+
+The main challenge of this paper was to create evolutionary algorithms
+program that took advantage of the asynchronous nature of node.js and
+the easiness with which asynchronous communication is done using
+it. To that end, two implementations of a parallel system (that can be
+easily distributed by changing the configuration files of the clients
+to reflect the URLs used), one in which evolutionary islands form a
+{\em star} topology and are aware and communicate with all other
+processes, and another in which each client must be aware only of the
+server it uses to deposit and pick up individuals that are deposited
+by other clients. These two alternatives offer different advantages
+from the raw and algorithmic performance point of view: while the P2P
+setup is able to achieve great improvements by reaching solution in a
+portion of the time, the server-based setup not only offers
+improvements of the same order, but also is able to improve the
+success rate over the P2P and single-server architecture. This despite
+the disadvantage of the server not being able to process all requests
+in some occassions.
+
+Why this happens is, however, a different matter. The P2P system
+always deposits the best individual in the current generation and
+retrieves also the best from its peer. This might not be the best
+alternative, as shown in papers such as
+\cite{multikulti:cec09}. However, the peer it takes the chromosome
+from {\em is} random, so that might not be the problem. It would be
+interesting, however, to use other strategies to retrieve individuals
+from other processes to check what is exactly the reason for this lack
+of performance. On the other hand, the pool-based system retrieves a
+random individual from the pool, but this individual has been, in some
+past moment, the best since they only deposit the best, so the
+probably increase in diversity afforded by using a random individual
+from the server might not be the reason; in fact, this was chosen
+since retrieving the best would probably get the same individual the
+client had just deposited and checking for that might lead to
+increasing complexity that we pointedly tried to avoid. 
+
+In any case, it is quite clear that the use of this platform and the
+degrees of liberty in its design open a whole world of possibilities
+to test, including these \begin{itemize}
+\item Uniform vs. heterogenous settings in nodes. We have been using a
+  single population size, generation gap and tournament size, in
+  general. Using dissimilar and even random values might increase
+  diversity and thus increase the success rate.
+\item Heterogeneous systems vs. homogeneous systems: using the same
+  parameters in different systems will, once again, increase diversity
+  and will allow anyways the use of many more resources that are
+  available under a single motherboard. Using free PaaS or the free
+  tier of IaaS products such as Amazon EC2 or Azure will allow to work
+  with bigger problems, be it in a P2P or pool-based fashion
+\item The P2P and pool-based options are not mutually exclusive, since
+  in fact the program used in the P2P setup can be used as a server by
+  adding to it the capability to respond to PUT petitions. Working
+  with different servers and distributing clients might offer a way
+  out of the server overload problem but, at the same time, opens many
+  more possibilities.
+\end{itemize}
+
+We should enphasize too that this research has been carried out in an
+open science fashion by publishing, as soon as they are produced, all
+results on a public server whose address is withheld at this point in
+the evaluation on the paper. We have made sure that these results are
+fully reproductible by not only releasing the source code, but also
+all configuration files (in JSON) and data obtained during the
+experiments, as well as a configuration script in Ansible for the
+setup of a virtual or real machine.
 
 
-%ACKNOWLEDGMENTS are optionalnd
+%ACKNOWLEDGMENTS are optionalndn
 \section{Acknowledgments}
+
+Withheld for anonymous review \\
+but\\
+should have these many lines.
 
 %Este trabajo se est� desarrollando gracias a la financiaci�n de  los
 %proyectos CANUBE (CEI2013-P-14) y ANYSELF (TIN2011-28627-C04-02). 
