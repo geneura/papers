@@ -81,16 +81,18 @@
 % Atención, he cambiado cosas. -RH
 Stories are not only painfully weaved by crafty writers in the
 solitude of their studios; they also have to be produced massively for
-non-playing characters in the video game industry or tailored to
+non-player characters in the video game industry or tailored to
 particular tastes in personalized stories. However, the creation of
 fictional stories is a very complex task that usually implies a
 creative process where the author has to combine characters, 
 conflicts and backstories to create an engaging narrative.
 This work presents a general methodology to generate cohesive and coherent
-backstories where desired archetypes (universally accepted literary symbols) can emerge in complex stochastic systems using a Genetic Algorithm (GA).
-This methodology supports the modeling and parameterization of the agents, the environment where they will live and the desired literary setting. The usage of a genetic algorithm is proposed to establish the parameter configuration that will lead to backstories that best fit the setting. Information extracted from a simulation can then be used to create the literary work.
+backstories where desired archetypes (universally accepted literary symbols) can emerge in complex stochastic systems.
+This methodology supports the modeling and parameterization of the agents, the environment where they will live and the desired literary setting. The use of a Genetic Algorithm (GA) is proposed to establish the parameter configuration that will lead to backstories that best fit the setting. Information extracted from a simulation can then be used to create the literary work.
 To demonstrate the adequacy of the methodology, we perform an implementation using a specific multi-agent system and evaluate the results.
-
+%FERGU: TODO en el abstract (de los comentarios de Antonio)
+% Definir literary setting
+% Mencionamos simulación, pero no la explicamos antes
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -114,21 +116,21 @@ To demonstrate the adequacy of the methodology, we perform an implementation usi
 \section{Introduction}
 \label{sec:intro}
 
-In video games, Non Player Characters (NPCs)  are a type of characters
+In video games, Non-Player Characters (NPCs)  are a type of characters
 that live in the game world to provide a more inmmersive
-experience and, in some cases, present a challenge to the human player. Modern RPGs (Role Playing Games), such as The
-Witcher\texttrademark~or Skyrim\texttrademark~ include hundreds of NPC characters. The effort to create a good interactive fiction script is directly proportional to the number of these characters. This is the reason why this kind of agents usually count with limited behaviors, such as wandering in the villages, selling groceries or guarding the cities. Also, they usually offer scripted conversations, for example, to buy and sell objects to the player. In other cases they interact with the player depending of the player's behavior: for example, if the player steals something then a city guard would attack him.  However, these characters do not interact among themselves, only with the player, and their activities are only guided with this purpose. In a world with such a number of characters, their collective interactions could improve the gaming experience, leading to a richer and more inmmersive world. For example, hungry inhabitants could become thieves, guards could pursuit the thieves, villagers could fell in love with others or different war alliances could emerge.
+experience and, in some cases, present a challenge to the human player. Modern  Role Playing Games (RPGs), such as The
+Witcher\texttrademark~or Skyrim\texttrademark~ include hundreds of NPCs. The effort to create a good interactive fiction script is directly proportional to the number of these characters. Thus, this kind of agents usually present limited behaviors, such as wandering in the villages, selling groceries or guarding the cities. Moreover, they usually offer scripted conversations (for example, to buy and sell objects to the player), or scripted behaviours, in which they interact with the player only if he/she conducts an specific action: for example, if the player steals something then a city guard would attack him. These characters are frequently programmed to interact with the human player, following a guided sequence of activities just with this purpose, so normally they do not interact among themselves. In a world with such a number of characters, their collective interactions could improve the gaming experience, leading to a richer and more inmmersive world. For example, hungry inhabitants could become thieves, guards could pursuit the thieves, villagers could fell in love with others, or different war alliances could emerge.
 
 
-%FERGU: HABLAR DE LA METODOLOGIA COMO UNA NARRACION
-These facts have motivated us to develop a methodology to model the language, agents and literary setting to generate backstories. In this methodology, a set of probabilities and
+%FERGU: HABLAR DE LA METODOLOGIA COMO UNA NARRACION Y DESCRIBIR LITERARY SETTING!
+These facts have motivated us to develop a methodology to model the language, agents and literary setting to generate backstories. In this methodology, a set of probabilities and 
 states are associated to agents' actions, and these probabilities are
-optimized by means of an Evolutionary Algorithm (EA) to match with a
+optimized by means of a Genetic Algorithm to match with a
 specific literary archetype, defined by the fiction creator. The {\em
 archetypes} are behaviors and patterns universally accepted and
 present in the collective imaginary
- \cite{ArchetypesGarry05}, which leads to empathize  % mal escrito, y Â FERGU: arreglado. SÃ­, existe.¿existe empathize? - JJ
-with the characters and immerse the spectator in the story
+ \cite{ArchetypesGarry05}. They allow to empathize  % mal escrito, y Â FERGU: arreglado. SÃ­, existe.¿existe empathize? - JJ
+with the characters and aid to immerse the spectator in the story
 (for example, the well-known {\em hero} archetype).
 
 
@@ -155,10 +157,10 @@ with the characters and immerse the spectator in the story
 
 To validate our methodology we also present a multi-agent system called
 MADE (Massive Artificial Drama Engine) to model a self-organized
-virtual world where their elements influences each other, following
-cause-effect behaviors in a coherent manner. This system needs to be
+virtual world where every element influences each other, following
+cause-effect behaviors in a coherent manner. This system must be
 a suitable environment for the plot of a specific literary work, also being
-interesting for the player/spectator. 
+interesting for the player/spectator. %FERGU: dice antonio que pongamos aquí un par de técnicas en las que se basa MADE
 
 The aim of this work is to answer the following questions:
 
@@ -170,10 +172,12 @@ The aim of this work is to answer the following questions:
  \item Could the obtained results of our methodology be used to create a literary work? %FERGU: pregunta aÃÂ±adida que hay que contestar
 \end{itemize}
 
-%Estas preguntas son las que tienes que contestar en las
-%conclusiones. Si no, el trabajo ha fallado - JJ2013 
+%FERGU: Antonio propone esta pregunta en lugar de la última: Could this methodology be exported to be used in a bigger task such as creating a literary piece or work?
 
-In this paper we show that EAs, together with a proper design of
+%Estas preguntas son las que tienes que contestar en las
+%conclusiones. Si no, el trabajo ha fallado - JJ2013 FERGU:TODO mirad que estén contestadas al final
+
+In this paper we show that GAs, together with a proper design of
 literary patterns, can be used to find the parameters that promote the
 generation of drama plots and sub-plots in a multi agent based
 environment.\\
@@ -184,8 +188,7 @@ environment.\\
 % es un mundo en que los personajes sigan unos porcentajes
 % determinados y eso es lo que obtienes, no tiene ninguna gracia - JJ
 
-The rest of the work is structured as follows: after the state of the art, the proposed methodology is presented in Section \ref{sec:methodology}. Then, an application of the methodology, with experiments conducted with the EA are shown (Section \ref{sec:applying}). Finally, conclusions and future works are discussed.
-
+The rest of the work is structured as follows: after the state of the art, the proposed methodology is presented in Section \ref{sec:methodology}. Then, some experiments, showing possible applications of this methodology (including the GA application) are presented (Section \ref{sec:applying}). Finally, conclusions and future work are discussed.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -202,21 +205,22 @@ The rest of the work is structured as follows: after the state of the art, the p
 
 Auto-generated interactive fiction research is mainly focused in
 methods to create the process of a story generation
-\cite{nairat2011character}. Story generation can be divided in two
-areas: interactive and non-interactive. In the first area, and
-according to \cite{ReviewArinbjarnar09}, an Interactive Drama is
-defined in a virtual world where the user has freedom to interact with
-the NPCs and objects in a dramatically interesting experience,
-different in each execution, and adapted to the interactions of the
-user. % Â¿QuÃ© metodologÃ­a usa cada uno? Â¿En quÃ© es mejor o peor que lo
+\cite{nairat2011character}. Story generation can be divided in two %FERGU: Dice Antonio si es 'storytelling'
+areas: interactive and non-interactive. In the first one, and
+according to \cite{ReviewArinbjarnar09}, an {\em interactive drama} is
+defined in a virtual world where the user is free to interact with
+the NPCs and objects in an interesting experience (from the dramatic point of view),
+ which should be different in each execution, and adapted to the user's interaction. % Â¿QuÃ© metodologÃ­a usa cada uno? Â¿En quÃ© es mejor o peor que lo
       % que se va a hacer aquÃ­?
 
-The generation of interactive dramas can also be based in script
+
+
+The generation of interactive dramas can also be based on a script
 structure \cite{ArchitectureYoung04}, where each possibility in the
 story must be previously defined, so there is a limited number of
 possible plot combinations.
 
-On the other side, in non-interactive plot generation systems the user
+On the other hand, in {\em non-interactive plot generation systems} the user
 does not take control as the protagonist. For example, in the system
 presented by Pizzi et al. \cite{pizzi2007interactive} the user can
 interact with the characters, changing their emotions, but making the
@@ -226,40 +230,48 @@ user an spectator, rather than an actor. % La secciÃ³n SoA es muy
                                 % extensa y que tenga su propia
                                 % narrativa - JJ
 
-As opposed to those concepts, out methodology is focused in Artificial Non
-Interactive Drama, because its aim is the massive plot generation
-for secondary characters, to provide a context for the writer and the
+%FERGU: Rubén, mira la frase del trabajo de Pizzi, que no se entiende muy bien, porque parece que es interactiva no-interactiva pero el usuario es espectador
+
+As opposed to those concepts, out methodology is focused in {\em artificial non-interactive drama}, 
+because its aim is the massive plot generation
+for secondary characters, in order to provide a context for the writer and the
 player to perceive a virtual world as coherent, detailed and
 enriched. The story generation (that is, the narrative) is addressed 
-by our methodology as the final step, giving freedom to creators. The story generation has been studied in the systems presented in
-the survey by Arinbjarnar et al. in \cite{ReviewArinbjarnar09}. 
+by our methodology as the final step, giving freedom to creators. This issue has been studied in the systems presented in
+the survey by Arinbjarnar et al. in \cite{ReviewArinbjarnar09}. %FERGU: describir algunos sistemas de este survey?
 
 % (JJ2013): Decir quÃÂÃÂ© te hace suponer que esto va a ser una buena soluciÃÂÃÂ³n.
 % (RubÃÂÃÂ©n): TODO
 
-Previous works define the plot as an emergence of the behaviour of the agents that follow a set of rules. In our methodology, the agents' behaviour is product of their personality and the environment. That is, the agents does not follow the plot, but they generate the plot itself.
+Previous works define the plot as as something that emerges from the behaviour of the agents that follow a set of rules. In the proposed methodology, the agents' behaviour is produced by their personality and the environment. That is, the agents do not follow a plot, but they generate the plot itself.
 
 
-Furthermore, the previous works generate plots in worlds with a limited number of characters. This restriction does not exist in our methodology, where the number of characters to create is unlimited.
+Furthermore,  previous works generate plots in worlds with a limited number of characters. This restriction does not exist in our methodology, where the number of characters to create is unlimited. 
+%ANTONIO: esta última afirmación parece falsa porque debes limitar el número para obtener algo, ¿no?
+%Aunque lo acabo de pensar, sin saber bien todavía de qué va MADE, y supongo que al crear arquetipos cualquier nuevo personaje se ajusta a uno de ellos y ya está, por eso hablas de número no limitado, ¿no?
+%En cualquier caso eso es MUY IMPORTANTE (uno de los selling points) y no está puesto ni en el abstract ni en la intro.
+%Además de que habría que explicarlo un poco más para darle más bombo aquí. ;)
 
 
 
-Following the ideas of the work of Epstein and Axtell
-\cite{epstein1996growing} an environment based in {\em Sugarscape} has
+Following the ideas of the work by Epstein and Axtell
+\cite{epstein1996growing} an environment based in {\em Sugarscape} has %Antonio: decir lo que es Sugarscape o quitarlo
 been developed with concepts such as food, metabolism and
-vision. This environment uses the elements by Gershenson
+vision. This environment uses the elements introduced by Gershenson
 \cite{gershenson2005general}: a virtual world, agents who are born, grow, 
 interact, reproduce and dead; resources (food), mediators, and
 relations of rivalry (friction) and cooperation (synergy). The actions
 of these agents are parametrized according the work of Nairat
-\cite{nairat2011character}, based in the use of genetic algorithms to
-obtain a plot (solution) where two characters interact in a creative way.
+\cite{nairat2011character}, based in the use of GAs in order to
+obtain a plot (solution) where two characters interact in a creative way. %Antonio: Entiendo que esto es nuevo, no lo que hizo ya el tal Nairat,¿no? Queda un poco lioso y puede parecer que esto ya lo hizo ese menda, cuando yo creo que tú quieres decir que os basásteis en su trabajo para hacer esto, que él no hizo. ;)
 
 According to the taxonomy described by Togelius et al. \cite{Togelius2011}, the present work
-with MADE can be seen has a \textit{procedural content generator} (\textit{PGC})
+with MADE can be classified as a \textit{procedural content generator} (\textit{PGC})
 mainly related to \textit{optional content}, with \textit{stochastic generation}
-and modeled as a \textit{generate-and-test} algorithm (search based) that
+and modeled as a \textit{generate-and-test} algorithm (search based), that
 performs the optimizations of the process during the game development (\textit{offline}).
+
+%ANTONIO: Echo de menos una mayor defensa de lo bueno que es MADE, que es algo nunca hecho, que avanza mucho el estado el arte (porque no hay mucho, aparentemenet), que abre nuevas líneas de investigación, nu se, dadle bombo. ;D
 
 %The current experiment allows the definition of behaviour patterns (or
 %archetypes, and using a weighted fitness function to measure
@@ -295,12 +307,12 @@ The methodology includes the following steps, as shown in Figure~\ref{fig:method
 
 \subsection{Modeling}
 
-The Modeling step affects different elements that make up a system where different agents (Finite State Machines) generate words, lately interpreted as backstories, whose symbols belong to a language that also defines the desired archetypes.
+The Modeling step affects different elements that make up a system where different agents generate words, lately interpreted as backstories, whose symbols belong to a language that also defines the desired archetypes.
 
 
 \subsubsection{Modeling of the language}
 
-Each agent has to be modeled as a FSM whose transitions generate symbols in a language based on the following one, expressed in Backus-Naur Formalism (BNF):
+Each agent has to be modeled as a Finite State Machine (FSM) whose transitions generate symbols in a language based on the following one, expressed in Backus-Naur Formalism (BNF):
 
 \begin{verbatim}
 <backstory> ::= <action_line> [<backstory>]
@@ -416,7 +428,7 @@ The codification of the chromosome consists in mapping the searchable properties
 
 The fitness function of a chromosome is the result of calculating the average of the application of the setting function over \textit{n} executions of the environment with defined base properties (where n is the minimum number that reduces the error and has to be calculated empirically).
 
-It is important to clarify that the term ``individual'' in this work refers to a solution in the EA that models a whole environment, where a number of different ``agents'' are living. So, an ``individual'' in the EA is not equal to an ``agent''.  %FERGU: dejo esto claro para que no se lien los revisores
+It is important to clarify that the term ``individual'' in this work refers to a solution in the GA that models a whole environment, where a number of different ``agents'' are living. So, an ``individual'' in the GA is not equal to an ``agent''.  %FERGU: dejo esto claro para que no se lien los revisores
 
 %TODO dibujo aquí
 
@@ -603,7 +615,7 @@ We have used the presented values to define this scene because, as our opinion, 
 The second literary scene is called is called ``revenge'' and its goal is to model an individual complex memory
 based behaviour between two characters. This scene is performed to make more complex memory based behaviour emerge between two characters:  It tries to find what number of profiles and values are optimal to make \textit{revenge} archetype emerge in as many agents as possible after 1000 days.  An agent (a) will be considered as a \textit{avenger} if it has been attacked by other agent (b) and after that, in a moment in its life, it has satisfactory attacked the agent b, in revenge. The value of the days is set to 1000 because is a duration long enough to make the archetype emerge. 
 
-\subsection{Definition of  the evolutionary algorithm}
+\subsection{Definition of  the genetic algorithm}
 
 
 To model the ``territorial war'' setting we have defined the fitness function as follows: if the exact percentage of agents are tagged with one archetype defined, 1 point is added to the fitness. The maximum is therefore, 5 points. However, all the fitnesses use a normal distribution over the percentage of appearance. For example, with the archetype ``survival population'', the maximum value (1) is obtained when the 60\% percent of the population is alive, and the normal distribution begins in the 30\% and ends in the 90\%. For the rest of the archetypes, 1 point is added if the 22'5\% of the population is tagged with each one of the archetypes, and each normal distribution begins in the 8\% and ends in the 30\%.
@@ -784,7 +796,7 @@ different behaviours of the agents.
    \includegraphics[width=13.5pc] {img/exp2_v2.pdf}
    \label{fig:subfig2}
  }
-\caption{Average fitness of the 30 best individuals of the EA for each configuration.}
+\caption{Average fitness of the 30 best individuals of the GA for each configuration.}
 
 \label{fig:graph}
 \end{figure}
@@ -800,7 +812,7 @@ different behaviours of the agents.
    \includegraphics[width=13.5pc] {img/graph2_v2.pdf}
    \label{fig:evo2}
  }
-\caption{Example of the evolution of the best individual of the EA for the five
+\caption{Example of the evolution of the best individual of the GA for the five
   profiles for each configuration.}
 % ÃÂ¿QuÃÂ© hay que ver aquÃÂ­? Comparar un nÃÂºmero de perfiles con otro? - JJ2013
 
