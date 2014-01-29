@@ -349,9 +349,9 @@ Given this premise, a multi-agent system seems promising for generating these ki
 \textbf{Agent as a finite state machine}\\
 
 
-An agent can be seen as a FSM and the multi-agent system relies in the sequential executions of time portions. Every execution implies a review of the current state and (maybe) one or more actions done, depending on local and external variables.\\
+An agent can be seen as a FSM and the multi-agent system relies in the sequential executions of time portions. Every execution implies a review of the current state and (maybe) one or more actions done, depending on local and external properties.\\
 
-Given a set of states, variables and actions modeled, the logic of the main process should be:
+Given a set of states, properties and actions modeled, the logic of the main process should be:
 
 \begin{enumerate}
 \item Collect internal and external information.
@@ -362,7 +362,7 @@ Given a set of states, variables and actions modeled, the logic of the main proc
 \end{enumerate}
 
 
-The agent should contemplate different states depending of the type of information we are interested in (``alive'', ``dead'', ``pregnant'', etc) and should also have local variables that define the possibility to make certain decisions.
+The agent should contemplate different states depending of the type of information we are interested in (``alive'', ``dead'', ``pregnant'', etc) and should also have local properties that define the possibility to make certain decisions.
 
 It's important to remark that an agent is a simplification of the character (in the way that it will perform only the actions we are interested in) and that the agent is inspired in conceptual behaviors, so some actions and transitions are mandatory and other depends on the personality and internal states.\\
 
@@ -380,14 +380,14 @@ The environment, understood as the virtual spatiotemporal frame where the agents
 The key of the use of agents to create background for characters relies in the following fact: Some actions are performed statically depending on the inputs and the current state but other (the majority) also depends on local features and probabilities of the agents. Even if all the agents share these values, it's difficult to predict the result when the system is so complex. A minimal change in one probability to make one decision can imply completely different scenes.\\
 %TODO revisar y añadir referencia a sistemas complejos, seguro que alguien más listo que yo ya ha dicho esto antes que yo
 
-For this reason, some actions should be statically defined and other have to depend on initialization variables. We define two kind of variables:
+For this reason, some actions should be statically defined and other have to depend on initialization properties. We define two kind of properties:
 
 \begin{itemize}
-\item \textbf{Base variables}: Those that are intrinsically defined by the nature of the conceptual agent. For example, if we are modeling a simplification of a person the average life expectancy could take values from 70 to 85 years. An agent that lives 100 years would be unusual, and an agent that lives 200 years shouldn't be possible.
-\item \textbf{Searchable variables}: Those used to increment or decrement the base values in the established limits or those that are used directly as probabilities to make decisions.
+\item \textbf{Base properties}: Those that are intrinsically defined by the nature of the conceptual agent. For example, if we are modeling a simplification of a person the average life expectancy could take values from 70 to 85 years. An agent that lives 100 years would be unusual, and an agent that lives 200 years shouldn't be possible.
+\item \textbf{Searchable properties}: Those used to increment or decrement the base values in the established limits or those that are used directly as probabilities to make decisions.
 \end{itemize}\\
 
-%TODO diagrama del concepto de variable base y variable configurable
+%TODO diagrama del concepto de property base y property configurable
 
 Due to the complexity of the system and the introduction of probabilities, even if all the agents have the same features and probabilities, the sequencing of the actions for every agent becomes unpredictable. For example, if we have our agent modeled and we choose random values for the configuration, roughly, the characters' backstories will be ``normal'', showing more or less the stereotyped behaviors (that make the character a group representative rather than an individual), but maybe, some of them show higher level not-modeled behaviors. In the next subsection, we will provide a way to model those high-level behavior in the way that, given a executed environment, a computer is able to find them 
 and, in the Execution step, obtain a configuration that promote the apparition of these archetypes in the execution.
@@ -420,13 +420,13 @@ The Genetic Algorithm needs:
 \item a fitness function to evaluate each chromosome.
 \end{itemize}
 
-The codification of the chromosome is simple: Given an agent, we map the searchable variables to an array of values. This array of values can be the chromosome.\\
+The codification of the chromosome is simple: Given an agent, we map the searchable properties to an array of values. This array of values can be the chromosome.\\
 
-The fitness function of a chromosome is the result of calculating the average of the application of the setting function over \textit{n} executions of the environment with defined base variables (where n is the minimum number that reduces the error and has to be calculated empirically).
+The fitness function of a chromosome is the result of calculating the average of the application of the setting function over \textit{n} executions of the environment with defined base properties (where n is the minimum number that reduces the error and has to be calculated empirically).
 
 %TODO dibujo aquí
 
-At this point, it's important to remark the possibility of using different profiles. In this context, a profile is a set of variables assigned to an agent. If two agents have different profiles, their behaviour in the face of the same inputs can be different. in the chromosome, the use of n profiles means a chromosome size equal to the number of searchable variables multiplied by n 
+At this point, it's important to remark the possibility of using different profiles. In this context, a profile is a set of properties assigned to an agent. If two agents have different profiles, their behaviour in the face of the same inputs can be different. in the chromosome, the use of \textit{n} profiles means a chromosome size equal to the number of searchable properties multiplied by \textit{n} 
 
 Intuitively, increasing the number of profiles will lead to richer backgrounds, but \textit{a priori}, since the system is complex, it's very difficult to establish which number of profiles will lead to the fittest solution without empirical tests. In some cases, a small number of profiles can generate many different archetypes and \textit{vice versa}. Moreover, it's important to remark that the bigger the chromosome is, the slowly the solution converge.
 
@@ -434,9 +434,9 @@ Intuitively, increasing the number of profiles will lead to richer backgrounds, 
 
 \subsection{Instantiation}
 
-After the Genetic Algorithm is configured, some variables need to be stablished in order to fit to the desired setting:
+After the Genetic Algorithm is configured, some properties need to be stablished in order to fit to the desired setting:
 \begin{itemize}
-\item Base variables: Including the threshold for the agent's features, and environment parameters (i.e. size of the world, resources, etc).
+\item Base properties: Including the threshold for the agent's features, and environment parameters (i.e. size of the world, resources, etc).
 \item Genetic Algorithm parameters: selection, genetics operators (crossover and mutation and termination condition)
 \item Number of profiles
 \end{itemize}
