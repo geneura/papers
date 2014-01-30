@@ -461,29 +461,26 @@ Due to the nature of the grammar proposed for the actions, they can be directly 
 \section{Applying the methodology}
 \label{sec:applying}
 
-To validate our methodology we apply their steps using a specific scenario and environment. In this scenario we want to model the next story: %FERGU: IMPORTANTE!!! HE PUESTO STORY, LE PONEMOS OTRA COSA? HAY QUE CUADRAR TODOS LOS CONCEPTOS (VER LISTA ARRIBA)
+To validate our methodology we apply its steps using a specific scenario and environment. In this scenario we want to model the next story: %FERGU: IMPORTANTE!!! HE PUESTO STORY, LE PONEMOS OTRA COSA? HAY QUE CUADRAR TODOS LOS CONCEPTOS (VER LISTA ARRIBA)
  - ``A number of rats live, eat, reproduce, compete for food and death within the walls of the Invisible University of Ankh-Morpork\footnote{This is our tribute to writer Terry Pratchett, whose books have inspired us to create these agents.}. As the University professors, these rats are very vindictive and territorial.''
 
 \subsection{Agents in the MADE environment}
 
-The first step is to model the agents and their environment. In this work we propose the MADE environment, a virtual place where different agents play their artificial lives. Its functions are:
+The first step is to model the agents and their environment. In this work we propose the MADE (Massive Artificial Drama Engine for non-player characters) environment, a virtual place where different agents play their artificial lives. Its functions are:
 
 \begin{itemize}
 \item \textbf{Create an initial set of agents:} MADE environment
-  initializes a set of just born orphan agents, each with a profile
-  sequentially assigned.
-% (JJ2013): Sequentially de quÃÂ¯ÃÂ¿ÃÂ½ secuencia? - JJ2013
-% (RubÃÂÃÂ©n): TODO
- These agents must compete or collaborate in order to survive.
-\item \textbf{Place agents in the map:} the environment has a squared map, formed by cells that can be occupied by one (and only one) agent. The environment allows the agents to discover and interact with other agents in the neighborhood.
+  initializes a set of just born orphan agents, each of them with a profile
+  sequentially assigned, that must compete or collaborate in order to survive.
+\item \textbf{Place agents in the map:} the environment is a squared map, formed by cells that can be occupied by one (and only one) agent. The environment allows the agents to discover and interact with other agents in the neighborhood.
 \item \textbf{Start and control the time:} after the creation of the initial set of agents, the MADE environment starts the timer, day by day until a maximum date is reached.
-\item \textbf{Execute each agent during a time unit (a day):} In each iteration the list of agents is randomly reordered, and after that following the new order, each agent perform an iteration of its life-cycle, and the dead agents are removed from the grid.
-\item \textbf{Perform as an external agent that changes the environment:} In each iteration in the MADE environment, food rations are placed in random cells. An agent only can eat if it is over a cell with a ration, so agents could move the other forcibly.
-\item \textbf{Offer services to the agents:} MADE environment allow the agents to check which closer cells have food, are occupied, what agents are in a near position or which positions can be occupied.
-\item \textbf{Decide the profile of the agents:} MADE allows the existence of different agent profiles, as previously said. A {\em profile} is a set of characteristics which governs the agent's behaviour.
+\item \textbf{Execute each agent during a time unit (a day):} In each iteration the list of agents is randomly reordered, and after that following the new order, each agent perform an iteration of its life-cycle. Then the dead agents are removed from the grid.
+\item \textbf{Perform as an external agent that changes the environment:} In each iteration in the MADE environment, food rations are placed in random cells. An agent only can eat if it is over a cell with a ration, so agents could move any others forcibly.
+\item \textbf{Offer services to the agents:} MADE environment allows the agents to check which neighbor cells have food, are occupied, who agents are in a near position or which positions can be occupied.
+\item \textbf{Decide the agents' profile:} MADE allows the existence of different agent profiles, as previously said. A {\em profile} is a set of characteristics which governs the agent's behavior.
 \end{itemize}
 
-The MADE environment can be configured by using the following parameters (and its values by default): Number of agents initially placed (15), map square grid dimension (10), number of rations randomly placed in the grid each day (10) and duration in virtual days of the  execution of the environment (1000). Those parameters can affect directly to the behavior of the agents.
+The MADE environment can be configured by using the following parameters (and its values by default): Number of agents initially placed (15), map square grid dimension (10), number of rations randomly placed in the grid each day (10) and duration in virtual days of the  execution of the environment (1000). These parameters can affect directly to the behavior of the agents.
 
 % (JJ2013): Usas un estilo demasiado conciso. Di quÃÂ¯ÃÂ¿ÃÂ½ hace cada uno de esos
 % parÃÂ¯ÃÂ¿ÃÂ½metros, cÃÂ¯ÃÂ¿ÃÂ½mo se meten (fichero de configuraciÃÂ¯ÃÂ¿ÃÂ½n o como sea), por
@@ -492,7 +489,7 @@ The MADE environment can be configured by using the following parameters (and it
 
 % (RubÃÂÃÂ©n): por simplificar y reducir tamaÃÂÃÂ±o, pongo los valores por omisiÃÂÃÂ³n
 
-A MADE Agent lives in a MADE Environment, occupies a cell in the grid, moves around looking for food or mate and interacts with other agents.\\
+A MADE Agent lives in a MADE Environment, occupies a cell in the grid, moves around looking for food or mates and interacts with other agents.\\
 
 %En un trabajo no se describe lo que se ha hecho, sino una
 %metodologÃÂ­a. DeberÃÂ­as justificar estos estados y las acciones. ÃÂ¿Se
@@ -500,8 +497,8 @@ A MADE Agent lives in a MADE Environment, occupies a cell in the grid, moves aro
 The design of a MADE Agent has some restrictions:
 \begin{itemize}
 \item An array of parameters (probabilities represented as real numbers between 0 and 1) should be provided in its initialization. These parameters should be used by the agent in its day-by-day decisions.
-\item Every action or event is subject to be logged for later analysis.
-\item As a result of some iterations of the agent's day-based life cycle, the agent should present the behavior of a \textit{living thing}, that is born, eats, grows, reacts, reproduces and dies.  
+\item Every action is subject to be logged for later analysis.
+\item As a result of some iterations of the agent's day-based life-cycle, the agent should present the behavior of a \textit{living thing}, that is born, eats, grows, reacts, reproduces and dies.  
 \end{itemize}
 
 A very simple agent has been designed for this study: a virtual
@@ -581,35 +578,35 @@ situations where the agent could be involved.
 
 
 
-The available source code of the MADE environment and the algorithms used in this experiment are publicly available in \url{http://ANONYMOUS} under a LGPL license.
+The source code of the MADE environment and the algorithms used in this experiment are publicly available in \url{http://ANONYMOUS} under a LGPL license.
 
 \subsection{Definition of the literary setting}
 
 As previously said, agents are independent of the desired literary settings. To validate our approach two different literary settings are going to be tested.
 
-The first literary setting, ``territorial war'' scene, aggregates different sample archetypes where many factors must be taken into account.  It tries to find what number of profiles and values are optimal to:
+The first one, ``territorial war'' scene, aggregates different sample archetypes where many factors must be taken into account.  It tries to find the number of profiles and values that are optimal to:
 \begin{itemize}
 \item Ensure that, after 1000 virtual days, the alive population will be the 60\% of the total population. This archetype, called \textit{survival population}, affects all the population, so it is a \textit{global archetype}.
 \item Emerge the \textit{downtrodden} archetype in the 22\% of the
   population. An agent will be considered as a \textit{downtrodden} or
   \textit{defender} if it has been attacked at least two times and has
   defended the position.
-\item Emerge the \textit{warrior} archetype the 22\% of the population. An agent will be considered as a \textit{warrior} if it has satisfactory attacked at least five times.
-\item Emerge the \textit{helpless} archetype the 22\% of the population. An agent will be considered as a \textit{helpless}  if it has been attacked at least ten times and has not defended the position.
-\item Emerge the \textit{bad warrior} archetype the 22\% of the population. An agent will be considered as a \textit{bad warrior}  if it has unsatisfactory attacked at least ten times.
+\item Emerge the \textit{warrior} archetype in the 22\% of the population. An agent will be considered as a \textit{warrior} if it has satisfactory attacked at least five times.
+\item Emerge the \textit{helpless} archetype in the 22\% of the population. An agent will be considered as a \textit{helpless}  if it has been attacked at least ten times and has not defended the position.
+\item Emerge the \textit{bad warrior} archetype the in 22\% of the population. An agent will be considered as a \textit{bad warrior}  if it has unsatisfactory attacked at least ten times.
 \end{itemize}
-We have used the presented values to define this scene because, as our opinion, they model an interesting literary scene.
+We have used the presented values to define this scene because, in our opinion, they model an interesting literary scene.
 
 
-The second literary scene is called is called ``revenge'' and its goal is to model an individual complex memory
-based behaviour between two characters. This scene is performed to make more complex memory based behaviour emerge between two characters:  It tries to find what number of profiles and values are optimal to make \textit{revenge} archetype emerge in as many agents as possible after 1000 days.  An agent (a) will be considered as a \textit{avenger} if it has been attacked by other agent (b) and after that, in a moment in its life, it has satisfactory attacked the agent b, in revenge. The value of the days is set to 1000 because is a duration long enough to make the archetype emerge. 
+The second literary scene is called ``revenge'' and its goal is to model an individual complex memory
+based behaviour between two characters. This scene is performed to make more complex memory based behavior emerging between two characters:  It tries to find the number of profiles and values which are optimal to make \textit{revenge} archetype emerge in as many agents as possible after 1000 days.  An agent (a) will be considered as a \textit{avenger} if it has been attacked by other agent (b) and after that, in a moment in its life, it has satisfactory attacked the agent b, in \textit{revenge}. The value of the days is set to 1000 because is a duration long enough to make the archetype emerge. 
 
 \subsection{Definition of  the genetic algorithm}
 
 
 To model the ``territorial war'' setting we have defined the fitness function as follows: if the exact percentage of agents are tagged with one archetype defined, 1 point is added to the fitness. The maximum is therefore, 5 points. However, all the fitnesses use a normal distribution over the percentage of appearance. For example, with the archetype ``survival population'', the maximum value (1) is obtained when the 60\% percent of the population is alive, and the normal distribution begins in the 30\% and ends in the 90\%. For the rest of the archetypes, 1 point is added if the 22'5\% of the population is tagged with each one of the archetypes, and each normal distribution begins in the 8\% and ends in the 30\%.
 
-For the second literary setting (``revenge''), for each agent, if the agent's log matches the archetype, it adds one point to the fitness. Therefore, the goal is to recreate an environment where most ``avenger'' agents exist.
+For the second literary setting (``revenge''), every agent whose log matches the archetype adds one point to the fitness. Therefore, the goal is to recreate an environment where several ``avenger'' agents exist.
 
 Thanks to the agents' logs, we can know every event (internal and
 external) of their lives, and evaluate their interest or
@@ -632,7 +629,7 @@ In this proposal, the parameters used to define an agent, mentioned in Section~\
 
 In this case,
  we do not exactly know how many roles are necessary to create a world of ``warrior'' or ``vindictive''
-  rats, so different numbers of profiles (from one to five) will be used.
+  rats, so different number of profiles (from one to five) will be considered.
 
 
 %Different number of profiles (from one to five) have been used to assign
@@ -651,7 +648,7 @@ some archetypes could emerge using one profile and other will need
 more (those that require two clearly differentiated roles). It is
 important to remark that the number of alleles of the chromosome are
 multiplied by the number of profiles, so the convergence of the
-solution could be affected by the number of profiles used. 
+solution will be be affected by the number of profiles used. 
 
 % Profile viene a ser las caracterÃ­sticas o patrones que hacen que
 % sepamos o podamos asociar una historia a un arquetipo, Â¿correcto? No
@@ -698,8 +695,8 @@ Population size & 30 \\
 
 
 
-Table~\ref{fig:exp1_30ex} shows the average of the best fitness and the average population fitness at the end of each execution for each configuration: number of profiles from 1 (P1) to 5 (P5) in the experiment 1 (``natality control'').
-The evolution of the best fitness for each configuration is shown in Figure~\ref{fig:evo1}. We have performed a Kruskal-Wallis test for the best individuals fitness, obtaining differences among all the number of profiles (p-value $<<$0.05). As we suspected, it is clear that using one profile is not enough to emerge the desired archetype. However, the pairwise comparison using Wilcoxon does not find significant differences using more than 2 profiles. This can be explained because an agent could share more than one archetype at the same time.  A promising number of profiles could be 4, because their only lower outlier is not as distributed as the others. As can be seen in Figure \ref{fig:evo1} the evolution of the best fitness increases with all possible number of profiles, existing therefore an increase of the performance of the system.
+Table~\ref{fig:exp1_30ex} shows the average of the best fitness and the average population fitness at the end of 30 executions for each configuration: number of profiles from 1 (P1) to 5 (P5) in the experiment 1 (``natality control'').
+The evolution of the best fitness for each configuration is shown in Figure~\ref{fig:evo1}. We have performed a Kruskal-Wallis test for the best individuals fitness, obtaining differences among all the number of profiles (p-value $<<$0.05). As we suspected, it is clear that using one profile is not enough to emerge the desired archetype. However, the pairwise comparison using Wilcoxon does not find significant differences using more than 2 profiles. This can be explained because an agent could share more than one archetype at the same time.  A promising number of profiles could be 4, because their only lower outlier is not as distributed as the others. As can be seen in Figure \ref{fig:evo2} the evolution of the best fitness increases with all possible number of profiles, existing therefore an increase of the performance of the system.
 
 \begin{table}
 \begin{center}
@@ -733,7 +730,7 @@ The evolution of the best fitness for each configuration is shown in Figure~\ref
 
 The results of the second experiment are shown in
 Table~\ref{fig:exp2_30ex}. It shows the average of the best fitness
-and the average population fitness at the end of each execution for
+and the average population fitness at the end of 30 executions for
 each configurations. Boxplots of the best fitness obtained are shown
 in Figure \ref{fig:subfig2}. In this case, Kruskal-Wallis and Wilcoxon
 pairwise comparison shows significant differences among all
@@ -913,8 +910,8 @@ non-interesting. This log can be used for evaluation. %In the next
 %revenge (as previously said, memory hasn't been explicitly modelled in the
 %agent).
 
-This work presents a general methodology to design emergent literary stories in massive virtual worlds. The steps presented include the modeling of the agents and literary setting with the use of a genetic algorithm to optimize the parameters of the agent profiles (behaviors) using
-as a fitness a function that model the literary setting. %Results show that in the first archetype the number of
+This work presents a general methodology to design emergent literary stories in massive virtual worlds. The described steps include the modeling of the agents and literary setting. Then a Genetic Algorithm is used to optimize the parameters of the agent's profiles (behaviors) using
+as fitness a function that models the literary setting. %Results show that in the first archetype the number of
 %profiles must be at least two, because it is necessary that different
 %behaviours (local archetypes) emerge. On the contrary, on the second
 %experiment, using only one profile is the best configuration, because
@@ -926,13 +923,13 @@ environment can be mapped to a number of profiles that maximize the appearance
 of these archetypes, and that the fittest number of profiles and its values can
 be obtained by using Genetic Algorithms.  
 Given a literary setting, an author of a story or a video game could define 
-different rates of archetypes or behavior patterns and use the techniques described in
-the present work to obtain the optimal profiles. The execution of the MADE Environment
+different rates of archetypes or behavior patterns, and use the techniques described in
+the present work to obtain the optimal profiles. The execution of the MADE (Massive Drama Engine for non-player characters) Environment
 using these profiles as input would produce a background (or set of characters' lives)
-where the archetypes have emerged and have automatically created massive plots coherent
+where the archetypes have emerged and have automatically created massive backstories coherent
 with the settings of the artwork.
 
-In future works, more complex agents will be used, with different rules to be modeled. For example, we plan to model more human behaviors such as love or envy, to generate interesting plots such as wars, weddings, or family crimes. Different fitnesses will be used, for example, taking into account human opinions to establish the interestingness of a generated plot. Also, this system will be tested into an existent and well-known game, such as Skyrim\texttrademark, whose AI engine is publicly available for players and researchers.
+In future works, more complex agents will be used, with different rules to be modeled. For example, we plan to model more human behaviors such as love or envy, to generate interesting plots such as wars, weddings, or family crimes. Different fitness functions will be used, for example, taking into account human opinions to establish the interestingness of a generated plot. Also, this system will be tested into an existent and well-known game, such as Skyrim\texttrademark, whose AI engine is publicly available for players and researchers.
 
 % -----------------------------------------------------------------------------
 % SEC ACKNOWLEGGEMENTS
