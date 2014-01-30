@@ -26,7 +26,7 @@
 
 
 
-\title{A methodology for designing emergent literary backstories on secondary characters using genetic algorithms}
+\title{A methodology for designing emergent literary backstories on non-player characters using genetic algorithms}
 
 
 
@@ -119,7 +119,7 @@ To demonstrate the adequacy of the methodology, we perform an implementation usi
 In video games, Non-Player Characters (NPCs)  are a type of characters
 that live in the game world to provide a more inmersive
 experience and, in some cases, present a challenge to the human player. Modern  Role Playing Games (RPGs), such as The
-Witcher\texttrademark~or Skyrim\texttrademark~ include hundreds of NPCs. The effort to create a good interactive fiction script is directly proportional to the number of these characters. Thus, this kind of agents usually present limited behaviors, such as wandering in the villages, selling groceries or guarding the cities. Moreover, they usually offer scripted conversations (for example, to buy and sell objects to the player), or scripted behaviours, in which they interact with the player only if he/she conducts an specific action: for example, if the player steals something then a city guard would attack him. These characters are frequently programmed to interact with the human player, following a guided sequence of activities just with this purpose, so normally they do not interact among themselves. In a world with such a number of characters, their collective interactions could improve the gaming experience, leading to a richer and more inmersive world. For example, hungry inhabitants could become thieves, guards could pursuit the thieves, villagers could fell in love with others, or different war alliances could emerge.
+Witcher\texttrademark~or Skyrim\texttrademark~ include hundreds of NPCs. The effort to create a good interactive fiction script is directly proportional to the number of these characters. Thus, this kind of agents usually present limited behaviors, such as wandering in the villages, selling groceries or guarding the cities. Moreover, they usually offer scripted conversations (for example, to buy and sell objects to the player), or scripted behaviors, in which they interact with the player only if he/she conducts an specific action: for example, if the player steals something then a city guard would attack him. These characters are frequently programmed to interact with the human player, following a guided sequence of activities just with this purpose, so normally they do not interact among themselves. In a world with such a number of characters, their collective interactions could improve the gaming experience, leading to a richer and more inmersive world. For example, hungry inhabitants could become thieves, guards could pursuit the thieves, villagers could fell in love with others, or different war alliances could emerge.
 
 
 %FERGU: HABLAR DE LA METODOLOGIA COMO UNA NARRACION Y DESCRIBIR LITERARY SETTING!
@@ -164,15 +164,14 @@ interesting for the player/spectator. %FERGU: dice antonio que pongamos aquí un
 
 The aim of this work is to answer the following questions:
 
-\begin{itemize}
- \item Is it possible to model a virtual environment inhabited by hundred of characters with interesting auto-generated behaviors based on literary archetypes?
- \item Could the personality of the agents be parametrized to obtain different behaviors?
- %\item How many profiles (groups of parameters that define a personality) are necessary to generate emergent quality sub-plots? %FERGU: quitada
- \item Could a Genetic Algorithm be used to find the fittest parameter values that allow the creation of quality sub-plots?
-% \item Could the obtained results of our methodology be used to create a literary work? %FERGU: pregunta aÃÂ±adida que hay que contestar
-\item Could this methodology be exported to be used in a bigger task such as creating a literary piece or work?
-\end{itemize}
 
+ Is it possible to model a virtual environment inhabited by hundred of characters with interesting auto-generated behaviors based on literary archetypes?
+ Could the personality of the agents be parametrized to obtain different behaviors?
+ %\item How many profiles (groups of parameters that define a personality) are necessary to generate emergent quality sub-plots? %FERGU: quitada
+ Could a Genetic Algorithm be used to find the fittest parameter values that allow the creation of quality sub-plots?
+% \item Could the obtained results of our methodology be used to create a literary work? %FERGU: pregunta aÃÂ±adida que hay que contestar
+Could this methodology be exported to be used in a bigger task such as creating a literary piece or work?
+\
 %FERGU: Antonio propone esta pregunta en lugar de la última: Could this methodology be exported to be used in a bigger task such as creating a literary piece or work?
 %RH: Cambiado
 
@@ -226,12 +225,13 @@ Those techniques and systems presented at the moment are focused in generating s
 because its aim is the massive background generation
 for secondary characters, in order to provide a context for the writer and the
 player to perceive a virtual world as coherent, detailed and
-enriched. In this respect, story generation systems such as Tale-Spin \cite{talespin}, Universe \cite{universe}, Minstrel \cite{minstrel} or Virtual Story Teller\cite{virtualstoryteller} are more aligned with our goal, since they are not focused in the interaction with the user.
+enriched.
+%In this respect, story generation systems such as Tale-Spin \cite{talespin}, Universe \cite{universe}, Minstrel \cite{minstrel} or Virtual Story Teller\cite{virtualstoryteller} are more aligned with our goal, since they are not focused in the interaction with the user.
 
 The narrative is addressed by our methodology as the final step, giving freedom to creators. This issue has been studied in the systems presented in
 the survey by Arinbjarnar et al. in \cite{ReviewArinbjarnar09}. 
 
-Previous works define the plot as as something that emerges from the behaviour of the agents that follow a set of rules. In the proposed methodology, the agents' behaviour is produced by their personality and the environment. That is, the agents do not follow a plot, but they generate the plot itself.
+Previous works define the plot as as something that emerges from the behavior of the agents that follow a set of rules. In the proposed methodology, the agents' behaviour is produced by their personality and the environment. That is, the agents do not follow a plot, but they generate the plot itself.
 
 Furthermore,  previous works generate plots in worlds with a limited number of characters. This restriction does not exist in our methodology, where the number of characters to create is unlimited: They are created massively and their goal is to relate in a complex system and generate backgrounds that fit the setting of a plot, not the plot itself.
 
@@ -365,10 +365,10 @@ Agents live in an {\em environment}, understood as the virtual spatio-temporal f
 
 %\textbf{Modeling the parameterization of the agent}
 
-The key in the use of agents to create background for characters relies in the following fact: Some actions are performed statically depending on the inputs and the current state but other (the majority) also depends on local features and probabilities of the agents. Even if all the agents share these values, it is difficult to predict the result when the system is so complex. A minimal change in one probability to make one decision can imply completely different scenes.\\
+The key in the use of agents to create background for characters relies in the following fact: Some actions are performed statically depending on the inputs and the current state but other (the majority) also depends on local features and probabilities of the agents. Even if all the agents share these values, it is difficult to predict the result when the system is so complex. A minimal change in one probability to make one decision can imply completely different scenes.
+For this reason, some actions should be statically defined and other have to depend on initialization properties. We define two kind of properties:
 %TODO revisar y añadir referencia a sistemas complejos, seguro que alguien más listo que yo ya ha dicho esto antes que yo
 
-For this reason, some actions should be statically defined and other have to depend on initialization properties. We define two kind of properties:
 
 \begin{itemize}
 \item \textbf{Base properties}: Those that are intrinsically defined by the nature of the conceptual agent. For example, if we are modeling a simplification of a person the average life expectancy could take values from 70 to 85 years. An agent that lives 100 years would be unusual, and an agent that lives 200 years shouldn't be possible.
@@ -450,6 +450,9 @@ Once the best solution has been found, the environment can be executed and the b
 %TODO Buscar agente que cumpla una condición
 %TODO Navegación entre agentes. Apoyo al proceso creativo
 
+Due to the nature of the grammar proposed for the actions, they can be directly converted to natural language. Applying the setting function (used as fitness by the GA) to the executed environment could be useful to tag the backstories with the different archetypes found and their explanations. As an example, if our setting is the ``far west'' and we need non-player characters to populate a saloon, we may want to find a ``Billy the kid'' archetype and three ``player'' archetypes. If they are met by the main character he/she may discover their backstories, that would be coherent with the world they live in and the mood of the story.
+
+
 % -----------------------------------------------------------------------------
 % SEC APPLY
 
@@ -518,21 +521,14 @@ It is important to remark that no ``feelings'' and no ``memory''
 have been modeled in the MADE agent for this study. This is
 illustrated in Figure~\ref{fig:madeAgent}.
 
-\begin{figure*}
-\begin{center}
-\includegraphics[scale=0.5]{img/MadeAgent.pdf}
-\caption{Actions and states modelled in the MADE Agent.}
-\label{fig:madeAgent}
-\end{center}
-\end{figure*}
-
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.35]{img/fsm.pdf}
-\caption{MADE Agent's finite state machine}
-\label{fig:fsm}
+\includegraphics[scale=0.35]{img/MadeAgent.pdf}
+\caption{Actions and states modeled in the MADE Agent.}
+\label{fig:madeAgent}
 \end{center}
 \end{figure}
+
 
 
 
@@ -573,6 +569,14 @@ agent is dynamic, and depends on the internal probabilities and states
 but also on the neighborhood, and the map configuration. Even so, we
 can say that these initial parameters define in some way the possible
 situations where the agent could be involved.
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.35]{img/fsm.pdf}
+\caption{MADE Agent's finite state machine}
+\label{fig:fsm}
+\end{center}
+\end{figure}
 
 
 
@@ -811,7 +815,7 @@ in a short readable format and some extra information. Every agent's
 log in the MADE Environment is coherent with all others' logs. Many
 plots are being created, with a structured format that can be read by
 game engines or natural language processors, but, given the simplicity
-of the modelled agents, the stories could be seen by the reader as
+of the modeled agents, the stories could be seen by the reader as
 non-interesting. This log can be used for evaluation. %In the next
 %section we propose a method based on EA to let the author of a story
 %promote different behaviours in the MADE agents that could be seen as
@@ -908,7 +912,7 @@ non-interesting. This log can be used for evaluation. %In the next
 %revenge (as previously said, memory hasn't been explicitly modelled in the
 %agent).
 
-This work present a general methodology to design emergent literary stories in massive virtual worlds. The steps presented include the modeling of the agents and literary setting with the use of a genetic algorithm to optimize the parameters of the agent profiles (behaviours) using
+This work presents a general methodology to design emergent literary stories in massive virtual worlds. The steps presented include the modeling of the agents and literary setting with the use of a genetic algorithm to optimize the parameters of the agent profiles (behaviors) using
 as a fitness a function that model the literary setting. %Results show that in the first archetype the number of
 %profiles must be at least two, because it is necessary that different
 %behaviours (local archetypes) emerge. On the contrary, on the second
@@ -921,13 +925,13 @@ environment can be mapped to a number of profiles that maximize the appearance
 of these archetypes, and that the fittest number of profiles and its values can
 be obtained by using Genetic Algorithms.  
 Given a literary setting, an author of a story or a video game could define 
-different rates of archetypes or behaviour patterns and use the techniques described in
+different rates of archetypes or behavior patterns and use the techniques described in
 the present work to obtain the optimal profiles. The execution of the MADE Environment
 using these profiles as input would produce a background (or set of characters' lives)
 where the archetypes have emerged and have automatically created massive plots coherent
 with the settings of the artwork.
 
-In future works, more complex agents will be used, with different rules to be modelled. For example, we plan to model more human behaviours such as love or envy, to generate interesting plots such as wars, weddings, or family crimes. Different fitnesses will be used, for example, taking into account human opinions to establish the interestingness of a generated plot. Also, this system will be tested into an existent and well-known game, such as Skyrim\texttrademark, whose AI engine is publicly available for players and researchers.
+In future works, more complex agents will be used, with different rules to be modeled. For example, we plan to model more human behaviors such as love or envy, to generate interesting plots such as wars, weddings, or family crimes. Different fitnesses will be used, for example, taking into account human opinions to establish the interestingness of a generated plot. Also, this system will be tested into an existent and well-known game, such as Skyrim\texttrademark, whose AI engine is publicly available for players and researchers.
 
 % -----------------------------------------------------------------------------
 % SEC ACKNOWLEGGEMENTS
