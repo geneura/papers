@@ -46,11 +46,25 @@
 % the running heads and the author index.
 %
 
-\author{Hidden for double blind review}
+\author{V\'{\i}ctor M. Rivas\inst{1} \and Juan Juli\'{a}n Merelo\inst{2} \and Gustavo Romero L\'{o}pez\inst{2} \and Maribel Garc\'{i}a Arenas\inst{2}}
+%
+%%%% modified list of authors for the TOC (add the affiliations)
+\tocauthor{V\'{\i}ctor M. Rivas (Universidad de Ja\'{e}n),
+Juan Juli\'{a}n Merelo (Universidad de Granada)}
+%
+\institute{Universidad de Ja\'{e}n, Ja\'{e}n, Spain,\\
+\email{vrivas@ujaen.es},\\ http://vrivas.es/\texttt{}
+\and
+Universidad de Granada, Granada, Spain}
+% Antonio - ya sabes que es revisión ciega. ;D
+
+
+
+%\author{Hidden for double blind review}
 %
 %%%% modified list of authors for the TOC (add the affiliations)
 %
-\institute{Hidden for double review}
+%\institute{Hidden for double review}
 
 
 
@@ -182,7 +196,7 @@ it is interpreted, not compiled, (i.e., slower than desired), it has
 no access to every resource of the device (e.g. file systems,  memory,
 or output devices), and that its execution can be stopped by
 web-browsers if it is consuming too many resources; in fact, most
-browsers put a limit to coninuous execution of scripts and will issue
+browsers put a limit to continuous execution of scripts and will issue
 a warning if that happens, as was noted by
 \cite{gecco07:workshop:dcor}. 
 
@@ -214,12 +228,12 @@ Two special operators have been implemented in order to solve problems in a coop
 
 \section{Methodology and Experimental Setup}
 \label{sec:method}
-The experiments designed to test jsEO include two problems, being the first the 256-bit Royal Road function, while the second is solving a 128-terms linear equation. In others words, the first one is related to a bit-string chromosome problem, while the second deals with vector of floats. Both problems have been executed as synchronized tasks, and are available at %\url{http://goo.gl/3lJj8Q}.
+The experiments designed to test jsEO include two problems, being the first the 256-bit Royal Road function, while the second is solving a 128-terms equation. In others words, the first one is related to a bit-string chromosome problem, while the second deals with vector of floats. Both problems have been executed as synchronized tasks, and are available at %\url{http://goo.gl/3lJj8Q}.
 \url{anonymo.us/url}. Currently, synchronizing is quite constrained since it is done by means of AJAX connections to a server, without allowing to perform requests from pages hosted on a different one. 
 
 Asking for collaboration to run the experiments was done publishing some messages in social nets as Facebook and Twitter, as well as sending an email to a group of about 70 computer-scientist professionals. The user who wanted to participate in the experiments only had to load in his/her browser a web file containing a brief description of the problem and the Javascript library, and the chosen problem was automatically executed. Users were able to select the problem they wanted to execute, to execute it as many time as desired, to change the problem at any moment, and, of course, to stop the execution by closing the browser or loading a new web page.
 
-In order to execute every problem, two new classes were derived from class \textit{jsEOGA}, the first one to deal with bit-string chromosomes, the second one to make evolve vector of floats. The \textit{jsEOGA} is a steady state algorithm, with rank-based selection, and elimination of the worst individuals after joining the current population of every generation with the new individuals created by means of operators. The algorithm stopped after a given number of generations (table~\ref{tb:params} shows the parameters used), and incorporated operators for crossover and mutation. In the case of real problem, mutation consist on changing values for new random ones. After every generation, best individual was sent to the server. On the other hand, requesting an individual to the server was done randomly according to the application rate of the corresponding \textit{jsEOGetIndividual} operator. Finally, two different evaluation functions were used, one per problem. In the case of 256-bit Royal Road function, the fitness corresponds to the number of "1111" or "0000" sequences found in the 256-length bit-string. In the case of 128-terms equation, the fitness was the inverse of the value obtained when evaluating a linear equation with 128 real values in the range $(-10,10)$ composing every chromosome. The exact solution is the one containing the terms that can be downloaded from \url{anonymo.us/url}.%\url{http://goo.gl/jI0Wt0}.
+In order to execute every problem, two new classes were derived from class \textit{jsEOGA}, the first one to deal with bit-string chromosomes, the second one to make evolve vector of floats. The \textit{jsEOGA} is a steady state algorithm, with rank-based selection, and elimination of the worst individuals after joining the current population of every generation with the new individuals created by means of operators. The algorithm stopped after a given number of generations (table~\ref{tb:params} shows the parameters used), and incorporated operators for crossover and mutation. In the case of real problem, mutation changes values for new random ones. After every generation, best individual was sent to the server. On the other hand, requesting an individual to the server was done randomly according to the application rate of the corresponding \textit{jsEOGetIndividual} operator. Finally, two different evaluation functions were used, one per problem. In the case of 256-bit Royal Road function, the fitness corresponds to the number of "1111" or "0000" sequences found in the 256-length bit-string. In the case of 128-terms equation, the fitness was the inverse of the value obtained when evaluating a linear equation with 128 real values in the range $(-10,10)$ composing every chromosome. The exact solution is the one containing the terms that can be downloaded from \url{anonymo.us/url}.%\url{http://goo.gl/jI0Wt0}.
 	
 Since both problems have been executed in a synchronous way, the best solution can be found in the server, but also in many clients as this individual is sent to the browser as soon as the \textit{jsEOGetInvididual} operator is selected to operate.
 
