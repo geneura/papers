@@ -2,15 +2,15 @@
 # Makefile
 ###############################################################################
 
-BIB = $(wildcard *.bib)
-BST = $(wildcard *.bst)
-CLS = $(wildcard *.cls)
-EPS = $(wildcard *.eps)
-STY = $(wildcard *.sty)
+#BIB = $(wildcard *.bib)
+#BST = $(wildcard *.bst)
+#CLS = $(wildcard *.cls)
+#EPS = $(wildcard *.eps)
+#STY = $(wildcard *.sty)
 TEX = $(wildcard *.tex)
-BBL = $(TEX:.tex=.bbl)
-BLG = $(TEX:.tex=.blg)
-DVI = $(TEX:.tex=.dvi)
+#BBL = $(TEX:.tex=.bbl)
+#BLG = $(TEX:.tex=.blg)
+#DVI = $(TEX:.tex=.dvi)
 PDF = $(TEX:.tex=.pdf)
 
 ###############################################################################
@@ -21,39 +21,43 @@ auto:
 	while true; do $(MAKE); sleep 1; done
 
 clean:
-	$(RM) $(BBL) $(BLG) $(DVI) $(PDF) *.aux *.log *~
+#	$(RM) $(BBL) $(BLG) $(DVI) $(PDF) *.aux *.log *~
+	latexmk -C
 
-warning: $(BLG)
-	while read i; do \
-		[ "$${i:0:7}" = "Warning" ] && echo "$$i --> $$(grep -l -m 1 -n $${i/* /} $(BIB))"; \
-	done < $<
+#warning: $(BLG)
+#	while read i; do \
+#		[ "$${i:0:7}" = "Warning" ] && echo "$$i --> $$(grep -l -m 1 -n $${i/* /} $(BIB))"; \
+#	done < $<
 
 ###############################################################################
 
-%.aux: %.tex
-	latex $*
+#%.aux: %.tex
+#	latex $*
 
-%.bib: %.tex
-	latex $*
+#%.bib: %.tex
+#	latex $*
 
-%.bbl %.blg: %.aux $(BIB)
-	bibtex $*
+#%.bbl %.blg: %.aux $(BIB)
+#	bibtex $*
 
-%.dvi:	%.tex $(BIB) $(BST) $(CLS) $(EPS) $(STY)
-	latex $*
-	latex $*
-	bibtex $*
-	latex $*
-	bibtex $*
-	latex $*
-	latex $*
+#%.dvi:	%.tex $(BIB) $(BST) $(CLS) $(EPS) $(STY)
+#	latex $*
+#	latex $*
+#	bibtex $*
+#	latex $*
+#	bibtex $*
+#	latex $*
+#	latex $*
+
+%.dvi: %.tex
+	latexmk -dvi $*
 
 %.pdf:	%.dvi
 	dvipdf $<
 
 ###############################################################################
 
-.PRECIOUS: $(BLG) $(DVI)
+#.PRECIOUS: $(BLG) $(DVI)
 
 ###############################################################################
 
