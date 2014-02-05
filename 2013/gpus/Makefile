@@ -2,15 +2,15 @@
 # Makefile
 ###############################################################################
 
-BIB = $(wildcard *.bib)
-BST = $(wildcard *.bst)
-CLS = $(wildcard *.cls)
-EPS = $(wildcard *.eps)
-STY = $(wildcard *.sty)
+#BIB = $(wildcard *.bib)
+#BST = $(wildcard *.bst)
+#CLS = $(wildcard *.cls)
+#EPS = $(wildcard *.eps)
+#STY = $(wildcard *.sty)
 TEX = $(wildcard *.tex)
-BBL = $(TEX:.tex=.bbl)
-BLG = $(TEX:.tex=.blg)
-DVI = $(TEX:.tex=.dvi)
+#BBL = $(TEX:.tex=.bbl)
+#BLG = $(TEX:.tex=.blg)
+#DVI = $(TEX:.tex=.dvi)
 PDF = $(TEX:.tex=.pdf)
 
 ###############################################################################
@@ -24,10 +24,10 @@ clean:
 #	$(RM) $(BBL) $(BLG) $(DVI) $(PDF) *.aux *.log *~
 	latexmk -C
 
-warning: $(BLG)
-	while read i; do \
-		[ "$${i:0:7}" = "Warning" ] && echo "$$i --> $$(grep -l -m 1 -n $${i/* /} $(BIB))"; \
-	done < $<
+#warning: $(BLG)
+#	while read i; do \
+#		[ "$${i:0:7}" = "Warning" ] && echo "$$i --> $$(grep -l -m 1 -n $${i/* /} $(BIB))"; \
+#	done < $<
 
 ###############################################################################
 
@@ -57,7 +57,7 @@ warning: $(BLG)
 
 ###############################################################################
 
-.PRECIOUS: $(BLG) $(DVI)
+#.PRECIOUS: $(BLG) $(DVI)
 
 ###############################################################################
 
