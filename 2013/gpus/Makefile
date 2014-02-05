@@ -21,7 +21,8 @@ auto:
 	while true; do $(MAKE); sleep 1; done
 
 clean:
-	$(RM) $(BBL) $(BLG) $(DVI) $(PDF) *.aux *.log *~
+#	$(RM) $(BBL) $(BLG) $(DVI) $(PDF) *.aux *.log *~
+	latexmk -C
 
 warning: $(BLG)
 	while read i; do \
@@ -30,23 +31,26 @@ warning: $(BLG)
 
 ###############################################################################
 
-%.aux: %.tex
-	latex $*
+#%.aux: %.tex
+#	latex $*
 
-%.bib: %.tex
-	latex $*
+#%.bib: %.tex
+#	latex $*
 
-%.bbl %.blg: %.aux $(BIB)
-	bibtex $*
+#%.bbl %.blg: %.aux $(BIB)
+#	bibtex $*
 
-%.dvi:	%.tex $(BIB) $(BST) $(CLS) $(EPS) $(STY)
-	latex $*
-	latex $*
-	bibtex $*
-	latex $*
-	bibtex $*
-	latex $*
-	latex $*
+#%.dvi:	%.tex $(BIB) $(BST) $(CLS) $(EPS) $(STY)
+#	latex $*
+#	latex $*
+#	bibtex $*
+#	latex $*
+#	bibtex $*
+#	latex $*
+#	latex $*
+
+%.dvi: %.tex
+	latexmk -dvi $*
 
 %.pdf:	%.dvi
 	dvipdf $<
