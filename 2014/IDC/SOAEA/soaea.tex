@@ -26,6 +26,7 @@
 \usepackage{url}
 \urldef{\mailsa}\path|pablogarcia@ugr.es|
 
+% ¿Cuál es el máximo? Si son 10 páginas, tienes que recortar - JJ
 
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
 \noindent\keywordname\enspace\ignorespaces#1}
@@ -68,15 +69,41 @@ showstringspaces=false
 
 
 \begin{abstract}
-This paper proposes a methodology to design and implement Evolutionary Algorithms using the Service Oriented Architecture paradigm. This paradigm allows to deal with some of the shortcomings in the Evolutionary Algorithms area, facilitating the development, integration, standardization and dynamism. A four-steps methodology to design services is presented: identification, specification, implementation and deployment. Also, as an example of application of this methodology, an adaptive algorithm is developed.
+This paper proposes a methodology to design and implement Evolutionary
+Algorithms using the Service Oriented Architecture paradigm. This
+paradigm allows to deal with some of the shortcomings in the
+Evolutionary Algorithms area, facilitating the development,
+integration, standardization and dynamism. A four-step methodology to
+design services is presented: identification, specification,
+implementation and deployment. Also, as an example of application of
+this methodology, an adaptive algorithm is developed. % ¿cómo se
+                                % valida esa metodología? Si no se
+                                % valida, una metodología no vale gran
+                                % cosa. Sólo llevar a cabo un ejemplo
+                                % no es suficiente (y esto vale
+                                % también para tu tesis) - JJ
 \end{abstract}
 
 
 
 \section{Introduction}
 
-Evolutionary Algorithms, and their subtypes (Genetic Algorithms, Evolution Strategies or Genetic Programming, among others) follow a number of common steps: initialization, evaluation, selection, recombination, mutation, replacement and stop criterion \cite{eiben2010whatis}. There exist many variations of these steps, and two different combinations can specify two different algorithms or approaches.
+Evolutionary Algorithms %, and their subtypes (Genetic Algorithms,
+%Evolution Strategies or Genetic Programming, among others)
+% elimino lo anterior por sobrante y por no estar de acuerdo con
+% "subtypes" - JJ
+ follow a number of common steps: initialization, evaluation,
+ selection, recombination, mutation, replacement and stop criterion
+ \cite{eiben2010whatis}. There exist many variations of these steps,
+ and two different combinations can yield two different algorithms. % este  párrafo tiene obviedades, puede eliminarse - JJ
 
+% Te falta una argumentación clara. Existe este problema porque lo ha
+% dicho no sé quién, esto puede ser una solución, yo voy a hacer esto
+% al respecto. Quítale la morralla a la introducción y te quedas con
+% "Los algoritmos evolutivos son esto, se pueden mejorar
+% distribuyéndolos, hay otras líneas de investigación y hay muchos
+% frameworks" WTF??? ¿Dónde están las premisas, y a qué quieres
+% llegar? - JJ
 Distributed EAs can improve the algorithmic and computational performance over the non-parallel versions of the algorithms.
  Classic parallelization approaches \cite{alba2002parallelism}, such as the master-slave or island-based models, have been updated with the usage of new trends such as P2P \cite{laredo2010evag} or pool-based EAs \cite{meri2013cloud}. These new approaches deal with computational nodes entering and exiting during the experiment runtime and heterogeneous architectures.
 
@@ -84,12 +111,27 @@ Other research lines, such as the parameter adaptation \cite{ParameterControlEib
 
 Finally, there exist a large number of different (and incompatible) frameworks for EAs, each one using different languages, technologies and communication protocols. As Parejo et al. suggest  in \cite{SURVEYMOFS}, a standardization of these frameworks should be carried out. Moreover, it is difficult to access, in a public way, to available public systems to execute existing EAs to validate experiments and save time, encouraging Open Science \cite{Foster2005Science}.
 
-Service Oriented Architecture (SOA)  is a possible solution to deal with these shortcomings. A service is a loosely, coarse-grained, and autonomous component that allows interactions of all the elements that conform the system \cite{Arsanjani2008SOMA}. The elements that combine an EA are candidate to be designed as services, as they can behave as input/output functions. Also, SOA could help to solve the problems previously addressed: 
+Service Oriented Architecture (SOA)  is a possible solution to deal
+with these shortcomings. % ¿Cuáles? ¿El que existan muchos frameworks?
+                         % ¿Lo ves como no está clara la línea
+                         % argumental? Sólo ha quedado claro un
+                         % "shortcoming" (que, además, no has
+                         % justificado) -JJ
+A service is a loosely, coarse-grained, and autonomous component that
+allows interactions of all the elements that conform the system
+\cite{Arsanjani2008SOMA}. The elements that combine an EA are
+candidate to be designed as services, as they can behave as
+input/output functions. Also, SOA could help to solve the problems
+previously addressed: % addressed o exposed? No los has expuesto - JJ
 
 \begin{itemize}
 \item {\em Development}: there exist several methodologies to model and design services. Also, as services are re-usable, they can be combined in different ways to create the different types of EAs. Moreover, existing technologies, also facilitate the development, using techniques such as versioning, packaging or life-cycle control.
 \item {\em Integration}: Services are independent of the programming language. For example, services implemented in Java may use services implemented in C++ and vice-versa. Also, services allow distribution transparency: it is not mandatory to use a specific library for the distribution, or modify the code to adapt the existing operators. Existing EA frameworks could also be adapted to be accessed as services, providing their interfaces. 
-\item {\em Standardization}: Interfaces of services use public standards (such as WSDL \cite{WSDL} or OSGi \cite{OSGI}). The service interfaces for EAs should be abstract enough to avoid their modification. Furthermore, as Foster claims \cite{Foster2005Science}, SOA is the key to develop Open Science.
+\item {\em Standardization}: Interfaces of services use public
+  standards (such as WSDL \cite{WSDL} or OSGi \cite{OSGI}). The
+  service interfaces for EAs should be abstract enough to avoid their
+  modification. Furthermore, as Foster claims
+  \cite{Foster2005Science}, SOA is the key to develop Open Science. % a ver si es verdad, pero lo veo complicado Es un buen argumento, de todas formas, igual tendrías que empezar por ahí. - JJ
 \item {\em Dynamism}: Services are not aware of the order of execution, so this paradigm can fit with new parallel approaches for EAs, where the control of the nodes is not centralized. For example, new operators in different nodes can be bound and used during the run of an algorithm. Also, there should be easy to add and remove elements to achieve self-adaptive mechanisms.
 \end{itemize} 
 
