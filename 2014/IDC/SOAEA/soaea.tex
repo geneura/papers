@@ -70,7 +70,7 @@ showstringspaces=false
 
 \begin{abstract}
 This paper proposes a methodology to design and implement Evolutionary
-Algorithms using the Service Oriented Architecture paradigm. This
+Algorithms using the Service Oriented Architecture. This
 paradigm allows to deal with some of the shortcomings in the
 Evolutionary Algorithms area, facilitating the development,
 integration, standardization and dynamism. A four-step methodology to
@@ -104,13 +104,12 @@ this methodology, an adaptive algorithm is developed. % ¿cómo se
 % distribuyéndolos, hay otras líneas de investigación y hay muchos
 % frameworks" WTF??? ¿Dónde están las premisas, y a qué quieres
 % llegar? - JJ FERGU: ok. Creo que en la tesis lo estoy dejando más claro (creo)
-METER DEFINICION DE EAS
-Distributed EAs can improve the algorithmic and computational performance over the non-parallel versions of the algorithms. Classic parallelization approaches \cite{alba2002parallelism}, such as the master-slave or island-based models, have been updated with the usage of new trends such as P2P \cite{laredo2010evag} or pool-based EAs \cite{meri2013cloud}. These new approaches deal with computational nodes entering and exiting during the experiment runtime and heterogeneous architectures, that could be difficult to deal with traditional {\em development} paradigms, such as Object Oriented Programming. Other research lines, such as the parameter adaptation \cite{ParameterControlEiben07} or Memetic Algorithms \cite{ong2006classification} also imply the existence of some kind of {\em dynamism} involving the parts that compose an algorithm: for example, different recombinators or mutators working at the same time.  %Moreover, there exist several lines of parameter adaptation in dynamic and heterogeneous environments, where different computational elements are working at the same time.
+Evolutionary Algorithms (EAs) are a set of bio-inspired techniques applied to optimization problems \cite{eiben2010whatis}, based in the process of natural selection. Their classic parallelization approaches \cite{alba2002parallelism}, such as the master-slave or island-based models, have been updated with the usage of new trends such as P2P \cite{laredo2010evag} or pool-based EAs \cite{meri2013cloud}. These new approaches deal with computational nodes entering and exiting during the experiment runtime and heterogeneous architectures, that could be difficult to deal with traditional {\em development} paradigms, such as Object Oriented Programming. Other research lines, such as the parameter adaptation \cite{ParameterControlEiben07} or Memetic Algorithms \cite{ong2006classification} also imply the existence of some kind of {\em dynamism} involving the parts that compose an algorithm: for example, different recombinators or mutators working at the same time.  %Moreover, there exist several lines of parameter adaptation in dynamic and heterogeneous environments, where different computational elements are working at the same time.
 
 Finally, there exist a large number of different (and incompatible) frameworks for EAs, each one using different languages, technologies and communication protocols, being difficult the {\em integration} (or reuse) of their elements. As Parejo et al. suggest  in \cite{SURVEYMOFS}, a {\em standardization} of these frameworks should be carried out. Moreover, it is difficult to access, in a public way, to available public systems to execute existing EAs to validate experiments and save time, encouraging Open Science \cite{Foster2005Science}.
 
 Service Oriented Architecture (SOA)  is a possible solution to deal
-with these shortcomings: development, integration, standardization and dynamism. % ¿Cuáles? ¿El que existan muchos frameworks?
+with these shortcomings in development, integration, standardization and dynamism. % ¿Cuáles? ¿El que existan muchos frameworks?
                          % ¿Lo ves como no está clara la línea
                          % argumental? Sólo ha quedado claro un
                          % "shortcoming" (que, además, no has
@@ -140,43 +139,29 @@ previously addressed: % addressed o exposed? No los has expuesto - JJ FERGUSON: 
 
 %SoA ¿en qué? ¿En estandarización? ¿En frameworks? Tienes que
 %establecer el marco en la introducción. ¿Por qué son importantes los
-%frameworks genéricos?  - JJ
+%frameworks genéricos?  - JJ FERGU: reescrito
 
 SOA has been previously used in the EA area. For example,
 web services have been used in the grid area for optimization
 problems, as can be seen in the works of
-\cite{grid1}, where services are defined using WSDL
-interfaces and other transmission mechanisms (such as Remote Procedure
-Call \cite{grid6}). Although EAs are executed in grids
-\cite{grid10}) no information about how to design these
-services for EAs has been provided in previous works. % y ahora pones
+\cite{grid1,grid6}, where services are defined using WSDL
+or RPC (Remote Procedure
+Call). In our previous work \cite{Garcia13ServiceEAs}, an introduction to the usage of SOA to develop EAs, with some advantages, guidelines and examples was presented. However, previous works do not count with a guided step by step methodology for EAs, as proposed in this paper.
+
+% y ahora pones
 % sólo cuatro cosillas el último de los cuales es de cuando? ¿de 2004?
 % El estado del arte no es poner cuatro artículos que se te ocurran,
 % sino establecer qué es lo que hay para mostrar que tú has ido un
-% poco más allá - JJ
-
-In our previous work \cite{Garcia13ServiceEAs}, an introduction to the usage of SOA to develop EAs, with some advantages, guidelines and examples was presented. However, that work does not count with a guided step by step methodology for EAs, as proposed in this paper.
+% poco más allá - JJ FERGU: reescrito
 
 The rest of the work is structured as follows: the description of the proposed methodology is presented in Section \ref{sec:methodology}. Then, in Section \ref{sec:example} an example of application of the methodology to create a service oriented evolutionary algorithm is performed. The results of the created algorithm are shown in Section \ref{sec:results}. Finally, conclusions and future works are discussed.
 
 \section{Methodology to develop service oriented evolutionary algorithms}
 \label{sec:methodology}
 
-This section presents all the steps to design and implement Service Oriented Evolutionary Algorithms (SOEAs), that is, evolutionary algorithms whose elements are services. The selected steps have been adapted from SOMA \cite{Arsanjani2008SOMA}, a methodology to develop services focused on business environments and adapted to be used in the EA research area.  As in SOMA, the phases of the proposed methodology are not linear, but they are iterative and incremental, that is, the designer can move back to a previous step if necessary. For example,
- new services can be discovered during the specification phase or changes on the specification could appear in the deployment phase. Figure \ref{fig:distributed:methodology} shows the steps of the proposed methodology.
+This section presents all the steps to design and implement Service Oriented Evolutionary Algorithms (SOEAs), that is, evolutionary algorithms whose elements are services. The selected steps have been adapted from SOMA \cite{Arsanjani2008SOMA}, a methodology to develop services focused on business environments and adapted to be used in the EA research area.  
 
-
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.4]{methodology.eps}
-\end{center} 
-\caption{Methodology to develop service oriented evolutionary algorithms.}
-\label{fig:distributed:methodology}
-\end{figure}
-
-This methodology also takes into account the work of Gagn\'e and Parizeau \cite{GENERICITY05}. The authors established six criteria to qualify the genericity of a framework for EAs:  
- generic representation, generic fitness, generic operations, generic evolutionary model, parameter management and configurable output.
+This methodology also takes into account the work of Gagn\'e and Parizeau \cite{GENERICITY05}. The authors established six criteria to qualify the genericity of a framework for EAs:  generic representation, generic fitness, generic operations, generic evolutionary model, parameter management and configurable output.
 
 Also, according to Valipour \cite{Valipour09surveysoa}, services to develop must follow these characteristics:
 
@@ -193,7 +178,20 @@ Also, according to Valipour \cite{Valipour09surveysoa}, services to develop must
 %agh, cambio de tema. Una vez más, el esqueleto. Aquí te dejo seis
 %criterios para no sé qué, características de no sé cuanto, y ahora te
 %cuento cuando se ha usado SOA en algoritmos genéticos porque yo lo
-%valgo. Sólo te falta el "Regarding to" - JJ FERGU: movidos de sitio
+%valgo. Sólo te falta el "Regarding to" - JJ FERGU: cambiado de sitio
+
+As in SOMA, the phases of the proposed methodology are not linear, but they are iterative and incremental, that is, the designer can move back to a previous step if necessary. For example,
+ new services can be discovered during the specification phase or changes on the specification could appear in the deployment phase. Figure \ref{fig:distributed:methodology} shows the steps of the proposed methodology.
+
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.38]{methodology.eps}
+\end{center} 
+\caption{Methodology to develop service oriented evolutionary algorithms.}
+\label{fig:distributed:methodology}
+\end{figure}
 
 \subsection{Identification}
 \label{subsec:soaea:identification}
@@ -346,68 +344,69 @@ As  stated in introduction, a basic EA is formed by several steps. Solving the q
 
 This section shows the comparative results obtained using the automatic enabling of operators. Two versions have been compared: a non-adaptive version that only uses a Binary Tournament for Selection, and an adaptive one, which automatically enables a Roulette Selection when a local optimum is found. The parameters used in this comparison (accessed from the Parameters service) are a population of 64 individuals, selector rate of 0.5, TPX crossover, bit flip mutation, and individual length of 60 genes. The Roulette selector is enabled when the best individual of the population has not changed in 10 seconds (checked every 2 seconds).
 
-\begin{table}
-\begin{center}
-\resizebox{8cm}{!}{
-\begin{tabular}{|c|c|c|}
-\hline
+%\begin{table}
+%\begin{center}
+%\resizebox{8cm}{!}{
+%\begin{tabular}{|c|c|c|}
+%\hline
 % marca los mejores, pon también en el pie cuando son significativos y
 % pon un gráfico para qeu se vea claro, que con tanto número no se ve
 % nada claro. - JJ
-			& Non-adaptive & Adaptive \\ \hline \hline
-Generations & 219403,10 $\pm$ 141692,16 		& 167166,66 $\pm$ 93594,37 \\ \hline
-Evaluations & 14041926,40	$\pm$ 9068298,82	& 10698794,66	$\pm$ 5990039,68 \\ \hline
-Time 		& 68766,40 $\pm$ 45073,04			& 51710,40 $\pm$ 29329,21 \\ \hline \hline
-\end{tabular}
-}
-\caption{Results obtained (average and std. deviation).}
-\label{tab:results}
-\end{center}
-\end{table}			
+%			& Non-adaptive & Adaptive \\ \hline \hline
+%Generations & 219403,10 $\pm$ 141692,16 		& 167166,66 $\pm$ 93594,37 \\ \hline
+%Evaluations & 14041926,40	$\pm$ 9068298,82	& 10698794,66	$\pm$ 5990039,68 \\ \hline
+%Time 		& 68766,40 $\pm$ 45073,04			& 51710,40 $\pm$ 29329,21 \\ \hline \hline
+%\end{tabular}
+%}
+%\caption{Results obtained (average and std. deviation).}
+%\label{tab:results}
+%\end{center}
+%\end{table}			
 
 % Son pocas pruebas, habría que hacer alguna más y sobre todo con
 % diferentes tamaños de problema - JJ
 
 % \begin{figure}
 %\begin{center}
-
+%\includegraphics[scale=0.25]{datos.eps}
 %\end{center} 
 %\caption{Boxplot of the number of evaluations in each configuration.}
 %\label{fig:datos}
 %\end{figure}
 
 
-%\begin{figure}[h]
-%
-%    \centering
-%    \subfigure[Numerical results (average and std. deviation)]{
-%    \resizebox{7cm}{!}{
-%               \begin{tabular}{|c|c|c|}
-%\hline
-%
-%			& Non-adaptive & Adaptive \\ \hline \hline
-%Generations & 219403,10 $\pm$ 141692,16 		& 167166,66 $\pm$ 93594,37 \\ \hline
-%Evaluations & 14041926,40	$\pm$ 9068298,82	& 10698794,66	$\pm$ 5990039,68 \\ \hline
-%Time 		& 68766,40 $\pm$ 45073,04			& 51710,40 $\pm$ 29329,21 \\ \hline \hline
-%\end{tabular}
-%    }
-%    }
-%    \subfigure[Boxplot of the number of evaluations in each configuration.]{
-%\includegraphics[scale=0.25]{datos.eps}
-%
-%    }
-%\caption{Results obtained.}
-%\label{fig:results}
-%\end{figure}
+\begin{figure}[h]
+
+    \centering
+    
+    \subfigure[Boxplot of the number of evaluations in each configuration.]{
+\includegraphics[scale=0.25]{datos.eps}
+
+    }
+    \subfigure[Numerical results (average and std. deviation)]{
+    \resizebox{9cm}{!}{
+               \begin{tabular}{|c|c|c|}
+\hline
+
+      & Non-adaptive & Adaptive \\ \hline \hline
+Generations & 219403,10 $\pm$ 141692,16     & 167166,66 $\pm$ 93594,37 \\ \hline
+Evaluations & 14041926,40 $\pm$ 9068298,82  & 10698794,66 $\pm$ 5990039,68 \\ \hline
+Time    & 68766,40 $\pm$ 45073,04     & 51710,40 $\pm$ 29329,21 \\ \hline \hline
+\end{tabular}
+    }
+    }
+\caption{Results obtained.}
+\label{fig:results}
+\end{figure}
 
 
 
-Table \ref{tab:results} shows the results obtained (average and std. deviation) of the 30 executions of the two configurations tested. As it can be seen, automatic and adaptive enabling of selection operators has allowed an increase of performance, reducing time and evaluations (both significantly with a p-value$<$0.05 of a Wilcoxon test). It must be remarked that the aim of this work is not the numerical results obtained. This example has been used to demonstrate that applying a methodology to develop loose coupled services that can be dynamically bound, without modification of the existing services, can be used to achieve better results.
+Figure \ref{fig:results} shows the results obtained of the 30 executions of the two configurations tested. As it can be seen, automatic and adaptive enabling of selection operators has allowed an increase of performance, reducing time and evaluations (both significantly with a p-value$<$0.05 of a Wilcoxon test). It must be remarked that the aim of this work is not the numerical results obtained. This example has been used to demonstrate that applying a methodology to develop loose coupled services that can be dynamically bound, without modification of the existing services, can be used to achieve better results.
 
 \section{Conclusions}
 \label{sec:conclusion}
 
- There exist several shortcomings in the Evolutionary Algorithms area, such as the  incompatibility between frameworks or how to handle with new trends of distributed programming, where nodes enter and exit in runtime, for example. All these facts  motivate the creation of a proper way to define services oriented evolutionary algorithms (SOEAs) to facilitate the development, integration, standardization and dynamism.
+ There exist several shortcomings in the Evolutionary Algorithms area, such as the  incompatibility between frameworks or how to handle with new trends of distributed programming, where nodes enter and exit in runtime, for example. All these facts  motivate the creation of a proper way to define service oriented evolutionary algorithms (SOEAs) to facilitate the development, integration, standardization and dynamism.
 
 In this paper the requirements in EA design (genericity in representation, fitness, operations, model, parameters and output) presented by Gagné and Parizeau, with the requirements in SOA (genericity in interfaces, language independence, distribution and dynamism), have been taken into account to propose a methodology to model the services that compose a service oriented EA, and several guidelines about the design of these services have been explained. This methodology proposes 4 iteratively and incremental phases: identification, specification, implementation and deployment. A number of questions has been proposed to answer in each phase to help in the development. This methodology has been used to create a service-oriented evolutionary algorithm that takes advantage of the SOA capabilities, such as loose-coupled services and automatic binding of new operators.
 
