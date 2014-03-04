@@ -3,7 +3,7 @@
 ###############################################################################
 
 DIA = $(wildcard *.dia)
-PNG = $(DIA:.dia=.eps)
+EPS = $(DIA:.dia=.eps)
 TEX = $(wildcard *.tex)
 BBL = $(TEX:.tex=.bbl)
 PDF = $(TEX:.tex=.pdf)
@@ -17,11 +17,11 @@ auto:
 
 clean:
 	latexmk -C
-	$(RM) $(BBL) *~
+	$(RM) $(BBL) $(EPS) *~
 
 ###############################################################################
 
-%.dvi: %.tex
+%.dvi: %.tex $(EPS)
 	latexmk -dvi -f $*
 
 %.eps: %.dia

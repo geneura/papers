@@ -8,6 +8,7 @@
 
 \usepackage{amsmath}
 \usepackage{epsfig} % \usepackage[dvips]{epsfig}
+\usepackage{float} % for [H]
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}  % text encoding
 \usepackage{times}
@@ -65,15 +66,18 @@ Many problems require high amount of computational power to be addressed, so par
 
 General-purpose computing on graphics processing units (GPGPU) is the technique of using a Graphics Processing Unit (GPU), which typically handles computation only for computer graphics, to perform computation in applications traditionally handled by a central processing unit (CPU). Recently there has been a growing interest in GPU computation. The fact that this kind of processors has the ability to perform restricted parallel processing has elicited considerable interest among researchers with applications that require intensive parallel computation.
 
-\begin{figure}[h]
-\centerline{\epsfig{file=./openclfigure2small.eps,width=10cm}}
-\caption{GPUs can be seen as SIMD multi-core processors. Internally the GPU contains a number of small processors that are used to perform calculations. Depending on the GPU, the number of threads that can be executed in parallel is in the order of hundreds to thousands.}
-\label{figure:openclfigure2small}
-\end{figure}
+%\begin{figure}[h]
+%\centering
+%\epsfig{file=./openclfigure2small.eps,width=\columnwidth}
+%\caption{GPUs can be seen as SIMD multi-core processors. Internally the GPU contains a number of small processors that are used to perform calculations. Depending on the GPU, the number of threads that can be executed in parallel is in the order of hundreds to thousands.}
+%\label{fig:opencl}
+%\end{figure}
 
 GPUs are specialized stream processors, initially useful for rendering graphics applications. Typically, a GPU is able to perform graphics manipulations at a much higher speed than a general purpose CPU, since the graphics processor is specifically designed to handle certain primitive operations which occur frequently in graphics applications. Internally, the GPU contains a number of small processors that are used to perform calculations. 
 Depending on the power of a GPU, the number of threads that can be executed in parallel on such devices is currently in the order of hundreds to thousands and it is expected to multiply in a few years. Nowadays, developers can write (easily) their own high-level programs on GPU. Due to the wide availability, programmability, and high-performance of these consumer-level GPUs, they are cost-effective for, not just game playing, but also scientific computing.
-Now, GPUs are exposed to the programmer as a set of general-purpose shared-memory Single Instruction Multiple Data (SIMD) multi-core processors (see Figure \ref{figure:openclfigure2small}). This makes these architectures well suited to run large computational problems, such as those from bioinformatic area. 
+Now, GPUs are exposed to the programmer as a set of general-purpose shared-memory Single Instruction Multiple Data (SIMD) multi-core processors 
+%(see Figure \ref{fig:opencl})
+. This makes these architectures well suited to run large computational problems, such as those from bioinformatic area. 
 
 Then, the goal of this article is to review the use of GPUs to solve bioinformatic problems, explaining the general approach to using a GPU and given an overview of currently available software systems.
 
@@ -91,12 +95,27 @@ Parallel computation has recently become necessary to take full advantage of the
 
 Graphics processors have rapidly matured over the last years, leaving behind their roots as fixed function accelerators, and growing into almost general purpose computational devices for highly parallel workloads. Some of the earliest academic work about GPUs as computational devices date back to University of Washington in 2002 \cite{Thompson:2002:UMG:774861.774894} and Stanford in 2004 \cite{Buck:2004:BGS:1015706.1015800}. 
 
-GPUs are similar to multi-core CPUs but with two main differences (see Figure \ref{figure:captura2paperCEC}). CPUs are made for speedup and GPUs for throughput. CPUs try to improve the execution of a single instruction stream while GPUs take the opposite route obtaining benefits from massively threaded streams of instructions and/or data. The second difference is how threads are scheduled. The operating system schedule threads over different cores of a CPU in a preemptive fashion. GPUs have dedicated hardware for the cooperative scheduling of threads.
+GPUs are similar to multi-core CPUs but with two main differences (compare Figures \ref{fig:cpu} and \ref{fig:gpu}). Traditionally, CPU main interest has been fast execution of single threaded code instead GPUs are made for throughput. CPUs try to improve the execution of a single instruction stream while GPUs take the opposite route obtaining benefits from massively threaded streams of instructions and/or data. The second difference is how threads are scheduled. The operating system schedule threads over different cores of a CPU in a preemptive fashion. GPUs have dedicated hardware for the cooperative scheduling of threads.
+
+\begin{figure*}[!h]
+\centering
+\epsfig{file=cpu-gpu.eps,width=\textwidth}
+\caption{CPU and GPU block diagram comparison.}
+\label{fig:cpu-gpu}
+\end{figure*}
 
 \begin{figure}[h]
-\centerline{\epsfig{file=captura2paperCEC.eps,width=10cm}}
-\caption{CPU-GPU blocks arrangement: The GPU architecture devotes more transistors to data processing.}
-\label{figure:captura2paperCEC}
+\centering
+\epsfig{file=cpu.eps,width=\columnwidth}
+\caption{CPU block diagram.}
+\label{fig:cpu}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\epsfig{file=gpu.eps,width=\columnwidth}
+\caption{GPU block diagram.}
+\label{fig:gpu}
 \end{figure}
 
 Physically GPUs used to be huge in comparison with CPUs, see Table \ref{fig:cpugpu}. Latest microprocessors from the two main vendors, AMD \cite{amd} and Intel \cite{intel}, are over 1 billion transistors. Latest GPUs from AMD and NVIDIA \cite{nvidia} are over 4 billion transistors. CPUs draw 130W at most, a limit established by the cost of commodity heat sink and fan. GPUs have increase power consumption and currently are in the neighborhood of 300W. This can be possible with the use of exotic cooling solutions. CPUs are built with the finest technology, read best lithography, while GPUs are made with budget in mind in more common and older processes.
@@ -323,12 +342,9 @@ A GP method proposed by Harding and Banzhaf \cite{4215552} uses the GPU only for
 
 Zhang et al. \cite{ZhangImplementationMasterSlave} adapt different EAs to a GPU using CUDA. The authors implemented an hierarchical parallel genetic algorithm using a deme model at the high level, and a master-slave schema at the low level. In this implementation, the CPU initializes the populations and distributes them to thread blocks in shared memory. Then, GPU threads within each block run a GA independently, selection, crossover, mutation and evaluation, and migrates individuals to other thread blocks in its neighborhood. In this case, no speedup results were reported.
 
-
 Van Luong et al. \cite{5586403} published in 2010 a methodology for mapping the search space onto the GPU memory hierarchy in three levels: the distribution of the search process among the CPU and GPU (1), the mapping of the neighborhood in the GPU threads (2) and the effective usage of the texture memory in the context of hybrid EAs. Experiments to solve the QAP problem with CUDA are presented, where the evolutionary process is performed in the CPU and the generation of the Local Search neighborhood are performed on parallel in the GPU, achieving an acceleration of 14,6 times faster. Hardware used is Core 2 Duo 2,67 Ghz and Nvidia GTX 280. As can be seen this work also shows the benefices of using a conjunction of CPU and GPU, being the GPU used only for intensive calculations.
 
-
 There are other papers related with the previous approach, like Tsutsui et al. paper \cite{Tsutsui:2011:GECCO}. This chapter uses a master-slave approach with an Ant Colony Optimization (ACO) algorithm \cite{Dorigo:1999:ACO:329055_329062} with Tabu Search \cite{Glover:1997:TS:549765}. Tsutsui uses an Intel Core i7 965 (3.2 GHz) processor and a single NVIDIA GeForce GTX480 GPU. They compare CPU and GPU implementations with and the results showed that GPU computation with MATA, an efficient method for thread assignment cost which they call Move-Cost Adjusted Thread Assignment, showed a promising speedup compared to computation with CPU.
-
 
 \cite{Pedemonte:2011:BOG:2001858.2002031} studies the difference of using different representations for binary problems in GPUs evaluating GAs: boolean data type versus packing multiple bits in a non boolean data type. The execution platform was a PC with Quad Core Intel Xeon E5530 processor at 2,4 Ghz and a Tesla C1060 with 240 CUDA cores. The CPU only calculates the initial population and a matrix of random number to be used in crossover and mutation by the GPU. The authors review the problem of the data types when GPGPU is used. Several data types of 8, 16, 32, and 64 bits) are compared in CPU and GPU versions. Results shows that
 packing in 32 bits data types achieve speedup values of up to 100 compared with boolean data types, specially when the size of the instances increases. This make sense because the Tesla C1060 are equipped with 32-bit integer ALUs. 
@@ -420,10 +436,8 @@ In \cite{ACO-on-GPU_Develacq} A. Develacq test different parallel strategies for
 
 Authors of \cite{Cecilia201342} proposed three different techniques for improving the classical ACO algorithms parallelization on GPUs: a data parallelism scheme for tour construction on GPU, a GPU-based pheromone updating stage, and a roulette wheel implementation on GPU, called I-Roulette. They introduced the queen ants, associated with CUDA blocks, and the worker ants, associated to CUDA threads. The experiments were performed on a four-core Intel Xeon E5620 running at 2.4 GHz, with 16GB RAM, and a NVIDIA Tesla C2050 Fermi. The proposed techniques lead to obtain a speed-up factor of up to 20 in comparison with the sequential implementation.
 
-
 In \cite{5586530} three cellular GA versions are compared: a CPU, a mono-GPU and a multi-GPU version, being the first work in use multi-GPU for cEAs. A 2D grid population is used and divided in two GPUs in the multi version. Selection, recombination, mutation and evaluation are performed in parallel. In the multi GPU case, a thread for each GPU is controlled by a CPU thread and borderline individuals of the sub-populations are exchanged. The
 speedup ranges from 8 to 711. However, there is not significantly difference between mono and multi GPU versions, probably due the overhead of the CPU. Hardware used is Intel Quad processor 2.67GHz and Nvidia GeForce GTX 285.
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Maribel
@@ -431,41 +445,32 @@ speedup ranges from 8 to 711. However, there is not significantly difference bet
 %Maribel: Ok, 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 % Maribel, este siguiente no me lo he bajado todavía, pero también hay que ampliarlo. 
 Experiments running several instances of Fast Ant System \cite{Taillard:1998:FFA:870509}e best neighbor at each iteration of the search and the Quadratic Assignment Problem \cite{Zhu:2010:0020-7543:1035} are shown. They use an Intel Core i7 930 with NVIDIA GTX 480 or the Intel Xeon E5520 with Tesla C1060. The GPU implementation is 15 times faster than the one running on the CPU.
 
-
 During 2012, Luong et at. run GPGPU algorithm from metaheuristics implementation point of view. In \cite{luongMetaheuristicsPpsn2012} a guideline to exploit heterogeneous computing resources, including GPU and CPUs, for effective hybrid metaheuristics was proposed. The goal of this paper is not the evaluation of the fitness of some individuals, but the parallelization of metaheuristics which were not inherently parallel, like local search algorithms. Task distribution is clearly defined into the paper,  the CPU manages the whole sequential Local Search process and the GPU is dedicated to the costly part i.e. the parallel generation and evaluation of the neighboring solutions.
-Authors mapped the population to the GPU and applied the parallel metaheuristic to each individual using its neighborhood structure taking adventage of blocks of threads, so of the GPU architecture. The parallelization of these metaheuristics generated several different individuals that the GPU evaluated at the same time. The critical issue was to find efficient mappings between a GPU threads and a particular neighbor. Indeed, this step is crucial in the design of new large neighborhood local search algorithms for binary problems since it is clearly identified as the gateway between a GPU process and a candidate neighbor. They reviewed neighborhoods based on a Hamming distance of one, two and three and applied their suggestions to Permuted Perceptron problem \cite{KnudsenPermutedPerceptronProblem1999}. They used a Tabu Search algorithm \cite{TaillardTabySearch1991} using CUDA for each neigborhood with a configuration of Intel Core 2 Duo 2.67GHz with a NVIDIA GTX 280 card. The CUDA implementation increased the number of successful solutions drastically every instance of the problem. Regarding execution time, acceleration factors using GPU are very significant (from $24.2x$ to $25.8x$). 
-
-   
-
-
-
+Authors mapped the population to the GPU and applied the parallel metaheuristic to each individual using its neighborhood structure taking adventage of blocks of threads, so of the GPU architecture. The parallelization of these metaheuristics generated several different individuals that the GPU evaluated at the same time. The critical issue was to find efficient mappings between a GPU threads and a particular neighbor. Indeed, this step is crucial in the design of new large neighborhood local search algorithms for binary problems since it is clearly identified as the gateway between a GPU process and a candidate neighbor. They reviewed neighborhoods based on a Hamming distance of one, two and three and applied their suggestions to Permuted Perceptron problem \cite{KnudsenPermutedPerceptronProblem1999}. They used a Tabu Search algorithm \cite{TaillardTabySearch1991} using CUDA for each neigborhood with a configuration of Intel Core 2 Duo 2.67GHz with a NVIDIA GTX 280 card. The CUDA implementation increased the number of successful solutions drastically every instance of the problem. Regarding execution time, acceleration factors using GPU are very significant (from $24.2x$ to $25.8x$).
 
 \subsection{Non standard Approaches}
 
 Pospichal et al. in 2011 has addressed several papers related with GPU devices. One of the last is \cite{DBLP:conf/gecco/PospichalMOSJ11} where they proposes to use a GPU device for Grammatical Evolution evolving complete programs in an arbitrary language using variable length binary strings. For this problem, the individual is a program, so it must to be compiled and sent to the GPU for evaluation each generation. But the most time-consuming part of this approach is to sent the individuals to the GPU and no the evaluation itself, so, Pospichal et al. propose to evolve the whole Grammatical Evolution algorithm on the GPU with a special mapping function. They mapped one individual per block of threads and one thread is used for manipulate each individual. They compare the execution time of an Intel Core i7 with NVIDIA GTX 480 using CUDA (CPU implementation with C) an a Java library called GEVA \cite{O'Neill:2008:GGE:1527063.1527066} which is interpreted language (CPU implementation using GEVA).  The authors include results for both implementations (C and GEVA) and one GPU implementation and they compare them with and without overhead for CPU-GPU communication. We include only the results with overhead, because the parallel version need the CPU-GPU communication so the authors might to take care about it. The results of GPU implementation are in average 5.3 speedup than CPU with C implementation which is an expected result. The speedup grows until 102.8 when GPU implementation and CPU implementation with GEVA are analysed but the authors do not include any variance results, so we do not recommend the last result as the most important of the paper. Thus, this paper proposes two levels of parallelism: 1) indi-
 viduals are evaluated in parallel (by threads in he same block) and 2) data within individuals (genes, crossover points, mutations, fitness points, etc.) are maintained by parallel access as well (by block of threads).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Artificial Neural Networks implementations on GPUs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%Artificial neural networks attempt to capture the adaptability of biological neurons in a mathematical model for information processing. ANNs are very powerful tools that are highly parallel but also computationally expensive and match well with the GPU computing architecture.  As a workhorse of the computational intelligence field, there exists a high demand for  this acceleration.  As a highly analytic structure, neural networks can be reduced to a series of matrix operations, and thus are easily parallelized, as the GPU is highly optimized to perform these kinds of operations \cite{Meuth2006}.  
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Artificial Neural Networks implementations on GPUs}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Several authors provide tips for ensuring efficient implementation  of algorithms on GPU’s \cite{Oh2004,Luo2005,Martinez2007,Martinez2010}.
 
-Artificial neural networks attempt to capture the adaptability of biological neurons in a mathematical model for information processing. ANNs are very powerful tools that are highly parallel but also computationally expensive and match well with the GPU computing architecture.  As a workhorse of the computational intelligence field, there exists a high demand for  this acceleration.  As a highly analytic structure, neural networks can be reduced to a series of matrix operations, and thus are easily parallelized, as the GPU is highly optimized to perform these kinds of operations \cite{Meuth2006}.  
+%Zhongwen uses the GPU to first extract a set of characteristics from image data, then applies a pre-trained MLP to these characteristics for classification \cite{Luo2005}.
 
-Several authors provide tips for ensuring efficient implementation  of algorithms on GPU’s \cite{Oh2004,Luo2005,Martinez2007,Martinez2010}.
+%Bernhard \cite{BernhardCITA17} proposes a different approach, implementing spiking neural networks for image segmentation.
 
-Zhongwen uses the GPU to first extract a set of characteristics from image data, then applies a pre-trained MLP to these characteristics for classification \cite{Luo2005}.
+%In general, significant performance gains can be elicited from implementing neural network algorithms on graphics processing units. However, these implementations are difficult to obtain.
 
-Bernhard \cite{BernhardCITA17} proposes a different approach, implementing spiking neural networks for image segmentation.
-
-In general, significant performance gains can be elicited from implementing neural network algorithms on graphics processing units. However, these implementations are difficult to obtain.
-
-Finally, several developers provide libraries and tools to help practitioners to develop ANN applications on GPUs \cite{url2}.
+%Finally, several developers provide libraries and tools to help practitioners to develop ANN applications on GPUs \cite{url2}.
 
 %\begin{figure}[b]
 %\sidecaption
@@ -510,13 +515,12 @@ about minimize the communication with the CPUs are emerging.
 % agradecimientos
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ack{This work has been supported in part by project ANYSELF (TIN2011-28627-C04-02). The authors would like to thank the FEDER of European Union for financial support via project "Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos" (SIPEsCa) of the "Programa Operativo FEDER de Andalucía 2007-2013". We also thank all Agency of Public Works of Andalusia Regional Government staff and researchers for their dedication and professionalism.
-}
+\ack{This work has been supported in part by project ANYSELF (TIN2011-28627-C04-02). The authors would like to thank the FEDER of European Union for financial support via project "Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos" (SIPEsCa) of the "Programa Operativo FEDER de Andalucía 2007-2013". We also thank all Agency of Public Works of Andalusia Regional Government staff and researchers for their dedication and professionalism.}
 
-\begin{figure*}
+\begin{figure}[hb]
 \centering
 \epsfig{file=logos_SIPESCA_2.eps,width=0.5\columnwidth}
-\end{figure*} 
+\end{figure} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % bibliografía
