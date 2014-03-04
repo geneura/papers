@@ -2,62 +2,33 @@
 # Makefile
 ###############################################################################
 
-#BIB = $(wildcard *.bib)
-#BST = $(wildcard *.bst)
-#CLS = $(wildcard *.cls)
-#EPS = $(wildcard *.eps)
-#STY = $(wildcard *.sty)
+DIA = $(wildcard *.dia)
+PNG = $(DIA:.dia=.eps)
 TEX = $(wildcard *.tex)
-#BBL = $(TEX:.tex=.bbl)
-#BLG = $(TEX:.tex=.blg)
-#DVI = $(TEX:.tex=.dvi)
+BBL = $(TEX:.tex=.bbl)
 PDF = $(TEX:.tex=.pdf)
 
 ###############################################################################
 
-all:	$(PDF)
+all:	$(EPS) $(PDF)
 
 auto:
 	while true; do $(MAKE); sleep 1; done
 
 clean:
-#	$(RM) $(BBL) $(BLG) $(DVI) $(PDF) *.aux *.log *~
 	latexmk -C
-
-#warning: $(BLG)
-#	while read i; do \
-#		[ "$${i:0:7}" = "Warning" ] && echo "$$i --> $$(grep -l -m 1 -n $${i/* /} $(BIB))"; \
-#	done < $<
+	$(RM) $(BBL) *~
 
 ###############################################################################
 
-#%.aux: %.tex
-#	latex $*
-
-#%.bib: %.tex
-#	latex $*
-
-#%.bbl %.blg: %.aux $(BIB)
-#	bibtex $*
-
-#%.dvi:	%.tex $(BIB) $(BST) $(CLS) $(EPS) $(STY)
-#	latex $*
-#	latex $*
-#	bibtex $*
-#	latex $*
-#	bibtex $*
-#	latex $*
-#	latex $*
-
 %.dvi: %.tex
-	latexmk -dvi $*
+	latexmk -dvi -f $*
+
+%.eps: %.dia
+	dia -e $@ $<
 
 %.pdf:	%.dvi
 	dvipdf $<
-
-###############################################################################
-
-#.PRECIOUS: $(BLG) $(DVI)
 
 ###############################################################################
 
