@@ -97,13 +97,6 @@ Graphics processors have rapidly matured over the last years, leaving behind the
 
 GPUs are similar to multi-core CPUs but with two main differences (compare Figures \ref{fig:cpu} and \ref{fig:gpu}). Traditionally, CPU main interest has been fast execution of single threaded code instead GPUs are made for throughput. CPUs try to improve the execution of a single instruction stream while GPUs take the opposite route obtaining benefits from massively threaded streams of instructions and/or data. The second difference is how threads are scheduled. The operating system schedule threads over different cores of a CPU in a preemptive fashion. GPUs have dedicated hardware for the cooperative scheduling of threads.
 
-\begin{figure*}[!h]
-\centering
-\epsfig{file=cpu-gpu.eps,width=\textwidth}
-\caption{CPU and GPU block diagram comparison.}
-\label{fig:cpu-gpu}
-\end{figure*}
-
 \begin{figure}[h]
 \centering
 \epsfig{file=cpu.eps,width=\columnwidth}
@@ -118,10 +111,10 @@ GPUs are similar to multi-core CPUs but with two main differences (compare Figur
 \label{fig:gpu}
 \end{figure}
 
-Physically GPUs used to be huge in comparison with CPUs, see Table \ref{fig:cpugpu}. Latest microprocessors from the two main vendors, AMD \cite{amd} and Intel \cite{intel}, are over 1 billion transistors. Latest GPUs from AMD and NVIDIA \cite{nvidia} are over 4 billion transistors. CPUs draw 130W at most, a limit established by the cost of commodity heat sink and fan. GPUs have increase power consumption and currently are in the neighborhood of 300W. This can be possible with the use of exotic cooling solutions. CPUs are built with the finest technology, read best lithography, while GPUs are made with budget in mind in more common and older processes.
+Physically GPUs used to be huge in comparison with CPUs, see Table \ref{tab:features}. Latest microprocessors from the two main vendors, AMD \cite{amd} and Intel \cite{intel}, are over 1 billion transistors. Latest GPUs from AMD and NVIDIA \cite{nvidia} are over 4 billion transistors. CPUs draw 130W at most, a limit established by the cost of commodity heat sink and fan. GPUs have increase power consumption and currently are in the neighborhood of 300W. This can be possible with the use of exotic cooling solutions. CPUs are built with the finest technology, read best lithography, while GPUs are made with budget in mind in more common and older processes.
 
 No standard terminology can be found in the world of graphics hardware.
-Every company have a very different set of words to refer to the same underlying objects and principles. Many authors try to alleviate this lack of standard terms calling `shader core' to an Intel Execution Unit (EU), an AMD Single Instruction Multiple Data (SIMD) or an NVIDIA Streaming Multiprocessors (SM). Any of these refer to a single processor core inside of the GPU that can fetch, decode, issue and execute several instructions. The shader core is composed of several execution units' or EU that can execute an individual vector operation equivalent to an Advanced Vector Extensions (AVX) or Streaming SIMD Extensions (SSE) instruction. AMD call this kind of EU streaming processor (SP), while NVIDIA uses the term CUDA core. Table \ref{fig:cpugpu} compares several existing CPUs, GPUs and Accelerated Processing Units (APUs), taking into account these terms and their meaning.
+Every company have a very different set of words to refer to the same underlying objects and principles. Many authors try to alleviate this lack of standard terms calling `shader core' to an Intel Execution Unit (EU), an AMD Single Instruction Multiple Data (SIMD) or an NVIDIA Streaming Multiprocessors (SM). Any of these refer to a single processor core inside of the GPU that can fetch, decode, issue and execute several instructions. The shader core is composed of several execution units' or EU that can execute an individual vector operation equivalent to an Advanced Vector Extensions (AVX) or Streaming SIMD Extensions (SSE) instruction. AMD call this kind of EU streaming processor (SP), while NVIDIA uses the term CUDA core. Table \ref{tab:features} compares several existing CPUs, GPUs and Accelerated Processing Units (APUs), taking into account these terms and their meaning.
 
 \begin{table*}[h]
 \centering
@@ -169,7 +162,7 @@ Intel Xeon Phi 5100P   & 5             & 600          & 60            & 1.053   
 
 \end{tabular}
 \caption{CPU, GPU and APU comparison of the best professional and commodity desktop hardware available nowadays. A slash is used in APUs to separate CPU/GPU parts.
-\label{fig:cpugpu}}
+\label{tab:features}}
 \end{table*}
 
 Nowadays NVIDIA has the best single chip GPU discrete card with superior performance in some workloads and AMD the best card with two GPU chips. Both makers takes different compromises in the design of theirs GPUs. AMD has more execution units but its memory hierarchy is weaker. This way software bounded by memory bandwidth or with strong ordering inter-dependencies prefers NVIDIA hardware. On the other side, loads capped by pure ALU execution power use to be faster on AMD hardware.
