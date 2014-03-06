@@ -53,8 +53,9 @@
 \begin{abstract}
 
 Many problems, such as large-instance or real-application ones, require high amount of computational power to be solved. In order to deal with them, parallelization of algorithms has been used with the aim of both, reducing the computation time, and improving the quality of the solutions. Traditionally these algorithms have been executed in central processing units (CPUs). However the advances in the videogames industry have led to the production of low-cost but high-performance graphics processing units (GPUs) included in almost every PC or even in every mobile device. Thus, some years ago, these units have been considered as general-purpose processors and profited as powerful substitutes or complements for CPUs regarding problem solving tasks.
-The GPUs, in conjunction with CPUs, can offer a quite higher speedup than traditional CPUs, so many researchers are migrating their algorithm to these systems. This work presents a review of hardware and software advances in this line, along with their application in the area of some the most used metaheuristics for solving complex problems: the bioinspired algorithms. 
-Thus, the work proposes a taxonomy of classification of the actual parallelization methods in GPUs and a review of the literature in this area.
+The GPUs, in conjunction with CPUs, can offer a quite higher speedup than traditional CPUs, so many researchers are migrating their algorithm to these systems. 
+This work presents a review of hardware and software advances in this line, along with their application in the area of some the most used metaheuristics for solving complex problems: the bioinspired algorithms. 
+Thus, the work proposes a taxonomy of classification of the actual parallelization methods in GPUs, along with a review of the literature in this area.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -66,7 +67,7 @@ Thus, the work proposes a taxonomy of classification of the actual parallelizati
 \label{sec:intro}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-General-purpose computing on graphics processing units (GPGPU) is the technique of using a Graphics Processing Unit (GPU), which typically handles computation only for computer graphics, to perform computation in applications traditionally handled by a central processing unit (CPU). Recently there has been a growing interest in GPU computation. The fact that this kind of processors has the ability to perform restricted parallel processing has elicited considerable interest among researchers with applications that require intensive parallel computation.
+General-purpose computing on graphics processing units (GPGPU) is the technique of using a Graphics Processing Unit (GPU), which typically handles computation only for computer graphics, to perform computation in applications traditionally handled by a central processing unit (CPU). Recently there has been a growing interest in GPU computation due to the fact that this kind of processors has the ability to perform restricted parallel processing, which is very attractive to researchers with applications that require intensive parallel computation.
 
 %\begin{figure}[h]
 %\centering
@@ -77,13 +78,19 @@ General-purpose computing on graphics processing units (GPGPU) is the technique 
 
 GPUs are specialized stream processors, initially useful for rendering graphics applications. Typically, a GPU is able to perform graphics manipulations at a much higher speed than a general purpose CPU, since the graphics processor is specifically designed to handle certain primitive operations which occur frequently in graphics applications. Internally, the GPU contains a number of small processors that are used to perform calculations. 
 Depending on the power of a GPU, the number of threads that can be executed in parallel on such devices is currently in the order of hundreds to thousands and it is expected to multiply in a few years. Nowadays, developers can write (easily) their own high-level programs on GPU. Due to the wide availability, programmability, and high-performance of these consumer-level GPUs, they are cost-effective for, not just game playing, but also scientific computing.
-Now, GPUs are exposed to the programmer as a set of general-purpose shared-memory Single Instruction Multiple Data (SIMD) multi-core processors 
+Now, GPUs are exposed to the programmer as a set of general-purpose shared-memory Single Instruction Multiple Data (SIMD) multi-core processors. 
 %(see Figure \ref{fig:opencl})
-. This makes these architectures well suited to run large computational problems, such as those from bioinformatic area. 
+This makes these architectures well suited to run large or complex computational problems. 
 
-Then, the goal of this article is to review the use of GPUs to solve bioinformatic problems, explaining the general approach to using a GPU and given an overview of currently available software systems.
+Then, the goal of this article is to review the use of GPUs to solve such as problems, by means of the most extended metaheuristics\footnote{high-level procedures which follow strategies for guiding the search, in order to solve an optimization problem}, the \textit{bioinspired algorithms}. These algorithms imitate or model the behaviour of natural systems in order to design heuristic methods to mainly address search, learning, and optimization problems.
+Bioinspired algorithms have been widely used by the scientific community because they are quite easy to understand and implement.
+They are stochastic, adaptive, and most of them inherently parallel models, since there are several agents working and cooperating to find the solution. This fact makes them completely suitable to be parallelized. The initial approaches considered clusters of computers or distributed processing, but the arise of GPGPUs have meant a new parallelization paradigm which is exposed here.
 
-To this end, the rest of this paper is structured as follows: Section \ref{sec:parall_and_GPUs} presents GPUs as highly parallel devices architectures.
+Thus, the paper presents a survey of the most extended bioinspired algorithms and the different proposals of GPUs-parallelization approaches made in a number of research works. They are organized according to a parallelization taxonomy.
+
+But previously, this work introduces the features and advantages of GPGPUs, then it explains the general approaches to use and profit a GPGPU, and gives an overview of currently available programming tools and software systems.
+
+The rest of this paper is structured as follows: Section \ref{sec:parall_and_GPUs} presents GPUs as highly parallel devices architectures.
 Section \ref{sec:programming} gives a background on the different higher level programming languages used to profit GPUs. Finally, Section \ref{sec:bioinfor_apps} reviews different bioinspired approaches using GPUs, followed by a brief conclusion (Section \ref{sec:conclusions}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -195,14 +202,14 @@ Figure \ref{fig:gk110a} shows the internals of latest NVIDIA Kepler GK110 archit
 
 In the Figure \ref{fig:tahiti}a the newest AMD GPU can be seen. It has an architecture called Graphics Core Next (GCN). Every chip, there are 2, is composed by 28 Compute Units (CU) as AMD call it. Every CU is composed by 4 SIMD vector processors. Every SIMD processor can operate on 16 number simultaneously. This way 1792 instructions can be finalized every clock. Every Tahiti chip has six 64-bit dual channel memory controllers (gray rectangles at the bottom of Figure \ref{fig:tahiti}b) connected to 2 GDDR5 memory channels for a total bandwidth of 240GB/s. The maximum theoretical throughput in simple precision for this design is 2956GFLOPS.
 
-\begin{figure}[h]
+\begin{figure*}[h]
 \begin{tabular}{cc}
 \epsfig{file=./amd-tahiti.eps,width=6.5cm} & \epsfig{file=./amd-gcn-cu-2.eps,width=6.5cm} \\
 (a) Block diagram. & (b) Compute Unit, a SIMD processor. \\
 \end{tabular}
 \caption{AMD Graphics Core Next architecture.}
 \label{fig:tahiti}
-\end{figure}
+\end{figure*}
 
 As CPU makers did some years ago, passing from single core to symmetric multiprocessing system (SMP), and more recently to multi-cores, GPU makers follow the same trend. We can connect more than one graphic card to our computer to improve its GPU capacities or buy a card with 2 graphic chips inside. GPUs are so much powerful than CPUs that even a small cluster of a few GPUs can be faster than classic, and much more expensive, big cluster of processors. First cluster of this kind appear in the scientific literature in 2004 \cite{10.1109/SC.2004.26} with big success. Nowadays, more and more people build small GPU clusters with a couple of mighty graphic cards just to game. Connecting 2, 3 or 4 graphics card is called CrossFire by AMD and Scalable Link Interface (SLI) by NVIDIA.
 
