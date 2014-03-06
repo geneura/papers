@@ -7,10 +7,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage{amsmath}
-\usepackage{epsfig} % \usepackage[dvips]{epsfig}
-\usepackage{float} % for [H]
+\usepackage{epsfig}         % \usepackage[dvips]{epsfig}
 \usepackage{graphicx}
-\usepackage[utf8]{inputenc}  % text encoding
+\usepackage[utf8]{inputenc} % text encoding
 \usepackage{times}
 \usepackage{url}
 
@@ -28,19 +27,10 @@
 % authors
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\author{G. Romero, M. G. Arenas, P. A. Castillo, A. M. Mora, P. Garc�a-Sanchez and J. J. Merelo}
-\affiliation{Departamento de Arquitectura y Tecnolog�a de Computadores, ETSIIT/CITIC, University of Granada}
+\author{G. Romero, M.G. Arenas, P.A. Castillo, A.M. Mora, P. García-Sanchez and J.J. Merelo}
+\affiliation{Departamento de Arquitectura y Tecnología de Computadores, ETSIIT/CITIC, University of Granada}
 \email{gustavo@ugr.es}
 \shortauthors{G. Romero et al.}
-
-%\author{G. ROMERO \affil{University of Granada}
-%M.G. ARENAS \affil{University of Granada}
-%P.A. CASTILLO \affil{University of Granada}
-%A.M. MORA \affil{University of Granada}
-%P. GARCIA-SANCHEZ \affil{University of Granada}
-%J.J. MERELO \affil{University of Granada}}
-
-%Department of Architecture and Computer Technology. CITIC (University of Granada), \email{{gustavo,mgarenas,pedro,amorag,pgarcia,jmerelo}@atc.ugr.es }
 
 \received{00 March 2014}
 \revised{00 July 2014}
@@ -69,6 +59,7 @@ Thus, the work proposes a taxonomy of classification of the actual parallelizati
 
 General-purpose computing on graphics processing units (GPGPU) is the technique of using a Graphics Processing Unit (GPU), which typically handles computation only for computer graphics, to perform computation in applications traditionally handled by a central processing unit (CPU). Recently there has been a growing interest in GPU computation due to the fact that this kind of processors has the ability to perform restricted parallel processing, which is very attractive to researchers with applications that require intensive parallel computation.
 
+% eliminada por innecesaria... la dejo comentada por si alguien quiere que vuelva
 %\begin{figure}[h]
 %\centering
 %\epsfig{file=./openclfigure2small.eps,width=\columnwidth}
@@ -200,16 +191,25 @@ Figure \ref{fig:gk110a} shows the internals of latest NVIDIA Kepler GK110 archit
 \label{fig:gk110b}
 \end{figure}
 
-In the Figure \ref{fig:tahiti}a the newest AMD GPU can be seen. It has an architecture called Graphics Core Next (GCN). Every chip, there are 2, is composed by 28 Compute Units (CU) as AMD call it. Every CU is composed by 4 SIMD vector processors. Every SIMD processor can operate on 16 number simultaneously. This way 1792 instructions can be finalized every clock. Every Tahiti chip has six 64-bit dual channel memory controllers (gray rectangles at the bottom of Figure \ref{fig:tahiti}b) connected to 2 GDDR5 memory channels for a total bandwidth of 240GB/s. The maximum theoretical throughput in simple precision for this design is 2956GFLOPS.
+In the Figure \ref{fig:tahitia} the newest AMD GPU can be seen. It has an architecture called Graphics Core Next (GCN). Every chip, there are 2, is composed by 28 Compute Units (CU) as AMD call it. Every CU is composed by 4 SIMD vector processors. Every SIMD processor can operate on 16 number simultaneously. This way 1792 instructions can be finalized every clock. Every Tahiti chip has six 64-bit dual channel memory controllers (gray rectangles at the bottom of Figure \ref{fig:tahitib}) connected to 2 GDDR5 memory channels for a total bandwidth of 240GB/s. The maximum theoretical throughput in simple precision for this design is 2956GFLOPS.
 
-\begin{figure*}[h]
-\begin{tabular}{cc}
-\epsfig{file=./amd-tahiti.eps,width=6.5cm} & \epsfig{file=./amd-gcn-cu-2.eps,width=6.5cm} \\
-(a) Block diagram. & (b) Compute Unit, a SIMD processor. \\
+\begin{figure}[h]
+\centering
+\begin{tabular}{c}
+\epsfig{file=./amd-tahiti.eps,width=\columnwidth} \\
 \end{tabular}
-\caption{AMD Graphics Core Next architecture.}
-\label{fig:tahiti}
-\end{figure*}
+\caption{AMD Graphics Core Next architecture block diagram.}
+\label{fig:tahitia}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{c}
+\epsfig{file=./amd-gcn-cu-2.eps,width=\columnwidth} \\
+\end{tabular}
+\caption{AMD Graphics Core Next architecture SIMD processor.}
+\label{fig:tahitib}
+\end{figure}
 
 As CPU makers did some years ago, passing from single core to symmetric multiprocessing system (SMP), and more recently to multi-cores, GPU makers follow the same trend. We can connect more than one graphic card to our computer to improve its GPU capacities or buy a card with 2 graphic chips inside. GPUs are so much powerful than CPUs that even a small cluster of a few GPUs can be faster than classic, and much more expensive, big cluster of processors. First cluster of this kind appear in the scientific literature in 2004 \cite{10.1109/SC.2004.26} with big success. Nowadays, more and more people build small GPU clusters with a couple of mighty graphic cards just to game. Connecting 2, 3 or 4 graphics card is called CrossFire by AMD and Scalable Link Interface (SLI) by NVIDIA.
 
@@ -296,7 +296,7 @@ The parallel EAs community has a long legacy with MIMD architectures compared to
 Alba classifies the main parallel metaheuristic models as follow:
 \begin{itemize}
 \item Parallel Genetic Algorithms (Cant\'u Paz \cite{Cantu-Paz98asurvey}) %(G. Luque, et al.).
-\item Parallel Genetic Programming (F. Fernández, et al.\cite{springerlink:10.1023_A:1021873026259}).
+\item Parallel Genetic Programming (F. FernÃ¡ndez, et al.\cite{springerlink:10.1023_A:1021873026259}).
 \item Parallel Evolution Strategies (G. Rudolph \cite{Rudolph92parallelapproaches}).
 \item Parallel Ant Colony Algorithms (S. Janson, et al. \cite{ParallelAntColony}).
 \item Parallel Estimation of Distribution Algorithms (J. Madera, et al. \cite{springerlink:10.1007_3_540_32494_1_7}).
@@ -314,12 +314,12 @@ Nevertheless, when the research community uses GPGPU, all the EC approaches are 
  
 At the end we have included a subsection for non-standard approaches \cite{DBLP:conf/gecco/PospichalMOSJ11} including  papers which may not be included in any of the previous ones because they mapped the algorithm and the problem they solve in a special way that cannot be considered as fine grained, coarse grained or master-slave ones.
 
-%%%%% Maribel, este último párrafo que viene a continuación yo lo quitaría, si se ha hablado de frameworks for GPGPU en las secciones previas, porque aquí no pega nada. Y si se deja, entonces habría que hablar de CUDA, de OpenCL y de alguna librería más que da soporte para GPGPU como JCUDA desde Java, o PUGACE
+%%%%% Maribel, este Ãºltimo pÃ¡rrafo que viene a continuaciÃ³n yo lo quitarÃ­a, si se ha hablado de frameworks for GPGPU en las secciones previas, porque aquÃ­ no pega nada. Y si se deja, entonces habrÃ­a que hablar de CUDA, de OpenCL y de alguna librerÃ­a mÃ¡s que da soporte para GPGPU como JCUDA desde Java, o PUGACE
  
 Most of the evolutionary computation metaheuristics can be used with almost zero effort by using existing frameworks. The most complete and comprehensive review of these frameworks is from Parejo \cite{springerlink:10.1007/s00500-011-0754-8}. It is a comparative study of metaheuristic optimization frameworks. As criteria for comparison, a set of 271 features grouped in 30 characteristics and 6 areas has been selected. These features include the different metaheuristic techniques covered, mechanisms for solution encoding, constraint handling, neighborhood specification, hybridization, parallel and distributed computation, software engineering best practices, documentation and user interface. But this survey does not include frameworks with GPGPU support but only for evolutionary computation metaheuristics. 
 
 %%%%HHHHHHH 
-%Maribel, esto es para gustavo. Si se incluye parte de frameworks en la primera parte del artículo, el siguiente párrafo debería ir ahí, sino, aquí la verdad es que tampoco pega nada y habría que quitarlo creo yo.
+%Maribel, esto es para gustavo. Si se incluye parte de frameworks en la primera parte del artÃ­culo, el siguiente pÃ¡rrafo deberÃ­a ir ahÃ­, sino, aquÃ­ la verdad es que tampoco pega nada y habrÃ­a que quitarlo creo yo.
 
 %%%%%%
 
@@ -335,7 +335,7 @@ PUGACE\cite{5586286} is a framework in CUDA for cellular GAs (cGAs), but only fo
 Master-slave Evolutionary Algorithms solve problems involving computationally expensive fitness functions, where the master node runs the entire algorithm while the slaves execute the fitness evaluation of the individuals. Using this approach, the evaluation of the fitness function is not sequential, but in parallel, so the master-slave version is more efficient because the evaluations usually are the more expensive portion of the total run time.
 
 %________________________________
-% maribel: he reescrito el párrafo siguiente entero, hay que revisarlo bien.
+% maribel: he reescrito el pÃ¡rrafo siguiente entero, hay que revisarlo bien.
 The GPU is responsible of fitness evaluation but it does not get involved with other phases of the algorithm like the crossover, selection or even population ordering for the next generation. In this approach, each generation the individuals are copied to the global memory of the GPU, each single processor gets one or more individuals from global memory and puts them into the shared memory, to decrease global memory overhead. After that, each thread evaluates it or them, and stores the result into the global memory again. The most usual is that each single core evaluates one individual. The programmer has to minimise the number of global memory accesses, as well as to minimise data transfers from CPU to GPU and vice versa. Some additional problems might to be faced, like for example, when the individuals need some data for evaluating, like a distance matrix or a dataset. This additional information might to be copied from CPU to GPU once at the beginning of the algorithm and the threads might to access to this data for evaluation minimising the data transfers from CPU to GPU. So, it must be clear than the more CPU-GPU data transfers passes are needed, the slower the program is.
 
 One of the first proposal for parallel Evolutionary Computation using a GPU was done by Wong et al. \cite{man-leung-wong-parallel-2005}. They  proposed an Evolutionary Programming (EP) without crossover for solving five simple test functions, called Fast Evolutionary Programming (FEP). In this master-slave approach, some actions were executed in the CPU, as the main loop of the algorithm, while evaluation and mutation were run into the GPU device because both steps do not need of external information exchange. In this case, the reproduction step implies interaction among, at least, two individuals so the authors eliminated this step in the algorithm. A maximum speedup of x5.02 was obtained when the population size increases. This is the most common organization in GPU implementations, since no interaction among individuals is required during the evaluation, so this step can be fully parallelized. In this paper the individuals was real-coded and the genomes were mapped into the texture memory. Each GPU thread evaluated one individual and returned its fitness at the end of the parallel step to the CPU for the next evolution cycle step.
@@ -443,11 +443,11 @@ speedup ranges from 8 to 711. However, there is not significantly difference bet
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Maribel
-%Falta incluir el otros dos artículos de Luong no sé exactamente en qué sección cuyas referencias son \cite{luong:Neighborhood2010} y % \cite{LuongParallelHybridEvolutionaryAlgorithmsOnGPUCEC2010} FERGU: Maribel, ese ya lo he comentado yo con el \cite{5586403} lo quito de tu .bib
+%Falta incluir el otros dos artÃ­culos de Luong no sÃ© exactamente en quÃ© secciÃ³n cuyas referencias son \cite{luong:Neighborhood2010} y % \cite{LuongParallelHybridEvolutionaryAlgorithmsOnGPUCEC2010} FERGU: Maribel, ese ya lo he comentado yo con el \cite{5586403} lo quito de tu .bib
 %Maribel: Ok, 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Maribel, este siguiente no me lo he bajado todavía, pero también hay que ampliarlo. 
+% Maribel, este siguiente no me lo he bajado todavÃ­a, pero tambiÃ©n hay que ampliarlo. 
 Experiments running several instances of Fast Ant System \cite{Taillard:1998:FFA:870509}e best neighbor at each iteration of the search and the Quadratic Assignment Problem \cite{Zhu:2010:0020-7543:1035} are shown. They use an Intel Core i7 930 with NVIDIA GTX 480 or the Intel Xeon E5520 with Tesla C1060. The GPU implementation is 15 times faster than the one running on the CPU.
 
 During 2012, Luong et at. run GPGPU algorithm from metaheuristics implementation point of view. In \cite{luongMetaheuristicsPpsn2012} a guideline to exploit heterogeneous computing resources, including GPU and CPUs, for effective hybrid metaheuristics was proposed. The goal of this paper is not the evaluation of the fitness of some individuals, but the parallelization of metaheuristics which were not inherently parallel, like local search algorithms. Task distribution is clearly defined into the paper,  the CPU manages the whole sequential Local Search process and the GPU is dedicated to the costly part i.e. the parallel generation and evaluation of the neighboring solutions.
@@ -458,44 +458,6 @@ Authors mapped the population to the GPU and applied the parallel metaheuristic 
 Pospichal et al. in 2011 has addressed several papers related with GPU devices. One of the last is \cite{DBLP:conf/gecco/PospichalMOSJ11} where they proposes to use a GPU device for Grammatical Evolution evolving complete programs in an arbitrary language using variable length binary strings. For this problem, the individual is a program, so it must to be compiled and sent to the GPU for evaluation each generation. But the most time-consuming part of this approach is to sent the individuals to the GPU and no the evaluation itself, so, Pospichal et al. propose to evolve the whole Grammatical Evolution algorithm on the GPU with a special mapping function. They mapped one individual per block of threads and one thread is used for manipulate each individual. They compare the execution time of an Intel Core i7 with NVIDIA GTX 480 using CUDA (CPU implementation with C) an a Java library called GEVA \cite{O'Neill:2008:GGE:1527063.1527066} which is interpreted language (CPU implementation using GEVA).  The authors include results for both implementations (C and GEVA) and one GPU implementation and they compare them with and without overhead for CPU-GPU communication. We include only the results with overhead, because the parallel version need the CPU-GPU communication so the authors might to take care about it. The results of GPU implementation are in average 5.3 speedup than CPU with C implementation which is an expected result. The speedup grows until 102.8 when GPU implementation and CPU implementation with GEVA are analysed but the authors do not include any variance results, so we do not recommend the last result as the most important of the paper. Thus, this paper proposes two levels of parallelism: 1) indi-
 viduals are evaluated in parallel (by threads in he same block) and 2) data within individuals (genes, crossover points, mutations, fitness points, etc.) are maintained by parallel access as well (by block of threads).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Artificial Neural Networks implementations on GPUs}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%Artificial neural networks attempt to capture the adaptability of biological neurons in a mathematical model for information processing. ANNs are very powerful tools that are highly parallel but also computationally expensive and match well with the GPU computing architecture.  As a workhorse of the computational intelligence field, there exists a high demand for  this acceleration.  As a highly analytic structure, neural networks can be reduced to a series of matrix operations, and thus are easily parallelized, as the GPU is highly optimized to perform these kinds of operations \cite{Meuth2006}.  
-
-%Several authors provide tips for ensuring efficient implementation  of algorithms on GPU’s \cite{Oh2004,Luo2005,Martinez2007,Martinez2010}.
-
-%Zhongwen uses the GPU to first extract a set of characteristics from image data, then applies a pre-trained MLP to these characteristics for classification \cite{Luo2005}.
-
-%Bernhard \cite{BernhardCITA17} proposes a different approach, implementing spiking neural networks for image segmentation.
-
-%In general, significant performance gains can be elicited from implementing neural network algorithms on graphics processing units. However, these implementations are difficult to obtain.
-
-%Finally, several developers provide libraries and tools to help practitioners to develop ANN applications on GPUs \cite{url2}.
-
-%\begin{figure}[b]
-%\sidecaption
-%\includegraphics[scale=.65]{figure}
-%\caption{If the width of the figure is less than 7.8 cm use the \texttt{sidecapion} command to flush the caption on the left side of the page. If the figure is positioned at the top of the page, align the sidecaption with the top of the figure -- to achieve this you simply need to use the optional argument \texttt{[t]} with the \texttt{sidecaption} command}
-%\label{fig:1}
-%\end{figure}
-
-%\begin{table}
-%\caption{Please write your table caption here}
-%\label{tab:1}
-%\begin{tabular}{p{2cm}p{2.4cm}p{2cm}p{4.9cm}}
-%\hline\noalign{\smallskip}
-%Classes & Subclass & Length & Action Mechanism  \\
-%\noalign{\smallskip}\svhline\noalign{\smallskip}
-%Translation & mRNA$^a$  & 22 (19--25) & Translation repression, mRNA cleavage\\
-%Translation & mRNA cleavage & 21 & mRNA cleavage\\
-%Translation & mRNA  & 21--22 & mRNA cleavage\\
-%Translation & mRNA  & 24--26 & Histone and DNA Modification\\
-%\noalign{\smallskip}\hline\noalign{\smallskip}
-%\end{tabular}
-%$^a$ Table foot note (with superscript)
-%\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusions}
@@ -518,15 +480,15 @@ In majority of the cases, extremely high speedups are attained in the comparison
 % agradecimientos
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ack{This work has been supported in part by project ANYSELF (TIN2011-28627-C04-02). The authors would like to thank the FEDER of European Union for financial support via project "Sistema de Informaci�n y Predicci�n de bajo coste y aut�nomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos" (SIPEsCa) of the "Programa Operativo FEDER de Andaluc�a 2007-2013". We also thank all Agency of Public Works of Andalusia Regional Government staff and researchers for their dedication and professionalism.}
+\ack{This work has been supported in part by project ANYSELF (TIN2011-28627-C04-02). The authors would like to thank the FEDER of European Union for financial support via project "Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos" (SIPEsCa) of the "Programa Operativo FEDER de Andalucía 2007-2013". We also thank all Agency of Public Works of Andalusia Regional Government staff and researchers for their dedication and professionalism.}
 
-\begin{figure}[hb]
+\begin{figure}[h]
 \centering
-\epsfig{file=logos_SIPESCA_2.eps,width=0.5\columnwidth}
+\epsfig{file=logos_SIPESCA_2.eps,width=0.75\columnwidth}
 \end{figure} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% bibliografía
+% bibliografÃ­a
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \nocite{*}
