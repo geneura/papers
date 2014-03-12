@@ -42,9 +42,30 @@
 
 \begin{abstract}
 
-Many problems, such as large-instance or real-application ones, require high amount of computational power to be solved. In order to deal with them, parallelization of algorithms has been used with the aim of both, reducing the computation time, and improving the quality of the solutions. Traditionally these algorithms have been executed in central processing units (CPUs). However the advances in the videogames industry have led to the production of low-cost but high-performance graphics processing units (GPUs) included in almost every PC or even in every mobile device. Thus, some years ago, these units have been considered as general-purpose processors and profited as powerful substitutes or complements for CPUs regarding problem solving tasks.
-The GPUs, in conjunction with CPUs, can offer a quite higher speedup than traditional CPUs, so many researchers are migrating their algorithm to these systems. 
-This work presents a review of hardware and software advances in this line, along with their application in the area of some the most used metaheuristics for solving complex problems: the bioinspired algorithms. 
+Many problems, such as large-instance or real-application ones, % ¿qué
+                                % es un real-application problem? ¿Son
+                                % exclusivas ambas categorías?
+ require a high amount of computational power to be solved. In order
+ to deal with them, parallelization of algorithms has been used with
+ the aim of both reducing the computation time and improving the
+ quality of the solutions. Traditionally %cada vez que escucho
+                                %traditionally Dios mata a un
+                                %gatito. ¿Hasta cuando es
+                                %traditionally? - JJ
+these algorithms have been executed in central processing units
+(CPUs). % hay ordenadores paralelos desde los 60 - JJ
+However the advances in the videogames industry have led to the production of low-cost and high-performance graphics processing units (GPUs) included in almost every PC or even in every mobile device. Thus, some years ago, these units have been considered as general-purpose processors and profited as powerful substitutes or complements for CPUs regarding problem solving tasks.
+The GPUs, in conjunction with CPUs, can offer a  higher speedup %over
+                                %what? - JJ
+than traditional CPUs, % por qué no dices que usarlas _aparte de la
+                       % CPU_ puede resultar en una mejora de
+                       % prestaciones? - JJ
+so many researchers are migrating their algorithm to these systems. 
+This work presents a review of hardware and software advances in this
+line, along with their application in the area of some the most used
+metaheuristics for solving complex problems: the bioinspired
+algorithms.  % ¿Con qué objetivo se hace el review? ¿Para establecer
+             % el estado del arte?  - JJ
 Thus, the work proposes a taxonomy of classification of the actual parallelization methods in GPUs, along with a review of the literature in this area.
 \end{abstract}
 
@@ -57,7 +78,18 @@ Thus, the work proposes a taxonomy of classification of the actual parallelizati
 \label{sec:intro}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-General-purpose computing on graphics processing units (GPGPU) is the technique of using a Graphics Processing Unit (GPU), which typically handles computation only for computer graphics, to perform computation in applications traditionally handled by a central processing unit (CPU). Recently there has been a growing interest in GPU computation due to the fact that this kind of processors has the ability to perform restricted parallel processing, which is very attractive to researchers with applications that require intensive parallel computation.
+General-purpose computing on graphics processing units (GPGPU) is the
+technique of using a Graphics Processing Unit (GPU), which typically
+handles computation only for computer graphics, % más bien di que está
+                                % diseñada para ejecutar unas
+                                % operaciones generalmente encontradas
+                                % en gráficos - JJ
+to perform computation in applications traditionally handled by a
+central processing unit (CPU). Recently there has been a growing
+interest in GPU computation due to the fact that this kind of
+processors has the ability to perform restricted parallel processing,
+which is very attractive to researchers with applications that require
+intensive parallel computation. 
 
 % eliminada por innecesaria... la dejo comentada por si alguien quiere que vuelva
 %\begin{figure}[h]
@@ -73,7 +105,15 @@ Now, GPUs are exposed to the programmer as a set of general-purpose shared-memor
 %(see Figure \ref{fig:opencl})
 This makes these architectures well suited to run large or complex computational problems. 
 
-The goal of this article is to review the use of GPUs to solve such as problems, by means of the most extended metaheuristics\footnote{high-level procedures which follow strategies for guiding the search, in order to solve an optimization problem}, the \textit{bioinspired algorithms}. These algorithms imitate or model the behaviour of natural systems in order to design heuristic methods to mainly address search, learning, and optimization problems.
+The goal of this article is to review the use of GPUs to solve such
+problems, by means of the most extended
+metaheuristics\footnote{high-level procedures which follow strategies
+  for guiding the search, in order to solve an optimization problem} % esto no debería ser una nota - JJ
+, the \textit{bioinspired algorithms}. These algorithms imitate or
+model the behaviour of natural systems in order to design heuristic
+methods to mainly address search, learning, and optimization
+problems. % Si este es el tema del trabajo, deberíais justificar
+          % porqué los elegís. - JJ
 
 Bioinspired algorithms have been widely used by the scientific community because they are quite easy to understand and implement.
 They are stochastic, adaptive, and most of them inherently parallel models, since there are several agents working and cooperating to find the solution. This fact makes them completely suitable to be parallelized. The initial approaches considered clusters of computers or distributed processing, but the arise of GPGPUs have meant a new parallelization paradigm which is exposed here.
@@ -83,20 +123,59 @@ Thus, the paper presents a survey of the most extended bioinspired algorithms an
 But previously, this work introduces the features and advantages of GPGPUs, then it explains the general approaches to use and profit a GPGPU, and gives an overview of currently available programming tools and software systems.
 
 The rest of the paper is structured as follows: Section \ref{sec:parall_and_GPUs} presents GPUs as highly parallel devices architectures.
-Section \ref{sec:programming} gives a background on the different higher level programming languages used to profit GPUs. Finally, Section \ref{sec:bioinfor_apps} reviews different bioinspired approaches using GPUs, followed by a brief conclusion (Section \ref{sec:conclusions}).
+Section \ref{sec:programming} gives a background on the different
+higher level programming languages used to profit GPUs. Finally,
+Section \ref{sec:bioinfor_apps} reviews different bioinspired
+approaches using GPUs, followed by a brief conclusion (Section
+\ref{sec:conclusions}). 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Throughput, parallelism and GPUs}
 \label{sec:parall_and_GPUs}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Moore's Law describes a long-term trend in the history of computing hardware: the number of transistors that can be placed inexpensively on an integrated circuit has doubled approximately every two years. The trend has continued for more than half a century and is not expected to stop, theoretically until not too many years above 2015. On 2005 Gordon Moore stated in an interview that his law cannot be sustained indefinitely because transistors would eventually reach the limits of miniaturization at atomic levels. Maybe it is time for Koomey's Law \cite{10.1109/MAHC.2010.28} to replace Moore's Law. Koomey says that energy efficiency is doubled every 18 months. For fixed computing load, the amount of battery you need will fall by a factor of two every year and a half.
+Moore's Law describes a long-term trend in the history of computing
+hardware: the number of transistors that can be placed inexpensively
+on an integrated circuit has doubled approximately every two
+years. The trend has continued for more than half a century and is not
+expected to stop, theoretically until not too many years above
+2015. On 2005 Gordon Moore stated in an interview that his law cannot
+be sustained indefinitely because transistors would eventually reach
+the limits of miniaturization at atomic levels. Maybe it is time for
+Koomey's Law \cite{10.1109/MAHC.2010.28} to replace Moore's
+Law. Koomey says that energy efficiency is doubled every 18
+months. For fixed computing load, the amount of battery you need will
+fall by a factor of two every year and a half.  % de hecho, yo diría
+                                % que se ha parado ya - JJ
 
-Parallel computation has recently become necessary to take full advantage of the gains allowed by Moore's law. For years, processor makers consistently delivered increases in clock rates and instruction-level parallelism, so that single-threaded code is executed faster on newer processors with no modification. Now, to manage CPU power dissipation, processor makers favor multi-core chip designs, and software has to be written in a multi-threaded or multi-process manner to take full advantage of the hardware.
+Parallel computation has recently become necessary to take full
+advantage of the gains allowed by Moore's law. For years, processor
+makers consistently delivered increases in clock rates and
+instruction-level parallelism, so that single-threaded code is
+executed faster on newer processors with no modification. Now, to
+manage CPU power dissipation, processor makers favor multi-core chip
+designs, and software has to be written in a multi-threaded or
+multi-process manner to take full advantage of the hardware. % ¿Ni una
+                                % referencia? - JJ
 
-Graphics processors have rapidly matured over the last years, leaving behind their roots as fixed function accelerators, and growing into almost general purpose computational devices for highly parallel workloads. Some of the earliest academic work about GPUs as computational devices date back to University of Washington in 2002 \cite{Thompson:2002:UMG:774861.774894} and Stanford in 2004 \cite{Buck:2004:BGS:1015706.1015800}. 
+Graphics processors have rapidly matured over the last years, leaving
+behind their roots as fixed function accelerators, and growing into
+almost general purpose computational devices for highly parallel
+workloads. Some of the earliest academic work about GPUs as
+computational devices date back to University of Washington in 2002
+\cite{Thompson:2002:UMG:774861.774894} and Stanford in 2004
+\cite{Buck:2004:BGS:1015706.1015800}.  % Esto debería ir en la intro - JJ
 
-GPUs are similar to multi-core CPUs but with two main differences (compare Figures \ref{fig:cpu} and \ref{fig:gpu}). Traditionally, CPU main interest has been fast execution of single threaded code instead GPUs are made for throughput. CPUs try to improve the execution of a single instruction stream while GPUs take the opposite route obtaining benefits from massively threaded streams of instructions and/or data. The second difference is how threads are scheduled. The operating system schedule threads over different cores of a CPU in a preemptive fashion. GPUs have dedicated hardware for the cooperative scheduling of threads.
+GPUs are similar to multi-core CPUs but with two main differences
+(compare Figures \ref{fig:cpu} and \ref{fig:gpu}). Traditionally, CPU
+main interest has been fast execution of single threaded code instead
+GPUs are made for throughput. CPUs try to improve the execution of a
+single instruction stream while GPUs take the opposite route obtaining
+benefits from massively threaded streams of instructions and/or
+data. The second difference is how threads are scheduled. The
+operating system schedule threads over different cores of a CPU in a
+preemptive fashion. GPUs have dedicated hardware for the cooperative
+scheduling of threads. 
 
 \begin{figure}[h]
 \centering
@@ -112,10 +191,34 @@ GPUs are similar to multi-core CPUs but with two main differences (compare Figur
 \label{fig:gpu}
 \end{figure}
 
-Physically GPUs used to be huge in comparison with CPUs, see Table \ref{tab:features}. Latest microprocessors from the two main vendors, AMD \cite{amd} and Intel \cite{intel}, are over 1 billion transistors. Latest GPUs from AMD and NVIDIA \cite{nvidia} are over 4 billion transistors. CPUs draw 130W at most, a limit established by the cost of commodity heat sink and fan. GPUs have increase power consumption and currently are in the neighborhood of 300W. This can be possible with the use of exotic cooling solutions. CPUs are built with the finest technology, read best lithography, while GPUs are made with budget in mind in more common and older processes.
+Physically GPUs used to be huge in comparison with CPUs as shown in
+Table \ref{tab:features}. Latest microprocessors from the two main
+vendors, AMD \cite{amd} and Intel \cite{intel}, are over 1 billion
+transistors. Latest GPUs from AMD and NVIDIA \cite{nvidia} are over 4
+billion transistors. CPUs draw 130W at most, a limit established by
+the cost of commodity heat sinks and fan. GPUs have an bigger power
+consumption and currently are in the neighborhood of 300W. This can be
+possible with the use of exotic cooling solutions. CPUs are built with
+the finest technology, read best lithography, while GPUs are made with
+budget in mind in more common and older processes. %esta frase está en
+                                %el artículo de 2012 - JJ
 
 No standard terminology can be found in the world of graphics hardware.
-Every company have a very different set of words to refer to the same underlying objects and principles. Many authors try to alleviate this lack of standard terms calling `shader core' to an Intel Execution Unit (EU), an AMD Single Instruction Multiple Data (SIMD) or an NVIDIA Streaming Multiprocessors (SM). Any of these refer to a single processor core inside of the GPU that can fetch, decode, issue and execute several instructions. The shader core is composed of several execution units' (EU) that can execute an individual vector operation equivalent to an Advanced Vector Extensions (AVX) or Streaming SIMD Extensions (SSE) instruction. AMD call this kind of EU streaming processor (SP), while NVIDIA uses the term CUDA core. Table \ref{tab:features} compares several existing CPUs, GPUs and Accelerated Processing Units (APUs), taking into account these terms and their meaning.
+Every company have a  different set of terms to refer to the same
+underlying objects and principles. Many authors try to alleviate this
+lack of standard terms calling `shader core' to an Intel Execution
+Unit (EU), an AMD Single Instruction Multiple Data (SIMD) or an NVIDIA
+Streaming Multiprocessors (SM). Any of these refer to a single
+processor core inside of the GPU that can fetch, decode, issue and
+execute several instructions. The shader core is composed of several
+execution units' (EU) that can execute an individual vector operation
+equivalent to an Advanced Vector Extensions (AVX) or Streaming SIMD
+Extensions (SSE) instruction. AMD call this kind of EU streaming
+processor (SP), while NVIDIA uses the term CUDA core. Table
+\ref{tab:features} compares several existing CPUs, GPUs and
+Accelerated Processing Units (APUs), taking into account these terms
+and their meaning. % Muchas de estas cosas son también del artículo de
+                   % 2012 - JJ
 
 \begin{table*}[h]
 \centering
@@ -162,17 +265,52 @@ Intel Xeon Phi 5100P   & 5             & 600          & 60            & 1.053   
 %\hline
 
 \end{tabular}
-\caption{CPU, GPU and APU comparison of the best professional and commodity desktop hardware available nowadays. A slash is used in APUs to separate CPU/GPU parts.
+\caption{CPU, GPU and APU comparison of the best professional and
+  commodity desktop hardware available nowadays. A slash is used in
+  APUs to separate CPU/GPU parts. 
+% ¿Está actualizado? - JJ
 \label{tab:features}}
 \end{table*}
 
-Nowadays NVIDIA has the best single chip GPU discrete card with superior performance in some workloads and AMD the best card with two GPU chips. Both makers takes different compromises in the design of theirs GPUs. AMD has more execution units but its memory hierarchy is weaker. This way software bounded by memory bandwidth or with strong ordering inter-dependencies prefers NVIDIA hardware. On the other side, loads capped by pure ALU execution power use to be faster on AMD hardware.
+Nowadays NVIDIA has the best single chip GPU discrete card with
+superior performance in some workloads and AMD the best card with two
+GPU chips. Both makers take different compromises in the design of
+theirs GPUs. AMD has more execution units but its memory hierarchy is
+weaker. This way software bounded by memory bandwidth or with strong
+ordering inter-dependencies prefers NVIDIA hardware. On the other
+side, loads capped by pure ALU execution power use to be faster on AMD
+hardware. % También en el artículo de 2012. Si sigue siendo cierto,
+          % refrasearlo - JJ
 
-Traditionally CPUs and GPUs has been separated. Now the trend is to integrate both into a single chip for cost efficiency reasons. Only top models remain as discrete devices. Some of this are top models from Intel's Core i7 or AMD's Opteron 6300 families. Also best discrete GPUs from NVIDIA and AMD, like consumer GeForce GTX 690 and Radeon HD 7990 and professional line QUADRO K6000 and Radeon FirePro S10000.
 
-Recently, CPU with an integrated GPU have appeared. AMD and Intel have just started selling this kind of combined processor and graphics card. The term Accelerated Processing Unit has been coined for this kind of chips. The architectural names are Llano for AMD and Sandy Bridge for Intel. Many reviews state that AMD's CPU cores are slower than Intel's ones but their GPU is faster. Which combination is better is not an easy question to answer. It must be backed by specific benchmarks, or better, the real application that we want it to run.
+Traditionally CPUs and GPUs have been separated. % Enésimo error
+                                % gramatical que corrijo. Por favor,
+                                % miradlo bien - JJ
+Now % ¿cuando? - JJ
+ the trend is to integrate both into a single chip for cost efficiency
+ reasons. Only top models remain as discrete devices. Some of this are
+ top models from Intel's Core i7 or AMD's Opteron 6300 families. Also
+ best discrete GPUs from NVIDIA and AMD, like consumer GeForce GTX 690
+ and Radeon HD 7990 and professional line QUADRO K6000 and Radeon
+ FirePro S10000. 
 
-Over time the use of GPUs has passed from odd to common in our systems. Actually, several time consuming processes has been parallelized inside our operating systems such as web page rendering. However, the speedup that graphics hardware can bring to us is not free, as each application to be accelerated must be rewritten to take advantage of the GPU.
+Recently, % ¿cuando? - JJ
+CPU with an integrated GPU have appeared. AMD and Intel have just
+started selling this kind of combined processor and graphics card. The
+term Accelerated Processing Unit has been coined for this kind of
+chips. The architectural names are Llano for AMD and Sandy Bridge for
+Intel. Many reviews state that AMD's CPU cores are slower than Intel's
+ones but their GPU is faster. Which combination is better is not an
+easy question to answer. It must be backed by specific benchmarks, or
+better, the real application that we want it to run. % enlaces, aunque
+                                % sea a la wikipedia - JJ
+
+Over time the use of GPUs has passed from odd to common in our
+systems. Actually, several time consuming processes have been
+parallelized inside our operating systems such as web page
+rendering. However, the speedup that graphics hardware can bring to us
+is not free, as each application to be accelerated must be rewritten
+to take advantage of the GPU. 
 
 Figure \ref{fig:gk110a} shows the internals of latest NVIDIA Kepler GK110 architecture. There can be a maximum of 15 SMX units and every one of this has 192 single precision CUDA cores. The six squares on the sides are memory interfaces for a total bus width of 384 bits. It is capable of a maximum bandwidth of 250GB/s connected to GDDR5 memory chips. Figure \ref{fig:gk110b} shows a disclosed SMX unit with its 192 CUDA cores. The maximum theoretical throughput in simple precision is 3950GFLOPS.
 
