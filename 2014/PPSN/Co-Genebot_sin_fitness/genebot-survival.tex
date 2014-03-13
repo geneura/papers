@@ -1,60 +1,29 @@
-\documentclass{sig-alternate}
+\documentclass{llncs}
 \usepackage[latin1]{inputenc}
 \usepackage{graphicx}        % standard LaTeX graphics tool
+\usepackage[dvips]{epsfig}
 \usepackage{subfigure}
 \usepackage{url}
 
 
 \begin{document}
-%
-% --- Author Metadata here ---
-\conferenceinfo{GECCO'14,} {July 12-16, 2014, Vancouver, BC, Canada.}
-    \CopyrightYear{2014}
-    \crdata{TBA}
-    \clubpenalty=10000
-    \widowpenalty = 10000
 
 \title{Fighting to Survive: Evolving RTS Bots without Explicit Evaluation}
 
 %Añado "explicit". Hay evaluación, sólo que no es explícita.
 
-\numberofauthors{2}
- \author{
- \alignauthor
- Bot1\\
-        \affaddr{BotLand Institute of Techonology (BIT)}\\
-        \affaddr{CPU Street num. 1110010}\\
-        \affaddr{BotLand}\\
-        \email{bot1@bit.com}
- \alignauthor
- Bot2\\
- \affaddr{Bots University (BU)}\\
- \affaddr{ALU Street num. 101110}\\
- \affaddr{Metropolis}\\
- \email{bot2@bu.com}
- }
-
-%\numberofauthors{2}
-% \author{
-% \alignauthor
-% J.J. Merelo, A.M. Mora, C. M. Fernandes\\
-%        \affaddr{University of Granada}\\
-%        \affaddr{Department of Computer Architecture and Technology, ETSIIT}\\
-%        \affaddr{18071 - Granada}\\
-%        \email{jmerelo,amorag,cfernandes@geneura.ugr.es}
-% \alignauthor
-% Anna I. Esparcia-Alcázar\\
-% \affaddr{S2 Grupo}\\
-% \email{aesparcia@s2grupo.es}
-% }
-
+%\author{A. FernÃ¡ndez-Ares \and A.M. Mora \and  J.J. Merelo \and \\ P. GarcÃ­a-SÃ¡nchez \and P.A. Castillo}
+%\authorrunning{A. FernÃ¡ndez-Ares. et al.}
+%
+%\institute{Departamento de Arquitectura y Tecnolog\'{\i}a de Computadores.\\
+%Universidad de Granada (Spain)\\
+%\email{antares.es@gmail.com}, \\ \email{\{amorag,jmerelo,pgarcia,pedro\}@geneura.ugr.es}
+%}
 
 \maketitle
 
 \begin{abstract}
-This paper proposes an evolutionary algorithm for evolving game bots that eschews a explicit
-fitness function for a fight between individuals implemented as a
-selection mechanism. Instead of measuring fitness by making the bots
+This paper proposes an evolutionary algorithm for evolving game bots that eschews a explicit fitness function for a fight between individuals implemented as a selection mechanism. Instead of measuring fitness by making the bots
 perform certain tasks or fight against baseline bots, they fight with
 each other and  on the winners  survive, passing  to the next
 generation. Explicit evaluation is thus omitted and substituted by
@@ -69,26 +38,20 @@ specific opponent, which are optimized to fight against it, and so,
 they are specialized bots. In addition, avoiding the evaluation step
 ideally will reduce the algorithm time consumption.
 % Todas estas cosas tienes que probarlas.
-Four different approaches are proposed and compared, namely steady
-state and generational implementations, each of them considering 1 vs
-1 and 1 vs 3 bots combats. They implement different exploration versus
-exploitation tradeoffs in order to decide the best balance between
-these factors.  % ¿Por qué consideras todas estas cosas? ¿Por qué es
-                % importante la exploración frente a la explotación en
-                % este tipo de trabajos?
+Three different approaches are proposed and compared, namely steady-state and generational implementations, and a pool-based approach in which a combat arena with potential individuals is considered. Each of them applies 1 vs
+1 bots combats. 
+*** RESULTS show that...***
+
+%They implement different exploration versus
+%exploitation tradeoffs in order to decide the best balance between
+%these factors.  
+% ¿Por qué consideras todas estas cosas? ¿Por qué es
+% importante la exploración frente a la explotación en
+% este tipo de trabajos?
+% Antonio - porque pienso que es importante en todos los algoritmos de optimización decidir el justo equilibrio entre exploración y explotación. Pero no queda muy adecuado aquí, asíq ue lo quito.
 \end{abstract}
 
-% A category with the (minimum) three required fields
-\category{I.2.1}{Computing Methodologies}{ARTIFICIAL INTELLIGENCE}[Applications and Expert Systems]\\
-%A category including the fourth, optional field follows...
-\category{G.1.6}{Mathematics of Computing}{Numerical Analysis}[Optimization]
-
-%D.2.8 [Software Engineering]: Metrics—complexity mea-
-%sures, performance measures
-\terms{Algorithms}
-
-
-\keywords{Real-Time Strategy Games, Evolutionary Algorithms, Bots, Fighting-based Evolution}
+%\keywords{Real-Time Strategy Games, Evolutionary Algorithms, Bots, Fighting-based Evolution}
 
 
 %
@@ -97,13 +60,11 @@ these factors.  % ¿Por qué consideras todas estas cosas? ¿Por qué es
 \section{Introduction}
 \label{sec:intro}
 %
-Evolutionary Algorithms (EAs) hav been %jolines, have been a estas
-                                %alturas. ¡El inglés, caray! - JJ
- widely applied in a number of problems, including videogames
- \cite{Ponsen_EvLearn_RTS,co-evol-rts2006,Su-EAs_StrategySel09,cooperativebots_CIG2010,Cook_Platforming2012}. This
- metaheuristic performs very well in most of cases, but the presence
+Evolutionary Algorithms (EAs) have been widely applied in a number of problems, including videogames \cite{Ponsen_EvLearn_RTS,co-evol-rts2006,Su-EAs_StrategySel09,cooperativebots_CIG2010,Cook_Platforming2012}. This metaheuristic performs very well in most of cases, but the presence
  of the so-called $noise$ in the evaluation process can make them do
- not work properly. % citas sobre el tema, incluyendo los tuyso
+ not work properly \cite{Genebot_JCST}. 
+
+% citas sobre el tema, incluyendo los tuyso
                     % propios - JJ
 This problem is quite common in the videogames scope, due to the
 pseudo-stochasticity present in some factors, such as the game rules
@@ -372,7 +333,7 @@ The consideration of a more flexible approach for defining the behavioural engin
 % The following two commands are all you need in the
 % initial runs of your .tex file to
 % produce the bibliography for the citations in your paper.
-\bibliographystyle{abbrv}
+\bibliographystyle{splncs}
 \bibliography{genebot} 
 
 \end{document}
