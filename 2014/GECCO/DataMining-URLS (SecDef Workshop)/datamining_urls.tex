@@ -97,10 +97,66 @@ data mining/clasificación aplicado a problemas de seguridad
 \label{sec:problemDescription}
 
 
-problema de las URLs, reglas a aplicar, datos de los que disponemos (descripción de los mismos y análisis preliminar)
+***problema de las URLs, reglas a aplicar, datos de los que disponemos (descripción de los mismos y análisis preliminar)***
+
+\begin{table*}[htpb]
+\centering
+ \caption{\label{tabdata} Independent Variables corresponding to an URL session (a connection to an URL for some time). ***The URLs are parsed extracting the XXXX Whatever XXXX, in order to avoid an infinite number of values (potentially there could be infinite different urls, considering that some of them can contain PHP variables and values, for instance.***)}
+{\tiny
+\begin{tabular}{llll}
+\hline\noalign{\smallskip}
+Variable name & Description & Type & Rank/Number of Values (if categorical)\\
+\noalign{\smallskip}\hline\noalign{\smallskip}
+\texttt{http\_reply\_code} & *** description *** & Categorical & 20 values\\
+\texttt{http\_method} & *** description *** & Categorical & 6 values\\
+\texttt{duration\_milliseconds} & Session duration & Numerical & integer in [***MIN, MAX***]\\
+\texttt{content\_type} & *** description *** & Categorical & ***11 values (main content), 85 values (whole content)***\\
+\texttt{server\_or\_cache\_address} & IP address & Categorical & ***XX values***\\
+\texttt{time} & connection hour (in the day) & Date & 00:00:00 to 23:59:59\\
+\texttt{squid\_hierarchy} & *** description *** & Categorical & 3 values\\
+\texttt{bytes} & *** transferred number of bytes in the session *** & Categorical & 3 values\\
+\texttt{client\_address} & IP address & Categorical & ***XX values***\\
+\texttt{URL} & parsed URL (***TLD***) & Categorical & ***XXX values***\\
+%\noalign{\smallskip} \hline\noalign{\smallskip}
+%Non-financial Variables (used in GP) & Description & Type\\
+%\noalign{\smallskip}\hline\noalign{\smallskip}
+%$x_0$, $x_1$, $x_2$ & Size & Small/Medium/Large& Categorical\\
+\noalign{\smallskip}\hline
+\end{tabular}
+}
+\end{table*}
+
+*** The dependent variable or class is a label which inherently assigns an action/decision to every connection (URL session). This can be: \textit{ALLOW} if the access is permitted according to the corporate security policies, or can be \textit{DENY}, if the connection is not permitted. ***\\
+
+********************************************
+\\
+
+Due to the nature of the data (URL accesses), the dataset is highly unbalanced \cite{imbalanced_data_05}. Thus, there are XXXX pattern belonging to class ALLOW (positive class) and YYYYYY of class DENY (negative class), so just a X\% of the samples belongs to ALLOW class. This is a very important problem of the dataset, since a classifier trained considering these proportions will aim to classify all the samples as DENY, getting a theoretically quite good classification accuracy of YY\%.
+
+In order to deal with this problem there exist several methods in the literature, but all of them are mainly grouped in three techniques \cite{imbalance_techniques_02}:
+\begin{itemize}
+\item \textit{Undersampling the over-sized classes}: i.e. reduce the considered number of patterns for the classes with the majority.
+\item \textit{Oversampling the small classes}: i.e. introduce additional (normally synthetic) patterns in the classes with the minority.
+\item \textit{Modifying the cost associated to misclassifying the positive and the negative class} to compensate for the imbalanced ratio of the two classes. For example, if the imbalance ratio is 1:10 in favour of the negative class, the penalty of misclassifying a positive example should be 10 times greater.
+\end{itemize}
+
+The first option has been applied in some works, following a random undersampling approach \cite{random_undersampling_08}, but the problem is the loss of valuable information. 
+
+On the other hand, the second option has been so far the most exploited, following different approaches, such as SMOTE (Synthetic Minority Oversampling Technique) \cite{smote_02}, a method proposed by Chawla et al. for creating `artificial' samples for the minority class, in order to balance the amount of them with respect. However this technique is based in numerical computations, which consider different distance measures, in order to generate useful patterns  (i.e. realistic or similar to the existing ones).
+
+The third option implies using a method in which a cost can be associated to the classifier accuracy at every epoch. This was done for instance by Alfaro-Cid et al. in \cite{cost_adjustment_07}, where they used a Genetic Programming approach in which the fitness function was modified in order to consider a penalty when the classifier makes a false negative (an element from the minority class was classified as belonging to the majority class).
+
+However almost all the approaches deal with numerical (real, integer) data. In our case, the dataset contains a majority of categorical/nominal data, so we have performed different approaches for data balancing:
+\begin{itemize}
+\item Undersampling: we will remove random samples of the majority class. ***REF?***
+\item Oversampling: we will duplicate random samples of the minority class, in order to get a closer number of patterns in both classes. This has be done due to the impossibility of creating synthetic data when dealing with categorical values (there is not a proper distance measure between two values in a category). ***REF A ALGO SIMILAR HECHO***
+\item We have not used a cost-based method... *** MIRAR SI ES VERDAD O JUSTIFICARLO MEJOR ***
+\end{itemize}
+
+These approaches will be evaluated in the experiments section.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   SURVIVAL BOT  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   METHODOLOGY  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Methodology}
 \label{sec:methodology}
