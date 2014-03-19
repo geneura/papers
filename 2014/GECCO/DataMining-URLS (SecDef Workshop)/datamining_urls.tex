@@ -1,0 +1,211 @@
+\documentclass{sig-alternate}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}        % standard LaTeX graphics tool
+\usepackage{subfigure}
+\usepackage{url}
+
+
+\begin{document}
+%
+% --- Author Metadata here ---
+\conferenceinfo{GECCO'14,} {July 12-16, 2014, Vancouver, BC, Canada.}
+    \CopyrightYear{2014}
+    \crdata{TBA}
+    \clubpenalty=10000
+    \widowpenalty = 10000
+
+\title{Data Mining Applied to Secure URL Accesses in the Company}
+
+\numberofauthors{2}
+ \author{
+ \alignauthor
+ Author1\\
+        \affaddr{Maracena Institute of Technology (MIT)}\\
+        \affaddr{Anonymous Street num. X}\\
+        \affaddr{AnonymousLand}\\
+        \email{aut1@mit.com}
+ \alignauthor
+ Author2\\
+ \affaddr{Authors University (AU)}\\
+ \affaddr{Authors Street num. AAA}\\
+ \affaddr{Metropolis}\\
+ \email{aut2@au.com}
+ }
+
+%\numberofauthors{2}
+% \author{
+% \alignauthor
+% A.M. Mora, P. De las Cuevas, J.J. Merelo\\
+%        \affaddr{University of Granada}\\
+%        \affaddr{Department of Computer Architecture and Technology, ETSIIT/CITIC}\\
+%        \affaddr{Granada, Spain}\\
+%        \email{amorag,paloma,jmerelo@geneura.ugr.es}
+% \alignauthor
+% S. Zamarripa, Anna I. Esparcia-Alcázar\\
+%        \affaddr{S2 Grupo}\\
+%        \affaddr{Valencia, Spain}\\
+%        \email{szamarripa,aesparcia@s2grupo.es}
+% }
+
+
+\maketitle
+
+\begin{abstract}
+This paper presents an analysis of a dataset based in URL requests performed by the employees of a company. The aim is to get a classification according to their features which can assign a new request a decision, based in the enterprise security policies...
+\end{abstract}
+
+% *** Esto hay que buscarlo y fijarlo para este artículo ***
+% A category with the (minimum) three required fields
+%\category{I.2.1}{Computing Methodologies}{ARTIFICIAL INTELLIGENCE}[Applications and Expert Systems]\\
+%A category including the fourth, optional field follows...
+%\category{G.1.6}{Mathematics of Computing}{Numerical Analysis}[Optimization]
+%
+%D.2.8 [Software Engineering]: Metrics—complexity mea-
+%sures, performance measures
+%\terms{Algorithms}
+
+
+\keywords{Data Mining, Security Policies, URL request, Classification}
+
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   INTRODUCTION   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Introduction}
+\label{sec:intro}
+
+seguridad en la empresa, políticas y reglas, data mining en seguridad (breve)
+
+%The paper is structured as follows. Next section describes the problem enclosed in the Planet Wars game.
+%Section \ref{sec:stateofart} reviews related work regarding the scope (videogames) and the implementation (EAs with no fitness computation or different selection mechanisms).
+%Section \ref{sec:survival_bots} presents the proposed method, termed {Survival Bot}, and its different implementations. 
+%The experiments and results are described and discussed in Section \ref{sec:experiments}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{State of the Art}
+\label{sec:stateofart}
+%
+
+data mining/clasificación aplicado a problemas de seguridad
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM DESCRIPTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\section{Problem and Data Description} 
+\label{sec:problemDescription}
+
+
+***problema de las URLs, reglas a aplicar, datos de los que disponemos (descripción de los mismos y análisis preliminar)***
+
+\begin{table*}[htpb]
+\centering
+ \caption{\label{tabdata} Independent Variables corresponding to an URL session (a connection to an URL for some time). ***The URLs are parsed extracting the XXXX Whatever XXXX, in order to avoid an infinite number of values (potentially there could be infinite different urls, considering that some of them can contain PHP variables and values, for instance.***)}
+{\tiny
+\begin{tabular}{llll}
+\hline\noalign{\smallskip}
+Variable name & Description & Type & Rank/Number of Values (if categorical)\\
+\noalign{\smallskip}\hline\noalign{\smallskip}
+\texttt{http\_reply\_code} & *** description *** & Categorical & 20 values\\
+\texttt{http\_method} & *** description *** & Categorical & 6 values\\
+\texttt{duration\_milliseconds} & Session duration & Numerical & integer in [***MIN, MAX***]\\
+\texttt{content\_type} & *** description *** & Categorical & ***11 values (main content), 85 values (whole content)***\\
+\texttt{server\_or\_cache\_address} & IP address & Categorical & ***XX values***\\
+\texttt{time} & connection hour (in the day) & Date & 00:00:00 to 23:59:59\\
+\texttt{squid\_hierarchy} & *** description *** & Categorical & 3 values\\
+\texttt{bytes} & *** transferred number of bytes in the session *** & Categorical & 3 values\\
+\texttt{client\_address} & IP address & Categorical & ***XX values***\\
+\texttt{URL} & parsed URL (***TLD***) & Categorical & ***XXX values***\\
+%\noalign{\smallskip} \hline\noalign{\smallskip}
+%Non-financial Variables (used in GP) & Description & Type\\
+%\noalign{\smallskip}\hline\noalign{\smallskip}
+%$x_0$, $x_1$, $x_2$ & Size & Small/Medium/Large& Categorical\\
+\noalign{\smallskip}\hline
+\end{tabular}
+}
+\end{table*}
+
+*** The dependent variable or class is a label which inherently assigns an action/decision to every connection (URL session). This can be: \textit{ALLOW} if the access is permitted according to the corporate security policies, or can be \textit{DENY}, if the connection is not permitted. ***\\
+
+********************************************
+\\
+
+Due to the nature of the data (URL accesses), the dataset is highly unbalanced \cite{imbalanced_data_05}. Thus, there are XXXX pattern belonging to class ALLOW (positive class) and YYYYYY of class DENY (negative class), so just a X\% of the samples belongs to ALLOW class. This is a very important problem of the dataset, since a classifier trained considering these proportions will aim to classify all the samples as DENY, getting a theoretically quite good classification accuracy of YY\%.
+
+In order to deal with this problem there exist several methods in the literature, but all of them are mainly grouped in three techniques \cite{imbalance_techniques_02}:
+\begin{itemize}
+\item \textit{Undersampling the over-sized classes}: i.e. reduce the considered number of patterns for the classes with the majority.
+\item \textit{Oversampling the small classes}: i.e. introduce additional (normally synthetic) patterns in the classes with the minority.
+\item \textit{Modifying the cost associated to misclassifying the positive and the negative class} to compensate for the imbalanced ratio of the two classes. For example, if the imbalance ratio is 1:10 in favour of the negative class, the penalty of misclassifying a positive example should be 10 times greater.
+\end{itemize}
+
+The first option has been applied in some works, following a random undersampling approach \cite{random_undersampling_08}, but the problem is the loss of valuable information. 
+
+On the other hand, the second option has been so far the most exploited, following different approaches, such as SMOTE (Synthetic Minority Oversampling Technique) \cite{smote_02}, a method proposed by Chawla et al. for creating `artificial' samples for the minority class, in order to balance the amount of them with respect. However this technique is based in numerical computations, which consider different distance measures, in order to generate useful patterns  (i.e. realistic or similar to the existing ones).
+
+The third option implies using a method in which a cost can be associated to the classifier accuracy at every epoch. This was done for instance by Alfaro-Cid et al. in \cite{cost_adjustment_07}, where they used a Genetic Programming approach in which the fitness function was modified in order to consider a penalty when the classifier makes a false negative (an element from the minority class was classified as belonging to the majority class).
+
+However almost all the approaches deal with numerical (real, integer) data. In our case, the dataset contains a majority of categorical/nominal data, so we have performed different approaches for data balancing:
+\begin{itemize}
+\item Undersampling: we will remove random samples of the majority class. ***REF?***
+\item Oversampling: we will duplicate random samples of the minority class, in order to get a closer number of patterns in both classes. This has be done due to the impossibility of creating synthetic data when dealing with categorical values (there is not a proper distance measure between two values in a category). ***REF A ALGO SIMILAR HECHO***
+\item We have not used a cost-based method... *** MIRAR SI ES VERDAD O JUSTIFICARLO MEJOR ***
+\end{itemize}
+
+These approaches will be evaluated in the experiments section.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   METHODOLOGY  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Methodology}
+\label{sec:methodology}
+
+descripción de la solución/metodología a aplicar. 
+
+% ------------------------------------------------------------------
+%
+\subsection{Security rules parsing}
+\label{subsec:ruleparsing}
+
+
+% ------------------------------------------------------------------
+%
+\subsection{URL data parsing}
+\label{subsec:urlparsing}
+
+
+% ------------------------------------------------------------------
+%
+\subsection{Data Mining Methods}
+\label{subsec:methods}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   RESULTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Obtained Results}
+\label{sec:results}
+
+describir y analizar lo que se ha obtenido en la clasificación (acierto, tasa de error, etc)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Conclusions and Future Work}
+\label{sec:conclusions}
+
+qué se puede concluir del trabajo y qué haremos a continuación
+
+
+%ACKNOWLEDGMENTS are optional
+\section{Acknowledgments}
+%This paper has been funded in part by European and National projects FP7-318508 (MUSES) and TIN2011-28627-C04-02 (ANYSELF) respectively, project P08-TIC-03903 (EV\-ORQ) awarded by the Andalusian Regional Government, and project 83 (CANUBE) awarded by the CEI-BioTIC UGR.
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+\bibliographystyle{abbrv}
+\bibliography{datamining_urls} 
+
+\end{document}
