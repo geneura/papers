@@ -39,16 +39,24 @@ Las herramientas de visualización de software a nivel de componente, pueden ser
 \label{sec:intro}
 La visualización de software es un amplio área de investigación que cubre las diferentes técnicas de asistencia empleadas en las actividades de ingeniería del software, tales como, especificación, diseño, programación, test, mantenimiento, ingeniería inversa o re-ingeniería. Los métodos empleados, representan gráficamente (en 2D o 3D) de forma estática o dinámica (con animaciones) información relacionada con la estructura, tamaño, historia o comportamiento de un sistema software. El objetivo es facilitar la comprensión de diferentes aspectos del sistema. Esta visualización también permite analizar complejos sistemas y detectar anomalías o defectos de calidad en el software, lo que facilita su evolución. Por otra parte, a nivel educativo, cabe destacar su especial utilidad para el aprendizaje de los conceptos de programación y algoritmos básicos.
 
-Para representar la estructura del software (generalmente orientado a objetos), normalmente, el enfoque consiste en visualizar las dependencias existentes entre las diferentes clases. Estas dependencias puede ser modeladas como un grafo por lo que la visualización en forma de grafo resulta adecuada. El software a un nivel más básico, es decir, a nivel de método, puede ser también representado de esta forma, mediante un diagrama de flujo. Este diagrama está basado en nodos y enlaces.
+Para representar la estructura del software (generalmente orientado a objetos), normalmente, el enfoque consiste en visualizar las dependencias existentes entre las diferentes clases. Estas dependencias puede ser modeladas como un grafo por lo que la visualización en forma de grafo resulta adecuada. El software a un nivel más básico, es decir, a nivel de método, puede ser también representado de esta forma, mediante un diagrama de flujo. Este diagrama está compuesto por nodos y enlaces.
 
 Sin embargo, el código de un método cumple además con las reglas sintácticas del lenguaje, por lo que también puede ser representado mediante su árbol sintáctico abstracto. En este árbol los nodos representan los diferentes elementos del lenguaje utilizados y las aristas su relación de inclusión (por ejemplo, el nodo IF tiene como nodos hijos la parte THEN y la parte ELSE, cada una con sus propios nodos hijos). A diferencia del diagrama de flujo, la visualización de un árbol es mucho más flexible. La jerarquía de un árbol puede ser visualizada mediante un mapa 2D sin necesidad de utilizar flechas \cite{softwarevisualization}.
 
-(Meter figura de árbol)
 
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.5]{images/arbol-mapa.pdf}
+\caption{La imagen está compuesta por los gráficos generados para los elementos a, b, c y d. Los nodos e y f comparten representación con el nodo c. La disposición de unas imágenes dentro de otras siguen unas reglas de composición determinadas.
+\label{fig:arbolmapa}}
+\end{center}
+\end{figure}
 
-La representación en forma de mapa, permite visualizar los diferentes nodos del lenguaje empleados con un nivel de precisión arbitrario. Es decir, si por ejemplo, no queremos visualizar detalles de una expresión, podemos visualizarla como un determinado objeto gráfico del mapa sin mostrar en su interior los elementos que la componen. El establecimiento de reglas adecuadas para la representación de los diferentes nodos del lenguaje y su composición interna (nodos hijos) nos permite proyectar de manera flexible pero completamente objetiva, el código del programa sobre una imagen representativa. Esta flexibilidad creativa que ofrecen las reglas de composición, habilitan la cosificación de metáforas conceptuales en imágenes que pueden ser generadas automáticamente según qué aspecto del código se quiera reflejar con ellas. De esta forma es posible visualizar un mismo programa, usando diferentes metáforas, atendiendo al contexto de utilidad o asistencia deseada, como puede ser mantenimiento, evolución, tests, calidad, etc.
+La representación en forma de mapa, permite visualizar los diferentes nodos del lenguaje empleados con un nivel de precisión arbitrario. Es decir, si por ejemplo, no queremos visualizar detalles de una expresión, podemos visualizarla como un determinado objeto gráfico del mapa sin mostrar en su interior los elementos que la componen (ver figura \ref{fig:arbolmapa}).
 
-En el caso del aprendizaje, interesa que la metáfora utilizada resulte atractiva para el estudiante. Para ello, este trabajo propone utilizar el escenario de un videojuego de plataformas como metáfora del árbol sintáctico abstracto del programa. Esta visualización encaja bien dentro de las técnicas de gamificación en educación como las empleadas en \cite{kumar2012gamification}, donde se gamifica todo el contexto de enseñanza de una asignatura de programación. Por otra parte, resulta ser también una visualización dinámica, puesto que existe una analogía dinámica entre ambos contextos semánticos, es decir, el protagonista del videojuego corre por el mapa y el ordenador ejecuta (corre) el programa. Esta metáfora también permite la creación de juegos serios donde la mecánica en realidad sería muy distinta a la del videojuego original, pues se trataría de diseñar un mapa (con posibles restricciones) que al ser recorrido resuelva el problema dado.
+El establecimiento de reglas adecuadas para la representación de los diferentes nodos del lenguaje y su composición interna (nodos hijos) nos permite proyectar de manera flexible pero completamente objetiva, el código del programa sobre una imagen representativa. Esta flexibilidad creativa que ofrecen las reglas de composición, habilitan la cosificación o materialización de las metáforas conceptuales en imágenes que pueden ser generadas automáticamente según qué aspecto del código se quiera reflejar con ellas. De esta forma es posible visualizar un mismo programa, usando diferentes metáforas, atendiendo al contexto de utilidad o asistencia deseada, como puede ser mantenimiento, evolución, tests, calidad, etc.
+
+En el caso del aprendizaje, interesa que la metáfora utilizada resulte atractiva para el estudiante. Para ello, este trabajo propone utilizar el escenario de un videojuego de plataformas como metáfora del árbol sintáctico abstracto del programa. Esta visualización encaja bien dentro de las técnicas de gamificación en educación como las empleadas en \cite{kumar2012gamification}, donde se gamifica todo el contexto de enseñanza de una asignatura de programación. Por otra parte, resulta ser también una visualización dinámica, puesto que la metáfora empleada es animada y existe una asociación directa entre ambos contextos semánticos, es decir, el protagonista del videojuego corre por el mapa y el ordenador ejecuta (corre) el programa. Esta metáfora también permite la creación de juegos serios donde la mecánica en realidad sería muy distinta a la del videojuego original, pues se trataría de diseñar un mapa (con posibles restricciones) que al ser recorrido resuelva el problema dado.
 
 Para la implementación de una herramienta de visualización dinámica de estas características se ha utilizado el lenguaje Java y el entorno Eclipse. El resto de este trabajo está organizado de la siguiente forma: en la sección \ref{sec:background} se explora el contexto taxonómico, se discute el concepto de legibilidad del código y su relación con algunas herramientas existentes para el aprendizaje de programación orientada a objetos, se describen las técnicas de gamificación y la importancia de su papel en la metáfora conceptual propuesta. En la sección \ref{sec:proposal} se describe la herramienta presentada concretando sus características. En la sección \ref{sec:details} se detallan los principales aspectos de la implementación. Y por último en la sección \ref{sec:conclusions} se establecen las conclusiones obtenidas y la continuación de este trabajo junto con los agradecimientos. 
 
@@ -57,7 +65,22 @@ Para la implementación de una herramienta de visualización dinámica de estas 
 %
 \section{Contexto}
 \label{sec:background}
+%----------------------------------------------------------------------------
+\subsection{Metáfora conceptual}
 
+La idea de utilizar metáforas para la representación y comprensión de conceptos abstractos es fundamental durante el aprendizaje. El término ``metáfora" que se usa aquí va más allá del sentido lingüístico habitual utilizado como recurso literario. En realidad se refiere al modelo metafórico por el cual se estructura el conocimiento de un dominio (objetivo) mediante la asociación al mismo de conceptos y relaciones de otro dominio (fuente) existente con el que ya se está familiarizado. En \cite{travers1996programming} se explora el concepto de metáfora en el contexto computacional.
+
+En matemáticas se utilizan metáforas a menudo para enseñar todo tipo de conceptos. Algunos símbolos matemáticos, como por ejemplo, los paréntesis, pueden ser interpretados como metáforas, en el sentido de que encierran explícitamente un determinado contenido. Podríamos decir que su uso como símbolo posee un significado visual añadido. Existe sin embargo un inconveniente cuando se hace un uso intensivo de estos símbolos ya que pierden su capacidad explicativa, como se observa a continuación en el siguiente programa escrito en Lisp:
+
+\begin{verbatim}
+(defun factorial (n) (if (<= n 1) 1 (* n (factorial (- n 1)))))
+\end{verbatim}
+
+Otro ejemplo es el uso de flechas para indicar transiciones de un punto a otro. Al igual que con los paréntesis, al aumentar el número de flechas, aumenta la dificultad de comprensión del diagrama. Además, al ser utilizadas frecuentemente en diferentes contextos y con diferente significado, las flechas adquieren un cierto nivel de abstracción, que devalúa todavía más su capacidad aclaratoria. 
+
+Con estos ejemplos se intenta ilustrar la importancia y necesidad de encontrar representaciones visuales concretas que faciliten la comprensión, documentación y el aprendizaje de forma específica según el tipo de conceptos que se utilizan en programación y que además puedan ser generadas automáticamente a partir del código. 
+
+Para este propósito, es necesario conseguir un compromiso adecuado entre la abstracción asociada a los elementos visuales y su analogía semántica con el elemento representado. Además resulta también útil hacer que estas representaciones sean atractivas para el estudiante durante el aprendizaje. 
 %----------------------------------------------------------------------------
 \subsection{Contexto taxonómico del uso de gráficos en programación}
 \label{subsec:taxonomy}
@@ -75,16 +98,18 @@ En concreto se clasifican según se visualiza el código, los datos o el algorit
 \end{center}
 \end{figure}
 
-La justificación se fundamenta en que el sistema visual humano está optimizado para procesar información multidimensional mientras que la programación convencional, sin embargo, es representada como un texto unidimensional. En este sentido, la capacidad del código de ser entendido por un humano, es decir, su legibilidad, es discutida a continuación y evaluada a través de algunas herramientas de ejemplo. En tales ejemplos se pone de manifiesto la necesidad de exploración y explotación de nuevas metáforas conceptuales que, aplicadas a un contexto puramente computacional, sean adecuadamente flexibles para expresar, resumir, documentar y comprender mejor el código. El videojuego de plataformas, como metáfora de programa, resulta ser especialmente adecuado para la descripción de los lenguajes Turing-completos, puesto que es universalmente conocido y ha surgido en el contexto de la programación.
+La justificación se fundamenta en que el sistema visual humano está optimizado para procesar información multidimensional mientras que la programación convencional, sin embargo, es representada como un texto unidimensional. En este sentido, la capacidad del código de ser entendido por un humano, es decir, su legibilidad, es discutida a continuación y evaluada a través de algunas herramientas de ejemplo. En tales ejemplos se pone de manifiesto la necesidad de exploración y explotación de nuevas metáforas conceptuales que, aplicadas a un contexto puramente computacional, sean adecuadamente flexibles para expresar, resumir, documentar y comprender mejor el código. 
+
+El videojuego de plataformas, como metáfora animada de programa, resulta especialmente adecuado para los lenguajes Turing-completos (como veremos posteriormente), ha surgido en el contexto de la programación y el estudiante está familiarizado con éste.
 
 %----------------------------------------------------------------------------
--\subsection{Legibilidad}
+\subsection{Legibilidad}
 \label{subsec:readability}
 A menudo se hace analogía entre el texto de un programa y el texto narrativo. La legibilidad en este sentido, como concepto, es decir, la capacidad de que algo sea leído por un humano, es una idea general muy amplia. El término ``leído'' implica todas las fases del procesamiento del lenguaje a fin de que el significado sea entendido por el lector. Con esta definición en mente vemos claramente diferencias sustanciales entre la legibilidad de un texto narrativo y el código de un programa. 
 
 La legibilidad del texto narrativo depende de la historia que se cuenta y de cómo el lector puede representar, mediante su imaginación, el significado natural de esta historia conforme a su experiencia. Si la historia es confusa o carece de sentido, el texto es poco legible. Sin embargo, es posible que la historia tenga pleno sentido y sea clara y que el texto siga siendo poco legible, por ejemplo, imaginemos un niño leyendo un artículo científico. En este caso la experiencia del lector es el factor predominante. 
 
-Si aplicamos esta misma idea al texto de un programa, enseguida nos damos cuenta de que la ``historia'' que expresa el programa poco tiene que ver con la experiencia del lector. Su significado existe en un contexto computacional, matemático-lógico completamente distinto, generalmente abstracto, y por tanto contrapuesto, al mundo real del lector. Para que el texto del programa sea legible por tanto sólo hay dos opciones: 
+Si aplicamos esta misma idea al texto de un programa, resulta obvio que la ``historia'' que expresa el programa poco tiene que ver con la experiencia del lector. Su significado existe en un contexto computacional, matemático-lógico completamente distinto, generalmente abstracto, y por tanto contrapuesto, al mundo real del lector. Para que el texto del programa sea legible por tanto sólo hay dos opciones: 
 
 \begin{itemize}
 \item o bien forzamos el contexto semántico del programa para que se adecue a la experiencia natural del lector, 
@@ -135,14 +160,13 @@ Algunas herramientas que utilizan este enfoque son:
 \subsubsection{La experiencia del lector.}
 \label{subsec:reader}
 
-El segundo caso, por otra parte, tiene un alcance mucho más amplio y por tanto, más difícil de conseguir. Es necesario trabajar multitud de conceptos como los algebraicos, lógicos y matemáticos desde una edad temprana en el colegio. Además, la naturaleza abstracta de estos conceptos dificulta su propia representación visual. En este sentido, algunos conceptos son más susceptibles que otros de ser visualizados, como por ejemplo, los conjuntos y sus operaciones, las funciones matemáticas, o los vectores, son más fáciles de visualizar que otros como la probabilidad, las derivadas o las diferentes partículas subatómicas. Esta visualización es importante durante el aprendizaje.
+El segundo caso, por otra parte, tiene un alcance mucho más amplio y por tanto, más difícil de conseguir. Es necesario trabajar multitud de conceptos como los algebraicos, lógicos y matemáticos desde edades tempranas. Además, la naturaleza abstracta de estos conceptos dificulta su propia representación visual. En este sentido, algunos conceptos son más susceptibles que otros de ser visualizados, como por ejemplo, los conjuntos y sus operaciones, las funciones matemáticas, o los vectores, son más fáciles de visualizar que otros como la probabilidad, las derivadas o las diferentes partículas subatómicas. Esta visualización es importante durante el aprendizaje.
 
-Como vemos, el concepto general de legibilidad en el ámbito de la programación no está claro. El motivo principal es claramente la confusión de no tener en cuenta que el verdadero lector de un programa no es una persona, sino una máquina. 
+Como vemos, el concepto general de legibilidad en el ámbito de la programación no está claro. El motivo principal es claramente la confusión de no tener en cuenta que el verdadero lector efectivo de un programa no es una persona, sino una máquina. 
 
-Desde este enfoque más amplio, es posible arrojar más luz sobre la comprensión de los procesos subyacentes en el aprendizaje de la programación. De aquí la importancia de la documentación de código \cite{tenny1988program}, a menudo descuidada. Es necesario abordar una automatización de generación de documentación legible entendiendo esta documentación, no sólo como un contenido añadido al programa, sino más bien como una característica intrínseca durante la generación del programa \cite{baecker1988enhancing}. En este paradigma el programador escribe y tanto el humano como la máquina pueden leer. Puesto que la máquina y el ser humano leen de forma diferente es necesario proveer al programador de diferentes herramientas para generar paralelamente al código, distintas representaciones semánticamente representativas. Estas herramientas son especialmente importantes durante el aprendizaje.
+Desde este enfoque más amplio, es posible arrojar más luz sobre la comprensión de los procesos subyacentes en el aprendizaje de la programación. De aquí la importancia de la documentación del código \cite{tenny1988program}, a menudo descuidada. Es necesario abordar una automatización de generación de documentación legible entendiendo esta documentación, no sólo como un contenido añadido al programa, sino más bien como una característica intrínseca durante la generación y depuración del programa \cite{baecker1988enhancing}. En este paradigma el programador escribe y tanto el humano como la máquina pueden leer. Puesto que la máquina y el ser humano leen de forma diferente es necesario proveer al programador de diferentes herramientas para generar paralelamente al código, distintas representaciones semánticamente representativas para otras personas. Estas herramientas son especialmente importantes durante el aprendizaje.
 
-En este trabajo se propone una representación metafórica para visualizar el flujo de un programa de forma dinámica. La semántica utilizada para esta metáfora toma prestada la experiencia de la persona al jugar a videojuegos para hacer más intuitivo y atractivo el proceso de aprendizaje en el uso de las estructuras de control básicas de un programa escrito en un lenguaje imperativo. La representación del código en forma de juego está motivada por la aplicación de técnicas de gamificación en el contexto educativo.
-
+En este trabajo se propone una representación metafórica para visualizar el flujo de un programa de forma dinámica. La semántica utilizada para esta metáfora toma prestada la experiencia de la persona al jugar a videojuegos para hacer más intuitivo y atractivo el proceso de aprendizaje en el uso de las estructuras de control básicas de un programa escrito en un lenguaje procedural. La representación del código en forma de videojuego está motivada por la aplicación de técnicas de gamificación en el contexto educativo. Pero más allá de un uso atractivo, esta representación puede asistir también en el diseño de programas concurrentes. Pues al ser una metáfora basada en agente \cite{travers1996programming}, los diferentes hilos de ejecución pueden ser representados por diferentes personajes del videojuego recorriendo un mismo escenario.
 
 %----------------------------------------------------------------------------
 \subsection{Gamificación}
@@ -157,9 +181,9 @@ La gamificación consiste en el uso de mecánicas de juego o pensamiento de jueg
 
 El campo de la educación presenta un gran potencial de crecimiento para la gamificación \cite{lee2011gamification}. Existen multitud de ejemplos de uso de gamificación para el aprendizaje. Quizá el más llamativo es la escuela neoyorquina Quest to Learn \cite{salen2011quest}, donde todo el proceso de aprendizaje está dirigido al juego. 
 
-Un ejemplo concreto de gamificación aplicado al aprendizaje de programación es Code Academy \cite{codecademy}. Esta plataforma online interactiva ofrece clases gratuitas de programación con diferentes lenguajes. La técnica de gamificación usada en este contexto es la de recompensar y motivar la competitividad de los estudiantes, es decir las técnicas A) y B). 
+Un ejemplo concreto de gamificación aplicado al aprendizaje de programación es Codecademy \cite{codecademy}. Esta plataforma online interactiva ofrece clases gratuitas de programación con diferentes lenguajes. La técnica de gamificación usada en este contexto es la de recompensar y motivar la competitividad de los estudiantes, es decir las técnicas A) y B). 
 
-En relación a la tercera técnica enumerada, entre muchos ejemplos, podemos destacar ParticleQuest. ParticleQuest trata de enseñar a los estudiantes de física las partículas subatómicas. La metáfora consiste en identificar las partículas subatómicas como personajes enemigos de un videojuego tipo RPG (Role-Playing Game). Las diferentes características de cada partícula identifican las habilidades y morfología de los diferentes personajes. 
+En relación a la tercera técnica enumerada, entre los ejemplos existentes, podemos destacar ParticleQuest. ParticleQuest trata de enseñar a los estudiantes de física las partículas subatómicas. La metáfora consiste en identificar las partículas subatómicas como personajes enemigos de un videojuego tipo RPG (Role-Playing Game). Las diferentes características de cada partícula identifican las habilidades y morfología de los diferentes personajes. 
 
 \begin{figure}[ht]
 \begin{center}
@@ -169,24 +193,9 @@ En relación a la tercera técnica enumerada, entre muchos ejemplos, podemos des
 \end{center}
 \end{figure}
 
-La herramienta que se presenta en este trabajo se encuadra dentro de este último tipo de técnicas. Pues al visualizar el texto correspondiente al código del programa como un escenario de un videojugo, resulta familiar y divertido al usuario, y se facilita así su comprensión e interpretación.
+La herramienta que se presenta en este trabajo se encuadra dentro de este último tipo de técnicas. Al visualizar el texto correspondiente al código del programa como un escenario de un videojugo, resulta familiar y divertido al usuario, y se facilita así su comprensión e interpretación.
 
-%----------------------------------------------------------------------------
-\subsection{Metáfora conceptual}
 
-La idea de utilizar metáforas para la representación y comprensión de conceptos abstractos es fundamental durante el aprendizaje. El término ``metáfora" que se usa aquí va más allá del sentido lingüístico habitual, y en realidad se refiere al modelo metafórico por el cual se estructura el conocimiento de un dominio (objetivo) mediante la asociación al mismo de conceptos y relaciones de otro dominio (fuente) existente con el que ya se está familiarizado. En \cite{travers1996programming} se explora el concepto de metáfora en el contexto computacional.
-
-En matemáticas se utilizan metáforas a menudo para enseñar todo tipo de conceptos. Algunos símbolos matemáticos, como por ejemplo, los paréntesis, pueden ser interpretados como metáforas, en el sentido de que encierran explícitamente un determinado contenido. Podríamos decir que su uso como símbolo posee un significado visual añadido. Existe sin embargo un inconveniente cuando se hace un uso intensivo de estos símbolos ya que pierden su capacidad explicativa, como se observa a continuación en el siguiente programa escrito en Lisp:
-
-\begin{verbatim}
-(defun factorial (n) (if (<= n 1) 1 (* n (factorial (- n 1)))))
-\end{verbatim}
-
-Otro ejemplo es el uso de flechas para indicar transiciones de un punto a otro. Al igual que con los paréntesis, al aumentar el número de flechas, aumenta la dificultad de comprensión del diagrama. Además al ser utilizadas frecuentemente en diferentes contextos y con diferente significado, las flechas adquieren un cierto nivel de abstracción, que devalúa todavía más su capacidad aclaratoria. 
-
-Con estos ejemplos se intenta ilustrar la importancia y necesidad de encontrar representaciones visuales más concretas que faciliten la comprensión, documentación y el aprendizaje de forma diferenciada para los conceptos que se utilizan en programación y que además puedan ser generadas automáticamente a partir del código. 
-
-Para este propósito, es necesario conseguir un compromiso adecuado entre la abstracción asociada a los elementos visuales y su analogía semántica con el elemento representado. Además resulta también útil hacer que estas representaciones sean atractivas para el estudiante durante el aprendizaje. 
 
 
 
