@@ -1,4 +1,4 @@
-%TODO GENERAL, hablar de arquetipos jungianos y de jung. No entremos en psicología pero lo usamos.
+%.%TODO GENERAL, hablar de arquetipos jungianos y de jung. No entremos en psicología pero lo usamos.
 %TODO Hablar del paper que decía el señor con alto expertise
 %TODO Revisar y cerrar todos los comentarios
 %TODO Es importante remarcar que esto no es una receta, es una guía
@@ -7,7 +7,7 @@
 %TODO Cada paso explicado en la metodología debe tener un ejemplo
 %TODO no usar el término ciclo de vida (no se usa como lo estoy usando)
 
-\documentclass{sig-alternate}
+\documentclass{llncs}
 \usepackage[latin1]{inputenc}
 \usepackage{graphicx}        % standard LaTeX graphics tool
 \usepackage{url} 
@@ -17,68 +17,27 @@
 \providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
 \begin{document}
 %
-% --- Author Metadata here ---
-\conferenceinfo{GECCO'14} {Vancouver, Canada}
-\CopyrightYear{2014}
-    \crdata{TBA}
-    \clubpenalty=10000
-    \widowpenalty = 10000
 
 
+\title{Evolving literary backstories for non-player characters}
 
-\title{A methodology for designing emergent literary backstories on non-player characters using genetic algorithms}
+\author{Rub�n H. Garc�a \inst{2} J.J. Merelo\inst{1} \and A.M. Mora\inst{1}  \and  Pablo Garc�a-S�nchez\inst{1}} 
 
-
-
-\numberofauthors{2}
- \author{
- \alignauthor
- Anonymous\\
-        \affaddr{Lost island}\\
-%        \affaddr{Unknown}\\
-%        \affaddr{Pacific Ocean}\\
-        \email{jack,sawyer,hurley@lost.com}
- \alignauthor
- Anonymous\\
- \affaddr{Lost island}\\
-% \affaddr{Unknown}\\
-% \affaddr{Pacific Ocean}\\
- \email{locke@lost.com}
- }
+\institute{University of Granada\\
+       Department of Computer Architecture and Technology, ETSIIT\\
+       18071 - Granada\\
+       \email{\{jmerelo,amorag,pgarcia\}@geneura.ugr.es}
+\and
+Fidesol\\
+\email{rhgarcia@fidesol.org}
+}
 
 
 \maketitle
 
-%FERGU: TODOs
-% 1) Pensar tÃÂ­tulo
-% 2) Escribir abstract
-% 3) Quitar referencias a "second experiment"
-% 4) Actualizar SOA
-% 5) Contestar las preguntas de la intro en las conclusiones.
-% 6) AÃ±adir referencia a FAÃADE
-
-%%%%FERGU: HAY QUE ESTABLECER CONCEPTOS
-% ENVIRONMENT: usar environment para referirnos a MADE
 
 \begin{abstract}
 
-%The creation of fictional stories is a very complex task that usually
-%implies a creative process where the author has to combine characters,
-%conflicts and plots to create an engaging narrative. This work
-%presents a simulated environment with hundreds of characters that
-%allows the study of coherent and interesting literary archetypes (or
-%behaviours), plots and sub-plots. We will use this environment to
-%perform a study about the number of profiles (parameters that define
-%the personality of a character) needed to create two emergent scenes
-%of archetypes: ``natality control'' and ``revenge''. A Genetic Algorithm (GA)
-%will be used to find the fittest number of profiles and parameter
-%configuration that enables the existence of the desired archetypes
-%(played by the characters without their explicit knowledge). The
-%results show that parametrizing this complex system is possible and
-%that these kind of archetypes can emerge in the given environment.
-
-% NUEVO ABSTRACT
-% Atención, he cambiado cosas. -RH
 Stories are not only painfully weaved by crafty writers in the
 solitude of their studios; they also have to be produced massively for
 non-player characters in the video game industry or tailored to
@@ -90,24 +49,8 @@ This work presents a general methodology to generate cohesive and coherent
 backstories where desired archetypes (universally accepted literary symbols) can emerge in complex stochastic systems.
 This methodology supports the modeling and parameterization of the agents, the environment where they will live and the desired literary setting. The use of a Genetic Algorithm (GA) is proposed to establish the parameter configuration that will lead to backstories that best fit the setting. Information extracted from a simulation can then be used to create the literary work.
 To demonstrate the adequacy of the methodology, we perform an implementation using a specific multi-agent system and evaluate the results.
-%FERGU: TODO en el abstract (de los comentarios de Antonio)
-% Definir literary setting
-% Mencionamos simulación, pero no la explicamos antes
+
 \end{abstract}
-
-% A category with the (minimum) three required fields
-\category{H.4}{Information Systems Applications}{Miscellaneous}
-%A category including the fourth, optional field follows...
-\category{G.1.6}{Mathematics of Computing}{NUMERICAL ANALYSIS}[Optimization]
-
-
-%sures, performance measures
-\terms{Algorithms}
-
-
-\keywords{Genetic Algorithms, literature, content generation}
-
-
 
 
 %
@@ -132,25 +75,6 @@ present in the collective imaginary
  \cite{ArchetypesGarry05}. They allow to empathize  % mal escrito, y Â FERGU: arreglado. SÃ­, existe.¿existe empathize? - JJ
 with the characters and aid to immerse the spectator in the story
 (for example, the well-known {\em hero} archetype).
-
-
-%To establish how an agent correspond with a specific archetype 
-%we use the concept {\em profile}. A profile are the set of characteristics
-% or patterns that... The number of this profiles in an story could be variable, so it is necessary to..
-
-%These probabilities are
-%optimized by means of an Evolutionary Algorithm (EA) to match with a
-%specific literary archetype, defined by the fiction creator.
-
-%Finally, the results of the execution is used to create the...
-
-% Explica como caracterizas el arquetipo a partir de una serie de
-% eventos en su historia personal y su relaciÃ³n con el resto de los
-% personajes - JJ
-
-% FERGU: aÃ±adido arriba, Ruben, completalo que tu lo dominas mÃ¡s
-
-
 
 
 
@@ -204,29 +128,12 @@ The rest of the work is structured as follows: after the state of the art, the p
 % (JJ2013): Por cierto, acabo de ver esto: \cite{StoryTecGobel2008}.
 %TODO
 
-Auto-generated interactive fiction research is mainly focused in
-methods to create the process of a story generation
-\cite{nairat2011character}. Story generation, or storytelling, can be divided in two areas: interactive and non-interactive. In the first one, and
-according to \cite{ReviewArinbjarnar09}, an {\em interactive drama} is
-defined in a virtual world where the user is free to interact with
-the NPCs and objects in an interesting experience (from the dramatic point of view), which should be different in each execution, and adapted to the user's interaction.
-
-The generation of interactive dramas can be based on a script
-structure \cite{ArchitectureYoung04} and dramatic structures, where an inciting accident provides the motive of the drama, is followed by an increase of complications to a climax point and, finally, descending to a closure. Two examples of this approach are The Oz Project~\cite{ozproject}, that requires generated narratives to follow a dramatic arc, and Fa\c{c}ade \cite{facade}, that uses a structure
-which they call neo-Aristotelian, an adaptation of the Aristotelian
-structure to interactivity.
-%TODO referencias
-
-On the other hand, in {\em non-interactive plot generation systems} the user
-does not take control as the protagonist but can participate in the final result. For example, in the system
-presented by Pizzi et al. \cite{pizzi2007interactive} the user can change the emotions of the other characters but as an spectator not as an actor.
-
-Those techniques and systems presented at the moment are focused in generating stories (interactive and non-interactive), but the present methodology, as opposed to this concept, is focused in \textit{generating a setting}
+The present methodology is focused on \textit{generating a setting}
 because its aim is the massive background generation
 for secondary characters, in order to provide a context for the writer and the
 player to perceive a virtual world as coherent, detailed and
 enriched.
-%In this respect, story generation systems such as Tale-Spin \cite{talespin}, Universe \cite{universe}, Minstrel \cite{minstrel} or Virtual Story Teller\cite{virtualstoryteller} are more aligned with our goal, since they are not focused in the interaction with the user.
+%In this respect, story generation systems such as Tale-Spin \cite{talespin}, Universe \cite{universe}, Minstrel \cite{minstrel} or Virtual Story Teller\cite{virtualstoryteller} are more aligned with our goal, since they are not focused on the interaction with the user.
 
 The narrative is addressed by our methodology as the final step, giving freedom to creators. This issue has been studied in the systems presented in
 the survey by Arinbjarnar et al. in \cite{ReviewArinbjarnar09}. 
@@ -241,27 +148,21 @@ the first widely known multi-agent generative social model. As a step of the met
 \cite{gershenson2005general}: a virtual world, agents who are born, grow, 
 interact, reproduce and dead; resources (food), mediators, and
 relations of rivalry (friction) and cooperation (synergy). In other step of our methodology, the actions of the agents are parametrized according the work of Nairat
-\cite{nairat2011character}, based in the use of GAs in order to
+\cite{nairat2011character}, based on the use of GAs in order to
 obtain a plot (solution) where two characters interact in a creative way.
 
-The proposed methodology is innovative since the goal has not been addressed before. Previous researches are focused on the plot, the interaction, and the narrative, but our proposal is focused in backgrounds (not in plot), where different archetypes emerge involving a starting point for future plots and subplots.
+The proposed methodology is innovative since the goal has not been addressed before. Previous researches are focused on the plot, the interaction, and the narrative, but our proposal is focused on backgrounds (not in plot), where different archetypes emerge involving a starting point for future plots and subplots.
 
 %Antonio: Entiendo que esto es nuevo, no lo que hizo ya el tal Nairat,¿no? Queda un poco lioso y puede parecer que esto ya lo hizo ese menda, cuando yo creo que tú quieres decir que os basásteis en su trabajo para hacer esto, que él no hizo. ;)
 
 According to the taxonomy described by Togelius et al. \cite{Togelius2011}, the present methodology can be classified as a \textit{procedural content generator} (\textit{PGC})
 mainly related to \textit{optional content}, with \textit{stochastic generation}
 and modeled as a \textit{generate-and-test} algorithm (search based), that
-performs the optimizations of the process during the game development (\textit{offline}).
+performs the optimizations of the process during the game development
+(\textit{offline}). % este p�rrafo deber�a ir a la intro JJ PPSN
 
 %ANTONIO: Echo de menos una mayor defensa de lo bueno que es MADE, que es algo nunca hecho, que avanza mucho el estado el arte (porque no hay mucho, aparentemenet), que abre nuevas líneas de investigación, nu se, dadle bombo. ;D
 
-
-
-%The current experiment allows the definition of behaviour patterns (or
-%archetypes, and using a weighted fitness function to measure
-%the presence of the desired archetypes.
-
-%TODO: presentar la metodología del párrafo siguiente
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   METHODOLOGY   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -278,23 +179,17 @@ The present methodology defines different steps that will lead the user from the
 
 In our approach, the mood of the setting will be modeled as a group of abstract archetypes and different conditions over them. These archetypes, conceptually modeled, would be designed and instantiated as regular expressions over a language used to describe the backstories along with the social relationships between them. Those instantiations will be used by the GA to obtain the fitness of each solution. The process is iterative and presented as a waterfall model, where each step influences the following one.
 
-The methodology includes the following steps, as shown in Figure~\ref{fig:methodology}: Modeling - the language, the literary setting, the agent -, Definition of the GA characteristics, Instantiation, Execution and Interpretation, which will be exposed in the following subsections.
+The methodology includes the following steps:  modeling - the
+language, the literary setting, the agent -, definition of the GA
+characteristics, instantiation, execution, which will be exposed in
+the following subsections, and finally interpretation. % No forma
+                                % parte del paper, as� que lo he
+                                % eliminado JJ PPSN
 
 
-\begin{figure}[htb]
-\centering
-   \includegraphics[width=12pc] {img/methodology.pdf}
-\caption{The proposed methodology for designing literary backstories}
-\label{fig:methodology}
-\end{figure}
 
-
-\subsection{Modeling}
-
-The Modeling step affects different elements that make up a system where different agents generate words, lately interpreted as backstories, whose symbols belong to a language that also defines the desired archetypes.
-
-
-\subsubsection{Modeling of the language}
+\subsection{Modeling} % Las subsecciones habr�a que eliminarlas para
+                      % conservar espacio. JJ PPSN
 
 Each agent has to be modeled as a Finite State Machine (FSM) whose transitions generate symbols in a language based on the following one, expressed in Backus-Naur Formalism (BNF):
 
@@ -307,9 +202,17 @@ Each agent has to be modeled as a Finite State Machine (FSM) whose transitions g
 
 Starting from this partial grammar, the user has to define the expressions:
 \begin{itemize}
-\item \textbf{<date>}: Should be expressed in a way that is meaningful to the type of background that we are looking for.For example, if we are talking about persons, it could be the age of the agent expressed in days.
+\item \textbf{<date>}: Should be expressed in a way that is meaningful
+  to the type of background that we are looking for. For example, if we are talking about persons, it could be the age of the agent expressed in days.
 
-\item \textbf{<action\_id>}: Different actions can be taken into account, and will depend on the kind of archetypes we will look for. For example, if we are trying to find archetypes about love like the classical Romeo and Juliet one, where two characters are in love but belongs to families in war and finally ends up with their death, we could include actions and relations like ``loves'', ``hates'', ``is son of'', ``is daughter of'', ``is parent of'', ``die'', etc.
+\item \textbf{<action\_id>}: Different actions can be taken into
+  account, and will depend on the kind of archetypes we will look
+  for. For example, if we are trying to find archetypes about love
+  like the classical Romeo and Juliet one, where two characters are in
+  love but belongs to families in war and finally ends up with their
+  death, we could include actions and relations like ``loves'',
+  ``hates'', ``is son of'', ``is daughter of'', ``is parent of'',
+  ``die'', etc. % Tienes demasiado ejemplos. Y no se usa etc - JJ PPSN
 
 Obviously, the smaller the group of possible actions is, the easier would be to find out the archetypes. In order to minimize the number of available actions and maximize the number of archetypes they allow we propose generic actions instead of specific ones.
 
@@ -320,10 +223,6 @@ Obviously, the smaller the group of possible actions is, the easier would be to 
 \end{itemize}
 
 The backstory generated by each agent using the language modeled this way will be automatic and human readable. Eventually, the backstories will evoke archetypes and behaviours. As we will see in the next sections, we will try to promote the emergence of specific archetypes in order to retrieve the best backstories for our setting.
-
-
-
-\subsubsection{Agent modeling}
 
 
 In a top-down approach (the opposite to the one proposed in the current methodology), if the creative needs a second character or an extra for a story, he or she creates it out of the blue, with the background that better fits with his/her needs. This approach, valid for a small amount of characters and poor requisites of coherence between them, becomes more and more complex when we add more characters to the environment, because each addition implies new relations in their social network.
@@ -359,7 +258,7 @@ It is important to remark that an agent is a simplification of the character (in
 
 Agents live in an {\em environment}, understood as the virtual spatio-temporal frame where the agents play their lives. This environment is also responsible for:
 \begin{itemize}
-\item execute the main process of each agent (corresponding to a portion of time). Each iteration the agents should be chosen randomly or based in classical role-playing games features like ``initiative''.
+\item execute the main process of each agent (corresponding to a portion of time). Each iteration the agents should be chosen randomly or based on classical role-playing games features like ``initiative''.
 \item provide a set of functions to interact with other characters and the environment itself.
 \end{itemize}
 
@@ -380,8 +279,6 @@ For this reason, some actions should be statically defined and others have to de
 
 Due to the complexity of the system and the introduction of probabilities, even if all the agents have the same features and probabilities, the sequence of the actions for every agent becomes unpredictable. For example, if we have our agent modeled and we choose random values for the configuration, roughly, the characters' backstories will be ``normal'', showing more or less the stereotyped behaviors (that make the character a group representative rather than an individual), but maybe, some of them show higher level non-modeled behaviors. In the next subsection, we will provide a way to model those high-level behavior in the way that, given a executed environment, a computer is able to find them 
 and, in the Execution step, obtain a configuration that promote the apparition of these archetypes in the execution.
-
-\subsubsection{Literary setting modeling}
 
 %TODO tener en cuenta a lo largo del texto que actions tb pueden ser predicates
 
@@ -425,7 +322,7 @@ Intuitively, increasing the number of profiles will lead to richer backgrounds, 
 
 \subsection{Instantiation and execution}
 
-After the Genetic Algorithm is configured, some properties need to be established in order to fit to the desired setting:
+After the Genetic Algorithm is configured, some properties need to be established in order to fit the desired setting:
 \begin{itemize}
 \item Base properties: Including the threshold for the agent's features, and environment parameters (i.e. size of the world, resources, etc).
 \item Genetic Algorithm parameters: selection, genetics operators (crossover and mutation and termination condition)
@@ -442,17 +339,6 @@ Once the parameters for the GA, the environment, the agent and the number of pro
 In some cases, the fitness can be improved by modifying base parameters, the evaluation of the archetypes or the logic of the agent. The process is iterative and a fine tunning is essential to obtain the best fitness.
 
 Once the best solution has been found, the environment can be executed and the backstories generated can be used.
-
-\subsection{Interpretation}
-
-%TODO Convert results to literary language
-%TODO Exportar los logs de los agentes, sus características y sus etiquetas
-%TODO Intepretar la historia de un agente, junto al arquetipo aporta explicaciones
-%TODO Buscar agente que cumpla una condición
-%TODO Navegación entre agentes. Apoyo al proceso creativo
-
-Due to the nature of the grammar proposed for the actions, they can be directly converted to natural language. Applying the setting function (used as fitness by the GA) to the executed environment could be useful to tag the backstories with the different archetypes found and their explanations. As an example, if our setting is the ``far west'' and we need non-player characters to populate a saloon, we may want to find a ``Billy the kid'' archetype and three ``player'' archetypes. If they are met by the main character he/she may discover their backstories, that would be coherent with the world they live in and the mood of the story.
-
 
 % -----------------------------------------------------------------------------
 % SEC APPLY
@@ -489,46 +375,17 @@ The MADE environment can be configured by using the following parameters (and it
 
 % (RubÃÂÃÂ©n): por simplificar y reducir tamaÃÂÃÂ±o, pongo los valores por omisiÃÂÃÂ³n
 
-A MADE Agent lives in a MADE Environment, occupies a cell in the grid, moves around looking for food or mates and interacts with other agents.\\
-
-%En un trabajo no se describe lo que se ha hecho, sino una
-%metodologÃÂ­a. DeberÃÂ­as justificar estos estados y las acciones. ÃÂ¿Se
-%pueden poner las que quieras? - JJ2013
-The design of a MADE Agent has some restrictions:
-\begin{itemize}
-\item An array of parameters (probabilities represented as real numbers between 0 and 1) should be provided in its initialization. These parameters should be used by the agent in its day-by-day decisions.
-\item Every action is subject to be logged for later analysis.
-\item As a result of some iterations of the agent's day-based life-cycle, the agent should present the behavior of a \textit{living thing}, that is born, eats, grows, reacts, reproduces and dies.  
-\end{itemize}
-
-A very simple agent has been designed for this study: a virtual
-rat, that models:
-\begin{itemize}
-\item Four states (be alive, be hungry, look for
-mate and be pregnant) that represent internal situations that will lead the
-agent to perform the actions described in the item bellow. % No se
-                                % usan nÃºmeros Cambiar abajo - JJ FERGU: OK
-\item Seven actions (move, eat, attack, defend, escape,
+A MADE Agent lives in a MADE Environment, occupies a cell in the grid,
+moves around looking for food or mates and interacts with other
+agents; it is defined by a set of probabilities that define its {\em
+  living thing} behavior. In this paper we model a virtual rat with  four states (be alive, be hungry, look for
+mate and be pregnant) and seven actions (move, eat, attack, defend, escape,
 find mate and have offspring) that lead to a basic instinctive animal
 behaviour, very useful for this work since it can be the canvas of 
 complex \textit{humanized} behaviour patterns.
-\item Parameters that define the characteristics and probabilities to
-perform actions depending on the state.
-\end{itemize}
 It is important to remark that no ``feelings'' and no ``memory''
-have been modeled in the MADE agent for this study. This is
-illustrated in Figure~\ref{fig:madeAgent}.
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.35]{img/MadeAgent.pdf}
-\caption{Actions and states modeled in the MADE Agent.}
-\label{fig:madeAgent}
-\end{center}
-\end{figure}
-
-
-
+have been modeled in the MADE agent for this study. % �Si no hay
+                                % memoria, c�mo hay venganza? - JJ
 
 %The life cycle of a MADE Agent illustrated in
 %Figure~\ref{fig:lifecycle} represents on day in its life. 
@@ -561,21 +418,11 @@ characteristics (probabilities to perform different actions). % Los
 
 
 The MADE Agent is created using twelve parameters, that define its
-base features and probabilities to make the decisions presented in the
-state diagram in Figure \ref{fig:fsm}. The execution of an
+base features and probabilities. The execution of an
 agent is dynamic, and depends on the internal probabilities and states
 but also on the neighborhood, and the map configuration. Even so, we
 can say that these initial parameters define in some way the possible
 situations where the agent could be involved.
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.35]{img/fsm.pdf}
-\caption{MADE Agent's finite state machine}
-\label{fig:fsm}
-\end{center}
-\end{figure}
-
 
 
 The source code of the MADE environment and the algorithms used in this experiment are publicly available in \url{http://ANONYMOUS} under a LGPL license.
@@ -614,7 +461,7 @@ adequacy to a specific literary setting.
                                 % interest in
                                 % what? Quieres decir si son
                                 % interesantes? - JJ2013
-In this work, we have implemented a method based in regular expressions with backreferences. The proposed technique puts annotations in every agent whose log matches a complex regular expression able to find emerging high level behaviours, not implemented in the life-cycle.
+In this work, we have implemented a method based on regular expressions with backreferences. The proposed technique puts annotations in every agent whose log matches a complex regular expression able to find emerging high level behaviours, not implemented in the life-cycle.
 
 In this proposal, the parameters used to define an agent, mentioned in Section~\ref{sec:methodology}, are mapped into a chromosome, and a Genetic Algorithm is used to evolve the solution. The fitness function is expressed in terms of:
 
@@ -664,7 +511,7 @@ solution will be be affected by the number of profiles used.
 
 For the experiments performed in this work, we have used the parameters shown in Table~\ref{fig:ga_parameters}. These values have been chosen empirically after several test runs.
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
 \caption{Parametrization of the Genetic Algorithm}
 \label{fig:ga_parameters}
@@ -679,24 +526,27 @@ Fitness function & Average of 10 executions.\\
 Natural selector & Original Rate: 0.9 \\
 Crossover operator & Rate: 35\% \\
 Mutation operator & Desired Rate: 12 \\
-Stop condition & 100 executions\\
+Stop condition & 100 executions\\ % �A qu� se refiere? Esto confund�a
+                                % tambi�n al revisor - JJ PPSN 
 Generations & 30\\
 Population size & 30 \\
 \hline
 \end{tabular}
 
-
 \end{center}
 \end{table}
 
-%\subsection{Analysis of the results}
-
-
-
-
-
 Table~\ref{fig:exp1_30ex} shows the average of the best fitness and the average population fitness at the end of 30 executions for each configuration: number of profiles from 1 (P1) to 5 (P5) in the experiment 1 (``natality control'').
-The evolution of the best fitness for each configuration is shown in Figure~\ref{fig:evo1}. We have performed a Kruskal-Wallis test for the best individuals fitness, obtaining differences among all the number of profiles (p-value $<<$0.05). As we suspected, it is clear that using one profile is not enough to emerge the desired archetype. However, the pairwise comparison using Wilcoxon does not find significant differences using more than 2 profiles. This can be explained because an agent could share more than one archetype at the same time.  A promising number of profiles could be 4, because their only lower outlier is not as distributed as the others. As can be seen in Figure \ref{fig:evo2} the evolution of the best fitness increases with all possible number of profiles, existing therefore an increase of the performance of the system.
+ We have performed a Kruskal-Wallis test for the
+best individuals fitness, obtaining differences among all the number
+of profiles (p-value $<<$0.05). As we suspected, it is clear that
+using one profile is not enough to emerge the desired
+archetype. However, the pairwise comparison using Wilcoxon does not
+find significant differences  between the results that use more than
+two profiles. This can be explained because an agent could share more
+than one archetype at the same time.  A promising number of profiles
+could be 4, because their only lower outlier is not as distributed as
+the others.  
 
 \begin{table}
 \begin{center}
@@ -725,7 +575,6 @@ The evolution of the best fitness for each configuration is shown in Figure~\ref
 \*** Average population fitness  at the end of each execution \\
 \end{center}
 \end{table}
-
 
 
 The results of the second experiment are shown in
@@ -775,11 +624,11 @@ different behaviours of the agents.
 \centering
 
 \subfigure[Experiment 1]{
-   \includegraphics[width=13.5pc] {img/exp1_v2.pdf}
+   \includegraphics[scale=0.32] {img/exp1_v2.pdf}
    \label{fig:subfig1}
  }
 \subfigure[Experiment 2]{
-   \includegraphics[width=13.5pc] {img/exp2_v2.pdf}
+   \includegraphics[scale=0.32] {img/exp2_v2.pdf}
    \label{fig:subfig2}
  }
 \caption{Average fitness of the 30 best individuals of the GA for each configuration.}
@@ -787,105 +636,6 @@ different behaviours of the agents.
 \label{fig:graph}
 \end{figure}
 
-\begin{figure}[htb]
-\centering
-
-\subfigure[Experiment 1]{
-   \includegraphics[width=13.5pc] {img/graph1_v2.pdf}
-   \label{fig:evo1}
- }
-\subfigure[Experiment 2]{
-   \includegraphics[width=13.5pc] {img/graph2_v2.pdf}
-   \label{fig:evo2}
- }
-\caption{Example of the evolution of the best individual of the GA for the five
-  profiles for each configuration.}
-% ÃÂ¿QuÃÂ© hay que ver aquÃÂ­? Comparar un nÃÂºmero de perfiles con otro? - JJ2013
-
-\label{fig:boxplots}
-\end{figure}
-
-\subsection{Convert results to literary language}
-
-Every agent has a log that stores all the relevant events in its life
-in a simple format. Each line of the log indicates the day, the event
-in a short readable format and some extra information. Every agent's
-log in the MADE Environment is coherent with all others' logs. Many
-plots are being created, with a structured format that can be read by
-game engines or natural language processors, but, given the simplicity
-of the modeled agents, the stories could be seen by the reader as
-non-interesting. This log can be used for evaluation. %In the next
-%section we propose a method based on EA to let the author of a story
-%promote different behaviours in the MADE agents that could be seen as
-%literary archetypes (usually associated with human feelings and high
-%level cognitive and memory abilities) that can be used to model NPCs
-%in video games (or be used in other creative areas). 
-% Â¿AquÃ­ podrÃ­as hablar, o volver a hablar, de los perfiles, no? - JJ
-
-
-
-
-
-
-% -----------------------------------------------------------------------------
-% SEC EXPERIMENTALSETUP
-
-%\section{Experimental setup}
-%\label{sec:experimentalsetup}
-
-
-
-
-% (JJ2013): Por quÃÂÃÂ© has elegido estos experimentos y no otros? - JJ2013
-% (RubÃÂÃÂ©n): Done
-% No del todo... lee abajo - JJ2013
-
-%For this work, two sample groups of archetypes (or scenes)  have been
-%chosen: % why only two and why _these_ two? - JJ2013
-%The first one is called ``natality control'' and its goal is to model
-%a global archetype (population growth) and four individual memory
-%based archetypes (\textit{downtrodden}, \textit{helpless},
-%\textit{warrior} and \textit{bad warrior}; these are related to their
-%attack and defense behaviors).
-                                % DefÃÂ­nelos, hombre o di
-                                % algo de ellos, como "identified
-                                % by". ÃÂ¿Se supone que el lector
-                                % sabe lo que son? ÃÂ¿QuÃÂ© tiene que ver
-                                % la natalidad con los guerreros? - JJ2013
-
-
-
-
-
-% (RubÃÂÃÂ©n) TODO: ÃÂÃÂ¿Es interesante poner las expresiones regulares?
-
-
-
-
-
- %AMOS, LA QUE TU QUIERAS, RUBEN (Fergu)
-
-% (RubÃÂÃÂ©n) TODO: ÃÂÃÂ¿Es interesante poner las expresiones regulares?
-% -----------------------------------------------------------------------------
-% SEC RESULTS
-%\section{Results and discussion}
-%\label{sec:results}
-
-
-
-
-
-
-
-
-
-%\clearpage
-
-
-% -----------------------------------------------------------------------------
-% SEC CONCLUSIONS
-
-%Lo mÃÂ¡s importante: responde a las preguntas que te has planteado? - JJ2013
 
 \section{Conclusions}
 \label{sec:conclusion}
@@ -935,18 +685,13 @@ In future works, more complex agents will be used, with different rules to be mo
 % SEC ACKNOWLEGGEMENTS
 
 
-%\section{Acknowledgments}
-%This work has been supported in part %by FPU research grant AP2009-2942 and projects AmIVital (CENIT2007-1010), EvOrq (P08-TIC-03903), UGR PR-PP2011-5 and TIN2011-28627-C04-02.
-
-%
-% The following two commands are all you need in the
-% initial runs of your .tex file to
-% produce the bibliography for the citations in your paper.
+\section{Acknowledgments}
+This work has been supported in part by FPU research grant AP2009-2942
+and TIN2011-28627-C04-02. 
 
 
-%\bibliographystyle{abbrv} CAMBIAR!!!!!!
-\bibliographystyle{plain}
-\bibliography{made}  % sigproc.bib is the name of the Bibliography in this case
+\bibliographystyle{splncs03}
+\bibliography{made}  
 
 
 \end{document}
