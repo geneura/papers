@@ -21,12 +21,12 @@
 
 \title{Evolving literary backstories for non-player characters}
 
-\author{Rub�n H. Garc�a \inst{2} J.J. Merelo\inst{1} \and A.M. Mora\inst{1}  \and  Pablo Garc�a-S�nchez\inst{1}} 
+\author{Rub�n H. Garc�a \inst{2} J.J. Merelo\inst{1} \and  Pablo Garc�a-S�nchez\inst{1} \and A.M. Mora\inst{1}  } 
 
 \institute{University of Granada\\
        Department of Computer Architecture and Technology, ETSIIT\\
        18071 - Granada\\
-       \email{\{jmerelo,amorag,pgarcia\}@geneura.ugr.es}
+       \email{\{jmerelo,pgarcia,amorag\}@geneura.ugr.es}
 \and
 Fidesol\\
 \email{rhgarcia@fidesol.org}
@@ -84,34 +84,16 @@ MADE (Massive Artificial Drama Engine) to model a self-organized
 virtual world where every element influences each other, following
 cause-effect behaviors in a coherent manner. This system must be
 a suitable environment for the plot of a specific literary work, also being
-interesting for the player/spectator. %FERGU: dice antonio que pongamos aquí un par de técnicas en las que se basa MADE
+interesting for the player/spectator. 
 
-The aim of this work is to answer the following questions:
+In this work we investigate whether it is possible to model a virtual environment inhabited by hundred of characters with interesting auto-generated behaviors based on literary archetypes. Also, we test if the personality of the agents can be parametrized to obtain these different emergent behaviors.A Genetic Algorithm will be used to find these adequate parameter values that allow the creation of quality sub-plots.
+%Could this methodology be exported to be used in a bigger task such as creating a literary piece or work?
 
 
- Is it possible to model a virtual environment inhabited by hundred of characters with interesting auto-generated behaviors based on literary archetypes?
- Could the personality of the agents be parametrized to obtain different behaviors?
- %\item How many profiles (groups of parameters that define a personality) are necessary to generate emergent quality sub-plots? %FERGU: quitada
- Could a Genetic Algorithm be used to find the fittest parameter values that allow the creation of quality sub-plots?
-% \item Could the obtained results of our methodology be used to create a literary work? %FERGU: pregunta aÃÂ±adida que hay que contestar
-Could this methodology be exported to be used in a bigger task such as creating a literary piece or work?
-\
-%FERGU: Antonio propone esta pregunta en lugar de la última: Could this methodology be exported to be used in a bigger task such as creating a literary piece or work?
-%RH: Cambiado
 
-%Estas preguntas son las que tienes que contestar en las
-%conclusiones. Si no, el trabajo ha fallado - JJ2013 FERGU:TODO mirad que estén contestadas al final
+%In this paper we show that GAs, together with a proper design of literary patterns, can be used to find the parameters that promote the generation of drama plots and sub-plots in a multi agent based environment.
 
-In this paper we show that GAs, together with a proper design of
-literary patterns, can be used to find the parameters that promote the
-generation of drama plots and sub-plots in a multi agent based
-environment.\\
 
-% pero Â¿quÃ© te da MADE? Â¿QuÃ© extraes de Ã©l? Â¿La historia de los
-% personajes? Â¿El perfil de los mismos? TenÃ©is que dejar muy claro
-% cuÃ¡l es el PRODUCTO del algoritmo, porque si lo que tratas de hacer
-% es un mundo en que los personajes sigan unos porcentajes
-% determinados y eso es lo que obtienes, no tiene ninguna gracia - JJ
 
 The rest of the work is structured as follows: after the state of the art, the proposed methodology is presented in Section \ref{sec:methodology}. Then, some experiments, showing possible applications of this methodology (including the GA application) are presented (Section \ref{sec:applying}). Finally, conclusions and future work are discussed.
 
@@ -128,23 +110,21 @@ The rest of the work is structured as follows: after the state of the art, the p
 % (JJ2013): Por cierto, acabo de ver esto: \cite{StoryTecGobel2008}.
 %TODO
 
-The present methodology is focused on \textit{generating a setting}
+The presented methodology is focused on \textit{generating a setting}
 because its aim is the massive background generation
 for secondary characters, in order to provide a context for the writer and the
 player to perceive a virtual world as coherent, detailed and
 enriched.
 %In this respect, story generation systems such as Tale-Spin \cite{talespin}, Universe \cite{universe}, Minstrel \cite{minstrel} or Virtual Story Teller\cite{virtualstoryteller} are more aligned with our goal, since they are not focused on the interaction with the user.
 
-The narrative is addressed by our methodology as the final step, giving freedom to creators. This issue has been studied in the systems presented in
-the survey by Arinbjarnar et al. in \cite{ReviewArinbjarnar09}. 
+%The narrative is addressed by our methodology as the final step, giving freedom to creators. This issue has been studied in the systems presented in
+%the survey by Arinbjarnar et al. in \cite{ReviewArinbjarnar09}. 
 
-Previous works define the plot as as something that emerges from the behavior of the agents that follow a set of rules. In the proposed methodology, the agents' behaviour is produced by their personality and the environment. That is, the agents do not follow a plot, but they generate the plot itself.
-
-Furthermore,  previous works generate plots in worlds with a limited number of characters. This restriction does not exist in our methodology, where the number of characters to create is unlimited: They are created massively and their goal is to relate in a complex system and generate backgrounds that fit the setting of a plot, not the plot itself.
+Previous works (see survey by  Arinbjarnar et al. in \cite{ReviewArinbjarnar09}) define the plot as as something that emerges from the behaviour of the agents that follow a set of rules. In the proposed methodology, the agents' behaviour is produced by their personality and the environment. That is, the agents do not follow a plot, but they generate the plot itself. Also, previous works generate plots in worlds with a limited number of characters, as opposed to our methodology. %In our methodology the number of characters to create is unlimited: they are created massively and their goal is to relate in a complex system and generate backgrounds that fit the setting of a plot, not the plot itself.
 
 The present methodology follows the ideas of the work by Epstein and Axtell
 \cite{epstein1996growing}, 
-the first widely known multi-agent generative social model. As a step of the methodology, a self-organizing system if defined following the methodology introduced by Gershenson
+the first widely known multi-agent generative social model. As a step of the methodology, a self-organizing system is defined following the methodology introduced by Gershenson
 \cite{gershenson2005general}: a virtual world, agents who are born, grow, 
 interact, reproduce and dead; resources (food), mediators, and
 relations of rivalry (friction) and cooperation (synergy). In other step of our methodology, the actions of the agents are parametrized according the work of Nairat
@@ -157,7 +137,7 @@ The proposed methodology is innovative since the goal has not been addressed bef
 
 According to the taxonomy described by Togelius et al. \cite{Togelius2011}, the present methodology can be classified as a \textit{procedural content generator} (\textit{PGC})
 mainly related to \textit{optional content}, with \textit{stochastic generation}
-and modeled as a \textit{generate-and-test} algorithm (search based), that
+and modelled as a \textit{generate-and-test} algorithm (search based), that
 performs the optimizations of the process during the game development
 (\textit{offline}). % este p�rrafo deber�a ir a la intro JJ PPSN
 
@@ -175,63 +155,64 @@ The mood, or the atmosphere, of the literary setting is one element in the narra
 %TODO añadir referencia a The Book of Literary Terms, University Press of New England, 1999
 
 
-The present methodology defines different steps that will lead the user from the initial question ``\textit{How could I obtain secondary characters for my setting, with coherent backstories consistent with its mood?}'' to a system that can automatically generate a setting massively populated with characters and backstories, where different desired behaviors or archetypes emerge from their interactions.
+The present methodology defines different steps that will lead the user to obtain secondary characters for his/her desired setting, with coherent backstories consistent with its mood. The result is a system that can automatically generate a setting massively populated with characters and backstories, where different desired behaviours or archetypes emerge from their interactions.
 
-In our approach, the mood of the setting will be modeled as a group of abstract archetypes and different conditions over them. These archetypes, conceptually modeled, would be designed and instantiated as regular expressions over a language used to describe the backstories along with the social relationships between them. Those instantiations will be used by the GA to obtain the fitness of each solution. The process is iterative and presented as a waterfall model, where each step influences the following one.
+In our approach, the mood of the setting will be modelled as a group of abstract archetypes and different conditions over them. These archetypes, conceptually modelled, would be designed and instantiated as regular expressions over a language used to describe the backstories along with the social relationships between them. Those instantiations will be used by the GA to obtain the fitness of each solution. %The process is iterative and presented as a waterfall model, where each step influences the following one.
 
-The methodology includes the following steps:  modeling - the
-language, the literary setting, the agent -, definition of the GA
-characteristics, instantiation, execution, which will be exposed in
-the following subsections, and finally interpretation. % No forma
+The methodology includes the following steps:  modelling (the
+language, the literary setting, the agent), definition of the GA
+characteristics, instantiation and execution. % No forma
                                 % parte del paper, as� que lo he
                                 % eliminado JJ PPSN
 
 
 
-\subsection{Modeling} % Las subsecciones habr�a que eliminarlas para
+\subsection{Modelling} % Las subsecciones habr�a que eliminarlas para
                       % conservar espacio. JJ PPSN
 
-Each agent has to be modeled as a Finite State Machine (FSM) whose transitions generate symbols in a language based on the following one, expressed in Backus-Naur Formalism (BNF):
+Each agent has to be modelled as a Finite State Machine (FSM), whose transitions are based on actions OJO!!!!!!! HAY QUE EXPLICAR LA FSM CON UN PARRAFO!!!!! % whose transitions generate symbols in a language based on the following one, expressed in Backus-Naur Formalism (BNF):
 
-\begin{verbatim}
-<backstory> ::= <action_line> [<backstory>]
-<action_line> := <date> <action>;
-<action> = <action_id> [<direct_object>]
-           [to <indirect_object>]
-\end{verbatim}
+%\begin{verbatim}
+%<backstory> ::= <action_line> [<backstory>]
+%<action_line> := <date> <action>;
+%<action> = <action_id> [<direct_object>]
+%           [to <indirect_object>]
+%\end{verbatim}
 
-Starting from this partial grammar, the user has to define the expressions:
-\begin{itemize}
-\item \textbf{<date>}: Should be expressed in a way that is meaningful
-  to the type of background that we are looking for. For example, if we are talking about persons, it could be the age of the agent expressed in days.
+%Starting from this partial grammar, the user has to define the expressions:
+%\begin{itemize}
+%\item \textbf{<date>}: Should be expressed in a way that is meaningful
+%  to the type of background that we are looking for. For example, if we are talking about persons, it could be the age of the agent expressed in days.
 
-\item \textbf{<action\_id>}: Different actions can be taken into
-  account, and will depend on the kind of archetypes we will look
-  for. For example, if we are trying to find archetypes about love
-  like the classical Romeo and Juliet one, where two characters are in
-  love but belongs to families in war and finally ends up with their
-  death, we could include actions and relations like ``loves'',
-  ``hates'', ``is son of'', ``is daughter of'', ``is parent of'',
-  ``die'', etc. % Tienes demasiado ejemplos. Y no se usa etc - JJ PPSN
+%\item \textbf{<action\_id>}: Different actions can be taken into
+%  account, and will depend on the kind of archetypes we will look
+%  for. For example, if we are trying to find archetypes about love
+%  like the classical Romeo and Juliet one, where two characters are in
+%  love but belongs to families in war and finally ends up with their
+%  death, we could include actions and relations like ``loves'',
+%  ``hates'', ``is son of'', ``is daughter of'', ``is parent of'',
+%  ``die'', etc. % Tienes demasiado ejemplos. Y no se usa etc - JJ PPSN FERGUPPSN: quitado todo esto
 
-Obviously, the smaller the group of possible actions is, the easier would be to find out the archetypes. In order to minimize the number of available actions and maximize the number of archetypes they allow we propose generic actions instead of specific ones.
+%Obviously, the smaller the group of possible actions is, the easier would be to find out the archetypes. In order to minimize the number of available %actions and maximize the number of archetypes they allow we propose generic actions instead of specific ones.
 
-\item \textbf{<direct\_object>}: The possible values of the direct objects depend on the nature of the actions.
+%\item \textbf{<direct\_object>}: The possible values of the direct objects depend on the nature of the actions.
 
-\item \textbf{<indirect\_object>}: Should define the unique id of an agent or a group of agents.
+%\item \textbf{<indirect\_object>}: Should define the unique id of an agent or a group of agents.
 
-\end{itemize}
+%\end{itemize}
 
-The backstory generated by each agent using the language modeled this way will be automatic and human readable. Eventually, the backstories will evoke archetypes and behaviours. As we will see in the next sections, we will try to promote the emergence of specific archetypes in order to retrieve the best backstories for our setting.
+The backstory generated by each agent using the language modelled this way will be automatic and human readable. Eventually, the backstories will evoke archetypes and behaviours. As we will see in the next sections, we will try to promote the emergence of specific archetypes in order to retrieve the best backstories for our setting.
 
 
-In a top-down approach (the opposite to the one proposed in the current methodology), if the creative needs a second character or an extra for a story, he or she creates it out of the blue, with the background that better fits with his/her needs. This approach, valid for a small amount of characters and poor requisites of coherence between them, becomes more and more complex when we add more characters to the environment, because each addition implies new relations in their social network.
+%In a top-down approach (the opposite to the one proposed in the current methodology), if the creative needs a second character or an extra for a story, he or she creates it out of the blue, with the background that better fits with his/her needs. This approach, valid for a small amount of characters and poor requisites of coherence between them, becomes more and more complex when we add more characters to the environment, because each addition implies new relations in their social network. FERGUPPSN: quitado esto
 %TODO Alguna referencia a la complejidad exponencial de las redes sociales cuando se añade un indivíduo
 
 
-Otherwise, the bottom-up approach promotes the agent as one of the pillars of the system because it offers the coherence of the backstory regarding to the timeline (for example, an agent cannot die before he or she is born). Some actions need to be sequential and to the relations (many actions involve two different agents). An agent is just a simple tool to generate a background, a character. In an environment where many characters can ``live'', make decisions taking into account the other characters and affecting them, the generated background becomes complex, many links have been created and no creative process has taken part on it (the creative process is present in the definition and modeling of the agent itself).
+%Otherwise, the bottom-up approach promotes the agent as one of the pillars of the system because it offers the coherence of the backstory regarding to the timeline (for example, an agent cannot die before he or she is born). Some actions need to be sequential and to the relations (many actions involve two different agents). An agent is just a simple tool to generate a background, a character. In an environment where many characters can ``live'', make decisions taking into account the other characters and affecting them, the generated background becomes complex, many links have been created and no creative process has taken part on it (the creative process is present in the definition and modeling of the agent itself).
 
-Given this premise, a multi-agent system seems promising for generating this kind of complex relations and backstories.
+%Given this premise, a multi-agent system seems promising for generating this kind of complex relations and backstories.
+%FERGUPPSN he quitado un mont�n de parrafazos de c�mo deben ser las metodolog�as y todo ese rollo de esta secci�n, que no interesa.
+
 %In this section we propose an agent's architecture and explain its characteristics.
 
 %\textbf{Agent as a finite state machine}\\
@@ -239,64 +220,63 @@ Given this premise, a multi-agent system seems promising for generating this kin
 
 An agent can be seen as a Finite State Machine (FSM), so the multi-agent system relies in the sequential executions of time portions. Every execution implies a review of the current state and (maybe) one or more actions done, depending on local and external properties.\\
 
-Given a set of states, properties and actions modeled, the logic of the main process should be:
+Given a set of states, properties and actions modelled, the logic of the main process should be:
 
-\begin{enumerate}
-\item Collect internal and external information.
-\item Depending on the state and the information collected, select the possible actions and probabilities to perform them.
-\item Use random numbers to decide the action to perform.
-\item Generate an action line using the language selected in the previous stage.
-\item Select the new state.
-\end{enumerate}
-
+%\begin{enumerate}
+%\item Collect internal and external information.
+%\item Depending on the state and the information collected, select the possible actions and probabilities to perform them.
+%\item Use random numbers to decide the action to perform.
+%\item Generate an action line using the language selected in the previous stage.
+%\item Select the new state.
+%\end{enumerate}
+%FERGUPPSN esto tambi�n fuera
 
 The agent should contemplate different states depending on the type of information we are interested in (``alive'', ``dead'', ``pregnant'', etc) and should also have local properties that define the possibility to make certain decisions.
 
-It is important to remark that an agent is a simplification of the character (in the way that it will perform only the actions we are interested in) and that the agent is inspired in conceptual behaviors, so some actions and transitions are mandatory and depend on the personality and internal states.\\
+%It is important to remark that an agent is a simplification of the character (in the way that it will perform only the actions we are interested in) and that the agent is inspired in conceptual behaviours, so some actions and transitions are mandatory and depend on the personality and internal states.\\ FERGUPPSN: esto sobra, como diria Ferran Adria.
 
 %\textbf{The agents' execution environment}
 
-Agents live in an {\em environment}, understood as the virtual spatio-temporal frame where the agents play their lives. This environment is also responsible for:
-\begin{itemize}
-\item execute the main process of each agent (corresponding to a portion of time). Each iteration the agents should be chosen randomly or based on classical role-playing games features like ``initiative''.
-\item provide a set of functions to interact with other characters and the environment itself.
-\end{itemize}
-
+%Agents live in an {\em environment}, understood as the virtual spatio-temporal frame where the agents play their lives. This environment is also responsible for:
+%\begin{itemize}
+%\item execute the main process of each agent (corresponding to a portion of time). Each iteration the agents should be chosen randomly or based on classical role-playing games features like ``initiative''.
+%\item provide a set of functions to interact with other characters and the environment itself.
+%\end{itemize}
+%FERGUPPSN: Adria: to esto sobra!
 
 %\textbf{Modeling the parameterization of the agent}
 
-The key in the use of agents to create background for characters relies in the following fact: Some actions are performed statically depending on the inputs and the current state but other (the majority) also depends on agent's local features and probabilities. Even if all the agents share these values, it is difficult to predict the result when the system is so complex. A minimal change in one probability to make one decision can imply completely different scenes.
-For this reason, some actions should be statically defined and others have to depend on initialization properties. We define two kind of properties:
+%The key in the use of agents to create background for characters relies in the following fact: Some actions are performed statically depending on the inputs and the current state but other (the majority) also depends on agent's local features and probabilities. Even if all the agents share these values, it is difficult to predict the result when the system is so complex. A minimal change in one probability to make one decision can imply completely different scenes.
+%For this reason, some actions should be statically defined and others have to depend on initialization properties. We define two kind of properties:
 %TODO revisar y añadir referencia a sistemas complejos, seguro que alguien más listo que yo ya ha dicho esto antes que yo
 
 
-\begin{itemize}
-\item \textbf{Base properties}: Those that are intrinsically defined by the nature of the conceptual agent. For example, if we are modeling a simplification of a person, the average life expectancy could take values from 70 to 85 years. An agent that lives 100 years would be unusual, and an agent that lives 200 years should not be possible.
-\item \textbf{Searchable properties}: Those used to increment or decrement the base values in the established limits or those that are used directly as probabilities to make decisions.
-\end{itemize}
+%\begin{itemize}
+%\item \textbf{Base properties}: Those that are intrinsically defined by the nature of the conceptual agent. For example, if we are modeling a simplification of a person, the average life expectancy could take values from 70 to 85 years. An agent that lives 100 years would be unusual, and an agent that lives 200 years should not be possible.
+%\item \textbf{Searchable properties}: Those used to increment or decrement the base values in the established limits or those that are used directly as probabilities to make decisions.
+%\end{itemize}
 
-%TODO diagrama del concepto de property base y property configurable
+%FERGUPPSN: Ferran Adria! TODO::::: buscar searchable properties y base properties!
 
-Due to the complexity of the system and the introduction of probabilities, even if all the agents have the same features and probabilities, the sequence of the actions for every agent becomes unpredictable. For example, if we have our agent modeled and we choose random values for the configuration, roughly, the characters' backstories will be ``normal'', showing more or less the stereotyped behaviors (that make the character a group representative rather than an individual), but maybe, some of them show higher level non-modeled behaviors. In the next subsection, we will provide a way to model those high-level behavior in the way that, given a executed environment, a computer is able to find them 
-and, in the Execution step, obtain a configuration that promote the apparition of these archetypes in the execution.
+
+%Due to the complexity of the system and the introduction of probabilities, even if all the agents have the same features and probabilities, the sequence of the actions for every agent becomes unpredictable. For example, if we have our agent modelled and we choose random values for the configuration, roughly, the characters' backstories will be ``normal'', showing more or less the stereotyped behaviors (that make the character a group representative rather than an individual), but maybe, some of them show higher level non-modelled behaviors. In the next subsection, we will provide a way to model those high-level behavior in the way that, given a executed environment, a computer is able to find them  and, in the Execution step, obtain a configuration that promote the apparition of these archetypes in the execution.
 
 %TODO tener en cuenta a lo largo del texto que actions tb pueden ser predicates
 
-The setting of a story is defined as the historical moment in time and geographic location in which it takes place, and helps initiate the main backdrop and mood for a story.
-Conceptually, the setting of a story is, in this methodology, independent from the agent design, but has to agree with it in the selected language: 
-The agent generates actions in a previously defined language with a clear semantic interpretation. On the other hand, the setting is composed by criteria over patterns for this language and the social networks derived from its usage. In other words, the agents create backstories and the settings matches specifics patterns inside these backstories.
+%The setting of a story is defined as the historical moment in time and geographic location in which it takes place, and helps initiate the main backdrop and mood for a story.
+%Conceptually, the setting of a story is, in this methodology, independent from the agent design, but has to agree with it in the selected language: 
+%The agent generates actions in a previously defined language with a clear semantic interpretation. On the other hand, the setting is composed by criteria over patterns for this language and the social networks derived from its usage. In other words, the agents create backstories and the settings matches specifics patterns inside these backstories.
 
-For Example, if we have a medieval storytelling setting and we have defined a language where the actions ``love'', ``hate'', ``attack'', ``defend'', ``win'' y ``lose'' are used, we could try to find classic 
+%For Example, if we have a medieval storytelling setting and we have defined a language where the actions ``love'', ``hate'', ``attack'', ``defend'', ``win'' y ``lose'' are used, we could try to find classic 
 %TODO citar de donde he sacado que son clásicos
-archetypes like the ``villain'' and the ``hero''. A villain could be a character that hate many others, attacks them and win. A hero could be a character who is loved by many people, that eventually defends them and then attacks to the villain. Moreover, if the mood of the story is sentimental, we could be interested in a ``heartbreak and reencounter'' archetype, where two characters are in love, after that they hate each other and finally fall in love again.
+%archetypes like the ``villain'' and the ``hero''. A villain could be a character that hate many others, attacks them and win. A hero could be a character who is loved by many people, that eventually defends them and then attacks to the villain. Moreover, if the mood of the story is sentimental, we could be interested in a ``heartbreak and reencounter'' archetype, where two characters are in love, after that they hate each other and finally fall in love again.
 
-In our methodology, an archetype is designed as a function that receives the backstory of an agent, processes it, tries to find patterns and interpret the social network related to the agent, and returns a /true/ value if the agent matches the behavior. 
+%In our methodology, an archetype is designed as a function that receives the backstory of an agent, processes it, tries to find patterns and interpret the social network related to the agent, and returns a /true/ value if the agent matches the behavior. 
 %TODO dibujo intuitivo: la ambientación te ofrece una función cuya entrada los los agentes
-The complexity of the agent is not evaluated, just the result of its execution in this environment. It is important to remark that the agent has to be modeled to play a normal life (stereotype), and that the archetypes work as high level behaviors not directly implemented.
+%The complexity of the agent is not evaluated, just the result of its execution in this environment. It is important to remark that the agent has to be modelled to play a normal life (stereotype), and that the archetypes work as high level behaviors not directly implemented.
+%FERGUPPSN: Adria!
 
-A setting can be seen as a function over the agents that matches an archetype. If the archetypes emerge in the desired way, the setting function would return high values.
-
-In the next section, we will explain the mechanism that will optimize the agent's searchable features to obtain backstories coherent with the mood of the setting.
+A setting can be seen as a function over the agents that matches an archetype. If the archetypes emerge in the desired way, the setting function would return high values. In the next sub-section, we will explain the mechanism that will optimize the agent's searchable features to obtain backstories coherent with the mood of the setting. %FERGUPPSN: extender un poco esto, si eso...
 
 \subsection{Features of the Genetic Algorithm}
 
@@ -308,7 +288,7 @@ In the next section, we will explain the mechanism that will optimize the agent'
 
 The codification of the chromosome consists in mapping the searchable properties to an array of values. %This array of values can be the chromosome.\\
 
-The fitness function of a chromosome is the result of calculating the average of the application of the setting function over \textit{n} executions of the environment with defined base properties (where n is the minimum number that reduces the error and has to be calculated empirically).
+The fitness function of a chromosome is the result of calculating the average of the application of the setting function over \textit{n} executions of the environment with defined base properties (where \textit{n} is the minimum number that reduces the error and has to be calculated empirically).
 
 It is important to clarify that the term ``individual'' in this work refers to a solution in the GA that models a whole environment, where a number of different ``agents'' are living. So, an ``individual'' in the GA is not equal to an ``agent''.  %FERGU: dejo esto claro para que no se lien los revisores
 
@@ -324,17 +304,13 @@ Intuitively, increasing the number of profiles will lead to richer backgrounds, 
 
 After the Genetic Algorithm is configured, some properties need to be established in order to fit the desired setting:
 \begin{itemize}
-\item Base properties: Including the threshold for the agent's features, and environment parameters (i.e. size of the world, resources, etc).
+\item Base properties: including the threshold for the agent's features, and environment parameters (i.e. size of the world, resources, etc).
 \item Genetic Algorithm parameters: selection, genetics operators (crossover and mutation and termination condition)
 \item Number of profiles
 \end{itemize}
 
 Once the parameters for the GA, the environment, the agent and the number of profiles are set, the GA can be executed.
-%The best fitness cannot be assured since:
-%\begin{itemize}
-%\item the environment is uncertain and noisy
-%\item the fitness is statistically calculated from stochastic executions
-%\end{itemize} FERGU: esto ya se sabe
+
 
 In some cases, the fitness can be improved by modifying base parameters, the evaluation of the archetypes or the logic of the agent. The process is iterative and a fine tunning is essential to obtain the best fitness.
 
@@ -347,33 +323,27 @@ Once the best solution has been found, the environment can be executed and the b
 \section{Applying the methodology}
 \label{sec:applying}
 
-To validate our methodology we apply its steps using a specific scenario and environment. In this scenario we want to model the next story: %FERGU: IMPORTANTE!!! HE PUESTO STORY, LE PONEMOS OTRA COSA? HAY QUE CUADRAR TODOS LOS CONCEPTOS (VER LISTA ARRIBA)
+To validate our methodology we apply its steps using a specific scenario and environment. In this scenario we want to model the next story: 
  - ``A number of rats live, eat, reproduce, compete for food and death within the walls of the Invisible University of Ankh-Morpork\footnote{This is our tribute to writer Terry Pratchett, whose books have inspired us to create these agents.}. As the University professors, these rats are very vindictive and territorial.''
 
 \subsection{Agents in the MADE environment}
 
-The first step is to model the agents and their environment. In this work we propose the MADE (Massive Artificial Drama Engine for non-player characters) environment, a virtual place where different agents play their artificial lives. Its functions are:
+The first step is to model the agents and their environment. In this work we propose the MADE (Massive Artificial Drama Engine for non-player characters) environment, a virtual place where different agents play their artificial lives. Its functions are to initialize agents in the map, control the time, execute the agents during a time unit (for example, a day in the story) and update the map. %FERGUPPSN: resumido to el chorro que viene ahora
 
-\begin{itemize}
-\item \textbf{Create an initial set of agents:} MADE environment
-  initializes a set of just born orphan agents, each of them with a profile
-  sequentially assigned, that must compete or collaborate in order to survive.
-\item \textbf{Place agents in the map:} the environment is a squared map, formed by cells that can be occupied by one (and only one) agent. The environment allows the agents to discover and interact with other agents in the neighborhood.
-\item \textbf{Start and control the time:} after the creation of the initial set of agents, the MADE environment starts the timer, day by day until a maximum date is reached.
-\item \textbf{Execute each agent during a time unit (a day):} In each iteration the list of agents is randomly reordered, and after that following the new order, each agent perform an iteration of its life-cycle. Then the dead agents are removed from the grid.
-\item \textbf{Perform as an external agent that changes the environment:} In each iteration in the MADE environment, food rations are placed in random cells. An agent only can eat if it is over a cell with a ration, so agents could move any others forcibly.
-\item \textbf{Offer services to the agents:} MADE environment allows the agents to check which neighbor cells have food, are occupied, who agents are in a near position or which positions can be occupied.
-\item \textbf{Decide the agents' profile:} MADE allows the existence of different agent profiles, as previously said. A {\em profile} is a set of characteristics which governs the agent's behavior.
-\end{itemize}
+%\begin{itemize}
+%\item \textbf{Create an initial set of agents:} MADE environment
+%  initializes a set of just born orphan agents, each of them with a profile
+%  sequentially assigned, that must compete or collaborate in order to survive.
+%\item \textbf{Place agents in the map:} the environment is a squared map, formed by cells that can be occupied by one (and only one) agent. The environment allows the agents to discover and interact with other agents in the neighborhood.
+%\item \textbf{Start and control the time:} after the creation of the initial set of agents, the MADE environment starts the timer, day by day until a maximum date is reached.
+%\item \textbf{Execute each agent during a time unit (a day):} In each iteration the list of agents is randomly reordered, and after that following the new order, each agent perform an iteration of its life-cycle. Then the dead agents are removed from the grid.
+%\item \textbf{Perform as an external agent that changes the environment:} In each iteration in the MADE environment, food rations are placed in random cells. An agent only can eat if it is over a cell with a ration, so agents could move any others forcibly.
+%\item \textbf{Offer services to the agents:} MADE environment allows the agents to check which neighbor cells have food, are occupied, who agents are in a near position or which positions can be occupied.
+%\item \textbf{Decide the agents' profile:} MADE allows the existence of different agent profiles, as previously said. A {\em profile} is a set of characteristics which governs the agent's behavior.
+%\end{itemize}
 
-The MADE environment can be configured by using the following parameters (and its values by default): Number of agents initially placed (15), map square grid dimension (10), number of rations randomly placed in the grid each day (10) and duration in virtual days of the  execution of the environment (1000). These parameters can affect directly to the behavior of the agents.
+The MADE environment can be configured by using the following parameters (with the values that will be used in the experimental section): Number of agents initially placed (15), map square grid dimension (10), number of rations randomly placed in the grid each day (10) and duration in virtual days of the  execution of the environment (1000). These parameters can affect directly to the behavior of the agents.
 
-% (JJ2013): Usas un estilo demasiado conciso. Di quÃÂ¯ÃÂ¿ÃÂ½ hace cada uno de esos
-% parÃÂ¯ÃÂ¿ÃÂ½metros, cÃÂ¯ÃÂ¿ÃÂ½mo se meten (fichero de configuraciÃÂ¯ÃÂ¿ÃÂ½n o como sea), por
-% quÃÂ¯ÃÂ¿ÃÂ½ se eligen esos y no otros, y los valores por defecto que has
-% usado.
-
-% (RubÃÂÃÂ©n): por simplificar y reducir tamaÃÂÃÂ±o, pongo los valores por omisiÃÂÃÂ³n
 
 A MADE Agent lives in a MADE Environment, occupies a cell in the grid,
 moves around looking for food or mates and interacts with other
@@ -384,37 +354,16 @@ find mate and have offspring) that lead to a basic instinctive animal
 behaviour, very useful for this work since it can be the canvas of 
 complex \textit{humanized} behaviour patterns.
 It is important to remark that no ``feelings'' and no ``memory''
-have been modeled in the MADE agent for this study. % �Si no hay
+have been modelled in the MADE agent for this study. % �Si no hay
                                 % memoria, c�mo hay venganza? - JJ
 
-%The life cycle of a MADE Agent illustrated in
-%Figure~\ref{fig:lifecycle} represents on day in its life. 
+
 Every
 decision made by the agent is based on its state and its
-characteristics (probabilities to perform different actions). % Los
-                                % agentes son un FSM entonces, ÃÂ¿no?
-                                % Cita los papers en los que hablamos
-                                % de FSM para Mario o Unreal, por ejemplo.
-                                % ÃÂ¿Esto es fijo? - JJ2013
+characteristics (probabilities to perform different actions). 
 
 
 
-% (RubÃÂÃÂ©n): TODO ÃÂÃÂ¿citar todas las caracterÃÂÃÂ­sticas de un agente made?
-% SÃÂÃÂ³lo si hay hueco, creo
-% No se ve nada y no aporta mucho. No uses notaciÃÂ¯ÃÂ¿ÃÂ½n del programa, sino
-% del algoritmo. Y mejor que lo contaras como un algoritmo usando el
-% entorno algorithmic que este grÃÂ¯ÃÂ¿ÃÂ½fico. - JJ2013
-
-% (RubÃÂÃÂ©n): TODO No se cÃÂÃÂ³mo mejorarlo...
-
-% CÃÂ¡mbialo por un algoritmo. Ocupa demasiado espacio y no se ve nada.
-% O bien dibÃÂºjalo como un autÃÂ³mata de estados finitos en vez de un
-% diagrama de flujo. Un redondÃÂ³n por estado y flechas de transiciÃÂ³n -
-% AdemÃÂ¡s, me da la impresiÃÂ³n de que estÃÂ¡s mezclando estados de un
-% bicho (pregnancy) con los de otro (a partir del nacimiento). Si es
-% asÃÂ­, mÃÂ¡s que pregnancy deberÃÂ­as llamarlo "embryo" (y, sinceramente,
-% no sÃÂ© si merece la pena mencionarlo aquÃÂ­ y quÃÂ© interÃÂ©s puede tener)
-% JJ2013
 
 
 The MADE Agent is created using twelve parameters, that define its
@@ -425,7 +374,7 @@ can say that these initial parameters define in some way the possible
 situations where the agent could be involved.
 
 
-The source code of the MADE environment and the algorithms used in this experiment are publicly available in \url{http://ANONYMOUS} under a LGPL license.
+The source code of the MADE environment and the algorithms used in this experiment are publicly available in \url{https://github.com/raiben/made} under a LGPL license.
 
 \subsection{Definition of the literary setting}
 
@@ -479,13 +428,7 @@ In this case,
   rats, so different number of profiles (from one to five) will be considered.
 
 
-%Different number of profiles (from one to five) have been used to assign
-% ÃÂ¿QuÃÂ© son los perfiles? No lo has definido en ningÃÂºn sitio. DeberÃÂ­as
-% ponerlo tambiÃÂ©n en el abstract si es tan importante - JJ2013
-% Sigue sin estar claro, ni quÃ© relaciÃ³n hay entre perfiles,
-% arquetipos, nÃºmero d elos mismos ... igual un grÃ¡fico ayudarÃ­a. O un
-% ejemplo - JJ
-%different parameters to different agents. 
+
 
 If only one profile is used
 in a run, all the agents are created with the same parameters, evolved
@@ -497,13 +440,7 @@ important to remark that the number of alleles of the chromosome are
 multiplied by the number of profiles, so the convergence of the
 solution will be be affected by the number of profiles used. 
 
-% Profile viene a ser las caracterÃ­sticas o patrones que hacen que
-% sepamos o podamos asociar una historia a un arquetipo, Â¿correcto? No
-% has hecho suficiente Ã©nfasis en esto y lo de los nÃºmeros queda un
-% poco en el aire. DeberÃ­as introducirlo preguntÃ¡ndote eso: Â¿cÃ³mo
-% sabemos si un individuo corresponde a un arquetipo? AsÃ­ introduces
-% los perfiles, y luego hablas de que los perfiles se deben de hacer a
-% mano, cuantos hacen falta... - JJ FERGU: puesto en la intro
+
 
 
 
@@ -526,8 +463,8 @@ Fitness function & Average of 10 executions.\\
 Natural selector & Original Rate: 0.9 \\
 Crossover operator & Rate: 35\% \\
 Mutation operator & Desired Rate: 12 \\
-Stop condition & 100 executions\\ % �A qu� se refiere? Esto confund�a
-                                % tambi�n al revisor - JJ PPSN 
+Stop condition & 100 generations\\ % �A qu� se refiere? Esto confund�a
+                                % tambi�n al revisor - JJ PPSN FERGU: generations. Culpa mia
 Generations & 30\\
 Population size & 30 \\
 \hline
@@ -570,8 +507,7 @@ the others.
 \end{tabular}
 \\
 \** Average of the best fitness at the end of each execution\\
-% Es decir, coges el mejor fitness de cada ejecucion (tendras 30 por cada
-% numero de perfiles) y sacas la media
+
 \*** Average population fitness  at the end of each execution \\
 \end{center}
 \end{table}
@@ -640,33 +576,9 @@ different behaviours of the agents.
 \section{Conclusions}
 \label{sec:conclusion}
 
-%FERGU: REESCRIBIR ENTERA
-%This work presents the result obtained by the MADE environment,
-                                % no se presenta un entorno,
-                                % se presenta los resultados obtenidos
-                                % por ÃÂ©l - JJ2013
-                                % (RubÃÂ©n:) ok
-% a self-organized multi-agent
-%system to model complex societies which can be used to study
-%emergent behaviours for literary purposes; for example, to extract
-%interesting plots for NPCs in videogames. %In this paper we have used
-%the MADE environment to establish the number of profiles (sets of
-%personality parameters) necessary to emerge two different global
-%scenes: ``natality control'' and ``revenge'',
-%which have been chosen because of their different nature: the first
-%one consist in specific archetype rates (related to defense and attack
-%behaviours of the agents) inside a global population rate, while the second one
-%consist in maximizing the appearance of a memory based archetype, like the
-%revenge (as previously said, memory hasn't been explicitly modelled in the
-%agent).
 
 This work presents a general methodology to design emergent literary stories in massive virtual worlds. The described steps include the modeling of the agents and literary setting. Then a Genetic Algorithm is used to optimize the parameters of the agent's profiles (behaviors) using
-as fitness a function that models the literary setting. %Results show that in the first archetype the number of
-%profiles must be at least two, because it is necessary that different
-%behaviours (local archetypes) emerge. On the contrary, on the second
-%experiment, using only one profile is the best configuration, because
-%the purpose was to emerge only one archetype ({\em avenger}). If the
-%number of profiles is increased worse results are obtained.
+as fitness a function that models the literary setting. 
 
 This implies that each scene or combination of desired archetypes for a given
 environment can be mapped to a number of profiles that maximize the appearance
@@ -679,7 +591,7 @@ using these profiles as input would produce a background (or set of characters' 
 where the archetypes have emerged and have automatically created massive backstories coherent
 with the settings of the artwork.
 
-In future works, more complex agents will be used, with different rules to be modeled. For example, we plan to model more human behaviors such as love or envy, to generate interesting plots such as wars, weddings, or family crimes. Different fitness functions will be used, for example, taking into account human opinions to establish the interestingness of a generated plot. Also, this system will be tested into an existent and well-known game, such as Skyrim\texttrademark, whose AI engine is publicly available for players and researchers.
+In future works, more complex agents will be used, with different rules to be modelled. For example, we plan to model more human behaviors such as love or envy, to generate interesting plots such as wars, weddings, or family crimes. Different fitness functions will be used, for example, taking into account human opinions to establish the interestingness of a generated plot. Also, this system will be tested into an existent and well-known game, such as Skyrim\texttrademark, whose AI engine is publicly available for players and researchers.
 
 % -----------------------------------------------------------------------------
 % SEC ACKNOWLEGGEMENTS
