@@ -12,7 +12,7 @@
 %\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
 % --- End of Author Metadata ---
 
-\title{Assessing different architectures for evolutionary algorithms in JavaScript}
+\title{NodEO, a multi-paradigm distributed evolutionary algorithm platform in JavaScript}
 \subtitle{}
 
 \author{
@@ -69,7 +69,7 @@ for the computer scientist. All implementations  have been released as open sour
 %A category including the fourth, optional field follows...
 \category{D.2.8}{Software Engineering}{Metrics}[complexity measures, performance measures]
 
-\keywords{Javascript, node.js, parallel evolutionary algorithms, asynchronous evolution}
+\keywords{JavaScript, node.js, parallel evolutionary algorithms, asynchronous evolution}
 
 \section{Introduction}
 
@@ -84,7 +84,7 @@ language for the browser, and in fact most books on JS
 \cite{goodman2007javascript} start by
 telling you how to embed your scripts in the browser HTML code.
 
-As such as a embedded language, Javascript is an interpreted language
+As such as a embedded language, JavaScript is an interpreted language
 that uses classes and objects, uses functions as first-rate types and
 is dynamic and weakly typed-checked (a variable can change its type during
 its lifetime, but whatever type it has, this needs to be explicitly coerced
@@ -224,12 +224,12 @@ implementations mainly done in the asynchronous JS interpreter {\tt
   node.js}; what this asynchrony means will be explained next. 
 % Antonio - ¿qué significa que sea asincrono?
 
-\section{An evolutionary algorithm in {\tt node.js}}
+\section{An evolutionary algorithm in node.js}
 \label{sec:node}
 
 {\tt node.js} (which, from now on, we will simply call Node) is a JS
 interpreter based on the V8 virtual machine created by Google. It is
-designed to deal with asynchronous input/output by default, also including an event model that makes event-driven
+designed to use asynchronous input/output by default,  including an event model that makes event-driven
 programming extremely easy \cite{5617064}. Since it is essentially a
 JS interpreter, sequential and synchronous programs are possible and,
 due to the speed of the underlying JS virtual machine, have a high
@@ -238,10 +238,9 @@ the asynchronous I/O features that make it different from other JS
 interpreters such as SpiderMonkey or Rhino and, in fact, closer to the
 event-driven programming that is usual in browsers.
 
-From the point of view of parallel evolutionary algorithms, which will
-have to do input/output operations to interact with the rest of the
-islands, this
-basically means that this pattern
+From the point of view of distributed evolutionary algorithms, which will
+have to perform input/output operations to interact with the rest of the
+islands, this implies that this pattern
 \begin{lstlisting}
 generate_population();
 do {
@@ -254,13 +253,13 @@ do {
 \end{lstlisting}
 will not work as expected. The main problem is that all input/output
 operations will create events in the implicit event loop, which will
-generate callbacks once the request has been completed. Code shown
+generate callbacks once the request has been completed.  Code shown
 above will work, but will {\em never} have time to process the events
-and thus migrations, either in or out, will never take place (or
+and thus migrations, either in or out, will never take place, or
 rather, inbound requests will be made but not processed and outbound
 requests will actually be made, but if the client on the other side
-works in the same way, it will never be processed). So, instead of
-this sequential loop, a long-lasting loop must be done this way in
+works in the same way, it will never be processed. So, instead of
+this sequential loop, a  loop intended to run for many iterations must be done this way in
 Node \cite{nodejs:patterns}:
 \begin{lstlisting}
 generate_population();
@@ -273,13 +272,16 @@ function do_evolution(){
     migrate_in();
   }
   if ( !evolution_end() ) {
-    do_after_callbacks( do_evolution());
+    do_after_callbacks( do_evolution);
   }
 }
 \end{lstlisting}
 
 This is not only a way of writing the programs using different patterns,
-it also a different way of understanding the program sequence. In a
+it also a different way of understanding the algorithm
+sequence. Please note that {\tt do\_after\_callbacks} receives a
+function {\em pointer}, not a function call; it is not a recursive
+call, but actually the definition of a callback. In a
 synchronous framework, the first pseudo-code should be expected to behave
 in this way:
 \begin{lstlisting}
