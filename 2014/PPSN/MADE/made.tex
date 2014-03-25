@@ -380,44 +380,58 @@ The source code of the MADE environment and the algorithms used in this experime
 
 As previously said, agents are independent of the desired literary settings. To validate our approach two different literary settings are going to be tested.
 
-The first one, ``territorial war'' scene, aggregates different sample archetypes where many factors must be taken into account.  It tries to find the number of profiles and values that are optimal to:
-\begin{itemize}
-\item Ensure that, after 1000 virtual days, the alive population will be the 60\% of the total population. This archetype, called \textit{survival population}, affects all the population, so it is a \textit{global archetype}.
-\item Emerge the \textit{downtrodden} archetype in the 22\% of the
-  population. An agent will be considered as a \textit{downtrodden} or
-  \textit{defender} if it has been attacked at least two times and has
-  defended the position.
-\item Emerge the \textit{warrior} archetype in the 22\% of the population. An agent will be considered as a \textit{warrior} if it has satisfactory attacked at least five times.
-\item Emerge the \textit{helpless} archetype in the 22\% of the population. An agent will be considered as a \textit{helpless}  if it has been attacked at least ten times and has not defended the position.
-\item Emerge the \textit{bad warrior} archetype the in 22\% of the population. An agent will be considered as a \textit{bad warrior}  if it has unsatisfactory attacked at least ten times.
-\end{itemize}
+The first one, ``territorial war'' scene, aggregates different sample archetypes where many factors must be taken into account.  It tries to find the number of profiles and values that generate at the end of the run an equally distribution of the archetypes \textit{downtrodden} (an agent that has been attacked at least two times and has defended the position), \textit{warrior} (if it has satisfactory attacked at least five times), \textit{helpless} (if it has been attacked at least ten times and has not defended the position) and \textit{bad warrior} (if it has unsatisfactory attacked at least ten times). Also,  after 1000 virtual days, the alive population will be the 60\% of the total population (archetype \textit{survival population}).
+%FERGUPPSN: reducido lo de abajo arriba
+
+%\begin{itemize}
+%\item Ensure that, after 1000 virtual days, the alive population will be the 60\% of the total population. This archetype, called \textit{survival population}, affects all the population, so it is a \textit{global archetype}.
+%\item Emerge the \textit{downtrodden} archetype in the 22\% of the
+%  population. An agent will be considered as a \textit{downtrodden} or
+%  \textit{defender} if it has been attacked at least two times and has
+%  defended the position.
+%\item Emerge the \textit{warrior} archetype in the 22\% of the population. An agent will be considered as a \textit{warrior} if it has satisfactory attacked at least five times.
+%\item Emerge the \textit{helpless} archetype in the 22\% of the population. An agent will be considered as a \textit{helpless}  if it has been attacked at least ten times and has not defended the position.
+%\item Emerge the \textit{bad warrior} archetype the in 22\% of the population. An agent will be considered as a \textit{bad warrior}  if it has unsatisfactory attacked at least ten times.
+%\end{itemize}
+
 We have used the presented values to define this scene because, in our opinion, they model an interesting literary scene.
 
 
 The second literary scene is called ``revenge'' and its goal is to model an individual complex memory
-based behaviour between two characters. This scene is performed to make more complex memory based behavior emerging between two characters:  It tries to find the number of profiles and values which are optimal to make \textit{revenge} archetype emerge in as many agents as possible after 1000 days.  An agent (a) will be considered as a \textit{avenger} if it has been attacked by other agent (b) and after that, in a moment in its life, it has satisfactory attacked the agent b, in \textit{revenge}. The value of the days is set to 1000 because is a duration long enough to make the archetype emerge. 
+based behaviour between two characters. This scene is performed to make more complex memory based behaviour emerging between two characters:  It tries to find the number of profiles and values which are optimal to make \textit{revenge} archetype emerge in as many agents as possible after 1000 days.  An agent (a) will be considered as a \textit{avenger} if it has been attacked by other agent (b) and after that, in a moment in its life, it has satisfactory attacked the agent b, in \textit{revenge}. The value of the days is set to 1000 because is a duration long enough to make the archetype emerge.
+
+The archetypes of both scenes can be searched in the set of generated logs from all agents at the end of a run.
 
 \subsection{Definition of  the genetic algorithm}
 
+%In this work, we have implemented a method based on regular expressions with backreferences. The proposed technique puts annotations in every agent whose log matches a complex regular expression able to find emerging high level behaviours, not implemented in the life-cycle.
+%FERGUPPSN: quitadas movidas destas
 
-To model the ``territorial war'' setting we have defined the fitness function as follows: if the exact percentage of agents are tagged with one archetype defined, 1 point is added to the fitness. The maximum is therefore, 5 points. However, all the fitnesses use a normal distribution over the percentage of appearance. For example, with the archetype ``survival population'', the maximum value (1) is obtained when the 60\% percent of the population is alive, and the normal distribution begins in the 30\% and ends in the 90\%. For the rest of the archetypes, 1 point is added if the 22'5\% of the population is tagged with each one of the archetypes, and each normal distribution begins in the 8\% and ends in the 30\%.
+In this proposal, the parameters used to define an agent, mentioned in Section~\ref{sec:methodology}, are mapped into a chromosome, and a Genetic Algorithm is used to evolve the solution. %The fitness function is expressed in terms of:
+
+%\begin{itemize}
+%\item \textbf{Regular expressions applied to the log of each agent in the environment:} An agent is tagged when a regular expression matches its log.
+%\item \textbf{A numeric function over the number of tagged agents for each archetype:} the fitness of the solution is incremented with the returning value.
+%\end{itemize}
+
+%FERGUPPSN: quitado
+
+Thanks to the agents' logs, we can know every event (internal and
+external) of their lives, so we can use it to evaluate the adequacy
+of the generated parameters for the environment with our desired literary setting.
+
+%and evaluate their interest or
+%adequacy to a specific literary setting.
+                                % interest in
+                                % what? Quieres decir si son
+                                % interesantes? - JJ2013 FERGUPPSN: reescrito arriba
+
+To model the ``territorial war'' setting we have defined the fitness function as follows: if the exact percentage of agents are tagged with one archetype defined in previous subsection, 1 point is added to the fitness. The maximum is therefore, 5 points. However, all the fitnesses use a normal distribution over the percentage of appearance. For example, with the archetype ``survival population'', the maximum value (1) is obtained when the 60\% percent of the population is alive, and the normal distribution begins in the 30\% and ends in the 90\%. For the rest of the archetypes, 1 point is added if the 22'5\% of the population is tagged with each one of the archetypes, and each normal distribution begins in the 8\% and ends in the 30\%.
 
 For the second literary setting (``revenge''), every agent whose log matches the archetype adds one point to the fitness. Therefore, the goal is to recreate an environment where several ``avenger'' agents exist.
 
-Thanks to the agents' logs, we can know every event (internal and
-external) of their lives, and evaluate their interest or
-adequacy to a specific literary setting.
-                                % interest in
-                                % what? Quieres decir si son
-                                % interesantes? - JJ2013
-In this work, we have implemented a method based on regular expressions with backreferences. The proposed technique puts annotations in every agent whose log matches a complex regular expression able to find emerging high level behaviours, not implemented in the life-cycle.
 
-In this proposal, the parameters used to define an agent, mentioned in Section~\ref{sec:methodology}, are mapped into a chromosome, and a Genetic Algorithm is used to evolve the solution. The fitness function is expressed in terms of:
 
-\begin{itemize}
-\item \textbf{Regular expressions applied to the log of each agent in the environment:} An agent is tagged when a regular expression matches its log.
-\item \textbf{A numeric function over the number of tagged agents for each archetype:} the fitness of the solution is incremented with the returning value.
-\end{itemize}
 
 % Our assumption is that
 % some archetypes could emerge using one profile but others may need
