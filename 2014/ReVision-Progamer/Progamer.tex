@@ -14,14 +14,14 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   AUTHORS   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\author{J.J. Asensio, A.M. Mora, \\P. García-Sánchez, J.J. Merelo}
+\author{J.J. Asensio, A.M. Mora, \\P. García-Sánchez, J.J. Merelo, P.A. Castillo}
 \authorrunning{J.J. Asensio et al.}
 
 \institute{
 Departamento de Arquitectura y Tecnología de Computadores. \\
 Escuela Técnica Superior de Ingenierías Informática y de Telecomunicación. \\
 Universidad de Granada, España \\
-\email{\{asensio, amorag, pablogarcia, jmerelo\}@ugr.es }  
+\email{\{asensio, amorag, pablogarcia, jmerelo, pacv\}@ugr.es }  
 }
 % la dirección de pablo es pgarcia y tú no sé si tienes - JJ
 \maketitle
@@ -32,15 +32,14 @@ Universidad de Granada, España \\
 Las herramientas de visualización de software a nivel de componente
 pueden ser utilizadas durante el desarrollo y mantenimiento del mismo
 para detectar y visualizar posibles defectos. Estas herramientas
-suelen ser diseñadas como plugins en los entornos de programación y
+suelen ser diseñadas como complementos en los entornos de programación y
 muestran las relaciones entre las clases permitiendo navegar también
 visualmente a través del software. Sin embargo también pueden ser
 útiles durante el aprendizaje de los conceptos básicos de
 programación. En este sentido es necesario dotar a las herramientas de
 características adicionales que faciliten este aprendizaje. Para tal
-fin, este trabajo explora el uso de juegos serios y técnicas de
-gamificación presentando la herramienta Progamer. Progamer es un
-plugin de Eclipse para visualización de código Java a nivel de método,
+fin, este trabajo explora el uso de técnicas de gamificación a través de la visualización de código presentando la herramienta Progamer. Progamer es un
+complemento en Eclipse para visualización de código Java a nivel de método,
 basado en mapa, que utiliza los videojuegos de plataformas como metáfora conceptual.
 \end{abstract}
 
@@ -50,7 +49,7 @@ basado en mapa, que utiliza los videojuegos de plataformas como metáfora concep
 %
 \section{Introducción}
 \label{sec:intro}
-La visualización de software es un amplio área de investigación que cubre las diferentes técnicas de asistencia empleadas en las actividades de ingeniería del software, tales como especificación, diseño, programación, test, mantenimiento, ingeniería inversa o re-ingeniería. Los métodos empleados, representan gráficamente (en 2D o 3D), de forma estática o dinámica (con animaciones), información relacionada con la estructura, tamaño, historia o comportamiento de un sistema software. El objetivo es facilitar la comprensión de diferentes aspectos del sistema. Esta visualización también permite analizar complejos sistemas y detectar anomalías o defectos de calidad en el software, lo que facilita su evolución. Por otra parte, a nivel educativo, cabe destacar su especial utilidad para el aprendizaje de los conceptos de programación y algoritmos básicos.
+La visualización de software es un amplio área de investigación que cubre las diferentes técnicas de asistencia empleadas en las actividades de ingeniería del software, tales como especificación, diseño, programación, test, mantenimiento, ingeniería inversa o re-ingeniería. Los métodos empleados, representan gráficamente (en 2D o 3D), de forma estática o dinámica (con animaciones), información relacionada con la estructura, tamaño, historia o comportamiento de un sistema software. El objetivo es facilitar la comprensión de diferentes aspectos del sistema \cite{baecker1988enhancing}. Esta visualización también permite analizar complejos sistemas y detectar anomalías o defectos de calidad en el software, lo que facilita su evolución \cite{softwarevisualization}. Por otra parte, a nivel educativo, cabe destacar su especial utilidad para el aprendizaje de los conceptos de programación y algoritmos básicos \cite{urquiza2009survey}.
 
 Para representar la estructura del software (generalmente orientado a objetos), normalmente, el enfoque consiste en visualizar las dependencias existentes entre las diferentes clases. Estas dependencias puede ser modeladas como un grafo por lo que la visualización en forma de grafo resulta adecuada. El software a un nivel más básico, es decir, a nivel de método, puede ser también representado de esta forma, mediante un diagrama de flujo. Este diagrama está compuesto por nodos y enlaces.
 
@@ -69,7 +68,11 @@ La representación en forma de mapa, permite visualizar los diferentes nodos del
 
 El establecimiento de reglas adecuadas para la representación de los diferentes nodos del lenguaje y su composición interna (nodos hijos) nos permite proyectar de manera flexible pero completamente objetiva, el código del programa sobre una imagen representativa. Esta flexibilidad creativa que ofrecen las reglas de composición, habilitan la cosificación o materialización de las metáforas conceptuales \cite{travers1996programming} en imágenes que pueden ser generadas automáticamente según qué aspecto del código se quiera reflejar con ellas. De esta forma es posible visualizar un mismo programa, usando diferentes metáforas, atendiendo al contexto de utilidad o asistencia deseada, como puede ser mantenimiento, evolución, tests, calidad, navegación, etc.
 
-En el caso del aprendizaje, interesa que la metáfora utilizada resulte atractiva para el estudiante. Para ello, este trabajo propone utilizar el escenario de un videojuego de plataformas como metáfora del árbol sintáctico abstracto del programa. Esta visualización encaja bien dentro de las técnicas de gamificación en educación como las empleadas en \cite{kumar2012gamification}, donde se gamifica todo el contexto de enseñanza de una asignatura de programación. Por otra parte, resulta ser también una visualización dinámica, puesto que la metáfora empleada es animada y existe una asociación directa entre ambos contextos semánticos, es decir, el protagonista del videojuego corre por el mapa y el ordenador ejecuta (corre) el programa. Esta metáfora también permite la creación de juegos serios donde la mecánica en realidad sería muy distinta a la del videojuego original, pues se trataría de diseñar un mapa (con posibles restricciones) que al ser recorrido resuelva el problema dado.
+En el caso del aprendizaje, interesa que la metáfora utilizada resulte atractiva para el estudiante. Para ello, este trabajo propone utilizar el escenario de un videojuego de plataformas como metáfora del árbol sintáctico abstracto del programa. Esta visualización encaja bien dentro de las técnicas de gamificación en educación como las empleadas en \cite{kumar2012gamification}, donde se gamifica todo el contexto de enseñanza de una asignatura de programación. 
+
+Por otra parte, resulta ser también una visualización dinámica, puesto que la metáfora empleada es animada y existe una asociación directa entre ambos contextos semánticos, es decir, el protagonista del videojuego corre por el mapa y el ordenador ejecuta (corre) el programa. 
+
+Esta metáfora también permite la creación de juegos serios donde la mecánica en realidad sería muy distinta a la del videojuego original, pues se trataría de diseñar un mapa (programa) aplicando ciertas restricciones que al ser recorrido (ejecutado) resuelva un problema dado. Hasta donde sabemos, no existe ninguna herramienta similar ni trabajos relacionados que apliquen esta técnica.
 
 Para la implementación de una herramienta de visualización dinámica de estas características se ha utilizado el lenguaje Java y el entorno Eclipse. El resto de este trabajo está organizado de la siguiente forma: en la sección \ref{sec:background} se explora el contexto taxonómico, se discute el concepto de legibilidad del código y su relación con algunas herramientas existentes para el aprendizaje de programación orientada a objetos, se describen las técnicas de gamificación y la importancia de su papel en la metáfora conceptual propuesta. En la sección \ref{sec:proposal} se describe la herramienta presentada concretando sus características. En la sección \ref{sec:details} se detallan los principales aspectos de la implementación. Y por último en la sección \ref{sec:conclusions} se establecen las conclusiones obtenidas y la continuación de este trabajo junto con los agradecimientos. 
 
@@ -81,7 +84,7 @@ Para la implementación de una herramienta de visualización dinámica de estas 
 %----------------------------------------------------------------------------
 \subsection{Metáfora conceptual}
 
-La idea de utilizar metáforas para la representación y comprensión de conceptos abstractos es fundamental durante el aprendizaje. El término ``metáfora" que se usa aquí va más allá del sentido lingüístico habitual utilizado como recurso literario. En realidad se refiere al modelo metafórico por el cual se estructura el conocimiento de un dominio (objetivo) mediante la asociación al mismo de conceptos y relaciones de otro dominio (fuente) existente con el que ya se está familiarizado. En \cite{travers1996programming} se explora el concepto de metáfora en el contexto computacional.
+La idea de utilizar metáforas para la representación y comprensión de conceptos abstractos es fundamental durante el aprendizaje. El término ``metáfora" que se usa aquí va más allá del sentido lingüístico habitual utilizado como recurso literario. En realidad se refiere al modelo metafórico por el cual se estructura el conocimiento de un dominio objetivo mediante la asociación al mismo de conceptos y relaciones de otro dominio origen existente con el que ya se está familiarizado. En \cite{travers1996programming} se explora el concepto de metáfora en el contexto computacional.
 
 En matemáticas se utilizan metáforas a menudo para enseñar todo tipo de conceptos. Algunos símbolos matemáticos, como por ejemplo, los paréntesis, pueden ser interpretados como metáforas, en el sentido de que encierran explícitamente un determinado contenido. Podríamos decir que su uso como símbolo posee un significado visual añadido. Existe sin embargo un inconveniente cuando se hace un uso intensivo de estos símbolos ya que pierden su capacidad explicativa, como se observa a continuación en el siguiente programa escrito en Lisp:
 
@@ -111,9 +114,7 @@ En concreto se clasifican según se visualiza el código, los datos o el algorit
 \end{center}
 \end{figure}
 
-La justificación se fundamenta en que el sistema visual humano está optimizado para procesar información multidimensional mientras que la programación convencional, sin embargo, es representada como un texto unidimensional. En este sentido, la capacidad del código de ser entendido por un humano, es decir, su legibilidad, es discutida a continuación y evaluada a través de algunas herramientas de ejemplo. En tales ejemplos se pone de manifiesto la necesidad de exploración y explotación de nuevas metáforas conceptuales que, aplicadas a un contexto puramente computacional, sean adecuadamente flexibles para expresar, resumir, documentar y comprender mejor el código. 
-
-El videojuego de plataformas, como metáfora animada de programa, resulta especialmente adecuado para los lenguajes Turing-completos (como veremos posteriormente), ha surgido en el contexto de la programación y el estudiante está familiarizado con éste.
+La justificación se fundamenta en que el sistema visual humano está optimizado para procesar información multidimensional mientras que la programación convencional, sin embargo, es representada como un texto unidimensional. En este sentido, la capacidad del código de ser entendido por un humano, es decir, su legibilidad, es discutida a continuación destacando la visualización de código empleada en algunas herramientas que se utilizan para enseñar la programación. En tales ejemplos se pone de manifiesto la necesidad de exploración y explotación de nuevas metáforas conceptuales que, aplicadas a un contexto puramente computacional, sean adecuadamente flexibles para expresar, resumir, documentar y comprender mejor el código. 
 
 %----------------------------------------------------------------------------
 \subsection{Legibilidad}
@@ -173,13 +174,14 @@ Algunas herramientas que utilizan este enfoque son:
 \subsubsection{La experiencia del lector.}
 \label{subsec:reader}
 
-El segundo caso, por otra parte, tiene un alcance mucho más amplio y por tanto, más difícil de conseguir. Es necesario trabajar multitud de conceptos como los algebraicos, lógicos y matemáticos desde edades tempranas. Además, la naturaleza abstracta de estos conceptos dificulta su propia representación visual. En este sentido, algunos conceptos son más susceptibles que otros de ser visualizados, como por ejemplo, los conjuntos y sus operaciones, las funciones matemáticas, o los vectores, son más fáciles de visualizar que otros como la probabilidad, las derivadas o las diferentes partículas subatómicas. Esta visualización es importante durante el aprendizaje.
+El segundo caso por otra parte, tiene un alcance mucho más amplio y por tanto más difícil de conseguir. Es necesario trabajar multitud de conceptos como los algebraicos, lógicos y matemáticos desde edades tempranas. Además, la naturaleza abstracta de estos conceptos dificulta su propia representación visual. En este sentido, algunos conceptos son más susceptibles que otros de ser visualizados, como por ejemplo los conjuntos y sus operaciones, las funciones matemáticas, o los vectores, son más fáciles de visualizar que otros como la probabilidad, las derivadas o las diferentes partículas subatómicas. Esta visualización es importante durante el aprendizaje.
 
-Como vemos, el concepto general de legibilidad en el ámbito de la programación no está claro. El motivo principal es claramente la confusión de no tener en cuenta que el verdadero lector efectivo de un programa no es una persona, sino una máquina. 
+Como vemos, el concepto general de legibilidad en el ámbito de la programación no está claro. El motivo principal es claramente la confusión de no tener en cuenta que el verdadero lector efectivo del texto de un programa no es una persona, sino una máquina. 
 
-Desde este enfoque más amplio, es posible arrojar más luz sobre la comprensión de los procesos subyacentes en el aprendizaje de la programación. De aquí la importancia de la documentación del código \cite{tenny1988program}, a menudo descuidada. Es necesario abordar una automatización de generación de documentación legible entendiendo esta documentación, no sólo como un contenido añadido al programa, sino más bien como una característica intrínseca durante la generación y depuración del programa \cite{baecker1988enhancing}. En este paradigma el programador escribe y tanto el humano como la máquina pueden leer. Puesto que la máquina y el ser humano leen de forma diferente es necesario proveer al programador de diferentes herramientas para generar paralelamente al código, distintas representaciones semánticamente representativas para otras personas. Estas herramientas son especialmente importantes durante el aprendizaje.
+Desde este enfoque más amplio, es posible arrojar más luz sobre la comprensión de los procesos subyacentes en el aprendizaje de la programación. De aquí la importancia de la documentación del código \cite{tenny1988program}, a menudo descuidada. Es necesario abordar una automatización de generación de documentación legible entendiendo esta documentación, no sólo como un contenido añadido al programa, sino más bien como una característica intrínseca durante la generación y depuración del programa \cite{baecker1988enhancing}. En este paradigma el programador escribe y tanto el humano como la máquina pueden leer. Puesto que la máquina y el ser humano leen de forma diferente es necesario proveer al programador de diferentes herramientas para generar paralelamente al código y de forma automática, distintas representaciones significativas (de dominios conocidos) para sí mismo y para otras personas. Estas herramientas pueden ser especialmente efectivas durante el aprendizaje si se aplican metáforas donde el dominio de origen asociado a tales representaciones resulte atractivo para el estudiante.
 
-En este trabajo se propone una representación metafórica para visualizar el flujo de un programa de forma dinámica. La semántica utilizada para esta metáfora toma prestada la experiencia de la persona al jugar a videojuegos para hacer más intuitivo y atractivo el proceso de aprendizaje en el uso de las estructuras de control básicas de un programa escrito en un lenguaje procedural. La representación del código en forma de videojuego está motivada por la aplicación de técnicas de gamificación en el contexto educativo. Pero más allá de un uso atractivo, esta representación puede asistir también en el diseño de programas concurrentes. Pues al ser una metáfora basada en agente \cite{travers1996programming}, los diferentes hilos de ejecución pueden ser representados por diferentes personajes del videojuego recorriendo un mismo escenario.
+Para este fin, a continuación se exploran las técnicas de gamificación y algunos ejemplos en el contexto educativo. La idea es tomar prestada la experiencia de la persona al jugar a videojuegos para hacer más intuitivo y atractivo el proceso de aprendizaje del uso de estructuras básicas de control en lenguajes imperativos. 
+
 
 %----------------------------------------------------------------------------
 \subsection{Gamificación}
@@ -206,7 +208,8 @@ En relación a la tercera técnica enumerada C), entre los ejemplos existentes p
 \end{center}
 \end{figure}
 
-La herramienta que se presenta en este trabajo se encuadra dentro de este último tipo de técnicas. Al visualizar el texto correspondiente al código del programa como un escenario de un videojugo, resulta familiar y divertido al usuario, y se facilita así su comprensión e interpretación.
+La herramienta que se presenta en este trabajo se encuadra dentro de este último tipo de técnicas. Al visualizar el texto correspondiente al código del programa como un escenario de un videojugo, resulta familiar y divertido al usuario, y se facilita así su comprensión e interpretación. Además, al ser una metáfora basada en agente \cite{travers1996programming} podría asistir también en el diseño de programas concurrentes donde los diferentes hilos de ejecución pueden ser representados por diferentes personajes del videojuego recorriendo un mismo escenario.
+
 
 
 
@@ -225,7 +228,7 @@ ejecutar una subtarea, contrata una PP especializadad en esa tarea y
 se duerme. Cuando la PP contratada termina, vuelve a despertar al
 llamador (véase \cite{harvey1985computer}).
 
-Este trabajo propone una materialización de esta representación metafórica para visualizar los elementos del lenguaje usados en un programa. La metáfora utilizada está inspirada en las técnicas de gamificación. La idea es hacer más atractiva la tarea de codificación en programación. Para ello se utilizan videojuegos de plataformas. Quizás el videjouego de este tipo más famoso es Super Mario, para este trabajo se ha utilizado una versión libre de este juego llamada Secret Maryo Chronicles. La metáfora utilizada consiste en visualizar un método o una función, como una plataforma en el escenario del videojuego. Todo lo que hay sobre esta plataforma será el contenido del método. El uso de las estructuras de control básicas de un programa se corresponden con otras plataformas o elementos del videojuego por los que el protagonista del videojuego se mueve. Esta analogía resulta muy intuitiva puesto que relaciona la dinámica de ambos contextos. En concreto, entre los elementos básicos que pueden ser representados, se incluyen las sentencias de control típicas como el condicional, el switch, los bucles y la instrucción de retorno como se explica a continuación: 
+Es posible materializar esta metáfora para visualizar a las ``pequeñas personas" realizando su tarea al moverse por las instrucciones de un programa. Para ello, es necesario que tales instrucciones sean visualizadas como diferentes partes del escenario. Atendiendo a la tercera técnica de gamificación mencionada se propone un escenario típico de un videojuego de plataformas. La idea es hacer más atractiva la tarea de codificación y depuración. Quizás el videjouego de este tipo más famoso es Super Mario, para este trabajo se ha utilizado una versión libre de este juego llamada Secret Maryo Chronicles. La metáfora utilizada consiste en visualizar un método o una función, como una plataforma en el escenario del videojuego. Todo lo que hay sobre esta plataforma será el contenido del método. El uso de las estructuras de control básicas de un programa se corresponden con otras plataformas o elementos del videojuego por los que el protagonista del videojuego se mueve. Esta analogía resulta muy intuitiva puesto que relaciona la dinámica de ambos contextos. En concreto, entre los elementos básicos que pueden ser representados, se incluyen las sentencias de control típicas como el condicional, el switch, los bucles y la instrucción de retorno como se explica a continuación: 
 
 \begin{itemize}
 \item {\em Condicional}: Es representado mediante una plataforma elevada. Si la condición se cumple, el personaje saltará a la plataforma, si no, pasará por debajo.
@@ -234,17 +237,17 @@ Este trabajo propone una materialización de esta representación metafórica pa
 \item {\em Retorno}: Una puerta representa la devolución de datos del método.
 \end{itemize}
 
-Para que el flujo de programa pueda ser representado al menos se requieren estos elementos. Existen multitud de videojuegos de plataformas que cumplen con estos requisitos. En este aspecto la visualización puede ser personalizada por el usuario eligiendo los gráficos relacionados con el juego que le resulte más atractivo. Además, otros elementos del lenguaje pueden ser representados mediante diferentes gráficos del juego. Por ejemplo, las expresiones pueden consistir en cajas que el personaje golpea para ver su contenido. Según este esquema el programa de las figuras \ref{fig:flowchart} y \ref{fig:scratch} queda representado en la figura \ref{fig:flowchartgame}.
+Para que el flujo de programa pueda ser representado al menos se requieren estos elementos. Existen multitud de videojuegos de plataformas que cumplen con estos requisitos. En este aspecto la visualización puede ser personalizada por el usuario eligiendo los gráficos del videojuego que le resulte más atractivo. Además, otros elementos del lenguaje pueden ser representados mediante diferentes gráficos del juego. Por ejemplo, las expresiones pueden consistir en cajas que el personaje golpea para ver su contenido. Según este esquema el programa de las figuras \ref{fig:flowchart} y \ref{fig:scratch} queda representado en la figura \ref{fig:flowchartgame}.
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[scale=0.5]{images/flowchartgame2.pdf}
+\includegraphics[scale=0.4]{images/flowchartgame2.pdf}
 \caption{Visualización propuesta para el programa de ejemplo de la figura \ref{fig:flowchart} y \ref{fig:scratch}. El bucle está representado como la plataforma que hay entre los dos tubos, el IF dentro del bucle es otra plataforma interior y las diferentes expresiones son cajas.
 \label{fig:flowchartgame}}
 \end{center}
 \end{figure}
 
-Otra característica interesante para dar más capacidad de expresión a la representación visual (en el sentido opuesto al ejemplo comentado de las flechas de la sección anterior), es la posibilidad de elegir diferentes texturas para las plataformas en el contexto del juego para diferentes partes del código. Por ejemplo, supongamos que hay una parte del código más interesante o que requiere mayor atención, entonces se pueden utilizar gráficos correspondientes a escenarios más difíciles del juego como mazmorras, escenarios de lava o nieve, que sean fácilmente identificables. En la figura \ref{fig:texture} vemos un ejemplo.
+Para dar más capacidad de expresión y concreción a la representación visual en determinadas zonas del código, existe la posibilidad de elegir diferentes texturas para los elementos del código. Si por ejemplo hay una parte del código más problemática y que por tanto requiere mayor atención, se pueden utilizar gráficos asociados a escenarios más difíciles del videojuego que sean fácilmente identificables. En la figura \ref{fig:texture} vemos un ejemplo.
 
 \begin{figure}[ht]
 \begin{center}
@@ -261,35 +264,34 @@ El lenguaje para el que se ha implementado la herramienta de visualización prop
 
 \section{Implementación}
 \label{sec:details}
-Para implementar esta herramienta de visualización dinámica se ha optado por utilizar el lenjuaje Java sobre Eclipse. Eclipse es una plataforma extensible para construir IDEs. Proporciona servicios básicos para utilizar varias herramientas que ayudan en las tareas de programación. Los desarrolladores de herramientas pueden contribuir a la plataforma envolviéndolas en forma de componentes llamados plugins. El mecanismo básico es añadir nuevos elementos de procesamiento a los plugins existentes. Mediante un manifiesto XML se describe la forma en que el entorno de ejecución de Eclipse activará y manejará las instancias del plugin. 
+Para implementar la herramienta de visualización dinámica propuesta se ha utilizado el lenjuaje Java sobre el entorno Eclipse. Eclipse es una plataforma extensible para construir IDEs. Proporciona servicios básicos para utilizar varias herramientas que ayudan en las tareas de programación. Los desarrolladores de herramientas pueden contribuir a la plataforma envolviéndolas en forma de componentes llamados complementos o \emph{plugins}. El mecanismo básico es añadir nuevos elementos de procesamiento a los complementos existentes. Mediante un manifiesto XML se describe la forma en que el entorno de ejecución de Eclipse activará y manejará las instancias del complemento. 
 
-El plugin Code Reimagined consiste en una vista añadida a la perspectiva Java para mostrar la imagen generada a partir del código que se está editando. 
+El complemento Progamer consiste en una vista añadida a la perspectiva Java para mostrar la imagen generada a partir del código que se está editando. 
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[scale=0.3]{images/crplugin.eps}
-\caption{Esquema del plugin como una nueva vista en Eclipse.
+\includegraphics[scale=0.35]{images/crplugin.eps}
+\caption{Esquema del complemento como una nueva vista en Eclipse.
 \label{fig:crplugin}}
 \end{center}
 \end{figure}
 
-Para analizar el código se ha usado el patrón ``visitor'' sobre el árbol sintáctico abstracto del código Java. Recorriendo este árbol se obtiene otro árbol cuyos nodos representan las áreas a dibujar en la vista. Estos nodos heredan de una clase abstracta y especifican cómo se pinta el elemento de programación dado y qué recuadro resulta de ello. Para obtener la imagen en la vista, basta hacer un recorrido de este árbol (sin importar el orden) y llamar al método que dibuja recursivamente los sprites de cada nodo. 
+Para analizar el código se ha usado el patrón ``visitor'' sobre el árbol sintáctico abstracto del código Java. Recorriendo este árbol se obtiene otro árbol cuyos nodos representan las áreas a dibujar en la vista. Estos objetos nodos heredan de una clase abstracta y especifican la lógica de las reglas de composición de la imagen, es decir, cómo se pintará el elemento de programación dado y qué recuadro resulta de ello. Para obtener la imagen en la vista, basta hacer un recorrido de este árbol (sin importar el orden) y llamar al método que dibuja recursivamente las imágenes de cada nodo. 
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[scale=0.4]{images/eclipse.eps}
-\caption{El plugin Code Reimagined muestra el programa de la figura \ref{fig:flowchart} y \ref{fig:scratch} una vez integrado en el entorno Eclipse. Maryo aparece sobre el área dibujada correspondiente al elemento Java que hay a continuación a partir de la posición actual del cursor.
+\includegraphics[scale=0.5]{images/eclipse.eps}
+\caption{El complemento Progamer muestra el programa de la figura \ref{fig:flowchart} y \ref{fig:scratch} una vez integrado en el entorno Eclipse. El protagonista aparece sobre el área dibujada correspondiente al elemento Java que hay a continuación a partir de la posición actual del cursor.
 \label{fig:eclipse}}
 \end{center}
 \end{figure}
 
-Para representar la dinámica de Maryo moviéndose sobre la vista se ha
-implementado un {\em listener'} % usa cursiva para palabras en inglés
- para el cursor del editor de Java, de forma que el personaje aparecerá en el área correspondiente al elemento Java que haya inmediatemente después (figura \ref{fig:eclipse}). La manera de hacerlo ha sido utilizar una tabla hash indexando los nodos correspondientes a los elementos Java según su offset en el archivo.
+Para representar la dinámica del agente moviéndose sobre la vista se ha
+implementado un {\em listener} para el cursor del editor Java, de forma que el personaje aparecerá sobre el área correspondiente al elemento Java que haya inmediatamente después del cursor (figura \ref{fig:eclipse}). Para ello una tabla de dispersión almacena los nodos correspondientes a los elementos Java según su {\em offset} en el archivo de texto.
 
-Otra funcionalidad implementada es el posicionamiento del cursor en el editor Java, al hacer doble clic sobre el elemento correspondiente del mapa.
+Otra funcionalidad implementada es la navegación a través del código posicionando el cursor en el editor Java al hacer doble clic sobre el elemento correspondiente de la imagen generada.
 
-Este plugin se presentó al VII Concurso Universitario de Software Libre \footnote{\url{www.concursosoftwarelibre.org}} quedando finalista en la final local de la Universidad de Granada. El código está disponible para descarga en \url{https://github.com/javiplay/code-reimagined}.
+Este complemento se presentó al VII Concurso Universitario de Software Libre \footnote{\url{www.concursosoftwarelibre.org}} quedando finalista en la final local de la Universidad de Granada. El código está disponible para descarga en \url{https://github.com/javiplay/code-reimagined}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -297,14 +299,20 @@ Este plugin se presentó al VII Concurso Universitario de Software Libre \footno
 \section{Conclusiones}
 \label{sec:conclusions}
 
-En el contexto taxonómico de la visualización de programas y partiendo del concepto de legibilidad del código, este trabajo ha identificado la necesidad de desarrollar técnicas de visualización automáticas, donde la metáfora conceptual juegue un papel básico, no sólo para el aprendizaje sino también para la documentación y la comprensión de las tareas y conceptos relacionados con la programación. 
+En el contexto de la visualización de software y partiendo del concepto de legibilidad del código, este trabajo ha identificado la necesidad de desarrollar técnicas automáticas de visualización de programas, donde la metáfora empleada juegue un papel activo y material tanto para el aprendizaje de los conceptos básicos relacionados con la programación como para la documentación, comprensión, análisis, navegación y evolución del software.
 
-Para este tipo de visualización se ha establecido un principio básico de diseño que consiste en maximizar la precisión semántica de las representaciones minimizando la pérdida de analogía con los conceptos representados.
-Para la aplicación de este principio se ha comprobado la utilidad de las técnicas de gamificación, concretamente el uso de videojuegos de plataformas para representar el flujo de un programa.
+Las metáforas pueden ser concretadas en imágenes compuestas de acuerdo al árbol sintáctico abstracto del programa, donde cada tipo de nodo establece las reglas de composición. Esta técnica habilita el diseño de metáforas específicas para asistir durante el aprendizaje. Las metáforas diseñadas pueden dirigir y concentrar la atención del estudiante asociando los conceptos del dominio de la programación a elementos de otros dominios con los que el estudiante está familiarizado. 
 
-La representación propuesta es independiente del lenguaje y por tanto, complementaria a cualquier software de programación y especialmente adecuado para herramientas de aprendizaje constructivista como Scratch. Una vez concretados los detalles de esta representación, se ha desarrollado una herramienta de visualización dinámica de código Java en forma de plugin para Eclipse. 
+El videojuego de plataformas como dominio fuente para el diseño de la metáfora es adecuado tanto para la representación visual del flujo de control de un programa (mediante el escenario) como para su dinámica o ejecución (mediante la interacción del agente en el escenario). Las sentencias de control son comunes en los lenguajes imperativos y por tanto esta metáfora puede ser implementada para este tipo de lenguajes. Una vez concretados los detalles de esta representación, se ha desarrollado una herramienta prototipo de visualización dinámica de código Java en forma de complemento para Eclipse. 
 
-Como líneas de actuación futura, además de añadir nuevas características, se propone la realización de experimentos para validar la efectividad de esta herramienta. En caso de obtener resultados positivos, se podría aplicar esta forma de visualización ``gamificada'', a otro tipo de diagramas relacionados con la programación orientada a objetos. 
+El desarrollo futuro de este trabajo contempla varias líneas:
+\begin{itemize}
+\item En primer lugar es necesario evaluar la efectividad de esta técnica en la mejora del aprendizaje, comprensión, depuración, navegación y documentación del software mediante diferentes experimentos.
+\item Por otro lado sería interesante desarrollar de cara a estos experimentos, juegos serios para abordar los problemas típicos de la asignatura "Fundamentos de la Programación".
+\item También se continuará con la exploración de nuevas formas metafóricas que destaquen o asistan otros aspectos del software básicos más allá de su estructura de flujo tales como el uso de expresiones, tipos de datos, variables, llamadas a métodos, uso de parámetros, etc.
+\item Por último, aunque no relacionado con el ámbito de la educación se planteará el uso de esta técnica para explorar nuevas formas de expresión tecno-artística.
+\end{itemize}
+
 
 
 
