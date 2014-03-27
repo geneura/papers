@@ -6,11 +6,8 @@
 \begin{document}
 %
 % --- Author Metadata here ---
-\conferenceinfo{GECCO'14} {Vancouver, Canada}
+\conferenceinfo{EvoSoft @ GECCO'14} {Vancouver, Canada}
 \CopyrightYear{2014}
-%\CopyrightYear{2007} % Allows default copyright year (20XX) to be over-ridden - IF NEED BE.
-%\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
-% --- End of Author Metadata ---
 
 \title{NodEO, a multi-paradigm distributed evolutionary algorithm platform in JavaScript}
 \subtitle{}
@@ -339,7 +336,14 @@ and crossover operators, tournament selection and a few test
 functions, including the Trap function (explained below), that has been selected for
 making the experiments in this paper. 
 
-% Antonio - de aqui hacia abajo podría ir en la sección de experimentos.
+
+
+\section{Testing distributed evolutionary architectures}
+\label{sec:dist}
+
+% Antonio - de aqui hacia abajo podría ir en la sección de
+% experimentos.
+% Movido - JJ
 
 The experiments in the paper have been designed so that different
 distributed architectures can be tested. All programs have been
@@ -363,30 +367,28 @@ $$
     b*(x-z)/(l-z) &\mbox{ if  $x>z$} \\
 \end{array}\right.
 $$
-
 where $x$ is the number of ones in the block, $l$ is the length of the
 block, and $a$ and $b$ are two constants that meet the condition $a <
-b$.
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|l|c|}
-\hline
-Constant & Value \\
-\hline
-$z$ & 3 \\
-$a$ & 1 \\
-$b$ & 2 \\
-\hline
-\end{tabular}
-\caption{Values used for the 4-Trap function; please note that $l=4$
-  and the rest of the values follow the usual conventions: $z=l-1$,
-  $a=b-1$.\label{tab:trap}}
-\end{table}
-
-Not all Trap functions are
-deceptive, but we will use here the 4 bit version, that is, $l=4$ with
-the values shown in Table \ref{tab:trap}, which are the usual in other
+b$. In this experiment we will use $z=3,a=1, b=2$
+% \begin{table}[h]
+%     \centering
+%     \begin{tabular}{|l|c|}
+% \hline
+% Constant & Value \\
+% \hline
+% $z$ & 3 \\
+% $a$ & 1 \\
+% $b$ & 2 \\
+% \hline
+% \end{tabular}
+% \caption{Values used for the 4-Trap function; please note that $l=4$
+%   and the rest of the values follow the usual conventions: $z=l-1$,
+%   $a=b-1$.\label{tab:trap}}
+% \end{table}
+% Not all Trap functions are
+% deceptive, but we will use here the 4 bit version, that is, $l=4$ with
+% the values shown in Table \ref{tab:trap}, 
+which are the usual in other
 papers such as \cite{gonzalez2010characterizing}. This guarantees the
 problem is challenging enough for a wide variety of problem sizes. We
 will consider 30, 40 or 50 blocks, which offer increasing difficulty
@@ -427,7 +429,7 @@ and 50.
 
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.4]{base-hits-pop.png}
+   \includegraphics[scale=0.35]{base-hits-pop.png}
 \caption{Number of successful runs out of 30; a run is considered
   successful if the target string (all ones) is found. The leftmost
   line corresponds to 30 blocks, the one in the middle to 40 and the
@@ -437,7 +439,7 @@ and 50.
 %
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.4]{base-time-pop.png}
+   \includegraphics[scale=0.35]{base-time-pop.png}
 \caption{Average time, in milliseconds, for successful runs. The leftmost
   line corresponds to 30 blocks, the one in the middle to 40 and the
   last one in the right to 50. }
@@ -459,19 +461,46 @@ with smaller sizes. We will also have to take into account this fact
 when doing the parallel version of these algorithms, which we will
 show in the next section.
 
+\begin{figure}[htb]
+\centering
+   \includegraphics[scale=0.30]{benchmark.png}
+\caption{Benchmark comparing running time for node.js and two
+  browsers. Node version is 0.10.29, Firefox 26.0 and Chromium
+  31.0.1650.63, all of them running on Ubuntu 13.10. The first
+  benchmark has been repeated 30 times, and the others 10 times. All
+  results run the same benchmark, with the node version using the same
+data as that plotted in Figure \ref{fig:time}; the benchmark uses
+4-trap with 30 blocks and population = 512.}
+\label{fig:benchmark}
+\end{figure}
+%
+
 It should be noted that the number of lines needed to implement this
 problem is quite small and of the order of a few hundred. This fact, along with the performance obtained when solving
 this problem, shows that JS and the library used in this paper
 can be a contender in the arena of evolutionary computation
-frameworks. 
+frameworks. We have also tested different JS virtual machines to see
+if there is a difference between implementations. The fact that it is
+done in JavaScript allows to easily transform Node code into one that
+can be run in the browser by just using a tool called {\tt
+  browserify}; the resulting code is, in fact, the same, with the main
+difference being the way it is called and the fact that it has to be
+done from a web page. There are also slight differences in the way the
+loop is done, or rather not done: it has got to stop from time to time
+to avoid blocking the browser. Even so, benchmark results shown in
+Figure \ref{fig:benchmark} show that performance of all virtual
+machines is essentially the same, with a statistical significant
+difference only between Firefox and Chromium, not between Node and the
+other two implementations. 
 % Antonio - quizá haría falta una comparativa con otras implementaciones o una REF para aseverar esto
 However, the true worth of {\tt node.js} will be shown in the
 next section by extending this basic algorithm for parallel execution.
 
-\section{Testing distributed evolutionary architectures}
-\label{sec:dist}
+% Antonio - Interesaría hacer una breve intro a los modelos
+% distribuidos de EAs, o un par de citas. No todo el mundo en el GECCO
+% los conocerá, creo yo. ;)
 
-% Antonio - Interesaría hacer una breve intro a los modelos distribuidos de EAs, o un par de citas. No todo el mundo en el GECCO los conocerá, creo yo. ;)
+%Al que no los conozca- lo echamos - JJ
 
 The easiest way of creating a distributed application using Node is
 adding a RESTful interface to it using {\tt express.js}; in fact,
@@ -568,7 +597,7 @@ influences the performance.
 
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.4]{parallel-hits-pop.png}
+   \includegraphics[scale=0.35]{parallel-hits-pop.png}
 \caption{Number of successful runs out of 30. Black, solid line
   corresponds to migration after 20 generations, light-colored, dashed
 corresponds to migration after 10 generations.}
@@ -577,7 +606,7 @@ corresponds to migration after 10 generations.}
 %
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.4]{parallel-time-pop.png}
+   \includegraphics[scale=0.35]{parallel-time-pop.png}
 \caption{Average time, in milliseconds, for successful runs. Black,
   solid line corresponds to $g$ (generation gap) = 10, light, dashed
   to $g=20$, and, for the sake of comparison, the baseline single-node
@@ -634,7 +663,7 @@ brings errors which crash the clients in some cases.
 
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.4]{par-pool-time-pop.png}
+   \includegraphics[scale=0.35]{par-pool-time-pop.png}
 \caption{Average time, in milliseconds, for successful runs. Black,
   solid represents the previously mentioned P2P architecture, while
   the light, dashed line represents the pool-based, single-server
@@ -644,7 +673,7 @@ brings errors which crash the clients in some cases.
 %
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.4]{par-pool-hits-pop.png}
+   \includegraphics[scale=0.35]{par-pool-hits-pop.png}
 \caption{Number of successful runs out of 30. Black, solid line
   corresponds to the P2P architecture, light-colored, dashed
 corresponds to the single-server architecture (pool).}
@@ -747,24 +776,24 @@ increasing complexity that we pointedly tried to avoid.
 
 In any case, it is quite clear that the use of this platform and the
 degrees of liberty in its design open a whole world of possibilities
-to test, including these \begin{itemize}
-\item Uniform vs. heterogeneous settings in nodes. We have been using a
+testing uniform vs. heterogeneous settings in nodes. We have been using a
   single population size, generation gap and tournament size, in
   general. Using dissimilar and even random values might increase
-  diversity and thus increase the success rate.
-\item Heterogeneous systems vs. homogeneous systems: using the same
-  parameters in different systems will, once again, increase diversity
-  and will allow anyways the use of many more resources that are
-  available under a single motherboard. Using free PaaS (Platform as a Service) or the free
-  tier of IaaS (Infrastructure as a Service) products such as Amazon EC2 or Azure will allow to work
-  with bigger problems, be it in a P2P or pool-based fashion
-\item The P2P and pool-based options are not mutually exclusive, since
+  diversity and thus increase the success rate; heterogeneity could
+  come from parameter settings or from different machines being
+  used. Besides, 
+% \item Heterogeneous systems vs. homogeneous systems: using the same
+%   parameters in different systems will, once again, increase diversity
+%   and will allow anyways the use of many more resources that are
+%   available under a single motherboard. Using free PaaS (Platform as a Service) or the free
+%   tier of IaaS (Infrastructure as a Service) products such as Amazon EC2 or Azure will allow to work
+%   with bigger problems, be it in a P2P or pool-based fashion
+the P2P and pool-based options are not mutually exclusive, since
   in fact the program used in the P2P setup can be used as a server by
   adding to it the capability to respond to PUT petitions. Working
   with different servers and distributing clients might offer a way
   out of the server overload problem but, at the same time, opens many
   more possibilities.
-\end{itemize}
 
 We should emphasize too that this research has been carried out in an
 open science fashion by publishing, as soon as they are produced, all
