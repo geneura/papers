@@ -6,11 +6,8 @@
 \begin{document}
 %
 % --- Author Metadata here ---
-\conferenceinfo{GECCO'14} {Vancouver, Canada}
+\conferenceinfo{EvoSoft @ GECCO'14} {Vancouver, Canada}
 \CopyrightYear{2014}
-%\CopyrightYear{2007} % Allows default copyright year (20XX) to be over-ridden - IF NEED BE.
-%\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
-% --- End of Author Metadata ---
 
 \title{NodEO, a multi-paradigm distributed evolutionary algorithm platform in JavaScript}
 \subtitle{}
@@ -49,18 +46,9 @@ Last one\\
 \maketitle
 \begin{abstract}After more than fifteen years, JavaScript has finally risen as a popular
 language for implementing all kind of applications, from server-based
-to rich Internet Applications. The fact that it is implemented in the browser and in server-side tools makes it interesting for
-% Antonio - qué features en concreto?, al menos nómbralas
-designing evolutionary algorithm frameworks 
-that encompass both
-tiers, but besides, they allow a change in paradigm that goes beyond
-the canonical evolutionary algorithm. 
-%Maribel, muchos frameworks van mÃ¡s allÃ¡ del algoritmo genÃ©tico canÃ³nico, pero esto no pasa porque estÃ©n hechos en javascript
-% Antonio - qué cambio en concreto?
-In this paper we will experiment
-with different architectures, client-server and peer to peer to assess which ones offer most advantages in terms of
-performance, scalability and ease of use 
-for the computer scientist. All implementations  have been released as open source, and besides showing that the concept of working with evolutionary algorithms in JavaScript can be done efficiently, we prove that a master-slave parallel architecture offers the best combination of time and algorithmic improvements in a parallel evolutionary algorithm that leverages JavaScript implementation features.
+to rich internet applications. The fact that it is implemented in the browser and in server-side tools makes it interesting for designing evolutionary algorithm frameworks that encompass both tiers, but besides, they allow a change in paradigm that goes beyond the canonical evolutionary algorithm. 
+In this paper we will experiment with different architectures, client-server and peer to peer to assess which ones offer most advantages in terms of
+performance, scalability and ease of use for the computer scientist. All implementations have been released as open source, and besides showing that the concept of working with evolutionary algorithms in JavaScript can be done efficiently, we prove that a master-slave parallel architecture offers the best combination of time and algorithmic improvements in a parallel evolutionary algorithm that leverages JavaScript implementation features.
 
 \end{abstract}
 
@@ -85,7 +73,7 @@ language for the browser, and in fact most books on JS
 telling you how to embed your scripts in the HTML code of a web page.
 
 Even as such embedded language, JavaScript is an interpreted language
-that uses classes and objects, functions as first-rate types and
+that uses classes and objects, functions as first-rate types, and which
 is dynamic and weakly typed-checked (a variable can change its type during
 its lifetime, but whatever type it has needs to be explicitly coerced
 to other type in some contexts, but not in all). These features make
@@ -97,17 +85,24 @@ this century with the introduction of standalone interpreters such
 as SpiderMonkey or Rhino \cite{mikkonen2007using}, but it was not
 until Google's introduction of the V8\cite{richards2010analysis}
 interpreter and its adoption by the {\tt node.js} JavaScript virtual machine that it started to
-become what it is now, one of the most (or arguably the most) popular development languages
+become what it is now, one of the most (or arguably the most) popular 
+% Antonio -yo quitaría esto, ya que no me lo creo. Será Java el más popular, ¿no?
+development languages
 \cite{ogrady14:ranking}. At the same time, it is the only language of
 which it can be said that it is truly ubiquitous; every
 Internet-connected device has at least one interpreter
 \cite{crockford:javascript} (often as a browser), but you can find it
 also as the language of choice of the Gnome user-interface in Linux,
-CouchDB object database, in many Platform-as-a-service products such
+CouchDB object database, and in many Platform-as-a-service (PaaS) products such
 as Heroku, Nodejitsu or Openshift. It can also be easily installed in
-IaaS (Infrastructure as a Service) products such as Windows Azure or Amazon. That makes it the right
+IaaS (Infrastructure-as-a-Service) products, such as Windows Azure or Amazon.
+% Antonio - Amazon qué? EC2?
+ That makes it the right
 choice for parasitic-style or volunteer computing platforms such as
-Crowdprocess\footnote{https://crowdprocess.com}. The fact that there are interpreters embedded in browsers
+Crowdprocess\footnote{https://crowdprocess.com}. 
+% Antonio - no acabo de ver clara esta justificación... parece que la razón es la última que dices de Windows Azure o Amazon)
+
+The fact that there are interpreters embedded in browsers
 and in server-side services makes it the only language in which you can
 develop both the client and server tier of a client-server application
 (and, for that matter, any other tier in between).
@@ -115,18 +110,18 @@ develop both the client and server tier of a client-server application
 What we propose in this paper is to measure different ways of
 implementing distributed evolutionary algorithms using JS. It
 has already been proved that implementation matters
-\cite{DBLP:conf/iwann/MereloRACML11}, and it does so since the
+\cite{DBLP:conf/iwann/MereloRACML11}, and it does so, since the
 evolutionary framework must be translated to a particular language in
 a way that goes with its grain and not in the way that is more easily
 translated from C or Java, but also because it offers new ways of
 implementing evolutionary algorithms. 
 % Antonio - en qué sentido? qué posibilidades ofrece?
 In many cases, the environments
-where JS excels, the browser, for instance, might need proper
+where JS excels, such as the browser, for instance, might need proper
 support in the shape of evolutionary algorithms; finally, creating
-distributed evolutionary algorithms is easy using JS; so easy,
-in fact, that there are so many ways of doing it and mixing and
-matching them (WebSockets, Ajax and REST, just to name a few) that it
+distributed evolutionary algorithms is easy using JS; 
+so easy, in fact, that there are so many ways of doing it, and mixing 
+and matching them (WebSockets, Ajax and REST, just to name a few) that it
 becomes necessary to give an initial idea of how to make them useful
 for evolutionary algorithms and what is the performance we should
 expect. 
@@ -143,9 +138,7 @@ performance in terms of scalability and number of evaluations needed
 to reach the solution.
 
 The rest of the paper is organized as follows: next we describe the
-state of the art in new and uncanny implementations of evolutionary algorithms and
-past implementations using different JS interpreters. The
-algorithm that has been adapted to JS is described next along with the
+state of the art in new and uncanny implementations of evolutionary algorithms, and a description of the past implementations using different JS interpreters. The algorithm that has been adapted to JS is described next along with the
 experimental setup in Section \ref{sec:node}; finally results are
 presented in Section \ref{sec:dist} and its implications
 discussed in the last section of the paper. 
@@ -177,11 +170,11 @@ algorithm (in this case, the use of populations much bigger than is
 usual in evolutionary algorithms) and, of course, faster and more
 efficient solutions of the problem at hand. 
 
-However, Javascript has not been the subject of extensive
+However, JavaScript has not been the subject of extensive
 experimentation until now. The first mention of JS in relation
 with evolutionary algorithms was in 1996, when Smith and Sugihara
 \cite{smith1996ga} used it for creating the user interface of a
-browser-based evolutionary building system that was, in fact, based in
+browser-based evolutionary building system, that was, in fact, based in
 Java. It was not much later, in 1998, when a single-browser
 evolutionary algorithm for evolving the layout of a web newspaper was
 published \cite{jj-ppsn98}. In this case an outstanding feature of
@@ -191,7 +184,7 @@ been done in any other way since the intention was that a personalized
 page was generated by every user and rendered using the user's own
 computing power, without needing to overload the server with the
 generation of pages for thousands of users. In this sense it also
-pointed out to {\em unwitting} \cite{klein2007unwitting} use of resources which was taken full
+pointed out to the {\em unwitting} \cite{klein2007unwitting} use of resources, which was taken full
 advantage later on for the generation of L-System (a grammar for
 describing fractal objects) in a distributed way
 \cite{langdon2004global} once again, and in the same way that has been
@@ -205,7 +198,7 @@ ways, \cite{gecco07:workshop:dcor,klein2007unwitting,agajaj}. These
 initial experiments mainly revealed that the usual ways of
 distributing evolutionary algorithms (farming out evaluation or using
 synchronous islands) were not suitable to an ephemeral client that
-could enter a particular experiment at any time. It was clear also
+could enter into a particular experiment at any time. It was clear also
 that new paradigms, based on using {\em pools} of resources and
 dealing with them asymmetrically could also be better suited to this
 environment that symmetric algorithms with uniform distribution of their
@@ -215,6 +208,7 @@ tested with this premise
 them use JavaScript, those that do not use it (like EvoSpace,
 \cite{DBLP:conf/evoW/ValdezTVGO13}) reach conclusions that can be
 applied to JS-based evolutionary algorithms as well.
+% Antonio - ¿como cuales?
 
 The current state of the art shows that JS can, indeed, be used in a
 cloud computing environment, but that an assessment of its performance
@@ -222,7 +216,7 @@ in different situations, frameworks and methodologies might be in
 order. This is what we will carry out in this paper via different
 implementations mainly done in the asynchronous JS interpreter {\tt
   node.js}; what this asynchrony means will be explained next. 
-% Antonio - ¿qué significa que sea asincrono?
+
 
 \section{An evolutionary algorithm in node.js}
 \label{sec:node}
@@ -253,7 +247,7 @@ do {
 \end{lstlisting}
 will not work as expected. The main problem is that all input/output
 operations will create events in the implicit event loop, which will
-generate callbacks once the request has been completed.  Code shown
+generate callbacks once the request has been completed.  The code shown
 above will work, but will {\em never} have time to process the events
 and thus migrations, either in or out, will never take place, or
 rather, inbound requests will be made but not processed and outbound
@@ -278,9 +272,9 @@ function do_evolution(){
 \end{lstlisting}
 
 This is not only a way of writing the programs using different patterns,
-it also a different way of understanding the algorithm
+it is also a different way of understanding the algorithm
 sequence. Please note that {\tt do\_after\_callbacks} receives a
-function {\em pointer}, not a function call; it is not a recursive
+function {\em pointer}, not a function call; so it is not a recursive
 call, but actually the definition of a callback. In a
 synchronous framework, the first pseudo-code should be expected to behave
 in this way:
@@ -293,8 +287,7 @@ Migration-out
 Migration-in
 \end{lstlisting}
 
-However, what we will find in an evolutionary algorithm in Node
-programmed as above will be something like
+However, what we will find in an evolutionary algorithm programmed in Node as above will be something like
 \begin{lstlisting}
 Generation 1
 Generation 2
@@ -336,10 +329,17 @@ URL have been withheld for anonymous review).
 The library has been intended mainly as a proof of concept, including
 the bare minimum to run an evolutionary algorithm: a single mutation
 and crossover operators, tournament selection and a few test
-functions, including the Trap function (explained below), that has been selected for
-making the experiments in this paper. 
+functions, including the Trap function (explained below), that has been selected for making the experiments in this paper. 
 
-% Antonio - de aqui hacia abajo podría ir en la sección de experimentos.
+
+\section{Testing distributed evolutionary architectures}
+\label{sec:dist}
+
+% Antonio - de aqui hacia abajo podría ir en la sección de
+% experimentos.
+% Movido - JJ
+% Antonio - de aqui hacia abajo podría ir en la sección de experimentos. Me reafirmo. :D
+% Y yo ya lo había movido - JJ
 
 The experiments in the paper have been designed so that different
 distributed architectures can be tested. All programs have been
@@ -363,30 +363,28 @@ $$
     b*(x-z)/(l-z) &\mbox{ if  $x>z$} \\
 \end{array}\right.
 $$
-
 where $x$ is the number of ones in the block, $l$ is the length of the
 block, and $a$ and $b$ are two constants that meet the condition $a <
-b$.
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|l|c|}
-\hline
-Constant & Value \\
-\hline
-$z$ & 3 \\
-$a$ & 1 \\
-$b$ & 2 \\
-\hline
-\end{tabular}
-\caption{Values used for the 4-Trap function; please note that $l=4$
-  and the rest of the values follow the usual conventions: $z=l-1$,
-  $a=b-1$.\label{tab:trap}}
-\end{table}
-
-Not all Trap functions are
-deceptive, but we will use here the 4 bit version, that is, $l=4$ with
-the values shown in Table \ref{tab:trap}, which are the usual in other
+b$. In this experiment we will use $z=3,a=1, b=2$
+% \begin{table}[h]
+%     \centering
+%     \begin{tabular}{|l|c|}
+% \hline
+% Constant & Value \\
+% \hline
+% $z$ & 3 \\
+% $a$ & 1 \\
+% $b$ & 2 \\
+% \hline
+% \end{tabular}
+% \caption{Values used for the 4-Trap function; please note that $l=4$
+%   and the rest of the values follow the usual conventions: $z=l-1$,
+%   $a=b-1$.\label{tab:trap}}
+% \end{table}
+% Not all Trap functions are
+% deceptive, but we will use here the 4 bit version, that is, $l=4$ with
+% the values shown in Table \ref{tab:trap}, 
+which are the usual in other
 papers such as \cite{gonzalez2010characterizing}. This guarantees the
 problem is challenging enough for a wide variety of problem sizes. We
 will consider 30, 40 or 50 blocks, which offer increasing difficulty
@@ -402,7 +400,9 @@ algorithm is a generational method with individuals kept as {\em
 2-point crossover. These parameters will be kept constant (except for
 the population) for all experiments.  If
 the solution is not found after 2 million evaluations, the program
-stops. 
+stops.
+% Antonio - cuanto tardarían 2000000000 evaluaciones???? queda un poco exagerao 
+% Sólo 2 millones, y tarda unos 20 segundos. Es rápido. 
 
 Experiments are repeated 30 times
 and take place in a Linux Ubuntu 13.10 box with
@@ -427,7 +427,7 @@ and 50.
 
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.4]{base-hits-pop.png}
+   \includegraphics[scale=0.35]{base-hits-pop.png}
 \caption{Number of successful runs out of 30; a run is considered
   successful if the target string (all ones) is found. The leftmost
   line corresponds to 30 blocks, the one in the middle to 40 and the
@@ -437,7 +437,7 @@ and 50.
 %
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.4]{base-time-pop.png}
+   \includegraphics[scale=0.35]{base-time-pop.png}
 \caption{Average time, in milliseconds, for successful runs. The leftmost
   line corresponds to 30 blocks, the one in the middle to 40 and the
   last one in the right to 50. }
@@ -451,7 +451,7 @@ runs. These graphs have two purposes: first, to show the time needed to
 find the solution in Node, which is around 10 seconds for any of the
 problems, slightly more for the problem with 50 traps. This time is
 well in line with other script-based languages and show that
-Javascript can be competitive, time wise, with other languages. As a
+JavaScript can be competitive, time wise, with other languages. As a
 side comment, time decreases with population since the presence of a
 higher initial diversity is key for a successful initial exploitation,
 as opposed to an exploration regime that is needed to find the solution
@@ -459,19 +459,48 @@ with smaller sizes. We will also have to take into account this fact
 when doing the parallel version of these algorithms, which we will
 show in the next section.
 
+\begin{figure}[htb]
+\centering
+   \includegraphics[scale=0.30]{benchmark.png}
+\caption{Benchmark comparing running time for node.js and two
+  browsers. Node version is 0.10.29, Firefox 26.0 and Chromium
+  31.0.1650.63, all of them running on Ubuntu 13.10. The first
+  benchmark has been repeated 30 times, and the others 10 times. All
+  results run the same benchmark, with the node version using the same
+data as that plotted in Figure \ref{fig:time}; the benchmark uses
+4-trap with 30 blocks and population = 512.}
+\label{fig:benchmark}
+\end{figure}
+%
+
 It should be noted that the number of lines needed to implement this
 problem is quite small and of the order of a few hundred. This fact, along with the performance obtained when solving
 this problem, shows that JS and the library used in this paper
 can be a contender in the arena of evolutionary computation
-frameworks. 
-% Antonio - quizá haría falta una comparativa con otras implementaciones o una REF para aseverar esto
+frameworks. We have also tested different JS virtual machines to see
+if there is a difference between implementations. The fact that it is
+done in JavaScript allows to easily transform Node code into one that
+can be run in the browser by just using a tool called {\tt
+  browserify}; the resulting code is, in fact, the same, with the main
+difference being the way it is called and the fact that it has to be
+done from a web page. There are also slight differences in the way the
+loop is done, or rather not done: it has got to stop from time to time
+to avoid blocking the browser. Even so, benchmark results shown in
+Figure \ref{fig:benchmark} show that performance of all virtual
+machines is essentially the same, with a statistical significant
+difference only between Firefox and Chromium, not between Node and the
+other two implementations. 
+% Antonio - quizá haría falta una comparativa con otras
+% implementaciones o una REF para aseverar esto
+%metida en la nueva versión. 
 However, the true worth of {\tt node.js} will be shown in the
 next section by extending this basic algorithm for parallel execution.
 
-\section{Testing distributed evolutionary architectures}
-\label{sec:dist}
+% Antonio - Interesaría hacer una breve intro a los modelos
+% distribuidos de EAs, o un par de citas. No todo el mundo en el GECCO
+% los conocerá, creo yo. ;)
 
-% Antonio - Interesaría hacer una breve intro a los modelos distribuidos de EAs, o un par de citas. No todo el mundo en el GECCO los conocerá, creo yo. ;)
+%Al que no los conozca- lo echamos - JJ
 
 The easiest way of creating a distributed application using Node is
 adding a RESTful interface to it using {\tt express.js}; in fact,
@@ -561,6 +590,7 @@ experiments have been repeated 30 times to achieve statistical
 significance. In many cases, the {\em generational gap}, that is, the
 number of generations before migration takes place, 
 % Antonio - eso no se llama migration rate?
+% Pues no lo sé... JJ 
 has been changed
 to 10 or 20 if it was considered necessary; the point of the
 experiment is, anyways, to see how the division of the population
@@ -568,7 +598,7 @@ influences the performance.
 
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.4]{parallel-hits-pop.png}
+   \includegraphics[scale=0.35]{parallel-hits-pop.png}
 \caption{Number of successful runs out of 30. Black, solid line
   corresponds to migration after 20 generations, light-colored, dashed
 corresponds to migration after 10 generations.}
@@ -577,7 +607,7 @@ corresponds to migration after 10 generations.}
 %
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.4]{parallel-time-pop.png}
+   \includegraphics[scale=0.35]{parallel-time-pop.png}
 \caption{Average time, in milliseconds, for successful runs. Black,
   solid line corresponds to $g$ (generation gap) = 10, light, dashed
   to $g=20$, and, for the sake of comparison, the baseline single-node
@@ -634,7 +664,7 @@ brings errors which crash the clients in some cases.
 
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.4]{par-pool-time-pop.png}
+   \includegraphics[scale=0.35]{par-pool-time-pop.png}
 \caption{Average time, in milliseconds, for successful runs. Black,
   solid represents the previously mentioned P2P architecture, while
   the light, dashed line represents the pool-based, single-server
@@ -644,7 +674,7 @@ brings errors which crash the clients in some cases.
 %
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.4]{par-pool-hits-pop.png}
+   \includegraphics[scale=0.35]{par-pool-hits-pop.png}
 \caption{Number of successful runs out of 30. Black, solid line
   corresponds to the P2P architecture, light-colored, dashed
 corresponds to the single-server architecture (pool).}
@@ -685,10 +715,10 @@ implementation in {\tt node.js}, and the simple library we are presenting in
 this paper, are valid platforms for performing distributed computation
 experiments, since they allow to create rapid prototypes to
 concentrate on system architecture and the solution of problems via
-evolutionary algorithms. In an unconstrained environment, Javascript will probably be slower than Java or C++, although its speed is on par (and may beat) other scripting languages. However, in an environment such as a multi-tier architecture that includes rich internet applications (with an UI written in JavaScript in the browser) or even mobile applications (which can easily be done in JavaScript via the PhoneGap framework or simply HTML5 in any browser) JavaScript can offer an excellent performance and even algorithmic advantages in parallel evolutionary algorithms, as we have proved in this paper. 
+evolutionary algorithms. In an unconstrained environment, JavaScript will probably be slower than Java or C++, although its speed is on par (and may beat) other scripting languages. However, in an environment such as a multi-tier architecture that includes rich internet applications (with an UI written in JavaScript in the browser) or even mobile applications (which can easily be done in JavaScript via the PhoneGap framework or simply HTML5 in any browser) JavaScript can offer an excellent performance and even algorithmic advantages in parallel evolutionary algorithms, as we have proved in this paper. 
 
 % Antonio - Creo hay que darle más bombo a esto porque el objetivo del trabajo parecía ser que ofrecía una alternativa MEJOR a lo que ya hay, es decir, mejor que las implementaciones de EAs en C y Java por ejemplo, pero eso no se comenta, sólo se dice que JavaScript ofrece una implementación VÁLIDA... queda un poco flojo en ese sentido. :-(
-
+% Pero es que no es mejor... simplemente otra alternativa. - JJ
 
 \section{Conclusions}
 
@@ -747,24 +777,24 @@ increasing complexity that we pointedly tried to avoid.
 
 In any case, it is quite clear that the use of this platform and the
 degrees of liberty in its design open a whole world of possibilities
-to test, including these \begin{itemize}
-\item Uniform vs. heterogeneous settings in nodes. We have been using a
+testing uniform vs. heterogeneous settings in nodes. We have been using a
   single population size, generation gap and tournament size, in
   general. Using dissimilar and even random values might increase
-  diversity and thus increase the success rate.
-\item Heterogeneous systems vs. homogeneous systems: using the same
-  parameters in different systems will, once again, increase diversity
-  and will allow anyways the use of many more resources that are
-  available under a single motherboard. Using free PaaS (Platform as a Service) or the free
-  tier of IaaS (Infrastructure as a Service) products such as Amazon EC2 or Azure will allow to work
-  with bigger problems, be it in a P2P or pool-based fashion
-\item The P2P and pool-based options are not mutually exclusive, since
+  diversity and thus increase the success rate; heterogeneity could
+  come from parameter settings or from different machines being
+  used. Besides, 
+% \item Heterogeneous systems vs. homogeneous systems: using the same
+%   parameters in different systems will, once again, increase diversity
+%   and will allow anyways the use of many more resources that are
+%   available under a single motherboard. Using free PaaS (Platform as a Service) or the free
+%   tier of IaaS (Infrastructure as a Service) products such as Amazon EC2 or Azure will allow to work
+%   with bigger problems, be it in a P2P or pool-based fashion
+the P2P and pool-based options are not mutually exclusive, since
   in fact the program used in the P2P setup can be used as a server by
   adding to it the capability to respond to PUT petitions. Working
   with different servers and distributing clients might offer a way
   out of the server overload problem but, at the same time, opens many
   more possibilities.
-\end{itemize}
 
 We should emphasize too that this research has been carried out in an
 open science fashion by publishing, as soon as they are produced, all
