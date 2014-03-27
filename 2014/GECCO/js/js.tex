@@ -49,18 +49,9 @@ Last one\\
 \maketitle
 \begin{abstract}After more than fifteen years, JavaScript has finally risen as a popular
 language for implementing all kind of applications, from server-based
-to rich Internet Applications. The fact that it is implemented in the browser and in server-side tools makes it interesting for
-% Antonio - qué features en concreto?, al menos nómbralas
-designing evolutionary algorithm frameworks 
-that encompass both
-tiers, but besides, they allow a change in paradigm that goes beyond
-the canonical evolutionary algorithm. 
-%Maribel, muchos frameworks van mÃ¡s allÃ¡ del algoritmo genÃ©tico canÃ³nico, pero esto no pasa porque estÃ©n hechos en javascript
-% Antonio - qué cambio en concreto?
-In this paper we will experiment
-with different architectures, client-server and peer to peer to assess which ones offer most advantages in terms of
-performance, scalability and ease of use 
-for the computer scientist. All implementations  have been released as open source, and besides showing that the concept of working with evolutionary algorithms in JavaScript can be done efficiently, we prove that a master-slave parallel architecture offers the best combination of time and algorithmic improvements in a parallel evolutionary algorithm that leverages JavaScript implementation features.
+to rich internet applications. The fact that it is implemented in the browser and in server-side tools makes it interesting for designing evolutionary algorithm frameworks that encompass both tiers, but besides, they allow a change in paradigm that goes beyond the canonical evolutionary algorithm. 
+In this paper we will experiment with different architectures, client-server and peer to peer to assess which ones offer most advantages in terms of
+performance, scalability and ease of use for the computer scientist. All implementations have been released as open source, and besides showing that the concept of working with evolutionary algorithms in JavaScript can be done efficiently, we prove that a master-slave parallel architecture offers the best combination of time and algorithmic improvements in a parallel evolutionary algorithm that leverages JavaScript implementation features.
 
 \end{abstract}
 
@@ -85,7 +76,7 @@ language for the browser, and in fact most books on JS
 telling you how to embed your scripts in the HTML code of a web page.
 
 Even as such embedded language, JavaScript is an interpreted language
-that uses classes and objects, functions as first-rate types and
+that uses classes and objects, functions as first-rate types, and which
 is dynamic and weakly typed-checked (a variable can change its type during
 its lifetime, but whatever type it has needs to be explicitly coerced
 to other type in some contexts, but not in all). These features make
@@ -97,17 +88,24 @@ this century with the introduction of standalone interpreters such
 as SpiderMonkey or Rhino \cite{mikkonen2007using}, but it was not
 until Google's introduction of the V8\cite{richards2010analysis}
 interpreter and its adoption by the {\tt node.js} JavaScript virtual machine that it started to
-become what it is now, one of the most (or arguably the most) popular development languages
+become what it is now, one of the most (or arguably the most) popular 
+% Antonio -yo quitaría esto, ya que no me lo creo. Será Java el más popular, ¿no?
+development languages
 \cite{ogrady14:ranking}. At the same time, it is the only language of
 which it can be said that it is truly ubiquitous; every
 Internet-connected device has at least one interpreter
 \cite{crockford:javascript} (often as a browser), but you can find it
 also as the language of choice of the Gnome user-interface in Linux,
-CouchDB object database, in many Platform-as-a-service products such
+CouchDB object database, and in many Platform-as-a-service (PaaS) products such
 as Heroku, Nodejitsu or Openshift. It can also be easily installed in
-IaaS (Infrastructure as a Service) products such as Windows Azure or Amazon. That makes it the right
+IaaS (Infrastructure-as-a-Service) products, such as Windows Azure or Amazon.
+% Antonio - Amazon qué? EC2?
+ That makes it the right
 choice for parasitic-style or volunteer computing platforms such as
-Crowdprocess\footnote{https://crowdprocess.com}. The fact that there are interpreters embedded in browsers
+Crowdprocess\footnote{https://crowdprocess.com}. 
+% Antonio - no acabo de ver clara esta justificación... parece que la razón es la última que dices de Windows Azure o Amazon)
+
+The fact that there are interpreters embedded in browsers
 and in server-side services makes it the only language in which you can
 develop both the client and server tier of a client-server application
 (and, for that matter, any other tier in between).
@@ -115,18 +113,18 @@ develop both the client and server tier of a client-server application
 What we propose in this paper is to measure different ways of
 implementing distributed evolutionary algorithms using JS. It
 has already been proved that implementation matters
-\cite{DBLP:conf/iwann/MereloRACML11}, and it does so since the
+\cite{DBLP:conf/iwann/MereloRACML11}, and it does so, since the
 evolutionary framework must be translated to a particular language in
 a way that goes with its grain and not in the way that is more easily
 translated from C or Java, but also because it offers new ways of
 implementing evolutionary algorithms. 
 % Antonio - en qué sentido? qué posibilidades ofrece?
 In many cases, the environments
-where JS excels, the browser, for instance, might need proper
+where JS excels, such as the browser, for instance, might need proper
 support in the shape of evolutionary algorithms; finally, creating
-distributed evolutionary algorithms is easy using JS; so easy,
-in fact, that there are so many ways of doing it and mixing and
-matching them (WebSockets, Ajax and REST, just to name a few) that it
+distributed evolutionary algorithms is easy using JS; 
+so easy, in fact, that there are so many ways of doing it, and mixing 
+and matching them (WebSockets, Ajax and REST, just to name a few) that it
 becomes necessary to give an initial idea of how to make them useful
 for evolutionary algorithms and what is the performance we should
 expect. 
@@ -143,9 +141,7 @@ performance in terms of scalability and number of evaluations needed
 to reach the solution.
 
 The rest of the paper is organized as follows: next we describe the
-state of the art in new and uncanny implementations of evolutionary algorithms and
-past implementations using different JS interpreters. The
-algorithm that has been adapted to JS is described next along with the
+state of the art in new and uncanny implementations of evolutionary algorithms, and a description of the past implementations using different JS interpreters. The algorithm that has been adapted to JS is described next along with the
 experimental setup in Section \ref{sec:node}; finally results are
 presented in Section \ref{sec:dist} and its implications
 discussed in the last section of the paper. 
@@ -181,7 +177,7 @@ However, Javascript has not been the subject of extensive
 experimentation until now. The first mention of JS in relation
 with evolutionary algorithms was in 1996, when Smith and Sugihara
 \cite{smith1996ga} used it for creating the user interface of a
-browser-based evolutionary building system that was, in fact, based in
+browser-based evolutionary building system, that was, in fact, based in
 Java. It was not much later, in 1998, when a single-browser
 evolutionary algorithm for evolving the layout of a web newspaper was
 published \cite{jj-ppsn98}. In this case an outstanding feature of
@@ -191,7 +187,7 @@ been done in any other way since the intention was that a personalized
 page was generated by every user and rendered using the user's own
 computing power, without needing to overload the server with the
 generation of pages for thousands of users. In this sense it also
-pointed out to {\em unwitting} \cite{klein2007unwitting} use of resources which was taken full
+pointed out to the {\em unwitting} \cite{klein2007unwitting} use of resources, which was taken full
 advantage later on for the generation of L-System (a grammar for
 describing fractal objects) in a distributed way
 \cite{langdon2004global} once again, and in the same way that has been
@@ -205,7 +201,7 @@ ways, \cite{gecco07:workshop:dcor,klein2007unwitting,agajaj}. These
 initial experiments mainly revealed that the usual ways of
 distributing evolutionary algorithms (farming out evaluation or using
 synchronous islands) were not suitable to an ephemeral client that
-could enter a particular experiment at any time. It was clear also
+could enter into a particular experiment at any time. It was clear also
 that new paradigms, based on using {\em pools} of resources and
 dealing with them asymmetrically could also be better suited to this
 environment that symmetric algorithms with uniform distribution of their
@@ -215,6 +211,7 @@ tested with this premise
 them use JavaScript, those that do not use it (like EvoSpace,
 \cite{DBLP:conf/evoW/ValdezTVGO13}) reach conclusions that can be
 applied to JS-based evolutionary algorithms as well.
+% Antonio - ¿como cuales?
 
 The current state of the art shows that JS can, indeed, be used in a
 cloud computing environment, but that an assessment of its performance
@@ -222,7 +219,7 @@ in different situations, frameworks and methodologies might be in
 order. This is what we will carry out in this paper via different
 implementations mainly done in the asynchronous JS interpreter {\tt
   node.js}; what this asynchrony means will be explained next. 
-% Antonio - ¿qué significa que sea asincrono?
+
 
 \section{An evolutionary algorithm in node.js}
 \label{sec:node}
@@ -253,7 +250,7 @@ do {
 \end{lstlisting}
 will not work as expected. The main problem is that all input/output
 operations will create events in the implicit event loop, which will
-generate callbacks once the request has been completed.  Code shown
+generate callbacks once the request has been completed.  The code shown
 above will work, but will {\em never} have time to process the events
 and thus migrations, either in or out, will never take place, or
 rather, inbound requests will be made but not processed and outbound
@@ -278,9 +275,9 @@ function do_evolution(){
 \end{lstlisting}
 
 This is not only a way of writing the programs using different patterns,
-it also a different way of understanding the algorithm
+it is also a different way of understanding the algorithm
 sequence. Please note that {\tt do\_after\_callbacks} receives a
-function {\em pointer}, not a function call; it is not a recursive
+function {\em pointer}, not a function call; so it is not a recursive
 call, but actually the definition of a callback. In a
 synchronous framework, the first pseudo-code should be expected to behave
 in this way:
@@ -293,8 +290,7 @@ Migration-out
 Migration-in
 \end{lstlisting}
 
-However, what we will find in an evolutionary algorithm in Node
-programmed as above will be something like
+However, what we will find in an evolutionary algorithm programmed in Node as above will be something like
 \begin{lstlisting}
 Generation 1
 Generation 2
@@ -336,10 +332,9 @@ URL have been withheld for anonymous review).
 The library has been intended mainly as a proof of concept, including
 the bare minimum to run an evolutionary algorithm: a single mutation
 and crossover operators, tournament selection and a few test
-functions, including the Trap function (explained below), that has been selected for
-making the experiments in this paper. 
+functions, including the Trap function (explained below), that has been selected for making the experiments in this paper. 
 
-% Antonio - de aqui hacia abajo podría ir en la sección de experimentos.
+% Antonio - de aqui hacia abajo podría ir en la sección de experimentos. Me reafirmo. :D
 
 The experiments in the paper have been designed so that different
 distributed architectures can be tested. All programs have been
@@ -386,8 +381,7 @@ $b$ & 2 \\
 
 Not all Trap functions are
 deceptive, but we will use here the 4 bit version, that is, $l=4$ with
-the values shown in Table \ref{tab:trap}, which are the usual in other
-papers such as \cite{gonzalez2010characterizing}. This guarantees the
+the values shown in Table \ref{tab:trap}, which are the usual ones  considered in other papers such as \cite{gonzalez2010characterizing}. This guarantees the
 problem is challenging enough for a wide variety of problem sizes. We
 will consider 30, 40 or 50 blocks, which offer increasing difficulty
 for evolutionary algorithms.
@@ -402,7 +396,8 @@ algorithm is a generational method with individuals kept as {\em
 2-point crossover. These parameters will be kept constant (except for
 the population) for all experiments.  If
 the solution is not found after 2 million evaluations, the program
-stops. 
+stops.
+% Antonio - cuanto tardarían 2000000000 evaluaciones???? queda un poco exagerao 
 
 Experiments are repeated 30 times
 and take place in a Linux Ubuntu 13.10 box with
