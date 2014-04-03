@@ -1,0 +1,206 @@
+\documentclass{sig-alternate}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}        % standard LaTeX graphics tool
+\usepackage{subfigure}
+\usepackage{url}
+
+
+\begin{document}
+%
+% --- Author Metadata here ---
+\conferenceinfo{GECCO'14,} {July 12-16, 2014, Vancouver, BC, Canada.}
+    \CopyrightYear{2014}
+    \crdata{TBA}
+    \clubpenalty=10000
+    \widowpenalty = 10000
+
+\title{Enforcing Corporate Security Policies via Computational Intelligence Techniques}
+
+\numberofauthors{2}
+ \author{
+ \alignauthor
+ Author1\\
+        \affaddr{Maracena Institute of Technology (MIT)}\\
+        \affaddr{Anonymous Street num. X}\\
+        \affaddr{AnonymousLand}\\
+        \email{aut1@mit.com}
+ \alignauthor
+ Author2\\
+ \affaddr{Authors University (AU)}\\
+ \affaddr{Authors Street num. AAA}\\
+ \affaddr{Metropolis}\\
+ \email{aut2@au.com}
+ }
+
+%\numberofauthors{2}
+% \author{
+% \alignauthor
+% A.M. Mora, P. De las Cuevas, J.J. Merelo\\
+%        \affaddr{University of Granada}\\
+%        \affaddr{Department of Computer Architecture and Technology, ETSIIT/CITIC}\\
+%        \affaddr{Granada, Spain}\\
+%        \email{amorag,paloma,jmerelo@geneura.ugr.es}
+% \alignauthor
+% S. Zamarripa, Anna I. Esparcia-Alcázar\\
+%        \affaddr{S2 Grupo}\\
+%        \affaddr{Valencia, Spain}\\
+%        \email{szamarripa,aesparcia@s2grupo.es}
+% }
+
+
+\maketitle
+
+\begin{abstract}
+This paper presents a review on the state of the art in Computational Intelligence techniques, above all, Evolutionary Computation methods, applied to corporate security aims...
+This will be focused in the improvement of security rules...
+The example of MUSES system is explained as it is being developed to apply these techniques.
+\end{abstract}
+
+% *** Esto hay que buscarlo y fijarlo para este artículo ***
+% A category with the (minimum) three required fields
+%\category{I.2.1}{Computing Methodologies}{ARTIFICIAL INTELLIGENCE}[Applications and Expert Systems]\\
+%A category including the fourth, optional field follows...
+%\category{G.1.6}{Mathematics of Computing}{Numerical Analysis}[Optimization]
+%
+%D.2.8 [Software Engineering]: Metrics—complexity mea-
+%sures, performance measures
+%\terms{Algorithms}
+
+\category{I.2.6}{Artificial Intelligence}{Learning - Induction} 
+\category{D.4.6}{Operating Systems}{Security and Protection - Access controls} \category{I.2.1}{Artificial Intelligence}{Applications and Expert Systems}
+
+
+\keywords{Computational Intelligence, Evolutionary Computation, Corporate Security Policies, Security Rules}
+
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   INTRODUCTION   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Introduction}
+\label{sec:intro}
+
+Security in distributed systems has been a very profiting research area from the arisen of the first client/server architectures. Inside this, corporate security is one of the main topics. This environment has changed dramatically in the last years, starting with the distribution of the information (instead of being centralised in corporate servers, it has been spread among multiple machines such as portable devices, external servers, or cloud storage systems); and continuing with the so-called Bring Your Own Device (BYOD) philosophy, in which the devices that access to the system are owned by the users (company's employees), and could contain personal and professional information.
+
+This scenario opens up new security issues \cite{Opp_Security11}, which should be dealt in a different way, having into account both (company's) data security and (user's) privacy. In order to protect them, there are defined \textit{Corporate Security Policies}.
+
+To dealt with this new situation, a novel system is being developed (inside an European Project). It is named \textit{MUSES}, from \textit{Multiplatform Usable Endpoint Security System} \cite{MUSES_SAC_14_anonymous}, which is a device-independent end-to end user-centric tool. 
+It considers a set of security rules defined as specifications of the Company Security Policies, and its main feature is the ability of `learning' from the user's past behaviour and adapt, even inferring new ones, the set of rules in order to deal with potential future security incidents due to the user's behaviour. Then, the system will react, in a non-intrusive way, to the potentially dangerous sequence of actions (events) that he or she is conducting at any time.
+
+To this end MUSES will analyse the users' behaviour by means of Data Mining
+(DM) techniques \cite{DataMining_Lee01} and Machine Learning (ML) methods \cite{MachineLearning_Bishop06}, extracting a set of patterns which will be later processed by means of Computational Intelligence (CI) algorithms, mainly Evolutionary Computation methods \cite{EAs_Back96,GAs_Goldberg89,GP_Koza92}.
+
+This is a step beyond the current state of the art in two senses: first regarding the current security systems for dealing with the new scenario inside the enterprises, as it can be read in \cite{MUSES_SAC_14_anonymous}; and second concerning the application of Computational or Artificial Intelligence (AI) techniques to corporate security issues, as will be analysed in this work.
+
+%Seguridad en la empresa, políticas y reglas, computational intelligence en seguridad (breve).
+%
+%Cosas del DOW de por qué es bueno aplicar cosas nuevas de CI a seguridad.
+%Decir si hay algo hecho al respecto.
+
+The paper is structured as follows. Next section gives a background in the current enterprise security issues. Section \ref{sec:stateofart} reviews related work regarding the application of DM, ML, AI and CI techniques to a wide range of security problems inside the enterprise.
+The MUSES system's features in this respect (application of DM, ML, CI) are described in Section \ref{sec:muses_ci}.
+Then, a comparison between the new system advantages and the existing works is conducted in Section \ref{sec:comparison}, followed by the reached conclusions in Section \ref{sec:conclusions}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   BACKGROUND  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Enterprise security}
+\label{sec:background}
+
+Until these days, enterprises used to follow a static Security Policy devoted to control a certain structure \cite{BYOD13}, where the Information Assets and the devices were purchased and maintained by the company. Now that corporate networks are becoming dynamic for being adapted to the BYOD philosophy, there is an additional risk because the devices that the employees use are not always company-owned. A needed security policy, or in this case, an \textit{Information Security Policy} (ISP from now on) should deal with the way of protecting a certain organization's information against a security breach. Though there are standards, such as the ISO27002 or the Security Forum's Standard of Good Practice\footnote{https://www.securityforum.org}, an ISP is defined depending on the characteristics of the community/organisation that they are built for.
+
+Normally, the enterprise network architecture was being adapted to cope with external attackers \cite{MIT05}. However, with the consideration of BYOD, the threat is about corporate assets being compromised due to employees' devices with vulnerabilities \cite{android11}, or leaked because they are being accessed from a device connected through an unsecured (public) network.
+
+%On the other hand, employee-owned devices, like smartphones, have the possibility of maintaining a good balance between work and private life. For this reason, the risk of uncontrolled devices (with potentially dangerous applications) accessing to corporate assets in unsafe conditions is bigger.
+
+%Thus now, more things should be considered than the usual ones when designing a company network architecture. 
+In Figure \ref{fig:proposed_diagram} there is a proposal which can be used for the beginning of the study of solutions that may make secure such a dynamic environment. It includes the possibility of having employee-owned mobile (smartphones and tablets) and portable (laptops) devices, and also the opportunity that the employees have of connecting these devices either from inside or outside the company premises. Moreover, company information assets are constantly accessed under these conditions, considering that an information asset means every \textit{piece of information} that has a \textit{value} (cost depending on the risk of being lost or leaked) for the company. It can be referred to files with sensitive information, to certain mails, or even to company applications.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.36]{proposed_diagram.eps}
+		\caption{Architecture approach of an Enterprise Network assuming that the Company has adopted the BYOD philosophy.}
+	\label{fig:proposed_diagram}
+	\end{center}
+\end{figure}
+
+The other issue to cope with is the elaboration of a good ISP, understandable for every user of the company, and more importantly, non-intrusive for him. A lot of researchers have studied the natural tendency of employees to comply with the ISP \cite{SecPolComp07,SecPolComp10,SecPolComp12}, reaching conclusions such as the employees compliance with the security policies increases educating/training them in information security awareness  \cite{SecPolComp09}, and decreases applying too much sanctions when a misuse or abuse occurs \cite{SecPolPenalty09}. 
+
+This situation leads to a need of protecting the organisation side, but also the users side, making non-interfering easy-to-follow ISPs, and leaving them to use their devices for personal purposes while working, without putting organisation's information assets under risk. The compliance of these requirements would compose an End-to-End Security Solution (protecting both enterprise and employee), which is the aim of the MUSES project \cite{MUSES_SAC_14_anonymous} (see Section \ref{sec:muses_ci}).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{State of the Art}
+\label{sec:stateofart}
+%
+
+- computational intelligence/artificial intelligence/evolutionary computation aplicado a problemas de seguridad
+
+- CI/AI aplicado a reglas de seguridad
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   MUSES EXAMPLE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{MUSES Project}
+\label{sec:muses_ci}
+
+
+As previously stated, one of the main features of the presented system will be the self-adaptation (to the user and context) of the set of security rules. To this end, the MusKRS's task will be run asynchronously to the system working. This process is composed by two steps: first, a Data Mining procedure \cite{DataMining_Lee01} will be performed, considering the whole amount of historic information mainly regarding user's behaviour and context. Some methods such as Clustering \cite{Clustering_Jain99,Clustering_Xu05} (grouping data), Pattern Recognition \cite{PatternMining_Han07} (usual situations identification), or Feature Selection \cite{FeatureSelection_Guyon03} (main variables/values in the data) will be applied. The second step consists in a refinement and inference process, performed by means of Machine Learning \cite{MachineLearning_Bishop06} and Computational Intelligence techniques. Regarding the latter, some methods will be used, such as Evolutionary or Genetic Algorithms \cite{EAs_Back96,GAs_Goldberg89} for parameters/values optimisation; or Genetic Programming \cite{GP_Koza92} for the modification of security rules.
+
+Thus the set of rules will be adapted to every user in the system, updating some of the existing and creating new ones (always respecting the corporate security policies).
+Moreover, some predictive models will be also obtained applying other soft computing techniques, so the user's potentially dangerous behaviour will be anticipated.
+
+
+descripción de la futura aplicación de CI a MUSES 
+
+% ------------------------------------------------------------------
+%
+\subsection{Data Mining/Machine Learning}
+\label{subsec:dm_ml}
+
+
+% ------------------------------------------------------------------
+%
+\subsection{Computational Intelligence}
+\label{subsec:ci}
+
+- Clasificación con GP
+- Inferencia de nuevas reglas con GP
+- Ajuste de valores de recursos con AGs???
+
+% ------------------------------------------------------------------
+%
+\subsection{Evolutionary Computation Approaches}
+\label{subsec:ec}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   RESULTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Expected results and comparison with other approaches}
+\label{sec:comparison}
+
+describir lo que se pretende obtener y lo que mejorará a lo existente en el estado del arte.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Conclusions and Future Work}
+\label{sec:conclusions}
+
+qué se puede concluir del trabajo y qué haremos a continuación
+
+
+%ACKNOWLEDGMENTS are optional
+\section{Acknowledgments}
+%This paper has been funded in part by European and National projects FP7-318508 (MUSES) and TIN2011-28627-C04-02 (ANYSELF) respectively, project P08-TIC-03903 (EV\-ORQ) awarded by the Andalusian Regional Government, and project 83 (CANUBE) awarded by the CEI-BioTIC UGR.
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+\bibliographystyle{abbrv}
+\bibliography{CI_security_rules} 
+
+\end{document}
