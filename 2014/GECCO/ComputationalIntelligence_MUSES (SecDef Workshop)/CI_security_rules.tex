@@ -51,9 +51,8 @@
 \maketitle
 
 \begin{abstract}
-This paper presents a review on the state of the art in Computational Intelligence techniques, above all, Evolutionary Computation methods, applied to corporate security aims...
-This will be focused in the improvement of security rules...
-The example of MUSES system is explained as it is being developed to apply these techniques.
+This paper presents an approach, based in a project in development, which combines Data Mining, Machine Learning and Computational Intelligence techniques, in order to create an user-centric and adaptable corporate security system. Thus, the system, named MUSES, will be able to analyse the user's behaviour (modelled as events) when interacting with the company's server, accessing to corporate assets, for instance. As a result of this analysis, and after the application of the commented techniques, the Corporate Security Policies, and specifically, the Corporate Security Rules will be adapted to deal with new anomalous situations, or to better manage user's behaviour.
+The work reviews the current state of the art in security issues resolution by means of these kind of methods. Then it describes the MUSES features in this respect and compares them with the existing approaches.
 \end{abstract}
 
 % *** Esto hay que buscarlo y fijarlo para este artículo ***
@@ -79,7 +78,7 @@ The example of MUSES system is explained as it is being developed to apply these
 \section{Introduction}
 \label{sec:intro}
 
-Security in distributed systems has been a very profiting research area from the arisen of the first client/server architectures. Inside this, corporate security is one of the main topics. This environment has changed dramatically in the last years, starting with the distribution of the information (instead of being centralised in corporate servers, it has been spread among multiple machines such as portable devices, external servers, or cloud storage systems); and continuing with the so-called Bring Your Own Device (BYOD) philosophy, in which the devices that access to the system are owned by the users (company's employees), and could contain personal and professional information.
+Security in distributed systems has been a very profiting research area from the arisen of the first client/server architectures \cite{computer_security_80}. Inside this, corporate security is one of the main topics. This environment has changed dramatically in the last years, starting with the distribution of the information (instead of being centralised in corporate servers, it has been spread among multiple machines such as portable devices, external servers, or cloud storage systems); and continuing with the so-called Bring Your Own Device (BYOD) philosophy, in which the devices that access to the system are owned by the users (company's employees), and could contain personal and professional information.
 
 This scenario opens up new security issues \cite{Opp_Security11}, which should be dealt in a different way, having into account both (company's) data security and (user's) privacy. In order to protect them, there are defined \textit{Corporate Security Policies}.
 
@@ -89,16 +88,16 @@ It considers a set of security rules defined as specifications of the Company Se
 To this end MUSES will analyse the users' behaviour by means of Data Mining
 (DM) techniques \cite{DataMining_Lee01} and Machine Learning (ML) methods \cite{MachineLearning_Bishop06}, extracting a set of patterns which will be later processed by means of Computational Intelligence (CI) algorithms, mainly Evolutionary Computation methods \cite{EAs_Back96,GAs_Goldberg89,GP_Koza92}.
 
-This is a step beyond the current state of the art in two senses: first regarding the current security systems for dealing with the new scenario inside the enterprises, as it can be read in \cite{MUSES_SAC_14_anonymous}; and second concerning the application of Computational or Artificial Intelligence (AI) techniques to corporate security issues, as will be analysed in this work.
+This is a step beyond the current state of the art in two senses: first regarding the current security systems for dealing with the new scenario inside the enterprises, as it can be read in \cite{MUSES_SAC_14_anonymous}; and second concerning the application of Computational or Artificial Intelligence (AI) techniques to corporate security issues, focused on (and adapted to) the users' behaviour, as will be analysed in this work.
 
 %Seguridad en la empresa, políticas y reglas, computational intelligence en seguridad (breve).
 %
 %Cosas del DOW de por qué es bueno aplicar cosas nuevas de CI a seguridad.
 %Decir si hay algo hecho al respecto.
 
-The paper is structured as follows. Next section gives a background in the current enterprise security issues. Section \ref{sec:stateofart} reviews related work regarding the application of DM, ML, AI and CI techniques to a wide range of security problems inside the enterprise.
-The MUSES system's features in this respect (application of DM, ML, CI) are described in Section \ref{sec:muses_ci}.
-Then, a comparison between the new system advantages and the existing works is conducted in Section \ref{sec:comparison}, followed by the reached conclusions in Section \ref{sec:conclusions}.
+The paper is structured as follows. Next section gives a background in the current enterprise security issues. Section \ref{sec:stateofart} reviews related work regarding the application of DM, ML, AI and CI techniques to a wide range of security problems inside the enterprise, but mainly focused on the user's behaviour and the security policies adaptation, which are the main advantages of MUSES.
+Then, the MUSES system's features in this respect (application of DM, ML, CI) are described in Section \ref{sec:muses_ci}, and compared with the existing works.
+Finally, the reached conclusions are presented in Section \ref{sec:conclusions}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   BACKGROUND  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -133,30 +132,67 @@ This situation leads to a need of protecting the organisation side, but also the
 \label{sec:stateofart}
 %
 
-- computational intelligence/artificial intelligence/evolutionary computation aplicado a problemas de seguridad
+Security is a wide area of research since the very beginning of the eighties \cite{computer_security_80}. Thousands of works have been published in a number of different issues in this topic. 
+One of the most profiting fields is the application of Artificial Intelligence techniques to different security-based problems. This research line was started more than twenty years ago \cite{ai_intrusion_detection_94}, and will be still open for several years more \cite{ai_cybersecurity_11}.
 
-- CI/AI aplicado a reglas de seguridad
+The topics addressed by the researchers are quite varied, going from the data mining \cite{botnet_detection_clustering_09,feature_selection_anomalies_08}, to the machine learning area \cite{learning_network_intrusion_09,user_classification_ml_13}, both applied to many different problems.
+
+Computational intelligence techniques have been also widely used in this area, being the most profiting methods the Evolutionary Computation (EC) metaheuristics: Genetic Algorithms (GAs) and Genetic Programming (GP).
+
+There are several works using GAs for solving security issues, such as the intrusion detection (see \cite{GA_intrusion_detection_survey_14} for a survey), the design and evaluation of security protocols \cite{detecting_intrusion_gp_03,eval_security_gas_07,GAs_security_protocols_10}, or the optimisation of different aspects related with security: IT security costs \cite{optimizing_IT_costs_ea_10} and cryptographic protocols \cite{cryptographic_gas_06}, to cite a few.
+
+We will focus in this work on the application of different DM, ML and AI/CI techniques to new set of security issues, which has been open by the new interactions between systems, and by the user's habits and behaviour (including the BYOD scenario), as it is described in Section \ref{sec:background}. 
+Then, the works that we are interested in are those related with the users' information and behaviour (in this scope), and the management (and adaptation) of Information or Corporate Security Policies (ISPs).
+
+In this line, the paper by Greenstadt and Beal \cite{cognitive_security_08} combined biometrics signals with machine learning methods in order to get a reliable user authentication in a computer system.
+P.G. Kelley et al. \cite{user-controllable_learning_08} presented a method named \textit{user-controllable policy learning} in which the user gives feedback to the system every time that a security policy is applied, so these policies can be refined according to that feedback to be more accurate with respect to the user's needs. This approach could be useful for a personal device, but our aim in MUSES is to have a global set of rules that could be adapted for all the users.
+On the other hand, policies could be created for enhancing user's privacy, as proposed by Danezis in \cite{inferring_policies_socialnetworks_09}, who defined a system able to infer privacy-related restrictions by means of a machine learning method applied in a social network environment. The idea of inferring policies will be also considered in MUSES, but in the scope of the company, and focused on ISPs.
+
+A closer work to our approach is the one presented by Samak et al. \cite{policy_generation_clustering_10}, in which the authors use a clustering-based approach to infer new traffic security policies in a network.
+However our idea in MUSES, explained in Section \ref{sec:muses_ci}, is to infer new Security Rules (as a specialisation of the ISPs) by means of GP.
+
+Some other authors have applied this rule-based method for evolving (improving) a set of policies, such as Lim et al. \cite{sec_policy_evolution_gp_08,pol_evol_gp_3_approaches_08}, who inferred new policies based in the decisions on a system, considering the user's feedback. A similar approach will be considered in MUSES, but there will be an automatic evaluation system for the new inferred rules, rather to the strict need of an user control. Moreover, these works have been tested on synthetic testbeds, but MUSES will work in real companies with real users and real data.
+
+Finally, the work by Suarez-Tangil et al. \cite{rule_generation_gp_09}, combines GP with the event correlation process which is also applied in MUSES \cite{MUSES_SAC_14_anonymous}. However their approach is designed to create the rules/engine for that process, instead of the security rules to be considered as the output of the event correlation, i.e. the decisions to be made according to the events produced and to the enterprise's ISPs.
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   MUSES EXAMPLE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   MUSES SYSTEM  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-\section{MUSES Project}
+\section{MUSES System}
 \label{sec:muses_ci}
 
 
-As previously stated, one of the main features of the presented system will be the self-adaptation (to the user and context) of the set of security rules. To this end, the MusKRS's task will be run asynchronously to the system working. This process is composed by two steps: first, a Data Mining procedure \cite{DataMining_Lee01} will be performed, considering the whole amount of historic information mainly regarding user's behaviour and context. Some methods such as Clustering \cite{Clustering_Jain99,Clustering_Xu05} (grouping data), Pattern Recognition \cite{PatternMining_Han07} (usual situations identification), or Feature Selection \cite{FeatureSelection_Guyon03} (main variables/values in the data) will be applied. The second step consists in a refinement and inference process, performed by means of Machine Learning \cite{MachineLearning_Bishop06} and Computational Intelligence techniques. Regarding the latter, some methods will be used, such as Evolutionary or Genetic Algorithms \cite{EAs_Back96,GAs_Goldberg89} for parameters/values optimisation; or Genetic Programming \cite{GP_Koza92} for the modification of security rules.
+As previously stated, MUSES will be a whole corporate security system aimed to deal with the new BYOD philosophy, i.e. it will manage user's accesses to the company's servers from diverse own devices, which could be dangerous for several reasons, including the user's behaviour.
 
-Thus the set of rules will be adapted to every user in the system, updating some of the existing and creating new ones (always respecting the corporate security policies).
-Moreover, some predictive models will be also obtained applying other soft computing techniques, so the user's potentially dangerous behaviour will be anticipated.
+One of the main features of this system will be the self-adaptation (to the user and context) of the set of Corporate Security Rules (specification of the ISPs). 
+To this end, there is a component in the designed architecture \cite{MUSES_SAC_14_anonymous} named \textit{MusKRS}, from \textit{Knowledge Refinement System}. This will be run asynchronously in the server and will be in charge of analysing all the gathered information (events, context, user-related data), and adapting/refining the security rules to better deal with these events, also trying to predict future threats due to the user's behaviour.
 
-
-descripción de la futura aplicación de CI a MUSES 
+This process will be composed by two steps: first, a Data Mining procedure will be performed (in the \textit{Data Miner} sub-component);  second, a refinement and inference process will be done (in the \textit{Knowledge Compiler} sub-component) by means of Machine Learning and Computational Intelligence techniques.
 
 % ------------------------------------------------------------------
 %
 \subsection{Data Mining/Machine Learning}
 \label{subsec:dm_ml}
+
+%Data miner
+%From System_Architecture#Security_Server_Architecture:
+%This component takes the ‘raw’ data from the database and processes the information, using Data Mining (DM) techniques, in order to yield a set of relevant data for
+%the Knowledge Compiler submodule. To this end, some techniques such as feature selection, clustering, or classification are performed. The process will be mainly
+%non-supervised and eventually, the datasets can be huge (depending on the company’s data flows), so Big Data processing methods are applied.
+
+This task will involve some techniques:
+
+\begin{itemize}
+
+\item \textit{Classification}: The aim is to use database information to look for patterns that had been allowed or denied, in order to build a classifier. When an incoming event (or set of events) has no rule to apply on, the classifier should tell the similarity with previous (and already labelled) patterns.
+
+\item \textit{Clustering}: The patterns could be grouped considering some similarity criteria, in order to deal with them as a set. This could be used for providing data visualisation mechanisms. In order to make it easier to interpret the data interaction and the distribution in clusters with respect to the different properties/features of the patterns.
+
+\item \textit{Data Analysis}: This will provide a controller (user) with mechanisms to visualise interesting facts about the data, such as more frequent events, dangerous or suspicious users (according to their behaviour), more triggered rules, etc.
+
+\item \textit{Feature Selection}: It consists of extracting the most important features from the data. This could be done by means of one of the previous techniques, and could be useful if we want to discard non-key features. This is useful in order to reduce the database weight, or for improving the classification running time and even the performance of the system.
+\end{itemize}
 
 
 % ------------------------------------------------------------------
@@ -164,9 +200,27 @@ descripción de la futura aplicación de CI a MUSES
 \subsection{Computational Intelligence}
 \label{subsec:ci}
 
-- Clasificación con GP
-- Inferencia de nuevas reglas con GP
-- Ajuste de valores de recursos con AGs???
+%- Clasificación con GP
+%- Inferencia de nuevas reglas con GP
+%- Ajuste de valores de recursos con AGs???
+
+These techniques are used in an inference or refinement process, which considers several factors:
+
+\begin{itemize}
+
+\item The information extracted from the data miner, mainly concerning the unclassified or misclassified patterns. These are those patterns which did not match with any of the existing classes (they are quite different from the patterns belonging to those classes), so they cannot be included in any of the classes and thus they should be taken into account for a potential inference or update in the set of security rules, in order to 'cover' them.
+
+\item User related information corresponding to those unlabelled patterns (actions). Thus, the user's ID, location and role, for instance, will be considered in order to select the applicable set of rules for that conditions.
+
+\item Context information for the same unclassified patterns, in order to also restrict the applicable set of rules considering this information.
+The process will be performed over the previous sets.
+
+\item Risk information extracted from the user profile (reputation), e.g. "Did the user received a lot of 'denies'/'allows' before?", or in terms of the RT2AE "Is he trustworthy?". In case the user is not, more restrictive rules would be created for him, otherwise the corresponding rules could be 'eased' for that user.
+
+\item The information included in logs along the system, which can, for instance, tell about how the user responds to system messages (either an action or if he gives feedback). This could result in the inference of new rules or in adaptation, in order to deal with e.g. users that repeatedly ignore warning messages.
+
+\end{itemize}
+
 
 % ------------------------------------------------------------------
 %
@@ -178,10 +232,10 @@ descripción de la futura aplicación de CI a MUSES
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   RESULTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-\section{Expected results and comparison with other approaches}
-\label{sec:comparison}
-
-describir lo que se pretende obtener y lo que mejorará a lo existente en el estado del arte.
+%\section{Expected results and comparison with other approaches}
+%\label{sec:comparison}
+%
+%describir lo que se pretende obtener y lo que mejorará a lo existente en el estado del arte.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -194,6 +248,9 @@ qué se puede concluir del trabajo y qué haremos a continuación
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
+
+Anonymous...
+
 %This paper has been funded in part by European and National projects FP7-318508 (MUSES) and TIN2011-28627-C04-02 (ANYSELF) respectively, project P08-TIC-03903 (EV\-ORQ) awarded by the Andalusian Regional Government, and project 83 (CANUBE) awarded by the CEI-BioTIC UGR.
 
 %
