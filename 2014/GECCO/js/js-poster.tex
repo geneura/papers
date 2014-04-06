@@ -1,0 +1,204 @@
+\documentclass{sig-alternate-2013}
+\usepackage[latin1]{inputenc}
+\usepackage{url}
+\usepackage{listings}
+\newfont{\mycrnotice}{ptmr8t at 7pt}
+\newfont{\myconfname}{ptmri8t at 7pt}
+\let\crnotice\mycrnotice%
+\let\confname\myconfname%
+
+\permission{Permission to make digital or hard copies of part or all of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage, and that copies bear this notice and the full citation on the first page. Copyrights for third-party components of this work must be honored. For all other uses, contact the owner/author(s). Copyright is held by the author/owner(s).}
+\conferenceinfo{GECCO'14,}{July 12--16, 2014, Vancouver, BC, Canada.}
+\copyrightetc{ACM \the\acmcopyr}
+\crdata{978-1-4503-1964-5/14/07. \\
+Include the http://DOI string/url which is specific for your submission and included in the ACM rightsreview confirmation email upon completing your ACM form}
+
+\clubpenalty=10000
+\widowpenalty = 10000
+\begin{document}
+%
+% --- Author Metadata here ---
+\conferenceinfo{GECCO'14} {Vancouver, Canada}
+
+\title{NodEO, a multi-paradigm distributed evolutionary algorithm platform in JavaScript}
+\subtitle{}
+\numberofauthors{5}
+\author{
+\alignauthor
+J.J. Merelo, Pedro Castillo, Antonio Mora\\
+       \affaddr{University of Granada}\\
+       \affaddr{GeNeura, ETSIIT + CITIC}\\
+       \email{jmerelo,pedro,amorag@geneura.ugr.es}
+\alignauthor
+Anna I. Esparcia-Alcázar\\
+\affaddr{S2 Grupo}\\
+\email{aesparcia@s2grupo.es}
+\alignauthor
+Víctor Rivas-Santos\\
+\affaddr{Universidad de Jaén}\\
+\email{vrivas@ujaen.es}
+}
+
+\maketitle
+\begin{abstract}
+JavaScript (JS) is nowadays the only language that can be used to develop
+web-based client-server applications in both tiers, client and
+server. This makes it an interesting choice for developing distributed
+evolutionary computation experiments, but the best way from
+algorithmic and practical point of views is not clear, so we will
+compare different distributed EC architectures in JavaScript using
+NodEO, an open source JS framework released by us.
+\end{abstract}
+
+% A category with the (minimum) three required fields
+\category{H.4}{Information Systems Applications}{Miscellaneous}
+%A category including the fourth, optional field follows...
+\category{D.2.8}{Software Engineering}{Metrics}[complexity measures, performance measures]
+
+\keywords{JavaScript, node.js, parallel evolutionary algorithms, asynchronous evolution}
+
+\section{Introduction}
+
+{\tt node.js} or Node is a JS
+interpreter whose default input/output mode is asynchronous, which
+means that when performing network operations like migration, we do
+not know when it will eventually finish or even if it will be
+performed in the exact sequence we called them. This implies a change
+in the evolutionary algorithm whose impact in performance will have to
+be evaluated; besides, there are many different ways of creating a
+distributed, some of which we will check in this paper using the NodEO
+open source
+evolutionary algorithm library written in Node \cite{nodeo2014},
+together with the {\tt express.js} server and {\tt restler} client modules for REST applications. 
+
+The function chosen for doing all the experiments is a classical deceptive
+function called Trap \cite{ackley:trap}:
+$$
+  T(x) = \left\{ \begin{array}{rl} 
+      a*(z-x)/z &\mbox{ if  $x<= z$} \\
+    b*(x-z)/(l-z) &\mbox{ if  $x>z$} \\
+\end{array}\right.
+$$
+where $x$ is the number of ones in the block, $l$ is the length of the
+block, and $a$ and $b$ are two constants that meet the condition $a <
+b$. In this experiment we will use $z=3,a=1, b=2$
+
+After some initial experiments to find the population size we will test two different architectures:\begin{itemize}
+\item {\em P2P}: in it, every {\em node} (which we will call
+  process from now on, since they are implemented as such and to avoid
+  confusion with {\tt node.js}, the JS interpreter) communicates with the
+  rest. Every process needs to know the directions of the other nodes
+  to interchange information, which is done through HTTP PUT requests.
+\item {\em pool-based} communication of one client with other is only
+  done through the server, with each program acting independently and
+  knowing only about this server. This makes easy to add new clients,
+  but also makes the single server a possible bottleneck. 
+\end{itemize}
+
+
+Some initial tests changing the generation gap (or migration rate)
+shows that waiting for 20 generations before migration is a reasonable
+quantity, and it will the one used in the experiments. Besides, we
+have tested up to 16 processes in a single machine with no noticeable
+degradation in performance. 
+
+However, this programming effort can be used in a different direction,
+and that is what we have attempted with the pool architecture,
+% Antonio - he puesto aquí pool architecture en lugar de other architecture
+ with
+clients all working against a single server. In principle we wanted to
+test the same architecture with the same generational gap, that is,
+total population for all nodes equal to 512, with this population
+divided among processes. However, since all the requests are done to a
+single process its event queue saturates very fast which led us to
+increase the generational gap with the number of processes; even so, it
+brings errors which crash the clients in some cases.
+% Antonio - si se han solucionado los problemas yo no lo comentaría. ;)
+
+\begin{figure}[htb]
+\centering
+   \includegraphics[scale=0.35]{par-pool-time-pop.png}
+\caption{Average time, in milliseconds, for successful runs. Black,
+  solid represents the previously mentioned P2P architecture, while
+  the light, dashed line represents the pool-based, single-server
+  architecture. }
+\label{fig:p:time}
+\end{figure}
+%
+\begin{figure}[htb]
+\centering
+   \includegraphics[scale=0.35]{par-pool-hits-pop.png}
+\caption{Number of successful runs out of 30. Black, solid line
+  corresponds to the P2P architecture, light-colored, dashed
+corresponds to the single-server architecture (pool).}
+\label{fig:p:hits}
+\end{figure}
+% Antonio - he puesto aquí 'pool' porque las imágenes pueden salir lejos una de otra y así son autocontenidas.
+
+
+In general and from the point of view of the operating system load, no
+great change is observed with the addition of one process ($n$ client
+processes + server) to the pool; if there is any time difference, it
+should not be attributed to increased OS load or, for that matter, for
+the small changes in the application architecture done. Even if the
+P2P applications do a single request (a GET) and this one performs two
+(first a PUT and then a GET), it probably cancels out with the fact
+that the P2P processes must also {\em respond} to requests from time
+to time. In fact, what we observe in the comparison of both types of
+architectures in Figure \ref{fig:p:time} is that there is a difference
+for the smallest number of processes and the biggest number of
+processes but they go in different directions, so it is difficult to
+say if, in general, there is any difference (there is none for
+$p=64,128$) and what is its origin. 
+
+But a more dramatic change of scenario is shown in Figure
+\ref{fig:p:hits}, which shows that the success rate increases
+drastically, although decreasingly so with the increasing population;
+this is only to be expected since, in fact, success rate increased
+with the population in the P2P architecture. This makes this pool-based
+architecture from the
+algorithmic point of view, a better alternative. 
+
+This conclusion is reached on top of the fact that JavaScript, its
+implementation in {\tt node.js}, and the simple library we are presenting in
+this paper, are valid platforms for performing distributed computation
+experiments, since they allow to create rapid prototypes to
+concentrate on system architecture and the solution of problems via
+evolutionary algorithms. In an unconstrained environment, JavaScript will probably be slower than Java or C++, although its speed is on par (and may beat) other scripting languages. However, in an environment such as a multi-tier architecture that includes rich internet applications (with an UI written in JavaScript in the browser) or even mobile applications (which can easily be done in JavaScript via the PhoneGap framework or simply HTML5 in any browser) JavaScript can offer an excellent performance and even algorithmic advantages in parallel evolutionary algorithms, as we have proved in this paper. 
+
+% Antonio - Creo hay que darle más bombo a esto porque el objetivo del trabajo parecía ser que ofrecía una alternativa MEJOR a lo que ya hay, es decir, mejor que las implementaciones de EAs en C y Java por ejemplo, pero eso no se comenta, sólo se dice que JavaScript ofrece una implementación VÁLIDA... queda un poco flojo en ese sentido. :-(
+% Pero es que no es mejor... simplemente otra alternativa. - JJ
+
+\section{Conclusions}
+
+In this paper we set to prove the worth of a {\tt node.js}-based distributed
+evolutionary algorithm. {\tt node.js} is a emerging platform which is
+receiving a lot of interest in the open source and enterprise arena,
+but not so much in the scientific community so our intention was to
+introduce it to the evolutionary computation (EC) community by proving its
+value as a platform for EC experiments. A basic EC library has been
+created and released, so it is available to the researches. The
+library can be expanded and, being open source, can be adapted and
+suited to the needs of any particular user; due to the expansion of
+the JavaScript and {\tt node.js} community, it should be increasingly easy
+to find people interested and skilled enough to work in evolutionary
+algorithms using JavaScript and {\tt node.js}, and, from the other end, it could get
+the {\tt node.js} community interested in our area, which might prove the
+source of interesting problems that can be dealt with from the point
+of view of metaheuristics.
+
+
+%ACKNOWLEDGMENTS are optionalndn
+\section{Acknowledgments}
+
+This work has been developed thanks to the funds provided by local
+CEI-BioTIC grant  CANUBE (CEI2013-P-14) and national ANYSELF project (TIN2011-28627-C04-02). 
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+\bibliographystyle{abbrv}
+\bibliography{geneura,javascript,ror-js}  % sigproc.bib is the name of the Bibliography in this case
+
+\end{document}
