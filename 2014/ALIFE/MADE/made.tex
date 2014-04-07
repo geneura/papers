@@ -3,7 +3,7 @@
 \usepackage{url}
 \usepackage{subfigure}
 
-\title{Emerging backstories from virtual environments using Genetic Algorithms}
+\title{My life as a sim: evolving unique and engaging life stories using virtual worlds}
 \author{Rub\'en H. Garc\'ia-Ortega$^{1}$, Pablo Garc\'ia-S\'anchez$^{2}$, Antonio M. Mora \and J.J. Merelo$^2$ \\
 \mbox{}\\
 $^1$Fidesol, Granada, Spain \\
@@ -130,7 +130,7 @@ The methodology includes the following steps, as shown in Figure~\ref{fig:method
 
 \begin{figure}[htb]
 \centering
-   \includegraphics[width=12pc] {img/methodology.pdf}
+   \includegraphics[width=15pc] {img/methodology.pdf}
 \caption{The proposed methodology for designing literary backstories}
 \label{fig:methodology}
 \end{figure}
@@ -336,7 +336,7 @@ illustrated in Figure~\ref{fig:madeAgent}.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.35]{img/MadeAgent.pdf}
+\includegraphics[scale=0.5]{img/MadeAgent.pdf}
 \caption{Actions and states modeled in the MADE Agent.}
 \label{fig:madeAgent}
 \end{center}
@@ -365,7 +365,7 @@ situations where the agent could be involved.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.35]{img/fsm.pdf}
+\includegraphics[scale=0.45]{img/fsm.pdf}
 \caption{MADE Agent's finite state machine}
 \label{fig:fsm}
 \end{center}
@@ -385,7 +385,7 @@ The secondary literary scene, ``territorial war'', aggregates different sample a
 
  Also,  after 1000 virtual days, the alive population will be the 60\% of the total population (archetype \textit{survival population}). We have used the presented values to define this scene because, in our opinion, they model an interesting literary setting. 
 
-Finally, a third scene () is TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERMINA
+Finally, the last literary setting, ``Shakesperian'', models different archetypes presents in the works of Shakespeare to create a richer and complex scene. In this scene, there exist several well-known archetypes, proposed in the work of \cite{vogler1998writer}. The first one is \textit{star crossed lovers} represents the Romeo And Juliet: rats who have offspring and whose parents have participated in a fight. Also, other archetypes must arise in this setting: the \textit{shadow} (an agent that kills another), the \textit{hero} (an agent that defeats a \textit{shadow}), the \textit{menthor} (an agent that gives food to the \textit{hero}) and the \textit{threshold guardian} (an agent that attacks the \textit{hero} at least two times). The last two archetypes can not be \textit{hero} or \textit{shadow}, adding complexity to the environment.
 
 
 
@@ -403,20 +403,15 @@ Different fitness functions have been used. In the first literary setting (``rev
 
 To model the ``territorial war'' setting we have defined the fitness function as follows: if the exact percentage of agents are tagged with one archetype defined, 1 point is added to the fitness. The maximum is therefore, 5 points. However, all the fitnesses use a normal distribution over the percentage of appearance. For example, with the archetype ``survival population'', the maximum value (1) is obtained when the 60\% percent of the population is alive, and the normal distribution begins in the 30\% and ends in the 90\%. For the rest of the archetypes, 1 point is added if the 22'5\% of the population is tagged with each one of the archetypes, and each normal distribution begins in the 8\% and ends in the 30\%.
 
-Finally, TEEEEEEEEEEEEEEEEERMINAAAAAAAAAAAAAAAA
+Finally, the function for the ``Shakesperian'' scene is the sum of the proportions of each archetype with respect to all the population. Therefore the maximum would be 5 (if the archetypes were not exclusive). 
 
 
 Thanks to the agents' logs, we can know every event (internal and
 external) of their lives, and evaluate their interest or
 adequacy to a specific literary setting.
 
-In this work, we have implemented a method based in regular expressions with backreferences. The proposed technique puts annotations in every agent whose log matches a complex regular expression able to find emerging high level behaviors, not implemented in the life-cycle.
-
-
-
-
-In this case,
- we do not exactly know how many roles are necessary to create a world of ``warrior'' or ``vindictive''
+In this work, we have implemented a method based in regular expressions with backreferences. The proposed technique puts annotations in every agent whose log matches a complex regular expression able to find emerging high level behaviors, not implemented in the life-cycle. In this case,
+ we do not exactly know how many roles are necessary to create a world of ``warrior'', ``vindictive'' or ``shadow''
   rats, so different number of profiles (from one to five) will be considered.
 
 
@@ -488,6 +483,8 @@ different behaviors of the agents.
 
 
 The results of the second literary setting (``territorial war'') shows differences among all the number of profiles (p-value $<<$0.05). As we suspected, it is clear that using one profile is not enough to emerge the desired archetype. However, the pairwise comparison using Wilcoxon does not find significant differences using more than 2 profiles. This can be explained because an agent could share more than one archetype at the same time.  A promising number of profiles could be 4, because their only lower outlier is not as distributed as the others. %As can be seen in Figure \ref{fig:evo2} the evolution of the best fitness increases with all possible number of profiles, existing therefore an increase of the performance of the system.
+
+Finally, the results of ``Shakesperian'' scene surprisingly show that using only one profile is the best choice to generate a complex world as the one desired, decreasing with the number of profiles (except for 4 and 5, where no significant difference exist, with p-value$>$0.05). This can be explained because, to model all the archetypes, all actions available in the environment should appear. Therefore, a profile optimized to trigger all available actions would generate more archetypes. Also, and as previously said, using more profiles requires more time to converge, as we are using larger chromosomes. Furthermore, the actions of our environment could be quite simple to model complex stories with different personalities.
 
 \begin{table}
 \begin{center}
@@ -577,12 +574,11 @@ as fitness a function that models the literary setting.
 %be obtained by using Genetic Algorithms.  
 Given a literary setting, an author of a story or a video game could define 
 different rates of archetypes or behavior patterns, and use the techniques described in
-the present work to obtain the optimal profiles. The execution of the MADE (Massive Drama Engine for non-player characters) Environment
-using these profiles as input would produce a background (or set of characters' lives)
+the present work to obtain the optimal profiles. In this work, several profiles have been generated in the MADE (Massive Drama Engine for non-player characters) Environment to produce a background (or set of characters' lives)
 where the archetypes have emerged and have automatically created massive backstories coherent
 with the settings of the artwork.
 
-In future works, more complex agents will be used, with different rules to be modeled. For example, we plan to model more human behaviors such as love or envy, to generate interesting plots such as wars, weddings, or family crimes. Different fitness functions will be used, for example, taking into account human opinions to establish the interestingness of a generated plot. Also, this system will be tested into an existent and well-known game, such as Skyrim\texttrademark, whose AI engine is publicly available for players and researchers.
+In future works, more complex agents will be used, with different rules to be modeled. For example, we plan to model more human behaviors such as love or envy, to generate interesting plots such as wars, weddings, or family crimes. More different fitness functions will be tested, for example, taking into account human opinions to establish the interestingness of a generated plot. Also, this system will be tested into an existent and well-known game, such as Skyrim\texttrademark, whose AI engine is publicly available for players and researchers.
 
 
 \section{Acknowledgments}
