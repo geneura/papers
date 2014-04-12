@@ -1,0 +1,41 @@
+
+In order to design the architecture of a software in the GAs application domain, we mostly identify the main concepts involved and the relations among them. Then, using the concepts of the paradigms and programming techniques chosen, we define the structure from the highest levels of abstraction indicating the data to be processed and their flow. The quality and extensibility of that structure might determine the success or failure of the software development.
+
+On the other hand, to develop an optimal codification of an algorithm is mandatory to know every characteristic of the programming language that is being used.
+
+%Concurrent-functional programming languages like, Erlang, Clojure and Scala  have native data types (optimized) for %the treatment of lists and primitives for creation, control and communication of concurrent units of execution. The %implementation of the pGAs heavily used list data structures and requires multiple execution units and communication.
+We used an hybrid pGAs (island topology with a pool based pGA in each node) for show the implementation recommendations. The main pGA’s components are listed in Table \ref{agpComp}. We chose a classical problem, the {\em Max-SAT} with 100 variable instances \cite{Hoos2000}.
+
+
+\begin{table}
+  \centering
+  \caption{Parallel GA components.}\label{agpComp}
+   \begin{tabular}{|>{\centering}p{2.4cm}|p{2.8cm}|p{2.4cm}|}
+   \hline
+   \textbf{AG Component} & \textbf{Rol} & \textbf{Description} \\
+     \hline
+      chromosome & Representing the solution. & binary string \\
+     \hline
+      evaluated chromosome & Pair \{chromosome, fitness\}. & relation thats indicate the value of a individual\\
+     \hline
+      population & Set of chromosomes. & list \\
+     \hline
+     crossover & Relation between two chromosomes producing other two new ones. & crossover's function \\
+     \hline
+      mutation & A chromosome modification. & chromosome's change function \\
+     \hline
+     selection & Means of population filtering. & selection's function \\
+     \hline
+      pool & Shared population among node's calculating units. & population \\
+     \hline
+      island & Topology's node. &  \\
+     \hline
+      migration & Random event for chromosome interchange. & message \\
+     \hline
+      evolution & Execution. & A generation is made \\
+     \hline
+      evaluation & Execution. & A fitness calculi is made \\
+     \hline
+   \end{tabular}
+
+\end{table}

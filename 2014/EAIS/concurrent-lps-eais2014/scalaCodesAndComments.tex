@@ -1,0 +1,59 @@
+In order to highlight the simplicity of the code based in the built in concurrent concepts of the selected languages. We will describe a canonical island-based GA implementation in Scala. We take and island-based GA implementation because is simpler parallel GA model than  hybrid pGAs we use for time evaluations.
+
+Scala inherit keywords from several languages to express programming concepts: from Java take {\em extends} for express inheritance and from Python/Ruby take {\em def} to define methods. In order to help the type inference they have Pascal-like syntax for declaring types.
+
+The listing \ref{island} shows a class declaration: an actor class.
+
+\lstset{language=scala,caption={Actor declaration.},label=island, basicstyle=\ttfamily\footnotesize}
+\begin{lstlisting}[frame=none]
+class Island extends Actor {
+  // Set of actors (workers)
+  var workers: Set[ActorRef] = _
+  def receive = {
+     case 'start =>
+      // All executing units to work!
+      workers.forEach(_ ! 'start)
+  }
+}
+\end{lstlisting}
+
+{\em Island} is an {\em actor}, it have a set of others actors (the workers reproducers and evaluators). All actors classes should have a {\em receive} method, this block of code is compound of a list of case instructions: one for each kind of message the actor is able to respond. In this method there is only one case: for send a {\em 'start} message to each worker. All actors have a method of name {\em !} to send messages to them.
+
+\lstset{language=scala,caption={Functional processing of data.},label=reproducer}
+\begin{lstlisting}[frame=none]
+// One of the worker classes
+class Reproducer extends Actor {
+  def receive = {
+    case ('evolve, pool: HashMap, n: Int) =>
+      val pop = pool.filter((a: (List,
+               (Int, Int))) => a._2._2 == 2).
+               keys.toList.map(i =>
+                            (i, pool(i)._1))
+      val (res, resultData) =
+        Reproducer.evolve(
+          Reproducer.extractSubpop(pop, n),
+          parentsCount = n / 2 })
+        // Continue the iteration with
+        // res and resultData
+ }
+}
+\end{lstlisting}
+
+The listing \ref{reproducer} shows the class for the reproducers, in this case the message processed is composed of a tuple of 3 elements. The first statement apply a filter and a transformation (method {\em map}) over the pool of individuals.
+
+\lstset{language=scala,caption={Main code.},label=main}
+\begin{lstlisting}[frame=none]
+// Creating 4 islands
+val islands = for(_ <- 1 to 4)
+              yield sys.actorOf(Props[Island])
+		
+// Puting the migrants destination & start
+// each island
+for(i <- 0 to 3){
+	islands(i) ! ('migrantsDest,
+	              islands((i+1)%4))
+	islands(i) ! 'start
+}
+\end{lstlisting}
+
+Finally the listing \ref{main} create islands and start the evolutions.  

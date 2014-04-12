@@ -1,0 +1,166 @@
+\documentclass[9pt, technote]{IEEEtran}
+%\usepackage{amssymb}
+\usepackage{graphicx,epsfig}
+\usepackage[noadjust]{cite}
+%%%%
+
+\usepackage{courier}
+\usepackage{color}
+\usepackage{alltt}
+\usepackage{verbatim}
+
+
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+
+\usepackage{array}
+
+\usepackage{url}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+
+
+%\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+%\noindent\keywordname\enspace\ignorespaces#1}
+
+
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+\renewcommand{\floatpagefraction}{0.9}
+
+\newcommand{\simpleEntry}[1]
+{
+\vspace{.3cm}
+\noindent \textbf{#1}
+\vspace{.3cm}
+}
+
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[listings,skins]{tcolorbox}
+\usepackage[skipbelow=\topskip,skipabove=\topskip]{mdframed}
+\mdfsetup{roundcorner=0}
+
+
+\begin{document}
+
+% first the title is needed
+\title{Implementing parallel genetic algorithm using concurrent-functional languages}
+
+%\author{J. Albert-Cruz\inst{1}, J.J. Merelo\inst{2}, L. Acevedo-Martínez\inst{1}, Paloma de las Cuevas \inst{2}}
+
+\author{\IEEEauthorblockN{J. Albert-Cruz\IEEEauthorrefmark{1}, J.J. Merelo\IEEEauthorrefmark{2}, L. Acevedo-Martínez\IEEEauthorrefmark{1} and Paloma de las Cuevas\IEEEauthorrefmark{2}}\\
+\IEEEauthorblockA{\IEEEauthorrefmark{1}Centro de Estudios de Matem\'atica Computacional, Universidad de Ciencias Inform\'aticas, Cuba\\
+Email: \{jalbert,liesner\}@uci.cu}\\
+\IEEEauthorblockA{\IEEEauthorrefmark{2}Dept. Arquitectura y Tecnología de los Computadores, Universidad de Granada, España\\
+Email: \{jmerelo,paloma\}@geneura.ugr.es}
+}
+
+%\author{A. N. Onymous ~\IEEEmembership{Anonymity institution, http://anonymi.ty}}
+
+%\titlerunning{A short methodology to implement Genetic Algorithm in concurrent languages}
+
+%\authorrunning{J. Albert Cruz et al.}
+%\institute{Centro de Estudios de Matem\'atica Computacional, Universidad de Ciencias Inform\'aticas, Cuba
+%\and Dept. Arquitectura y Tecnología de los Computadores, Universidad de Granada, España \\
+%jalbert@uci.cu}
+
+
+%\tocauthor{Authors' Instructions}
+
+\maketitle
+
+\begin{abstract}
+The spread of multiprocessor architectures, like multi-core ones, have a pervasive effect on the way software is developed. In order to take full advantage of them, a parallel implementation of every single program would be needed. In this work we implement an evolutionary computation model using programming languages with built-in concurrent concepts. This article shows the advantages of these paradigms in order to implement a  parallel genetic algorithm (pGA) with an island pools based topology in the concurrent-functional oriented programming languages: Erlang, Scala, and Clojure. Some implementation decisions are analyzed and the results of the solution of a study case are shown.
+\end{abstract}
+
+%-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{IEEEkeywords}
+Parallel Evolutionary Algorithms, Functional Languages, Concurrent Languages, Implementation, Modeling
+\end{IEEEkeywords}
+
+
+\section{Introduction}
+\label{sec:intro}
+    \input{intro}
+
+\section{Functional and concurrent programming}
+\label{sec:stateArt}
+Developing correct software quickly and efficiently is a never ending goal in the software industry. Novel solutions that try to make a difference providing new abstraction tools outside the mainstream of programming languages have been proposed to pursue this goal; two of the most promising are the functional and the concurrent.
+
+%-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+%\simpleEntry{Paradigms}
+%\label{sec:paradigmas}
+
+
+%Functional languages have been available for a long time, in the shape of LISP, which was introduced in the fifties, nevertheless their use has been limited mainly due to the inefficiency of their compilers or interpreters. Currently these situations have changed, the problems with efficiency are solved and their newly found advantages have promoted the inclusions of several functional concepts in modern and mainstream languages. C\# for example, or even the creation of new ones such as Clojure, which excels among the emergent languages with the concurrent paradigm together with Go, Scala, Haskell and Erlang \cite{DiPierro:2012:CMP}; they have built-in programming constructs for managing concurrency simplifying its use.
+
+\simpleEntry{Concurrent programming}
+    \input{progConcurrente}
+
+\simpleEntry{Functional programming}
+    \input{progFuncional}
+
+\simpleEntry{Multi-paradigms emerging languages} %emerging
+    \input{lengEmergentesIntro}
+
+\section{A concurrent-functional approach to pGAs}
+\label{sec:design}
+    \input{disenno}
+
+\subsection{Modeling and Implementing in concurrent languages}
+\label{sec:impl}
+    \input{implIntro}
+
+\simpleEntry{Erlang modeling}
+    \input{erlangDesign}
+
+\simpleEntry{Library erlEA}
+    \input{erlEA}
+
+\simpleEntry{Scala modeling}
+    \input{scalaDesign}
+
+\simpleEntry{Library sclEA}
+    \input{sclEA}
+
+\simpleEntry{Clojure modeling}
+    \input{clojureDesign}
+
+\simpleEntry{Library cljEA}
+    \input{cljEA}
+
+\subsection{Application over the study case} \label{sec:results}%Application over the study case
+    \input{results}
+
+\subsection{Sample program of canonical island/GA in Scala}\label{sec:sample}
+\input{scalaCodesAndComments.tex}
+
+\section{Conclusions}
+\label{sec:conclusions}
+    \input{conclusions}
+
+
+\section{Acknowledgements}
+
+This work is supported by projects TIN2011-28627-C04-02 (ANYSELF),
+awarded by the Spanish Mineco, CANUBE (CEI2013-P-14) and P08-TIC-03903 awarded by the Andalusian Regional Government. It is also supported too by the PhD
+Program of the AUIP.
+
+
+%\section{Agradecimientos}
+%
+%Este trabajo se está desarrollando gracias a la financiación de  los proyectos EvOrq (P08-TIC-3903), CANUBE (CEI2013-P-14) y ANYSELF (TIN2011-28627-C04-02). Es también respaldado por el Programa de Doctorado de la AUIP y por el proyecto 83 del Campus CEI BioTIC.
+
+
+\bibliographystyle{splncs}
+\bibliography{osgiliath,geneura,referencias,erlang-ae-model}
+
+\end{document}
+

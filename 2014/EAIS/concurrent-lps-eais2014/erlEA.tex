@@ -1,0 +1,19 @@
+
+We developed a library in Erlang following the previous design concepts and it was tested with the case study. The code is open, under AGPL license, at \url{https://github.com/jalbertcruz/erlEA/archive/v1.0.tar.gz}. The main modules are briefly described in this section.
+
+\subsubsection{Reproducer module}
+
+This module selects the subpopulation and parents for reproduction, and then it does the crossover and activates migrations. As actor, it responds to {\em evolve} and {\em emigrateBest} messages, for iteration and migration operations.
+
+\subsubsection{Evaluator module}
+
+This module consults the pool constantly looking for non evaluated individuals. It is compound by the function {\em evaluate/1} (general evaluation function) and the activation message: {\em evaluate}.
+
+\subsubsection{PoolManager module}
+
+This module initializes the pool’s workers (evaluators and reproducers) and decide the message routes among them.
+
+\subsubsection{Auxiliar modules}
+
+The previous modules contain the GA’s logic, nevertheless it is necessary other nonfunctional components. The auxiliary modules used are: \textbf{experimentRun and experiment}, the experiments initialization and execution; \textbf{problem} (Experiment’s parameters specification), \textbf{profiler} (Execution statistics: execution time, number of iterations, etc), \textbf{islandManager} (Pool coordination, starting and finalization controls) and \textbf{manager} (Multi-experiments control and final report emission).
+
