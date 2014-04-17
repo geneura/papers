@@ -34,7 +34,7 @@
 
 
 % paper title: Must keep \ \\ \LARGE\bf in it to leave enough margin.
-\title{\ \\ \LARGE\bf An experimental study of exhaustive solutions for the MasterMind puzzle
+\title{\ \\ \LARGE\bf Exhaustive solutions for MasterMind: How can we profit them?
 \thanks{ J. J. Merelo and Antonio M. Mora are with the Dept. of Architecture and Computer
   Technology, ETSIIT, University of Granada, email: jj@merelo.net, amorag@geneura.ugr.es}
 \thanks{Thomas P. Runarsson is with the School of Engineering and Natural
@@ -65,12 +65,14 @@ results that are as good as the best of them, and, besides, are better suited as
 \label{s:intro}
 
 MasterMind \cite{mm:mathworld} is a board game that has enjoyed
-world-wide popularity in the last decades. Although its current version
-follows a design created in the 70s by the Israeli engineer Mordecai Meirowitz
-\cite{wiki:mm}, the antecedents of the game can be
-traced back 
-to traditional puzzles such as \emph{bulls and cows} \cite{francisstrategies:moo} or the so-called \emph{AB}
-\cite{Chen2007435} game played in the Far East. Briefly, MasterMind is a two-player
+world-wide popularity in the last decades. 
+%Although its current version
+%follows a design created in the 70s by the Israeli engineer Mordecai Meirowitz
+%\cite{wiki:mm}, the antecedents of the game can be
+%traced back 
+%to traditional puzzles such as \emph{bulls and cows} \cite{francisstrategies:moo} or the so-called \emph{AB}
+%\cite{Chen2007435} game played in the Far East. 
+Briefly, MasterMind is a two-player
 code-breaking game, or in some sense a single-player puzzle, where one of the
 players --the \emph{codemaker} (\codemaker)-- has no other role in the game than
 setting a hidden combination, and automatically providing hints on
@@ -79,16 +81,18 @@ come to correctly guess this combination. More precisely, the flow of the game
 is as follows:
 \begin{itemize}
 
-\item The \codemaker\  (Alice in cryptography \cite{goodrich2013}) sets and hides a length $\ell$ combination of $\kappa$
+\item The \codemaker\  
+%(Alice in cryptography \cite{goodrich2013}) 
+sets and hides a length $\ell$ combination of $\kappa$
   symbols. Therefore, the \codebreaker\ is faced with $\kappa^\ell$
   candidates for the hidden combination, which is typically
   represented by an array of pegs of different colors (but can also be
   represented using any digits or letter strings) and hidden from the
   \codebreaker. 
 
-\item The \codebreaker\ (which is called Bob in cryptographic contexts
-  such as \cite{DBLP:journals/corr/abs-0904-4458}) tries to guess this secret code by
-  producing a combination (which we will call move) with the same length, and using the same set
+\item The \codebreaker\ 
+%(which is called Bob in cryptographic contexts such as \cite{DBLP:journals/corr/abs-0904-4458}) 
+tries to guess this secret code by producing a combination (which we will call move) with the same length, and using the same set
   of symbols. As a response to that move, the \codemaker\, acting as an
       {\em oracle} (which explains the inclusion of this game in the
       category called {\em oracle} games)
@@ -103,13 +107,13 @@ is as follows:
   the hidden combination in at most $N$ attempts, the \codebreaker\
       wins. Otherwise,  the \codemaker\ takes the game. $N$ usually
       corresponds to the 
-      physical number of rows in the  game board, which is equal to
+      physical number of rows in the  game board, which was equal to
       fifteen in the first commercial version.
 
- \item \codemaker\ and \codebreaker\ are then interchanged, and several rounds of the game
-       are played. This is a part of the game we do not
-       consider. The player that is able to obtain the solution in the minimal amount
-       of attempts wins. 
+% \item \codemaker\ and \codebreaker\ are then interchanged, and several rounds of the game
+%       are played. This is a part of the game we do not
+%       consider. The player that is able to obtain the solution in the minimal amount
+%       of attempts wins. 
 
 \end{itemize}
 
@@ -134,36 +138,58 @@ ABBC & 4 black\\
 \end{tabular}
 \end{table}
 
+We want to clarify the referred concept (in Table \ref{tab:mm})  of {\em consistent} combinations \cite{o1991mastermind} in the following way: a 
+combination $c$ is \emph{consistent} with another played previously 
+$c_p$ if $c$ has as many black and white pegs with respect to the $c_p$ as $c_p$ has with respect to the hidden combination. We can easily
+extend this notion and denote a combination $c$ as consistent (or
+feasible) if, and only if, it is consistent with all the combinations
+played so far. Any consistent combination is a
+candidate solution. A {\em consistent set} is the set of all
+consistent combinations at a particular point in the game.
+
+Consistent combinations are important because only a move using one of
+them decreases the size of the consistent set, at least by one (the
+combination itself). A non-consistent combination might or might not
+do that, depending on its similarity to already played moves. So most
+MasterMind strategies play a consistent combination. We will see next
+how these concepts are used to find the secret combination in a
+minimum number of combinations. 
+
 In this paper, we will consider the puzzle only from the point of view
 of the \codebreaker\ , that is, a solver will be confronted with an
 oracle that will award, for each move, a number of black and white
 pegs. We will make no assumptions on the \codemaker\ other that it
-will use random combinations (which in fact it does, although actual
-applications of MasterMind might use some information on the
-distribution of symbols \cite{DBLP:journals/corr/abs-0904-4458}). A human player will probably have some
+will use random combinations. 
+%(which in fact it does, although actual
+%applications of MasterMind might use some information on the
+%distribution of symbols \cite{DBLP:journals/corr/abs-0904-4458}). 
+A human player will probably have some
 kind of bias, but we are interested in finding the most general
 playing method
 without using that kind of information. 
 
 From the point of view mentioned in the last paragraph this puzzle is, in fact, a quite interesting combinatorial problem,
 as it relates to other {\em oracle}-type problems such as the
- hacking of the PIN codes used in bank ATMs
- \cite{bank:mm,focardi2011guessing},  uniquely identifying a person
- from queries to a genetic database \cite{goodrich2009algorithmic,DBLP:journals/corr/abs-0904-4458}, or
- identifying which genotypes have interesting traits for selectively
- phenotyping them \cite{gagneur2011selective}; this is just a small
- sample of possible applications of the solution of the game of
- MasterMind. A more complete survey of applications (up to 2005) can
- be found in our previous paper \cite{mastermind05}, but recent posts
- in the questions-and-answers website StackOverflow and mentions in
- special issues devoted to {\em fun with algorithms}
- \cite{boldi2012special} are witness to the
- ongoing interest in finding solutions to the game
- \cite{stackoverflow}. 
+ hacking of the PIN codes used in bank ATMs,
+% \cite{bank:mm,focardi2011guessing},  
+uniquely identifying a person from queries to a genetic database,
+% \cite{goodrich2009algorithmic,DBLP:journals/corr/abs-0904-4458}, 
+or identifying which genotypes have interesting traits for selectively
+phenotyping them; 
+%\cite{gagneur2011selective}; 
+this is just a small sample of possible applications of the solution of the game of MasterMind. A more complete survey of applications (up to 2005) can
+ be found in our previous paper \cite{mastermind05}.
+% but recent posts
+% in the questions-and-answers website StackOverflow and mentions in
+% special issues devoted to {\em fun with algorithms}
+% \cite{boldi2012special} are witness to the
+% ongoing interest in finding solutions to the game
+% \cite{stackoverflow}. 
 
 MasterMind is also, as has been proved recently, a complex problem, paradigmatic of a whole class of search problems \cite{o1991mastermind};  the problem of finding the solution has been shown to be NP-complete under different formulations \cite{abs-cs-0512049,Kendall200813}, and the problem of counting the number of solutions compatible with a certain set of answers is
 \#P-complete \cite{DBLP:journals/corr/abs-1111-6922}. 
-This makes the search for good heuristic algorithms to solve it a challenge; besides, several issues remain open, such as what is the lowest average number of guesses needed to solve the problem for any given $\kappa$ and $\ell$. Associated to this, there arises the issue of coming up with an efficient mechanism for finding the hidden combination independently of the problem size, or at least, a method that scales gracefully when the problem size increases.
+This makes the search for good heuristic algorithms to solve it a challenge; besides, several issues remain open, such as what is the lowest average number of guesses needed to solve the problem for any given $\kappa$ (colors) and $\ell$ (pegs). 
+Associated to this, there arises the issue of coming up with an efficient mechanism for finding the hidden combination independently of the problem size, or at least, a method that scales gracefully when the problem size increases.
 
 In this paper we will mainly examine empirical exhaustive search algorithms for
 sizes in which they are feasible and try to find out which are the
@@ -175,8 +201,7 @@ secret code) is found. While most methods of
 this kind consider as the only important factor the reduction of the search space \cite{Kooi200513}, we will prove that how different combinations, and in particular the secret (and unknown) one is scored contributes also to finding the solution faster.
 Taking into account how often the hidden combination appears
 among the top scorers for a particular method, we will propose new
-exhaustive search methods that are competitive with the best
-solutions for MasterMind known so far. Besides, these methods do not
+exhaustive search methods that are competitive with the best known solutions for MasterMind. Besides, these methods do not
 add too much complexity to the solution and present certain behaviors
 that are better than the empirical solutions used so far. 
 
@@ -185,20 +210,21 @@ small sizes in NP-hard problems such as this one. However, its
 analysis and the proposal of new methods have traditionally been,
 and will also be used, to design metaheuristic search methods (such as
 evolutionary algorithms) that are able to search much further in the
-parameter space. Since that has been our line of research for a long
-time \cite{jj-ppsn96,genmm99,mastermind05}, eventually we will use them in those
-algorithms, but that is outside the scope of this paper.
-
-The rest of the paper is organized as follows: we lay out the
-terminology and explain the state of the art in solutions to the game of MasterMind in
-Section \ref{s:mm}; the state of the art in solutions to it is
-presented next, in Section \ref{s:soa}. Next we will analyze the
-best performing MasterMind methods known so far in Section  \ref{s:sm}
-and reach some conclusions on its way of working; the conclusions
-extracted in this analysis will be used in Section \ref{s:nsm} to
-propose and analyze the new solutions proposed in this paper, which we
-have called Plus and Plus2. This Section will be followed by
-conclusions in the last Section \ref{s:c}. 
+parameter space. 
+%Since that has been our line of research for a long
+%time \cite{jj-ppsn96,genmm99,mastermind05}, eventually we will use them in those
+%algorithms, but that is outside the scope of this paper.
+%
+%The rest of the paper is organized as follows: we lay out the
+%terminology and explain the state of the art in solutions to the game of MasterMind in
+%Section \ref{s:mm}; the state of the art in solutions to it is
+%presented next, in Section \ref{s:soa}. Next we will analyze the
+%best performing MasterMind methods known so far in Section  \ref{s:sm}
+%and reach some conclusions on its way of working; the conclusions
+%extracted in this analysis will be used in Section \ref{s:nsm} to
+%propose and analyze the new solutions proposed in this paper, which we
+%have called Plus and Plus2. This Section will be followed by
+%conclusions in the last Section \ref{s:c}. 
 
 % -----------------------------------------------------------------------------
 
@@ -206,50 +232,50 @@ conclusions in the last Section \ref{s:c}.
 % ------------------------------ MASTERMIND -----------------------------------
 % -----------------------------------------------------------------------------
 
-\section*{The game of MasterMind}
-\label{s:mm}
-
-As mentioned in Section \ref{s:intro}, a MasterMind problem instance is
-characterized by two parameters: the number of colors $\kappa$
-and the number of pegs $\ell$. Let
-$\mathbb{N}_\kappa=\{1,2,\cdots\,\kappa\}$ be the set of symbols
-used to denote the colors. Subsequently, any combination, either the
-hidden one or one played by the \codebreaker, is a string $c\in
-\mathbb{N}_\kappa^\ell$. Whenever the \codebreaker\  plays a
-combination $c_p$, a \emph{response} $h(c_p,c_h)\in\mathbb{N}^2$ is
-obtained from the \codemaker, where $c_h$ is the hidden combination.
-A response $\langle b, w \rangle$ indicates that the $c_p$ matches
-$c_h$ in $b$ positions, and there exist other $w$ symbols in $c_p$
-present in $c_h$ but in different positions.
-
-Let us define {\em consistent} combinations \cite{o1991mastermind} in
-the following way: a 
-combination $c$ is \emph{consistent} with another played previously 
-$c_p$ if, and only if, $h(c,c_p)=h(c_p,c_h)$, i.e., if $c$ has as
-many black and white pegs with respect to the $c_p$ as $c_p$ has
-with respect to the hidden combination. Intuitively, this captures
-the fact that $c$ might be a potential candidate for secret code in light of the outcome of playing $c_p$. We can easily
-extend this notion and denote a combination $c$ as consistent (or
-feasible) if, and only if, it is consistent with all the combinations
-played so far, i.e., $h(c,c^i_p) = h(c^i_p, c_h)$ for $1 \leqslant i \leqslant n$,
-where $n$ is the number of combinations played so far, and $c^i_p$
-is the $i-$th combination played. Any consistent combination is a
-candidate solution. A {\em consistent set} is the set of all
-consistent combinations at a particular point in the game. 
-
-Consistent combinations are important because only a move using one of
-them decreases the size of the consistent set, at least by one (the
-combination itself). A non-consistent combination might or might not
-do that, depending on its similarity to already played moves. So most
-MasterMind strategies play a consistent combination. We will see next
-how these concepts are used to find the secret combination in a
-minimum number of combinations. 
+%\section*{The game of MasterMind}
+%\label{s:mm}
+%
+%As mentioned in Section \ref{s:intro}, a MasterMind problem instance is
+%characterized by two parameters: the number of colors $\kappa$
+%and the number of pegs $\ell$. Let
+%$\mathbb{N}_\kappa=\{1,2,\cdots\,\kappa\}$ be the set of symbols
+%used to denote the colors. Subsequently, any combination, either the
+%hidden one or one played by the \codebreaker, is a string $c\in
+%\mathbb{N}_\kappa^\ell$. Whenever the \codebreaker\  plays a
+%combination $c_p$, a \emph{response} $h(c_p,c_h)\in\mathbb{N}^2$ is
+%obtained from the \codemaker, where $c_h$ is the hidden combination.
+%A response $\langle b, w \rangle$ indicates that the $c_p$ matches
+%$c_h$ in $b$ positions, and there exist other $w$ symbols in $c_p$
+%present in $c_h$ but in different positions.
+%
+%Let us define {\em consistent} combinations \cite{o1991mastermind} in
+%the following way: a 
+%combination $c$ is \emph{consistent} with another played previously 
+%$c_p$ if, and only if, $h(c,c_p)=h(c_p,c_h)$, i.e., if $c$ has as
+%many black and white pegs with respect to the $c_p$ as $c_p$ has
+%with respect to the hidden combination. Intuitively, this captures
+%the fact that $c$ might be a potential candidate for secret code in light of the outcome of playing $c_p$. We can easily
+%extend this notion and denote a combination $c$ as consistent (or
+%feasible) if, and only if, it is consistent with all the combinations
+%played so far, i.e., $h(c,c^i_p) = h(c^i_p, c_h)$ for $1 \leqslant i \leqslant n$,
+%where $n$ is the number of combinations played so far, and $c^i_p$
+%is the $i-$th combination played. Any consistent combination is a
+%candidate solution. A {\em consistent set} is the set of all
+%consistent combinations at a particular point in the game. 
+%
+%Consistent combinations are important because only a move using one of
+%them decreases the size of the consistent set, at least by one (the
+%combination itself). A non-consistent combination might or might not
+%do that, depending on its similarity to already played moves. So most
+%MasterMind strategies play a consistent combination. We will see next
+%how these concepts are used to find the secret combination in a
+%minimum number of combinations. 
 
 % -----------------------------------------------------------------------------
 % ---------------------------------- SOTA -------------------------------------
 % -----------------------------------------------------------------------------
 
-\section*{State of the art}
+\section{State of the art}
 \label{s:soa}
 
 Most theoretical work done on the game of MasterMind tries to find
@@ -287,19 +313,20 @@ size).
   a game after two combinations have already been played. In boldface,
   the combinations which have the minimal worst set size (which happen to be in the 1b-1w column, but it could be any one); in this
   case, equal to ten. A strategy that tries to minimize worst case
-  would play one of those combinations. The column 0b-1w with all values equal
-  to 0 has been suppressed; column for combination 3b-1w, being impossible, is
-  not shown either. Some rows have also been eliminated for the sake
-  of compactness.  \label{tab:partitions}}
-\small
+  would play one of those combinations. 
+%The column 0b-1w with all values equal
+%  to 0 has been suppressed; column for combination 3b-1w, being impossible, is
+%  not shown either. Some rows have also been eliminated for the sake
+%  of compactness.  
+\label{tab:partitions}}
+\scriptsize
 \centering
 \tiny
 \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|}
 \hline
-Combination & \multicolumn{10}{|c|}{Number of combinations in the
-  partition with response} \\
+COMBINATION & \multicolumn{10}{|c|}{NUMBER OF COMBINATIONS IN THE PARTITION WITH RESPONSE} \\
 \hline
- &0b-2w& 0b-3w& 0b-4w& 1b-1w& 1b-2w& 1b-3w& 2b-0w& 2b-1w& 2b-2w& 3b-0w\\
+ &0b2w& 0b3w& 0b4w& 1b1w& 1b2w& 1b3w& 2b0w& 2b1w& 2b2w& 3b0w\\
 AABA &0 & 0 & 0 & 14 & 8 & 0 & 13 & 1 & 0 & 3 \\
 {\bf AACC} &8 & 0 & 0 & 10 & 5 & 0 & 8 & 4 & 1 & 3 \\
 AACD &6 & 2 & 0 & 11 & 6 & 1 & 4 & 5 & 1 & 3 \\
@@ -504,7 +531,7 @@ methods, see Figure \ref{fig:histo:me}.
 %%% FIGURES 1, 2, 3 %%%
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=4in,angle=-90]{img/fig1_histo-me.eps}
+\includegraphics[width=2.5in,angle=-90]{img/fig1_histo-me.eps}
 \caption{Histogram with the count of the number of times every method
   is able to find the solution in each number of moves for the
   Entropy method (black and solid) and Most Parts (light or red, dashed). \label{fig:histo:me}}
@@ -512,13 +539,13 @@ methods, see Figure \ref{fig:histo:me}.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[scale=0.65]{img/fig2_dif-46.eps}
+\includegraphics[scale=0.5]{img/fig2_dif-46.eps}
 \caption{***Figure caption***\label{fig:dif:me}}
 \end{figure}
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[scale=0.65]{img/fig3_score-dif-46.eps}
+\includegraphics[scale=0.5]{img/fig3_score-dif-46.eps}
 \caption{Difference in score among the number of games won by Entropy and Most
   Parts in $x$ moves. Every $y$ value in the graph \ref{fig:dif:me}
   has been multiplied by the number of moves, resulting in the actual
@@ -949,7 +976,7 @@ initial move.
 % -------------------------- NEW EXHAUSTIVE METHODS ---------------------------
 % -----------------------------------------------------------------------------
 
-\section*{New exhaustive search methods}
+\section{New exhaustive search methods}
 \label{s:nsm}
 
 Our intention by proposing new methods is to use the two main factors
@@ -1250,7 +1277,7 @@ different initial combination.
 % ----------------------------- STUDYING EFFECTS ------------------------------
 % -----------------------------------------------------------------------------
 
-\section*{Studying the effect of a different starting combination on
+\section{Studying the effect of a different starting combination on
   the differences among algorithms} 
 
 To test whether, under different circumstances, the newly proposed
@@ -1445,7 +1472,7 @@ of MasterMind.
 % ------------------------------- CONCLUSIONS ---------------------------------
 % -----------------------------------------------------------------------------
 
-\section*{Conclusions and discussion}
+\section{Conclusions and discussion}
 \label{s:c}
 
 In this work we have analyzed the solutions to the game of MasterMind
