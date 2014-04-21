@@ -169,10 +169,11 @@ descripción de la solución/metodología a aplicar.
 \subsection{Security rules parsing}
 \label{subsec:ruleparsing}
 
-The `before and after' performing the parsing over the .drl file is in Figure \ref{fig:drools_hash}.
+In this work we have considered Drools \cite{drools:site} as the tool to create and therefore managing rules in a business environment. This so called Business Rule Management System (BRMS) has been developed by the JBoss community under an Apache License and it is written in Java. Though this platform consist of many components, here we focus on Drools Expert and the Drools Rule Language (DRL, \cite{drools:doc}). Then, the defined rules for a certain company are inside of a file with a \textt{.drl} extension, the file that needs to be parsed to obtain the final set of rules. In Figure \ref{fig:drools_hash}, (a), there is the typical rule syntax in DRL. Two main things should be obtained from the parsing method: both left and right sides of the rule, taking into account that the left side is where the company specifies the conditions required to apply the action indicated in the right side. Also, for describing the conditions, Squid is used (see Subsection \ref{subsec:urlparsing}), having thus the following structure: \texttt{squid:Squid(\textit{conditions})}. Finally, from the right side of the rule, the \textit{ALLOW} or \textit{DENY} label to apply on the data that matches with the conditions, will be extracted. The Perl parser that we have implemented applies two regular expressions, one for each side of the rule, and returns a hash with all the rules with the conditions and actions defined. The `before and after' performing the parsing over the \texttt{.drl} file is in Figure \ref{fig:drools_hash}.
 
 \begin{figure}[htb]
 \centering
+\caption{(a) Structure of a rule in Drools Expert. (b) Resulting rule, after the parsing, in a global hash of rules. \label{fig:drools_hash}}
 \subfloat[Drools Rule]{
 \begin{tabular}{ p{0.05cm} p{0.05cm} p{3cm} }
   \texttt{rule~"name"} & & \\
@@ -197,13 +198,15 @@ The `before and after' performing the parsing over the .drl file is in Figure \r
   \texttt{);} & & \\
 \end{tabular}
 }
-\caption{(a) Structure of a rule in Drools Expert. (b) Resulting rule, after the parsing, in a global hash of rules. \label{fig:drools_hash}}
 \end{figure}
 
 % ------------------------------------------------------------------
 %
 \subsection{URL data parsing}
 \label{subsec:urlparsing}
+
+%hablar de Squid aquí \cite{squid:site}
+
 
 
 % ------------------------------------------------------------------
