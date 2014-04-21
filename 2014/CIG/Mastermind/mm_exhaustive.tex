@@ -34,7 +34,7 @@
 
 
 % paper title: Must keep \ \\ \LARGE\bf in it to leave enough margin.
-\title{\ \\ \LARGE\bf An experimental study of exhaustive solutions for the MasterMind puzzle
+\title{\ \\ \LARGE\bf New Exhaustive solutions to the Game of MasterMind
 \thanks{ J. J. Merelo and Antonio M. Mora are with the Dept. of Architecture and Computer
   Technology, ETSIIT, University of Granada, email: jj@merelo.net, amorag@geneura.ugr.es}
 \thanks{Thomas P. Runarsson is with the School of Engineering and Natural
@@ -52,9 +52,7 @@ Sciences at the University of M\'alaga, email: ccottap@lcc.uma.es}}
 \maketitle
 
 \begin{abstract}
-MasterMind is in essence a search problem in which a string of symbols that is kept secret must be found by sequentially playing strings that use the same alphabet, and using the responses that indicate how close are those other strings to the secret one as hints. Although it is commercialized as a game, it is a combinatorial problem of high complexity, with applications on fields that range from computer security to genomics. As such a kind of problem, there are no exact solutions; even exhaustive search methods rely on heuristics to
-choose, at every step, strings to obtain as a response the best possible hint. So far, these methods mostly try to play the move that offers the best possibility in reduction of the search space size in the next step, so this move is chosen according to an empirical score. In this paper we will examine several state of the art exhaustive search methods and show that another factor, the presence of the actual solution among the candidate moves, or, in other words, the fact that the actual solution might obtain the highest score, plays also a very important role. Using that, we will propose new exhaustive search approaches that obtain results which are comparable to the classic ones, obtain
-results that are as good as the best of them, and, besides, are better suited as a basis for non-exhaustive search strategies such as evolutionary algorithms, since their behavior in a series of key indicators is better than the classical algorithms. 
+MasterMind puzzle, rather than just a game, is a combinatorial problem of high complexity, with applications on fields that range from computer security to genomics. As such a kind of problem, there are no exact solutions; even exhaustive search methods rely on heuristics to choose, at every step, strings to obtain as a response the best possible hint. So far, these methods mostly try to play the move that offers the best possibility in reduction of the search space size in the next step, so this move is chosen according to an empirical score. In this paper we revise several state of the art exhaustive search methods in this scope, and show that another factor (the presence of the actual solution among the candidate moves, or, in other words, the fact that the actual solution might obtain the highest score), plays also a very important role. Using that, we will propose two new exhaustive search approaches that obtain results which are comparable to the classic ones, being as good as the best of them. Besides, these approaches are better suited as a basis for non-exhaustive search strategies such as evolutionary algorithms, since their behavior in a series of key indicators is better than the classical algorithms. 
 \end{abstract}
 
 % -----------------------------------------------------------------------------
@@ -65,12 +63,14 @@ results that are as good as the best of them, and, besides, are better suited as
 \label{s:intro}
 
 MasterMind \cite{mm:mathworld} is a board game that has enjoyed
-world-wide popularity in the last decades. Although its current version
-follows a design created in the 70s by the Israeli engineer Mordecai Meirowitz
-\cite{wiki:mm}, the antecedents of the game can be
-traced back 
-to traditional puzzles such as \emph{bulls and cows} \cite{francisstrategies:moo} or the so-called \emph{AB}
-\cite{Chen2007435} game played in the Far East. Briefly, MasterMind is a two-player
+world-wide popularity in the last decades. 
+%Although its current version
+%follows a design created in the 70s by the Israeli engineer Mordecai Meirowitz
+%\cite{wiki:mm}, the antecedents of the game can be
+%traced back 
+%to traditional puzzles such as \emph{bulls and cows} \cite{francisstrategies:moo} or the so-called \emph{AB}
+%\cite{Chen2007435} game played in the Far East. 
+Briefly, MasterMind is a two-player
 code-breaking game, or in some sense a single-player puzzle, where one of the
 players --the \emph{codemaker} (\codemaker)-- has no other role in the game than
 setting a hidden combination, and automatically providing hints on
@@ -79,16 +79,18 @@ come to correctly guess this combination. More precisely, the flow of the game
 is as follows:
 \begin{itemize}
 
-\item The \codemaker\  (Alice in cryptography \cite{goodrich2013}) sets and hides a length $\ell$ combination of $\kappa$
+\item The \codemaker\  
+%(Alice in cryptography \cite{goodrich2013}) 
+sets and hides a length $\ell$ combination of $\kappa$
   symbols. Therefore, the \codebreaker\ is faced with $\kappa^\ell$
   candidates for the hidden combination, which is typically
   represented by an array of pegs of different colors (but can also be
   represented using any digits or letter strings) and hidden from the
   \codebreaker. 
 
-\item The \codebreaker\ (which is called Bob in cryptographic contexts
-  such as \cite{DBLP:journals/corr/abs-0904-4458}) tries to guess this secret code by
-  producing a combination (which we will call move) with the same length, and using the same set
+\item The \codebreaker\ 
+%(which is called Bob in cryptographic contexts such as \cite{DBLP:journals/corr/abs-0904-4458}) 
+tries to guess this secret code by producing a combination (which we will call move) with the same length, and using the same set
   of symbols. As a response to that move, the \codemaker\, acting as an
       {\em oracle} (which explains the inclusion of this game in the
       category called {\em oracle} games)
@@ -103,13 +105,13 @@ is as follows:
   the hidden combination in at most $N$ attempts, the \codebreaker\
       wins. Otherwise,  the \codemaker\ takes the game. $N$ usually
       corresponds to the 
-      physical number of rows in the  game board, which is equal to
+      physical number of rows in the  game board, which was equal to
       fifteen in the first commercial version.
 
- \item \codemaker\ and \codebreaker\ are then interchanged, and several rounds of the game
-       are played. This is a part of the game we do not
-       consider. The player that is able to obtain the solution in the minimal amount
-       of attempts wins. 
+% \item \codemaker\ and \codebreaker\ are then interchanged, and several rounds of the game
+%       are played. This is a part of the game we do not
+%       consider. The player that is able to obtain the solution in the minimal amount
+%       of attempts wins. 
 
 \end{itemize}
 
@@ -134,36 +136,58 @@ ABBC & 4 black\\
 \end{tabular}
 \end{table}
 
+We want to clarify the referred concept (in Table \ref{tab:mm})  of {\em consistent} combinations \cite{o1991mastermind} in the following way: a 
+combination $c$ is \emph{consistent} with another played previously 
+$c_p$ if $c$ has as many black and white pegs with respect to the $c_p$ as $c_p$ has with respect to the hidden combination. We can easily
+extend this notion and denote a combination $c$ as consistent (or
+feasible) if, and only if, it is consistent with all the combinations
+played so far. Any consistent combination is a
+candidate solution. A {\em consistent set} is the set of all
+consistent combinations at a particular point in the game.
+
+Consistent combinations are important because only a move using one of
+them decreases the size of the consistent set, at least by one (the
+combination itself). A non-consistent combination might or might not
+do that, depending on its similarity to already played moves. So most
+MasterMind strategies play a consistent combination. We will see next
+how these concepts are used to find the secret combination in a
+minimum number of combinations. 
+
 In this paper, we will consider the puzzle only from the point of view
 of the \codebreaker\ , that is, a solver will be confronted with an
 oracle that will award, for each move, a number of black and white
 pegs. We will make no assumptions on the \codemaker\ other that it
-will use random combinations (which in fact it does, although actual
-applications of MasterMind might use some information on the
-distribution of symbols \cite{DBLP:journals/corr/abs-0904-4458}). A human player will probably have some
+will use random combinations. 
+%(which in fact it does, although actual
+%applications of MasterMind might use some information on the
+%distribution of symbols \cite{DBLP:journals/corr/abs-0904-4458}). 
+A human player will probably have some
 kind of bias, but we are interested in finding the most general
 playing method
 without using that kind of information. 
 
 From the point of view mentioned in the last paragraph this puzzle is, in fact, a quite interesting combinatorial problem,
 as it relates to other {\em oracle}-type problems such as the
- hacking of the PIN codes used in bank ATMs
- \cite{bank:mm,focardi2011guessing},  uniquely identifying a person
- from queries to a genetic database \cite{goodrich2009algorithmic,DBLP:journals/corr/abs-0904-4458}, or
- identifying which genotypes have interesting traits for selectively
- phenotyping them \cite{gagneur2011selective}; this is just a small
- sample of possible applications of the solution of the game of
- MasterMind. A more complete survey of applications (up to 2005) can
- be found in our previous paper \cite{mastermind05}, but recent posts
- in the questions-and-answers website StackOverflow and mentions in
- special issues devoted to {\em fun with algorithms}
- \cite{boldi2012special} are witness to the
- ongoing interest in finding solutions to the game
- \cite{stackoverflow}. 
+ hacking of the PIN codes used in bank ATMs,
+% \cite{bank:mm,focardi2011guessing},  
+uniquely identifying a person from queries to a genetic database,
+% \cite{goodrich2009algorithmic,DBLP:journals/corr/abs-0904-4458}, 
+or identifying which genotypes have interesting traits for selectively
+phenotyping them; 
+%\cite{gagneur2011selective}; 
+this is just a small sample of possible applications of the solution of the game of MasterMind. A more complete survey of applications (up to 2005) can
+ be found in our previous paper \cite{mastermind05}.
+% but recent posts
+% in the questions-and-answers website StackOverflow and mentions in
+% special issues devoted to {\em fun with algorithms}
+% \cite{boldi2012special} are witness to the
+% ongoing interest in finding solutions to the game
+% \cite{stackoverflow}. 
 
 MasterMind is also, as has been proved recently, a complex problem, paradigmatic of a whole class of search problems \cite{o1991mastermind};  the problem of finding the solution has been shown to be NP-complete under different formulations \cite{abs-cs-0512049,Kendall200813}, and the problem of counting the number of solutions compatible with a certain set of answers is
 \#P-complete \cite{DBLP:journals/corr/abs-1111-6922}. 
-This makes the search for good heuristic algorithms to solve it a challenge; besides, several issues remain open, such as what is the lowest average number of guesses needed to solve the problem for any given $\kappa$ and $\ell$. Associated to this, there arises the issue of coming up with an efficient mechanism for finding the hidden combination independently of the problem size, or at least, a method that scales gracefully when the problem size increases.
+This makes the search for good heuristic algorithms to solve it a challenge; besides, several issues remain open, such as what is the lowest average number of guesses needed to solve the problem for any given $\kappa$ (colors) and $\ell$ (pegs). 
+Associated to this, there arises the issue of coming up with an efficient mechanism for finding the hidden combination independently of the problem size, or at least, a method that scales gracefully when the problem size increases.
 
 In this paper we will mainly examine empirical exhaustive search algorithms for
 sizes in which they are feasible and try to find out which are the
@@ -175,8 +199,7 @@ secret code) is found. While most methods of
 this kind consider as the only important factor the reduction of the search space \cite{Kooi200513}, we will prove that how different combinations, and in particular the secret (and unknown) one is scored contributes also to finding the solution faster.
 Taking into account how often the hidden combination appears
 among the top scorers for a particular method, we will propose new
-exhaustive search methods that are competitive with the best
-solutions for MasterMind known so far. Besides, these methods do not
+exhaustive search methods that are competitive with the best known solutions for MasterMind. Besides, these methods do not
 add too much complexity to the solution and present certain behaviors
 that are better than the empirical solutions used so far. 
 
@@ -185,20 +208,21 @@ small sizes in NP-hard problems such as this one. However, its
 analysis and the proposal of new methods have traditionally been,
 and will also be used, to design metaheuristic search methods (such as
 evolutionary algorithms) that are able to search much further in the
-parameter space. Since that has been our line of research for a long
-time \cite{jj-ppsn96,genmm99,mastermind05}, eventually we will use them in those
-algorithms, but that is outside the scope of this paper.
-
-The rest of the paper is organized as follows: we lay out the
-terminology and explain the state of the art in solutions to the game of MasterMind in
-Section \ref{s:mm}; the state of the art in solutions to it is
-presented next, in Section \ref{s:soa}. Next we will analyze the
-best performing MasterMind methods known so far in Section  \ref{s:sm}
-and reach some conclusions on its way of working; the conclusions
-extracted in this analysis will be used in Section \ref{s:nsm} to
-propose and analyze the new solutions proposed in this paper, which we
-have called Plus and Plus2. This Section will be followed by
-conclusions in the last Section \ref{s:c}. 
+parameter space. 
+%Since that has been our line of research for a long
+%time \cite{jj-ppsn96,genmm99,mastermind05}, eventually we will use them in those
+%algorithms, but that is outside the scope of this paper.
+%
+%The rest of the paper is organized as follows: we lay out the
+%terminology and explain the state of the art in solutions to the game of MasterMind in
+%Section \ref{s:mm}; the state of the art in solutions to it is
+%presented next, in Section \ref{s:soa}. Next we will analyze the
+%best performing MasterMind methods known so far in Section  \ref{s:sm}
+%and reach some conclusions on its way of working; the conclusions
+%extracted in this analysis will be used in Section \ref{s:nsm} to
+%propose and analyze the new solutions proposed in this paper, which we
+%have called Plus and Plus2. This Section will be followed by
+%conclusions in the last Section \ref{s:c}. 
 
 % -----------------------------------------------------------------------------
 
@@ -206,50 +230,50 @@ conclusions in the last Section \ref{s:c}.
 % ------------------------------ MASTERMIND -----------------------------------
 % -----------------------------------------------------------------------------
 
-\section*{The game of MasterMind}
-\label{s:mm}
-
-As mentioned in Section \ref{s:intro}, a MasterMind problem instance is
-characterized by two parameters: the number of colors $\kappa$
-and the number of pegs $\ell$. Let
-$\mathbb{N}_\kappa=\{1,2,\cdots\,\kappa\}$ be the set of symbols
-used to denote the colors. Subsequently, any combination, either the
-hidden one or one played by the \codebreaker, is a string $c\in
-\mathbb{N}_\kappa^\ell$. Whenever the \codebreaker\  plays a
-combination $c_p$, a \emph{response} $h(c_p,c_h)\in\mathbb{N}^2$ is
-obtained from the \codemaker, where $c_h$ is the hidden combination.
-A response $\langle b, w \rangle$ indicates that the $c_p$ matches
-$c_h$ in $b$ positions, and there exist other $w$ symbols in $c_p$
-present in $c_h$ but in different positions.
-
-Let us define {\em consistent} combinations \cite{o1991mastermind} in
-the following way: a 
-combination $c$ is \emph{consistent} with another played previously 
-$c_p$ if, and only if, $h(c,c_p)=h(c_p,c_h)$, i.e., if $c$ has as
-many black and white pegs with respect to the $c_p$ as $c_p$ has
-with respect to the hidden combination. Intuitively, this captures
-the fact that $c$ might be a potential candidate for secret code in light of the outcome of playing $c_p$. We can easily
-extend this notion and denote a combination $c$ as consistent (or
-feasible) if, and only if, it is consistent with all the combinations
-played so far, i.e., $h(c,c^i_p) = h(c^i_p, c_h)$ for $1 \leqslant i \leqslant n$,
-where $n$ is the number of combinations played so far, and $c^i_p$
-is the $i-$th combination played. Any consistent combination is a
-candidate solution. A {\em consistent set} is the set of all
-consistent combinations at a particular point in the game. 
-
-Consistent combinations are important because only a move using one of
-them decreases the size of the consistent set, at least by one (the
-combination itself). A non-consistent combination might or might not
-do that, depending on its similarity to already played moves. So most
-MasterMind strategies play a consistent combination. We will see next
-how these concepts are used to find the secret combination in a
-minimum number of combinations. 
+%\section*{The game of MasterMind}
+%\label{s:mm}
+%
+%As mentioned in Section \ref{s:intro}, a MasterMind problem instance is
+%characterized by two parameters: the number of colors $\kappa$
+%and the number of pegs $\ell$. Let
+%$\mathbb{N}_\kappa=\{1,2,\cdots\,\kappa\}$ be the set of symbols
+%used to denote the colors. Subsequently, any combination, either the
+%hidden one or one played by the \codebreaker, is a string $c\in
+%\mathbb{N}_\kappa^\ell$. Whenever the \codebreaker\  plays a
+%combination $c_p$, a \emph{response} $h(c_p,c_h)\in\mathbb{N}^2$ is
+%obtained from the \codemaker, where $c_h$ is the hidden combination.
+%A response $\langle b, w \rangle$ indicates that the $c_p$ matches
+%$c_h$ in $b$ positions, and there exist other $w$ symbols in $c_p$
+%present in $c_h$ but in different positions.
+%
+%Let us define {\em consistent} combinations \cite{o1991mastermind} in
+%the following way: a 
+%combination $c$ is \emph{consistent} with another played previously 
+%$c_p$ if, and only if, $h(c,c_p)=h(c_p,c_h)$, i.e., if $c$ has as
+%many black and white pegs with respect to the $c_p$ as $c_p$ has
+%with respect to the hidden combination. Intuitively, this captures
+%the fact that $c$ might be a potential candidate for secret code in light of the outcome of playing $c_p$. We can easily
+%extend this notion and denote a combination $c$ as consistent (or
+%feasible) if, and only if, it is consistent with all the combinations
+%played so far, i.e., $h(c,c^i_p) = h(c^i_p, c_h)$ for $1 \leqslant i \leqslant n$,
+%where $n$ is the number of combinations played so far, and $c^i_p$
+%is the $i-$th combination played. Any consistent combination is a
+%candidate solution. A {\em consistent set} is the set of all
+%consistent combinations at a particular point in the game. 
+%
+%Consistent combinations are important because only a move using one of
+%them decreases the size of the consistent set, at least by one (the
+%combination itself). A non-consistent combination might or might not
+%do that, depending on its similarity to already played moves. So most
+%MasterMind strategies play a consistent combination. We will see next
+%how these concepts are used to find the secret combination in a
+%minimum number of combinations. 
 
 % -----------------------------------------------------------------------------
 % ---------------------------------- SOTA -------------------------------------
 % -----------------------------------------------------------------------------
 
-\section*{State of the art}
+\section{State of the art}
 \label{s:soa}
 
 Most theoretical work done on the game of MasterMind tries to find
@@ -287,19 +311,20 @@ size).
   a game after two combinations have already been played. In boldface,
   the combinations which have the minimal worst set size (which happen to be in the 1b-1w column, but it could be any one); in this
   case, equal to ten. A strategy that tries to minimize worst case
-  would play one of those combinations. The column 0b-1w with all values equal
-  to 0 has been suppressed; column for combination 3b-1w, being impossible, is
-  not shown either. Some rows have also been eliminated for the sake
-  of compactness.  \label{tab:partitions}}
-\small
+  would play one of those combinations. 
+%The column 0b-1w with all values equal
+%  to 0 has been suppressed; column for combination 3b-1w, being impossible, is
+%  not shown either. Some rows have also been eliminated for the sake
+%  of compactness.  
+\label{tab:partitions}}
+\scriptsize
 \centering
 \tiny
 \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|}
 \hline
-Combination & \multicolumn{10}{|c|}{Number of combinations in the
-  partition with response} \\
+COMBINATION & \multicolumn{10}{|c|}{NUMBER OF COMBINATIONS IN THE PARTITION WITH RESPONSE} \\
 \hline
- &0b-2w& 0b-3w& 0b-4w& 1b-1w& 1b-2w& 1b-3w& 2b-0w& 2b-1w& 2b-2w& 3b-0w\\
+ &0b2w& 0b3w& 0b4w& 1b1w& 1b2w& 1b3w& 2b0w& 2b1w& 2b2w& 3b0w\\
 AABA &0 & 0 & 0 & 14 & 8 & 0 & 13 & 1 & 0 & 3 \\
 {\bf AACC} &8 & 0 & 0 & 10 & 5 & 0 & 8 & 4 & 1 & 3 \\
 AACD &6 & 2 & 0 & 11 & 6 & 1 & 4 & 5 & 1 & 3 \\
@@ -367,7 +392,8 @@ the cardinality of set $C$.  For example, a combination such as ABDC in Table \r
     sub-matrix. We will call this strategy Entropy. 
  \end{enumerate}
 
-\begin{algorithm*}[htb!]
+\begin{algorithm}[htb!]
+{\small
 \caption{Choosing the next move in the general case}\label{alg:general}
 \smallskip 
 
@@ -377,8 +403,9 @@ the cardinality of set $C$.  For example, a combination such as ABDC in Table \r
 \textbf{var} TopScorers: List[Combination]\; 
 \textsc{Score}( $F$ )\;
 $guess\leftarrow$ \textsc{RandomElement} ( TopScorers )\;
-\end{algorithm*}
-%
+}
+\end{algorithm}
+
 All strategies based on partitions work as follows:\begin{enumerate}
 \item Score all combinations in the consistent set according to the
   method chosen (Entropy, Most Parts, Best Expected, or Minimize Worst)
@@ -389,11 +416,11 @@ All strategies based on partitions work as follows:\begin{enumerate}
 This is also represented more formally in Algorithm \ref{alg:general},
 where \textsc{Score} scores all combinations according to the
 criterion chosen, and \textsc{RandomElement} extracts a random element
-from the list passed as an argument using uniform distribution. 
+from the list passed as an argument. 
 
-Exhaustive strategies have only (as far as we know) been examined and compared for the
-base case of $\kappa=6, \ell=4$, for instance in \cite{nicso};
-restricted versions of the game have been examined for other spaces,
+Exhaustive strategies were examined and compared for the
+base case of $\kappa=6, \ell=4$, for instance in \cite{nicso}, and for that in addition to $\kappa=8, \ell=4$ in our work \cite{exhaustive_MM_arXiv}.
+Restricted versions of the game have been examined for other spaces,
 for instance in  \cite{o1991mastermind}. The best
 results are obtained by Entropy and Most Parts, but its difference is
 not statistically significant. All other results (including the
@@ -403,9 +430,9 @@ strategies, which represent the state of the art in exhaustive
 search. Bear in mind that all these strategies are empirical, in the
 sense that they are based in an assumption of how the reduction of the
 search space work; there is, for the time being, no other way of
-proposing new strategies for the game of mastermind. 
+proposing new strategies for the game of MasterMind. 
 
-Besides, the size of the the search space is used as proxy for what is
+Besides, the size of the search space is used as proxy for what is
 actually the key to success of a strategy: the probability of drawing
 the winning combination at each step. It is evident that reducing the
 number of combinations will eventually result in drawing the secret
@@ -413,9 +440,8 @@ one with probability one. However, it should not be neglected that the
 probability of drawing it even if it is not the only remaining
 combination is non-zero and care should be taken so that this
 probability is either maximized, or at least considered to minimize
-the number of moves needed to find it. So far, and to the best of our
-knowledge, no study has been made of this probability; we will show in
-this paper its influence on the success of a strategy. 
+the number of moves needed to find it. 
+We studied this probability in \cite{exhaustive_MM_arXiv}, where we demonstrated its influence on the success of a strategy. 
 
 Let us finally draw our attention to the first move. It is obviously
 an important part of the game, and since, a priori, all combinations
@@ -440,521 +466,513 @@ exhaustive search strategies. These algorithms, along with all others
 used in this paper, are written in Perl, released under a open source
 licence and can be downloaded from \url{http://goo.gl/G9mzZ}. All
 parameters, experiment scripts, data extraction scripts and R data
-files can be found within the {\tt app/IEEE-CIG} directory. Next we
-will examine how these algorithms work in two different sizes, which
-are considered enough to assess its performance, since they are two
-instances in which exhaustive strategies can be applied and run for a
-good number of times; in
-Section \ref{s:nsm} we will propose new methods and prove that they
-obtain a better average number of moves making them the new state of
-the art in exhaustive search algorithms for the game of MasterMind. 
+files can be found within the {\tt app/IEEE-CIG} directory. In \cite{exhaustive_MM_arXiv} we examined how these algorithms worked in two different sizes, which are considered enough to assess its performance, since they are two instances in which exhaustive strategies can be applied and run for a good number of times; having this in mind, in Section \ref{s:nsm} we will propose new methods and prove that they obtain a better average number of moves making them the new state of the art in exhaustive search algorithms for the game of MasterMind. 
 
 % -----------------------------------------------------------------------------
 % ------------------- ANALYZING EXHAUSTIVE SEARCH METHODS ---------------------
 % -----------------------------------------------------------------------------
 
-\section{Analyzing exhaustive search methods}
-\label{s:sm}
-
-In this section, we will outline a methodology for analyzing
-exhaustive solutions to the game of MasterMind and apply it to two
-strategies that are usually considered the best, Entropy and Most
-Parts, for two different problem sizes, keeping  $\ell=4$ fixed and
-setting $\kappa=6$ (Subsection \ref{ss:k6}) and  $\kappa=8$
-(Subsection \ref{ss:k8}).
-
+%\section{Analyzing exhaustive search methods}
+%\label{s:sm}
+%
+%In this section, we will outline a methodology for analyzing
+%exhaustive solutions to the game of MasterMind and apply it to two
+%strategies that are usually considered the best, Entropy and Most
+%Parts, for two different problem sizes, keeping  $\ell=4$ fixed and
+%setting $\kappa=6$ (Subsection \ref{ss:k6}) and  $\kappa=8$
+%(Subsection \ref{ss:k8}).
+%
 %-------------------------------------------------------------------------------
-
-\subsection{Instance 1, $\ell=4,\kappa=6$}
-\label{ss:k6}
-
-Let us look first at the smallest usual size, $\kappa=6$ and
-$\ell=4$. The best two strategies in this case have been proved 
-to be Entropy and Most Parts \cite{nicso,Berghman20091880}, in both cases
-starting using Knuth's rule, ABCA \cite{Knuth}. An analysis of the number of moves obtained by each method
-are shown in Table \ref{tab:me}.
+%
+%\subsection{Instance 1, $\ell=4,\kappa=6$}
+%\label{ss:k6}
+%
+%Let us look first at the smallest usual size, $\kappa=6$ and
+%$\ell=4$. The best two strategies in this case have been proved 
+%to be Entropy and Most Parts \cite{nicso,Berghman20091880}, in both cases
+%starting using Knuth's rule, ABCA \cite{Knuth}. An analysis of the number of moves obtained by each method
+%are shown in Table \ref{tab:me}.
 %%% TABLE 3 %%%
-\begin{table}[htb!]
-\caption{Average (with error of the mean) and Maximum number of moves for two search strategies: Most Parts
-  and Entropy. \label{tab:me}}
-  \centering\smallskip
-\begin{tabular}{|l|c|c|c|}
-\hline
-\emph{Method} & \multicolumn{3}{c|}{\emph{Number of moves}}\\
- & \emph{Average} & \emph{Maximum} & \emph{Median} \\
-\hline
-Entropy & 4.413 $\pm$ 0.006 & 6 & 4 \\
-Most Parts & 4.406 $\pm$ 0.007 & 7 & 4 \\
-\hline
-\end{tabular}
-\end{table}
-
-To compute this average, 10 runs over the whole combination space were
-made. In fact the difference in the number of moves is small enough to not
-be statistically significant (using Wilcoxon test, p-value = 0.4577), 
-but there is a
-difference among them, the most striking being that, even if the
-maximum number of moves is higher for Most Parts, Entropy has a higher
-average. 
-
-To check where that difference lies we will plot a
-histogram of the number of moves needed to find the solution for both
-methods, see Figure \ref{fig:histo:me}. 
-
+%\begin{table}[htb!]
+%\caption{Average (with error of the mean) and Maximum number of moves for two search strategies: Most Parts
+%  and Entropy. \label{tab:me}}
+%  \centering\smallskip
+%\begin{tabular}{|l|c|c|c|}
+%\hline
+%\emph{Method} & \multicolumn{3}{c|}{\emph{Number of moves}}\\
+% & \emph{Average} & \emph{Maximum} & \emph{Median} \\
+%\hline
+%Entropy & 4.413 $\pm$ 0.006 & 6 & 4 \\
+%Most Parts & 4.406 $\pm$ 0.007 & 7 & 4 \\
+%\hline
+%\end{tabular}
+%\end{table}
+%
+%To compute this average, 10 runs over the whole combination space were
+%made. In fact the difference in the number of moves is small enough to not
+%be statistically significant (using Wilcoxon test, p-value = 0.4577), 
+%but there is a
+%difference among them, the most striking being that, even if the
+%maximum number of moves is higher for Most Parts, Entropy has a higher
+%average. 
+%
+%To check where that difference lies we will plot a
+%histogram of the number of moves needed to find the solution for both
+%methods, see Figure \ref{fig:histo:me}. 
+%
 %%% FIGURES 1, 2, 3 %%%
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=4in,angle=-90]{img/fig1_histo-me.eps}
-\caption{Histogram with the count of the number of times every method
-  is able to find the solution in each number of moves for the
-  Entropy method (black and solid) and Most Parts (light or red, dashed). \label{fig:histo:me}}
-\end{figure} 
-
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=0.65]{img/fig2_dif-46.eps}
-\caption{***Figure caption***\label{fig:dif:me}}
-\end{figure}
-
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=0.65]{img/fig3_score-dif-46.eps}
-\caption{Difference in score among the number of games won by Entropy and Most
-  Parts in $x$ moves. Every $y$ value in the graph \ref{fig:dif:me}
-  has been multiplied by the number of moves, resulting in the actual
-  score the player would achieve. Remember that less is better;
-  positive values mean that Entropy beats Most Parts (for that move),
-  and vice versa. \label{fig:scoredif:me}}
-\end{figure}
-
-
-As should be expected for the negligible difference in the average number of moves, differences here
-are very small. It is noticeable, however, than Most Parts finishes
-less times in 1 to 3 moves, and also 5 moves. Most parts only finishes
-in less occasions than Entropy for 4 moves; quite obviously, too,
-there are a few times in which Most Parts needs 7 moves, but only
-8 out of the total 12,960 games (10 games times the total number of
-combinations, 1296). Again, differences are not significant, 
-but noticeable , so we will try to seek what is its source;
-these differences must be the cause why eventually Most Parts achieves
-a slightly higher average number of moves. Let us look further into
-these differences by plotting the difference in the number of games
-won by every one in a particular number of moves, let's say $x$. That
-is shown in Figure \ref{fig:dif:me}. For all moves, except 5 and 7 (by
-that move Entropy has always finished), Most Parts has more
-games. Since both methods play the same number of games, the
-difference is offset by the number of games more, around 150, that
-Entropy finishes by move number five; this is also seen clearly in the
-histogram in Figure \ref{fig:histo:me}. However, the important issue is the
-difference in {\em score}, that is, in number of moves brought by
-finishing each move. Differences in scores are computed by multiplying
-the difference in the number of games by the move number, and plotted
-in Figure \ref{fig:scoredif:me}. It obviously follows the same pattern
-than Figure \ref{fig:dif:me}, however it gives us an idea of the
-contribution of differences to total score. Since in this case the
-total score for Entropy is 57189 and for Most Parts 57106, and Most
-Parts is always better (negative difference in score) than Entropy, we
-see that for low number of moves Most Parts is accumulating
-differences, although it is worsened by not being able to finish as
-many times as Entropy in 5 moves. This is the key move, and the shape
-of the plot indicates a change of regime in the game. It also shows
-that no single strategy is better than the other, yielding the
-non-significant difference in moves (and scant difference in score,
-less than 100 over 12,960 games!). The main conclusion would be that ,
-in fact, bot solutions are very similar, and this is also supported by
-other experiments (not shown here) with more games, that do not yield
-a significant difference either. However, we can also see that the way
-they find the solution is different, that is why we will study other
-aspects of the algorithm in the next paragraphs. 
-
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[width=2.5in,angle=-90]{img/fig1_histo-me.eps}
+%\caption{Histogram with the count of the number of times every method
+%  is able to find the solution in each number of moves for the
+%  Entropy method (black and solid) and Most Parts (light or red, dashed). \label{fig:histo:me}}
+%\end{figure} 
+%
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[scale=0.5]{img/fig2_dif-46.eps}
+%\caption{***Figure caption***\label{fig:dif:me}}
+%\end{figure}
+%
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[scale=0.5]{img/fig3_score-dif-46.eps}
+%\caption{Difference in score among the number of games won by Entropy and Most
+%  Parts in $x$ moves. Every $y$ value in the graph \ref{fig:dif:me}
+%  has been multiplied by the number of moves, resulting in the actual
+%  score the player would achieve. Remember that less is better;
+%  positive values mean that Entropy beats Most Parts (for that move),
+%  and vice versa. \label{fig:scoredif:me}}
+%\end{figure}
+%
+%
+%As should be expected for the negligible difference in the average number of moves, differences here
+%are very small. It is noticeable, however, than Most Parts finishes
+%less times in 1 to 3 moves, and also 5 moves. Most parts only finishes
+%in less occasions than Entropy for 4 moves; quite obviously, too,
+%there are a few times in which Most Parts needs 7 moves, but only
+%8 out of the total 12,960 games (10 games times the total number of
+%combinations, 1296). Again, differences are not significant, 
+%but noticeable , so we will try to seek what is its source;
+%these differences must be the cause why eventually Most Parts achieves
+%a slightly higher average number of moves. Let us look further into
+%these differences by plotting the difference in the number of games
+%won by every one in a particular number of moves, let's say $x$. That
+%is shown in Figure \ref{fig:dif:me}. For all moves, except 5 and 7 (by
+%that move Entropy has always finished), Most Parts has more
+%games. Since both methods play the same number of games, the
+%difference is offset by the number of games more, around 150, that
+%Entropy finishes by move number five; this is also seen clearly in the
+%histogram in Figure \ref{fig:histo:me}. However, the important issue is the
+%difference in {\em score}, that is, in number of moves brought by
+%finishing each move. Differences in scores are computed by multiplying
+%the difference in the number of games by the move number, and plotted
+%in Figure \ref{fig:scoredif:me}. It obviously follows the same pattern
+%than Figure \ref{fig:dif:me}, however it gives us an idea of the
+%contribution of differences to total score. Since in this case the
+%total score for Entropy is 57189 and for Most Parts 57106, and Most
+%Parts is always better (negative difference in score) than Entropy, we
+%see that for low number of moves Most Parts is accumulating
+%differences, although it is worsened by not being able to finish as
+%many times as Entropy in 5 moves. This is the key move, and the shape
+%of the plot indicates a change of regime in the game. It also shows
+%that no single strategy is better than the other, yielding the
+%non-significant difference in moves (and scant difference in score,
+%less than 100 over 12,960 games!). The main conclusion would be that ,
+%in fact, bot solutions are very similar, and this is also supported by
+%other experiments (not shown here) with more games, that do not yield
+%a significant difference either. However, we can also see that the way
+%they find the solution is different, that is why we will study other
+%aspects of the algorithm in the next paragraphs. 
+%
 %%% TABLE 4 %%%
-\begin{table}[h!tb]
-\centering
-\caption{Average and standard deviation of the number of combinations
-  remaining after every move (or step). The numbers are the same after
-  the  first move (not shown here), since they are playing the same one.\label{tab:cset:me}}
-\smallskip
-\begin{tabular}{|c|c|c|}
-\hline
-\emph{Before move \#} & \emph{Entropy} & \emph{Most Parts} \\
-\hline
-3 & 23 $\pm$ 14& 24 $\pm$  15\\
-4 & 3.1 $\pm$ 1.8 & 3.4 $\pm$ 2.4 \\
-5 & 1.13 $\pm$ 0.35 & 1.17 $\pm$ 0.43 \\ 
-6 & 1 & 1.02 $\pm$ 0.17 \\
-7 & & 1 \\
-\hline
-\end{tabular}
-\end{table}
-
-Since both methods try to reduce the size of the consistent set, we
-will look at their size and how it changes with the number of
-moves. We will log the size of the remaining consistent combinations
-at every step, and this is shown in Figure \ref{fig:cset:me} and Table
-\ref{tab:cset:me}. 
-
+%\begin{table}[h!tb]
+%\centering
+%\caption{Average and standard deviation of the number of combinations
+%  remaining after every move (or step). The numbers are the same after
+%  the  first move (not shown here), since they are playing the same one.\label{tab:cset:me}}
+%\smallskip
+%\begin{tabular}{|c|c|c|}
+%\hline
+%\emph{Before move \#} & \emph{Entropy} & \emph{Most Parts} \\
+%\hline
+%3 & 23 $\pm$ 14& 24 $\pm$  15\\
+%4 & 3.1 $\pm$ 1.8 & 3.4 $\pm$ 2.4 \\
+%5 & 1.13 $\pm$ 0.35 & 1.17 $\pm$ 0.43 \\ 
+%6 & 1 & 1.02 $\pm$ 0.17 \\
+%7 & & 1 \\
+%\hline
+%\end{tabular}
+%\end{table}
+%
+%Since both methods try to reduce the size of the consistent set, we
+%will look at their size and how it changes with the number of
+%moves. We will log the size of the remaining consistent combinations
+%at every step, and this is shown in Figure \ref{fig:cset:me} and Table
+%\ref{tab:cset:me}. 
+%
 %%% FIGURE 4 %%%
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=0.65]{img/fig4_cset-me.eps}
-\caption{Average number of combinations (or moves) remaining after
-  each move, for the
-  Entropy method (black and solid) and Most Parts (light or
-  red). This plot corresponds to the numbers represented in Table
-  \ref{tab:cset:me}. The $y$ axis is logarithmic for clarity, and the
-  $x$ axis is shifted by one (1 means the second move, size before the
-  first move is always the whole space).\label{fig:cset:me}}
-\end{figure} 
-
-In effect, the Entropy method is more efficient in
-reducing the size of the set of remaining solutions, which is the
-reason why usually it is presented as the best method for solving
-MasterMind, since it achieves most effectively what it is intended to
-achieve: reduction in search space size. At every step,
-the difference is significant (using Wilcox test). This difference is
-of a single combination at the beginning, and decreases with time while
-still being significant; however, this reduction at the first stages
-of the game makes the search simpler and would, in principle, imply an
-easy victory for the Entropy technique, as would be expected. However, the
-result is a statistical draw, 
-with a slight advantage for the other
-method, Most Parts. Besides, this reduction does not explain the
-advantage found in Figures \ref{fig:histo:me} and \ref{fig:dif:me}: if the number of
-solutions that remain is bigger (on average), why is Most Parts able
-to find the solution at those same stages more often than Entropy,
-which seems to be the key to success?
-
-To discover why this happen, we will look at another result. As explained above,
-all methods are based on scoring consistent combinations according to
-the partitioning of the set they yield, and then playing randomly one
-of the combinations with the top score. If, by chance, the winning
-combination is in that set of top scorers, there is a non-zero
-possibility of playing it as next move and thus winning the match. In
-effect, what we want is to maximize at every step the probability of
-drawing the secret code. We
-will then look at whether the winning combination effectively is or
-not among the top scorers at each step. Results are shown in Figure 
-\ref{fig:top:me} and Table \ref{tab:top:me}.
-
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[scale=0.65]{img/fig4_cset-me.eps}
+%\caption{Average number of combinations (or moves) remaining after
+%  each move, for the
+%  Entropy method (black and solid) and Most Parts (light or
+%  red). This plot corresponds to the numbers represented in Table
+%  \ref{tab:cset:me}. The $y$ axis is logarithmic for clarity, and the
+%  $x$ axis is shifted by one (1 means the second move, size before the
+%  first move is always the whole space).\label{fig:cset:me}}
+%\end{figure} 
+%
+%In effect, the Entropy method is more efficient in
+%reducing the size of the set of remaining solutions, which is the
+%reason why usually it is presented as the best method for solving
+%MasterMind, since it achieves most effectively what it is intended to
+%achieve: reduction in search space size. At every step,
+%the difference is significant (using Wilcox test). This difference is
+%of a single combination at the beginning, and decreases with time while
+%still being significant; however, this reduction at the first stages
+%of the game makes the search simpler and would, in principle, imply an
+%easy victory for the Entropy technique, as would be expected. However, the
+%result is a statistical draw, 
+%with a slight advantage for the other
+%method, Most Parts. Besides, this reduction does not explain the
+%advantage found in Figures \ref{fig:histo:me} and \ref{fig:dif:me}: if the number of
+%solutions that remain is bigger (on average), why is Most Parts able
+%to find the solution at those same stages more often than Entropy,
+%which seems to be the key to success?
+%
+%To discover why this happen, we will look at another result. As explained above,
+%all methods are based on scoring consistent combinations according to
+%the partitioning of the set they yield, and then playing randomly one
+%of the combinations with the top score. If, by chance, the winning
+%combination is in that set of top scorers, there is a non-zero
+%possibility of playing it as next move and thus winning the match. In
+%effect, what we want is to maximize at every step the probability of
+%drawing the secret code. We
+%will then look at whether the winning combination effectively is or
+%not among the top scorers at each step. Results are shown in Figure 
+%\ref{fig:top:me} and Table \ref{tab:top:me}.
+%
 %%% TABLE 5 %%%
-\begin{table}[!htb]
-\centering
-\caption{Percentage of times the secret code is among the top scorers for
-  each method.\label{tab:top:me}}
-\smallskip
-\begin{tabular}{|c|c|c|}
-\hline
-\emph{In move \#} & \emph{Entropy} & \emph{Most Parts} \\
-\hline
-2 & 0.1142857  & 0.3644788\\
-3 & 0.2919495 & 0.5270987 \\
-4 & 0.7721438 & 0.8242563 \\ 
-5 & 0.9834515 &  0.9810066\\
-6 & & 1 \\
-\hline
-\end{tabular}
-\end{table}
-
-
+%\begin{table}[!htb]
+%\centering
+%\caption{Percentage of times the secret code is among the top scorers for
+%  each method.\label{tab:top:me}}
+%\smallskip
+%\begin{tabular}{|c|c|c|}
+%\hline
+%\emph{In move \#} & \emph{Entropy} & \emph{Most Parts} \\
+%\hline
+%2 & 0.1142857  & 0.3644788\\
+%3 & 0.2919495 & 0.5270987 \\
+%4 & 0.7721438 & 0.8242563 \\ 
+%5 & 0.9834515 &  0.9810066\\
+%6 & & 1 \\
+%\hline
+%\end{tabular}
+%\end{table}
+%
+%
 %%% FIGURE 5 %%%
-\begin{figure}[!htb]
-\centering\smallskip
-\includegraphics[scale=0.65]{img/fig5_top-me.eps}
-\caption{Chance of finding the secret code among the top scorers for the
-  Entropy method (black and solid) and Most Parts (light or
-  red). This plot corresponds to the numbers represented in Table
-  \ref{tab:top:me}.\label{fig:top:me}}
-\end{figure} 
-
-Table \ref{tab:top:me} clearly shows that the probability of finding
-the hidden combination among the top scorers increases with time, so
-that in the 5th move is practically one. But it also shows that (in the first moves) there
-is almost double the chance of having the winning combination among the top
-ones for Most Parts than for Entropy, so, effectively, and obviously
-depending on the size of the consistent set found at Table 
-\ref{tab:cset:me}, the likelihood of playing the winning combination
-is higher for Most Parts and its key to success. Making a back of the
-envelope calculation, when the game arrives at the second move, which
-roughly 11,000 games do, a third of them will include the winning
-combination among the top scorers, which again is roughly three
-thousand. 
-
+%\begin{figure}[!htb]
+%\centering\smallskip
+%\includegraphics[scale=0.65]{img/fig5_top-me.eps}
+%\caption{Chance of finding the secret code among the top scorers for the
+%  Entropy method (black and solid) and Most Parts (light or
+%  red). This plot corresponds to the numbers represented in Table
+%  \ref{tab:top:me}.\label{fig:top:me}}
+%\end{figure} 
+%
+%Table \ref{tab:top:me} clearly shows that the probability of finding
+%the hidden combination among the top scorers increases with time, so
+%that in the 5th move is practically one. But it also shows that (in the first moves) there
+%is almost double the chance of having the winning combination among the top
+%ones for Most Parts than for Entropy, so, effectively, and obviously
+%depending on the size of the consistent set found at Table 
+%\ref{tab:cset:me}, the likelihood of playing the winning combination
+%is higher for Most Parts and its key to success. Making a back of the
+%envelope calculation, when the game arrives at the second move, which
+%roughly 11,000 games do, a third of them will include the winning
+%combination among the top scorers, which again is roughly three
+%thousand. 
+%
 %%% FIGURE 6 %%%
-\begin{figure}[!htb]
-\centering\smallskip
-\includegraphics[scale=0.65]{img/fig6_prob-me-46.eps}
-\caption{Chance of drawing the secret code for the
-  Entropy method (black and solid) and Most Parts (light or
-  red). \label{fig:prob:me:46}}
-\end{figure} 
-
-This is not the whole picture, however. Every set of top scorers will
-have a different size; even if the probability of finding the secret
-score among that set is higher, the probability of {\em drawing} it
-will be different if the size is smaller. The average of this
-probability has been drawn in Figure \ref{fig:prob:me:46}. While
-initially the probability is very small (but different), Most Parts
-has a better chance of obtaining the secret code at each move than
-Entropy, at least until move number 6 (label 4). That change of regime
-is reflected in the previous plots by a sudden increase in the number
-of games Entropy finishes (see Figures \ref{fig:histo:me} and
-\ref{fig:dif:me}). However, since by that time Most Parts has been
-able to finish a good amount of times, the difference is not too
-big. Looking at figure \ref{fig:cset:me} and table \ref{tab:cset:me}, which plots the average size
-of the set of remaining combinations, we see that by the 5th move
-(label 4) there is, almost always, a single remaining combination, but
-it happens more often for Entropy than for Most Parts; that is, in
-this move is when the reduction of the search space effectively kicks
-in, accounting for the {\em change in regime} we mentioned before. 
-
-This, in turn, implies one of the main results of this paper: 
-there are two factors in the success of a method for playing MasterMind. The
-first is the reduction it achieves on the search space size by playing
-combinations that reduce it maximally, but there is a second and
-non-negligible factor: the chance of playing the winning
-combination by having it among the top scorers. It can be said that
-there is a particular number of moves, which in this case is after the
-median, 4 moves, where a change of regime takes place. Before and up to 
-that number of games, if a method finishes it is mainly due to
-drawing, by chance, the secret code. After the median the secret code
-is found because it is the only remaining element in the search
-space. 
-
-Most studies so far, however, had only looked at the smallest
-size. Let us study another problem size, with search space 4 times as
-big in the next subsection.
-
+%\begin{figure}[!htb]
+%\centering\smallskip
+%\includegraphics[scale=0.65]{img/fig6_prob-me-46.eps}
+%\caption{Chance of drawing the secret code for the
+%  Entropy method (black and solid) and Most Parts (light or
+%  red). \label{fig:prob:me:46}}
+%\end{figure} 
+%
+%This is not the whole picture, however. Every set of top scorers will
+%have a different size; even if the probability of finding the secret
+%score among that set is higher, the probability of {\em drawing} it
+%will be different if the size is smaller. The average of this
+%probability has been drawn in Figure \ref{fig:prob:me:46}. While
+%initially the probability is very small (but different), Most Parts
+%has a better chance of obtaining the secret code at each move than
+%Entropy, at least until move number 6 (label 4). That change of regime
+%is reflected in the previous plots by a sudden increase in the number
+%of games Entropy finishes (see Figures \ref{fig:histo:me} and
+%\ref{fig:dif:me}). However, since by that time Most Parts has been
+%able to finish a good amount of times, the difference is not too
+%big. Looking at figure \ref{fig:cset:me} and table \ref{tab:cset:me}, which plots the average size
+%of the set of remaining combinations, we see that by the 5th move
+%(label 4) there is, almost always, a single remaining combination, but
+%it happens more often for Entropy than for Most Parts; that is, in
+%this move is when the reduction of the search space effectively kicks
+%in, accounting for the {\em change in regime} we mentioned before. 
+%
+%This, in turn, implies one of the main results of this paper: 
+%there are two factors in the success of a method for playing MasterMind. The
+%first is the reduction it achieves on the search space size by playing
+%combinations that reduce it maximally, but there is a second and
+%non-negligible factor: the chance of playing the winning
+%combination by having it among the top scorers. It can be said that
+%there is a particular number of moves, which in this case is after the
+%median, 4 moves, where a change of regime takes place. Before and up to 
+%that number of games, if a method finishes it is mainly due to
+%drawing, by chance, the secret code. After the median the secret code
+%is found because it is the only remaining element in the search
+%space. 
+%
+%Most studies so far, however, had only looked at the smallest
+%size. Let us study another problem size, with search space 4 times as
+%big in the next subsection.
+%
 %-------------------------------------------------------------------------------
-
-\subsection{Instance 2, $\ell=4,\kappa=8$}
-\label{ss:k8}
-
-The way the solutions work will change when the problem size is increased, so we
-will perform the same measurements for problem size $\kappa=8, \ell=4$. Search space size is four times as big; time to solution grows faster
-than lineally so it is not practical (although possible) to work with
-exhaustive search for sizes bigger than that; in fact,
-$\ell=5,\kappa=6$ is the next step that is feasible, but initial work
-has shown that the behavior is not different from this case, and it
-takes around two times as much; while the exhaustive
-solution to the smallest MasterMind size considered takes around half
-a second, it takes around 5 seconds for $\kappa=8, \ell=4$, and 10
-seconds for $\kappa=6,\ell=5$. In practice, this means that instead of
-using the whole search space 10 times over to compute this average, we will generate a
-particular set of 5000 combinations, which includes all combinations
-at least once and none more than two times. This instance set is available at
-the method website (\url{http://goo.gl/ONYLF}).
-A solution is searched, then, for every one of
-these combinations. We are playing ABCD as first move, as one
-interpretation of Knuth's \cite{Knuth} first move would say; that is,
-we play half the alphabet and start again by the first letter (ABCA
-would play half the ABCDEF alphabet and then start again). 
-
-The average number of moves is represented in
-Table \ref{tab:me:48}. This confirms in parts our above hypothesis:
-the better capability Entropy has to decrease the size of the search
-space gives it an advantage in the average number of moves, keeping at the
-same time the ability of solving it in less maximum number of
-moves. However, for this number of experiments, the difference is 
-significant  (Wilcoxon paired test = 0.052). We will check
-whether this difference has the same origin as we hypothesized
-for the smaller search space size, by looking at the same variables. 
-
+%
+%\subsection{Instance 2, $\ell=4,\kappa=8$}
+%\label{ss:k8}
+%
+%The way the solutions work will change when the problem size is increased, so we
+%will perform the same measurements for problem size $\kappa=8, \ell=4$. Search space size is four times as big; time to solution grows faster
+%than lineally so it is not practical (although possible) to work with
+%exhaustive search for sizes bigger than that; in fact,
+%$\ell=5,\kappa=6$ is the next step that is feasible, but initial work
+%has shown that the behavior is not different from this case, and it
+%takes around two times as much; while the exhaustive
+%solution to the smallest MasterMind size considered takes around half
+%a second, it takes around 5 seconds for $\kappa=8, \ell=4$, and 10
+%seconds for $\kappa=6,\ell=5$. In practice, this means that instead of
+%using the whole search space 10 times over to compute this average, we will generate a
+%particular set of 5000 combinations, which includes all combinations
+%at least once and none more than two times. This instance set is available at
+%the method website (\url{http://goo.gl/ONYLF}).
+%A solution is searched, then, for every one of
+%these combinations. We are playing ABCD as first move, as one
+%interpretation of Knuth's \cite{Knuth} first move would say; that is,
+%we play half the alphabet and start again by the first letter (ABCA
+%would play half the ABCDEF alphabet and then start again). 
+%
+%The average number of moves is represented in
+%Table \ref{tab:me:48}. This confirms in parts our above hypothesis:
+%the better capability Entropy has to decrease the size of the search
+%space gives it an advantage in the average number of moves, keeping at the
+%same time the ability of solving it in less maximum number of
+%moves. However, for this number of experiments, the difference is 
+%significant  (Wilcoxon paired test = 0.052). We will check
+%whether this difference has the same origin as we hypothesized
+%for the smaller search space size, by looking at the same variables. 
+%
 %%% TABLE 6 %%%
-\begin{table}[htb]
-\caption{Average (with error of the mean) and Maximum number of moves for two search strategies: Most Parts
-  and Entropy for $\kappa=8, \ell=4$. \label{tab:me:48}}
-  \centering
-\smallskip
-\begin{tabular}{|l|c|c|c|}
-\hline
-\emph{Method} & \multicolumn{3}{c|}{\emph{Number of moves}}\\
- & \emph{Average} & \emph{Maximum} & \emph{Median} \\
-\hline
-Entropy & 5.132 $\pm$ 0.012 & 8  & 5\\
-Most Parts & 5.167 $\pm$ 0.012 & 8 & 5 \\
-\hline
-\end{tabular}
-\end{table}
-
+%\begin{table}[htb]
+%\caption{Average (with error of the mean) and Maximum number of moves for two search strategies: Most Parts
+%  and Entropy for $\kappa=8, \ell=4$. \label{tab:me:48}}
+%  \centering
+%\smallskip
+%\begin{tabular}{|l|c|c|c|}
+%\hline
+%\emph{Method} & \multicolumn{3}{c|}{\emph{Number of moves}}\\
+% & \emph{Average} & \emph{Maximum} & \emph{Median} \\
+%\hline
+%Entropy & 5.132 $\pm$ 0.012 & 8  & 5\\
+%Most Parts & 5.167 $\pm$ 0.012 & 8 & 5 \\
+%\hline
+%\end{tabular}
+%\end{table}
+%
 %%% FIGURE 7 %%%
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=0.65]{img/fig7_histo-me-4-8.eps}
-\caption{Frequency of the number of moves up to (and including) the
-  secret combination, for $\kappa=8, \ell=4$. As usual, red or light dashed line 
-  represents Most Parts and solid black line Entropy. \label{fig:histo:me:48}}
-\end{figure} 
-
-The equivalent to Figure \ref{fig:histo:me} has been represented in Fig \ref{fig:histo:me:48}.
-The shape is similar, but the solid line that represents Entropy is slightly below the
-dashed line for Most Parts for the highest number of moves which accounts for the small difference in
-average number of moves. Is this difference accounted for by the size
-of the search space after each move? As previously, we will plot it in
-Figure \ref{fig:cset:me:48} and Table \ref{fig:cset:me:48}. 
-Differences for all moves are significant according to Wilcoxon test,
-which means that actually Entropy is achieving what it was designed
-for: reduce in a significant way the search space, until the secret
-combination is found. However, in the same way as has been shown
-above, other mechanisms are also at work to find the solution before
-that reduction. 
-
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[scale=0.65]{img/fig7_histo-me-4-8.eps}
+%\caption{Frequency of the number of moves up to (and including) the
+%  secret combination, for $\kappa=8, \ell=4$. As usual, red or light dashed line 
+%  represents Most Parts and solid black line Entropy. \label{fig:histo:me:48}}
+%\end{figure} 
+%
+%The equivalent to Figure \ref{fig:histo:me} has been represented in Fig \ref{fig:histo:me:48}.
+%The shape is similar, but the solid line that represents Entropy is slightly below the
+%dashed line for Most Parts for the highest number of moves which accounts for the small difference in
+%average number of moves. Is this difference accounted for by the size
+%of the search space after each move? As previously, we will plot it in
+%Figure \ref{fig:cset:me:48} and Table \ref{fig:cset:me:48}. 
+%Differences for all moves are significant according to Wilcoxon test,
+%which means that actually Entropy is achieving what it was designed
+%for: reduce in a significant way the search space, until the secret
+%combination is found. However, in the same way as has been shown
+%above, other mechanisms are also at work to find the solution before
+%that reduction. 
+%
 %%% TABLE 7 %%%
-\begin{table}[!htb]
-\centering
-\caption{Average and standard deviation of the number of combinations
-  remaining after every move. The number of combinations is the same after
-  the  first move (not shown here), since both are playing the same
-  first move.\label{tab:cset:me:48}}
-\smallskip
-\begin{tabular}{|c|c|c|}
-\hline
-\emph{After move \#} & \emph{Entropy (ABCD)} & \emph{Entropy (ABCA)} \\
-\hline
-2 & 98 $\pm$ 67 & 102 $\pm$ 69 \\
-3 & 13 $\pm$ 10 & 14 $\pm$ 12 \\ 
-4 & 2.4 $\pm$ 1.6 & 2.63 $\pm$ 1.96 \\
-5 & 1.21 $\pm$ 0.46 & 1.27 $\pm$ 0.52\\
-6 & 1.07 $\pm$ 0.27 & 1.08 $\pm$ 0.31 \\
-7 & 1 & 1.25 $\pm$ 0.46 \\
-\hline
-\end{tabular}
-\end{table}
-
+%\begin{table}[!htb]
+%\centering
+%\caption{Average and standard deviation of the number of combinations
+%  remaining after every move. The number of combinations is the same after
+%  the  first move (not shown here), since both are playing the same
+%  first move.\label{tab:cset:me:48}}
+%\smallskip
+%\begin{tabular}{|c|c|c|}
+%\hline
+%\emph{After move \#} & \emph{Entropy (ABCD)} & \emph{Entropy (ABCA)} \\
+%\hline
+%2 & 98 $\pm$ 67 & 102 $\pm$ 69 \\
+%3 & 13 $\pm$ 10 & 14 $\pm$ 12 \\ 
+%4 & 2.4 $\pm$ 1.6 & 2.63 $\pm$ 1.96 \\
+%5 & 1.21 $\pm$ 0.46 & 1.27 $\pm$ 0.52\\
+%6 & 1.07 $\pm$ 0.27 & 1.08 $\pm$ 0.31 \\
+%7 & 1 & 1.25 $\pm$ 0.46 \\
+%\hline
+%\end{tabular}
+%\end{table}
+%
 %%% FIGURES 8, 9 , 10 %%%
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=0.65]{img/fig8_csets-me-4-8.eps}
-\caption{Average size of the consistent set, that is, the set of
-  solutions that have not been discarded at a point in the game for
-  $\kappa=8, \ell=4$. As usual, red or light dashed line 
-  represents Most Parts and solid black Entropy. \label{fig:cset:me:48}}
-\end{figure} 
-
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=0.65]{img/fig9_dif-48.eps}
-\caption{Difference among the number of games won by Entropy and Most
-  Parts in $x$ moves for  $\kappa=8, \ell=4$. \label{fig:dif:me:48}}
-\end{figure} 
-
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=0.65]{img/fig10_score-dif-48.eps}
-\caption{Difference in score among the number of games won by Entropy and Most
-  Parts in $x$ moves for  $\kappa=8, \ell=4$. Method is the same as
-  for figure \ref{fig:scoredif:me}, that is, product of difference and
-  number of moves. \label{fig:scoredif:me:48}}
-\end{figure}
-
-
-However, we will have to look in this case too at the differences in
-games and score by both methods with is represented in Figures
-\ref{fig:dif:me:48} and \ref{fig:scoredif:me:48}. The first one
-represents the raw difference in number of times every one wins; again
-there is a change in behavior or phase shift (which we have called
-before a change of regime) when arriving at the fifth move, which is
-also around the median (exactly the median, in this case; it was one
-less than the median in the previous study). The scenario drawn in
-\ref{fig:scoredif:me:48} is also similar, but shows that Entropy is
-able to beat Most Parts mainly because it is able to finish more times
-in less moves (around 5) than Most Parts (which accumulates lots of
-bad games that need 6,7 and 8 moves). The final difference is around
-200 points for the 5000 games (25834 vs. 25662) which is very small
-but, in this case, significant. 
-
-We mentioned in Subsection \ref{ss:k6} that the probability of finding
-the secret code among the top scorers was one of those features. It
-should be expected that the probability of finding the secret code 
-among the top scorers will change; since the number of elements in the
-consistent set intuitively we should expect it to decrease. But this intuition is wrong, as shown in Table \ref{tab:top:me:48} and Figure \ref{fig:top:me:48}. 
-In fact, if we compare these results with
-those shown in Table \ref{tab:top:me} we see that, for the same move,
-the proportion of times in which the secret code is among the top
-scorers is almost twice as big at the beginning for Most Parts and
-almost three times as big for Entropy. Interestingly enough, this also
-implies that, while for $\kappa=6, \ell=4$ this probability was three
-times as high for Most Parts, it is only two times as high now. 
-
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[scale=0.65]{img/fig8_csets-me-4-8.eps}
+%\caption{Average size of the consistent set, that is, the set of
+%  solutions that have not been discarded at a point in the game for
+%  $\kappa=8, \ell=4$. As usual, red or light dashed line 
+%  represents Most Parts and solid black Entropy. \label{fig:cset:me:48}}
+%\end{figure} 
+%
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[scale=0.65]{img/fig9_dif-48.eps}
+%\caption{Difference among the number of games won by Entropy and Most
+%  Parts in $x$ moves for  $\kappa=8, \ell=4$. \label{fig:dif:me:48}}
+%\end{figure} 
+%
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[scale=0.65]{img/fig10_score-dif-48.eps}
+%\caption{Difference in score among the number of games won by Entropy and Most
+%  Parts in $x$ moves for  $\kappa=8, \ell=4$. Method is the same as
+%  for figure \ref{fig:scoredif:me}, that is, product of difference and
+%  number of moves. \label{fig:scoredif:me:48}}
+%\end{figure}
+%
+%
+%However, we will have to look in this case too at the differences in
+%games and score by both methods with is represented in Figures
+%\ref{fig:dif:me:48} and \ref{fig:scoredif:me:48}. The first one
+%represents the raw difference in number of times every one wins; again
+%there is a change in behavior or phase shift (which we have called
+%before a change of regime) when arriving at the fifth move, which is
+%also around the median (exactly the median, in this case; it was one
+%less than the median in the previous study). The scenario drawn in
+%\ref{fig:scoredif:me:48} is also similar, but shows that Entropy is
+%able to beat Most Parts mainly because it is able to finish more times
+%in less moves (around 5) than Most Parts (which accumulates lots of
+%bad games that need 6,7 and 8 moves). The final difference is around
+%200 points for the 5000 games (25834 vs. 25662) which is very small
+%but, in this case, significant. 
+%
+%We mentioned in Subsection \ref{ss:k6} that the probability of finding
+%the secret code among the top scorers was one of those features. It
+%should be expected that the probability of finding the secret code 
+%among the top scorers will change; since the number of elements in the
+%consistent set intuitively we should expect it to decrease. But this intuition is wrong, as shown in Table \ref{tab:top:me:48} and Figure \ref{fig:top:me:48}. 
+%In fact, if we compare these results with
+%those shown in Table \ref{tab:top:me} we see that, for the same move,
+%the proportion of times in which the secret code is among the top
+%scorers is almost twice as big at the beginning for Most Parts and
+%almost three times as big for Entropy. Interestingly enough, this also
+%implies that, while for $\kappa=6, \ell=4$ this probability was three
+%times as high for Most Parts, it is only two times as high now. 
+%
 %%% TABLE 8 %%%
-\begin{table}
-\centering
-\caption{Percentage of times the secret code is among the top scorers for
-  each method, $\kappa=8, \ell=4$.\label{tab:top:me:48}}
-\begin{tabular}{|c|c|c|}
-\hline
-\emph{In move \#} & \emph{Entropy} & \emph{Most Parts} \\
-\hline
-2 & 0.3008602  & 0.6379276 \\
-3 & 0.3425758 & 0.6957395 \\
-4 & 0.4937768 & 0.7845089 \\ 
-5 & 0.8630084 & 0.9160276\\
-6 & 0.9898990 & 1 \\
-\hline
-\end{tabular}
-\end{table}
-
+%\begin{table}
+%\centering
+%\caption{Percentage of times the secret code is among the top scorers for
+%  each method, $\kappa=8, \ell=4$.\label{tab:top:me:48}}
+%\begin{tabular}{|c|c|c|}
+%\hline
+%\emph{In move \#} & \emph{Entropy} & \emph{Most Parts} \\
+%\hline
+%2 & 0.3008602  & 0.6379276 \\
+%3 & 0.3425758 & 0.6957395 \\
+%4 & 0.4937768 & 0.7845089 \\ 
+%5 & 0.8630084 & 0.9160276\\
+%6 & 0.9898990 & 1 \\
+%\hline
+%\end{tabular}
+%\end{table}
+%
 %%% FIGURES 11, 12 %%%
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=0.65]{img/fig11_top-me-4-8.eps}
-\caption{Chance of finding the secret code among the top scorers for the
-  Entropy method (black and solid) and Most Parts (light or
-  red). This plot corresponds to the numbers represented in table
-  \ref{tab:top:me:48} for $\kappa=8, \ell=4$.\label{fig:top:me:48}}
-\end{figure} 
-
-\begin{figure}[!htb]
-\centering\smallskip
-\includegraphics[scale=0.65]{img/fig12_prob-me-48.eps}
-\caption{Chance of drawing the secret code for the
-  Entropy method (black and solid) and Most Parts (light or
-  red) for $\kappa=8, \ell=4$. Remember that the $x$ axis is shifted
-  by one, since the first move is fixed.\label{fig:prob:me:48}}
-\end{figure} 
-
-This decrease in the chance of finding the secret code might
-explain the difference in the average number of moves needed to find
-the solution, which for this size tilts the balance in the direction
-of Entropy. While for the smaller size this probability was enough to
-compensate the superior capability of the Entropy method in reducing
-the size of the search space, in this case the difference is not so
-high, which makes the Entropy method find the solution, on average, on
-less moves. This is actually only one of the factors in the actual
-probability of drawing the secret code, which is shown
-in Figure \ref{fig:prob:me:48}. In the same fashion as the previous
-study (shown in Figure \ref{fig:prob:me:46}), Most Parts is better
-in playing the secret combination up to the sixth move (label 5 in the
-graphic). But, after that, probabilities are similar and the change in
-regime takes place; in fact, looking at \ref{fig:dif:me:48} and
-\ref{fig:cset:me:48}, it could be argued that the fact that after the
-6th move almost always there is only one combination left accounts for
-the observed phase shift. 
-
-As we concluded the previous section, it is non-negligible the
-influence of the probability of a score that is able to consistently
-give top score to the secret combination; however, in this case the
-size of the search space implies that the probability of playing the
-secret code is smaller (by the 3rd move in $\kappa=6$ it is as high as
-the 4th move in $\kappa=8$), and thus its influence is not enough to
-make Most Parts as good as Entropy.
-
-At any rate, it is clear that, also for this size, the only
-determinant factor is not the decrease in size brought by the method,
-but also the ability to score correctly. This, in turn, can take us to
-design new heuristic methods that are able to address both issues at
-the same time, and also study the difference brought by a different
-initial move. 
-
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[scale=0.65]{img/fig11_top-me-4-8.eps}
+%\caption{Chance of finding the secret code among the top scorers for the
+%  Entropy method (black and solid) and Most Parts (light or
+%  red). This plot corresponds to the numbers represented in table
+%  \ref{tab:top:me:48} for $\kappa=8, \ell=4$.\label{fig:top:me:48}}
+%\end{figure} 
+%
+%\begin{figure}[!htb]
+%\centering\smallskip
+%\includegraphics[scale=0.65]{img/fig12_prob-me-48.eps}
+%\caption{Chance of drawing the secret code for the
+%  Entropy method (black and solid) and Most Parts (light or
+%  red) for $\kappa=8, \ell=4$. Remember that the $x$ axis is shifted
+%  by one, since the first move is fixed.\label{fig:prob:me:48}}
+%\end{figure} 
+%
+%This decrease in the chance of finding the secret code might
+%explain the difference in the average number of moves needed to find
+%the solution, which for this size tilts the balance in the direction
+%of Entropy. While for the smaller size this probability was enough to
+%compensate the superior capability of the Entropy method in reducing
+%the size of the search space, in this case the difference is not so
+%high, which makes the Entropy method find the solution, on average, on
+%less moves. This is actually only one of the factors in the actual
+%probability of drawing the secret code, which is shown
+%in Figure \ref{fig:prob:me:48}. In the same fashion as the previous
+%study (shown in Figure \ref{fig:prob:me:46}), Most Parts is better
+%in playing the secret combination up to the sixth move (label 5 in the
+%graphic). But, after that, probabilities are similar and the change in
+%regime takes place; in fact, looking at \ref{fig:dif:me:48} and
+%\ref{fig:cset:me:48}, it could be argued that the fact that after the
+%6th move almost always there is only one combination left accounts for
+%the observed phase shift. 
+%
+%As we concluded the previous section, it is non-negligible the
+%influence of the probability of a score that is able to consistently
+%give top score to the secret combination; however, in this case the
+%size of the search space implies that the probability of playing the
+%secret code is smaller (by the 3rd move in $\kappa=6$ it is as high as
+%the 4th move in $\kappa=8$), and thus its influence is not enough to
+%make Most Parts as good as Entropy.
+%
+%At any rate, it is clear that, also for this size, the only
+%determinant factor is not the decrease in size brought by the method,
+%but also the ability to score correctly. This, in turn, can take us to
+%design new heuristic methods that are able to address both issues at
+%the same time, and also study the difference brought by a different
+%initial move. 
+%
 % -----------------------------------------------------------------------------
 % -------------------------- NEW EXHAUSTIVE METHODS ---------------------------
 % -----------------------------------------------------------------------------
 
-\section*{New exhaustive search methods}
+\section{New exhaustive search methods}
 \label{s:nsm}
 
 Our intention by proposing new methods is to use the two main factors
-that we have proved have an influence in the performance of
-MasterMind-playing methods to devise new strategies that could serve
+that we proved \cite{exhaustive_MM_arXiv} have an influence in the performance of MasterMind-playing methods to devise new strategies that could serve
 as another empirical proof of the mechanism, and also, if possible,
 obtain methods that are able to obtain better results (or, at least,
 not worse results).
@@ -967,7 +985,8 @@ giving winning moves. So we will propose several methods that will try
 to combine them with the objective of achieving a better average
 number of moves.
 %
-\begin{algorithm*}[htb!]
+\begin{algorithm}[htb!]
+{\small
 \caption{Choosing the next move in the {\em Plus} MasterMind solution
   method. This algorithm is the new version we propose to the
   \textsc{NextMove} function presented in Algorithm \ref{alg:general}.}\label{alg:plus}
@@ -984,7 +1003,8 @@ TopScorersEntropy$\leftarrow$ \textsc{TopScorersEntropy}( $F$ )\;
 TopScorersMostParts$\leftarrow$ \textsc{TopScorersMostParts}( $F$ )\;
 TopScorersAll $\leftarrow$ TopScorersEntropy $\cap$ TopScorersMostParts\;
 $guess\leftarrow$ \textsc{RandomElement} ( TopScorersAll )\;
-\end{algorithm*}
+}
+\end{algorithm}
 
 The first one, which we will call  {\em Plus}, works as follows (please see Algorithm \ref{alg:plus}): the set of
 consistent combinations is scored according to {\em both} Most Parts
@@ -998,7 +1018,8 @@ intersecting it with the set of top scorers for Most Part, the
 probability of finding the winning combination among them is also
 increased. 
 %
-\begin{algorithm*}[htb!]
+\begin{algorithm}[htb!]
+{\small
 \caption{Choosing the next move in the {\em Plus} MasterMind solution
   method. Please note that up to line 6, this algorithm is identical to \ref{alg:plus}.}\label{alg:plus2}
 \smallskip
@@ -1013,7 +1034,8 @@ increased.
 TopScorersEntropy$\leftarrow$ \textsc{TopScorersEntropy}( $F$ )\;
 TopScorersAll$\leftarrow$ \textsc{TopScorersMostParts}( TopScorersEntropy )\;
 $guess\leftarrow$ \textsc{RandomElement} ( TopScorersAll )\;
-\end{algorithm*}
+}
+\end{algorithm}
 
 There is no single way of combining the two scoring methods. A second
 one tested, which we will call {\em Plus2} (and which is outlined in
@@ -1038,7 +1060,7 @@ Parts can be swapped, by first scoring according to Most Parts and
 then choosing those with the best Entropy score. This method was also
 tested, but initial results were not as good, so we will show only
 results for these two and compare them with the traditional methods
-analyzed in the previous Section \ref{s:sm}
+analyzed in our previous work \cite{exhaustive_MM_arXiv}.
 
 Let us first look at the most important result: the number of
 moves. They are shown in Table \ref{tab:plus:46}.
@@ -1100,19 +1122,16 @@ is shown in Figure \ref{fig:top:plus} and Table \ref{tab:top:plus}.
 \includegraphics[scale=0.65]{img/fig13_top-plus-4-6.eps}
 \smallskip
 \caption{Chance of finding the secret code among the top scorers for the
-  Entropy method (black and solid) and Most Parts (light or
-  red), to which we have added Plus (dotted, blue) and Plus2
-  (dash-dotted, brown), for $\kappa=6, \ell=4$.\label{fig:top:plus}}
+  Entropy method (black and solid) Most Parts (light or
+  red), Plus (dotted, blue) and Plus2  (dash-dotted, brown), for $\kappa=6, \ell=4$.\label{fig:top:plus}}
 \end{figure} 
 
 \begin{figure}[!htb]
 \centering\smallskip
 \includegraphics[scale=0.65]{img/fig14_prob-plus-46.eps}
 \caption{Chance of drawing the secret code for the
-  Entropy method (black and solid) and Most Parts (light or
-  red) (same as in Figure \ref{fig:prob:me:46}) to which we have added
-  Plus and Plus2, practically one on top of the other and represented
-  with dark-blue and dotted (Plus) and blue dash-dotted (Plus2). \label{fig:prob:plus:46}}
+  Entropy method (black and solid), Most Parts (light or
+  red), Plus (dark-blue, dotted) and Plus2 (blue, dash-dotted), practically one on top of the other. \label{fig:prob:plus:46}}
 \end{figure} 
 
 Table and graph show that, as intended, Plus and Plus2 reduce the size
@@ -1136,8 +1155,7 @@ could obtain the same results. However, we have achieved
 
 As we have seen before, the scenario is different at other sizes, so we will have to experiment them over the $\kappa=8,
 \ell=6$ space. We use the same instance of 5000 combinations as we did
-in Subsection \ref{ss:k8}. This size was big enough to find some differences among
-methods, and small enough for being able to perform the whole
+in \cite{exhaustive_MM_arXiv}. This size was big enough to find some differences among methods, and small enough for being able to perform the whole
 experiment in a reasonable amount of time (around 90 minutes for the
 whole set). The average number of moves is shown in Table
 \ref{tab:plus:48}.
@@ -1152,8 +1170,8 @@ whole set). The average number of moves is shown in Table
 \hline
 \emph{Method} & \multicolumn{3}{c|}{\emph{Number of moves}}\\
  & \emph{Average} & \emph{Maximum} & \emph{Median} \\
-\emph{Method} & \emph{Number of moves: Average} & \emph{Number of
-  moves: Maximum} \\
+\emph{Method} & \emph{Number of moves} & \emph{Number of
+  moves} & \\
 \hline
 Entropy & 5.132 $\pm$ 0.012 & 8  & 5\\
 Most Parts & 5.167 $\pm$ 0.012 & 8 & 5 \\
@@ -1176,7 +1194,7 @@ not enough to gain a clear victory over both of them.
 %%% FIGURES 15, 16, 17 %%%
 \begin{figure}[!htb]
 \centering
-\includegraphics[scale=0.65]{img/fig15_csets-plus-4-8.eps}
+\includegraphics[scale=0.31,angle=-90]{img/fig15_csets-plus-4-8.eps}
 \caption{Average size of the consistent set, that is, the set of
   solutions that have not been discarded at a point in the game for
   $\kappa=8, \ell=4$. As usual, red or light dashed line 
@@ -1188,7 +1206,7 @@ not enough to gain a clear victory over both of them.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[scale=0.65]{img/fig16_top-plus-4-8.eps}
+\includegraphics[scale=0.31,angle=-90]{img/fig16_top-plus-4-8.eps}
 \caption{Chance of finding the secret code among the top scorers for
   the Plus (dotted, blue), Plus2 (dash-dotted, brown),
   Entropy method (black and solid) and Most Parts (light or
@@ -1225,8 +1243,7 @@ significant way, the state of the art in solutions of the game of
 MasterMind. But looking more precisely at the actual chance of drawing
 the secret code (not the binary probability of finding it among the
 top scorers as in the previous graph), represented in Figure
-\ref{fig:prob:plus:48} we find the situation very similar to the one
-shown in Figure \ref{fig:prob:me:48}, however, the probability of drawing the
+\ref{fig:prob:plus:48}, the probability of drawing the
 secret code is better for Plus2 than for Most Parts, and significantly
 so for all moves up to the 5th. However, it is still worse for Plus2
 than for Entropy for the third move ($x=2$), which accounts for its
@@ -1234,7 +1251,7 @@ eventual tie with it. However, the difference with respect to Most
 Parts seems to be enough to achieve a small difference at the end. 
 
 As a conclusion to this section, we have proposed two new methods for
-solving mastermind that try to improve the capability of drawing the
+solving MasterMind that try to improve the capability of drawing the
 secret combination at the beginning of the game while, at the same
 time, decreasing the size of the search space as Entropy does. The
 proposed methods obtain results that are better than the worst of the
@@ -1250,7 +1267,7 @@ different initial combination.
 % ----------------------------- STUDYING EFFECTS ------------------------------
 % -----------------------------------------------------------------------------
 
-\section*{Studying the effect of a different starting combination on
+\section{Studying the effect of a different starting combination on
   the differences among algorithms} 
 
 To test whether, under different circumstances, the newly proposed
@@ -1311,7 +1328,7 @@ Entropy and Plus2.
 %%% FIGURE 18 %%%
 \begin{figure}[!htb]
 \centering
-\includegraphics[scale=0.65]{img/fig18_prob-abca-48.eps}
+\includegraphics[scale=0.31,angle=-90]{img/fig18_prob-abca-48.eps}
 \caption{Chance of finding the secret code among the top scorers for the
   Entropy method (black and solid) and Plus2 (light or
   brown, dot-dashed), both for ABCD as first move, and Entropy (black,
@@ -1346,9 +1363,7 @@ Entropy and Plus2.
 \centering
 \includegraphics[scale=0.65]{img/fig19_scoredif-abca-48.eps}
 \caption{Difference in score among the number of games won by Entropy
-  (ABCD) and Entropy (ABCA)  in $x$ moves for  $\kappa=8, \ell=4$. Method is the same as
-  for figure \ref{fig:scoredif:me}, that is, product of difference and
-  number of moves. \label{fig:scoredif:abca:48}}
+  (ABCD) and Entropy (ABCA)  in $x$ moves for  $\kappa=8, \ell=4$. Method is the product of difference and number of moves. \label{fig:scoredif:abca:48}}
 \end{figure}
 
 
@@ -1382,8 +1397,7 @@ not significant) of Entropy (ABCA).
 \caption{Average size of the consistent set, that is, the set of
   solutions that have not been discarded at a point in the game for
   $\kappa=8, \ell=4$. As usual, red or light dashed line 
-  represents Most Parts  and two-dashed and brown for Plus2. Please note that the $y$
-  axis is logarithmic; we have put it that way to highlight
+  represents Most Parts  and two-dashed and brown for Plus2. Please note that the $y$  axis is logarithmic; we have put it that way to highlight
   differences. \label{fig:cset:mp:plus:48}}
 \end{figure} 
 
@@ -1399,9 +1413,7 @@ not significant) of Entropy (ABCA).
 \centering
 \includegraphics[scale=0.65]{img/fig22_scoredif-most-plus2-abca-48.eps}
 \caption{Difference in score among the number of games won by Most Parts
-  (ABCD) and Plus2 (ABCA)  in $x$ moves for  $\kappa=8, \ell=4$. Method is the same as
-  for figure \ref{fig:scoredif:me}, that is, product of difference and
-  number of moves. \label{fig:scoredif:mp:abca:48}}
+  (ABCD) and Plus2 (ABCA)  in $x$ moves for  $\kappa=8, \ell=4$. Method is the product of difference and number of moves. \label{fig:scoredif:mp:abca:48}}
 \end{figure}
 
 The improvements brought by the new Plus2 algorithm and the change in
@@ -1445,24 +1457,24 @@ of MasterMind.
 % ------------------------------- CONCLUSIONS ---------------------------------
 % -----------------------------------------------------------------------------
 
-\section*{Conclusions and discussion}
+\section{Conclusions and discussion}
 \label{s:c}
 
-In this work we have analyzed the solutions to the game of MasterMind
+In this work we have studied the solutions to the game of MasterMind
 in a novel way, taking into account not only the reduction of the size
 of the search space brought by the combination played, but also how
 every method scores the components of the search space and whether the
 secret combination is among the top scorers, that is, the actual
-probability of drawing the secret combination at each move. Using
-always combinations of length equal to 4, we have proved that the
+probability of drawing the secret combination at each move. 
+Considering the conclusions reached in a previous work \cite{exhaustive_MM_arXiv}, in which we proved, for length=4, that the
 fact that Most Parts has an increased chance of finding the secret
 combination among its top scorers counterbalances the effective
 reduction of the set of consistent combinations brought by Entropy for
-six colors; the difference among the probabilities for both method decreases with the search space size (which we have proved for $\kappa=8$),
+six colors; the difference among the probabilities for both method decreases with the search space size (which we proved for $\kappa=8$),
 making Entropy beat Most Parts for that configuration.
 
 Using that fact, we have proposed two new methods that effectively
-combine Entropy and Most Parts by reducing search space size as the
+combine Entropy and Most Parts by reducing the search space size as the
 former, and having a set of top scorers to choose at worst as bad as
 Most Parts. These two methods, Plus and Plus2, behave statistically in
 the same way for both sizes tested, are marginally (not significantly)
@@ -1489,19 +1501,18 @@ both methods, but specially Plus2, is always (for the two sizes
 tested, which is considered enough) as good as the best previous
 method described, which makes it more robust.
 
-This paper also introduces and tests a methodology for testing
-different algorithms for solving MasterMind. While the first
-approximation would be to empirically measure the average number of
-moves, and the first would design methods that maximize the reduction
-of search space every move, we have introduced here the measurement of
-the probability of drawing the secret code as a third empirical test
-to consider when designing a new method, since the success of a
-solution depends, for the first moves, in that probability, to be
-followed by the reduction of search space to a single element, as
-considered so far.
+%This paper also introduces and tests a methodology for testing
+%different algorithms for solving MasterMind. While the first
+%approximation would be to empirically measure the average number of
+%moves, and the first would design methods that maximize the reduction
+%of search space every move, we have introduced here the measurement of
+%the probability of drawing the secret code as a third empirical test
+%to consider when designing a new method, since the success of a
+%solution depends, for the first moves, in that probability, to be
+%followed by the reduction of search space to a single element, as
+%considered so far.
 
-In theory, these results and methodology could be extended to spaces with bigger sizes;
-however, in practice, the increase in time complexity of the algorithm
+Theoretically, these results could be extended to spaces with bigger sizes; however, in practice, the increase in time complexity of the algorithm
 bars it except from the simplest extensions. While solving  $\kappa=6,
 \ell=4$ takes around 0.5s, $\kappa=8,\ell=4$, whose search space is
 only 4 times as big, needs around 10 times as much time, around 5
@@ -1547,7 +1558,7 @@ range, although another avenue, already explored years ago
 cases if enough time without finding consistent combinations passes.
 
 This leaves as future work improving the scoring used in evolutionary
-algorithms using these results, and checking how far these solutions
+algorithms using the proposed approaches, and checking how far these solutions
 will go into the search space. Managing to find a solution to the
 $\kappa=12,\ell=8$ in under one hour would be a good target, but it
 will need a good adjustment of the evolutionary algorithm parameters,

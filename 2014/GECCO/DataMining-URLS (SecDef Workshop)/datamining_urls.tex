@@ -1,8 +1,9 @@
 \documentclass{sig-alternate}
 \usepackage[latin1]{inputenc}
 \usepackage{graphicx}        % standard LaTeX graphics tool
-\usepackage{subfigure}
+%\usepackage{subfigure}
 \usepackage{url}
+\usepackage{subfig}
 
 
 \begin{document}
@@ -168,6 +169,36 @@ descripción de la solución/metodología a aplicar.
 \subsection{Security rules parsing}
 \label{subsec:ruleparsing}
 
+The `before and after' performing the parsing over the .drl file is in Figure \ref{fig:drools_hash}.
+
+\begin{figure}[htb]
+\centering
+\subfloat[Drools Rule]{
+\begin{tabular}{ p{0.05cm} p{0.05cm} p{3cm} }
+  \texttt{rule~"name"} & & \\
+   & \texttt{attributes} & \\
+   & \texttt{when} & \\
+   & & \texttt{/* Left Side of the Rule */} \\
+   & \texttt{then} & \\
+   & & \texttt{/* Right Side of the Rule */} \\
+  \texttt{end} & & \\
+\end{tabular}
+}
+~
+\subfloat[Hash Rule]{
+\begin{tabular}{ p{0.05cm} p{0.05cm} p{3cm} }
+  \texttt{\%rules~=~(} & & \\
+   & \texttt{rule~=>\{} & \\
+   & & \texttt{field => xxx} \\
+   & & \texttt{relation => xxx} \\
+   & & \texttt{value => xxx} \\
+   & & \texttt{action => [allow, deny]} \\
+   & \texttt{\},} & \\
+  \texttt{);} & & \\
+\end{tabular}
+}
+\caption{(a) Structure of a rule in Drools Expert. (b) Resulting rule, after the parsing, in a global hash of rules. \label{fig:drools_hash}}
+\end{figure}
 
 % ------------------------------------------------------------------
 %

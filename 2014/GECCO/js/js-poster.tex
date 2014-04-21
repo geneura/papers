@@ -68,7 +68,10 @@ in the evolutionary algorithm whose impact in performance will have to
 be evaluated; besides, there are many different ways of creating a
 distributed, some of which we will check in this paper using the NodEO
 open source
-evolutionary algorithm library written in Node \cite{nodeo2014},
+evolutionary algorithm library written in Node \cite{nodeo2014}, which
+is available from the Node Package Manager at
+\url{https://npmjs.org/package/nodeo} with a GPL license and whose
+development is open at GitHub.
 together with the {\tt express.js} server and {\tt restler} client modules for REST applications. 
 
 The function chosen for doing all the experiments is a classical deceptive
@@ -81,7 +84,7 @@ $$
 $$
 where $x$ is the number of ones in the block, $l$ is the length of the
 block, and $a$ and $b$ are two constants that meet the condition $a <
-b$. In this experiment we will use $z=3,a=1, b=2$
+b$. In this experiment we will use $z=3,a=1, b=2$.
 
 After some initial experiments to find the population size we will test two different architectures:\begin{itemize}
 \item {\em P2P}: in it, every {\em node} (which we will call
@@ -117,7 +120,7 @@ brings errors which crash the clients in some cases.
 
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.35]{par-pool-time-pop.png}
+   \includegraphics[scale=0.35]{par-pool-time-pop}
 \caption{Average time, in milliseconds, for successful runs. Black,
   solid represents the previously mentioned P2P architecture, while
   the light, dashed line represents the pool-based, single-server
@@ -127,7 +130,7 @@ brings errors which crash the clients in some cases.
 %
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.35]{par-pool-hits-pop.png}
+   \includegraphics[scale=0.35]{par-pool-hits-pop}
 \caption{Number of successful runs out of 30. Black, solid line
   corresponds to the P2P architecture, light-colored, dashed
 corresponds to the single-server architecture (pool).}
@@ -138,8 +141,8 @@ corresponds to the single-server architecture (pool).}
 
 In general and from the point of view of the operating system load, no
 great change is observed with the addition of one process ($n$ client
-processes + server) to the pool; if there is any time difference, it
-should not be attributed to increased OS load or, for that matter, for
+processes + server) to the pool; if there is any  difference in time, it
+should not be attributed to increased OS load or, for that matter, to
 the small changes in the application architecture done. Even if the
 P2P applications do a single request (a GET) and this one performs two
 (first a PUT and then a GET), it probably cancels out with the fact
@@ -152,19 +155,29 @@ say if, in general, there is any difference (there is none for
 $p=64,128$) and what is its origin. 
 
 But a more dramatic change of scenario is shown in Figure
-\ref{fig:p:hits}, which shows that the success rate increases
-drastically, although decreasingly so with the increasing population;
+\ref{fig:p:hits}, which shows that the success rate is noticeably
+higher for the pool-based architecture, although decreasingly so with the increasing population;
 this is only to be expected since, in fact, success rate increased
 with the population in the P2P architecture. This makes this pool-based
 architecture from the
-algorithmic point of view, a better alternative. 
+algorithmic point of view, the best alternative. Besides, they are not
+mutually exclusive.
 
-This conclusion is reached on top of the fact that JavaScript, its
-implementation in {\tt node.js}, and the simple library we are presenting in
+This conclusion is reached on top of having proved (yet again, some
+might say) that JavaScript, its
+implementation in {\tt node.js}, and the simple library called NodEO we are presenting in
 this paper, are valid platforms for performing distributed computation
 experiments, since they allow to create rapid prototypes to
 concentrate on system architecture and the solution of problems via
-evolutionary algorithms. In an unconstrained environment, JavaScript will probably be slower than Java or C++, although its speed is on par (and may beat) other scripting languages. However, in an environment such as a multi-tier architecture that includes rich internet applications (with an UI written in JavaScript in the browser) or even mobile applications (which can easily be done in JavaScript via the PhoneGap framework or simply HTML5 in any browser) JavaScript can offer an excellent performance and even algorithmic advantages in parallel evolutionary algorithms, as we have proved in this paper. 
+evolutionary algorithms. In an unconstrained environment, JavaScript
+will probably be slower than Java or C++, although its speed is on par
+(and may beat) other scripting languages like Ruby. However, in an environment
+such as a multi-tier architecture that includes rich internet
+applications (with an UI written in JavaScript in the browser) or even
+mobile applications (which can easily be done in JavaScript via the
+PhoneGap framework or simply HTML5 in any browser) JavaScript can
+offer an excellent performance and even algorithmic advantages in
+distributed evolutionary algorithms, as we have proved in this paper.  
 
 % Antonio - Creo hay que darle más bombo a esto porque el objetivo del trabajo parecía ser que ofrecía una alternativa MEJOR a lo que ya hay, es decir, mejor que las implementaciones de EAs en C y Java por ejemplo, pero eso no se comenta, sólo se dice que JavaScript ofrece una implementación VÁLIDA... queda un poco flojo en ese sentido. :-(
 % Pero es que no es mejor... simplemente otra alternativa. - JJ
@@ -172,8 +185,9 @@ evolutionary algorithms. In an unconstrained environment, JavaScript will probab
 \section{Conclusions}
 
 In this paper we set to prove the worth of a {\tt node.js}-based distributed
-evolutionary algorithm. {\tt node.js} is a emerging platform which is
-receiving a lot of interest in the open source and enterprise arena,
+evolutionary algorithm by using a standard module, NodEO, to implement
+distributed evolutionary algorithms with the help of standard modules. {\tt node.js} is a emerging platform which is
+receiving a lot of interest in the open source, web development and enterprise arena,
 but not so much in the scientific community so our intention was to
 introduce it to the evolutionary computation (EC) community by proving its
 value as a platform for EC experiments. A basic EC library has been
