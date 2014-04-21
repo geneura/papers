@@ -100,11 +100,11 @@ data mining/clasificación aplicado a problemas de seguridad
 
 %***problema de las URLs, reglas a aplicar, datos de los que disponemos (descripción de los mismos y análisis preliminar)***
 
-The analysed data comes from a typical \textit{access.log} of Squid \cite{squid_site}. This open source tool works as a proxy, but with the advantage of storing a cache of recent transactions so future requests may be answered without asking the origin server again \cite{DuaneWessels2004}. Thus, the studied log file has 10 fields that are described in the Table \ref{tabdata}. 
+The analysed data comes from a typical \textit{access.log} of Squid \cite{squid_site}. This open source tool works as a proxy, but with the advantage of storing a cache of recent transactions so future requests may be answered without asking the origin server again \cite{DuaneWessels2004}. Thus, the studied log file has 10 fields that are described in the Table \ref{tabdata}. Also, it is indicated if the variable is nominal or categorical. Some of them are represented by numbers but that does not mean that they are nominal, but categorical, for instance, the client and server addresses. 
 
 \begin{table*}[htpb]
 \centering
- \caption{\label{tabdata} Independent Variables corresponding to an URL session (a connection to an URL for some time). ***The URLs are parsed extracting the XXXX Whatever XXXX, in order to avoid an infinite number of values (potentially there could be infinite different urls, considering that some of them can contain PHP variables and values, for instance.***)}
+ \caption{\label{tabdata} Independent Variables corresponding to a URL session (a connection to a URL for some time). The URLs are parsed as detailed in \ref{subsec:urlparsing}.}
 {\tiny
 \begin{tabular}{llll}
 \hline\noalign{\smallskip}
@@ -129,7 +129,7 @@ Variable name & Description & Type & Rank/Number of Values (if categorical)\\
 }
 \end{table*}
 
-*** The dependent variable or class is a label which inherently assigns an action/decision to every connection (URL session). This can be: \textit{ALLOW} if the access is permitted according to the corporate security policies, or can be \textit{DENY}, if the connection is not permitted. ***\\
+The dependent variable or class is a label which inherently assigns an action/decision to every connection (URL session). This can be: \textit{ALLOW} if the access is permitted according to the corporate security policies, or can be \textit{DENY}, if the connection is not permitted. The engine for creating the rules that specify the decision to make is described in Subsection \ref{subsec:ruleparsing}.\\
 
 ********************************************
 \\
@@ -215,7 +215,7 @@ The other solved problem was to extract from a whole URL the part that was more 
 \label{subsec:methods}
 
 % Ránking:
-% 
+% Nº- Técnica %acierto unders. / %acierto overs.
 % Basados en reglas:
 % 
 % 1- NNge 96'49% / 98'76%
