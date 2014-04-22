@@ -100,7 +100,7 @@ data mining/clasificación aplicado a problemas de seguridad
 
 %***problema de las URLs, reglas a aplicar, datos de los que disponemos (descripción de los mismos y análisis preliminar)***
 
-The analysed data comes from a typical \textit{access.log} of Squid \cite{squid_site}. This open source tool works as a proxy, but with the advantage of storing a cache of recent transactions so future requests may be answered without asking the origin server again \cite{DuaneWessels2004}. Thus, the studied log file has 10 fields that are described in the Table \ref{tabdata}. Also, it is indicated if the variable is nominal or categorical. Some of them are represented by numbers but that does not mean that they are nominal, but categorical, for instance, the client and server addresses. 
+The analysed data comes from a typical \textit{access.log} of Squid \cite{squid:site}. This open source tool works as a proxy, but with the advantage of storing a cache of recent transactions so future requests may be answered without asking the origin server again \cite{DuaneWessels2004}. Thus, the studied log file has 10 fields that are described in the Table \ref{tabdata}. Also, it is indicated if the variable is numeric, nominal, or date. Some of them are represented by numbers but that does not mean that they are nominal, but categorical, for instance, the client and server addresses. 
 
 \begin{table*}[htpb]
 \centering
@@ -171,7 +171,7 @@ descripción de la solución/metodología a aplicar.
 \subsection{Security rules parsing}
 \label{subsec:ruleparsing}
 
-In this work we have considered Drools \cite{drools_site} as the tool to create and therefore managing rules in a business environment. This so called Business Rule Management System (BRMS) has been developed by the JBoss community under an Apache License and it is written in Java. Though this platform consist of many components, here we focus on Drools Expert and the Drools Rule Language (DRL, \cite{drools_doc}). Then, the defined rules for a certain company are inside of a file with a \textt{.drl} extension, the file that needs to be parsed to obtain the final set of rules. In Figure \ref{fig:drools_hash}, (a), there is the typical rule syntax in DRL. Two main things should be obtained from the parsing method: both left and right sides of the rule, taking into account that the left side is where the company specifies the conditions required to apply the action indicated in the right side. Also, for describing the conditions, Squid syntax is used (see Section \ref{sec:problemDescription}), having thus the following structure: \texttt{squid:Squid(\textit{conditions})}. Finally, from the right side of the rule, the \textit{ALLOW} or \textit{DENY} label to apply on the data that matches with the conditions, will be extracted. The Perl parser that we have implemented applies two regular expressions, one for each side of the rule, and returns a hash with all the rules with the conditions and actions defined. The `before and after' performing the parsing over the \texttt{.drl} file is in Figure \ref{fig:drools_hash}.
+In this work we have considered Drools \cite{drools:site} as the tool to create and therefore managing rules in a business environment. This so called Business Rule Management System (BRMS) has been developed by the JBoss community under an Apache License and it is written in Java. Though this platform consist of many components, here we focus on Drools Expert and the Drools Rule Language (DRL, \cite{drools:doc}). Then, the defined rules for a certain company are inside of a file with a \textt{.drl} extension, the file that needs to be parsed to obtain the final set of rules. In Figure \ref{fig:drools_hash}, (a), there is the typical rule syntax in DRL. Two main things should be obtained from the parsing method: both left and right sides of the rule, taking into account that the left side is where the company specifies the conditions required to apply the action indicated in the right side. Also, for describing the conditions, Squid syntax is used (see Section \ref{sec:problemDescription}), having thus the following structure: \texttt{squid:Squid(\textit{conditions})}. Finally, from the right side of the rule, the \textit{ALLOW} or \textit{DENY} label to apply on the data that matches with the conditions, will be extracted. The Perl parser that we have implemented applies two regular expressions, one for each side of the rule, and returns a hash with all the rules with the conditions and actions defined. The `before and after' performing the parsing over the \texttt{.drl} file is in Figure \ref{fig:drools_hash}.
 
 \begin{figure}[htb]
 \centering
@@ -215,28 +215,33 @@ The other solved problem was to extract from a whole URL the part that was more 
 \label{subsec:methods}
 
 % Ránking:
-% Nº- Técnica %acierto unders. / %acierto overs.
-% Basados en reglas:
+% Undersampling:
 % 
-% 1- NNge 96'49% / 98'76%
-% 2- PART 96'45% / 97'54%
-% 3- DTNB 94'75% / 95'65%
-% 4- Decision Table 94'08% / 90'30%
-% 5- One R 93'45% / 93'7%
-% 6- JRip 90'08% / 92'47%
-% 7- Ridor 87'22 % / 89'87%
-% 8- Conjunctive Rule 60'14% / 60'02%
-% 9- Zero R 51'39% / 51'26%
+% 1- J48 97'02%
+% 2- Random Forest 96'87%
+% 3- REP Tree 96'79%
+% 4- NNge 96'49%
+% 5- PART 96'45%
 % 
-% Basados en árbol:
+% Oversampling:
 % 
-% 1- J48 97'02% / 98%
-% 2- Random Forest 96'87% / 98'84%
-% 3- REP Tree 96'79% / 97'67%
-% 4- Random Tree 95'14% / 98'35%
-% 5- LAD Tree 79'95% / 79'97%
-% 6- AD Tree 77'73% / 77'68%
-% 7- Decision Stump 60'14% / 60'02%
+% 
+% 1- J48 98%
+% 2- Random Forest 98'84%
+% 3- REP Tree 97'67%
+% 4- NNge 98'76%
+% 5- PART 97'54%
+%
+
+As said in Section \ref{sec:problemDescription}, the data used for this work is not only numerical or nominal, thus, only classification algorithms that support both types of data must be considered. Weka has a great number of possible algorithms to work with, so there is need to make a preprocessing in order to know which ones would yield better results.
+
+\begin{description}
+   \item[J48]
+   \item[Random Forest]
+   \item[REP Tree]
+   \item[NNge]
+   \item[PART] 
+ \end{description} 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   RESULTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -263,6 +268,6 @@ qué se puede concluir del trabajo y qué haremos a continuación
 % initial runs of your .tex file to
 % produce the bibliography for the citations in your paper.
 \bibliographystyle{abbrv}
-\bibliography{datamining_urls} 
+\bibliography{datamining_urls}
 
 \end{document}
