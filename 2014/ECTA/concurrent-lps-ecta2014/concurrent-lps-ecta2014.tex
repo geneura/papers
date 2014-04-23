@@ -1,0 +1,190 @@
+\documentclass[a4paper,twoside]{article}
+
+\usepackage{epsfig}
+\usepackage{subfigure}
+\usepackage{calc}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{multicol}
+\usepackage{pslatex}
+\usepackage{apalike}
+\usepackage{SCITEPRESS}
+\usepackage[small]{caption}
+
+\subfigtopskip=0pt
+\subfigcapskip=0pt
+\subfigbottomskip=0pt
+
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+
+\usepackage{array}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+
+
+%\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+%\noindent\keywordname\enspace\ignorespaces#1}
+
+
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+\renewcommand{\floatpagefraction}{0.9}
+
+\newcommand{\simpleEntry}[1]{
+\vspace{.3cm}
+\noindent \textbf{#1}
+\vspace{.3cm}
+}
+
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[listings,skins]{tcolorbox}
+\usepackage[skipbelow=\topskip,skipabove=\topskip]{mdframed}
+\mdfsetup{roundcorner=0}
+
+\hyphenation{experimentRun}
+
+%\author{A. N. Onymous ~\inst{Anonymity institution, http://anonymi.ty}}
+
+%\authorrunning{J. Albert Cruz et al.}
+%\institute{Centro de Estudios de Matem\'atica Computacional, Universidad de Ciencias Inform\'aticas, Cuba
+%\and Dept. Arquitectura y Tecnología de los Computadores, Universidad de Granada, España \\
+%jalbert@uci.cu}
+
+
+%\tocauthor{Authors' Instructions}
+
+
+\begin{document}
+
+
+\title{Implementing parallel genetic algorithm using concurrent-functional languages}
+
+%\author{J. Albert-Cruz\inst{1}, J.J. Merelo\inst{2}, L. Acevedo-Martínez\inst{1}, Paloma de las Cuevas \inst{2}}
+
+%\author{\IEEEauthorblockN{J. Albert-Cruz\IEEEauthorrefmark{1}, J.J. Merelo\IEEEauthorrefmark{2}, L. Acevedo-Martínez\IEEEauthorrefmark{1} and Paloma de las Cuevas\IEEEauthorrefmark{2}}\\
+%\IEEEauthorblockA{\IEEEauthorrefmark{1}Centro de Estudios de Matem\'atica Computacional, Universidad de Ciencias Inform\'aticas, Cuba\\
+%Email: \{jalbert,liesner\}@uci.cu}\\
+%\IEEEauthorblockA{\IEEEauthorrefmark{2}Dept. Arquitectura y Tecnología de los Computadores, Universidad de Granada, España\\
+%Email: \{jmerelo,paloma\}@geneura.ugr.es}
+%}
+
+\author{
+\authorname{A. N. Onymous\sup{1}}
+\affiliation{\sup{1}Anonymity institution, http://anonymi.ty}
+\email{onymous@anonymi.ty}
+}
+
+%\author{\authorname{J. Albert-Cruz\sup{1}, J.J. Merelo\sup{2}, L. Acevedo-Martínez\sup{1}, and Paloma de las Cuevas\sup{2}}
+%\affiliation{\sup{1}Centro de Estudios de Matem\'atica Computacional, Universidad de Ciencias Inform\'aticas, Cuba}
+%\affiliation{\sup{2}Dept. Arquitectura y Tecnología de los Computadores, Universidad de Granada, España}
+%\email{\{jalbert,liesner\}@uci.cu, \{jmerelo,paloma\}@geneura.ugr.es}
+%}
+
+
+\keywords{Parallel Evolutionary Algorithms, Functional Languages, Concurrent Languages, Implementation, Modeling}
+
+
+\abstract{The spread of multiprocessor and multi-core architectures have a
+pervasive effect on the way software is developed. In order to take
+full advantage of them, a parallel implementation of every single
+program would be needed, but also a radical reformulation of the
+algorithms that are more appropriate to that kind of implementation. In this work we design and implement an evolutionary
+computation model using programming languages with built-in concurrent
+concepts. This article shows the advantages of these paradigms in
+order to implement a  parallel genetic algorithm (pGA) with an island
+pools based topology in the concurrent-functional oriented programming
+languages: Erlang, Scala, and Clojure. Some implementation decisions
+are analyzed and the results of the solution of a study case are
+shown.}
+
+\onecolumn \maketitle \normalsize \vfill
+
+\section{\uppercase{Introduction}}
+\label{sec:intro}
+    \input{intro}
+
+\section{\uppercase{Functional and concurrent programming}}
+\label{sec:stateArt}
+\noindent Developing correct software quickly and efficiently is a never ending goal in the software industry. Novel solutions that try to make a difference providing new abstraction tools outside the mainstream of programming languages have been proposed to pursue this goal; two of the most promising are the functional and the concurrent.
+
+%-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+%\simpleEntry{Paradigms}
+%\label{sec:paradigmas}
+
+
+%Functional languages have been available for a long time, in the shape of LISP, which was introduced in the fifties, nevertheless their use has been limited mainly due to the inefficiency of their compilers or interpreters. Currently these situations have changed, the problems with efficiency are solved and their newly found advantages have promoted the inclusions of several functional concepts in modern and mainstream languages. C\# for example, or even the creation of new ones such as Clojure, which excels among the emergent languages with the concurrent paradigm together with Go, Scala, Haskell and Erlang \cite{DiPierro:2012:CMP}; they have built-in programming constructs for managing concurrency simplifying its use.
+
+\simpleEntry{Concurrent programming}
+    \input{progConcurrente}
+
+\simpleEntry{Functional programming}
+    \input{progFuncional}
+
+\simpleEntry{Multi-paradigms emerging languages} %emerging
+    \input{lengEmergentesIntro}
+
+\section{\uppercase{A concurrent and functional approach to pGAs}}
+\label{sec:design}
+    \input{disenno}
+
+\subsection{Modeling and Implementing in Concurrent Languages}
+\label{sec:impl}
+    \input{implIntro}
+
+\simpleEntry{Erlang modeling}
+    \input{erlangDesign}
+
+\simpleEntry{Library erlEA}
+    \input{erlEA}
+
+\simpleEntry{Scala modeling}
+    \input{scalaDesign}
+
+\simpleEntry{Library sclEA}
+    \input{sclEA}
+
+\simpleEntry{Clojure modeling}
+    \input{clojureDesign}
+
+\simpleEntry{Library cljEA}
+    \input{cljEA}
+
+\subsection{Application Over the Study Case} \label{sec:results}%Application over the study case
+    \input{results}
+
+\subsection{Sample Program of Canonical Island/GA in Scala}\label{sec:sample}
+\input{scalaCodesAndComments.tex}
+
+\section{\uppercase{Conclusions}}
+\label{sec:conclusions}
+    \input{conclusions}
+
+
+%\section{Acknowledgements}
+%
+%This work is supported by projects TIN2011-28627-C04-02 (ANYSELF),
+%awarded by the Spanish MINECO and CANUBE (CEI2013-P-14) awarded by CEI
+%BioTIC, as well as MUSES (http://musesproject.eu) awarded by the
+%European commission. It is also supported too by the PhD
+%Program of the AUIP.
+
+
+%\bibliographystyle{splncs}
+%\bibliography{osgiliath,geneura,referencias,erlang-ae-model}
+
+\vfill
+\bibliographystyle{apalike}
+{\small
+\bibliography{osgiliath,geneura,referencias,erlang-ae-model}}
+
+\end{document}
+

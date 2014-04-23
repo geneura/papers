@@ -1,0 +1,139 @@
+
+All used languages have functional and concurrent built-in features, with the first ones supporting the second ones. Erlang and Scala’s implementations are based in the actor pattern for doing parallel computation. Clojure on the other hand works with the agent concept, a similar model with simplified ways of reading the involved information.
+
+To communicate modules we used language’s dependent (and different) data types.
+The message's structure was tuples for Erlang and Scala, and for agents it was necessary to encapsulate functions on protocols (Clojure variants of Java interfaces). For sharing individuals (the pool) we used functionals consult/modification data structures: hash-like for Scala/Clojure and the {\em ets} module in Erlang’s case. The data was encoded with compound data structures: lists, vectors, tuples, records, etc. The Table \ref{tb:res:comp} summarizes the differences between the languages.
+
+\begin{table*}
+  \caption{Language concept used for each pGA component.}\label{tb:res:comp}
+  \centering
+%\begin{tabular}{|p{2.2cm}|>{\centering}p{1.6cm}|>{\centering}p{1.6cm}|>{\centering}p{1.8cm}|}
+  \begin{tabular}{|p{4cm}|>{\centering}p{2.4cm}|>{\centering}p{2.4cm}|>{\centering}p{3cm}|}    \hline
+     & \textbf{Erlang} & \textbf{Scala} & \textbf{Clojure} \tabularnewline
+    \hline
+    Parallel execution unit & actor & actor & agent \tabularnewline
+    \hline
+    Communication (messages) & tuple & tuple & function (protocol) \tabularnewline
+    \hline
+    pool & \emph{ets} & HashMap & hash-map \tabularnewline
+    \hline
+    DS chromosome & list & list & vector \tabularnewline
+    \hline
+    DS population & list & list & lazy list \tabularnewline
+    \hline
+    Compound data & tuple & tuple/object & record/vector \tabularnewline
+    \hline
+    Runtime environment & Erlang VM & Java VM & Java VM \tabularnewline
+    \hline
+  \end{tabular}
+
+\end{table*}
+
+
+\simpleEntry{Results}
+
+The design was tested with a population of 1024 individuals on each island (two islands were used), doing 5000 evaluations on a dual-core (4 threads) laptop  i7-3520M with Windows 8 and 16 Gb of RAM. In order to find the better combinations of evaluators/reproducers, several of them were tested for each technology (evaluators = $1..30$ and reproducers = $1..10$). In every combination the number of evaluators is greater than the reproducers because the fitness function is more computational intensive than the reproduction execution. 10 runs were used for each combination and then the times with more dispersion were deleted until the standard deviation (SD) remained below the 5 \%.
+
+For a \emph{speedup} analysis, using the ideas presented in \cite{Alba02parallelevolutionary},  a sequential implementation with the same data structures and operator's implementations was made. Speedup is the ratio between $E[T_1]$ (sequential implementation average time) and $E[T_m]$ (parallel implementation average time in $m$ processors), the expected value is $m=4$ in this case (the number of logical processors in the used hardware).
+
+\begin{table*}
+  \caption{Experiment results for the minimum parallel time of all combinations tested.}\label{tb:resAll}
+  \centering
+%\begin{tabular}{|>{\centering}p{.85cm}|>{\centering}p{1.4cm}|
+%>{\centering}p{1.4cm}|>{\centering}p{.9cm}|>{\centering}p{1cm}|
+%>{\centering}p{.8cm}|>{\centering}p{.45cm}|}
+\begin{tabular}{|>{\centering}p{1.6cm}|>{\centering}p{2.5cm}|
+>{\centering}p{2.4cm}|>{\centering}p{2.1cm}|>{\centering}p{1.7cm}|
+>{\centering}p{1.45cm}|>{\centering}p{1.45cm}|}
+
+  \hline
+  \textbf{Language} & \textbf{Parallel time $\pm$ SD (ms)} & \textbf{Workers combination} & \textbf{Sequential time (ms)} & \textbf{Relative speedup} & \textbf{Speedup}\tabularnewline
+  \hline
+  Erlang & 2920.40 $\pm$ 126 & 25 evaluators, 1 reproducer & 8143.3 & 2.78 & 0.55 \tabularnewline
+  \hline
+  Clojure & 1734.66 $\pm$ 28.32 & 10 evaluators, 1 reproducer & 3340.22 & 1.92 & 0.92 \tabularnewline
+  \hline
+  Scala & 563 $\pm$ 24.32 & 6 evaluators, 1 reproducer & 1651.8 & 2.86 & 2.86 \tabularnewline
+  \hline
+\end{tabular}
+\end{table*}
+
+The results shown in Table \ref{tb:resAll} indicate for each language the best time for the parallel implementation, the combination of evaluators/reproducers in which the parallel variant was obtained, the time for the sequential implementation, a relative speedup (calculated in relation to his sequential time) and the speedup (relative to the best sequential time, Scala's in this case). Each worker (evaluators and reproducers) is a unit of execution, and in the used hardware only 4 units (at most) can run at the same time.
+
+Figure 1 shows the running times when one reproducer is used with a variant number of evaluators;  Figure 2 shows the same but for two reproducers. In both cases the overall behaviour of Scala is better. The computation complexity of the evaluation function is greater than the reproduction phase and this is why the results when one reproducer was used are better than when two reproducers were used.
+
+%\begin{small}
+%\begin{itemize}
+%
+%\item[] \input{graphs/g1_1}
+%\textbf{Fig. 1.} Parallel running times for one reproducer and 0..30 evaluators of hybrid pGAs implementation in Erlang, Scala and Clojure.
+%
+%
+%\item[] \input{graphs/g1_2}
+%\textbf{Fig. 2.} Parallel running times for two reproducers and 0..30 evaluators of hybrid pGAs implementation in Erlang, Scala and Clojure.
+%
+%\end{itemize}
+%\end{small}
+
+\begin{small}
+
+\input{graphs/g1_1}
+\textbf{Fig. 1.} Parallel running times for one reproducer and 0..30 evaluators of hybrid pGAs implementation in Erlang, Scala and Clojure.
+
+\end{small}
+
+
+\begin{small}
+
+\input{graphs/g1_2}
+\textbf{Fig. 2.} Parallel running times for two reproducers and 0..30 evaluators of hybrid pGAs implementation in Erlang, Scala and Clojure.
+
+\end{small}
+
+
+% \begin{multicols}{2}
+% \begin{small}
+% \begin{itemize}
+% \item[] \textbf{Fig. 3.} Number of evaluators with best results for one reproducer.
+%     \input{graphs/g2_1}
+
+% \columnbreak
+% \item[] \textbf{Fig. 4.} Number of evaluators with best results for two reproducers.
+%     \input{graphs/g2_2}
+
+% \end{itemize}
+% \end{small}
+% \end{multicols}
+
+%\begin{small}
+%\begin{itemize}
+%\item[] \textbf{Fig. 3.} Parallel time for 25 evaluators (Erlang's best case).
+%    \input{graphs/g3_1}
+%
+%
+%\item[] \textbf{Fig. 4.} Parallel time for 10 evaluators (Clojure's best case).
+%    \input{graphs/g3_2}
+%
+%\end{itemize}
+%\end{small}
+
+Figures 1 and 2 show that the three languages have a good concurrent behaviour: the overhead of managing more logical execution units than the available physical ones did not show any impact on the execution time of the algorithm, even when that number gradually increases.
+
+%\setcounter{figure}{4}
+%
+%\begin{figure}
+%\caption{Parallel time for 6 evaluators (Scala's best case).}
+%\centering
+%    \input{graphs/g3_3}
+%\end{figure}
+
+The Scala implementation is smoother in its results in contrast with
+Clojure where many peaks were obtained.
+These two languages use the JVM and the same random library, however there are clear differences in their concurrent models. The results for Scala and Clojure are better with a small number of units of execution: when the number of evaluators grows the efficiency of the algorithm falls. In this sense Erlang have a non-typical behaviour, improving up to 25 evaluators, and then the speed begins to decrease.
+
+Erlang is the language with the worst execution time; but its runtime, in the best case, is able to schedule 52 units of execution (far more than the others). The Erlang processes are scheduled using SMP whith one scheduler per core. Each process is allowed to run until it is paused to wait for input (a message from some other processes) or until it has executed a maximum fixed number of reductions (each VM instruction has associated a number of reductions). This unique way of scheduling processes yields these particular results and will be better used in next studies. Also the speedup obtained in relationship with his sequential time is very good. These two facts point to a possible good scalability.
+
+Clojure's performance is medium, with a speedup close to $1$. The {\em send} function was always used to compute the expression by the agents therefore a hardware dependent pool of treats was used.
+
+Scala is the language with best results, even when its runtime is the same of Clojure's. It has a particular model of concurrency (actors on a {\em event-based} dispatcher supported on the Java JSR166 fork-join pool); and of computation (its balance between mutable and immutable state), allowing the best behaviour of the concurrent algorithm. Again is important to note the quality of the concurrent abstractions made by all these technologies in which the number of logical units of executions is greater than the number of the physical ones.
+
