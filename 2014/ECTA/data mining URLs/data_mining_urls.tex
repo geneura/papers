@@ -1,0 +1,287 @@
+\documentclass[a4paper,twoside]{article}
+
+\usepackage[latin1]{inputenc}
+\usepackage{epsfig}
+\usepackage{graphicx}        % standard LaTeX graphics tool
+%\usepackage{subfigure}
+\usepackage{url}
+\usepackage{subfig}
+\usepackage{calc}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{multicol}
+\usepackage{pslatex}
+\usepackage{apalike}
+\usepackage{caption}
+\usepackage{SCITEPRESS}
+
+
+%\subfigtopskip=0pt
+%\subfigcapskip=0pt
+%\subfigbottomskip=0pt
+
+\begin{document}
+
+\title{Data Mining Applied to Secure URL Accesses in the Company}
+
+\author{\authorname{Author1\sup{1}, Author2\sup{1} and Author3\sup{2}}
+\affiliation{\sup{1}Maracena Institute of Technology (MIT), Anonymous university, Anonymous Street num. X, AnonymousLand}
+\affiliation{\sup{2}Department of Computing, Authors University (AU), Authors Street num. AAA, Metropolis, Moon}
+\email{\{auth1,auth2\}@mit.edu, auth3@au.edu}
+}
+
+\keywords{Data Mining, Security Policies, URL request, Machine Learning, Classification}
+
+\abstract{This paper presents an analysis of a dataset based in URL requests performed by the employees of a company. The aim is to get a classification according to their features which can assign a new request a decision, based in the enterprise security policies...}
+
+\onecolumn \maketitle \normalsize \vfill
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   INTRODUCTION   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{\uppercase{Introduction}}
+\label{sec:introduction}
+
+\noindent seguridad en la empresa, políticas y reglas, data mining en seguridad (breve)
+
+%The paper is structured as follows. Next section describes the problem enclosed in the Planet Wars game.
+%Section \ref{sec:stateofart} reviews related work regarding the scope (videogames) and the implementation (EAs with no fitness computation or different selection mechanisms).
+%Section \ref{sec:survival_bots} presents the proposed method, termed {Survival Bot}, and its different implementations. 
+%The experiments and results are described and discussed in Section \ref{sec:experiments}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{\uppercase{State of the Art}}
+\label{sec:stateofart}
+%
+
+\noindent data mining/clasificación aplicado a problemas de seguridad
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM DESCRIPTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\section{\uppercase{Problem and Data Description}} 
+\label{sec:problemDescription}
+
+%***problema de las URLs, reglas a aplicar, datos de los que disponemos (descripción de los mismos y análisis preliminar)***
+
+\noindent The analysed data comes from a typical \textit{access.log} of Squid \cite{squid:site}. This open source tool works as a proxy, but with the advantage of storing a cache of recent transactions so future requests may be answered without asking the origin server again \cite{DuaneWessels2004}. Thus, the studied log file has 10 fields that are described in the Table \ref{tabdata}. Also, it is indicated if the variable is numeric, nominal, or date. Some of them are represented by numbers but that does not mean that they are numeric, but nominal, for instance, the client and server addresses. 
+
+\begin{table*}[htpb]
+\centering
+ \caption{\label{tabdata} Independent Variables corresponding to a URL session (a connection to a URL for some time). The URLs are parsed as detailed in Subsection \ref{subsec:logparsing}.}
+{\scriptsize
+\begin{tabular}{llll}
+\hline\noalign{\smallskip}
+Variable name & Description & Type & Rank/Number of Values (if categorical)\\
+\noalign{\smallskip}\hline\noalign{\smallskip}
+\texttt{http\_reply\_code} & Status of the server response & Categorical & 20 values\\
+\texttt{http\_method} & Desired action to be performed & Categorical & 6 values\\
+\texttt{duration\_milliseconds} & Session duration & Numerical & integer in [0, 357170]\\
+\texttt{content\_type} & Media type of the entity-body sent to the recipient & Categorical & 11 values (main content), 85 values (whole content)\\
+\texttt{server\_or\_cache\_address} & IP address & Categorical & 2343 values\\
+\texttt{time} & connection hour (in the day) & Date & 00:00:00 to 23:59:59\\
+\texttt{squid\_hierarchy} & It indicates how the next-hop cache was selected & Categorical & 3 values\\
+\texttt{bytes} & Number of transferred bytes during the session *** & Categorical & 3 values\\
+\texttt{client\_address} & IP address & Categorical & 105 values\\
+\texttt{URL} & Core domain of the URL, not taking into account the TLD & Categorical & 976 values\\
+%\noalign{\smallskip} \hline\noalign{\smallskip}
+%Non-financial Variables (used in GP) & Description & Type\\
+%\noalign{\smallskip}\hline\noalign{\smallskip}
+%$x_0$, $x_1$, $x_2$ & Size & Small/Medium/Large& Categorical\\
+\noalign{\smallskip}\hline
+\end{tabular}
+}
+\end{table*}
+
+The dependent variable or class is a label which inherently assigns an action/decision to every connection (URL session). This can be: \textit{ALLOW} if the access is permitted according to the corporate security policies, or can be \textit{DENY}, if the connection is not permitted. The engine for creating the rules that specify the decision to make is described in Subsection \ref{subsec:ruleparsing}.\\
+
+********************************************
+\\
+
+Due to the nature of the data (URL accesses), the dataset is highly unbalanced \cite{imbalanced_data_05}. Thus, there are 38972 pattern belonging to class ALLOW (positive class) and 18530 of class DENY (negative class), so just a 67'78\% of the samples belongs to ALLOW class. This is a very important problem of the dataset, since a classifier trained considering these proportions will aim to classify all the samples as DENY, getting a theoretically quite good classification accuracy of YY\%.
+
+In order to deal with this problem there exist several methods in the literature, but all of them are mainly grouped in three techniques \cite{imbalance_techniques_02}:
+\begin{itemize}
+\item \textit{Undersampling the over-sized classes}: i.e. reduce the considered number of patterns for the classes with the majority.
+\item \textit{Oversampling the small classes}: i.e. introduce additional (normally synthetic) patterns in the classes with the minority.
+\item \textit{Modifying the cost associated to misclassifying the positive and the negative class} to compensate for the imbalanced ratio of the two classes. For example, if the imbalance ratio is 1:10 in favour of the negative class, the penalty of misclassifying a positive example should be 10 times greater.
+\end{itemize}
+
+The first option has been applied in some works, following a random undersampling approach \cite{random_undersampling_08}, but the problem is the loss of valuable information. 
+
+On the other hand, the second option has been so far the most exploited, following different approaches, such as SMOTE (Synthetic Minority Oversampling Technique) \cite{smote_02}, a method proposed by Chawla et al. for creating `artificial' samples for the minority class, in order to balance the amount of them with respect. However this technique is based in numerical computations, which consider different distance measures, in order to generate useful patterns  (i.e. realistic or similar to the existing ones).
+
+The third option implies using a method in which a cost can be associated to the classifier accuracy at every epoch. This was done for instance by Alfaro-Cid et al. in \cite{cost_adjustment_07}, where they used a Genetic Programming approach in which the fitness function was modified in order to consider a penalty when the classifier makes a false negative (an element from the minority class was classified as belonging to the majority class).
+
+However almost all the approaches deal with numerical (real, integer) data. In our case, the dataset contains a majority of categorical/nominal data, so we have performed different approaches for data balancing:
+\begin{itemize}
+\item Undersampling: we will remove random samples of the majority class. ***REF?***
+\item Oversampling: we will duplicate random samples of the minority class, in order to get a closer number of patterns in both classes. This has be done due to the impossibility of creating synthetic data when dealing with categorical values (there is not a proper distance measure between two values in a category). ***REF A ALGO SIMILAR HECHO***
+\item We have not used a cost-based method... *** MIRAR SI ES VERDAD O JUSTIFICARLO MEJOR ***
+\end{itemize}
+
+These approaches will be evaluated in the experiments section.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   METHODOLOGY  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{\uppercase{Methodology}}
+\label{sec:methodology}
+
+%descripción de la solución/metodología a aplicar. 
+
+\noindent Before Data Mining techniques are applied, a preprocessing of the data must be performed, and also a study of which techniques are the best. First, in Subsection \ref{subsec:ruleparsing} is explained how the rules are transformed from their original format into a simple hash in Perl. Then, in Subsection \ref{subsec:logparsing} we detail how the entries of the navigation data log are also converted to a Perl hash. At the end of these two steps, the two hashes are compared in order to obtain which entries of the log should be allowed or denied, and to make an ARFF file (Weka format) with the log entries labelled.
+
+Finally, in Subsection \ref{subsec:methods} we explain the way the \textit{ALLOW} or \textit{DENY} classified data is balanced for testing several different classifier algorithms and, depending on the results, the best five classifiers have been tested with train and test files.
+
+% ------------------------------------------------------------------
+%
+\subsection{Security rules parsing}
+\label{subsec:ruleparsing}
+
+\noindent In this work we have considered Drools \cite{drools:site} as the tool to create and therefore managing rules in a business environment. This so called Business Rule Management System (BRMS) has been developed by the JBoss community under an Apache License and it is written in Java. Though this platform consist of many components, here we focus on Drools Expert and the Drools Rule Language (DRL, \cite{drools:doc}). Then, the defined rules for a certain company are inside of a file with a \texttt{.drl} extension, the file that needs to be parsed to obtain the final set of rules. In Figure \ref{fig:drools_hash}, (a), there is the typical rule syntax in DRL. Two main things should be obtained from the parsing method: both left and right sides of the rule, taking into account that the left side is where the company specifies the conditions required to apply the action indicated in the right side. Also, for describing the conditions, Squid syntax is used (see Section \ref{sec:problemDescription}), having thus the following structure: \texttt{squid:Squid(\textit{conditions})}. Finally, from the right side of the rule, the \textit{ALLOW} or \textit{DENY} label to apply on the data that matches with the conditions, will be extracted. The Perl parser that we have implemented applies two regular expressions, one for each side of the rule, and returns a hash with all the rules with the conditions and actions defined. The `before and after' performing the parsing over the \texttt{.drl} file is in Figure \ref{fig:drools_hash}.
+
+\begin{figure}[htb]
+\centering
+\subfloat[Drools Rule]{
+\begin{tabular}{ p{0.05cm} p{0.05cm} p{2.5cm} }
+  \texttt{rule~"name"} & & \\
+   & \texttt{attributes} & \\
+   & \texttt{when} & \\
+   & & \texttt{/* Left Side of the Rule */} \\
+   & \texttt{then} & \\
+   & & \texttt{/* Right Side of the Rule */} \\
+  \texttt{end} & & \\
+\end{tabular}
+}
+~
+\subfloat[Hash Rule]{
+\begin{tabular}{ p{0.05cm} p{0.05cm} p{3cm} }
+  \texttt{\%rules~=~(} & & \\
+   & \texttt{rule~=>\{} & \\
+   & & \texttt{field => xxx} \\
+   & & \texttt{relation => xxx} \\
+   & & \texttt{value => xxx} \\
+   & & \texttt{action => [allow, deny]} \\
+   & \texttt{\},} & \\
+  \texttt{);} & & \\
+\end{tabular}
+}
+\caption{(a) Structure of a rule in Drools Expert. (b) Resulting rule, after the parsing, in a global hash of rules. \label{fig:drools_hash}}
+\end{figure}
+
+% ------------------------------------------------------------------
+%
+\subsection{URL log data parsing}
+\label{subsec:logparsing}
+
+\noindent Usually, the instances of a Log file have a number of fields, in order to have a registration of the client who asks for a resource, the time of the day when the request is made, and so on. In this case, we have worked with an \textit{access.log} (see Section \ref{sec:problemDescription}) file, converted into a CSV format file so it could be parsed and transformed in another hash of data. All 10 fields of the Squid Log yield a hash like the one depicted in Figure \ref{fig:data_hash}.
+
+Once the two hashes of data were created, they were compared in such a way that for each rule in the hash of rules, it was determined how many entries in the data log hash are covered by the rule, and so they were applied the label that appears as `action' in the rule.
+
+One of the problems was to extract from a whole URL the part that was more interesting for our purposes. It is important to point out that in a log with thousands of entries, an enormous variety of URLs can be found, since some can belong to advertisements, images, videos, or even some others does not have a domain name but are given directly by an IP address. For this reason, we have taken into account that for a domain name, many subdomains (separated by dots) could be considered, and their hierarchy grows from the right towards the left. The highest level of the domain name space is the Top-Level Domain (TLD) at the right-most part of the domain name, divided itself in country code TLDs and generic TLDs. Then, a domain and a number of subdomains follows the TLD (again, from right to left). This way, the URLs in the used log are such as \textit{http://subdomain...subdomain.domain.TLD/other\_subdirectories}. However, for the ARFF file to be created, only the domain (without the subdomains and the TLD) should be considered, because there are too many different URLs to take into consideration. Hence, applying another regular expression, the data parser implemented in Perl obtains all the core domains of the URLs, which makes 976 domains in total.
+
+\begin{figure}[htb]
+\centering
+\caption{Perl hash with an example entry. The actual hash used for this work has a total of 100000 entries, with more than a half labelled as \textit{ALLOW} or \textit{DENY} after the comparing process. \label{fig:data_hash}}
+\begin{tabular}{ p{0.1cm} p{0.1cm} p{6cm} }
+  \texttt{\%logdata~=~(} & & \\
+   & \texttt{entry~=>\{} & \\
+   & & \texttt{http\_reply\_code => xxx} \\
+   & & \texttt{http\_method => xxx} \\
+   & & \texttt{duration\_miliseconds => xxx} \\
+   & & \texttt{content\_type => xxx} \\
+   & & \texttt{server\_or\_cache\_address => xxx} \\
+   & & \texttt{time => xxx} \\
+   & & \texttt{squid\_hierarchy => xxx} \\
+   & & \texttt{bytes => xxx} \\
+   & & \texttt{url => xxx} \\
+   & & \texttt{client\_address => xxx} \\
+   & \texttt{\},} & \\
+  \texttt{);} & & \\
+\end{tabular}
+\end{figure}
+
+% ------------------------------------------------------------------
+%
+\subsection{Data Mining Methods}
+\label{subsec:methods}
+
+% Ránking:
+% Undersampling:             |      80% entrenamiento - 20% test (random)
+%                            |
+% 1- J48 97'02%              |                      97'38%
+% 2- Random Forest 96'87%    |                      97'63%
+% 3- REP Tree 96'79%         |                      97'41%
+% 4- NNge 96'49%             |                      97'34%
+% 5- PART 96'45%             |                      96'85%
+%                            |
+% Oversampling:              |      90% entrenamiento - 10% test (random)
+%                            | 
+% 1- J48 98%                 |                      97'56%
+% 2- Random Forest 98'84%    |                      97'56%
+% 3- REP Tree 97'67%         |                      97'56%
+% 4- NNge 98'76%             |                      97'02%
+% 5- PART 97'54%             |                      97'21%
+%                            |
+
+\noindent As said in Section \ref{sec:problemDescription}, the data used for this work is not only numerical or nominal, thus, only classification algorithms that support both types of data must be considered. Weka has a great number of possible algorithms to work with, so there is need to make a preprocessing in order to know which ones would yield better results. More specifically, we have focused in rule based and decision tree based algorithms. It is important to point out that rules can become trees, but rules cannot always be derived from trees (for instance, a tree modelling a mathematical operation).
+
+Therefore, a decision tree algorithm is a group of conditions organised in a top-down recursive manner in a way that a class is assigned following a path of conditions, from the root of the tree to one of its leaves. Generally speaking, the possible classes to choose are mutually exclusive. Furthermore, these algorithms are also called ``divide-and-conquer'' algorithms. On the other hand, there are the ``separate-and-conquer'' algorithms, which work creating rules one at a time, then the instances covered by the created rule are removed and the next rule is generated from the remaining instances.
+
+A reference to each Weka classifier can be found at \cite{Frank2011}. Below are described the top five techniques, obtained from the best results of the experiments done in the preprocessing, along with more specific bibliography.
+
+\begin{description}
+   \item[J48] This classifier generates a pruned or unpruned C4.5 decision tree. Described for the first time in 1993 by \cite{Quinlan1993}, this machine learning method builds a decision tree selecting, for each node, the best attribute for splitting and create the next nodes. An attribute is selected as `the best' by evaluating the difference in entropy (information gain) resulting from choosing that attribute for splitting the data. This way, the tree continues to grow till there are not attributes anymore for further splitting, meaning that the resulting nodes are instances of single classes. 
+   \item[Random Forest] This manner of building a decision tree can be seen as a randomization of the previous C4.5 process. It was stated by \cite{Breiman2001} and consist of, instead of choosing `the best' attribute, the algorithm randomly chooses one between a group of attributes from the top ones. The size of this group is customizable in Weka.
+   \item[REP Tree] Is another kind of decision tree, it means Reduced Error Pruning Tree. Originally stated by \cite{Quinlan1987}, this method builds a decision tree using information gain, like C4.5, and then prunes it using reduced-error pruning. That means that the training dataset is divided in two parts: one devoted to make the tree grow and another for pruning. For every subtree (not a class/leaf) in the tree, it is replaced by the best possible leaf in the pruning three and then it is tested with the test dataset if the made prune has improved the results. A deep analysis about this technique and its variants can be found in \cite{Elomaa2001}.
+   \item[NNge] Nearest-Neighbor machine learning method of generating rules using non-nested generalised exemplars, i.e., the so called `hyperrectangles' for being multidimensional rectangular regions of attribute space \cite{Martin1995}. The NNge algorithm builds a ruleset from the creation of this hyperrectangles. They are non-nested (overlapping is not permitted), which means that the algorithm checks, when a proposed new hyperrectangle created from a new generalisation, if it has conflicts with any region of the attribute space. This is done in order to avoid that an example is covered by more than one rule (two or more).
+   \item[PART] It comes from `partial' decision trees, for it builds its rule set from them \cite{Frank1998}. The way of generating a partial decision tree is a combination of the two aforementioned strategies ``divide-and-conquer'' and ``separate-and-conquer'', gaining then flexibility and speed. When a tree begins to grow, the node with lowest information gain is the chosen one for starting to expand. When a subtree is complete (it has reached its leaves), its substitution by a single leaf is considered. At the end the algorithm obtains a partial decision tree instead of a fully explored one, because the leafs with largest coverage become rules and some subtrees are thus discarded.
+ \end{description} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   RESULTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{\uppercase{Obtained Results}}
+\label{sec:results}
+
+\noindent describir y analizar lo que se ha obtenido en la clasificación (acierto, tasa de error, etc)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{\uppercase{Conclusions and Future Work}}
+\label{sec:conclusions}
+
+\noindent qué se puede concluir del trabajo y qué haremos a continuación
+
+
+%ACKNOWLEDGMENTS are optional
+\section*{\uppercase{Acknowledgements}}
+
+\noindent %This paper has been funded in part by European and National projects FP7-318508 (MUSES) and TIN2011-28627-C04-02 (ANYSELF) respectively, project P08-TIC-03903 (EV\-ORQ) awarded by the Andalusian Regional Government, and project 83 (CANUBE) awarded by the CEI-BioTIC UGR.
+
+%If any, should be placed before the references section
+%without numbering. To do so please use the following command:
+%\textit{$\backslash$section*\{ACKNOWLEDGEMENTS\}}
+
+
+\vfill
+\bibliographystyle{apalike}
+{\small
+\bibliography{data_mining_urls}}
+
+
+%\section*{\uppercase{Appendix}}
+%
+%\noindent If any, the appendix should appear directly after the
+%references without numbering, and not on a new page. To do so please use the following command:
+%\textit{$\backslash$section*\{APPENDIX\}}
+%
+%\vfill
+\end{document}
+
