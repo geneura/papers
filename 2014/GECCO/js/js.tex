@@ -1,46 +1,56 @@
-\documentclass{sig-alternate}
+\documentclass{sig-alternate-2013}
 \usepackage[latin1]{inputenc}
 \usepackage{url}
 \usepackage{listings}
 
+\newfont{\mycrnotice}{ptmr8t at 7pt}
+\newfont{\myconfname}{ptmri8t at 7pt}
+\let\crnotice\mycrnotice%
+\let\confname\myconfname%
+
+\permission{Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.}
+\conferenceinfo{GECCO'14,}{July 12--16, 2014, Vancouver, BC, Canada.}
+\copyrightetc{Copyright 2014 ACM \the\acmcopyr}
+\crdata{978-1-4503-2881-4/14/07\ ...\$15.00.\\
+http://dx.doi.org/10.1145/2598394.2605688 }
+
+\clubpenalty=10000
+\widowpenalty = 10000
+
 \begin{document}
-%
-% --- Author Metadata here ---
-\conferenceinfo{EvoSoft @ GECCO'14} {Vancouver, Canada}
-\CopyrightYear{2014}
 
-\title{NodEO, a multi-paradigm distributed evolutionary algorithm platform in JavaScript}
+\title{NodEO, a Multi-Paradigm Distributed Evolutionary Algorithm Platform in JavaScript}
 \subtitle{}
-
+\numberofauthors{3}
 \author{
-% \alignauthor
-% J.J. Merelo, Pedro Castillo, Antonio Mora\\
-%        \affaddr{University of Granada}\\
-%        \affaddr{GeNeura, Department of Computer Architecture and Technology, ETSIIT + CITIC}\\
-%        \affaddr{18071 - Granada}\\
-%        \email{jmerelo,pedro,amorag@geneura.ugr.es}
-% \alignauthor
-% Anna I. Esparcia-Alcï¿½zar\\
-% \affaddr{S2 Grupo}\\
-% \email{aesparcia@s2grupo.es}
-% \alignauthor
-% Vï¿½ctor Rivas-Santos\\
-% \affaddr{Universidad de Jaï¿½n}\\
-% \email{vrivas@ujaen.es}
 \alignauthor
-Three wise guys\\
-       \affaddr{University of Miskatonic}\\
-       \affaddr{Wise affairs dep}\\
-       \affaddr{Metropolis}\\
-       \email{some.good.e@mails.com}
+J.J. Merelo, Pedro Castillo, Antonio Mora\\
+       \affaddr{University of Granada}\\
+       \affaddr{GeNeura, Department ATC, ETSIIT + CITIC}\\
+       \affaddr{18071 - Granada}\\
+       \email{jmerelo,pedro,amorag@geneura.ugr.es}
 \alignauthor
-Another author\\
-\affaddr{Adrress}\\
-\email{e@ma.il}
+Anna I. Esparcia-Alc\'azar\\
+\affaddr{S2 Grupo}\\
+\email{aesparcia@s2grupo.es}
 \alignauthor
-Last one\\
-\affaddr{Science Institute}\\
-\email{last@o.ne}
+V\'ictor Rivas-Santos\\
+\affaddr{Universidad de Ja\'en}\\
+\email{vrivas@ujaen.es}
+% \alignauthor
+% Three wise guys\\
+%        \affaddr{University of Miskatonic}\\
+%        \affaddr{Wise affairs dep}\\
+%        \affaddr{Metropolis}\\
+%        \email{some.good.e@mails.com}
+% \alignauthor
+% Another author\\
+% \affaddr{Adrress}\\
+% \email{e@ma.il}
+% \alignauthor
+% Last one\\
+% \affaddr{Science Institute}\\
+% \email{last@o.ne}
 }
 
 \maketitle
@@ -68,8 +78,7 @@ Explorer, Opera and the offspring of Netscape, Mozilla and then
 Firefox). It later became a standard by the European Association for
 Standardizing Information and Communication Systems in 1999
 \cite{ecma1999262}. Despite this standard it was for a long time considered just a
-language for the browser, and in fact most books on JS
-\cite{goodman2007javascript} start by
+language for the browser, and in fact most books on JS start by
 telling you how to embed your scripts in the HTML code of a web page.
 
 Even as such embedded language, JavaScript is an interpreted language
@@ -127,8 +136,7 @@ for evolutionary algorithms and what is the performance we should
 expect. 
 
 The experiments proposed in this paper have been released under an
-open source license and are available right now (address withheld for
-anonymous review). They offer a glimpse into the different
+open source license and are available at \url{https://github.com/JJ/nodeo}. They offer a glimpse into the different
 possibilities of programming using JS, but at the same time
 show the kind of performance we should expect from them and what it
 wins from parallel operation. In doing so, our intention is to prove
@@ -158,7 +166,7 @@ framework called RuTeG \cite{mairhofer2011search} using this
 language. In fact, this use has not been limited to new and
 paradigm-heavy languages; Langdon used the venerable {\tt awk} to
 handle populations of millions of regular expressions in
-\cite{langdon2008evolving,langdon2009evolving} and claims:
+\cite{langdon2009evolving} and claims:
 \begin{quote}
 Although this may seem complex, gawk (Unix' free interpreted pattern
 scanning and processing language) can handle populations of a million
@@ -323,8 +331,7 @@ Node, which is introduced in this paper, has been released
 % Antonio - se ha hecho para este artículo como contribución del mismo, ¿no?
 % Si es así habría que destacarlo más. ;)
 so that it can be used with the Node package
-manager, installed with it and used in any Node program (the name and
-URL have been withheld for anonymous review).
+manager just by issuing {\tt npm install nodeo}.
 
 The library has been intended mainly as a proof of concept, including
 the bare minimum to run an evolutionary algorithm: a single mutation
@@ -427,7 +434,7 @@ and 50.
 
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.35]{base-hits-pop.png}
+   \includegraphics[scale=0.35]{base-hits-pop}
 \caption{Number of successful runs out of 30; a run is considered
   successful if the target string (all ones) is found. The leftmost
   line corresponds to 30 blocks, the one in the middle to 40 and the
@@ -437,7 +444,7 @@ and 50.
 %
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.35]{base-time-pop.png}
+   \includegraphics[scale=0.35]{base-time-pop}
 \caption{Average time, in milliseconds, for successful runs. The leftmost
   line corresponds to 30 blocks, the one in the middle to 40 and the
   last one in the right to 50. }
@@ -461,7 +468,7 @@ show in the next section.
 
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.30]{benchmark.png}
+   \includegraphics[scale=0.30]{benchmark}
 \caption{Benchmark comparing running time for node.js and two
   browsers. Node version is 0.10.29, Firefox 26.0 and Chromium
   31.0.1650.63, all of them running on Ubuntu 13.10. The first
@@ -598,7 +605,7 @@ influences the performance.
 
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.35]{parallel-hits-pop.png}
+   \includegraphics[scale=0.35]{parallel-hits-pop}
 \caption{Number of successful runs out of 30. Black, solid line
   corresponds to migration after 20 generations, light-colored, dashed
 corresponds to migration after 10 generations.}
@@ -607,7 +614,7 @@ corresponds to migration after 10 generations.}
 %
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.35]{parallel-time-pop.png}
+   \includegraphics[scale=0.35]{parallel-time-pop}
 \caption{Average time, in milliseconds, for successful runs. Black,
   solid line corresponds to $g$ (generation gap) = 10, light, dashed
   to $g=20$, and, for the sake of comparison, the baseline single-node
@@ -664,7 +671,7 @@ brings errors which crash the clients in some cases.
 
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.35]{par-pool-time-pop.png}
+   \includegraphics[scale=0.35]{par-pool-time-pop}
 \caption{Average time, in milliseconds, for successful runs. Black,
   solid represents the previously mentioned P2P architecture, while
   the light, dashed line represents the pool-based, single-server
@@ -674,7 +681,7 @@ brings errors which crash the clients in some cases.
 %
 \begin{figure}[htb]
 \centering
-   \includegraphics[scale=0.35]{par-pool-hits-pop.png}
+   \includegraphics[scale=0.35]{par-pool-hits-pop}
 \caption{Number of successful runs out of 30. Black, solid line
   corresponds to the P2P architecture, light-colored, dashed
 corresponds to the single-server architecture (pool).}
@@ -809,17 +816,8 @@ setup of a virtual or real machine.
 %ACKNOWLEDGMENTS are optionalndn
 \section{Acknowledgments}
 
-Withheld for anonymous review \\
-but\\
-should have these many lines.
+This paper has been developed thanks to the support of the projects  CANUBE (CEI2013-P-14), ANYSELF (TIN2011-28627-C04-02) and Muses (\url{http://musesproject.eu}).
 
-%Este trabajo se estï¿½ desarrollando gracias a la financiaciï¿½n de  los
-%proyectos CANUBE (CEI2013-P-14) y ANYSELF (TIN2011-28627-C04-02). 
-
-%
-% The following two commands are all you need in the
-% initial runs of your .tex file to
-% produce the bibliography for the citations in your paper.
 \bibliographystyle{abbrv}
 \bibliography{geneura,javascript,ror-js}  % sigproc.bib is the name of the Bibliography in this case
 
