@@ -188,7 +188,7 @@ Weka Data Mining Software\footnote{http://www.cs.waikato.ac.nz/ml/weka/} has bee
 
 Once the two hashes of data were created, they were compared in such a way that for each rule in the hash of rules, it was determined how many entries in the data log hash are covered by the rule, and so they were applied the label that appears as `action' in the rule.
 
-One of the problems was to extract from a whole URL the part that was more interesting for our purposes. It is important to point out that in a log with thousands of entries, an enormous variety of URLs can be found, since some can belong to advertisements, images, videos, or even some others does not have a domain name but are given directly by an IP address. For this reason, we have taken into account that for a domain name, many subdomains (separated by dots) could be considered, and their hierarchy grows from the right towards the left. The highest level of the domain name space is the Top-Level Domain (TLD) at the right-most part of the domain name, divided itself in country code TLDs and generic TLDs. Then, a domain and a number of subdomains follows the TLD (again, from right to left). This way, the URLs in the used log are such as \textit{http://subdomain...subdomain.domain.TLD/} \textit{other\_subdirectories}. However, for the ARFF\footnote{Format of Weka files} file to be created, only the domain (without the subdomains and the TLD) should be considered, because there are too many different URLs to take into consideration. Hence, applying another regular expression, the data parser implemented in Perl obtains all the core domains of the URLs, which makes 976 domains in total.
+One of the problems was to extract from a whole URL the part that was more interesting for our purposes. It is important to point out that in a log with thousands of entries, an enormous variety of URLs can be found, since some can belong to advertisements, images, videos, or even some others does not have a domain name but are given directly by an IP address. For this reason, we have taken into account that for a domain name, many subdomains (separated by dots) could be considered, and their hierarchy grows from the right towards the left. The highest level of the domain name space is the Top-Level Domain (TLD) at the right-most part of the domain name, divided itself in country code TLDs and generic TLDs. Then, a domain and a number of subdomains follow the TLD (again, from right to left). This way, the URLs in the used log are such as \textit{http://subdomain...subdomain.domain.TLD/} \textit{other\_subdirectories}. However, for the ARFF\footnote{Format of Weka files} file to be created, only the domain (without the subdomains and the TLD) should be considered, because there are too many different URLs to take into consideration. Hence, applying another regular expression, the data parser implemented in Perl obtains all the core domains of the URLs, which makes 976 domains in total.
 
 \begin{figure}[htb]
 \centering
@@ -235,11 +235,11 @@ One of the problems was to extract from a whole URL the part that was more inter
 %                            |
 
 
-\noindent As said in Section \ref{sec:problemDescription}, the data used for this work is not only numerical or nominal, thus, only classification algorithms that support both types of data must be considered. Weka has a great number of possible algorithms to work with, so we have conducted a preselection phase trying to choose those which would yield better results in the experiments. More specifically, we have focused in rule-based and decision-tree-based algorithms. 
+\noindent As said in Section \ref{sec:problemDescription}, the data used for this work is not only numerical or nominal, thus, only classification algorithms that support both types of data have been considered. Weka has a great number of possible algorithms to work with, so we have conducted a preselection phase trying to choose those which would yield better results in the experiments. More specifically, we have focused in rule-based and decision-tree-based algorithms. 
 
 %It is important to point out that rules can become trees, but rules cannot always be derived from trees (for instance, a tree modelling a mathematical operation).
 
-A decision-tree algorithm is a group of conditions organised in a top-down recursive manner in a way that a class is assigned following a path of conditions, from the root of the tree to one of its leaves. Generally speaking, the possible classes to choose are mutually exclusive. Furthermore, these algorithms are also called ``divide-and-conquer'' algorithms. On the other hand, there are the ``separate-and-conquer'' algorithms, which work creating rules one at a time, then the instances covered by the created rule are removed and the next rule is generated from the remaining instances.
+In this way, a decision-tree algorithm is a group of conditions organised in a top-down recursive manner in a way that a class is assigned following a path of conditions, from the root of the tree to one of its leaves. Generally speaking, the possible classes to choose are mutually exclusive. Furthermore, these algorithms are also called ``divide-and-conquer'' algorithms. On the other hand, there are the ``separate-and-conquer'' algorithms, which work creating rules one at a time, then the instances covered by the created rule are removed and the next rule is generated from the remaining instances.
 
 A reference to each Weka classifier can be found at \cite{Frank2011}. Below are described the top five techniques, obtained from the best results (See Table \ref{tabresults_todos}) of the experiments done in this stage, along with more specific bibliography.
 
@@ -315,15 +315,15 @@ These methods will be deeply tested on the dataset (balanced and unbalanced) in 
 \cline{2-5}
 \multicolumn{1}{l|}{} & Random-Avg & Sequential & Random-Avg & Sequential \\ 
 \hline
-J48 & 97.56 $\pm$ 1.11 & 88.48 & 97.70 $\pm$ 3.33 & 82.28 \\ 
+J48 & 97.56 $\pm$ 0.20 & 88.48 & 97.70 $\pm$ 0.15 & 82.28 \\ 
 \cline{1-1}
-Random Forest & 97.68 & 89.77 & 97.63 & 82.59 \\ 
+Random Forest & 97.68 $\pm$ 0.20 & 89.77 & 97.63 $\pm$ 0.13 & 82.59 \\ 
 \cline{1-1}
-REP Tree & 97.47 & 88.34 & 97.57 & 83.20 \\ 
+REP Tree & 97.47 $\pm$ 0.11 & 88.34 & 97.57 $\pm$ 0.01 & 83.20 \\ 
 \cline{1-1}
-NNge & 97.23 & 84.41 & 97.38 & 80.34 \\ 
+NNge & 97.23 $\pm$ 0.10 & 84.41 & 97.38 $\pm$ 0.36 & 80.34 \\ 
 \cline{1-1}
-PART & 97.06 & 89.11 & 97.40 & 84.17 \\ 
+PART & 97.06 $\pm$ 0.19 & 89.11 & 97.40 $\pm$ 0.16 & 84.17 \\ 
 \hline
 \end{tabular}
 }
@@ -345,15 +345,15 @@ PART & 97.06 & 89.11 & 97.40 & 84.17 \\
 \cline{2-9}
 \multicolumn{1}{l|}{} & Random-Avg & Sequential & Random-Avg & Sequential & Random-Avg & Sequential & Random-Avg & Sequential \\ 
 \hline
-J48 & 97.05 $\pm$ 1.11 & 84.29 & 97.40 $\pm$ 3.33 & 85.66 & 96.85 $\pm$ 5.55 & 76.44 & 96.37 $\pm$ 7.77 & 74.24 \\ 
+J48 & 97.05 $\pm$ 0.25 & 84.29 & 97.40 $\pm$ 0.03 & 85.66 & 96.85 $\pm$ 0.35 & 76.44 & 96.37 $\pm$ 0.06 & 74.24 \\ 
 \cline{1-1}
-Random Forest & 96.61 & 88.59 & 97.16 & 89.03 & 96.99 & 79.98 & 97.25 & 81.33 \\ 
+Random Forest & 96.61 $\pm$ 0.17 & 88.59 & 97.16 $\pm$ 0.19 & 89.03 & 96.99 $\pm$ 0.13 & 79.98 & 97.25 $\pm$ 0.33 & 81.33 \\ 
 \cline{1-1}
-REP Tree & 96.52 & 85.54 & 97.13 & 85.41 & 96.55 & 77.65 & 97.14 & 76.81 \\ 
+REP Tree & 96.52 $\pm$ 0.13 & 85.54 & 97.13 $\pm$ 0.25 & 85.41 & 96.55 $\pm$ 0.10 & 77.65 & 97.14 $\pm$ 0.09 & 76.81 \\ 
 \cline{1-1}
-NNge & 96.56 & 85.28 & 96.90 & 83.46 & 96.33 & 81.93 & 96.91 & 78.73 \\ 
+NNge & 96.56 $\pm$ 0.42 & 85.28 & 96.90 $\pm$ 0.28 & 83.46 & 96.33 $\pm$ 0.05 & 81.93 & 96.91 $\pm$ 0.06 & 78.73 \\ 
 \cline{1-1}
-PART & 96.19 & 85.16 & 96.82 & 84.50 & 96.09 & 79.70 & 96.68 & 78.16 \\ 
+PART & 96.19 $\pm$ 0.14 & 85.16 & 96.82 $\pm$ 0.09 & 84.50 & 96.09 $\pm$ 0.10 & 79.70 & 96.68 $\pm$ 0.11 & 78.16 \\ 
 \hline
 \end{tabular}
 }
