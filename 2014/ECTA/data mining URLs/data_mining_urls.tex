@@ -34,7 +34,10 @@
 
 \keywords{Data Mining, Security Policies, URL request, Machine Learning, Classification}
 
-\abstract{This paper presents an analysis of a dataset based in URL requests performed by the employees of a company. The aim is to get a classification according to their features which can assign a new request a decision, based in the enterprise security policies...}
+\abstract{This paper presents a deep analysis of a dataset based in URL sessions performed by the employees of a company. The aim is to find the best classification algorithm in order to make the decision of allowing or denying future URL requests, considering a set of corporate security policies.
+The complete preprocessing phase is also described, including a labelling stage based in the defined set of security rules.
+Two data balancing techniques are tested (under- and oversampling) over several different training/test partitions.
+The results show that...}
 
 \onecolumn \maketitle \normalsize \vfill
 
@@ -44,12 +47,20 @@
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-\noindent seguridad en la empresa, políticas y reglas, data mining en seguridad (breve)
+\noindent Corporate security is one of the key areas inside an enterprise, and thus, one of the main research topics nowadays.
+The new scenario defined by the Bring Your Own Device (BYOD) tendency in the companies, in which the own users or employees  have become one of the main threats for the security assurance inside them \cite{Opp_Security11}, have meant the arisen of new security issues , which should be dealt in a different way, normally by means of the \textit{Corporate Security Policies}.
+These are a set of rules aimed to protect the company's assets defining sets of permissions to be considered for every different action to be performed inside the security system.
 
-%The paper is structured as follows. Next section describes the problem enclosed in the Planet Wars game.
-%Section \ref{sec:stateofart} reviews related work regarding the scope (videogames) and the implementation (EAs with no fitness computation or different selection mechanisms).
-%Section \ref{sec:survival_bots} presents the proposed method, termed {Survival Bot}, and its different implementations. 
-%The experiments and results are described and discussed in Section \ref{sec:experiments}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
+One of the main breaches regarding the security in an enterprise is the access to non-confident (or non-certified) web sites ***REF***. Moreover, several webpages should be also controlled for productivity or suitability reasons.
+So, there are usually defined sets of allowed or denied pages/sites to be potentially accessed by the enterprise users/employees. 
+
+In this work we try to define a tool for automatically made an allowance or denial decision for some webpages/sites that are not included in the aforementioned list.
+Thus, the problem is transformed into a classification one, in which we started from a set of unlabelled patterns modelling the connection properties from a huge amount of URL accesses (the so-called sessions). Then we assign a label to many of them, considering a set of security rules defined by the Chief Security Officer in the company.
+We process this dataset by means of different classification methods, and applying some data balancing techniques, in order to choose the best algorithm for this problem.
+
+The results are quite good, getting classification accuracies around 95-97\% in the test phase, even when using the non-balanced datasets.
+
+The paper is structured as follows. Next section describes related work regarding the application of data mining and machine learning techniques to security issues inside the company. Section \ref{sec:problemDescription} presents the problem to solve and the dataset to work with. The followed methodology is described in Section \ref{sec:methodology}, concerning the data preprocessing and a first round of experiments comparing different classification methods. Once the best of them are selected, a set of experiments have been conducted, and the results are described and discussed in Section \ref{sec:results}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -58,9 +69,7 @@
 \label{sec:stateofart}
 %
 
-\noindent data mining/clasificación aplicado a problemas de seguridad
-
-Although Data Mining, Classification, and Machine Learning techniques have been used since long ago in many science fields, and given that research in computer security was growing since the eighties , it was not until the nineties that these techniques began to be applied to security issues \cite{Clifton1996}. On the one hand, DM helped developing new solutions to computer forensics \cite{DeVel2001}, being the researchers able to extract information from large files with events gathered from infected computers. Another important advance took place after the 9/11 events, because \textit{clustering techniques} and \textit{social network analysis} started to be performed in order to detect pontential crime networks \cite{Hsinchun2003}.
+\noindent Although Data Mining, Classification, and Machine Learning techniques have been used since long ago in many science fields, and given that research in computer security was growing since the eighties , it was not until the nineties that these techniques began to be applied to security issues \cite{Clifton1996}. On the one hand, DM helped developing new solutions to computer forensics \cite{DeVel2001}, being the researchers able to extract information from large files with events gathered from infected computers. Another important advance took place after the 9/11 events, because \textit{clustering techniques} and \textit{social network analysis} started to be performed in order to detect pontential crime networks \cite{Hsinchun2003}.
 
 % Data Mining applied to crime \cite{Hsinchun2003} and computer forensics \cite{DeVel2001} \cite{Clifton1996}
 % donde esta \cite{computer_security_80}?
@@ -126,8 +135,9 @@ However almost all the approaches deal with numerical (real, integer) data.
 
 In our case, the dataset contains a majority of categorical/nominal data, so we have performed different approaches for data balancing:
 \begin{itemize}
-\item Undersampling: we will remove random samples of the majority class. ***REF?***
-\item Oversampling: we will duplicate random samples of the minority class, in order to get a closer number of patterns in both classes. This has be done due to the impossibility of creating synthetic data when dealing with categorical values (there is not a proper distance measure between two values in a category). ***REF A ALGO SIMILAR HECHO***
+\item Undersampling: we will remove random samples of the majority class until the amount in both classes are similar. ***REF?***
+\item Oversampling: we will duplicate random samples of the minority class, in order to get a close number of patterns in both classes. This has be done due to the impossibility of creating synthetic data when dealing with categorical values (there is not a proper distance measure between two values in a category). ***REF A ALGO SIMILAR HECHO***
+Actually, since the number of samples in the majority class is almost twice the minority one, we have just duplicated all of those belonging to the minority class.
 \end{itemize}
 
 These approaches will be evaluated in the experiments section.
@@ -145,7 +155,7 @@ Subsection \ref{subsec:logparsing} details how the patterns of the navigation da
 
 At the end of these two steps, the two hashes are compared in order to obtain which entries of the log should be allowed or denied. This is similar to perform a decision process in a security system.
 
-Finally, in Subsection \ref{subsec:methods} we explain the selection of the methods to apply in order to classify the data. We just have considered the patterns correctly labelled in the preprocessing phase. Thus, a supervised ***REF*** classification process has been conducted on the balanced datasets.
+Finally, in Subsection \ref{subsec:methods} we explain the selection of the methods to apply in order to classify the data. We just have considered the patterns correctly labelled in the preprocessing phase. Thus, a supervised classification process \cite{classification_67} has been conducted on the balanced datasets.
 Weka Data Mining Software\footnote{http://www.cs.waikato.ac.nz/ml/weka/} has been used, in order to select the best set of methods in order to deal with these data. These classifiers will be further tested in Section \ref{sec:results}.
 
 % ------------------------------------------------------------------
