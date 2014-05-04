@@ -6,8 +6,10 @@ use warnings;
 use v5.14;
 use File::Slurp;
 
-my @files=glob "generacion50/*";
+my @files=glob "generacion50/* generacion1/*";
 my @dists =  qw(weibull norm gamma);
+say 'library("fitdistrplus")';
+
 for my $f ( @files ) {
   my $var_name = $f;
   $var_name =~ s{/}{.};
@@ -23,5 +25,4 @@ for my $f ( @files ) {
   say "gof.$var_name <- gofstat( list("
     .join(", ", @gof_variables)."),fitnames=c("
       .join(", ", map("\"$_\"",@dists))."))";
-  say "summary( gof.$var_name )";
 }
