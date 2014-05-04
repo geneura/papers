@@ -25,6 +25,9 @@
 \begin{document}
 
 \title{Data Mining Applied to Secure URL Accesses in the Company}
+% applied to what? En el título tiene que quedar bien claro de qué
+% problema se trata. Puesto así suena a "aplico data mining a ver qué
+% pasa" - JJ
 
 \author{\authorname{Author1\sup{1}, Author2\sup{1} and Author3\sup{2}}
 \affiliation{\sup{1}Maracena Institute of Technology (MIT), Anonymous university, Anonymous Street num. X, AnonymousLand}
@@ -34,10 +37,20 @@
 
 \keywords{Data Mining, Security Policies, URL request, Machine Learning, Classification}
 
-\abstract{This paper presents a deep analysis of a dataset based in URL sessions performed by the employees of a company. The aim is to find the best classification algorithm in order to make the decision of allowing or denying future URL requests, considering a set of corporate security policies.
+\abstract{This paper presents a deep analysis of a dataset based in
+  URL sessions performed by the employees of a company. The aim is to
+  find the best classification algorithm in order to make the decision
+  of allowing or denying future URL requests, considering a set of
+  corporate security policies. % no cuentes lo que has hecho, sino qué
+                               % problema quieres resolver. Por qué
+                               % pienasas que tu método resuelve el
+                               % problema y prueba que efectivametne
+                               % lo hace. Escritura de papers 101 - JJ
 The complete preprocessing phase is also described, including a labelling stage based in the defined set of security rules.
 Two data balancing techniques are tested (under- and oversampling) over several different training/test partitions.
-The results show that...}
+The results show that...} %Todo esto me suena más a que estás
+                          %presentando un método de preprocesamiento
+                          %de URLs. - JJ
 
 \onecolumn \maketitle \normalsize \vfill
 
@@ -47,14 +60,41 @@ The results show that...}
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-\noindent Corporate security is one of the key areas inside an enterprise, and thus, one of the main research topics nowadays.
-The new scenario defined by the Bring Your Own Device (BYOD) tendency in the companies, in which the own users or employees  have become one of the main threats for the security assurance inside them \cite{Opp_Security11}, have meant the arisen of new security issues , which should be dealt in a different way, normally by means of the \textit{Corporate Security Policies}.
-These are a set of rules aimed to protect the company's assets defining sets of permissions to be considered for every different action to be performed inside the security system.
+\noindent Corporate security is one of the key areas inside an
+enterprise, and thus, one of the main research topics
+nowadays. %Típica frase vacía de contenido. main ¿en qué contexto?
+          %¿quién lo dice? Aquí deberías de definir qué problema es el
+          %que quieres resolver y el contexto en el que se
+          %encuentra. Por ejemplo, "Corporate security involves all kinds
+          %of challanges, including this and that and that. Every
+          %problem is approached in a different way, but since mobile
+          %devices are used for browsing, it is... - JJ
+The new scenario defined by the Bring Your Own Device (BYOD) tendency %defínela
+in the companies, in which the 
+users or employees  themselves have become one of the main threats for
+the security assurance % assurance? qué significa eso? - JJ
+ inside them \cite{Opp_Security11}, has meant % the new scenario
+                                % ... has meant - JJ
+the arisen % the arisen! the afallen! Diablos, revisad esto!!!! - JJ
+ of new security issues , which should be dealt in a different way, normally by means of \textit{Corporate Security Policies}.
+These are a set of rules aimed to protect the company's assets
+defining sets of permissions to be considered for every different
+action to be performed inside the security system. % párrafo confuso
+                                % que yo borraría del tirón. Empezaría
+                                % explicando qué son las CSP, en qué
+                                % contexto se usan y por qué, y
+                                % seguiría a partir de ahí - JJ
 
-One of the main breaches regarding the security in an enterprise is the access to non-confident (or non-certified) web sites ***REF***. Moreover, several webpages should be also controlled for productivity or suitability reasons.
-So, there are usually defined sets of allowed or denied pages/sites to be potentially accessed by the enterprise users/employees. 
+One of the main breaches regarding % primer regarding - JJ
+the security in an enterprise is the access to non-confident (or non-certified) web sites ***REF***. Moreover, several webpages should be also controlled for productivity or suitability reasons.
+So, there are usually defined sets of allowed or denied pages/sites to
+be potentially accessed by the enterprise users/employees. 
+% There are defined sets? En serio? - JJ
 
-In this work we try to define a tool for automatically made an allowance or denial decision for some webpages/sites that are not included in the aforementioned list.
+In this work we try to define a tool for automatically made % for
+                                % automatically made? Quién diablos ha
+                                % escrito esto? JJ 
+an allowance or denial decision for some webpages/sites that are not included in the aforementioned list.
 Thus, the problem is transformed into a classification one, in which we started from a set of unlabelled patterns modelling the connection properties from a huge amount of URL accesses (the so-called sessions). Then we assign a label to many of them, considering a set of security rules defined by the Chief Security Officer in the company.
 We process this dataset by means of different classification methods, and applying some data balancing techniques, in order to choose the best algorithm for this problem.
 
