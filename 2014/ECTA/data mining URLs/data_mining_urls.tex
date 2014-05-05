@@ -24,10 +24,11 @@
 
 \begin{document}
 
-\title{Data Mining Applied to Secure URL Accesses in the Company}
+\title{Applying Classification Methods to Manage\\ Secure URL Accesses in the Company}
 % applied to what? En el título tiene que quedar bien claro de qué
 % problema se trata. Puesto así suena a "aplico data mining a ver qué
 % pasa" - JJ
+% Antonio - Ya, era el título dummy. He puesto uno menos dummy, pero no me acaba de convencer... :D
 
 \author{\authorname{Author1\sup{1}, Author2\sup{1} and Author3\sup{2}}
 \affiliation{\sup{1}Maracena Institute of Technology (MIT), Anonymous university, Anonymous Street num. X, AnonymousLand}
@@ -75,8 +76,7 @@ users or employees  themselves have become one of the main threats for
 the security assurance % assurance? qué significa eso? - JJ
  inside them \cite{Opp_Security11}, has meant % the new scenario
                                 % ... has meant - JJ
-the arisen % the arisen! the afallen! Diablos, revisad esto!!!! - JJ
- of new security issues , which should be dealt in a different way, normally by means of \textit{Corporate Security Policies}.
+the rising of new security issues , which should be dealt in a different way, normally by means of \textit{Corporate Security Policies}.
 These are a set of rules aimed to protect the company's assets
 defining sets of permissions to be considered for every different
 action to be performed inside the security system. % párrafo confuso
@@ -85,15 +85,19 @@ action to be performed inside the security system. % párrafo confuso
                                 % contexto se usan y por qué, y
                                 % seguiría a partir de ahí - JJ
 
-One of the main breaches regarding % primer regarding - JJ
+One of the main breaches with respect to 
+% primer regarding - JJ
+% Antonio - quitado
 the security in an enterprise is the access to non-confident (or non-certified) web sites ***REF***. Moreover, several webpages should be also controlled for productivity or suitability reasons.
 So, there are usually defined sets of allowed or denied pages/sites to
 be potentially accessed by the enterprise users/employees. 
 % There are defined sets? En serio? - JJ
+% Antonio - no lo sé a ciencia cierta, pero a nosotros nos pasaron una serie de reglas especificando qué sitios se podían y no se podían acceder...¿?
 
-In this work we try to define a tool for automatically made % for
+In this work we try to define a tool for automatically making % for
                                 % automatically made? Quién diablos ha
                                 % escrito esto? JJ 
+% Antonio - creo que ahora está bien
 an allowance or denial decision for some webpages/sites that are not included in the aforementioned list.
 Thus, the problem is transformed into a classification one, in which we started from a set of unlabelled patterns modelling the connection properties from a huge amount of URL accesses (the so-called sessions). Then we assign a label to many of them, considering a set of security rules defined by the Chief Security Officer in the company.
 We process this dataset by means of different classification methods, and applying some data balancing techniques, in order to choose the best algorithm for this problem.
@@ -109,7 +113,7 @@ The paper is structured as follows. Next section describes related work regardin
 \label{sec:stateofart}
 %
 
-\noindent Although Data Mining (DM), Classification, and Machine Learning (ML) techniques have been used since long ago in many scientific fields, and given that research in computer security was growing since the eighties \cite{computer_security_80}, it was not until the nineties that these techniques began to be applied to security issues \cite{Clifton1996}. On the one hand, DM helped developing new solutions to computer forensics \cite{DeVel2001}, being the researchers able to extract information from large files with events gathered from infected computers. Another important advance took place after the 9/11 events, because \textit{clustering techniques} and \textit{social network analysis} started to be performed in order to detect pontential crime networks \cite{Hsinchun2003}.
+\noindent Although Data Mining (DM) and Machine Learning (ML) techniques have been used since long ago in many scientific fields, and given that research in computer security was growing since the eighties \cite{computer_security_80}, it was not until the nineties that these techniques began to be applied to security issues \cite{Clifton1996}. On the one hand, DM helped developing new solutions to computer forensics \cite{DeVel2001}, being the researchers able to extract information from large files with events gathered from infected computers. Another important advance took place after the 9/11 events, because \textit{clustering techniques} and \textit{social network analysis} started to be performed in order to detect pontential crime networks \cite{Hsinchun2003}.
 
 On the other hand, and more closely to our work, there exist some user-centric solutions to problems like user authentication in a personal device, who Greenstadt and Beal \cite{cognitive_security_08} proposed to address using collected user biometrics along with machine learning techniques. Then, when a security policy is going to be applied, P.G. Kelley et al. \cite{user-controllable_learning_08} found important to include the user in the machine learning process for refining the policy model. They called it \textit{user-controllable policy learning}. Another approach to the refinement of user's privacy policies has been described by Danezis in \cite{inferring_policies_socialnetworks_09}, for he uses ML techniques over the user's settings in a social network.
 
@@ -160,7 +164,7 @@ The dependent variable or class is a label which inherently assigns an action/de
 
 These data were gathered along a period of two hours, from 8.30 to 10.30 am (30 minutes after the work started), monitoring the activity of all the employees in a medium-size company (80-100 people). There is an amount of 100000 patterns.
 
-Due to the nature of the data (URL accesses performed by humans), the dataset is highly unbalanced \cite{imbalanced_data_05}. Thus, there are 38972 pattern belonging to class ALLOW (positive class) and 18530 of class DENY (negative class), so just a 67.78\% of the samples belongs to the majority class. This is a very important problem of the dataset, since a classifier trained considering these proportions will aim to classify all the samples as ALLOW, getting a theoretically quite good classification accuracy equal or greater than 68\%.
+Due to the nature of the data (URL accesses performed by humans), the dataset is highly unbalanced \cite{imbalanced_data_05}. Thus, after a labelling process described in Section \ref{sec:methodology}, there are 38972 pattern belonging to class ALLOW (positive class) and 18530 of class DENY (negative class), so just a 67.78\% of the samples belongs to the majority class. This is a very important problem of the dataset, since a classifier trained considering these proportions will aim to classify all the samples as ALLOW, getting a theoretically quite good classification accuracy equal or greater than 68\%.
 
 In order to deal with this problem there exist several methods in the literature, but all of them are mainly grouped in three techniques \cite{imbalance_techniques_02}:
 \begin{itemize}
@@ -196,7 +200,7 @@ These approaches will be evaluated in the experiments section.
 
 Subsection \ref{subsec:logparsing} details how the patterns of the navigation data log (URL sessions) are also converted to a Perl hash to perform the matting/labelling process. 
 
-At the end of these two steps, the two hashes are compared in order to obtain which entries of the log should be allowed or denied. This is similar to perform a decision process in a security system.
+At the end of these two steps, the two hashes are compared in order to obtain which entries of the log should be ALLOW or DENY, know as the \textit{labelling} step. This is similar to perform a decision process in a security system.
 
 Finally, in Subsection \ref{subsec:methods} we explain the selection of the methods to apply in order to classify the data. We just have considered the patterns correctly labelled in the preprocessing phase. Thus, a supervised classification process \cite{classification_67} has been conducted on the balanced datasets.
 Weka Data Mining Software\footnote{http://www.cs.waikato.ac.nz/ml/weka/} has been used, in order to select the best set of methods in order to deal with these data. These classifiers will be further tested in Section \ref{sec:results}.
@@ -358,20 +362,30 @@ These methods will be deeply tested on the dataset (balanced and unbalanced) in 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   RESULTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-\section{\uppercase{Obtained Results}}
+\section{\uppercase{Experiments and Results}}
 \label{sec:results}
 
-\noindent describir y analizar lo que se ha obtenido en la clasificación (acierto, tasa de error, etc)
+\noindent Several experiments have been conducted, once a subset of classification methods have been chosen in previous section.
+To this end, some training/test datasets have been created, starting from the set of labelled patterns. It contains 57502 samples, belonging 38972 to class ALLOW, and 18530 to class DENY.
+
+In order to better prove the methods, two different divisions (training-test) have been done, namely 90\%-10\% and 80\%-20\%. Moreover, two additional splits have been considered in every case, using both a random and a sequential approach for selecting samples from the original file. Thus, in the latter, consecutive patterns have been included in the training file up to the desired percentage. The rest have composed the test file. In the first approach, a random selection is performed.
+
+The aim of the sequential division is to compare if the online activity of the employees considering URL sessions could be somehow `predicted', just using data from previous minutes or hours.
+
+With respect to the data, the initial file was unbalanced, as it can be seen in the number of patterns per class. Thus, as stated in Section \ref{sec:problemDescription}, two data balancing methods have been applied to all the files, to get similar numbers in both classes: undersampling (random removal of patterns) and oversampling (duplication of patterns).
+
+Results for unbalanced data are presented in Table \ref{tabresults_nobalan}.
+Three different tests have been done for the random pattern distribution approach, so the mean and standard deviation is shown in the corresponding columns.
 
 \begin{table*}[htpb]
 \centering
- \caption{\label{tabresults_nobalan} Results of non-balanced data}
+ \caption{\label{tabresults_nobalan} Percentage of correctly classified patterns for non-balanced data}
 {\small
 \begin{tabular}{|l|l|l|l|l|}
 \cline{2-5}
-\multicolumn{1}{l|}{} & \multicolumn{2}{c|}{80-20} & \multicolumn{2}{c|}{90-10} \\ 
+\multicolumn{1}{l|}{} & \multicolumn{2}{c|}{80\% Training - 20\% Test} & \multicolumn{2}{c|}{90\% Training - 10\% Test} \\ 
 \cline{2-5}
-\multicolumn{1}{l|}{} & Random-Avg & Sequential & Random-Avg & Sequential \\ 
+\multicolumn{1}{l|}{} & Random (mean) & Sequential & Random (mean) & Sequential \\ 
 \hline
 J48 & 97.56 $\pm$ 0.20 & 88.48 & 97.70 $\pm$ 0.15 & 82.28 \\ 
 \cline{1-1}
@@ -387,21 +401,36 @@ PART & 97.06 $\pm$ 0.19 & 89.11 & 97.40 $\pm$ 0.16 & 84.17 \\
 }
 \end{table*}
 
+As it can be seen in the table...
 
+***
+Se puede ver que todos los métodos obtienen un rendimiento similar en aciertos, siendo éste bastante alto. Si se mira la desviación estándard se ve que los resultados no son fortuitos, ya que ésta es muy pequeña.
 
+Como era de esperar la división en 90\%-10\% mejora los resultados, aunque no mucho, por lo que habría que hacer una prueba con una división más agresiva (trabajo futuro) para saber las capacidades de los métodos al trabajar con pocos datos de entrenamiento.
 
+Respecto a los datos secuenciales sus resultados son peores, pero aún así bastante buenos (> 85\%).
+La bajada en aciertos se debe sin duda a la aparición de patrones totalmente nuevos a partir de determinada hora (puede que algo que se haga de forma programada cada día o determinados días), por lo que no hay patrones similares con los que entrenar y se falla al clasificar en el test.
+
+Los aciertos son incluso menores (hay una bajada de 5-6 puntos) al hacer una división considerando más patrones, contrariamente a lo esperado/logico, por lo que esto refuerza la teoría de patrones que sólo suceden a determinadas horas.
+
+Como técnica destaca levemente \textit{Random Forest}, siendo la que mejores resultados obtiene en casi todos los casos, incluyendo las más complejas particiones secuenciales. Aunque mirando la desviación estándar nos decantamos por \textit{REP Tree}, que obtiene resultados más robustos.
+***
+
+***
+Los resultados de los datos balanceados se muestran en la Tabla \ref{tabresults_balan}. Nuevamente los resultados de las particiones aleatorias se muestran en media de tres particiones.
+***
 
 \begin{table*}[htpb]
 \centering
- \caption{\label{tabresults_balan} Results of balanced data (under- and oversampling)}
+ \caption{\label{tabresults_balan} Percentage of correctly classified patterns for balanced data (under- and oversampling)}
 {\small
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
 \cline{2-9}
-\multicolumn{1}{l|}{} & \multicolumn{4}{c|}{80-20} & \multicolumn{4}{c|}{90-10} \\ 
+\multicolumn{1}{l|}{} & \multicolumn{4}{c|}{80\% Training - 20\% Test} & \multicolumn{4}{c|}{90\% Training - 10\% Test} \\ 
 \cline{2-9}
 \multicolumn{1}{l|}{} & \multicolumn{2}{c|}{Undersampling} & \multicolumn{2}{c|}{Oversampling} & \multicolumn{2}{c|}{Undersampling} & \multicolumn{2}{c|}{Oversampling} \\ 
 \cline{2-9}
-\multicolumn{1}{l|}{} & Random-Avg & Sequential & Random-Avg & Sequential & Random-Avg & Sequential & Random-Avg & Sequential \\ 
+\multicolumn{1}{l|}{} & Rand (mean) & Sequential & Rand (mean) & Sequential & Rand (mean) & Sequential & Rand (mean) & Sequential \\ 
 \hline
 J48 & 97.05 $\pm$ 0.25 & 84.29 & 97.40 $\pm$ 0.03 & 85.66 & 96.85 $\pm$ 0.35 & 76.44 & 96.37 $\pm$ 0.06 & 74.24 \\ 
 \cline{1-1}
@@ -417,18 +446,46 @@ PART & 96.19 $\pm$ 0.14 & 85.16 & 96.82 $\pm$ 0.09 & 84.50 & 96.09 $\pm$ 0.10 & 
 }
 \end{table*}
 
+***
+Como puede verse en la tabla...\\
+
+A DESARROLLAR:\\
+
+* Undersampling peor que Oversampling - lógico porque se pueden perder patrones que pueden ser relevantes y en el otro se mantienen todos.\\
+
+* Resultados empeoran al usar las técnicas de balanceo. La Justificación sería algo como esto:\\
+
 DON'T WORK PROPERLY:\\
-Undersampling -> Losses important information (key patterns).\\
-Oversampling -> Just duplication because there are several nominal values so it doesn't work as well as in other approaches which uses numerical computations for creating the new patterns to include in the minority class.\\
-Sequential -> Some kind of URL accesses are just performed at a time, which could not be included in the training set.
+Undersampling - Losses important information (key patterns).\\
+Oversampling - Just duplication because there are several nominal values so it doesn't work as well as in other approaches which uses numerical computations for creating the new patterns to include in the minority class.\\
+Sequential - Some kind of URL accesses are just performed at a time, which could not be included in the training set.\\
+
+* Resultados secuenciales peor que aleatorios por lo explicado antes. Aquí incluso empeoran más porque se pierde más información que antes\\
+
+En este caso destacan los algoritmos \textit{J48}, muy cercano a \textit{Random Forest} en el procesamiento de ficheros aleatorios, y \textit{REP Tree}, que mejora a todos los demás al trabajar con datos secuenciales.
+***\\
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{\uppercase{Conclusions and Future Work}}
 \label{sec:conclusions}
 
-\noindent qué se puede concluir del trabajo y qué haremos a continuación
+\noindent In this paper a set of classification methods have been used in order to perform a decision process inside a company, according to some predefined corporate security policies.
+This decision is focused on the allowance or denial of URL accesses/requests.
 
+Thus, starting from a big dataset (100000 patterns) about employees' URL sessions information, and considering a set of URL access permissions, we composed a labelled dataset (57000 patterns).
+
+Several classification methods have been tested over this dataset, after some balancing techniques have been applied. Then, the best five have been deeply proved over several training/test divisions, one of them using sequential patterns.\\
+
+The results show that...\\
+
+So we can conclude that...\\
+
+Future lines of work include the implementation of other classification methods, such as one based in Genetic Programming, in which a modification of the cost associated to misclassifying could be applied as a class balancing method (as the authors did in \cite{cost_adjustment_07}).
+However, and considering the good classification results obtained in this work, the first step could be the application of these methods in the real system from which data was gathered, counting with the opinion of expert CSOs, in order to know the real value of the proposal.
+
+*** probar una división en entrenamiento/prueba más grande ***
 
 %ACKNOWLEDGMENTS are optional
 \section*{\uppercase{Acknowledgements}}
