@@ -227,8 +227,19 @@ behaviour after the system decisions.  % Aquí deberías referenciar
 
 \noindent The problem to solve is related with the application of corporate security policies in order to deal with potential URL accesses inside an enterprise. To this end a dataset of URL sessions (requests/accesses) is analysed. These data are labelled with the corresponding permission or not for that access following the aforementioned rules. The problem is then transformed into a classification one, in which every new potential URL request/access will be classified, and thus, a grant or deny action will be assigned to that pattern.
 
-The analysed data come from a typical \texttt{access.log} of Squid \cite{squid:site}, in a real Spanish company. This open source tool works as a proxy, but with the advantage of storing a cache of recent transactions so future requests may be answered without asking the origin server again \cite{DuaneWessels2004}. 
-Every pattern, namely a URL session, have associated 10 variables, which are described in Table \ref{tabdata}, indicating if the variable is numeric or nominal/categorical.
+The analysed data come from a typical \texttt{access.log} of the Squid
+proxy application
+\cite{squid:site}, in a real Spanish company. This open source tool
+works as a proxy, but with the advantage of storing a cache of recent
+transactions so future requests may be answered without asking the
+origin server again \cite{DuaneWessels2004}.  % ¿Quién dice que es
+                                % typical? ¿Es suficiente para probar
+                                % lo que quieres? - jj
+Every pattern, namely a URL session has ten variables associated,
+which we describe in Table \ref{tabdata}, indicating if the variable
+is numeric or nominal/categorical. % ¿Todas las variables son
+                                % relevantes para la clasificación?
+                                % ¿Por qué? ¿Quién lo dice? - JJ
 
 \begin{table*}[htpb]
 \centering
@@ -259,11 +270,31 @@ Variable name & Description & Type & Rank/Number of Values (if categorical)\\
 
 The dependent variable or class is a label which inherently assigns an action/decision to every request (URL session). This can be: \textit{ALLOW} if the access is permitted according to the CSPs, or can be \textit{DENY}, if the connection is not permitted. These patterns are labelled using an `engine' based in a set of security rules, that specify the decision to make. This process is described in Subsection \ref{subsec:ruleparsing}.
 
-These data were gathered along a period of two hours, from 8.30 to 10.30 am (30 minutes after the work started), monitoring the activity of all the employees in a medium-size Spanish company (80-100 people), being 100000 patterns.
+These data were gathered along a period of two hours, from 8.30 to
+10.30 am (30 minutes after the work started), monitoring the activity
+of all the employees in a medium-size Spanish company (80-100 people),
+being 100000 patterns. % y esto es suficiente porque... - JJ
 
-Due to the nature of the data (URL accesses performed by humans), the dataset is highly unbalanced \cite{imbalanced_data_05}. Thus, after a labelling process described in Section \ref{sec:methodology}, there are 38972 pattern belonging to class ALLOW (positive class) and 18530 of class DENY (negative class), so just a 67.78\% of the samples belongs to the majority class. This is a very important problem of the dataset, since a classifier trained considering these proportions will aim to classify all the samples as ALLOW, getting a theoretically quite good classification accuracy equal or greater than 68\%.
+Due to the nature of the data (URL accesses performed by humans), the
+dataset is highly unbalanced \cite{imbalanced_data_05}. Thus, after a
+labelling process described in Section \ref{sec:methodology}, there
+are 38972 pattern belonging to class ALLOW (positive class) and 18530
+of class DENY (negative class), so just a 67.78\% of the samples
+belongs to the majority class. This is a very important problem of the
+dataset, since a classifier trained considering these proportions will
+aim to classify all the samples as ALLOW, getting a theoretically
+quite good classification accuracy equal or greater than 68\%. % Eso
+                                % no es bueno. Es una mierda - JJ
 
-In order to deal with this problem there exist several methods in the literature, but all of them are mainly grouped in three techniques \cite{imbalance_techniques_02}:
+In order to deal with this problem there exist several methods in the
+literature, % ... que deberías haber mencionado en el estado del arte
+            % - JJ
+but all of them are mainly grouped in three techniques
+\cite{imbalance_techniques_02}: % Este no es el sitio de mencionar
+                                % este tipo de cosas. Es el estado del
+                                % arte. Si no está en el estado del
+                                % arte, es que no tiene suficientes
+                                % cosas - JJ
 \begin{itemize}
 \item \textit{Undersampling the over-sized classes}: i.e. reduce the considered number of patterns for the classes with the majority.
 \item \textit{Oversampling the small classes}: i.e. introduce additional (normally synthetic) patterns in the classes with the minority.
@@ -271,8 +302,8 @@ In order to deal with this problem there exist several methods in the literature
 \end{itemize}
 
 The first option has been applied in some works, following a random undersampling approach \cite{random_undersampling_08}, but the problem is the loss of valuable information. 
-
-On the other hand, the second option has been so far the most exploited, following different approaches, such as SMOTE (Synthetic Minority Oversampling Technique) \cite{smote_02}, a method proposed by Chawla et al. for creating `artificial' samples for the minority class, in order to balance the amount of them with respect. However this technique is based in numerical computations, which consider different distance measures, in order to generate useful patterns  (i.e. realistic or similar to the existing ones).
+% dónde está la primera hand? - JJ
+On the other hand, the second option has been so far the most widely used, following different approaches, such as SMOTE (Synthetic Minority Oversampling Technique) \cite{smote_02}, a method proposed by Chawla et al. for creating `artificial' samples for the minority class, in order to balance the amount of them with respect. However this technique is based in numerical computations, which consider different distance measures, in order to generate useful patterns  (i.e. realistic or similar to the existing ones).
 
 The third option implies using a method in which a cost can be associated to the classifier accuracy at every epoch. This was done for instance by Alfaro-Cid et al. in \cite{cost_adjustment_07}, where they used a Genetic Programming approach in which the fitness function was modified in order to consider a penalty when the classifier makes a false negative (an element from the minority class was classified as belonging to the majority class).
 However almost all the approaches deal with numerical (real, integer) data. 
@@ -292,6 +323,7 @@ These approaches will be evaluated in the experiments section.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   METHODOLOGY  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{\uppercase{Methodology}}
+% Si esto es la metodología, ¿qué es lo que has descrito hasta ahora?- JJ
 \label{sec:methodology}
 
 
@@ -309,7 +341,9 @@ Weka Data Mining Software\footnote{http://www.cs.waikato.ac.nz/ml/weka/} has bee
 \subsection{Security rules parsing}
 \label{subsec:ruleparsing}
 
-\noindent In this work we have considered Drools \cite{drools:site} as the tool to create and therefore managing rules in a business environment. This so called Business Rule Management System (BRMS) has been developed by the JBoss community under an Apache License and it is written in Java. Though this platform consist of many components, here we focus on Drools Expert and the Drools Rule Language (DRL, \cite{drools:doc}). Then, the defined rules for a certain company are inside of a file with a \texttt{.drl} extension, the file that needs to be parsed to obtain the final set of rules. In Figure \ref{fig:drools_hash}, (a), there is the typical rule syntax in DRL. Two main things should be obtained from the parsing method: both left and right sides of the rule, taking into account that the left side is where the company specifies the conditions required to apply the action indicated in the right side. Also, for describing the conditions, Squid syntax is used (see Section \ref{sec:problemDescription}), having thus the following structure: \texttt{squid:Squid(\textit{conditions})}. Finally, from the right side of the rule, the \textit{ALLOW} or \textit{DENY} label to apply on the data that matches with the conditions, will be extracted. The Perl parser that we have implemented applies two regular expressions, one for each side of the rule, and returns a hash with all the rules with the conditions and actions defined. The `before and after' performing the parsing over the \texttt{.drl} file is in Figure \ref{fig:drools_hash}.
+\noindent In this work we have considered Drools \cite{drools:site}
+as % otra cosa que debería estar en el estado del arte.  - JJ
+the tool to create and therefore manage rules in a business environment. This so called Business Rule Management System (BRMS) has been developed by the JBoss community under an Apache License and it is written in Java. Though this platform consist of many components, here we focus on Drools Expert and the Drools Rule Language (DRL, \cite{drools:doc}). Then, the defined rules for a certain company are inside of a file with a \texttt{.drl} extension, the file that needs to be parsed to obtain the final set of rules. In Figure \ref{fig:drools_hash}, (a), there is the typical rule syntax in DRL. Two main things should be obtained from the parsing method: both left and right sides of the rule, taking into account that the left side is where the company specifies the conditions required to apply the action indicated in the right side. Also, for describing the conditions, Squid syntax is used (see Section \ref{sec:problemDescription}), having thus the following structure: \texttt{squid:Squid(\textit{conditions})}. Finally, from the right side of the rule, the \textit{ALLOW} or \textit{DENY} label to apply on the data that matches with the conditions, will be extracted. The Perl parser that we have implemented applies two regular expressions, one for each side of the rule, and returns a hash with all the rules with the conditions and actions defined. The `before and after' performing the parsing over the \texttt{.drl} file is in Figure \ref{fig:drools_hash}.
 
 \begin{figure}[htb]
 \centering
@@ -345,11 +379,33 @@ Weka Data Mining Software\footnote{http://www.cs.waikato.ac.nz/ml/weka/} has bee
 \subsection{URL log data parsing}
 \label{subsec:logparsing}
 
-\noindent Usually, the instances of a log file have a number of fields, in order to have a registration of the client who asks for a resource, the time of the day when the request is made, and so on. In this case, we have worked with an \textit{access.log} (see Section \ref{sec:problemDescription}) file, converted into a CSV format file so it could be parsed and transformed in another hash of data. All 10 fields of the Squid Log yield a hash like the one depicted in Figure \ref{fig:data_hash}.
+\noindent Usually, the instances of a log file have a number of fields, in order to have a registration of the client who asks for a resource, the time of the day when the request is made, and so on. In this case, we have worked with an \textit{access.log} (see Section \ref{sec:problemDescription}) file, converted into a CSV format file so it could be parsed and transformed in another hash of data. All ten fields of the Squid log yield a hash like the one depicted in Figure \ref{fig:data_hash}.
 
 Once the two hashes of data were created, they were compared in such a way that for each rule in the hash of rules, it was determined how many entries in the data log hash are covered by the rule, and so they were applied the label that appears as `action' in the rule.
 
-One of the problems was to extract from a whole URL the part that was more interesting for our purposes. It is important to point out that in a log with thousands of entries, an enormous variety of URLs can be found, since some can belong to advertisements, images, videos, or even some others does not have a domain name but are given directly by an IP address. For this reason, we have taken into account that for a domain name, many subdomains (separated by dots) could be considered, and their hierarchy grows from the right towards the left. The highest level of the domain name space is the Top-Level Domain (TLD) at the right-most part of the domain name, divided itself in country code TLDs and generic TLDs. Then, a domain and a number of subdomains follow the TLD (again, from right to left). This way, the URLs in the used log are such as \textit{http://subdomain...subdomain.domain.TLD/} \textit{other\_subdirectories}. However, for the ARFF\footnote{Format of Weka files} file to be created, only the domain (without the subdomains and the TLD) should be considered, because there are too many different URLs to take into consideration. Hence, applying another regular expression, the data parser implemented in Perl obtains all the core domains of the URLs, which makes 976 domains in total.
+One of the problems was to extract from a whole URL the part that was
+more interesting for our purposes. It is important to point out that
+in a log with thousands of entries, an enormous variety of URLs can be
+found, since some can belong to advertisements, images, videos, or
+even some others does not have a domain name but are given directly by
+an IP address. For this reason, we have taken into account that for a
+domain name, many subdomains (separated by dots) could be considered,
+and their hierarchy grows from the right towards the left. The highest
+level of the domain name space is the Top-Level Domain (TLD) at the
+right-most part of the domain name, divided itself in country code
+TLDs and generic TLDs. Then, a domain and a number of subdomains
+follow the TLD (again, from right to left). This way, the URLs in the
+used log are such as \textit{http://subdomain...subdomain.domain.TLD/}
+\textit{other\_subdirectories}. However, for the ARFF\footnote{Format
+  of Weka files} file to be created, only the domain (without the
+subdomains and the TLD) should be considered, because there are too
+many different URLs to take into consideration. Hence, applying
+another regular expression, the data parser implemented in Perl
+obtains all the core domains of the URLs, which makes 976 domains in
+total. % primero: deberíais usar domain + TLD. Perl.com no es lo mismo
+       % que perl.org. Segundo: deberíais de justificar esto un poco
+       % más. Pensaba que usábais algo más avanzado para clasificar el
+       % sitio, directorios o algo... - JJ
 
 \begin{figure}[htb]
 \centering
@@ -465,9 +521,11 @@ These methods will be deeply tested on the dataset (balanced and unbalanced) in 
 \label{sec:results}
 
 \noindent Several experiments have been conducted, once a subset of classification methods has been chosen in previous section.
-To this end, some training and test datasets have been created from the set of labelled patterns. It contains 57502 samples, belonging 38972 to class ALLOW, and 18530 to class DENY.
+To this end, some training and test datasets have been created from
+the set of labelled patterns. It contains 57502 samples, with 38972
+belonging to class ALLOW and 18530 to class DENY.
 
-In order to better prove the methods, two different divisions (training-test) have been done, namely 90\%-10\% and 80\%-20\%. Moreover, two additional splits have been considered in every case, using both a random and a sequential approach for selecting samples from the original file. Thus, in the latter, consecutive patterns have been included in the training file up to the desired percentage. The rest have composed the test file. In the first approach, a random selection is performed.
+In order to better test the methods, two different divisions (training-test) have been done, namely 90\%-10\% and 80\%-20\%. Moreover, two additional splits have been considered in every case, using both a random and a sequential approach for selecting samples from the original file. Thus, in the latter, consecutive patterns have been included in the training file up to the desired percentage. The rest have composed the test file. In the first approach, a random selection is performed.
 
 The aim of the sequential division is to compare if the online activity of the employees considering URL sessions could be somehow `predicted', just using data from previous minutes or hours.
 
@@ -499,12 +557,25 @@ PART & 97.06 $\pm$ 0.19 & 89.11 & 97.40 $\pm$ 0.16 & 84.17 \\
 \end{tabular}
 }
 \end{table*}
+% primero: ¿las diferencias son significativas? No lo
+% parecen. Segundo: ¿habéis incluido algún método "baseline" para
+% comparación, como NaiveBayes, que es el que se incluye siempre? - JJ 
+As it can be seen, all the five methods achieved a high performance classifying in the right way the test dataset. Also, these results are not like this by chance, as shown by a low standard deviation. Although it was expected that the results from the 90\%-10\% division were slightly better, in the future a more agressive division will be executed so the methods can be really proved with much less training data.
 
-As it can be seen, all the five methods got a high performance classifying in the right way the test dataset. Also, these results are not like this by chance, as shown by a low standard deviation. Although it was expected that the results from the 90\%-10\% division were slightly better, in the future a more agressive division will be executed so the methods can be really proved with much less training data.
+What matters to the results of the experiments made with the sequential data, they are worse than the obtained from the random data, but still they are good ($>$ 85\%). This is due to the occurrence of new patterns from a certain time (maybe there are some requests that are made just at one specific time in a day, or in settled days), and then there is no sufficient similarity between the training data and the classifying of the test data set may fail. The loss of 5 to 6 points in the results of the 90\%-10\% division is the first unexpected or unlogicall result of the experiments, but they also reinforce the previous theory.
 
-What matters to the results of the experiments made with the sequential data, they are worse than the obtained from the random data, but still they are good (> 85\%). This is due to the occurrence of new patterns from a certain time (maybe there are some requests that are made just at one specific time in a day, or in settled days), and then there is no sufficient similarity between the training data and the classifying of the test data set may fail. The loss of 5 to 6 points in the results of the 90\%-10\% division is the first unexpected or unlogicall result of the experiments, but they also reinforce the previous theory.
-
-The technique that lightly stands out over the others is \textit{Random Forest}, being the best in almost every case, even in the experiments with the most complex sequential divisions. However, if we focus on the standard deviation, \textit{REP Tree} is the chosen one, as its results present robustness.
+The technique that lightly stands out over the others is
+\textit{Random Forest}, being the best in almost every case, even in
+the experiments with the most complex sequential divisions. However,
+if we focus on the standard deviation, \textit{REP Tree} is the chosen
+one, as its results present robustness. % yo no estaría tan
+                                % seguro. Tenéis que hacer tests
+                                % estadísticos. En serio que parecen
+                                % exactamente los mismos
+                                % resultados. ¿Son métodos
+                                % deterministas? En todo caso, la
+                                % diferencia es mínima, de 5 o 6
+                                % dominios URLs, ¿no? - JJ
 
 For its part, results obtained from unbalanced data are shown in Table \ref{tabresults_balan}. Again the corresponding to the random partitions come from the mean of three blocks of experiments, and so are specified the standard deviations. The Table illustrates two segments of results, obtained from the undersampled data and from the oversampled data. For each one, the 90\%-10\% and 80\%-20\% divisions were also made.
 
@@ -558,7 +629,19 @@ PART & 96.19 $\pm$ 0.14 & 85.16 & 96.82 $\pm$ 0.09 & 84.50 & 96.09 $\pm$ 0.10 & 
 
 In both cases is noticeable that taking the data in a sequential way, instead of randomly, lower the results. It is clear that due to the fact that performing undersampling some patterns are lost while in the case of oversampling they all remain, \textit{undersampling results} are better. Then, in this case the algorithm with best performance is \textit{J48}, though \textit{Random Forest} follows its results very closely in random datasets processing, and \textit{REP Tree}, which is better than the rest when working with sequential data. Nevertheless, generally speaking and given the aforementioned reasons, performing data balancing methods yields worse results.
 
-Furthermore, we have found that for the data sets taken consequently, the methods always classify worse the DENY labels, as they label them as ALLOW patterns. This worth futher study because it is the worst situation. It would be preferable a false positive in a DENY pattern, rather than a false negative and to permit a request that is forbidden in the ISP.
+Furthermore, we have found that for the data sets taken consequently,
+the methods always classify worse the DENY labels, as they label them
+as ALLOW patterns. This worth futher study because it is the worst
+situation. It would be preferable a false positive in a DENY pattern,
+rather than a false negative and to permit a request that is forbidden
+in the ISP. % podríais citar los trabajos de bancarrotas que hemos
+            % hecho, donde se optimizan por separado los dos tipos de
+            % errores - JJ 
+
+% ¿No ponéis nada sobre los resultados? ¿Se limita a usar el dominio?
+% ¿Hace alguna cosa más? ¿No podéis examinar el Forest ese, haga lo
+% que haga¿ Si usa los dominios sólo, no es mucho mejor que el
+% whitelist... - JJ
 
 % ***
 % Como puede verse en la tabla...\\
