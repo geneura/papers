@@ -35,6 +35,10 @@
 % hacerlo en el servidor o a través de un proxy? (vale, esto en el
 % título es complicado pero habría que justificarlo como client-based
 % y no server-based - JJ
+% Un sistema de clasificación no "gestiona", clasifica. Es más, un
+% sistema de clasificación lo que hace es generalizar a partir de
+% ejemplos. "A new method for preprocessing URLs for secure web
+% access" podría ser la forma mejor de describirlo - JJ
 
 \author{\authorname{Author1\sup{1}, Author2\sup{1} and Author3\sup{2}}
 \affiliation{\sup{1}Maracena Institute of Technology (MIT), Anonymous university, Anonymous Street num. X, AnonymousLand}
@@ -44,8 +48,19 @@
 
 \keywords{Data Mining, Corporate Security Policies, URL request, Machine Learning, Classification}
 
-\abstract{Security management lists are normally used as a control tool in a distributed security system. With these lists it is possible to restrict (or to allow) to the users the execution of applications or the access to URLs, among others. This paper is focused in the latter option. It describes the whole processing of a dataset composed by URL sessions performed by the employees of a company. From the preprocessing stage, including labelling and data balancing processes, to the application of several classification algorithms. The aim is to define a method for automatically make a decision of allowing or denying future URL requests, considering a set of corporate security policies.
-Thus, this work goes a step beyond the usual Black and White lists, since they can only control those URLs that are specifically included in the lists (or the complementary ones), but not making decisions based in similarity (through classification techniques) as it is proposed here.
+\abstract{Security management lists are normally used as a control
+  tool in a distributed security system. % La pasiva debe usarse lo
+                                % menos posible. Date cuenta que no he
+                                % dicho la pasiva debe ser usada lo
+                                % menos posible. Propuesta:
+                                % Distributed security systems are
+                                % normally implemented using white or
+                                % blacklists (pero tiene tan poco
+                                % sentido como la anterior: ¿qué tiene
+                                % que ver un sistema distribuido con
+                                % los URLs?- JJ
+ With these lists it is possible to restrict (or to allow) to the users the execution of applications or the access to URLs, among others. This paper is focused in the latter option. It describes the whole processing of a dataset composed by URL sessions performed by the employees of a company from the preprocessing stage, including labelling and data balancing processes, to the application of several classification algorithms. The aim is to define a method for automatically make a decision of allowing or denying future URL requests, considering a set of corporate security policies.
+Thus, this work goes a step beyond the usual black or white lists, since they can only control those URLs that are specifically included in the lists (or the complementary ones), but not making decisions based in similarity (through classification techniques) as it is proposed here.
 The results show a set of classification methods which get very good classification percentages (95-97\%), meaning that the approach could be a useful tool in an enterprise.
 % no cuentes lo que has hecho, sino qué
                                % problema quieres resolver. Por qué
@@ -56,7 +71,8 @@ The results show a set of classification methods which get very good classificat
                           %presentando un método de preprocesamiento
                           %de URLs. - JJ
 % Antonio - Creo que ahora está mejor. ;)
-
+% could be o is? Deberíais enmarcar esto: se hace dentro de muses,
+% corporate security, todo eso - JJ
 \onecolumn \maketitle \normalsize \vfill
 
 % A ver, tal como yo lo veo la principal cuestión es que estáis
@@ -74,7 +90,10 @@ The results show a set of classification methods which get very good classificat
 
 \noindent The new scenario defined by the Bring Your Own Device (BYOD) tendency, in which the devices that access to the system are owned by the users (company's employees), and could contain both personal and professional information, has turned the security focus to those users, who have become one of the main threats to the corporate security \cite{Opp_Security11}.
 
-This has meant the rising of new security issues, which are normally dealt by means of \textit{Corporate Security Policies} (CSPs). These are basically a set of security rules aimed to protect the company's assets, by defining permissions to be considered for every different action to be performed inside the security system. 
+This has meant the rising of new security issues, which are normally
+dealt by means of \textit{Corporate Security Policies} (CSPs), which
+are %basically no uses basically en lenguaje formal -JJ 
+a set of security rules aimed to protect the company's assets, by defining permissions to be considered for every different action to be performed inside the security system. 
 
 % párrafo confuso
 % que yo borraría del tirón. Empezaría
@@ -83,10 +102,17 @@ This has meant the rising of new security issues, which are normally dealt by me
 % seguiría a partir de ahí - JJ
 % Antonio - lo he cambiado y ahora está mejor explicado y enlazado, creo. ;)
 
-One of the main breaches with respect to 
+One of the main issues in enterprise secury systems
 % primer regarding - JJ
 % Antonio - quitado
-the security in an enterprise is the access to non-confident (or non-certified) web sites (URLs in this work) ***REF***. Moreover, several webpages should be also controlled for productivity or suitability reasons.
+% Tampoco está bien breaches. Ni with respect to . Ni que no lo
+% relaciones con el párrafo anterior, que habla de CSPs. Una primera
+% frase debería hacer referencia a esas CSPs, porque te acuestas en el
+% párrafo anterior hablando de CSPs y te levantas en este hablando de
+% security systems, como si no tuvieran nada que ver. Propuesta: These
+% CSPs include usually  policies that allow or deny access to certain
+% websites or services - JJ
+ is the access to non-confident (or non-certified) web sites (URLs in this work) ***REF***. Moreover, several webpages should be also controlled for productivity or suitability reasons.
 Thus, some of the CSPs usually define sets of allowed or denied pages/sites that could be potentially accessed by the enterprise users/employees. These sets are included in the so-called White (permitted) or Black (non-permitted) Lists ***REF***. These lists offer a good control tool for those URLs included in them of for the complementary, i.e. the URLs non included in a White List have automatically denial access, for instance.
 % There are defined sets? En serio? - JJ
 % Antonio - no lo sé a ciencia cierta, pero a nosotros nos pasaron una serie de reglas especificando qué sitios se podían y no se podían acceder...¿?
@@ -135,10 +161,20 @@ when these techniques began to be applied to security issues
                     % Cambiada la frase, porque "sí y no" a lo que me 
                     % has comentado. Estaba mal construida, pero "given
                     % that" es "dado que" y se usa para explicar
-                    % consecuencia, no algo extraño o contrario. - Paloma
+                    % consecuencia, no algo extraño o contrario. -
+                    % Paloma
+                    % me refería a en este contexto. Y sé lo que
+                    % significa given that. Quería decir que como
+                    % estaba la frase construida, deberías haber
+                    % creado la subordinada como lo has hecho ahora - JJ
 On the one hand, DM helped to develop new solutions to computer forensics \cite{DeVel2001}, being the researchers able to extract information from large files with events gathered from infected computers. Another important advance took place after the 9/11 events, when \textit{clustering techniques} and \textit{social network analysis} started to be performed in order to detect pontential crime networks \cite{Hsinchun2003}.
 
-On the other hand, and more closely to our work, there exist some
+On the other hand, and more closely to our work, there exist some % Si
+                                % usas on one hand, on the other hand
+                                % debe de ir en el mismo párrafo. Si
+                                % es principio de párrafo, la frase
+                                % con la que se relaciona debe ser
+                                % también principio de párrafo. - JJ
 user-centric solutions to problems like user authentication in a
 personal device, who Greenstadt and Beal \cite{cognitive_security_08}
 proposed to address using collected user biometrics along with machine
@@ -158,7 +194,8 @@ privacy policies has been described by Danezis in
 \cite{inferring_policies_socialnetworks_09}, for he uses ML techniques
 over the user's settings in a social network. % para hacer qué? - JJ
 
-In the same line, Lim et al. have two works \cite{sec_policy_evolution_gp_08,pol_evol_gp_3_approaches_08} where a certain set of computer security policies evolve by means of Genetic Programming (GP), taking again into account the user's feedback. Furthermore, Suarez-Tangil et al. \cite{rule_generation_gp_09} take the same approach as Lim et al., but also bringing event correlation in. These two latter author's works are interesting for ours, though they are not focused in company Information Security Policies (ISPs)  - for instance, our case with the allowed or denied http requests -.
+In the same line, Lim et al. propose a system
+\cite{sec_policy_evolution_gp_08,pol_evol_gp_3_approaches_08} that evolves a  set of computer security policies by means of Genetic Programming (GP), taking again into account the user's feedback. Furthermore, Suarez-Tangil et al. \cite{rule_generation_gp_09} take the same approach as Lim et al., but also bringing event correlation in. These two latter author's works are interesting for ours, though they are not focused in company Information Security Policies (ISPs)  - for instance, our case with the allowed or denied http requests -.
 
 Finally, a system named MUSES (from Multiplatform Usable Endpoint
 Security System) \cite{MUSES_SAC_14} is being developed under the
@@ -181,6 +218,7 @@ behaviour after the system decisions.  % Aquí deberías referenciar
 %trabajo a avanzar o mejorar el estado del arte. ¿Nadie ha clasificado
 %URLs? ¿nadie los ha preprocesado? ¿Se usan listas blancas o negras?
 %¿Qué problemas tienen esos enfoques? - JJ
+% Esto no se ha tocado... - JJ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM DESCRIPTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 
