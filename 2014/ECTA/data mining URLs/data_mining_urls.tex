@@ -499,7 +499,7 @@ For its part, results obtained from unbalanced data are shown in Table \ref{tabr
 \cline{2-9}
 \multicolumn{1}{l|}{} & Rand (mean) & Sequential & Rand (mean) & Sequential & Rand (mean) & Sequential & Rand (mean) & Sequential \\ 
 \hline
-J48 & 97.05 $\pm$ 0.25 & 84.29 & 97.40 $\pm$ 0.03 & 85.66 & 96.85 $\pm$ 0.35 & 76.44 & 96.37 $\pm$ 0.06 & 74.24 \\ 
+J48 & 97.05 $\pm$ 0.25 & 84.29 & 97.40 $\pm$ 0.03 & 85.66 & 96.85 $\pm$ 0.35 & 76.44 & 97.37 $\pm$ 0.06 & 74.24 \\ 
 \cline{1-1}
 Random Forest & 96.61 $\pm$ 0.17 & 88.59 & 97.16 $\pm$ 0.19 & 89.03 & 96.99 $\pm$ 0.13 & 79.98 & 97.25 $\pm$ 0.33 & 81.33 \\ 
 \cline{1-1}
@@ -514,9 +514,13 @@ PART & 96.19 $\pm$ 0.14 & 85.16 & 96.82 $\pm$ 0.09 & 84.50 & 96.09 $\pm$ 0.10 & 
 \end{table*}
 
 \begin{description}
-  \item[Applying Undersampling]
-  \item[Applying Oversampling] 
+  \item[Applying Undersampling] In comparison with those results from Table \ref{tabresults_nobalan}, these go down one point (in the case of randomly made divisions) to six points (sequential divisions). The reason why this happens is that when randomly removing ALLOW patterns, we are really losing information, i. e. key patterns that could be decisive in a good classification of a certain set of test patterns. 
+  \item[Applying Oversampling] Here we have duplicated the DENY patterns so their number could be up to that of the ALLOW patterns. However, it does not work as well as in other approaches which uses numerical computations for creating the new patterns to include in the minority class. Consequently, the results have been decreased.
 \end{description}
+
+In both cases is noticeable that taking the data in a sequential way, instead of randomly, lower the results. It is clear that due to the fact that performing undersampling some patterns are lost while in the case of oversampling they all remain, \textit{undersampling results} are better. Then, in this case the algorithm with best performance is \textit{J48}, though \textit{Random Forest} follows its results very closely in random datasets processing, and \textit{REP Tree}, which is better than the rest when working with sequential data. Nevertheless, generally speaking and given the aforementioned reasons, performing data balancing methods yields worse results.
+
+Furthermore, we have found that for the data sets taken consequently, the methods always classify worse the DENY labels, as they label them as ALLOW patterns. This worth futher study because it is the worst situation. It would be preferable a false positive in a DENY pattern, rather than a false negative and to permit a request that is forbidden in the ISP.
 
 % ***
 % Como puede verse en la tabla...\\
