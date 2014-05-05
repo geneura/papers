@@ -42,22 +42,20 @@
 \email{\{auth1,auth2\}@mit.edu, auth3@au.edu}
 }
 
-\keywords{Data Mining, Security Policies, URL request, Machine Learning, Classification}
+\keywords{Data Mining, Corporate Security Policies, URL request, Machine Learning, Classification}
 
-\abstract{This paper presents a deep analysis of a dataset based in
-  URL sessions performed by the employees of a company. The aim is to
-  find the best classification algorithm in order to make the decision
-  of allowing or denying future URL requests, considering a set of
-  corporate security policies. % no cuentes lo que has hecho, sino qué
+\abstract{Security management lists are normally used as a control tool in a distributed security system. With these lists it is possible to restrict (or to allow) to the users the execution of applications or the access to URLs, among others. This paper is focused in the latter option. It describes the whole processing of a dataset composed by URL sessions performed by the employees of a company. From the preprocessing stage, including labelling and data balancing processes, to the application of several classification algorithms. The aim is to define a method for automatically make a decision of allowing or denying future URL requests, considering a set of corporate security policies.
+Thus, this work goes a step beyond the usual Black and White lists, since they can only control those URLs that are specifically included in the lists (or the complementary ones), but not making decisions based in similarity (through classification techniques) as it is proposed here.
+The results show a set of classification methods which get very good classification percentages (95-97\%), meaning that the approach could be a useful tool in an enterprise.
+% no cuentes lo que has hecho, sino qué
                                % problema quieres resolver. Por qué
                                % pienasas que tu método resuelve el
                                % problema y prueba que efectivametne
                                % lo hace. Escritura de papers 101 - JJ
-The complete preprocessing phase is also described, including a labelling stage based in the defined set of security rules.
-Two data balancing techniques are tested (under- and oversampling) over several different training/test partitions.
-The results show that...} %Todo esto me suena más a que estás
+} %Todo esto me suena más a que estás
                           %presentando un método de preprocesamiento
                           %de URLs. - JJ
+% Antonio - Creo que ahora está mejor. ;)
 
 \onecolumn \maketitle \normalsize \vfill
 
@@ -66,6 +64,7 @@ The results show that...} %Todo esto me suena más a que estás
 % deberíais centraros en eso y no en los resultados y no sé si en la
 % aplicación, porque no está muy clara ni qué parte de la aplicación
 % final se está haciendo o no - JJ
+% Antonio - bueno, pero eso no es gran cosa (científicamente) para un artículo. Yo pienso que es mejor hablar de todo lo que se ha hecho. ;D
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   INTRODUCTION   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,48 +72,36 @@ The results show that...} %Todo esto me suena más a que estás
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-\noindent Corporate security is one of the key areas inside an
-enterprise, and thus, one of the main research topics
-nowadays. %Típica frase vacía de contenido. main ¿en qué contexto?
-          %¿quién lo dice? Aquí deberías de definir qué problema es el
-          %que quieres resolver y el contexto en el que se
-          %encuentra. Por ejemplo, "Corporate security involves all kinds
-          %of challanges, including this and that and that. Every
-          %problem is approached in a different way, but since mobile
-          %devices are used for browsing, it is... - JJ
-The new scenario defined by the Bring Your Own Device (BYOD) tendency %defínela
-in the companies, in which the 
-users or employees  themselves have become one of the main threats for
-the security assurance % assurance? qué significa eso? - JJ
- inside them \cite{Opp_Security11}, has meant % the new scenario
-                                % ... has meant - JJ
-the rising of new security issues , which should be dealt in a different way, normally by means of \textit{Corporate Security Policies}.
-These are a set of rules aimed to protect the company's assets
-defining sets of permissions to be considered for every different
-action to be performed inside the security system. % párrafo confuso
-                                % que yo borraría del tirón. Empezaría
-                                % explicando qué son las CSP, en qué
-                                % contexto se usan y por qué, y
-                                % seguiría a partir de ahí - JJ
+\noindent The new scenario defined by the Bring Your Own Device (BYOD) tendency, in which the devices that access to the system are owned by the users (company's employees), and could contain both personal and professional information, has turned the security focus to those users, who have become one of the main threats to the corporate security \cite{Opp_Security11}.
+
+This has meant the rising of new security issues, which are normally dealt by means of \textit{Corporate Security Policies} (CSPs). These are basically a set of security rules aimed to protect the company's assets, by defining permissions to be considered for every different action to be performed inside the security system. 
+
+% párrafo confuso
+% que yo borraría del tirón. Empezaría
+% explicando qué son las CSP, en qué
+% contexto se usan y por qué, y
+% seguiría a partir de ahí - JJ
+% Antonio - lo he cambiado y ahora está mejor explicado y enlazado, creo. ;)
 
 One of the main breaches with respect to 
 % primer regarding - JJ
 % Antonio - quitado
-the security in an enterprise is the access to non-confident (or non-certified) web sites ***REF***. Moreover, several webpages should be also controlled for productivity or suitability reasons.
-So, there are usually defined sets of allowed or denied pages/sites to
-be potentially accessed by the enterprise users/employees. 
+the security in an enterprise is the access to non-confident (or non-certified) web sites (URLs in this work) ***REF***. Moreover, several webpages should be also controlled for productivity or suitability reasons.
+Thus, some of the CSPs usually define sets of allowed or denied pages/sites that could be potentially accessed by the enterprise users/employees. These sets are included in the so-called White (permitted) or Black (non-permitted) Lists ***REF***. These lists offer a good control tool for those URLs included in them of for the complementary, i.e. the URLs non included in a White List have automatically denial access, for instance.
 % There are defined sets? En serio? - JJ
 % Antonio - no lo sé a ciencia cierta, pero a nosotros nos pasaron una serie de reglas especificando qué sitios se podían y no se podían acceder...¿?
 
-In this work we try to define a tool for automatically making % for
-                                % automatically made? Quién diablos ha
-                                % escrito esto? JJ 
+In this work we go a step beyond, trying to define a tool for automatically making 
+% for automatically made? Quién diablos ha escrito esto? JJ 
 % Antonio - creo que ahora está bien
-an allowance or denial decision for some webpages/sites that are not included in the aforementioned list.
-Thus, the problem is transformed into a classification one, in which we started from a set of unlabelled patterns modelling the connection properties from a huge amount of URL accesses (the so-called sessions). Then we assign a label to many of them, considering a set of security rules defined by the Chief Security Officer in the company.
-We process this dataset by means of different classification methods, and applying some data balancing techniques, in order to choose the best algorithm for this problem.
+an allowance or denial decision with respect to URLs that are not included in the aforementioned lists. This decision would be based in the corresponding one to similar URL accesses (those with similar features).
 
-The results are quite good, getting classification accuracies around 95-97\% in the test phase, even when using the non-balanced datasets.
+Thus, the problem has been transformed into a \textit{classification} one, in which we have started from a set of unlabelled patterns, that model the connection properties from a huge amount of \textit{real} URL accesses (the so-called sessions). Then we have assigned a label to many of them, considering a set of \textit{real} security rules (CSPs) defined by the Chief Security Officer (CSO) in the company.
+This dataset has been processed by means of different classification methods, in order to find the best algorithm for dealing with these data.
+Previously data balancing techniques have been applied, namely \textit{undersampling} and \textit{oversampling} \cite{imbalance_techniques_02}, due to the high imbalance present in the dataset (more than double of patterns belong to the majority class).
+
+Different data partitions have been done in the experiments, even considering consecutive URL sessions in the training and test files.
+The results are quite good, getting classification accuracies around 95-97\% in the test phase, even when using the unbalanced datasets.
 
 The paper is structured as follows. Next section describes related work regarding the application of data mining and machine learning techniques to security issues inside the company. Section \ref{sec:problemDescription} presents the problem to solve and the dataset to work with. The followed methodology is described in Section \ref{sec:methodology}, concerning the data preprocessing and a first round of experiments comparing different classification methods. Once the best of them are selected, a set of experiments have been conducted, and the results are described and discussed in Section \ref{sec:results}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
 
@@ -202,7 +189,7 @@ behaviour after the system decisions.  % Aquí deberías referenciar
 
 \noindent The problem to solve is related with the application of corporate security policies in order to deal with potential URL accesses inside an enterprise. To this end a dataset of URL sessions (requests/accesses) is analysed. These data are labelled with the corresponding permission or not for that access following the aforementioned rules. The problem is then transformed into a classification one, in which every new potential URL request/access will be classified, and thus, a grant or deny action will be assigned to that pattern.
 
-The analysed data come from a typical \texttt{access.log} of Squid \cite{squid:site}. This open source tool works as a proxy, but with the advantage of storing a cache of recent transactions so future requests may be answered without asking the origin server again \cite{DuaneWessels2004}. 
+The analysed data come from a typical \texttt{access.log} of Squid \cite{squid:site}, in a real Spanish company. This open source tool works as a proxy, but with the advantage of storing a cache of recent transactions so future requests may be answered without asking the origin server again \cite{DuaneWessels2004}. 
 Every pattern, namely a URL session, have associated 10 variables, which are described in Table \ref{tabdata}, indicating if the variable is numeric or nominal/categorical.
 
 \begin{table*}[htpb]
@@ -232,9 +219,9 @@ Variable name & Description & Type & Rank/Number of Values (if categorical)\\
 }
 \end{table*}
 
-The dependent variable or class is a label which inherently assigns an action/decision to every request (URL session). This can be: \textit{ALLOW} if the access is permitted according to the corporate security policies, or can be \textit{DENY}, if the connection is not permitted. These patterns are labelled using an `engine' based in a set of security rules, that specify the decision to make. This process is described in Subsection \ref{subsec:ruleparsing}.
+The dependent variable or class is a label which inherently assigns an action/decision to every request (URL session). This can be: \textit{ALLOW} if the access is permitted according to the CSPs, or can be \textit{DENY}, if the connection is not permitted. These patterns are labelled using an `engine' based in a set of security rules, that specify the decision to make. This process is described in Subsection \ref{subsec:ruleparsing}.
 
-These data were gathered along a period of two hours, from 8.30 to 10.30 am (30 minutes after the work started), monitoring the activity of all the employees in a medium-size company (80-100 people). There is an amount of 100000 patterns.
+These data were gathered along a period of two hours, from 8.30 to 10.30 am (30 minutes after the work started), monitoring the activity of all the employees in a medium-size Spanish company (80-100 people), being 100000 patterns.
 
 Due to the nature of the data (URL accesses performed by humans), the dataset is highly unbalanced \cite{imbalanced_data_05}. Thus, after a labelling process described in Section \ref{sec:methodology}, there are 38972 pattern belonging to class ALLOW (positive class) and 18530 of class DENY (negative class), so just a 67.78\% of the samples belongs to the majority class. This is a very important problem of the dataset, since a classifier trained considering these proportions will aim to classify all the samples as ALLOW, getting a theoretically quite good classification accuracy equal or greater than 68\%.
 
@@ -242,7 +229,7 @@ In order to deal with this problem there exist several methods in the literature
 \begin{itemize}
 \item \textit{Undersampling the over-sized classes}: i.e. reduce the considered number of patterns for the classes with the majority.
 \item \textit{Oversampling the small classes}: i.e. introduce additional (normally synthetic) patterns in the classes with the minority.
-\item \textit{Modifying the cost associated to misclassifying the positive and the negative class} to compensate for the imbalanced ratio of the two classes. For example, if the imbalance ratio is 1:10 in favour of the negative class, the penalty of misclassifying a positive example should be 10 times greater.
+\item \textit{Modifying the cost associated to misclassifying the positive and the negative class} to compensate for the imbalance ratio of the two classes. For example, if the imbalance ratio is 1:10 in favour of the negative class, the penalty of misclassifying a positive example should be 10 times greater.
 \end{itemize}
 
 The first option has been applied in some works, following a random undersampling approach \cite{random_undersampling_08}, but the problem is the loss of valuable information. 
@@ -254,8 +241,10 @@ However almost all the approaches deal with numerical (real, integer) data.
 
 In our case, the dataset contains a majority of categorical/nominal data, so we have performed different approaches for data balancing:
 \begin{itemize}
-\item Undersampling: we will remove random samples of the majority class until the amount in both classes are similar. ***REF?***
-\item Oversampling: we will duplicate random samples of the minority class, in order to get a close number of patterns in both classes. This has be done due to the impossibility of creating synthetic data when dealing with categorical values (there is not a proper distance measure between two values in a category). ***REF A ALGO SIMILAR HECHO***
+\item Undersampling: we will remove random samples of the majority class until the amount in both classes are similar. 
+%***REF?***
+\item Oversampling: we will duplicate random samples of the minority class, in order to get a close number of patterns in both classes. This has be done due to the impossibility of creating synthetic data when dealing with categorical values (there is not a proper distance measure between two values in a category). 
+%***REF A ALGO SIMILAR HECHO***
 Actually, since the number of samples in the majority class is almost twice the minority one, we have just duplicated all of those belonging to the minority class.
 \end{itemize}
 
@@ -555,28 +544,41 @@ PART & 96.19 $\pm$ 0.14 & 85.16 & 96.82 $\pm$ 0.09 & 84.50 & 96.09 $\pm$ 0.10 & 
 \section{\uppercase{Conclusions and Future Work}}
 \label{sec:conclusions}
 
-\noindent In this paper a set of classification methods have been used
+\noindent In this paper a set of classification methods have been applied
 in order to perform a decision process inside a company, according to
 some predefined corporate security policies. % pero ¿esto no es una
                                 % lista blanca? - jj
+% Antonio - no, se trata de decidir sobre algo que no tenemos en la lista
 This decision is focused on the allowing or denying of URL
-accesses/requests. % ¿lista blanca? - JJ
+accesses/requests, but just considering previous decisions on similar requests, not having specific rules in a White/Black List, defined for those URLs. 
+% ¿lista blanca? - JJ
+% Antonio - aclarado, creo
 
-Thus, starting from a big dataset (100000 patterns) about employees' URL sessions information, and considering a set of URL access permissions, we composed a labelled dataset (57000 patterns).
+Thus, starting from a big dataset (100000 patterns) about employees' URL sessions information, and considering a set of URL access permissions, we have composed a labelled dataset (57000 patterns).
 
-Several classification methods have been tested over this dataset, after some balancing techniques have been applied. Then, the best five have been deeply proved over several training/test divisions, one of them using sequential patterns.\\
+Several classification methods have been tested over this dataset, after some data balancing techniques have been applied. Then, the best five have been deeply proved over several training/test divisions, one of them using sequential patterns (consecutive URL accesses).
 
-The results show that...\\
+The results show that...
+***
+RESUMEN en un párrafo de lo que se ha obtenido:
+- muy buenos porcentajes (en torno al 95-97\%) en general incluso en datos no balanceados
+- el método pierde efectividad si se omiten algunos patrones que pueden no haber aparecido antes (datos secuenciales o undersampling) => hay que estudiarlo mejor en siguientes trabajos
+
 % Esto teníais que haberlo puesto antes que nada. - JJ
-So we can conclude that...\\
+% Antonio - yo creo que está bien así. Las conclusiones suelen ser autocontenidas y yo las estructuro como un resumen del trabajo. ;)
 
-Future lines of work include the implementation of other classification methods, such as one based in Genetic Programming, in which a modification of the cost associated to misclassifying could be applied as a class balancing method (as the authors did in \cite{cost_adjustment_07}).
-However, and considering the good classification results obtained in this work, the first step could be the application of these methods in the real system from which data was gathered, counting with the opinion of expert CSOs, in order to know the real value of the proposal.
+So we can conclude that...
+*** la propuesta ha sido exitosa y podría ser, potencialmente, una buena herramienta de decisión en sistemas de seguridad ***
 
-*** probar una división en entrenamiento/prueba más grande ***
+Future lines of work include conducting a deeper set of experiments trying to test the generalisation power of the method, maybe considering bigger data divisions or adding some kind of `noise' to the dataset.
+Then, considering the good classification results obtained in this work, the next step could be the application of these methods in the real system from which data was gathered, counting with the opinion of expert CSOs, in order to know the real value of the proposal.
+The study of other classification methods could be another research branch, along with the implementation of a Genetic Programming approach, which could deal with the imbalance problem using a modification of the cost associated to misclassifying, could be done (as the authors did in \cite{cost_adjustment_07}).
+
 
 %ACKNOWLEDGMENTS are optional
 \section*{\uppercase{Acknowledgements}}
+
+Omitted for double-blind review process.
 
 \noindent %This paper has been funded in part by European and National projects FP7-318508 (MUSES) and TIN2011-28627-C04-02 (ANYSELF) respectively, project P08-TIC-03903 (EV\-ORQ) awarded by the Andalusian Regional Government, and project 83 (CANUBE) awarded by the CEI-BioTIC UGR.
 
