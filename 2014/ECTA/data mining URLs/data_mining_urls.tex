@@ -103,8 +103,8 @@ This has meant the rising of new security issues, which are normally dealt by me
 These CSPs usually include policies that allow or deny access
 % primer regarding - JJ
 % Antonio - quitado
-to non-confident (or non-certified) web sites (referenced by their URLs in this work) ***REF***. Moreover, several web pages might be also controlled for productivity or suitability reasons.
-Thus, some of the CSPs usually define sets of allowed or denied pages/sites that could be accessed by the enterprise users/employees. These sets are usually included in a White (permitted) or Black (non-permitted) Lists ***REF***. These lists act as a good control tool for those URLs included in them of for the complementary, i.e. the URLs not included in a Whitelist have automatically denial of access, for instance.
+to non-confident (or non-certified) web sites (referenced by their URLs in this work). Moreover, several web pages might be also controlled for productivity or suitability reasons.
+Thus, some of the CSPs usually define sets of allowed or denied pages/sites that could be accessed by the enterprise users/employees. These sets are usually included in a White (permitted) or Black (non-permitted) Lists. These lists act as a good control tool for those URLs included in them of for the complementary, i.e. the URLs not included in a Whitelist have automatically denial of access, for instance.
 % Tampoco está bien breaches. Ni with respect to . Ni que no lo
 % relaciones con el párrafo anterior, que habla de CSPs. Una primera
 % frase debería hacer referencia a esas CSPs, porque te acuestas en el
@@ -121,7 +121,7 @@ In this work we go a step beyond, trying to define a tool for automatically maki
 % Antonio - creo que ahora está bien
 an allowance or denial decision with respect to URLs that are not included in the aforementioned lists. This decision would be based in the one made for similar URL accesses (those with similar features).
 
-Thus, the problem has been transformed into a \textit{classification} one, in which we have started from a set of unlabelled patterns, that model the connection properties from a huge amount of \textit{real}\footnote{Taken from a log file given by a volunteer company.} URL accesses (known as sessions). Then we have assigned a label to many of them, considering a set of \textit{real}\footnote{The set of rules has been written by the same company, with respect to its employees.} security rules (CSPs) defined by the Chief Security Officer (CSO) in the company.
+Thus, the problem has been transformed into a \textit{classification} one, in which we have started from a set of unlabelled patterns, that model the connection properties from a huge amount of \textit{real}\footnote{Taken from a log file given by a volunteer Spanish company.} URL accesses (known as sessions). Then we have assigned a label to many of them, considering a set of \textit{real}\footnote{The set of rules has been written by the same company, with respect to its employees.} security rules (CSPs) defined by the Chief Security Officer (CSO) in the company.
 The resulting dataset has been processed by means of different classification methods, in order to find the best algorithm for dealing with these data.
 Previously, data balancing techniques were applied, namely \textit{undersampling} and \textit{oversampling} \cite{imbalance_techniques_02}, due to the high imbalance present in the dataset (more than two thirds of the patterns belonged to the majority class).
 
@@ -143,7 +143,29 @@ The paper is structured as follows. Next section describes related work in relat
 % de machine learning... - JJ
 \noindent Our work tries to obtain a URL classification for enhancing the security in the client side, as at the end we want to get if a certain URL is secure or not, having as reference a set of rules (derived from a CSP) that allow or deny a set of known \textit{http} requests. For this, Data Mining (DM) and Machine Learning (ML) techniques have been applied. This section gives an overview in a number of solutions given to protect the user, or the company, against unsecure situations.
 
-Also, an interesting point about URL classification is that the study of the distance between URLs may be based in the distance between two strings, but Blanco et al. \cite{Blanco2011} argues that the lexical distance between two URLs is not enough to classify them. In addition, the heuristic study of URLs for security purposes in the user side is not a novel practice. Also, the use of Blacklists (in this work, the \textit{denied} URLs) and Whitelists (\textit{allowed} URLs) are very extended practices. For instance, phishing is a problem of security that Sheng et al.  and Khonki et al. \cite{Khonji2011} tried to solve. The first work uses Blacklists as reference to avoid phishing attacks made by e-mail; the second one aims for an heuristic analysis of the URLs domain names and its ranks, in a way that a phished URL can be detected.
+Due to the nature of the data (URL accesses performed by humans), the used set of data is highly unbalanced \cite{imbalanced_data_05}. In order to deal with this problem there exist several methods in the
+literature, % ... que deberías haber mencionado en el estado del arte
+            % - JJ
+but all of them are mainly grouped in three techniques
+\cite{imbalance_techniques_02}: % Este no es el sitio de mencionar
+                                % este tipo de cosas. Es el estado del
+                                % arte. Si no está en el estado del
+                                % arte, es que no tiene suficientes
+                                % cosas - JJ
+\begin{itemize}
+\item \textit{Undersampling the over-sized classes}: i.e. reduce the considered number of patterns for the classes with the majority.
+\item \textit{Oversampling the small classes}: i.e. introduce additional (normally synthetic) patterns in the classes with the minority.
+\item \textit{Modifying the cost associated to misclassifying the positive and the negative class} to compensate for the imbalance ratio of the two classes. For example, if the imbalance ratio is 1:10 in favour of the negative class, the penalty of misclassifying a positive example should be 10 times greater.
+\end{itemize}
+
+The first option has been applied in some works, following a random undersampling approach \cite{random_undersampling_08}, but it has the problem of the loss of valuable information. 
+% dónde está la primera hand? - JJ
+The second has been so far the most widely used, following different approaches, such as SMOTE (Synthetic Minority Oversampling Technique) \cite{smote_02}, a method proposed by Chawla et al. for creating `artificial' samples for the minority class, in order to balance the amount of them with respect. However this technique is based in numerical computations, which consider different distance measures, in order to generate useful patterns  (i.e. realistic or similar to the existing ones).
+
+The third option implies using a method in which a cost can be associated to the classifier accuracy at every epoch. This was done for instance by Alfaro-Cid et al. in \cite{cost_adjustment_07}, where they used a Genetic Programming (GP) approach in which the fitness function was modified in order to consider a penalty when the classifier makes a false negative (an element from the minority class was classified as belonging to the majority class).
+However almost all the approaches deal with numerical (real, integer) data.
+
+One interesting point about URL classification is that the study of the distance between URLs may be based in the distance between two strings, but Blanco et al. \cite{Blanco2011} argues that the lexical distance between two URLs is not enough to classify them. In addition, the heuristic study of URLs for security purposes in the user side is not a novel practice. Also, the use of Blacklists (in this work, the \textit{denied} URLs) and Whitelists (\textit{allowed} URLs) are very extended practices. For instance, phishing is a problem of security that Sheng et al.  and Khonki et al. \cite{Khonji2011} tried to solve. The first work uses Blacklists as reference to avoid phishing attacks made by e-mail; the second one aims for an heuristic analysis of the URLs domain names and its ranks, in a way that a phished URL can be detected.
 
 Also, doing some web searching we have found that a lot of companies stands for the use of one between Blacklist and Whitelist \footnote{http://kevtownsend.wordpress.com/2011/08/24/whitelisting-vs-blacklisting/}. While whitelisting is the more restrictive solution and therefore the more secure, we think that the best solution is to use both, and for this reason the set of rules that we used covers a succession of either allowed and denied web sites.
 
@@ -164,22 +186,22 @@ when these techniques began to be applied to security issues
                     % estaba la frase construida, deberías haber
                     % creado la subordinada como lo has hecho ahora - JJ
 On the one hand, DM helped to develop new solutions to computer forensics \cite{DeVel2001}, being the researchers able to extract information from large files with events gathered from infected computers. Another important advance took place after the 9/11 events, when \textit{clustering techniques} and \textit{social network analysis} started to be performed in order to detect pontential crime networks \cite{Hsinchun2003}.
-On the other hand, and more focused on the user side like our approach, there exist some user-centric solutions to problems like user authentication in a personal device, who Greenstadt and Beal \cite{cognitive_security_08} proposed to address using collected user biometrics along with machine learning techniques. % more closely, but not too close... - JJ
-                                % Si
+On the other hand, and more focused on the user side like our approach, there exist some user-centric solutions to problems like user authentication in a personal device, who Greenstadt and Beal \cite{cognitive_security_08} proposed to address using collected user biometrics along with machine learning techniques. % more closely, but not too close... - JJ                                % Si
                                 % usas on one hand, on the other hand
                                 % debe de ir en el mismo párrafo. Si
                                 % es principio de párrafo, la frase
                                 % con la que se relaciona debe ser
                                 % también principio de párrafo. - JJ
-
 % a ver, hay que enmarcar bien el trabajo para hallar el estado del
 % arte. De aquí para abajo parece claro que el tema es "diseño o
 % creación de políticas de seguridad usando técnicas de machine
 % learning". Si es así, tienes que decirlo *explícitamente* al
-% principio del estado del arte - JJ 
-Then, when a Information Security Policy (ISP) is going to be applied, P.G. Kelley et al. \cite{user-controllable_learning_08} found important to include the user in the machine learning process for refining the policy model. They called it \textit{user-controllable policy learning}. Another approach to the refinement of user's privacy policies has been described by Danezis in \cite{inferring_policies_socialnetworks_09}, for he uses ML techniques over the user's settings in a social network, being capable of restricting permissions to other people depending on their interaction with the user. % para hacer qué? - JJ
+% principio del estado del arte - JJ
+ 
+Then, when a Information Security Policy (ISP) is going to be applied, P.G. Kelley et al. \cite{user-controllable_learning_08} found important to include the user in the machine learning process for refining the policy model. They called it \textit{user-controllable policy learning}. Another approach to the refinement of user's privacy policies has been described by Danezis in \cite{inferring_policies_socialnetworks_09}, for he uses ML techniques over the user's settings in a social network, being capable of restricting permissions to other people depending on their interaction with the user.
+% para hacer qué? - JJ
 
-In the same line, Lim et al. propose a system \cite{sec_policy_evolution_gp_08,pol_evol_gp_3_approaches_08} that evolves a set of computer security policies by means of Genetic Programming (GP), taking again into account the user's feedback. Furthermore, Suarez-Tangil et al. \cite{rule_generation_gp_09} take the same approach as Lim et al., but also bringing event correlation in. These two latter author's works are interesting for ours, though they are not focused in company ISPs - for instance, our case with the allowed or denied http requests -.
+In the same line, Lim et al. propose a system \cite{sec_policy_evolution_gp_08,pol_evol_gp_3_approaches_08} that evolves a set of computer security policies by means of GP, taking again into account the user's feedback. Furthermore, Suarez-Tangil et al. \cite{rule_generation_gp_09} take the same approach as Lim et al., but also bringing event correlation in. These two latter author's works are interesting for ours, though they are not focused in company ISPs - for instance, our case with the allowed or denied http requests -.
 
 Finally, a system named MUSES (from Multiplatform Usable Endpoint
 Security System) \cite{MUSES_SAC_14} is being developed under the
@@ -209,9 +231,9 @@ behaviour after the system decisions \cite{muses_sotics_13}.  % Aquí deberías re
 \section{\uppercase{Problem and Data Description}} 
 \label{sec:problemDescription}
 
-\noindent The problem to solve is related with the application of corporate security policies in order to deal with potential URL accesses inside an enterprise. To this end a dataset of URL sessions (requests/accesses) is analysed. These data are labelled with the corresponding permission or not for that access following the aforementioned rules. The problem is then transformed into a classification one, in which every new potential URL request/access will be classified, and thus, a grant or deny action will be assigned to that pattern.
+\noindent The problem to solve is related with the application of corporate security policies in order to deal with potential URL accesses inside an enterprise. To this end a dataset of URL sessions (requests and accesses) is analysed. These data are labelled with the corresponding permission or not for that access following the aforementioned rules. The problem is then transformed into a classification one, in which every new URL request will be classified, and thus, a grant or deny action will be assigned to that pattern.
 
-The analysed data come from a typical \texttt{access.log} of the Squid
+The analysed data come from an \texttt{access.log} of the Squid
 proxy application
 \cite{squid:site}, in a real Spanish company. This open source tool
 works as a proxy, but with the advantage of storing a cache of recent
@@ -252,57 +274,13 @@ Variable name & Description & Type & Rank/Number of Values (if categorical)\\
 }
 \end{table*}
 
-The dependent variable or class is a label which inherently assigns an action/decision to every request (URL session). This can be: \textit{ALLOW} if the access is permitted according to the CSPs, or can be \textit{DENY}, if the connection is not permitted. These patterns are labelled using an `engine' based in a set of security rules, that specify the decision to make. This process is described in Subsection \ref{subsec:ruleparsing}.
+The dependent variable or class is a label which inherently assigns an decision (and so the following action) to every request. This can be: \textit{ALLOW} if the access is permitted according to the CSPs, or can be \textit{DENY}, if the connection is not permitted. These patterns are labelled using an `engine' based in a set of security rules, that specify the decision to make. This process is described in Subsection \ref{subsec:ruleparsing}.
 
 These data were gathered along a period of two hours, from 8.30 to
 10.30 am (30 minutes after the work started), monitoring the activity
 of all the employees in a medium-size Spanish company (80-100 people),
 being 100000 patterns. % y esto es suficiente porque... - JJ
-
-Due to the nature of the data (URL accesses performed by humans), the
-dataset is highly unbalanced \cite{imbalanced_data_05}. Thus, after a
-labelling process described in Section \ref{sec:methodology}, there
-are 38972 pattern belonging to class ALLOW (positive class) and 18530
-of class DENY (negative class), so just a 67.78\% of the samples
-belongs to the majority class. This is a very important problem of the
-dataset, since a classifier trained considering these proportions will
-aim to classify all the samples as ALLOW, getting a theoretically
-quite good classification accuracy equal or greater than 68\%. % Eso
-                                % no es bueno. Es una mierda - JJ
-
-In order to deal with this problem there exist several methods in the
-literature, % ... que deberías haber mencionado en el estado del arte
-            % - JJ
-but all of them are mainly grouped in three techniques
-\cite{imbalance_techniques_02}: % Este no es el sitio de mencionar
-                                % este tipo de cosas. Es el estado del
-                                % arte. Si no está en el estado del
-                                % arte, es que no tiene suficientes
-                                % cosas - JJ
-\begin{itemize}
-\item \textit{Undersampling the over-sized classes}: i.e. reduce the considered number of patterns for the classes with the majority.
-\item \textit{Oversampling the small classes}: i.e. introduce additional (normally synthetic) patterns in the classes with the minority.
-\item \textit{Modifying the cost associated to misclassifying the positive and the negative class} to compensate for the imbalance ratio of the two classes. For example, if the imbalance ratio is 1:10 in favour of the negative class, the penalty of misclassifying a positive example should be 10 times greater.
-\end{itemize}
-
-The first option has been applied in some works, following a random undersampling approach \cite{random_undersampling_08}, but the problem is the loss of valuable information. 
-% dónde está la primera hand? - JJ
-On the other hand, the second option has been so far the most widely used, following different approaches, such as SMOTE (Synthetic Minority Oversampling Technique) \cite{smote_02}, a method proposed by Chawla et al. for creating `artificial' samples for the minority class, in order to balance the amount of them with respect. However this technique is based in numerical computations, which consider different distance measures, in order to generate useful patterns  (i.e. realistic or similar to the existing ones).
-
-The third option implies using a method in which a cost can be associated to the classifier accuracy at every epoch. This was done for instance by Alfaro-Cid et al. in \cite{cost_adjustment_07}, where they used a Genetic Programming approach in which the fitness function was modified in order to consider a penalty when the classifier makes a false negative (an element from the minority class was classified as belonging to the majority class).
-However almost all the approaches deal with numerical (real, integer) data. 
-
-In our case, the dataset contains a majority of categorical/nominal data, so we have performed different approaches for data balancing:
-\begin{itemize}
-\item Undersampling: we will remove random samples of the majority class until the amount in both classes are similar. 
-%***REF?***
-\item Oversampling: we will duplicate random samples of the minority class, in order to get a close number of patterns in both classes. This has be done due to the impossibility of creating synthetic data when dealing with categorical values (there is not a proper distance measure between two values in a category). 
-%***REF A ALGO SIMILAR HECHO***
-Actually, since the number of samples in the majority class is almost twice the minority one, we have just duplicated all of those belonging to the minority class.
-\end{itemize}
-
-These approaches will be evaluated in the experiments section.
-
+The results derived from the experiments (described in Section \ref{sec:results}) show that this quantity of data might be enough, but a more accurate outcome would be given with, for instance, a 24 hours long log.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   METHODOLOGY  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -310,12 +288,20 @@ These approaches will be evaluated in the experiments section.
 % Si esto es la metodología, ¿qué es lo que has descrito hasta ahora?- JJ
 \label{sec:methodology}
 
-
 \noindent Before classification techniques are applied, a data preprocessing step has been performed. First, the raw dataset is labelled according a set of \textit{initial corporate security rules}, i.e. every pattern is assigned to a label indication if the corresponding URL request/access would be ALLOWED or DENIED considering these rules. This step is necessary in order to transform the problem into a classification one. However, in order to apply the rules they must be transformed from their initial format into another one that can be applied in our programs (a hash in Perl\footnote{A \textit{hash} in Perl is an object that represents a \textit{hash table}, which is a set of pairs key-value. Sometimes, the value can be another hash itself.}). This is described in Subsection \ref{subsec:ruleparsing}. 
 
 Subsection \ref{subsec:logparsing} details how the patterns of the navigation data log (URL sessions) are also converted to a Perl hash to perform the matting/labelling process. 
 
-At the end of these two steps, the two hashes are compared in order to obtain which entries of the log should be ALLOW or DENY, know as the \textit{labelling} step. This is similar to perform a decision process in a security system.
+At the end of these two steps, the two hashes are compared in order to obtain which entries of the log should be ALLOW or DENY, know as the \textit{labelling} step. This is similar to perform a decision process in a security system. This step results in that there are 38972 pattern belonging to class ALLOW (positive class) and 18530
+of class DENY (negative class), so just a 67.78\% of the samples
+belong to the majority class. This represents a very important problem, since a classifier that is trained considering these proportions is supposed to classify all the samples as ALLOW, getting a theoretically
+quite good classification accuracy equal or greater than 68\%. However, in section \ref{sec:results} we will see that, despite the fact that some denied patterns are classified as allow, the overall performance of the classifiers are better than the expected.% Eso
+                                % no es bueno. Es una mierda - JJ
+Given that the dataset contains a majority of categorical/nominal data, we have performed different approaches for data balancing:
+\begin{itemize}
+\item Undersampling: we will remove random samples of the majority class until the amount in both classes are similar.
+\item Oversampling: we will duplicate random samples of the minority class, in order to get a close number of patterns in both classes. This has be done due to the impossibility of creating synthetic data when dealing with categorical values (there is not a proper distance measure between two values in a category). Actually, since the number of samples in the majority class is almost twice the minority one, we have just duplicated all of those belonging to the minority class.
+\end{itemize}
 
 Finally, in Subsection \ref{subsec:methods} we explain the selection of the methods to apply in order to classify the data. We just have considered the patterns correctly labelled in the preprocessing phase. Thus, a supervised classification process \cite{classification_67} has been conducted on the balanced datasets.
 Weka Data Mining Software\footnote{http://www.cs.waikato.ac.nz/ml/weka/} has been used, in order to select the best set of methods in order to deal with these data. These classifiers will be further tested in Section \ref{sec:results}.
