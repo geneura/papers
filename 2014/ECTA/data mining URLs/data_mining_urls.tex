@@ -44,8 +44,8 @@
 
 \keywords{Data Mining, Corporate Security Policies, URL request, Machine Learning, Classification}
 
-\abstract{Security management lists are normally used as a control tool in a distributed security system. With these lists it is possible to restrict (or to allow) to the users the execution of applications or the access to URLs, among others. This paper is focused in the latter option. It describes the whole processing of a dataset composed by URL sessions performed by the employees of a company. From the preprocessing stage, including labelling and data balancing processes, to the application of several classification algorithms. The aim is to define a method for automatically make a decision of allowing or denying future URL requests, considering a set of corporate security policies.
-Thus, this work goes a step beyond the usual Black and White lists, since they can only control those URLs that are specifically included in the lists (or the complementary ones), but not making decisions based in similarity (through classification techniques) as it is proposed here.
+\abstract{Security management lists are normally used as a control tool in a distributed security system. With these lists it is possible to restrict (or to allow) the users the execution of applications or the access to certain URLs, among others. This paper is focused in the latter option. It describes the whole processing of a set of data composed by URL sessions performed by the employees of a company; from the preprocessing stage, including labelling and data balancing processes, to the application of several classification algorithms. The aim is to define a method for automatically make a decision of allowing or denying future URL requests, considering a set of corporate security policies.
+Thus, this work goes a step beyond the usual Black and White lists, since they can only control those URLs that are specifically included in them, but not by making decisions based in similarity (through classification techniques) as it is proposed here.
 The results show a set of classification methods which get very good classification percentages (95-97\%), meaning that the approach could be a useful tool in an enterprise.
 % no cuentes lo que has hecho, sino qué
                                % problema quieres resolver. Por qué
@@ -72,9 +72,9 @@ The results show a set of classification methods which get very good classificat
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-\noindent The new scenario defined by the Bring Your Own Device (BYOD) tendency, in which the devices that access to the system are owned by the users (company's employees), and could contain both personal and professional information, has turned the security focus to those users, who have become one of the main threats to the corporate security \cite{Opp_Security11}.
+\noindent With the diffusion and evolution in the society of the so-called \textit{smartphones}, a new scenario defined by the Bring Your Own Device (BYOD) tendency has been created, meaning that people do not use their smart devices for only one purpose (personal life or business) anymore. This scenario, in which the devices that access to the company system are owned by the users (employees), and that could contain both personal and professional information, has turned the security focus on those users, who have become one of the main threats (even not on purpose) to the corporate security \cite{Opp_Security11}.
 
-This has meant the rising of new security issues, which are normally dealt by means of \textit{Corporate Security Policies} (CSPs). These are basically a set of security rules aimed to protect the company's assets, by defining permissions to be considered for every different action to be performed inside the security system. 
+This has meant the rising of new security issues, which are normally dealt by means of \textit{Corporate Security Policies} (CSPs). These are basically a set of security rules aimed to protect the company assets, by defining permissions to be considered for every different action to be performed inside the security system. 
 
 % párrafo confuso
 % que yo borraría del tirón. Empezaría
@@ -86,24 +86,24 @@ This has meant the rising of new security issues, which are normally dealt by me
 One of the main breaches with respect to 
 % primer regarding - JJ
 % Antonio - quitado
-the security in an enterprise is the access to non-confident (or non-certified) web sites (URLs in this work) ***REF***. Moreover, several webpages should be also controlled for productivity or suitability reasons.
-Thus, some of the CSPs usually define sets of allowed or denied pages/sites that could be potentially accessed by the enterprise users/employees. These sets are included in the so-called White (permitted) or Black (non-permitted) Lists ***REF***. These lists offer a good control tool for those URLs included in them of for the complementary, i.e. the URLs non included in a White List have automatically denial access, for instance.
+the security in an enterprise is the access to non-confident (or non-certified) web sites (referenced by their URLs in this work) ***REF***. Moreover, several web pages might be also controlled for productivity or suitability reasons.
+Thus, some of the CSPs usually define sets of allowed or denied pages/sites that could be accessed by the enterprise users/employees. These sets are usually included in a White (permitted) or Black (non-permitted) Lists ***REF***. These lists act as a good control tool for those URLs included in them of for the complementary, i.e. the URLs not included in a Whitelist have automatically denial of access, for instance.
 % There are defined sets? En serio? - JJ
 % Antonio - no lo sé a ciencia cierta, pero a nosotros nos pasaron una serie de reglas especificando qué sitios se podían y no se podían acceder...¿?
 
 In this work we go a step beyond, trying to define a tool for automatically making 
 % for automatically made? Quién diablos ha escrito esto? JJ 
 % Antonio - creo que ahora está bien
-an allowance or denial decision with respect to URLs that are not included in the aforementioned lists. This decision would be based in the corresponding one to similar URL accesses (those with similar features).
+an allowance or denial decision with respect to URLs that are not included in the aforementioned lists. This decision would be based in the one made for similar URL accesses (those with similar features).
 
-Thus, the problem has been transformed into a \textit{classification} one, in which we have started from a set of unlabelled patterns, that model the connection properties from a huge amount of \textit{real} URL accesses (the so-called sessions). Then we have assigned a label to many of them, considering a set of \textit{real} security rules (CSPs) defined by the Chief Security Officer (CSO) in the company.
-This dataset has been processed by means of different classification methods, in order to find the best algorithm for dealing with these data.
-Previously data balancing techniques have been applied, namely \textit{undersampling} and \textit{oversampling} \cite{imbalance_techniques_02}, due to the high imbalance present in the dataset (more than double of patterns belong to the majority class).
+Thus, the problem has been transformed into a \textit{classification} one, in which we have started from a set of unlabelled patterns, that model the connection properties from a huge amount of \textit{real}\footnote{Taken from a log file given by a volunteer company.} URL accesses (known as sessions). Then we have assigned a label to many of them, considering a set of \textit{real}\footnote{The set of rules has been written by the same company, with respect to its employees.} security rules (CSPs) defined by the Chief Security Officer (CSO) in the company.
+The resulting dataset has been processed by means of different classification methods, in order to find the best algorithm for dealing with these data.
+Previously, data balancing techniques were applied, namely \textit{undersampling} and \textit{oversampling} \cite{imbalance_techniques_02}, due to the high imbalance present in the dataset (more than two thirds of the patterns belonged to the majority class).
 
 Different data partitions have been done in the experiments, even considering consecutive URL sessions in the training and test files.
 The results are quite good, getting classification accuracies around 95-97\% in the test phase, even when using the unbalanced datasets.
 
-The paper is structured as follows. Next section describes related work regarding the application of data mining and machine learning techniques to security issues inside the company. Section \ref{sec:problemDescription} presents the problem to solve and the dataset to work with. The followed methodology is described in Section \ref{sec:methodology}, concerning the data preprocessing and a first round of experiments comparing different classification methods. Once the best of them are selected, a set of experiments have been conducted, and the results are described and discussed in Section \ref{sec:results}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
+The paper is structured as follows. Next section describes related work in relation to the application of Data Mining and Machine Learning techniques to security issues inside a company. Section \ref{sec:problemDescription} presents the problem we solve and the dataset we have worked with. The followed methodology is described in Section \ref{sec:methodology}, concerning the data preprocessing and a first round of experiments comparing different classification methods. Once the best of them were selected, a set of experiments have been conducted, and the results are described and discussed in Section \ref{sec:results}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -116,14 +116,11 @@ The paper is structured as follows. Next section describes related work regardin
 % de la seguridad informática centrada en el usuario (ya que vamos a
 % aplicarla en el cliente, no en el servidor). Nuestra intención es aplicar técnicas
 % de machine learning... - JJ
-\noindent Our work tries to obtain a URL classification for enhancing the security in the client side, as at the end we want to get if a certain URL is secure or not, having as reference a set of rules that allow or deny a set of known \textit{http} requests. For this, Data Mining (DM) and Machine Learning (ML) techniques have been applied. This section gives an overview in a number of solutions given to protect the user against unsecure situations.
+\noindent Our work tries to obtain a URL classification for enhancing the security in the client side, as at the end we want to get if a certain URL is secure or not, having as reference a set of rules (obtained from a CSP) that allow or deny a set of known \textit{http} requests. For this, Data Mining (DM) and Machine Learning (ML) techniques have been applied. This section gives an overview in a number of solutions given to protect the user, or the company, against unsecure situations.
 
-The heuristic study of URLs for security purposes in the user side is not a novel practice. Also, the use of \textit{Blacklists} (in this work, the \textit{denied} URLs) and \textit{Whitelists} (\textit{allowed} URLs) are very extended practices. For instance, phishing is a problem of security that Sheng et al. \cite{} and Khonki et al. \cite{Khonji2001} tried to solve. The first work uses Blacklists as reference to avoid phishing attacks made by e-mail; the second one aims for an heuristic analysis of the URLs domain names and its ranks, in a way that a phished URL can be detected.
+The heuristic study of URLs for security purposes in the user side is not a novel practice. Also, the use of Blacklists (in this work, the \textit{denied} URLs) and Whitelists (\textit{allowed} URLs) are very extended practices. For instance, phishing is a problem of security that Sheng et al.  and Khonki et al. \cite{Khonji2011} tried to solve. The first work uses Blacklists as reference to avoid phishing attacks made by e-mail; the second one aims for an heuristic analysis of the URLs domain names and its ranks, in a way that a phished URL can be detected.
 
-% Khonki et al. \cite{Khonji2001} phishing by heuristically studying the URLs.
-% In "Highly Efficient Algorithms for Structural Clustering of Large Websites" they explain that distance can not be a good measure of URLs when there is a problem of classification.
-% Blacklist -> An Empirical Analysis of Phishing Blacklists 
-
+Also, doing some web searching we have found that a lot of companies stands for the use of one between blacklist and whitelist \footnote{http://kevtownsend.wordpress.com/2011/08/24/whitelisting-vs-blacklisting/}. Yet, the best solution is to use both.
 
 What refers to the used techniques, DM, as well as ML, has been used since long ago in many scientific fields,
 and given that research in computer security was growing since the
@@ -138,27 +135,16 @@ when these techniques began to be applied to security issues
                     % consecuencia, no algo extraño o contrario. - Paloma
 On the one hand, DM helped to develop new solutions to computer forensics \cite{DeVel2001}, being the researchers able to extract information from large files with events gathered from infected computers. Another important advance took place after the 9/11 events, when \textit{clustering techniques} and \textit{social network analysis} started to be performed in order to detect pontential crime networks \cite{Hsinchun2003}.
 
-On the other hand, and more closely to our work, there exist some
-user-centric solutions to problems like user authentication in a
-personal device, who Greenstadt and Beal \cite{cognitive_security_08}
-proposed to address using collected user biometrics along with machine
-learning techniques. % more closely, but not too close... - JJ
+On the other hand, and more focused on the user side like our approach, there exist some user-centric solutions to problems like user authentication in a personal device, who Greenstadt and Beal \cite{cognitive_security_08} proposed to address using collected user biometrics along with machine learning techniques. % more closely, but not too close... - JJ
 
 % a ver, hay que enmarcar bien el trabajo para hallar el estado del
 % arte. De aquí para abajo parece claro que el tema es "diseño o
 % creación de políticas de seguridad usando técnicas de machine
 % learning". Si es así, tienes que decirlo *explícitamente* al
 % principio del estado del arte - JJ 
-Then, when a security policy is going to be
-applied, P.G. Kelley et al. \cite{user-controllable_learning_08} found
-important to include the user in the machine learning process for
-refining the policy model. They called it \textit{user-controllable
-  policy learning}. Another approach to the refinement of user's
-privacy policies has been described by Danezis in
-\cite{inferring_policies_socialnetworks_09}, for he uses ML techniques
-over the user's settings in a social network. % para hacer qué? - JJ
+Then, when a Information Security Policy (ISP) is going to be applied, P.G. Kelley et al. \cite{user-controllable_learning_08} found important to include the user in the machine learning process for refining the policy model. They called it \textit{user-controllable policy learning}. Another approach to the refinement of user's privacy policies has been described by Danezis in \cite{inferring_policies_socialnetworks_09}, for he uses ML techniques over the user's settings in a social network, being capable of restricting permissions to other people depending on their interaction with the user. % para hacer qué? - JJ
 
-In the same line, Lim et al. have two works \cite{sec_policy_evolution_gp_08,pol_evol_gp_3_approaches_08} where a certain set of computer security policies evolve by means of Genetic Programming (GP), taking again into account the user's feedback. Furthermore, Suarez-Tangil et al. \cite{rule_generation_gp_09} take the same approach as Lim et al., but also bringing event correlation in. These two latter author's works are interesting for ours, though they are not focused in company Information Security Policies (ISPs)  - for instance, our case with the allowed or denied http requests -.
+In the same line, Lim et al. have two works \cite{sec_policy_evolution_gp_08,pol_evol_gp_3_approaches_08} where a certain set of computer security policies evolve by means of Genetic Programming (GP), taking again into account the user's feedback. Furthermore, Suarez-Tangil et al. \cite{rule_generation_gp_09} take the same approach as Lim et al., but also bringing event correlation in. These two latter author's works are interesting for ours, though they are not focused in company ISPs - for instance, our case with the allowed or denied http requests -.
 
 Finally, a system named MUSES (from Multiplatform Usable Endpoint
 Security System) \cite{MUSES_SAC_14} is being developed under the
@@ -520,7 +506,7 @@ PART & 96.19 $\pm$ 0.14 & 85.16 & 96.82 $\pm$ 0.09 & 84.50 & 96.09 $\pm$ 0.10 & 
 
 In both cases is noticeable that taking the data in a sequential way, instead of randomly, lower the results. It is clear that due to the fact that performing undersampling some patterns are lost while in the case of oversampling they all remain, \textit{undersampling results} are better. Then, in this case the algorithm with best performance is \textit{J48}, though \textit{Random Forest} follows its results very closely in random datasets processing, and \textit{REP Tree}, which is better than the rest when working with sequential data. Nevertheless, generally speaking and given the aforementioned reasons, performing data balancing methods yields worse results.
 
-Furthermore, we have found that for the data sets taken consequently, the methods always classify worse the DENY labels, as they label them as ALLOW patterns. This worth futher study because it is the worst situation. It would be preferable a false positive in a DENY pattern, rather than a false negative and to permit a request that is forbidden in the ISP.
+Furthermore, we have found that for the data sets taken consecutively, the methods always classify worse the DENY labels, as they label them as ALLOW patterns. This worth futher study because it is the worst situation. It would be preferable a false positive in a DENY pattern, rather than a false negative and to permit a request that is forbidden in the ISP.
 
 % ***
 % Como puede verse en la tabla...\\
