@@ -437,17 +437,17 @@ These methods will be deeply tested on the dataset (balanced and unbalanced) in 
 \section{\uppercase{Experiments and Results}}
 \label{sec:results}
 
-\noindent Several experiments have been conducted, once a subset of classification methods have been chosen in previous section.
-To this end, some training/test datasets have been created, starting from the set of labelled patterns. It contains 57502 samples, belonging 38972 to class ALLOW, and 18530 to class DENY.
+\noindent Several experiments have been conducted, once a subset of classification methods has been chosen in previous section.
+To this end, some training and test datasets have been created from the set of labelled patterns. It contains 57502 samples, belonging 38972 to class ALLOW, and 18530 to class DENY.
 
 In order to better prove the methods, two different divisions (training-test) have been done, namely 90\%-10\% and 80\%-20\%. Moreover, two additional splits have been considered in every case, using both a random and a sequential approach for selecting samples from the original file. Thus, in the latter, consecutive patterns have been included in the training file up to the desired percentage. The rest have composed the test file. In the first approach, a random selection is performed.
 
 The aim of the sequential division is to compare if the online activity of the employees considering URL sessions could be somehow `predicted', just using data from previous minutes or hours.
 
-With respect to the data, the initial file was unbalanced, as it can be seen in the number of patterns per class. Thus, as stated in Section \ref{sec:problemDescription}, two data balancing methods have been applied to all the files, to get similar numbers in both classes: undersampling (random removal of patterns) and oversampling (duplication of patterns).
+With respect to the data, the initial file was unbalanced, as it can be seen in the number of patterns per class. Hence, as stated in Section \ref{sec:problemDescription}, two data balancing methods have been applied to all the files, to get similar numbers in both classes: undersampling (random removal of ALLOW patterns) and oversampling (duplication of DENY patterns).
 
 Results for unbalanced data are presented in Table \ref{tabresults_nobalan}.
-Three different tests have been done for the random pattern distribution approach, so the mean and standard deviation is shown in the corresponding columns.
+Three different tests have been done for the random pattern distribution approach, so the mean and standard deviation are shown in the corresponding columns.
 
 \begin{table*}[htpb]
 \centering
@@ -473,24 +473,30 @@ PART & 97.06 $\pm$ 0.19 & 89.11 & 97.40 $\pm$ 0.16 & 84.17 \\
 }
 \end{table*}
 
-As it can be seen in the table...
+As it can be seen, all the five methods got a high performance classifying in the right way the test dataset. Also, these results are not like this by chance, as shown by a low standard deviation. Although it was expected that the results from the 90\%-10\% division were slightly better, in the future a more agressive division will be executed so the methods can be really proved with much less training data.
 
-***
-Se puede ver que todos los métodos obtienen un rendimiento similar en aciertos, siendo éste bastante alto. Si se mira la desviación estándard se ve que los resultados no son fortuitos, ya que ésta es muy pequeña.
+What matters to the results of the experiments made with the sequential data, they are worse than the obtained from the random data, but still they are good (> 85\%). This is due to the occurrence of new patterns from a certain time (maybe there are some requests that are made just at one specific time in a day, or in settled days), and then there is no sufficient similarity between the training data and the classifying of the test data set may fail. The loss of 5 to 6 points in the results of the 90\%-10\% division is the first unexpected or unlogicall result of the experiments, but they also reinforce the previous theory.
 
-Como era de esperar la división en 90\%-10\% mejora los resultados, aunque no mucho, por lo que habría que hacer una prueba con una división más agresiva (trabajo futuro) para saber las capacidades de los métodos al trabajar con pocos datos de entrenamiento.
+The technique that lightly stands out over the others is \textit{Random Forest}, being the best in almost every case, even in the experiments with the most complex sequential divisions. However, if we focus on the standard deviation, \textit{REP Tree} is the chosen one, as its results present robustness.
 
-Respecto a los datos secuenciales sus resultados son peores, pero aún así bastante buenos (> 85\%).
-La bajada en aciertos se debe sin duda a la aparición de patrones totalmente nuevos a partir de determinada hora (puede que algo que se haga de forma programada cada día o determinados días), por lo que no hay patrones similares con los que entrenar y se falla al clasificar en el test.
+For its part, results obtained from unbalanced data are shown in Table \ref{tabresults_balan}. Again the corresponding to the random partitions come from the mean of three blocks of experiments, and so are specified the standard deviations. The Table illustrates two segments of results, obtained from the undersampled data and from the oversampled data. For each one, the 90\%-10\% and 80\%-20\% divisions were also made.
 
-Los aciertos son incluso menores (hay una bajada de 5-6 puntos) al hacer una división considerando más patrones, contrariamente a lo esperado/logico, por lo que esto refuerza la teoría de patrones que sólo suceden a determinadas horas.
-
-Como técnica destaca levemente \textit{Random Forest}, siendo la que mejores resultados obtiene en casi todos los casos, incluyendo las más complejas particiones secuenciales. Aunque mirando la desviación estándar nos decantamos por \textit{REP Tree}, que obtiene resultados más robustos.
-***
-
-***
-Los resultados de los datos balanceados se muestran en la Tabla \ref{tabresults_balan}. Nuevamente los resultados de las particiones aleatorias se muestran en media de tres particiones.
-***
+% ***
+% Se puede ver que todos los métodos obtienen un rendimiento similar en aciertos, siendo éste bastante alto. Si se mira la desviación estándard se ve que los resultados no son fortuitos, ya que ésta es muy pequeña.
+% 
+% Como era de esperar la división en 90\%-10\% mejora los resultados, aunque no mucho, por lo que habría que hacer una prueba con una división más agresiva (trabajo futuro) para saber las capacidades de los métodos al trabajar con pocos datos de entrenamiento.
+% 
+% Respecto a los datos secuenciales sus resultados son peores, pero aún así bastante buenos (> 85\%).
+% La bajada en aciertos se debe sin duda a la aparición de patrones totalmente nuevos a partir de determinada hora (puede que algo que se haga de forma programada cada día o determinados días), por lo que no hay patrones similares con los que entrenar y se falla al clasificar en el test.
+% 
+% Los aciertos son incluso menores (hay una bajada de 5-6 puntos) al hacer una división considerando más patrones, contrariamente a lo esperado/logico, por lo que esto refuerza la teoría de patrones que sólo suceden a determinadas horas.
+% 
+% Como técnica destaca levemente \textit{Random Forest}, siendo la que mejores resultados obtiene en casi todos los casos, incluyendo las más complejas particiones secuenciales. Aunque mirando la desviación estándar nos decantamos por \textit{REP Tree}, que obtiene resultados más robustos.
+% ***
+% 
+% ***
+% Los resultados de los datos balanceados se muestran en la Tabla \ref{tabresults_balan}. Nuevamente los resultados de las particiones aleatorias se muestran en media de tres particiones.
+% ***
 
 \begin{table*}[htpb]
 \centering
@@ -518,25 +524,30 @@ PART & 96.19 $\pm$ 0.14 & 85.16 & 96.82 $\pm$ 0.09 & 84.50 & 96.09 $\pm$ 0.10 & 
 }
 \end{table*}
 
-***
-Como puede verse en la tabla...\\
+\begin{description}
+  \item[Applying Undersampling]
+  \item[Applying Oversampling] 
+\end{description}
 
-A DESARROLLAR:\\
+% ***
+% Como puede verse en la tabla...\\
+% 
+% A DESARROLLAR:\\
 % Si no está escrito debéis ponerlo en comentarios. - JJ 
 
-* Undersampling peor que Oversampling - lógico porque se pueden perder patrones que pueden ser relevantes y en el otro se mantienen todos.\\
-
-* Resultados empeoran al usar las técnicas de balanceo. La Justificación sería algo como esto:\\
-
-DON'T WORK PROPERLY:\\
-Undersampling - Losses important information (key patterns).\\
-Oversampling - Just duplication because there are several nominal values so it doesn't work as well as in other approaches which uses numerical computations for creating the new patterns to include in the minority class.\\
-Sequential - Some kind of URL accesses are just performed at a time, which could not be included in the training set.\\
-
-* Resultados secuenciales peor que aleatorios por lo explicado antes. Aquí incluso empeoran más porque se pierde más información que antes\\
-
-En este caso destacan los algoritmos \textit{J48}, muy cercano a \textit{Random Forest} en el procesamiento de ficheros aleatorios, y \textit{REP Tree}, que mejora a todos los demás al trabajar con datos secuenciales.
-***\\
+% * Undersampling peor que Oversampling - lógico porque se pueden perder patrones que pueden ser relevantes y en el otro se mantienen todos.\\
+% 
+% * Resultados empeoran al usar las técnicas de balanceo. La Justificación sería algo como esto:\\
+% 
+% DON'T WORK PROPERLY:\\
+% Undersampling - Losses important information (key patterns).\\
+% Oversampling - Just duplication because there are several nominal values so it doesn't work as well as in other approaches which uses numerical computations for creating the new patterns to include in the minority class.\\
+% Sequential - Some kind of URL accesses are just performed at a time, which could not be included in the training set.\\
+% 
+% * Resultados secuenciales peor que aleatorios por lo explicado antes. Aquí incluso empeoran más porque se pierde más información que antes\\
+% 
+% En este caso destacan los algoritmos \textit{J48}, muy cercano a \textit{Random Forest} en el procesamiento de ficheros aleatorios, y \textit{REP Tree}, que mejora a todos los demás al trabajar con datos secuenciales.
+% ***\\
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
