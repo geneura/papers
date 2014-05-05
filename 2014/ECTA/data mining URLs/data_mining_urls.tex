@@ -162,7 +162,7 @@ The first option has been applied in some works, following a random undersamplin
 % dónde está la primera hand? - JJ
 The second has been so far the most widely used, following different approaches, such as SMOTE (Synthetic Minority Oversampling Technique) \cite{smote_02}, a method proposed by Chawla et al. for creating `artificial' samples for the minority class, in order to balance the amount of them with respect. However this technique is based in numerical computations, which consider different distance measures, in order to generate useful patterns  (i.e. realistic or similar to the existing ones).
 
-The third option implies using a method in which a cost can be associated to the classifier accuracy at every epoch. This was done for instance by Alfaro-Cid et al. in \cite{cost_adjustment_07}, where they used a Genetic Programming (GP) approach in which the fitness function was modified in order to consider a penalty when the classifier makes a false negative (an element from the minority class was classified as belonging to the majority class).
+The third option implies using a method in which a cost can be associated to the classifier accuracy at every step. This was done for instance by Alfaro-Cid et al. in \cite{cost_adjustment_07}, where they used a Genetic Programming (GP) approach in which the fitness function was modified in order to consider a penalty when the classifier makes a false negative (an element from the minority class was classified as belonging to the majority class).
 However almost all the approaches deal with numerical (real, integer) data.
 
 One interesting point about URL classification is that the study of the distance between URLs may be based in the distance between two strings, but Blanco et al. \cite{Blanco2011} argues that the lexical distance between two URLs is not enough to classify them. In addition, the heuristic study of URLs for security purposes in the user side is not a novel practice. Also, the use of Blacklists (in this work, the \textit{denied} URLs) and Whitelists (\textit{allowed} URLs) are very extended practices. For instance, phishing is a problem of security that Sheng et al.  and Khonki et al. \cite{Khonji2011} tried to solve. The first work uses Blacklists as reference to avoid phishing attacks made by e-mail; the second one aims for an heuristic analysis of the URLs domain names and its ranks, in a way that a phished URL can be detected.
@@ -280,7 +280,7 @@ These data were gathered along a period of two hours, from 8.30 to
 10.30 am (30 minutes after the work started), monitoring the activity
 of all the employees in a medium-size Spanish company (80-100 people),
 being 100000 patterns. % y esto es suficiente porque... - JJ
-The results derived from the experiments (described in Section \ref{sec:results}) show that this quantity of data might be enough, but a more accurate outcome would be given with, for instance, a 24 hours long log.
+The results derived from the experiments (described in Section \ref{sec:results}) show that this quantity of data might be big enough, but a more accurate outcome would be given with, for instance, a 24 hours long log.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   METHODOLOGY  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -599,8 +599,7 @@ PART & 96.19 $\pm$ 0.14 & 85.16 & 96.82 $\pm$ 0.09 & 84.50 & 96.09 $\pm$ 0.10 & 
 
 In both cases is noticeable that taking the data in a sequential way, instead of randomly, lower the results. It is clear that due to the fact that performing undersampling some patterns are lost while in the case of oversampling they all remain, \textit{undersampling results} are better. Then, in this case the algorithm with best performance is \textit{J48}, though \textit{Random Forest} follows its results very closely in random datasets processing, and \textit{REP Tree}, which is better than the rest when working with sequential data. Nevertheless, generally speaking and given the aforementioned reasons, performing data balancing methods yields worse results.
 
-
-Furthermore, we have found that for the data sets taken consecutively, the methods always classify worse the DENY labels, as they label them as ALLOW patterns. This worth futher study because it is the worst situation. It would be preferable a false positive in a DENY pattern, rather than a false negative and to permit a request that is forbidden in the ISP.
+Furthermore, we have found that for the data sets taken consecutively, the methods always classify worse the DENY labels, as they label them as ALLOW patterns. This is worth further study because it is the worst situation. It would be preferable a false positive in a DENY pattern, rather than a false negative and to permit a request that is forbidden in the ISP.
             % podríais citar los trabajos de bancarrotas que hemos
             % hecho, donde se optimizan por separado los dos tipos de
             % errores - JJ 
@@ -642,29 +641,28 @@ in order to perform a decision process inside a company, according to
 some predefined corporate security policies. % pero ¿esto no es una
                                 % lista blanca? - jj
 % Antonio - no, se trata de decidir sobre algo que no tenemos en la lista
-This decision is focused on the allowing or denying of URL
-accesses/requests, but just considering previous decisions on similar requests, not having specific rules in a White/Black List, defined for those URLs. 
+This decision is focused on allowing or denying URL
+requests, but just considering previous decisions on similar requests, not having specific rules in a White/Black List, defined for those URLs.
 % ¿lista blanca? - JJ
 % Antonio - aclarado, creo
 
-Thus, starting from a big dataset (100000 patterns) about employees' URL sessions information, and considering a set of URL access permissions, we have composed a labelled dataset (57000 patterns).
+Thus, starting from a big dataset (100000 patterns) about employees' URL sessions information, and considering a set of URL access permissions, we have composed a labelled dataset (57000 patterns). Over that set of data, we have tested several classification methods, after some data balancing techniques have been applied. Then, the best five have been deeply proved over several training and test divisions, and with two methods: using sequential patterns (consecutive URL accesses), and taking them in a randomly way.
 
-Several classification methods have been tested over this dataset, after some data balancing techniques have been applied. Then, the best five have been deeply proved over several training/test divisions, one of them using sequential patterns (consecutive URL accesses).
+The results show that classification accuracies are between 95\% and 97\%, even when using the unbalanced datasets. However, they have been diminished because of the possible loss of data that comes from performing an undersampling (removing patterns) method; or taking the training and the data sets in a sequential way from the main log file, due to the fact that certain URL requests can be made only at a certain time.
 
-The results show that...
-***
-RESUMEN en un párrafo de lo que se ha obtenido:
-- muy buenos porcentajes (en torno al 95-97\%) en general incluso en datos no balanceados
-- el método pierde efectividad si se omiten algunos patrones que pueden no haber aparecido antes (datos secuenciales o undersampling) => hay que estudiarlo mejor en siguientes trabajos
+This way, we can conclude that the approach has been successful and it would be a useful tool in an enterprise.
 
+% ***
+% RESUMEN en un párrafo de lo que se ha obtenido:
+% - muy buenos porcentajes (en torno al 95-97\%) en general incluso en datos no balanceados
+% - el método pierde efectividad si se omiten algunos patrones que pueden no haber aparecido antes (datos secuenciales o undersampling) => hay que estudiarlo mejor en siguientes trabajos
+% 
 % Esto teníais que haberlo puesto antes que nada. - JJ
 % Antonio - yo creo que está bien así. Las conclusiones suelen ser autocontenidas y yo las estructuro como un resumen del trabajo. ;)
-
-So we can conclude that...
-*** la propuesta ha sido exitosa y podría ser, potencialmente, una buena herramienta de decisión en sistemas de seguridad ***
-
-Future lines of work include conducting a deeper set of experiments trying to test the generalisation power of the method, maybe considering bigger data divisions or adding some kind of `noise' to the dataset.
-Then, considering the good classification results obtained in this work, the next step could be the application of these methods in the real system from which data was gathered, counting with the opinion of expert CSOs, in order to know the real value of the proposal.
+% So we can conclude that...
+% *** la propuesta ha sido exitosa y podría ser, potencialmente, una buena herramienta de decisión en sistemas de seguridad ***
+Future lines of work include conducting a deeper set of experiments trying to test the generalisation power of the method, maybe considering bigger data divisions, bigger data sets (from a whole day or working day), or adding some kind of `noise' to the dataset.
+So that, considering the good classification results obtained in this work, the next step could be the application of these methods in the real system from which data was gathered, counting with the opinion of expert CSOs, in order to know the real value of the proposal.
 The study of other classification methods could be another research branch, along with the implementation of a Genetic Programming approach, which could deal with the imbalance problem using a modification of the cost associated to misclassifying, could be done (as the authors did in \cite{cost_adjustment_07}).
 
 
