@@ -66,7 +66,7 @@ what demonstrates the power and features of the developed system.
 \end{abstract}
 
 \begin{keywords}
-Traffic flow, time series forecasting, evolutionary computation, artificial neural networks, evolutionary algorithms.
+Traffic flow, time series forecasting, evolutionary computation, artificial neural networks
 \end{keywords}
 
 \section{Introducción}
@@ -90,7 +90,6 @@ The rest of the chapter is organized as follows: following section reviews curre
 
 \section{Current technologies}
 \label{sec:tech}
-% Estáis usando la misma fórmula para empezar párrafos. Por favor, ponedlo de otra forma - JJ
 Nowadays, several technologies are used to data collection and generation of information on the state of the roads and traffic monitoring. Those systems can be classified according to the immediacy of data, completeness in the collection and intrusiveness \cite{martin2003detector}.
 
 According to the immediacy of data collection, systems are classified into direct data collection (the source obtains data experimentally), and indirect data collection (the data is obtained by further processing algorithms).
@@ -99,7 +98,7 @@ Taking into account the completeness of data collection, systems can be making n
 
 Finally, current monitoring technologies can be classified as intrusive technologies (installed in the pavement), not-intrusive technologies (no contact with the road, causing minimal effect on traffic flow), and floating vehicle technologies.
 
-Figure 1 shows a classification of information systems according to the intrusiveness of the technology.
+Figure \ref{fig:f1} shows a classification of information systems according to the intrusiveness of the technology.
 
 \begin{figure}[ht]
 \begin{center}
@@ -108,6 +107,7 @@ Figure 1 shows a classification of information systems according to the intrusiv
 \label{fig:f1}}
 \end{center}
 \end{figure}
+
 
 
 Main technologies currently used in traffic monitoring include pneumatic tubes, loop detectors, floating vehicles or automatic recognition systems, among others \cite{rodrigue2013geography}.
@@ -137,16 +137,16 @@ The proposal presented in this work has some common features with the previous a
 
 \section{Objectives and expected results}
 \label{sec:objectives}
-The main objective was building a low-cost system to provide real-time information about about the traffic status and flows that occur in a certain area, allowing to optimally manage motion decisions by citizens.
+The main objective was building a low-cost system to provide real-time information about the traffic status and flows that occur in a certain area, allowing to optimally manage motion decisions by citizens.
 
 Thus, several features have been developed:
 \begin{itemize}
-\item Data collection component: it includes several sensors to continuously scanning and identifying BT devices. It uses a 3G connection to send data to the storage server. It is enclosed in hermetic boxes and uses a 220volt power line.
+\item Data collection component: it includes several sensors to continuously scanning and identifying BT devices. It uses a 3G connection to send data to the storage server. It is enclosed in hermetic boxes and uses a 220V power line.
 \item Data processing component: it stores the obtained data, and offers some tools to serve them (through web services).
 \item Information service: it provides the users the requested information related to the traffic status.
 \end{itemize}
 
-Six devices were installed for data collection. They send obtained data to servers for further data processing. Node locations are shown in the map on Figure 2. Locations were set according to the suggestions of DGT staff, looking for an adequate place, with a continuous flow of vehicles, and also taking into account the assembly difficulty of the monitoring devices.
+Six devices were installed for data collection. They send obtained data to servers for further data processing. Node locations are shown in the map on Figure \ref{fig:f2}. Locations were set according to the suggestions of the National Department of Traffic (DGT), looking for an adequate place, with a continuous flow of vehicles, and also taking into account the assembly difficulty of the monitoring devices.
 
 \begin{figure}[ht]
 \caption{Geographical node locations in the metropolitan area of Granada. Source: \url{http://bit.ly/SQdQkH}}
@@ -176,13 +176,13 @@ The first step of this study was to choose between several hardware devices to s
 
 Another possible solution studied was using Android cell phones. These are low power consumption devices, with high connectivity, highly available development tools and powerful processors.
 
-A prototype application was developed for Android. The application was limited to three tasks: BT device discovery, BT identification and data sending to a server through its 3G connection. The server finally stored that information in a database. Both the Android application and its source code are available at:
-\url{http://sipesca.ugr.es/download/descargas/sipesca_bt.apk}
-\url{http://sipesca.ugr.es/download/descargas/com.pacv.bt.sipesca1__SRC.zip}
+A prototype application was developed for Android. The application was limited to three tasks: BT device discovery, BT identification and data sending to a server through its 3G connection. The server finally stored that information in a database. Both the Android application \footnote{\scriptsize{\url{http://sipesca.ugr.es/download/descargas/sipesca_bt.apk}}} and its source code\footnote{\scriptsize{\url{http://sipesca.ugr.es/download/descargas/com.pacv.bt.sipesca1__SRC.zip}}} are available for download.
+
+
 
 Despite the advantages of the cell phone, they include small and low power BT antennas. Because of that, their detection capability is very limited; thus, using cell phones was discarded.
 
-Finally the Intelify \cite{Intelify} (see Figure 3) was chosen due to its low power consumption and high detection range.
+Finally the Intelify \cite{Intelify} (see Figure \ref{fig:f3}) was chosen due to its low power consumption and high detection range.
 
 \begin{figure}[ht]
 \caption{Intelify device with a connected USB 3G dongle.}
@@ -255,13 +255,32 @@ In this case, our platform uses Representational State Transfer (REST) web servi
 
 REST web services are simple and lightweight (as no extra XML markup is needed), their message format is readable by humans, they are easy to build, and finally, developments achieve a high performance \cite{daigneau2011service}.
 
-Developed services have been designed to extract/insert information in the database taking into account security and availability requirements. The implementation of this part of the system is being performed using Google web services, specifically Google Fusion Tables \cite{gonzalez2010google}\cite{gonzalez2010socializing} to serve information to end users. Thus, we ensure the availability of information to users, and at the same time we reduce our server load. This way, users can access our database with an extra layer of security and management (instead accessing the database directly). 
+
+\subsection{Data services implementation}
+
+Developed data services have been designed to extract/insert information in the database taking into account security and availability requirements. Among the different web-centered data management systems Google web services, specifically Google Fusion Tables \cite{gonzalez2010google}\cite{gonzalez2010socializing} was chosen to serve information to end users.  
+
+Google Fusiont Tables is built on two layers:
+\begin{itemize}
+\item Bigtable: the tuples of pairs (key, value) are sorted on the key and sharded among multiple servers based on key ranges. Bigtable provides a write operation that inserts a new tuple automatically and three read operations to retrieve pairs, namely by key, by key prefix or by key range. For each tuple a transaction-time history is recorded.
+\item Megastore: On top of bigtable Megastore provides higher level primitives such as consistent secondary indexes, multi-rows transactions, and consistent replication.
+\end{itemize}
+
+
+The motivation for this choice is based on the following features:
+
+\begin{itemize}
+\item Export and attribution: We can restrict the ability of others to export the data outside Fusion Tables. We can also control who we share the data with and the data is always carring around the attribution, no matter what transformation gets applied.
+\item Search: the public data is made discoverable by search engines, so they can direct users to the data when this is relevant to their queries.
+\item Sharing and integration: data can be shared between organizations and can be merged from multiple owners.
+\item Visualization: Fusion Tables offers serveral map viewing options for geographic location values and useful visualizations of time data values which occur frequently in our services.
+\end{itemize}
+
+Thus, we ensure the availability of information to users, and at the same time we reduce our server load. This way, users can access our database with an extra layer of security and management (instead accessing the database directly). 
 
 This mechanism, and therefore allowing the usage of our system data by third parties, will facilitate the easy creation of web pages and mobile apps to serve useful information to the users.
 
-In this sense, a cross-platform mobile application to allow users access any kind of data using computers, mobile phones and tablets is under development. Figure 4 shows several screenshots of this application. Both the application and its source code are available at:
-\url{http://sipesca.ugr.es/download/descargas/sipesca_info.apk}
-\url{http://sipesca.ugr.es/download/descargas/com.pacv.info.sipesca1__SRC.zip}
+In this sense, a cross-platform mobile application to allow users access any kind of data using computers, mobile phones and tablets is under development. Figure \ref{fig:f4} shows several screenshots of this application. Both the application\footnote{\url{http://sipesca.ugr.es/download/descargas/sipesca_info.apk}} and its source code\footnote{\url{http://sipesca.ugr.es/download/descargas/com.pacv.info.sipesca1__SRC.zip} } are available for download.
 
 \begin{figure}[ht]
 \caption{Screenshots of the Android application developed to serve information to the users.}
@@ -323,7 +342,7 @@ Traffic density can be calculated taking into account the total number of detect
 \end{center}
 \end{figure}
 
-Figure 5 shows the number of individual detected devices in each node along the day and taking into account six time-ranges. 
+Figure \ref{fig:f5} shows the number of individual detected devices in each node along the day and taking into account six time-ranges. 
 
 As can be seen, a high density on all nodes is reached at peak times (7:00 to 10:00 and 16:00 to 20:00).
 This might be due to the people going/returning to/from work and school, and those who are in leisure time.
@@ -331,7 +350,7 @@ This might be due to the people going/returning to/from work and school, and tho
 This figure shows individual devices, eliminating repeated appearances of vehicles.
 
 \subsection{Total detections by time range}
-Additionally we can calculate for each node the number of detected devices by time range, without differentiating whether the device is the same or not (repeated passes). In this case, repeated appearances of vehicles have been taken into account (Figure 6).
+Additionally we can calculate for each node the number of detected devices by time range, without differentiating whether the device is the same or not (repeated passes). In this case, repeated appearances of vehicles have been taken into account (Figure \ref{fig:f6}).
 
 \begin{figure}[ht]
 \caption{For each of the six nodes, the total number of detected devices by time range is shown. Figure is shown in logarithmic scale.}
@@ -342,7 +361,7 @@ Additionally we can calculate for each node the number of detected devices by ti
 \end{figure}
 
 
-Figure 6 shows the total number of detected devices in each node along the day and taking into account six time-ranges. As in previous analysis (Figure 5), a high density on all nodes is reached at peak times (7:00 to 10:00 and 16:00 to 20:00).
+Figure \ref{fig:f6} shows the total number of detected devices in each node along the day and taking into account six time-ranges. As in previous analysis (Figure 5), a high density on all nodes is reached at peak times (7:00 to 10:00 and 16:00 to 20:00).
 
 \subsection{Number of individual vehicle detections}
 We can take advantage of the proposed system's ability to identify BT devices. Thus, it can detect and report whether a vehicle pass by different nodes.
@@ -357,16 +376,16 @@ We can take advantage of the proposed system's ability to identify BT devices. T
 
 This figure displays how many times an individual device has been detected in each node, i.e., if device A has been detected three times in node 4, then A is shown into the range ">0 \& <=5" for node 4.
 
-Figure 7 shows a large number of vehicles that pass repeated times (up to 10 times) by some of the nodes (mainly those located in the A44). Even, it can be seen that nodes 4 and 5 detect about 1,000 vehicles passing more than 25 times repeatedly, what means that many vehicles repeat their pass over and over again. Paying attention to the remainder nodes, over 25 repetitions of the same device have been detected only around 120 times.
+Figure \ref{fig:f7} shows a large number of vehicles that pass repeated times (up to 10 times) by some of the nodes (mainly those located in the A44). Even, it can be seen that nodes 4 and 5 detect about 1,000 vehicles passing more than 25 times repeatedly, what means that many vehicles repeat their pass over and over again. Paying attention to the remainder nodes, over 25 repetitions of the same device have been detected only around 120 times.
 
 Finally, as most of the devices have been detected only one time, then the first range >0 \& <=5 includes the largest number of detected devices.
 
 \subsection{Complexity of displacements}
 
-To study the complexity of displacements, the number of vehicles that have sequentially visited several nodes were calculated. Table 5 also shows the average number of times that vehicles have visited 2, 3, 4, 5 or 6 nodes.
-
+To study the complexity of displacements, the number of vehicles that have sequentially visited several nodes were calculated. Table \ref{table:complex} also shows the average number of times that vehicles have visited 2, 3, 4, 5 or 6 nodes.
+\small {
 \begin{table}
-\small
+
 \caption{Total number of vehicles that have visited two nodes, 3 nodes and up to 6 nodes, and average number of times that vehicles have passed through 2, 3, 4, 5 or 6 nodes. In some cases the deviations are high due to the fact that some devices have a very high number of occurrences for some nodes.}
 \label{table:complex}
 \begin{center}
@@ -378,8 +397,8 @@ To study the complexity of displacements, the number of vehicles that have seque
 \end{tabular}
 \end{center}
 \end{table}
-
-Information in Table \ref{table:complex} is shown in Figure 8.
+}
+Information in Table \ref{table:complex} is shown in Figure \ref{fig:f8}.
 
 \begin{figure}[ht]
 \caption{Complexity of displacements as the number of vehicles that have visited several nodes. Figure is shown in logarithmic scale.}
@@ -392,7 +411,7 @@ Information in Table \ref{table:complex} is shown in Figure 8.
 As expected, most of the BT devices rarely visited all nodes sequentially, while most of devices pass only by one or two of nodes (their displacements are focused on a small part of the monitored area).
 
 \subsection{Average speed on a section delimited by two consecutive nodes}
-Finally, taking two consecutive nodes located on the A44 highway, average speeds in the section bounded by nodes 4 (located at km 119.550) and 5 (located at km 123.250) can be calculated. This highway section where the study takes place is 3700 meters long. Actually, we can calculate the average speed in the global section, but not the instant vehicle speed within that section (shown in Table 6).
+Finally, taking two consecutive nodes located on the A44 highway, average speeds in the section bounded by nodes 4 (located at km 119.550) and 5 (located at km 123.250) can be calculated. This highway section where the study takes place is 3700 meters long. Actually, we can calculate the average speed in the global section, but not the instant vehicle speed within that section (shown in Table \ref{table:speeds}).
 
 \begin{table}
 \caption{Average speeds (globally) in the section bounded by nodes 4 and 5.}
@@ -443,7 +462,7 @@ Finally, the power and features of the system have been demonstrated. This has b
 
 \section*{Agradecimientos}
 
-This work is supported in part by the 0100DGT21285 project of the Spanish Direccio?n General de Tra?fico, and the FEDER of European Union project "Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos ? SIPEsCa ? G-GI3000/IDIF? (Programa Operativo FEDER de Andalucía 2007-2013). We also thank all Agency of Public Works of Andalusia Regional Government staff and researchers for their dedication and professionalism. The authors are very grateful to the anonymous referees whose comments and suggestions have contributed to improve this paper.
+This work is supported in part by the 0100DGT21285 project of the Spanish Direccio?n General de Tra?fico, and the FEDER of European Union project "Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos SIPEsCa  ? G-GI3000/IDIF? (Programa Operativo FEDER de Andalucía 2007-2013). We also thank all Agency of Public Works of Andalusia Regional Government staff and researchers for their dedication and professionalism. The authors are very grateful to the anonymous referees whose comments and suggestions have contributed to improve this paper.
 
 \begin{figure}[ht]
 \label{fig:f9}
