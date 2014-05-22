@@ -89,9 +89,9 @@ Los resultados indican que los bots creados con GP son más competentes, y que el
 
 Real-Time Strategy (RTS) games are a sub-genre of strategy-based videogames in which the contenders control a set of resources, units and structures that are distributed in a playing arena. A proper control and a sound strategy and tactics for handling these units is essential for winning the game, which happens after the game objective has been fulfilled, normally eliminating all enemy units, but sometimes also when certain points or game objectives have been reached.
 
-Their main feature is their real-time nature (which is explicit in its denomination, real time strategy games), i.e. the player is not required to wait for the results of other players' moves as in turn-based games. Command and Conquer\texttrademark, Starcraft\texttrademark, Warcraft\texttrademark~ and Age of Empires\texttrademark~ are some examples of RTS games.
+Their main feature is their real-time nature (which is explicit in its denomination, real time strategy games), i.e. the player is not required to wait for the results of other players' moves as in turn-based games. Command and Conquer\texttrademark, Starcraft\texttrademark, Warcraft\texttrademark~ and Age of Empires\texttrademark~ are examples of RTS games.
 
-One simple game belonging to this type is {\em Planet Wars}. It was presented under the Google AI Challenge 2010\footnote{\url{http://planetwars.aichallenge.org/}}, and has been used by several authors for the study of computational intelligence in RTS games
+{\em Planet Wars} is a RTS which was presented under the Google AI Challenge 2010\footnote{\url{http://planetwars.aichallenge.org/}}. It has been used by several authors for the study of computational intelligence techniques in RTS games
 \cite{Genebot_CEC11,ExpGenebot_CIG2012,Lara2013mapgenerator}, due to it is a simplification (just one type of resource and one type of unit) of the elements that commercial RTSs (as those previously cited) present.
 Thus, the players in this game just can manage planets and starships (or just ships). The aim is conquering the whole galaxy in the current map, against an enemy\footnote{can be more than one opponents,but we are focusing in 1 vs 1 battles in this work} trying to do the same. The planets can produce new ships and the ships are destroyed one by one for both players when they crash.
 
@@ -166,11 +166,11 @@ Therefore, the aim in this paper is to study the improvement of a bot according 
 
 RTS games have been used extensively in the computational intelligence area (see \cite{Lara2013review} for a survey). 
 
-Among other techniques, Evolutionary Algorithms (EAs) have been widely used in computational intelligence in RTS games \cite{Lara2013review}. For example, for parameter optimization \cite{Esparcia10FPS}, learning \cite{Kenneth2005neuroevolution} or content generation \cite{Mahlmann2012MapGeneration}. 
+Among other techniques, Evolutionary Algorithms (EAs) have been widely used as a  Computational Intelligence method in RTS games \cite{Lara2013review}. For example, for parameter optimization \cite{Esparcia10FPS}, learning \cite{Kenneth2005neuroevolution} or content generation \cite{Mahlmann2012MapGeneration}. 
 
-One of these types, genetic programming, has been proved as a good tool for developing strategies in games, achieving results comparable to human, or human-based competitors \cite{Sipper2007gameplaying}. They also have obtained higher ranking than solvers produced by other techniques or even beating high-ranking humans \cite{Elyasaf2012FreeCell}. GP has also been used in different kind of games, such as board-games \cite{Benbassat2012Reversi}, or (in principle) simpler games such as Ms. Pac-Man \cite{Brandstetter2012PacMan} and Spoof \cite{Wittkamp2007spoof} and even in modern video-games such as First Person Shothers (FPS) (for example, Unreal\texttrademark~ \cite{Esparcia2013GPunreal}).
+One of these types, Genetic Programming, has been proved as a good tool for developing strategies in games, achieving results comparable to human, or human-based competitors \cite{Sipper2007gameplaying}. They also have obtained higher ranking than solvers produced by other techniques or even beating high-ranking humans \cite{Elyasaf2012FreeCell}. GP has also been used in different kind of games, such as board-games \cite{Benbassat2012Reversi}, or (in principle) simpler games such as Ms. Pac-Man \cite{Brandstetter2012PacMan} and Spoof \cite{Wittkamp2007spoof} and even in modern video-games such as First Person Shothers (FPS) (for example, Unreal\texttrademark~ \cite{Esparcia2013GPunreal}).
  
-Planet Wars, the game used in this work, has also been used as experimental environment for testing agents in other works. 
+Planet Wars, the game used in this work, has also been used in other researches as an experimental framework for agent testing. 
 We have deeply worked in this environment \cite{Genebot-IWANN2011,Genebot_CEC11,genebot-evo12,ExpGenebot_CIG2012,Co-Genebot_EVO2014}, mainly using Genetic Algorithms for evolving (the parameters of) a behavioural engine previously defined by a human expert from scratch. In those works we have proposed different implementations, analysed the noise influence, defined expert bots, or implemented co-evolutionary approaches.
 
 %For example, in
@@ -182,25 +182,27 @@ We have deeply worked in this environment \cite{Genebot-IWANN2011,Genebot_CEC11,
 %  using a tree of 5 levels. These results outperformed the previous
 %  version of the bot with 87\% of victories. 
 
-In this paper we use GP to create the decision tree, instead of expert human gaming experience to model it, and the resulting agent is compared with two bots previously presented: Genebot \cite{Genebot_CEC11}, our initial improved bot by means of Genetic Algorithms, and Exp-Genebot \cite{ExpGenebot_CIG2012} and improved agent which considers different sets of parameters depending on the type of the battle map.
+In this paper we use GP to create the Decision Tree ***[REF]***, instead of expert human gaming experience to model it, and the resulting agent is compared with two bots previously presented: Genebot \cite{Genebot_CEC11}, our initial bot improved by means of Genetic Algorithms, and Exp-Genebot \cite{ExpGenebot_CIG2012} an enhanced agent which considers different sets of parameters depending on the type of battle map, which is previously analysed by the bot.
+
 
 %-------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%% GP BOT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %-------------------------------------------------------------
-\section{GP BOT}
+\section{GPBot}
 \label{sec:agent}
 
-*** Mejorar esto y enfocarlo a este nuevo trabajo ***
+The Genetic Programming-based bot or {\em GPBot} evolves a set of rules which, in turn, models a Decision Tree. During the evolution, every individual in the population (a tree) must be evaluated. To do so the tree is set as the behavioural engine of an agent, which is then placed in a map against a rival in a Planet Wars match. Depending on the obtained results the agent (i.e. the individual) gets a fitness value, that will be considered in the evolutionary process as a measure of its validity.
+ 
+Thus, during the match the tree will be used (by the bot) in order to select the best strategy at every moment, i.e. for every planet a target will be selected along with the number of ships to send from one the other.
 
-The proposed agent receives a tree to be executed. The generated tree
-is a binary tree of expressions formed by two different types of nodes:
+\noindent The used Decision Trees are binary trees of expressions composed by two different \textit{types of nodes}:
 
 \begin{itemize}
 \item {\em Decision}: a logical expression formed by a variable, a less than operator ($<$), and a number between 0 and 1. It is the equivalent to a ``primitive'' in the field of GP.
-\item {\em Action}: a leave of the the tree (therefore, a ``terminal''). Each decision is the name of the method to call from the planet that executes the tree. This method indicates to which planet send a percentage of available ships (from 0 to 1). 
+\item {\em Action}: a leave of the tree (therefore, a ``terminal''). Each decision is the name of the method to call from the planet that executes the tree. This method indicates to which planet send a percentage of available ships (from 0 to 1). 
 \end{itemize}
 
-The different variables for the decisions are:
+\noindent The decisions are based in the values of different \textit{variables}, namely:
 
 \begin{itemize}
 \item {\em myShipsEnemyRatio}: Ratio between the player's ships and enemy's ships.
@@ -211,14 +213,13 @@ The different variables for the decisions are:
 \item {\em actualLandedFlyingRatio}: Ratio between the number of ships landed and flying from the specific planet that evaluates the tree and player's total ships.
 \end{itemize}
 
-The decision list is:
-% ¿De dónde habéis sacado esto? También tienen una cierta estrategia
-% presupuesta: que hay que elegir objetivos, por ejemplo - JJ FERGU: me lo he inventado yo, son las decisiones que puede tomar el bot
+\noindent Finally, the possible \textit{decisions} are:
+
 \begin{itemize}
 \item {\em Attack Nearest (Neutral|Enemy|NotMy) Planet}: The objective is the nearest planet.
 \item {\em Attack Weakest (Neutral|Enemy|NotMy) Planet}: The objective is the planet with less ships.
 \item {\em Attack Wealthiest (Neutral|Enemy|NotMy) Planet}: The objective is the planet with higher lower rate.
-\item {\em Attack Beneficial (Neutral|Enemy|NotMy) Planet}: The objective is the  more beneficial planet, that is, the one with growth rate divided by the number of ships.
+\item {\em Attack Beneficial (Neutral|Enemy|NotMy) Planet}: The objective is the  more beneficial planet, that is, the one with highest growth rate divided by the number of ships.
 \item {\em Attack Quickest (Neutral|Enemy|NotMy) Planet}: The objective is the planet easier to be conquered: the lowest product between the distance from the planet that executes the tree and the number of  ships in the objective planet.
 \item {\em Attack (Neutral|Enemy|NotMy) Base}: The objective is the planet with more ships (that is, the base).
 \item {\em  Attack Random Planet}.
@@ -227,15 +228,14 @@ The decision list is:
 \item {\em Reinforce Wealthiest Planet}: Reinforce the player's planet with higher grown rate.
 \item {\em Do nothing}.
 
-
 \end{itemize}
 
-An example of a possible tree is shown below. This example tree has a total of 5 nodes, with 2 decisions and 3 actions, and a depth of 3 levels.\\
+\noindent An example of a possible decision tree is shown below. This example tree has a total of 5 nodes, with 2 decisions and 3 actions, and a depth of 3 levels.
 
 \begin{verbatim}
 
-if(myShipsLandedFlyingRatio<0.796)
-   if(actualMyShipsRatio<0.201)
+if(myShipsLandedFlyingRatio < 0.796)
+   if(actualMyShipsRatio < 0.201)
       attackWeakestNeutralPlanet(0.481);
    else
       attackNearestEnemyPlanet(0.913);
@@ -244,7 +244,7 @@ else
 
 \end{verbatim}\\\\
 
-The bot behaviour is explained in Algorithm \ref{alg:turn}.
+\noindent The bot's behaviour is explained in Algorithm \ref{alg:turn}.
 
 \begin{algorithm}[ht]
 \begin{algorithmic}
@@ -266,7 +266,7 @@ The bot behaviour is explained in Algorithm \ref{alg:turn}.
 \ENDWHILE
 
 \end{algorithmic}
-\caption{Pseudocode of the proposed agent. The tree is fixed during all the agent's execution}
+\caption{Pseudocode of the proposed agent. The same tree is used during all the agent's execution}
 \label{alg:turn}
 \end{algorithm}
 
@@ -289,13 +289,16 @@ The bot behaviour is explained in Algorithm \ref{alg:turn}.
 %		\ENDFOR
 %\ENDLOOP
 
+Next section is devoted to explain the main component of the evolutionary process, i.e. the fitness function. As previously stated, we have implemented three different functions, which are used to evaluate the agent's performance during the matches.
 
 %-----------------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%% FITNESS FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %-----------------------------------------------------------------------
 
-\section{Fitness Evaluation Functions}
+\section{Fitness Functions}
 \label{sec:fitness_functions}
+
+*** ACLARAR ESTO con FERGU ***
 
 In previous works *** [REF a trabajos de Genebot] ***, a bot was evaluated always versus the same enemy (a reference bot), several times (in different maps). The fitness function was defined depending on the result of the battle (if the bot wins all its battles or loses in any of them) and the number of turns needed for ending the game. 
 For two bots, A and B the fitness was defined as Algorithm \ref{alg:fitness_turns_positions} shows.
