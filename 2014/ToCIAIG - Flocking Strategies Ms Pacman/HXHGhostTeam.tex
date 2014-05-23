@@ -367,6 +367,23 @@ $N$ & Mean CPU Time (s) & Best $F_1$ & Average $F_1$  \\
 }
 \end{table*}
 
+\begin{table} [!t]
+\caption{Adjusted p-values for the Tukey test for multiple comparisons of means. Homogeneous team learning.}
+\label{tab:tukey}
+\begin{tabular}{c|c|c|cc}
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{} &  & \tabularnewline
+\cline{2-2} 
+2 & 0.00697 & \multicolumn{1}{c}{2} &  & \tabularnewline
+\cline{2-3} 
+3 & 0.00645 & 0.99999 & 3 & \tabularnewline
+\cline{2-4} 
+4 & 0.00003 & 0.41569 & \multicolumn{1}{c|}{0.43184} & 4\tabularnewline
+\cline{2-5} 
+5 & 0.00511 & 0.99997 & \multicolumn{1}{c|}{0.99999} & \multicolumn{1}{c|}{0.48022}\tabularnewline
+\cline{2-5} 
+\end{tabular}
+\end{table}
+
 Table \ref{tab:summary} shows the performance of the evolved controllers over 10 runs of the MCGA with $N=1,\ldots,5$ when applying homogeneous and heterogeneous team learning (Tables \ref{tab:summary_HOM} and \ref{tab:summary_HET}, respectively). Each row is associated to a different number of neighborhoods, displayed in the first column. The second column presents the average computational time; the standard deviation is also reported after the plus-minus sign. Next, the third column illustrates the fitness value $F_1$ of the best controller found. A higher $F_1$ value corresponds to a lower ghosts' performance, and the other way round. Finally, the last column reports the average fitness value over the 10 runs and the corresponding standard deviation. By observing the tables some conclusions can be drawn.
 
 Concerning the computational time, we can see that a single run takes
@@ -376,31 +393,33 @@ Ms. Pac-Man controllers make use of all the allowed maximum
 computational time for each game tick (40 ms). 
 
 For the homogeneous team learning case the best controller is obtained
-when $N=5$. Also, the scores have a decreasing trend, confirming our
-supposition that higher values of $N$ should result in better
-performances. However, for the heterogeneous team learning experiments
-the results are quite different: the performance of the best controller found do not follow any trend,
-while the averages have no substantial difference. Also, the heterogeneous team controllers
-perform worse than the corresponding homogeneous team ones. This is probably due to
-the increased solution space that makes it impossible for the MCGA to
-converge to a good solution within the determined number of
-generations. %Aquí deberíais poner aparte de la tabla un gráfico y
-             %también añadir un test de significación estadística como
-             %el Wilcoxon. En tiempos no parece que haya diferencias
-             %significativas según el número de vecindades, y en el
-             %fitness en al caso del aprendizaje heterogéneo tampoco,
-             %almenos entre 2 y 3, por ejemplo, en ambos
-             %casos. Deberíasi analizarlo y comentarlo. 
+when $N=5$. Also, the scores seem to have a decreasing trend. To verify if high values of $N$ correspond to better performances we run several statistical tests. After testing the samples for normality with the Kolmogorov-Smirnov test, we run an ANOVA that shows high significance ($p-value=8.324e-05$)\footnote{A $p-value\leq0.05$ is considered to indicate statistically significant differences in the means.}. Table \ref{tab:tukey} shows the adjusted p-values of a Tukey test for multiple comparisons of means.The results suggest that statistically significant differences are present only between $N=1$ and the other values of $N$. As a result, we can infer that there is no improvement when using values of $N$ greater than two.
+
+For the heterogeneous team learning experiments
+the results are quite different: by observing the values in Table \ref{tab:summary_HET} we can see that the performance of the best controller found do not follow any trend,
+while the averages have no substantial difference. This result is confirmed by an ANOVA test that shows no significant differences between the different values of $N$ ($p-value=0.09579$). This is probably due to the increased solution space that makes it impossible for the MCGA to converge to a good solution within the determined number of generations.
+
+Finally, we compared the performances of the homogeneous and heterogeneous teams. The results of the Tukey's range test for each value of $N$ are reported in the following.
+
+\begin{itemize}
+\item $N=1$, $p-value = 0.5970576$.
+\item $N=2$, $p-value = 4.5e-06$.
+\item $N=3$, $p-value = 2.9e-06$.
+\item $N=4$, $p-value = 5e-07$.
+\item $N=5$, $p-value = 4.55e-05$.
+\end{itemize}
+
+These results suggest that, for $N=2,\ldots,5$, the samples show statistically significant differences in the means. Therefore, we can infer that the homogeneous team controllers perform better than the heterogeneous team ones. This insight is somehow counter-intuitive. In fact, as the search space for the heterogeneous team case includes that of the homogeneous team case, we would expect the opposite to be true. Apparently, the search space for the heterogeneous team case is too wide for the MCGA to explore efficiently. As a result, the optimization algorithm gets stuck in local optimal.
 
 \begin{figure*}[!t]
-  \caption{Average $F_1$ score of the best ghost controller of each generation for $N=1,\ldots,5$ (for interpretation of the references to color in this figure legend, the reader is referred to the web version of this article).}
+  \caption{Average $F_1$ score in each generation for $N=1,\ldots,5$ (for interpretation of the references to color in this figure legend, the reader is referred to the web version of this article).}
   \label{fig:GA_trend}
   \centering
   \subfloat[Homogeneous team learning]{\includegraphics[scale=0.5]{"homogeneous_trend"} \label{fig:GA_trend_homogeneous}}
   \subfloat[Heterogeneous team learning]{\includegraphics[scale=0.5]{"heterogeneous_trend"} \label{fig:GA_trend_heterogeneous}}
 \end{figure*}
 
-Figure \ref{fig:GA_trend} illustrates the average $F_1$ score of the best ghost controller of each generation, for the homogeneous (on the left) and the heterogeneous team (on the right) cases. From the chart we can see that all the heterogeneous team have a similar behavior: after a small decrease they tend to reach a plateau. On the other hand, we can observe a greater variance in the trends of the homogeneous team, with different steepness depending on the value taken by $N$.
+Figure \ref{fig:GA_trend} illustrates the average $F_1$ score in each generation, for the homogeneous (on the left) and the heterogeneous team (on the right) cases. From the chart we can see that all the heterogeneous team have a similar behavior: after a small decrease they tend to reach a plateau. On the other hand, we can observe a greater variance in the trends of the homogeneous team, with different steepness depending on the value taken by $N$.
 
 \subsection{Robustness Analysis}
 
