@@ -311,34 +311,26 @@ Next section is devoted to explain the main component of the evolutionary proces
 \section{Fitness Functions}
 \label{sec:fitness_functions}
 
-*** ACLARAR ESTO con FERGU *** %FERGU: En realidad con Antares, que es su fitness el que se usa. Creo que está bien, pero que lo confirme
+*** ACLARAR ESTO con FERGU *** %FERGU: Mi fitness es 
 
-In previous works *** [REF a trabajos de Genebot] ***, a bot was evaluated always versus the same enemy (a reference bot), several times (in different maps). The fitness function was defined depending on the result of the battle (if the bot wins all its battles or loses in any of them) and the number of turns needed for ending the game. 
+In previous works *** [REF a trabajos de Genebot] ***, a bot was evaluated always versus the same enemy (a reference bot), several times (in different maps). Hierarchical fitness is used, as proposed in \cite{Genebot_CEC11}. Thus, an individual is better than another if it wins in a higher number of maps. In case of equality of victories, then the individual with more turns to be defeated (i.e. the stronger one) is considered better. The maximum fitness in this work is, therefore, 5 victories and 0 turns. %FERGU: mover la ultima frase a cuando se hable de los parametros
 For two bots, A and B the fitness was defined as Algorithm \ref{alg:fitness_turns_positions} shows.
 
 \begin{algorithm}[ht]
 \begin{algorithmic}
         
 \STATE $A,B \in Population$
-\IF{A WINs always}
-	\IF{B LOSEs some battle}
+\IF{A.victories $=$ B.victories}
+	\IF{A.turns $>=$ B.turns}
 		\STATE A is better than B
 	\ELSE
-		\IF{A take less turns than B}
-			\STATE A is better than B
-      \ELSE
-			\STATE B is better than A
-      \ENDIF
-	\ENDIF   
-\ELSE
-	\IF{B WINs always}
 		\STATE B is better than A
+	\ENDIF
+\ELSE
+	\IF{A.victories $>$ B.victories}
+		\STATE A is better than B
 	\ELSE
-		\IF{A take less turns than B}
-			\STATE B is better than A
-		\ELSE
-			\STATE A is better than B
-		\ENDIF
+		\STATE B is better than A
 	\ENDIF
 \ENDIF
 
@@ -481,7 +473,7 @@ As in previous case, maximum and minimum values has been set for this fitness. I
 Sub-tree crossover and 1-node mutation evolutionary operators have been used, following other researchers' proposals that have used these operators obtaining good results \cite{Esparcia2013GPunreal}. In this case, the mutation randomly changes the decision of a node or mutate the value with a step-size of 0.25 (an adequate value empirically tested). Each configuration is executed 30 times, with a population of 32 individuals and a 2-tournament selector for a pool of 16 parents.
 
 To test each individual during the evolution, a battle with a previously created bot is performed in 5 different (but representative) maps provided by Google is played. 
-%Hierarchical fitness is used, as proposed in \cite{Genebot_CEC11}. Thus, an individual is better than another if it wins in a higher number of maps. In case of equality of victories, then the individual with more turns to be defeated (i.e. the stronger one) is considered better. The maximum fitness is, therefore 5 victories and 0 turns. FERGU: Este es el que yo usé en mi trabajo, no el que se usa aquí
+%Hierarchical fitness is used, as proposed in \cite{Genebot_CEC11}. Thus, an individual is better than another if it wins in a higher number of maps. In case of equality of victories, then the individual with more turns to be defeated (i.e. the stronger one) is considered better. The maximum fitness is, therefore 5 victories and 0 turns. 
 Also, as proposed by \cite{Genebot_CEC11}, and due to the noisy fitness effect, all individuals are re-evaluated in every generation.
 
 
