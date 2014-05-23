@@ -1,0 +1,255 @@
+\documentclass[a4paper]{llncs}
+\usepackage[latin1]{inputenc}
+\usepackage{color}
+\usepackage[english]{babel}
+%\usepackage[pdftex]{graphicx}
+\usepackage{epstopdf}
+\usepackage{amsfonts}
+\usepackage{algorithm,algorithmic}
+\addtolength{\intextsep}{-5mm}
+
+\usepackage{url}
+\urldef{\mailsa}\path|federico.liberatore@urjc.es|
+\urldef{\mailsb}\path|{amorag, pacv, jmerelo}@geneura.ugr.es|
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\begin{document}
+\mainmatter
+
+%
+%     %%%%%%%%%%   TITLE   %%%%%%%%%%
+%
+
+\title{Evolving Evil: Optimizing Flocking Strategies through Genetic Algorithms for the Ghost Team in the Game of Ms. Pac-Man\thanks{This is a summary of the work \cite{flocking_ghosts-evo14} previously published in EVOGames track of EVOApplications 2014 Conference, included in EVO* 2014}}
+\subtitle{\textit{[Published in EVOGames 2014 (EVOApplications)]}}
+\titlerunning{Flocking Strategies and Genetic Algorithms in the Game of Ms. Pac-Man}
+
+%
+%     %%%%%%%%%%   AUTHORS   %%%%%%%%%%
+%
+
+\author{F. Liberatore, A.M. Mora, P.A. Castillo, J.J. Merelo}
+\authorrunning{F. Liberatore, A.M. Mora, P.A. Castillo, J.J. Merelo}
+\institute{
+Departamento de Arquitectura y Tecnolog\'ia de Computadores. \\
+CITIC-UGR, ETSIIT. \\
+University of Granada, Spain \\
+\mailsa\\
+\mailsb\\
+}
+
+\maketitle
+
+%
+%     %%%%%%%%%%   ABSTRACT   %%%%%%%%%%
+%
+\begin{abstract} 
+Flocking strategies are sets of behavior rules for the interaction of agents that allow to devise controllers with reduced complexity that generate emerging behavior. In this paper, we present an application of genetic algorithms and flocking strategies to control the Ghost Team in the game Ms. Pac-Man. In particular, we define flocking strategies for the Ghost Team and optimize them for robustness with respect to the stochastic elements of the game and effectiveness against different possible opponents by means of genetic algorithm. The performance of the methodology proposed is tested and compared with that of other standard controllers. The results show that flocking strategies are capable of modeling complex behaviors and produce effective and challenging agents.
+
+%\keywords{Flocking Strategies, Genetic Algorithms, Artificial Intelligence, Ms. Pac-Man, Videogames, Evolutionary Computation.}
+\end{abstract}
+
+%
+%     %%%%%%%%%%   INTRODUCTION   %%%%%%%%%%
+%
+\section{Introduction and Problem Description}
+\label{sec:intro}
+
+The game of Ms. Pac-Man was released in 1981, presenting a new female protagonist, who has to collect all the pills in a maze while avoiding four ghosts chasing her. As in the original game of Pac-Man, if Ms. Pac-Man is touched by a ghost the player loses one life, then she is relocated at the initial position, and the ghosts respawn from the center of the maze. The {\em powerpills} turn the ghosts vulnerable for a short time, allowing Ms. Pac-Man to ``eat'' them. When a ghost gets eaten, it disappears from the game and respawns at the center of the maze after a certain amount of time. As the levels are cleared, the game becomes more difficult by changing certain parameters such as respawn time, length of time the ghosts are vulnerable, and ghosts' speed. The 
+The main difference with respect to the original game of Pac-Man, in addition to the new maze designs and, of course to the new main character, is that this game has elements of randomness, apparently included to make the game more engaging. Thus, occasionally, there is a global reversal event when all the ghosts suddenly change direction.
+
+Given its multiple challenges, the game has been chosen for the Ms. Pac-Man vs Ghosts competition, a game AI competition started in 2009 \cite{Lucas2009}, where participants can submit controllers for both Ms. Pac-Man and the Ghost Team. The aim of Ms. Pac-Man agents is to maximize the final score, while the aim of Ghost Team controllers is to minimize it. 
+During the competition, the controllers are ranked according to the results of random matches between two controllers of the same kind (e.g., Ghosts controllers) against two other controllers of the opposite kind (e.g., Ms.Pac-Man controllers). The controllers of each type that get the best score win the match and increase their rank. The competition is won by the controller of each kind having the highest rank.
+
+The version of the game implemented for the competitions differs slightly from the original one. A thorough description of the game rules can be found in \cite{MsPacManVSGhost2011}. For the purposes of this work, the relevant restrictions for the Ghost Team are briefly enlisted in the following:
+\begin{itemize}
+  \item A ghost can never stop and, when it is in a corridor, it can only move forward.
+  \item A ghost can choose its direction only at a junction. Specifically, a ghost can only move into a corridor different from the one it is coming from. As a result, a ghost cannot turn back on itself.
+  \item Every time a ghost is at a junction the controller has to provide a direction (i.e., UP, DOWN, LEFT, or RIGHT) from the set of feasible directions, i.e., those directions corresponding to corridors different from the one the ghost is coming from. If no direction or an unfeasible direction is returned by the controller, the game framework chooses a random direction from the set of feasible directions.
+  \item At every tick of the game all the ghosts obligatorily reverse their direction according to a small random probability, set in the game implementation to 0.005.
+  \item After 2000 game ticks, a level is considered completed: Ms. Pac-Man is rewarded with the points of the remaining pills and the game moves on to the next level.
+\end{itemize}
+
+Thinking in this competition, and focusing in the Ghosts Teams, it can be noticed that it is a group of individuals that perform simple actions (i.e., moving up, down, left, or right), so it seems a natural proving ground for algorithms based on the paradigm of Swarm Intelligence (SI) \cite{BeniWang89}. SI is the term used to describe the type of coordinated intelligence that arises from the collective behavior of decentralized, self-organized systems, either natural or artificial.
+
+Moreover, in this work we have focused in the so-called Flocking Strategies (FSs). Flocking refers to a SI technique proposed by Reynolds \cite{Reynolds87} for the coordinated movement of multiple AI agents. Originally, flocking algorithms have been developed to mimic lifelike behaviors of groups of beings such as herds of animals and schools of fishes. A flocking system typically consists of a population of simple \textit{agents} (or \textit{boids}) interacting locally with one another depending on the distance between them. The agents follow very simple steering behaviors:
+
+\begin{itemize}
+	\item \textit{Separation} makes the agent steer away from close flock mates.
+	\item \textit{Alignment} makes the agent steer toward the average heading of the flock.
+	\item \textit{Cohesion} makes the agent steer toward the average position of distant flock mates.
+\end{itemize} 
+
+Despite the lack of a centralized control structure dictating how individual agents should behave, the interactions between such agents lead to the emergence of ``intelligent" global behavior, unknown to the individual agents \cite{SpectorEtAl03}. Due to this desirable property, the easiness of implementation, and the reduced computational cost, flocking algorithms have been extensively applied to many fields, such as cinematography, art, medicine, etcetera. A presentation of flocking algorithms applications in videogames can be found in \cite{Scutt02} and \cite{Rabin10}.
+ 
+In this work we have combined this Ghost Team controller with Genetic Algorithms (GAs) \cite{GAs_Goldberg89}. Offline (not during the game) GAs are used to design FSs for the Ghost Team that are effective at minimizing Ms. Pac-Man final score and that are also robust with respect to the stochastic elements of the game. To the best of the authors knowledge this is the first work to actually applying flocking algorithms to the game of Pac-Man. Our objective is to understand how the proposed methodology would perform in comparison to controllers that use different approaches.
+
+%
+%     %%%%%%%%%%   Ghost Team AI   %%%%%%%%%%
+%
+
+\section{Ghost Team AI: Evolutionary Flocking}
+\label{sec:ghosts_ai}
+
+%In this section the evolutionary FS model developed for designing controllers for the Ghost Team is described. In the flocking system described, each one of the four ghosts is an independent agent. Nevertheless, all the ghosts determine their movement according to the same FS, as explained in the following.
+%
+%\subsection{Generalized Flocking Strategies}
+%\label{subsec:flocking_strategies}
+
+Every Flocking Rule (FR) for boids (ghosts, in this case), considers a number of concentric ring-shaped neighborhoods centered on the ghost. They are limited to different radii. When an agent falls into one of these neighborhoods a steering force is applied on the ghost.
+
+To find the steering force on an agent A resulting from the interaction with agent B, a difference vector and the Euclidean distance between the two agents are calculated.
+The magnitude is determined by the neighborhood where agent B belongs to.
+A negative magnitude corresponds to the behavior of separation, while a positive magnitude corresponds to the behavior of cohesion. No alignment behavior is included in this strategy model as it would make the ghosts very predictable.
+
+Differently from the basic flocking algorithm where only one type of agent is considered, in the game Ms. Pac-Man a variety of different actors are present. Also, the ghosts can be in different states: $HUNTER$ is the ``normal'' state of a ghost (i.e., kills Ms. Pac-Man if touched).  When Ms. Pac-Man eats a powerpill all the ghosts become $HUNTED$ for a certain length of time (i.e., is killed by Ms. Pac-Man on contact). When this period is about to expire, every ghost blinks to warn the player; we call this state $BLINKING$. 
+
+In the same way, we can define a set of possible actors in the game, namely:
+$PACMAN$, $POWERPILL$, $HUNTER$, $HUNTED$, $BLINKING$, referring the three later to ghosts in that state. We can now define a Flocking Strategy (FS) for the Ghost Team as a function that, given a ghost state and the type of actor considered, returns the flocking rule that has to be applied to calculate the steering force on the ghost resulting from the interaction with the actor.
+
+As explained in Section \ref{sec:intro}, every time a ghost is at a junction the game needs to calculate its next move, so the controller based on the FS provides it.
+
+% by following the steps illustrated in Algorithm \ref{alg:FS_Controller}.
+%
+%\begin{algorithm}[ht]
+%\caption{Flocking Strategy-based Ghost Controller.}
+%\label{alg:FS_Controller} 
+%\begin{algorithmic}
+%\STATE $s\gets$ status of the current ghost $G$;
+%\STATE $v_a\gets$ position of the current ghost $G$;
+%\FORALL{actor $b$ in the game}
+%	\STATE $\phi\gets\Phi(s,b)$; \COMMENT{Determine the Flocking Rule to be applied.}
+%	\STATE $v_\delta\gets v_b-v_a$; \COMMENT{Calculate the difference vector (Equation \ref{eq:v_delta}).}
+%	\STATE $\delta\gets\|v_\delta\|$; \COMMENT{Calculate the Euclidean distance (Equation \ref{eq:delta}).}
+%	\STATE $n\gets n^\prime|\phi^d_{n^\prime-1} < \delta \leq phi^d_{n^\prime}$; \COMMENT{Identify the neighborhood (Equation \ref{eq:neighborhood}).}
+%	\STATE $f^{b}\gets\phi^m_n \cdot \frac{v_\delta}{\delta}$; \COMMENT{Compute the steering force (Equation \ref{eq:force}).}
+%\ENDFOR
+%\STATE $f\gets\sum_b f^b$; \COMMENT{Calculate the total steering force.}
+%\STATE \COMMENT{Translate the steering force in a ranking for the next ghost direction as follows:}
+%\STATE $\mathrm{UP}\gets- f_2$;
+%\STATE $\mathrm{DOWN}\gets f_2$;
+%\STATE $\mathrm{LEFT}\gets- f_1$;
+%\STATE $\mathrm{RIGHT}\gets f_1$;
+%\STATE RETURN the feasible direction (see restrictions in Section \ref{sec:mspacman_problem}) having maximum rank;
+%\end{algorithmic}
+%\end{algorithm}
+
+A FS could be manually designed by an expert with decent results. Nevertheless, given as the number of parameters and the inherent complexity of the game, it is desirable to automatize the definition of an effective strategy by means of an optimization algorithm, such as GAs. 
+
+In this algorithm every \textit{individual is represented by a FS}. The \textit{initial population} is created as a random set of FSs, but ensuring that most of the magnitudes are close to zero and there are assign similar probabilities to the appearance of cohesion, separation, and no interaction behaviors.
+
+The proposed optimization algorithm should generate Ghost Team strategies that perform well against any possible Ms. Pac-Man strategy and, at the same time, should be resilient to the random ghosts reverse direction events (see Section \ref{sec:intro}). To achieve this result, each flocking strategy is pitted against two different Ms. Pac-Man controllers included in the Ms. Pac-Man vs Ghosts competition framework: \textit{StarterPacMan} (SPM) and \textit{NearestPillPacMan} (NPPM) (for a description of the controllers, please refer to the competition framework documentation\footnote{http://www.pacman-vs-ghosts.net/, last visited on {\today}}). The game is simulated 30 times for each Ms. Pac-Man
+controller. Thanks to that we can take advantage of the central limit
+theorem to compute a relatively precise 95\% confidence interval of
+the final score obtained by the Ms. Pac-Man controllers. This is done to minimize the effect of noise present in this problem and in videogames in general \cite{Mora12}. since, due to the stochastic elements of the game, the same FS could perform very well sometimes and quite bad some others. 
+
+The \textit{Fitness function} is defined as the sum of the inverses of the average scores obtained by each of the controllers in the 30 runs:
+
+\begin{small}
+\begin{equation}
+\mathrm{FITNESS} = \frac{1}{\overline{\mathrm{SCORE}}_\mathrm{SPM}} + \frac{1}{\overline{\mathrm{SCORE}}_\mathrm{NPPM}}
+\end{equation}
+\end{small}
+
+After all the individuals (FSs) of the current generation have been evaluated, the offspring will be generated. For each individual to be generated, two parents are chosen by \textit{roulette-wheel selection}  (i.e., every member of the population has a probability of being chosen proportional to its fitness). The children individual is created by random recombination of the parameters of the parents.
+
+During the recombination, \textit{Mutations} can occur with certain probability. When a mutation happens, the current parameter is re-initialized to a random value. Initially, the probability value is set to $p^\mathrm{mut} =
+0.00125$. At each iteration $t$, its value changes depending on a coefficient of variation of the current population fitness, which measures the degree of variability of the population in terms of fitness. When the variability is low, we increment the mutation probability to introduce new chromosomes in the genetic pool of the population. When the variability is too big, the mutation probability is set to a low initial value.
+
+%
+%     %%%%%%%%%%   EXPERIMENTS   %%%%%%%%%%
+%
+
+\section{Experiments, Results and Future Work}
+\label{sec:experiments}
+
+In this section, it will be tested how well a GA evolved controller performs, compared to non-evolutionary strategies. The standard Ghost Team controllers included in the competition framework will be used as a comparative basis.  
+In the experiments, the GA described in the previous section has been
+run for 50 generations with a population of 50 candidate strategies. At each iteration, the next generation was constituted by 49 recombined individuals plus the best solution of the current generation. 
+
+A first experiment has been conducted comparing the performance of the Ghost Team controllers obtained with different values of the parameter $N$ (i.e., the number of neighborhoods considered in the Flocking Rules). 
+
+\begin{table} [htbp]
+\centering
+{
+\begin{scriptsize}
+\begin{tabular}{|c||c|c|c|c|c|}
+\hline & $N = 1$ & $N = 2$ & $N = 3$ & $N = 4$ & $N = 5$ \\
+\hline
+Best $\mathrm{FITNESS}^-1$& 783.38 & 726.84 & 815.66 & 766.96 & 720.20 \\
+\hline
+Avg. $\mathrm{FITNESS}^-1$& 871.30$\pm$55.45 & 861.57$\pm$70.13 & 876.31$\pm$65.06 & 905.86$\pm$62.66 & 863.17$\pm$72.15 \\
+\hline
+Worst $\mathrm{FITNESS}^-1$ & 951.75 & 969.20 & 1,032.39 & 986.48 & 980.50 \\
+\hline
+Avg. CPU time (s)& 1373$\pm$150.66 & 1484.3$\pm$122.01 & 1561$\pm$193.94 & 1562.60$\pm$109.90 & 1473.00$\pm$74.02 \\
+\hline
+\end{tabular}
+\end{scriptsize}
+}
+\caption{Performance of the controllers for the Ghost Team obtained by the GA using different numbers of neighborhoods.
+\label{tab:results_GA}}
+\end{table}
+
+
+Table \ref{tab:results_GA} shows the performance of the evolved controllers over 10 runs of the GA with $N=1,\ldots,5$. Each column is associated to a different number of neighborhoods. The first row displays the inverse fitness of the best individual found. The second row presents the average controllers fitness; the standard deviation is also reported after the plus-minus sign. Next, the third row illustrates the fitness value of the worst controller found. Finally, the last row reports the average optimization CPU time in seconds over the 10 runs and the corresponding standard deviation. By observing the table some conclusions can be drawn.
+
+According to the results the best controller is obtained for $N=5$ (the higher number of neighbours, the better). As a clarification we use the inverse fitness as a clearer measure of performance, so a lower value corresponds to a better controller.
+
+In the next experiment, we compare our controllers to the five Ghost Team controllers included in the competition framework. Their $\mathrm{FITNESS}^-1$ values, computed exactly as per the GA solutions, are presented in Table \ref{tab:results_controllers}.
+
+\begin{table} [htbp]
+\centering
+{
+\begin{scriptsize}
+\begin{tabular}{|c||c|c|c|c|c|}
+\hline Controller & \textit{AggressiveGhosts} & \textit{Legacy} & \textit{Legacy2TheReckoning} & \textit{RandomGhosts} & \textit{StarterGhosts} \\
+\hline
+$\mathrm{FITNESS}^-1$& 1893.13 & 2210.94 & 1429.20 & 4200.70 & 1603.49 \\
+\hline
+\end{tabular}
+\end{scriptsize}
+}
+\caption{Performance of the standard Ghost Team controllers included in the competition framework.
+\label{tab:results_controllers}}
+\end{table}
+
+
+According to these results, the best controller is \textit{Legacy2TheReckoning}, followed by  \textit{StarterGhosts}. Nevertheless, their $\mathrm{FITNESS}^-1$ value is twice that of the best evolved FS found, approximately. These results support the claim that FSs are a viable option for the definition of intelligent controllers.
+
+It is possible to see a video of the best evolved controller at\\ \texttt{https://www.youtube.com/watch?v=I9rL0jUwHhk}. It is pitted against the Ms. Pac-Man controller \textit{StarterPacMan}. The video illustrates that, despite the lack of explicit coordination between them, the ghosts show complex strategic behaviors, entrapping and ambushing Ms. Pac-Man in a cooperative emergent way. This is obtained without including complex rules, which is a desirable feature in this type of problems (i.e., AI in games). This, in turn, results in the ghosts behaving in a ``intelligent'' fashion although they are not explicitly programmed with this objective in mind.
+
+Some possible future lines of research include a fitness function extension by including more Ms. Pac-Man controllers. This should result in a Ghost Team controller that performs better against a wider range of opponents. 
+Moreover, it would be interesting to compare the controllers obtained by applying the presented methodology with the best Ghost Team controllers that took part to the Ms. Pac-Man vs Ghosts competition. This would allow us to really understand the limits of FSs.
+
+It would be also interesting to investigate the effectiveness of optimization methods that allows for small changes in the solutions parameters (instead of abrupt ones as in GAs), such as Particle Swarm Optimization (PSO).
+
+
+%
+%     %%%%%%%%%%   CONCLUSIONS  %%%%%%%%%%
+%
+
+%\section{Conclusions and Future Work}
+%\label{sec:conclusions}
+%
+%In this paper, a new controller for the Ghost Team based on FSs is proposed. FSs are sets of behavior rules that determine the next move of an agent as a force resulting from the interaction of the agents in the game. A GA is presented to design optimized strategies offline. The fitness function evaluates each individual by pitting it against two Ms. Pac-Man controller 30 times, so as to avoid noise in the function. Parents are chosen by roulette-wheel selection and the children are generated by random recombination of the parents' chromosomes. The mutation probability is adaptive and increases when the population is homogeneous, while it decreases when the population is too heterogeneous. The methodology has been empirically tested: the fitness of the best individual found by the GA has been compared to the fitness of the five standard controller included in the competition framework. The results show that FSs model complex behaviors and that the GA successfully optimize the design of the ghosts controller, producing effective and challenging agents.
+%
+%This work is just scratching the surface and there is still a lot to be investigated. Some possible future lines of research are highlighted in the following. The fitness function can be easily extended by including more Ms. Pac-Man controllers. This should result in a Ghost Team controller that performs better against a wider range of opponents. By considering in the GA fitness function the best Ms. Pac-Man controllers that took part to the competitions, it would be possible to generate Ghost Team controllers that are capable of tackling the best known Ms. Pac-Man strategies. 
+%
+%Moreover, it would be interesting to compare the controllers obtained by applying the presented methodology with the best Ghost Team controllers that took part to the Ms. Pac-Man vs Ghosts competition. This would allow us to really understand the limits of FSs.
+%
+%The GAs as a means to optimize FSs have proven to be satisfactory. Nevertheless, the recombination step causes abrupt changes in the solutions' parameters and might generate individuals that are very different from the initial ones. It would be interesting to investigate the effectiveness of optimization methods that allows for small changes in the solutions parameters. Particle Swarm Optimization (PSO) algorithms  might be a sensible choice. In fact, on top of making few or no assumptions about the problem, PSO algorithm are particularly effective with problems that are noisy and present many multiple optima, such as this one.
+
+%
+%     %%%%%%%%%%   ACKNOWLEDGMENTS  %%%%%%%%%%
+%
+
+%\section*{Acknowledgments}
+%This work has been supported in part by CANUBE (CEI2013-P-14) and ANYSELF (TIN2011-28627-C04-02), awarded by the Spanish Ministry of Science and Innovation. Liberatore's research was financed by the Government of Spain (TIN2012-32482). All the supports are gratefully acknowledged. In addition, Liberatore would like to thanks the GeNeura research group at University of Granada for their kind hospitality. 
+
+\bibliographystyle{splncs03}
+
+\bibliography{flocking_ghosts_mspacman}
+
+\end{document}
