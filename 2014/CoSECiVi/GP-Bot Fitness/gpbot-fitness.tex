@@ -91,12 +91,14 @@ Los resultados indican que los bots creados con GP son más competentes, y que el
 \section{Introduction}
 \noindent 
 
-Real-Time Strategy (RTS) games are a sub-genre of strategy-based videogames in which the contenders control a set of resources, units and structures that are distributed in a playing arena. A proper control and a sound strategy and tactics for handling these units is essential for winning the game, which happens after the game objective has been fulfilled, normally eliminating all enemy units, but sometimes also when certain points or game objectives have been reached.
+Real-Time Strategy (RTS) games are a sub-genre of strategy-based videogames in which the contenders struggle to control a set of resources, units and structures that are distributed in a playing arena. A proper control and a sound strategy and tactics for handling these units is essential for winning the game, which happens after the game objective has been fulfilled, normally eliminating all enemy units, but sometimes also when certain points or game objectives have been reached.
 
 Their main feature is their real-time nature (which is explicit in its denomination, real time strategy games), i.e. the player is not required to wait for the results of other players' moves as in turn-based games. Command and Conquer\texttrademark, Starcraft\texttrademark, Warcraft\texttrademark~ and Age of Empires\texttrademark~ are examples of RTS games.
 
+% Pero ¿no creéis que ya es hora de que presentéis el trabajo como algo más general, y no cómo una solución particular de un problema particular, el Challenge e AI, que es de hace 4 años? Hablad de estrategia, de los problemas que presentan, todo eso. Esto ya no es relevante a estas alturas y deberías empezar a hablar de él en metodología. Vamos a desarrollar una estrategia para hacer tal, y para ver si funciona lo vamos a probar en Planet War. - JJ
 {\em Planet Wars} is a RTS which was presented under the Google AI Challenge 2010\footnote{\url{http://planetwars.aichallenge.org/}}. It has been used by several authors for the study of computational intelligence techniques in RTS games
 \cite{Genebot_CEC11,ExpGenebot_CIG2012,Lara2013mapgenerator}, due to it is a simplification (just one type of resource and one type of unit) of the elements that commercial RTSs (as those previously cited) present. %FERGU quitar el "as those previously cited", que queda raro
+% y una vez más decid qué problema queréis solucionar. Si es como decís en el título, GP para RTS, es interesante. Si es planet wars, no lo es a menos que haya competiciones actuales, etc, etc. - jj
 Thus, the players in this game just can manage planets and starships (or just ships). The aim is conquering the whole galaxy in the current map, against an enemy\footnote{can be more than one opponents,but we are focusing in 1 vs 1 battles in this work} trying to do the same. The planets can produce new ships and the ships are destroyed one by one for both players when they crash. %FERGU: si no se va a hacer nada 4vs4 quitar de todo el paper que también existe la posibilidad, que puede liar.
 
 %The objective of the player is to conquer enemy and neutral planets in a space-like simulator. Each player has planets (resources) that produce ships (units) depending on a growth-rate. The player must send these ships to other planets (literally, crashing towards the planet) to conquer them. A player win if he is the owner of all the planets. As requirements, the limit to calculate next actions (this time window is called {\em turn}\footnote{Although in this work we are using this term, note that the game is always performed in real time.}) is only a second, and no memory about the previous turns must be used.  Figure \ref{fig:naves} shows a screen capture of the game. The reader is referred to \cite{Mora2012Genebot,FernandezAres2012adaptive} for more details about the game.
@@ -109,9 +111,16 @@ Thus, the players in this game just can manage planets and starships (or just sh
 %\label{fig:naves}
 %\end{figure}
 
-In this work Genetic Programming (GP) is used to obtain agents that play 1 vs 1 battles in Planet Wars. The objective of GP is to create functions or programs to solve determined problems. Individual representation is usually in form of a tree, formed by operators (or {\em primitives}) and variables ({\em terminals}). These sets are usually fixed and known. The genome size is, therefore, variable, but the maximum size (depth) of the individuals is usually fixed, to avoid high evaluation costs. 
+% Genial, saltáis del problema a decir qué habéis hecho en el paper sin nada enmedio. El clásico "he hecho esto sobre esto y me ha salido esto" que es como NO tiene que escribirse un paper. Algún día aprenderéis, pero mientras tanto os vuelvo a repetir el esquema, la "narrativa", que tiene que seguir un paper
+% Queremos resolver un problema: generación de estrategias en RTS
+% Hasta ahora, otros lo han hecho así: y nosotros asao: usando parametrización de una estrategia heurística, pero tenía problemas como este y este
+% En este trabajo queremos hacer una búsqueda más eficiente del espacio de estrategias usando GP. Y para ello vamos a usar un juego RTS en particular, tal y tal. - JJ
+In this work Genetic Programming (GP) is used to obtain agents that play 1 vs 1 battles in Planet Wars. The objective of GP is to create functions or programs %en realidad, son expresiones - JJ
+ to solve determined problems. Individual representation is usually in form of a tree, formed by operators (or {\em primitives}) and variables ({\em terminals}). These sets are usually fixed and known. The genome %Genome? Quien ha hablado de genome? Y de size? Y qué importa a estas alturas? - JJ
+ size is, therefore, variable, but the maximum size (depth) of the individuals is usually fixed, to avoid high evaluation costs. 
 
 %GP has been used to evolve LISP (LISt Processing) programs \cite{Koza1990Tools}, or XSLT (eXtensible Stylesheet Language Transformations) scripts \cite{Garcia2008XSLT}, among others.
+% Hombre, podíais haberlo dejado... - JJ
 
 The aim of using GP in this scope is the creation of behavioural rule-based engines following an heuristic, algorithmic and automatic process. Thus, instead of implementing them from scratch by a human (expert or not), this method will define a set of rules that could be more complex (or simpler) than those defined by the humans. 
 
@@ -183,6 +192,8 @@ RTS games have been used extensively in the computational intelligence area (see
 Among other techniques, Evolutionary Algorithms have been widely used as a  Computational Intelligence method in RTS games \cite{Lara2013review}. For example, for parameter optimization \cite{Esparcia10FPS}, learning \cite{Kenneth2005neuroevolution} or content generation \cite{Mahlmann2012MapGeneration}. 
 
 One of these types, Genetic Programming, has been proved as a good tool for developing strategies in games, achieving results comparable to human, or human-based competitors \cite{Sipper2007gameplaying}. They also have obtained higher ranking than solvers produced by other techniques or even beating high-ranking humans \cite{Elyasaf2012FreeCell}. GP has also been used in different kind of games, such as board-games \cite{Benbassat2012Reversi}, or (in principle) simpler games such as Ms. Pac-Man \cite{Brandstetter2012PacMan} and Spoof \cite{Wittkamp2007spoof} and even in modern video-games such as First Person Shothers (FPS) (for example, Unreal\texttrademark~ \cite{Esparcia2013GPunreal}).
+% ... y eso nos hace pensar que puede dar buenos resultados en este caso, porque nunca se ha aplicado a este tipo de problema.
+% ¿Cuál es el selling poing? ¿GP aplicado a RTS? ¿GP aplicado a Planet Wars? - JJ 
  
 Planet Wars, the game used in this work, has also been used in other researches as an experimental framework for agent testing. 
 %We have deeply worked in this environment \cite{Genebot-IWANN2011,Genebot_CEC11,genebot-evo12,ExpGenebot_CIG2012,Co-Genebot_EVO2014},
@@ -219,7 +230,7 @@ Thus, during the match the tree will be used (by the bot) in order to select the
 \item {\em Action}: a leave of the tree (therefore, a ``terminal''). Each decision is the name of the method to call from the planet that executes the tree. This method indicates to which planet send a percentage of available ships (from 0 to 1). 
 \end{itemize}
 
-\noindent The decisions are based in the values of different \textit{variables}, namely:
+\noindent The decisions are based in the values of different \textit{variables}, namely: % estas variables, ¿de dónde salen? ¿Son todas las variables del juego? ¿Unas pocas? - JJ 
 
 \begin{itemize}
 \item {\em myShipsEnemyRatio}: Ratio between the player's ships and enemy's ships.
