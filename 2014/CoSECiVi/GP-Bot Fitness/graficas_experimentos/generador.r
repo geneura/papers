@@ -1,5 +1,6 @@
 #Cargamos librerías
 library(xtable) #Librería para la exportación de tablas a latex. ¡Mola!
+library(lattice)
 
 #Cargamos los datos de las ejecuciones
 t_ex = read.csv("datos/ex_turns.csv")
@@ -154,21 +155,32 @@ rm(tabla)
 batallas = read.csv('datos/batallas.csv')
 
 #Gráfica ponderada de los mejores de cada ejecución
-barplot(head(sort(table(batallas[batallas[,"Wins"]!="DRAW","Wins"])/1134*100,decreasing=TRUE),n=10),ylim=c(0,100))
+pdf('barra_top_10.pdf')
+barplot(head(sort(table(batallas[batallas[,"Wins"]!="DRAW","Wins"])/1134*100,decreasing=TRUE),n=10),ylim=c(0,100),ylab="%Victories")
+dev.off()
+
+pdf('barra_todos.pdf')
+barplot(head(sort(table(batallas[batallas[,"Wins"]!="DRAW","Wins"])/1134*100,decreasing=TRUE),n=63),ylim=c(0,100),ylab="%Victories")
+dev.off()
 
 #Victorias de cada tipo de fitness
+pdf('barplot_victoria_bot_por_metodo.pdf')
 barplot(sort(table(batallas[,"Type"])/nrow(batallas)*100,decreasing=TRUE),ylim=c(0,50),ylab="% Victories")
+dev.off()
 
 
+pdf('boxplot_victoria_bot_por_metodo.pdf')
 par(mfrow=c(1,3))
 boxplot(as.matrix(table(batallas[batallas["Type"]=="TURNS","Wins"],exclude=c("DRAW","s_0","s_1","s_2","s_2","s_3","s_4","s_5","s_6","s_7","s_8","s_9","s_10","s_11","s_12","s_13","s_14","s_15","s_16","s_17","s_18","s_19","s_20","a_0","a_1","a_2","a_2","a_3","a_4","a_5","a_6","a_7","a_8","a_9","a_10","a_11","a_12","a_13","a_14","a_15","a_16","a_17","a_18","a_19","a_20"))/1134*100),ylim=c(0,100))
-title(sub="TURNS FITNESS")
+title(main="TURNS FITNESS",ylab="% Victories")
 
 boxplot(as.matrix(table(batallas[batallas["Type"]=="AREA","Wins"],exclude=c("DRAW","s_0","s_1","s_2","s_2","s_3","s_4","s_5","s_6","s_7","s_8","s_9","s_10","s_11","s_12","s_13","s_14","s_15","s_16","s_17","s_18","s_19","s_20","t_0","t_1","t_2","t_2","t_3","t_4","t_5","t_6","t_7","t_8","t_9","t_10","t_11","t_12","t_13","t_14","t_15","t_16","t_17","t_18","t_19","t_20"))/1134*100),ylim=c(0,100))
-title(sub="AREA FITNESS")
+title(main="AREA FITNESS")
 
 boxplot(as.matrix(table(batallas[batallas["Type"]=="SLOPE","Wins"],exclude=c("DRAW","a_0","a_1","a_2","a_2","a_3","a_4","a_5","a_6","a_7","a_8","a_9","a_10","a_11","a_12","a_13","a_14","a_15","a_16","a_17","a_18","a_19","a_20","t_0","t_1","t_2","t_2","t_3","t_4","t_5","t_6","t_7","t_8","t_9","t_10","t_11","t_12","t_13","t_14","t_15","t_16","t_17","t_18","t_19","t_20"))/1134*100),ylim=c(0,100))
-title(sub="SLOPE FITNESS")
+title(main="SLOPE FITNESS")
+dev.off()
 
+batallas[batallas["Wins"]=="DRAW",1:3]
 
 
