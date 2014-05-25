@@ -42,3 +42,70 @@ barplot(t_ex[t_ex[,2]==49,"AVERAGE_F"], main="TURNS FITNESS", xlab="Execution", 
 barplot(a_ex[a_ex[,2]==49,"AVERAGE_F"], main="AREA FITNESS", xlab="Execution", ylab="Fitness",names.arg=a_ex[a_ex[,2]==49,"EX"])
 barplot(s_ex[s_ex[,2]==49,"AVERAGE_F"], main="SLOPE FITNESS", xlab="Execution", ylab="Fitness",names.arg=s_ex[s_ex[,2]==49,"EX"])
 dev.off()
+
+
+##Parámetros de la ejecución de cada algoritmo
+
+
+pdf('plot_turns_best_fitness.pdf')
+par(mfrow=c(3,7),mai = rep(1,4), pin = c(0.8,1))
+for (i in 0:9 ) {
+  plot(t_ex[t_ex[,1]==paste("t_0",i,sep=""),"BEST_F"], main=paste("t_0",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
+}
+for (i in 10:20 ) {
+  plot(t_ex[t_ex[,1]==paste("t_",i,sep=""),"BEST_F"], main=paste("t_",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
+}
+dev.off()
+
+pdf('plot_area_best_fitness.pdf')
+par(mfrow=c(3,7),mai = rep(1,4), pin = c(0.8,1))
+for (i in 0:9 ) {
+  plot(a_ex[a_ex[,1]==paste("a_0",i,sep=""),"BEST_F"], main=paste("a_0",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
+}
+for (i in 10:20 ) {
+  plot(a_ex[a_ex[,1]==paste("a_",i,sep=""),"BEST_F"], main=paste("a_",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
+}
+dev.off()
+
+pdf('plot_slope_best_fitness.pdf')
+par(mfrow=c(3,7),mai = rep(1,4), pin = c(0.8,1))
+for (i in 0:9 ) {
+  plot(s_ex[s_ex[,1]==paste("s_0",i,sep=""),"BEST_F"], main=paste("s_0",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
+}
+for (i in 10:20 ) {
+  plot(s_ex[s_ex[,1]==paste("s_",i,sep=""),"BEST_F"], main=paste("s_",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
+}
+dev.off()
+
+pdf('plot_turns_average_fitness.pdf')
+par(mfrow=c(3,7),mai = rep(1,4), pin = c(0.8,1))
+for (i in 0:9 ) {
+  plot(t_ex[t_ex[,1]==paste("t_0",i,sep=""),"AVERAGE_F"], main=paste("t_0",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
+}
+for (i in 10:20 ) {
+  plot(t_ex[t_ex[,1]==paste("t_",i,sep=""),"AVERAGE_F"], main=paste("t_",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
+}
+dev.off()
+
+pdf('plot_area_average_fitness.pdf')
+par(mfrow=c(3,7),mai = rep(1,4), pin = c(0.8,1))
+for (i in 0:9 ) {
+  plot(a_ex[a_ex[,1]==paste("a_0",i,sep=""),"AVERAGE_F"], main=paste("a_0",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
+}
+for (i in 10:20 ) {
+  plot(a_ex[a_ex[,1]==paste("a_",i,sep=""),"AVERAGE_F"], main=paste("a_",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
+}
+dev.off()
+
+pdf('plot_slope_average_fitness.pdf')
+par(mfrow=c(3,7),mai = rep(1,4), pin = c(0.8,1))
+for (i in 0:9 ) {
+  plot(s_ex[s_ex[,1]==paste("s_0",i,sep=""),"AVERAGE_F"], main=paste("s_0",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
+}
+for (i in 10:20 ) {
+  plot(s_ex[s_ex[,1]==paste("s_",i,sep=""),"AVERAGE_F"], main=paste("s_",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
+}
+dev.off()
+
+
+
