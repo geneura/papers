@@ -53,9 +53,10 @@
 \title{Designing Competitive Bots for a Real Time Strategy Game using Genetic Programming}
 %FERGU: ¿Qué hay que vender aquí, la comparativa de los 3 fitness o que vamos a usar GP? Pensar el título en concordancia
 %Y no usar acrónimos - JJ
+% Antonio - bueno, yo he visto de todo, pero sí, así está mejor el título ;)
 
 % a short form should be given in case it is too long for the running head
-\titlerunning{GP for generation of agents for RTS}
+\titlerunning{Designing Bots for RTS games using GP}
 \author{P. Garc\'ia-S\'anchez, A. Fern\'andez-Ares, \\ A.M. Mora, P.A. Castillo, and J.J. Merelo}
 
 \authorrunning{P. Garc\'ia-S\'anchez et al.}
@@ -72,16 +73,25 @@
 
 
 \begin{abstract}
-This paper presents a Genetic Programming application to the design of behavioural engines for autonomous agents (bots) which play 1 vs 1 battles in the RTS Planet Wars. % Este paper, como todos, resuelve un problema. ¿Qué problema resuelve? No me cuentes lo que has hecho, cuéntame primero lo que quieres hacer. 
-With this method it is possible to create rule-based systems defining the bot's actions, in a way completely different from a human designer doing them from scratch. Thus, Genetic Programming is able to define behavioural rules that could perform better than those. %FERGU: pero también 'podría" ser peor... no?
+The design of the Artificial Intelligence (AI) engine for an autonomous agent (bot) is always a difficult task mainly done by an expert human player, who has to transform his/her knowledge into a behavioural engine.
+This paper presents an approach for conducting this task by means of Genetic Programming (GP) application. This algorithm is used to design decision trees to be used as bot's AI in 1 vs 1 battles inside the RTS game Planet Wars. 
+% Este paper, como todos, resuelve un problema. ¿Qué problema resuelve? No me cuentes lo que has hecho, cuéntame primero lo que quieres hacer. 
+% Antonio - hecho. Creo que ha quedado bien. ;)
+Using this method it is possible to create and rule-based systems defining decisions and actions, in an automatic way, completely different from a human designer doing them from scratch. These rules will be optimised along the algorithm run, considering the bot's performance during evaluation matches. Thus, GP will eventually define behavioural rules that could perform better than human-defined ones.  
+%FERGU: pero también 'podría" ser peor... no?
 % Efectivamente. O tardar una eternidad. - JJ
-Due to the difficulties present in the videogames scope, mainly noise in the evaluation functions, three different fitness approaches have been implemented and tested. %FERGU: qué dificultades?
+% Antonio - aro, pero eso no lo vamos a decir, no? Todos los métodos tienen sus puntos flacos, no veo por qué habría que destacarlos...
+Due to the difficulties present in the videogames scope, such as noise in the evaluation functions, three different fitness approaches have been implemented and tested. 
+%FERGU: qué dificultades?
+% Antonio - Such as noise in the fitness function. XD
 % Algunos resultados preliminares del fitness ya se han publicado en abierto. Haz pull del  ultimo geneura.bib y mira wilcoxon:ga - JJ
+% Antonio - JJ, estamos hablando del problema en los videojuegos, no quiere decir que sea el único sitio en el que hay ruido. Pongo la cita a tu Wilcoxon en el texto. ;)
 The best obtained agents have been compared with previous bots, some created by an expert player (from scratch) and then optimised by means of Genetic Algorithms.
 ***
 Los resultados indican que los bots creados con GP son más competentes, y que el uso de la función de fitness XXX es la que mejores agentes genera.
 ***
 % agh. No pongáis esto nunca así, que a veces se cuela en la versión final. Ponedlo en comentarios - JJ
+% Antonio - tranquilo que no se cuela, lo revisaré yo mismo buscando el texto '***' que yo siempre pongo. Me gusta más resaltarlo así porque además me hago una idea de lo que ocupa en el texto. ;)
 \end{abstract}
 
 
@@ -95,11 +105,28 @@ Real-Time Strategy (RTS) games are a sub-genre of strategy-based videogames in w
 
 Their main feature is their real-time nature (which is explicit in its denomination, real time strategy games), i.e. the player is not required to wait for the results of other players' moves as in turn-based games. Command and Conquer\texttrademark, Starcraft\texttrademark, Warcraft\texttrademark~ and Age of Empires\texttrademark~ are examples of RTS games.
 
+Two levels of AI are usually considered in RTS games \cite{ahlquist_game_ai08}: the first one, interpreted by a Non-Playing Character (NPC), which is also a bot, makes decisions over the whole set of units (workers, soldiers, machines, vehicles or even buildings); the second level is devoted implement the behaviour of every one of these small units.
+These two level of actions, which can be considered {\em strategic} and {\em tactical}, make them inherently difficult to be designed by a human; but this difficulty is increased by their real-time nature (usually addressed by constraining the time that each bot can use to make a decision) and also for the huge search space that is implicit in its action.
+
+For these reasons, in this work a Genetic Programming (GP) approach is proposed as an automatic method to create the Artificial Intelligence (AI) engine of autonomous agents in a RTS. The objective of GP is to create functions or programs to solve determined problems, moreover the individual representation is usually in form of a tree, formed by operators (or {\em primitives}) and variables ({\em terminals}). 
+%Thus GP can be applied to the generation of rule-based systems, such as Decision Trees [***REF***], which can, in turn, define the behavioural engine of a bot in this case. 
+The aim of using GP in this scope is the creation of behavioural rule-based engines following an heuristic, algorithmic and automatic process. Thus, instead of implementing them from scratch by a human (expert or not), this method will define a set of rules that could be more complex (or simpler) than those defined by the humans. 
+In addition, this algorithm is able to evaluate every possible set of rules, according to the corresponding bot's performance, so this set will be improved (evolved) along the algorithm run.
+
+
 % Pero ¿no creéis que ya es hora de que presentéis el trabajo como algo más general, y no cómo una solución particular de un problema particular, el Challenge e AI, que es de hace 4 años? Hablad de estrategia, de los problemas que presentan, todo eso. Esto ya no es relevante a estas alturas y deberías empezar a hablar de él en metodología. Vamos a desarrollar una estrategia para hacer tal, y para ver si funciona lo vamos a probar en Planet War. - JJ
-{\em Planet Wars} is a RTS which was presented under the Google AI Challenge 2010\footnote{\url{http://planetwars.aichallenge.org/}}. It has been used by several authors for the study of computational intelligence techniques in RTS games
-\cite{Genebot_CEC11,ExpGenebot_CIG2012,Lara2013mapgenerator}, due to it is a simplification (just one type of resource and one type of unit) of the elements that commercial RTSs (as those previously cited) present. %FERGU quitar el "as those previously cited", que queda raro
+% Antonio - hecho, creo que ahora está mejor. ;)
+In order to implement and test this proposal, we have considered the game {\em Planet Wars}, a RTS which was presented under the Google AI Challenge 2010\footnote{\url{http://planetwars.aichallenge.org/}}. It has been used by several authors for the study of computational intelligence techniques in RTS games
+\cite{Genebot_CEC11,ExpGenebot_CIG2012,Lara2013mapgenerator}, due to it is a simplification (just one type of resource and one type of unit) of the elements that those commercial RTSs present. 
+% FERGU quitar el "as those previously cited", que queda raro
+% Antonio - hecho
 % y una vez más decid qué problema queréis solucionar. Si es como decís en el título, GP para RTS, es interesante. Si es planet wars, no lo es a menos que haya competiciones actuales, etc, etc. - jj
-Thus, the players in this game just can manage planets and starships (or just ships). The aim is conquering the whole galaxy in the current map, against an enemy\footnote{can be more than one opponents,but we are focusing in 1 vs 1 battles in this work} trying to do the same. The planets can produce new ships and the ships are destroyed one by one for both players when they crash. %FERGU: si no se va a hacer nada 4vs4 quitar de todo el paper que también existe la posibilidad, que puede liar.
+% Antonio - creo que ahora está mejor explicado. ;)
+Thus, the players in this game just can manage planets and starships (or just ships). The aim is conquering the whole galaxy in the current map, against an enemy
+%\footnote{can be more than one opponents,but we are focusing in 1 vs 1 battles in this work} 
+trying to do the same. The planets can produce new ships and the ships are destroyed one by one for both players when they crash. 
+%FERGU: si no se va a hacer nada 4vs4 quitar de todo el paper que también existe la posibilidad, que puede liar.
+% Antonio - Ok
 
 %The objective of the player is to conquer enemy and neutral planets in a space-like simulator. Each player has planets (resources) that produce ships (units) depending on a growth-rate. The player must send these ships to other planets (literally, crashing towards the planet) to conquer them. A player win if he is the owner of all the planets. As requirements, the limit to calculate next actions (this time window is called {\em turn}\footnote{Although in this work we are using this term, note that the game is always performed in real time.}) is only a second, and no memory about the previous turns must be used.  Figure \ref{fig:naves} shows a screen capture of the game. The reader is referred to \cite{Mora2012Genebot,FernandezAres2012adaptive} for more details about the game.
 %
@@ -111,37 +138,43 @@ Thus, the players in this game just can manage planets and starships (or just sh
 %\label{fig:naves}
 %\end{figure}
 
+This work uses some of the results obtained in a previous one \cite{GPBot_EVO2014} as a baseline for comparisons. 
+Three different fitness functions will be presented and tested in this paper: 
+the first one is the previously \textit{turn-based fitness} \cite{Genebot_CEC11}, 
+%FERGU: quitado el "our traditional". Queda muy "our traditional polvorones"
+% Antonio - guay
+which evaluates all the individuals in the population by playing five different matches (in five different maps) against a sparring bot. The aim of the repetitions is to avoid the noisy factor present in these dynamic environments \cite{Mora_noisy_jcst,wilcoxon:ga}.   
+%FERGU: quitado el "problems (videogames)"
+% Antonio - ok
+Due to this, the fitness value for an individual could dramatically vary between different matches, since it depends on the pseudo-stochastic opponent's actions, and also on its own non-deterministic decisions.
+The other two presented fitness functions also point to reduce the influence of noise in the evolution, but using additional data to this aim. 
+%FERGU: si buscan lo mismo poner al principio "las 3 funciones". No tiene sentido decir "Vamos a usar una función para tratar el ruido y otras dos que también" xD
+% Antonio - Lo he aclarado mejor. Se trata de que esas funciones incluyen nuevas técnicas para tratar el ruido. ;)
+Thus, they consider the number of ships generated by each bot rather than the number of turns and compute, respectively, a \textit{linear regression} based on the percentage of ships with respect to the total, and \textit{the integral} of the function which represents these numbers.
+All of them consider the final results of every individual (bot) after the aforementioned five matches (on average).
+
+The work is then focused on proving the value of these evolved rule-based control systems for the agents. To this end, several experiments have been conducted, considering the aforementioned fitness functions and some evolutionary bots as rivals. These bots have been presented in previous works \cite{Genebot_CEC11,ExpGenebot_CIG2012,GPBot_EVO2014}. 
+%FERGU: our previous evolutionary bots -> bots previously used in the literature (que parece que el paper dice "somos los únicos que hacemos esto"
+% Antonio - Yo no veo que digamos que somos los únicos, que (casi) lo somos, (XD), pero si dices en la literatura parece más general de lo que es... una evolución de un trabajo anterior.
+
+%The rest of the work is structured as follows: after the state of the art, the description of our agent is presented in Section \ref{sec:agent}. Then, the experimental setup conduced with the GP is shown (Section \ref{sec:experiments}). Finally, results, conclusions and future works are discussed.
+%
+
 % Genial, saltáis del problema a decir qué habéis hecho en el paper sin nada enmedio. El clásico "he hecho esto sobre esto y me ha salido esto" que es como NO tiene que escribirse un paper. Algún día aprenderéis, pero mientras tanto os vuelvo a repetir el esquema, la "narrativa", que tiene que seguir un paper
 % Queremos resolver un problema: generación de estrategias en RTS
 % Hasta ahora, otros lo han hecho así: y nosotros asao: usando parametrización de una estrategia heurística, pero tenía problemas como este y este
 % En este trabajo queremos hacer una búsqueda más eficiente del espacio de estrategias usando GP. Y para ello vamos a usar un juego RTS en particular, tal y tal. - JJ
-In this work Genetic Programming (GP) is used to obtain agents that play 1 vs 1 battles in Planet Wars. The objective of GP is to create functions or programs %en realidad, son expresiones - JJ
- to solve determined problems. Individual representation is usually in form of a tree, formed by operators (or {\em primitives}) and variables ({\em terminals}). These sets are usually fixed and known. The genome %Genome? Quien ha hablado de genome? Y de size? Y qué importa a estas alturas? - JJ
- size is, therefore, variable, but the maximum size (depth) of the individuals is usually fixed, to avoid high evaluation costs. 
+% Antonio - Creo que ahora está mejor explicado.
+
+%Genome? Quien ha hablado de genome? Y de size? Y qué importa a estas alturas? - JJ
+% Antonio - Lo he quitado.
 
 %GP has been used to evolve LISP (LISt Processing) programs \cite{Koza1990Tools}, or XSLT (eXtensible Stylesheet Language Transformations) scripts \cite{Garcia2008XSLT}, among others.
 % Hombre, podíais haberlo dejado... - JJ
+% Antonio - No pintaba nada y nos falta espacio (nos sobran páginas, vaya)... XD
 
-The aim of using GP in this scope is the creation of behavioural rule-based engines following an heuristic, algorithmic and automatic process. Thus, instead of implementing them from scratch by a human (expert or not), this method will define a set of rules that could be more complex (or simpler) than those defined by the humans. 
 
-This work uses some of the results obtained in a previous one \cite{GPBot_EVO2014} as a baseline for comparisons. 
-Three different fitness functions will be presented and tested in this paper: 
-the first one is the previously \textit{turn-based fitness} \cite{Genebot_CEC11}, %FERGU: quitado el "our traditional". Queda muy "our traditional polvorones"
-which evaluates all the individuals in the population by playing five different matches 
-(in five different maps) against a sparring bot. The aim of the repetitions is to avoid 
-the noisy factor present in these dynamic environments \cite{Mora_noisy_jcst}.   %FERGU: quitado el "problems (videogames)"
-The fitness value for an individual could dramatically vary between different matches, 
-since it depends on the pseudo-stochastic opponent's actions, and also on its own 
-non-deterministic decisions.
-The other two presented fitness functions also point to reduce the influence of noise in the evolution. %FERGU: si buscan lo mismo poner al principio "las 3 funciones". No tiene sentido decir "Vamos a usar una función para tratar el ruido y otras dos que también" xD
-Thus, they consider the number of ships generated by each bot rather than the number of turns and compute, respectively, a \textit{linear regression} based on the percentage of ships with respect to the total, and \textit{the integral} of the function which represents these numbers.
-All of them consider the final results of every individual (bot) after the aforementioned five matches (on average).
 
-The work is then focused on proving the value of these evolved rule-based control systems for the agents. To this end, several experiments have been conducted, considering the aforementioned fitness functions and some of our previous evolutionary bots as rivals in the comparisons. %FERGU: our previous evolutionary bots -> bots previously used in the literature (que parece que el paper dice "somos los únicos que hacemos esto"
-
-%The rest of the work is structured as follows: after the state of the art, the description of our agent is presented in Section \ref{sec:agent}. Then, the experimental setup conduced with the GP is shown (Section \ref{sec:experiments}). Finally, results, conclusions and future works are discussed.
-%
-%*** Reescribir ***
 
 %-----------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%% BACKGROUND %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -151,8 +184,7 @@ The work is then focused on proving the value of these evolved rule-based contro
 \subsection{Genetic Programming}
 
 The Genetic Programming (GP) \cite{GP_Koza92} is a kind of Evolutionary Algorithm (EA) \cite{EAs_Back96} (a class of direct, probabilistic search and optimization algorithms gleaned from the model of darwinistic evolution), based on the idea that in nature structures undergo adaptation. It shares some common features with these algorithms: a population of possible solutions (individuals) of the target problem, a selection method that favours better solutions and a set of operators that act upon the selected solutions.
-Thus, GP is a structural optimisation technique where the individuals are represented as hierarchical structures (typically tree structures) and the size and shape of the solutions are not defined a priori as in other methods from the field of evolutionary computation, but they evolve along the generations. So, the main difference with respect to GAs is the individual representation and the genetic operators to apply, which are mainly focused on the management (and improvement) of this kind of
-structure.
+Thus, GP is a structural optimisation technique where the individuals are represented as hierarchical structures (typically tree structures) and the size and shape of the solutions are not defined a priori as in other methods from the field of evolutionary computation, but they evolve along the generations. So, the main difference with respect to GAs is the individual representation and the genetic operators to apply, which are mainly focused on the management (and improvement) of this kind of structure.
 The flow of a GP algorithm is the same as any other EA: a population is created at random, each individual in the population is evaluated using a fitness function, the individuals that performed better in the evaluation process have a higher probability of being selected as parents for the new population than the rest and a new population is created once the individuals are subjected to the genetic operators of crossover and mutation with a certain probability. The loop is run until a predefined termination criterion is met.
 
 % ----------------------------------------------------------------------
@@ -161,7 +193,6 @@ The flow of a GP algorithm is the same as any other EA: a population is created 
 
 In this paper we work with a %simplified
 version of the game Galcon, aimed at performing bot's fights which was used as base for the Google AI Challenge 2010 (GAIC)\footnote{http://ai-contest.com}.
-% Maribel, añado el we que creo que faltaba no?
 
  \begin{figure}[ht]
  \begin{center}
@@ -176,10 +207,17 @@ that contains several planets (neutral, enemies or owned), each one of them with
 
 The aim of the game is to defeat all the ships in the opponent's planets. Although Planet Wars is a RTS game, this implementation has transformed it into a turn-based game, in which each player has a maximum number of turns to accomplish the objective. At the end of the match, the winner is the player that remains alive, or that which owns more ships if more than one survives. 
 
-There are two strong constraints which determine the possible methods to apply to design a bot: a simulated turn takes \textit{just one second}, %FERGU: falso, es el máximo tiempo para calcular una acción
-and the bot is \textit{not allowed to store any kind of information} about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map). %i.e. no quiere decir "es decir", quiere decir "por ejemplo". Poner "that is,"
+There are two strong constraints which determine the possible methods to apply to design a bot: a simulated turn takes \textit{just one second}, 
+%FERGU: falso, es el máximo tiempo para calcular una acción
+% Antonio - y qué es un turno entonces sino el tiempo para decidir una acción (o conjunto de acciones)?
+and the bot is \textit{not allowed to store any kind of information} about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map). 
+%FERGU: i.e. no quiere decir "es decir", quiere decir "por ejemplo". Poner "that is,"
+% Antonio - creo que te lias, i.e. significa "id est", que significa "esto es/es decir". Creo que te confundes con e.g. que sí significa "for example".
 
-Therefore, the aim in this paper is to study the improvement of a bot according to the state of the map in each simulated turn (input), returning a set of actions to perform in order to fight the enemy, conquering its resources, and, ultimately, wining the game. In the original game, only two bots are faced but in this paper it is studied what happen when we simulate 4 on 4 battles, i.e., when 4 bots are fighting in the same map. %FERGU: no se va a hacer 4 vs 4: quitadlo
+Therefore, the aim in this paper is to study the improvement of a bot according to the state of the map in each simulated turn (input), returning a set of actions to perform in order to fight the enemy, conquering its resources, and, ultimately, wining the game. 
+%In the original game, only two bots are faced but in this paper it is studied what happen when we simulate 4 on 4 battles, i.e., when 4 bots are fighting in the same map. 
+%FERGU: no se va a hacer 4 vs 4: quitadlo
+% Antonio - Cierto es. se me había pasado. :D
 
 %-----------------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%% STATE OF THE ART %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -191,14 +229,16 @@ RTS games have been used extensively in the computational intelligence area (see
 
 Among other techniques, Evolutionary Algorithms have been widely used as a  Computational Intelligence method in RTS games \cite{Lara2013review}. For example, for parameter optimization \cite{Esparcia10FPS}, learning \cite{Kenneth2005neuroevolution} or content generation \cite{Mahlmann2012MapGeneration}. 
 
-One of these types, Genetic Programming, has been proved as a good tool for developing strategies in games, achieving results comparable to human, or human-based competitors \cite{Sipper2007gameplaying}. They also have obtained higher ranking than solvers produced by other techniques or even beating high-ranking humans \cite{Elyasaf2012FreeCell}. GP has also been used in different kind of games, such as board-games \cite{Benbassat2012Reversi}, or (in principle) simpler games such as Ms. Pac-Man \cite{Brandstetter2012PacMan} and Spoof \cite{Wittkamp2007spoof} and even in modern video-games such as First Person Shothers (FPS) (for example, Unreal\texttrademark~ \cite{Esparcia2013GPunreal}).
+One of these types, Genetic Programming, has been proved as a good tool for developing strategies in games, achieving results comparable to human, or human-based competitors \cite{Sipper2007gameplaying}. They also have obtained higher ranking than solvers produced by other techniques or even beating high-ranking humans \cite{Elyasaf2012FreeCell}. GP has also been used in different kind of games, such as board-games \cite{Benbassat2012Reversi}, or (in principle) simpler games such as Ms. Pac-Man \cite{Brandstetter2012PacMan} and Spoof \cite{Wittkamp2007spoof} and even in modern video-games such as First Person Shothers (FPS) (for example, Unreal\texttrademark~ \cite{Esparcia2013GPunreal}). This makes us to think that the method will get also very good results in the RTS scope.
 % ... y eso nos hace pensar que puede dar buenos resultados en este caso, porque nunca se ha aplicado a este tipo de problema.
 % ¿Cuál es el selling poing? ¿GP aplicado a RTS? ¿GP aplicado a Planet Wars? - JJ 
+% Antonio - escrito, aunque no es una frase lapidaria porque no estoy seguro de que no se haya usado antes en RTSs. PEro el objetivo/selling point se explica en la intro ahora.
  
 Planet Wars, the game used in this work, has also been used in other researches as an experimental framework for agent testing. 
 %We have deeply worked in this environment \cite{Genebot-IWANN2011,Genebot_CEC11,genebot-evo12,ExpGenebot_CIG2012,Co-Genebot_EVO2014},
 %FERGU: no usar el "hemos trabajado", sino "se ha trabajado", que parece que somos los únicos que lo hacen (aunque sea verdad)
-This game has been already use in some previous studies \cite{Genebot-IWANN2011,Genebot_CEC11,genebot-evo12,ExpGenebot_CIG2012,Co-Genebot_EVO2014}, mainly using Genetic Algorithms for evolving (the parameters of) a behavioural engine previously defined by a human expert from scratch. Those works have been used to compare different implementations, the analysis the noise influence, definition of expert bots, or implementation co-evolutionary approaches.
+% Antonio - pues yo lo veo peor así porque das a entender que se ha usado en varios trabajos (de gente diversa) y sólo citas los nuestros... XD
+We have considered this game in some previous studies \cite{Genebot-IWANN2011,Genebot_CEC11,genebot-evo12,ExpGenebot_CIG2012,Co-Genebot_EVO2014}, mainly applying Genetic Algorithms for evolving (the parameters of) a behavioural engine previously defined by a human expert from scratch. Those works have respectively defined a first approach, compared different implementations, analysed the noise influence, defined expert bots, and implemented co-evolutionary approaches.
 
 %For example, in
 %\cite{Mora2012Genebot} the authors programmed the behaviour of a {\em bot} (a computer-controlled player) with a decision tree of 3 levels. Then, the values of these rules were optimized using a genetic algorithm to tune the strategy rates and percentages.  
@@ -210,7 +250,7 @@ This game has been already use in some previous studies \cite{Genebot-IWANN2011,
 %  version of the bot with 87\% of victories. 
 
 In this paper we use GP to create the Decision Tree ***[REF]***, instead of expert human gaming experience to model it, and the resulting agent is compared with two bots previously presented: Genebot \cite{Genebot_CEC11}, our initial bot improved by means of Genetic Algorithms, and Exp-Genebot \cite{ExpGenebot_CIG2012} an enhanced agent which considers different sets of parameters depending on the type of battle map, which is previously analysed by the bot.
-
+*** Quitamos Exp-Genebot??? ***
 
 %-------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%% GP BOT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -218,8 +258,12 @@ In this paper we use GP to create the Decision Tree ***[REF]***, instead of expe
 \section{GPBot}
 \label{sec:agent}
 
-The Genetic Programming-based bot or {\em GPBot} evolves a set of rules which models a Decision Tree. %FERGU: quitado lo del turno. Cada turno no modela un árbol nuevo.
-During the evolution, every individual in the population (a tree) must be evaluated. To do so, the tree is set as the behavioural engine of an agent, which is then placed in a map against a rival in a Planet Wars match. Depending on the obtained results the agent (that is, the individual) gets a fitness value, that will be considered in the evolutionary process as a measure of its validity. %FERGU: i.e. -> that is
+The Genetic Programming-based bot or {\em GPBot} evolves a set of rules which, in turn, models a Decision Tree. 
+%FERGU: quitado lo del turno. Cada turno no modela un árbol nuevo.
+% Antonio - "in turn" significa "a su vez". ;)
+During the evolution, every individual in the population (a tree) must be evaluated. To do so, the tree is set as the behavioural engine of an agent, which is then placed in a map against a rival in a Planet Wars match. Depending on the obtained results, the agent (i.e. the individual) gets a fitness value, that will be considered in the evolutionary process as a measure of its validity. 
+%FERGU: i.e. -> that is
+% Antonio - no. XD
  
 Thus, during the match the tree will be used (by the bot) in order to select the best strategy at every moment, i.e. for every planet a target will be selected along with the number of ships to send from one the other.
 
@@ -230,7 +274,9 @@ Thus, during the match the tree will be used (by the bot) in order to select the
 \item {\em Action}: a leave of the tree (therefore, a ``terminal''). Each decision is the name of the method to call from the planet that executes the tree. This method indicates to which planet send a percentage of available ships (from 0 to 1). 
 \end{itemize}
 
-\noindent The decisions are based in the values of different \textit{variables}, namely: % estas variables, ¿de dónde salen? ¿Son todas las variables del juego? ¿Unas pocas? - JJ 
+\noindent The decisions are based in the values of different \textit{variables} which are computed considering some other variables in the game. They are defined by a human expert, and are:
+% estas variables, ¿de dónde salen? ¿Son todas las variables del juego? ¿Unas pocas? - JJ 
+% Antonio - Las define un experto. Escrito. ;)
 
 \begin{itemize}
 \item {\em myShipsEnemyRatio}: Ratio between the player's ships and enemy's ships.
@@ -317,7 +363,9 @@ else
 %		\ENDFOR
 %\ENDLOOP
 
-Next section is devoted to explain the main component of the evolutionary process, i.e. the fitness function. As previously stated, we have implemented three different functions, which are used to evaluate the agent's performance during the matches. %FERGU: el "devoted to" no me mola xD Tampoco sé si el fitness es el "main component". Ah, no usar el "we"
+Next section explains the main component of the evolutionary process, i.e. the fitness function. As previously stated, three different functions have been implemented, which are used to evaluate the agent's performance during the matches. 
+%FERGU: el "devoted to" no me mola xD Tampoco sé si el fitness es el "main component". Ah, no usar el "we"
+% Antonio - arreglado
 
 %-----------------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%% FITNESS FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -326,9 +374,12 @@ Next section is devoted to explain the main component of the evolutionary proces
 \section{Fitness Functions}
 \label{sec:fitness_functions}
 
-*** ACLARAR ESTO con FERGU *** %FERGU: Mi fitness es 
+% ---------------------------------------------------------------------
 
-In previous works *** [REF a trabajos de Genebot] ***, a bot was evaluated always versus the same enemy (a reference bot), several times (in different maps). Hierarchical fitness is used, as proposed in \cite{Genebot_CEC11}. Thus, an individual is better than another if it wins in a higher number of maps. In case of equality of victories, then the individual with more turns to be defeated (i.e. the stronger one) is considered better. The maximum fitness in this work is, therefore, 5 victories and 0 turns. %FERGU: mover la ultima frase a cuando se hable de los parametros
+\subsection{Fitness based in Turns}
+\label{subsec:fitness_turns}
+
+In previous works \cite{Genebot_CEC11}, a bot was evaluated always versus the same enemy (a reference bot), several times (in different maps),using a \textit{hierarchical fitness function}. Thus, an individual is better than another if it wins in a higher number of maps. In case of equality of victories, then the individual with more turns to be defeated (i.e. the stronger one) is considered as better. The maximum fitness in this work is, therefore, 5 victories and 0 turns. %FERGU: mover la ultima frase a cuando se hable de los parametros
 For two bots, A and B the fitness was defined as Algorithm \ref{alg:fitness_turns_positions} shows.
 
 \begin{algorithm}[ht]
@@ -354,26 +405,30 @@ For two bots, A and B the fitness was defined as Algorithm \ref{alg:fitness_turn
 \label{alg:fitness_turns_positions}
 \end{algorithm}
 
+% Antonio - Lo de 'is better' ¿qué significa a efectos de puntuación? ¿no sería mejor poner en lugar de "A is better than B" otra cosa?. Es que no queda claro cómo se calcula el fitness, que es un número con este algoritmo,que es más bien una comparativa entre individuos... ¿?
+
 In this fitness, we are only interested in the final result (position and number of turns). We do not include in the analysis how the bot has reached them. The problem of this function is that the consideration of two different terms makes it difficult the comparison between different evaluations. 
 
-%FERGU: creo que la sección 5.1 debería empezar aquí
-This fitness works well for 1 vs 1 battles, it has some limitations *** PROBLEMAS DEL FITNESS ***  that should be addressed. Therefore, in this work two additional evaluation functions have been proposed in order to let easier and fairer comparison methods between bots. *** intenta paliar en cierta medida el ruido [REF al ruido] *** %FERGU: he puesto un therefore para enlazar
-
-Both of them are based in the percentage of ships belonging to each player in every turn. They are normalized considering the total number of ships in the game for that turn (including neutrals ships in neutral planets). For each player, we have a different {$cloud$} of ships as Fig.\ref{figura:nubecita} shows. %FERGU: explicar la figura, que no queda na claro.
-
-\begin{figure}[ht]
-\begin{center}
-  \epsfig{file=imags/nubecita.eps,width=6cm}
-\end{center}
-\caption{Representation of the number of ships of each bot in each turn} 
-\label{figura:nubecita}
-\end{figure}
-
+Thus, in this work two additional evaluation functions have been proposed in order to let easier and fairer comparison methods between bots, trying to add another factor in order to reduce the influence of noise \cite{Mora_noisy_jcst}.
+%FERGU: he puesto un therefore para enlazar
+% Antonio - lo he cambiado todo. XD
+Both of them are based in the percentage of ships belonging to each player in every turn. They are normalized considering the total amount of ships in the game for that turn (including neutrals ships in neutral planets), so for each player, there is a different {$cloud$} of ships.
+% as Fig.\ref{figura:nubecita} shows. 
+%FERGU: explicar la figura, que no queda na claro.
+% Antonio - Eso digo yo... la voy a quitar
+%
+%\begin{figure}[ht]
+%\begin{center}
+%  \epsfig{file=imags/nubecita.eps,width=8cm}
+%\end{center}
+%\caption{Representation of the number of ships of each bot in each turn} 
+%\label{figura:nubecita}
+%\end{figure}
 Below, are described the two alternatives to deal with this cloud of points for the fitness function: the use of slopes and areas.
 
 % ---------------------------------------------------------------------
 
-\subsection{Fitness based in Slope.}
+\subsection{Fitness based in Slope}
 \label{subsec:fitness_slope}
 
 For this fitness, a square regression analysis is computed in order to transform the cloud of points into a simple line. The line is represented as {$y = \alpha \times x + \beta $}, where {$\alpha$} and {$\beta$} are calculated as shown in Equations \ref{eq:alpha} and \ref{eq:beta}, computing a least squares regression. For every bot in the simulation we calculate $\alpha$ and ($slope$). This $slope$ is the fitness of every bot for that simulation. 
@@ -395,7 +450,7 @@ For this fitness, a square regression analysis is computed in order to transform
 %\begin{figure}[h]
 %\centering
 %\hspace*{-1in}
-%  \epsfig{file=imagenes/nubecita_pendiente.eps,width=0.6
+%  \epsfig{file=imags/nubecita_pendiente.eps,width=0.6
 %  \textwidth}
 %\caption{Fitness based in Slope: number of ships of every bot in each turn}
 %\label{figura:nubecita:pendiente}
@@ -436,7 +491,7 @@ Then, the bot with the highest value will be the best is each turn or battle.
 
 % ---------------------------------------------------------------------
 
-\subsection{Fitness based in Area.}
+\subsection{Fitness based in Area}
 \label{sec:fitness}
 
 In this case, the integral of the curve of the bot's live-line is used for calculating the area that is `covered' by the fitness cloud of points (see Equation \ref{eq:area}). This {$area$} is normalized considering the number of turns, and thus it represents the average percentage of ships during the battle for each player. 
@@ -492,7 +547,9 @@ To test each individual during the evolution, a battle with a previously created
 Also, as proposed by \cite{Genebot_CEC11}, and due to the noisy fitness effect, all individuals are re-evaluated in every generation.
 
 
-Two publicly available bots have been chosen for our experiments\footnote{Both can be downloaded from \url{https://github.com/deantares/genebot}}. The first bot to confront is {\em GeneBot}, proposed in \cite{Genebot_CEC11}. This bot was trained using a GA to optimize the 8 parameters that conforms a set of hand-made rules, obtained from an expert human player experience. The second one is an advanced version of the previous, called {\em Exp-Genebot} (Expert Genebot) \cite{}. This bot outperformed Genebot widely. Exp-Genebot bot analyses the distribution of the planets in the map to chose a previously optimized set of parameters by a GA.  Both bots are the best individual obtained of all runs of their algorithm (not an average one). %FERGU: confirmarlo con Antares, que es el que los lanza.
+Two publicly available bots have been chosen for our experiments\footnote{Both can be downloaded from \url{https://github.com/deantares/genebot}}. The first bot to confront is {\em GeneBot}, proposed in \cite{Genebot_CEC11}. This bot was trained using a GA to optimize the 8 parameters that conforms a set of hand-made rules, obtained from an expert human player experience. ***The second one is an advanced version of the previous, called {\em Exp-Genebot} (Expert Genebot) \cite{ExpGenebot_CIG2012}. This bot outperformed Genebot widely. Exp-Genebot bot analyses the distribution of the planets in the map to chose a previously optimized set of parameters by a GA.  Both bots are the best individual obtained of all runs of their algorithm (not an average one). ***
+%FERGU: confirmarlo con Antares, que es el que los lanza.
+% Antonio - pos eso...
 
 %After running the proposed algorithm without tree limitation in depth, it has also been executed with the lower and average levels obtained for the best individuals: 3 and 7, respectively, to study if this number has any effect on the results.  FERGU: en este trabajo no se estudia la profundidad
  Table \ref{tab:parameters} summarizes all the parameters used.
@@ -512,7 +569,9 @@ Replacement & Steady-state\\ \hline
 Stop criterion & 50 generations \\ \hline
 Maximum Tree Depth & 7  \\ \hline %FERGU: quitados distintos tamaños
 Runs per configuration & 30 \\ \hline
-Evaluation & Playing versus Genebot \cite{Genebot_CEC11} and Exp-Genebot \cite{ExpGenebot_CIG2012} \\ \hline %FERGU: Antares, confirmalo
+Evaluation & Playing versus Genebot \cite{Genebot_CEC11} *** and Exp-Genebot \cite{ExpGenebot_CIG2012} *** \\ \hline 
+%FERGU: Antares, confirmalo
+% Antonio - Al final creo que sólo Genebot
 Maps used in each evaluation & map76.txt map69.txt map7.txt map11.txt map26.txt \\ \hline
 \end{tabular}
 \caption{Parameters used in the experiments.}
@@ -520,7 +579,8 @@ Maps used in each evaluation & map76.txt map69.txt map7.txt map11.txt map26.txt 
 \end{center}
 \end{table}
 
-After all the executions we have evaluated the obtained best individuals in all runs confronting to the bots in a larger set of maps (the 100 maps provided by Google) to study the behaviour of the algorithm and how good are the obtained bots in maps that have not been used for training. %FERGU: Antares, esto lo haces?
+After all the executions we have evaluated the obtained best individuals in all runs confronting to the bots in a larger set of maps (the 100 maps provided by Google) to study the behaviour of the algorithm and how good are the obtained bots in maps that have not been used for training. 
+%FERGU: Antares, esto lo haces?
 
 The used framework is OSGiLiath, a service-oriented evolutionary framework \cite{Garcia13Service}. The generated tree is compiled in real-time and injected in the agent's code using Javassist \footnote{\url{www.javassist.org}} library. All the source code used in this work is available under a LGPL V3 License in \url{http://www.osgiliath.org}.
 
