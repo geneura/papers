@@ -43,6 +43,19 @@ barplot(a_ex[a_ex[,2]==49,"AVERAGE_F"], main="AREA FITNESS", xlab="Execution", y
 barplot(s_ex[s_ex[,2]==49,"AVERAGE_F"], main="SLOPE FITNESS", xlab="Execution", ylab="Fitness",names.arg=s_ex[s_ex[,2]==49,"EX"])
 dev.off()
 
+pdf('plot_depth_best_generation_each_execution.pdf')
+par(mfrow=c(3,1))
+barplot(t_ex[t_ex[,2]==49,"BEST_DEPTH"], main="TURNS FITNESS", xlab="Execution", ylab="Fitness",names.arg=t_ex[t_ex[,2]==49,"EX"])
+barplot(a_ex[a_ex[,2]==49,"BEST_DEPTH"], main="AREA FITNESS", xlab="Execution", ylab="Fitness",names.arg=a_ex[a_ex[,2]==49,"EX"])
+barplot(s_ex[s_ex[,2]==49,"BEST_DEPTH"], main="SLOPE FITNESS", xlab="Execution", ylab="Fitness",names.arg=s_ex[s_ex[,2]==49,"EX"])
+dev.off()
+
+pdf('plot_age_best_generation_each_execution.pdf')
+par(mfrow=c(3,1))
+barplot(t_ex[t_ex[,2]==49,"BEST_AGE"], main="TURNS FITNESS", xlab="Execution", ylab="Fitness",names.arg=t_ex[t_ex[,2]==49,"EX"])
+barplot(a_ex[a_ex[,2]==49,"BEST_AGE"], main="AREA FITNESS", xlab="Execution", ylab="Fitness",names.arg=a_ex[a_ex[,2]==49,"EX"])
+barplot(s_ex[s_ex[,2]==49,"BEST_AGE"], main="SLOPE FITNESS", xlab="Execution", ylab="Fitness",names.arg=s_ex[s_ex[,2]==49,"EX"])
+dev.off()
 
 ##Parámetros de la ejecución de cada algoritmo
 
@@ -106,6 +119,56 @@ for (i in 10:20 ) {
   plot(s_ex[s_ex[,1]==paste("s_",i,sep=""),"AVERAGE_F"], main=paste("s_",i,sep=""), xlab="Generation", ylab="Fitness",ylim=c(0,5),type="l")
 }
 dev.off()
+
+rm(i)
+
+#Creamos una tabla
+
+
+tabla <- t_ex[t_ex[,2]==49,c(1,2)]
+tabla$TURNS_EX <- t_ex[t_ex[,2]==49,c(1)]
+tabla$TURNS_BEST_FITNESS <- t_ex[t_ex[,2]==49,c(4)]
+tabla$TURNS_AVERAGE_FITNESS <- t_ex[t_ex[,2]==49,c(5)]
+
+tabla$SLOPE_EX <- s_ex[s_ex[,2]==49,c(1)]
+tabla$SLOPE_BEST_FITNESS <- s_ex[s_ex[,2]==49,c(4)]
+tabla$SLOPE_AVERAGE_FITNESS <- s_ex[s_ex[,2]==49,c(5)]
+
+tabla$AREA_EX <- a_ex[a_ex[,2]==49,c(1)]
+tabla$AREA_BEST_FITNESS <- a_ex[a_ex[,2]==49,c(4)]
+tabla$AREA_AVERAGE_FITNESS <- a_ex[a_ex[,2]==49,c(5)]
+
+tabla$EX <- NULL
+tabla$IT <- NULL
+
+sink(file="tabla_fitness.latex")
+xtable(tabla)
+dev.off()
+
+rm(tabla)
+
+#
+#RESULTADOS DE LAS EJECUCIONES
+#
+
+batallas = read.csv('datos/batallas.csv')
+
+#Gráfica ponderada de los mejores de cada ejecución
+barplot(head(sort(table(batallas[batallas[,"Wins"]!="DRAW","Wins"])/1134*100,decreasing=TRUE),n=10),ylim=c(0,100))
+
+#Victorias de cada tipo de fitness
+barplot(sort(table(batallas[,"Type"])/nrow(batallas)*100,decreasing=TRUE),ylim=c(0,50),ylab="% Victories")
+
+
+par(mfrow=c(1,3))
+boxplot(as.matrix(table(batallas[batallas["Type"]=="TURNS","Wins"],exclude=c("DRAW","s_0","s_1","s_2","s_2","s_3","s_4","s_5","s_6","s_7","s_8","s_9","s_10","s_11","s_12","s_13","s_14","s_15","s_16","s_17","s_18","s_19","s_20","a_0","a_1","a_2","a_2","a_3","a_4","a_5","a_6","a_7","a_8","a_9","a_10","a_11","a_12","a_13","a_14","a_15","a_16","a_17","a_18","a_19","a_20"))/1134*100),ylim=c(0,100))
+title(sub="TURNS FITNESS")
+
+boxplot(as.matrix(table(batallas[batallas["Type"]=="AREA","Wins"],exclude=c("DRAW","s_0","s_1","s_2","s_2","s_3","s_4","s_5","s_6","s_7","s_8","s_9","s_10","s_11","s_12","s_13","s_14","s_15","s_16","s_17","s_18","s_19","s_20","t_0","t_1","t_2","t_2","t_3","t_4","t_5","t_6","t_7","t_8","t_9","t_10","t_11","t_12","t_13","t_14","t_15","t_16","t_17","t_18","t_19","t_20"))/1134*100),ylim=c(0,100))
+title(sub="AREA FITNESS")
+
+boxplot(as.matrix(table(batallas[batallas["Type"]=="SLOPE","Wins"],exclude=c("DRAW","a_0","a_1","a_2","a_2","a_3","a_4","a_5","a_6","a_7","a_8","a_9","a_10","a_11","a_12","a_13","a_14","a_15","a_16","a_17","a_18","a_19","a_20","t_0","t_1","t_2","t_2","t_3","t_4","t_5","t_6","t_7","t_8","t_9","t_10","t_11","t_12","t_13","t_14","t_15","t_16","t_17","t_18","t_19","t_20"))/1134*100),ylim=c(0,100))
+title(sub="SLOPE FITNESS")
 
 
 
