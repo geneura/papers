@@ -10,7 +10,7 @@
 
 \usepackage{amsmath}
 \usepackage{epsfig}
-\usepackage[utf8]{inputenc}
+%\usepackage[utf8]{inputenc}
 \usepackage{url}
 
 \journalname{Computing Journal}
@@ -42,8 +42,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
+Queda por arreglar:
+\begin{itemize}
+\item referencias demasiado largas
+\item tabla de hardware
+\item algunos comentarios de JJ
+\end{itemize}
+
 Many real life problems, and large instances of some toy problems, require a high amount of computational power to be solved. In order to deal with them, parallelization of algorithms has been used with the aim of both reducing the computation time and improving the quality of the solutions. From the beginning of the computation age these algorithms have been executed in central processing units (CPUs), one or more.
+
 However the advances in the video game industry have led to the production of low cost and high-performance graphics processing units (GPUs) included in almost every PC or even in every mobile device. Thus, recently, these units have been considered as general purpose processors and profited as powerful substitutes or complements for CPUs regarding problem solving tasks.
+
 The GPUs, alone or in conjunction with CPUs, can offer better results than traditional CPUs alone, both in time and power consumption. Many researchers are migrating their algorithm to these systems. This work presents a review of hardware and software advances in this line, along with their application in the area of some the most frequently used heuristics for solving complex problems: the bioinspired algorithms. Thus, the work proposes a taxonomy of the actual parallelization methods in GPUs, along with a review of the literature in this area.
 \keywords{Survey, Review, GPUs, General Purpose GPUs, Parallel Computation, Bioinspired Algorithms}
 \end{abstract}
@@ -57,45 +66,18 @@ The GPUs, alone or in conjunction with CPUs, can offer better results than tradi
 \label{sec:intro}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-General-purpose computing on graphics processing units (GPGPU) is the
-technique of using a Graphics Processing Unit (GPU), which typically
-handles computation only for computer graphics, % más bien di que está
-                                % diseñada para ejecutar unas
-                                % operaciones generalmente encontradas
-                                % en gráficos - JJ
-to perform computation in applications traditionally handled by a
-central processing unit (CPU). Recently there has been a growing
-interest in GPU computation due to the fact that this kind of
-processors has the ability to perform restricted parallel processing,
-which is very attractive to researchers with applications that require
-intensive parallel computation. 
-
-% eliminada por innecesaria... la dejo comentada por si alguien quiere que vuelva
-%\begin{figure}[h]
-%\centering
-%\epsfig{file=./openclfigure2small.eps,width=\columnwidth}
-%\caption{GPUs can be seen as SIMD multi-core processors. Internally the GPU contains a number of small processors that are used to perform calculations. Depending on the GPU, the number of threads that can be executed in parallel is in the order of hundreds to thousands.}
-%\label{fig:opencl}
-%\end{figure}
+General-purpose computing on graphics processing units (GPGPU) is the technique of using a Graphics Processing Unit (GPU), which typically handles computer graphics related stuff,
+to perform any kind of computation traditionally carried out by a central processing unit (CPU). Recently there has been a growing interest in GPU computation due to the fact that this kind of processors has the ability to perform restricted parallel processing, which is very attractive to researchers with applications that require intensive parallel computation. 
 
 GPUs are specialized stream processors, initially useful for rendering graphics applications. Typically, a GPU is able to perform graphics manipulations at a much higher speed than a general purpose CPU, since the graphics processor is specifically designed to handle certain primitive operations which occur frequently in graphics applications. Internally, the GPU contains a number of small processors that are used to perform calculations. 
-Depending on the power of a GPU, the number of threads that can be executed in parallel on such devices is currently in the order of hundreds to thousands and it is expected to multiply in a few years. Nowadays, developers can write (easily) their own high-level programs on GPU. Due to the wide availability, programmability, and high-performance of these consumer-level GPUs, they are cost-effective for, not just game playing, but also scientific computing.
-Now, GPUs are exposed to the programmer as a set of general-purpose shared-memory Single Instruction Multiple Data (SIMD) multi-core processors. 
-%(see Figure \ref{fig:opencl})
-This makes these architectures well suited to run large or complex computational problems. 
 
-The goal of this article is to review the use of GPUs to solve such
-problems, by means of the most extended
-metaheuristics\footnote{high-level procedures which follow strategies
-  for guiding the search, in order to solve an optimization problem} % esto no debería ser una nota - JJ
-, the \textit{bioinspired algorithms}. These algorithms imitate or
-model the behaviour of natural systems in order to design heuristic
-methods to mainly address search, learning, and optimization
-problems. % Si este es el tema del trabajo, deberíais justificar
-          % porqué los elegís. - JJ
+Depending on the power of a GPU, the number of threads that can be executed in parallel on such devices is currently in the order of hundreds to thousands and it is expected to multiply in a few years. Nowadays, developers can write their own high-level programs on GPU. Due to the wide availability, programmability, and high-performance of these consumer-level GPUs, they are cost-effective for, not just game playing, but also scientific computing.
 
-Bioinspired algorithms have been widely used by the scientific community because they are quite easy to understand and implement.
-They are stochastic, adaptive, and most of them inherently parallel models, since there are several agents working and cooperating to find the solution. This fact makes them completely suitable to be parallelized. The initial approaches considered clusters of computers or distributed processing, but the arise of GPGPUs have meant a new parallelization paradigm which is exposed here.
+Now, GPUs are exposed to the programmer as a set of general-purpose shared-memory Single Instruction Multiple Data (SIMD) multi-core processors. This makes these architectures well suited to run large or complex computational problems. 
+
+The goal of this article is to review the use of GPUs to solve such problems, by means of the most extended metaheuristics (high-level procedures which follow strategies for guiding the search, in order to solve an optimization problem), the \textit{bioinspired algorithms}. These algorithms imitate or model the behaviour of natural systems in order to design heuristic methods to address search, learning, and optimization problems.
+
+Bioinspired algorithms have been widely used by the scientific community because they are quite easy to understand and implement. They are stochastic, adaptive, and most of them inherently parallel models, since there are several agents working and cooperating to find the solution. This fact makes them completely suitable to be parallelized. The initial approaches considered clusters of computers or distributed processing, but the arise of GPGPUs have meant a new parallelization paradigm which is exposed here.
 
 Thus, the paper presents a survey of the most extended bioinspired algorithms and the different proposals of GPUs-parallelization approaches made in a number of research works. They are organized according to a parallelization taxonomy.
 
@@ -124,8 +106,7 @@ the limits of miniaturization at atomic levels. Maybe it is time for
 Koomey's Law \cite{10.1109/MAHC.2010.28} to replace Moore's
 Law. Koomey says that energy efficiency is doubled every 18
 months. For fixed computing load, the amount of battery you need will
-fall by a factor of two every year and a half.  % de hecho, yo diría
-                                % que se ha parado ya - JJ
+fall by a factor of two every year and a half.
 
 Parallel computation has recently become necessary to take full
 advantage of the gains allowed by Moore's law. For years, processor
@@ -177,16 +158,8 @@ scheduling of threads.
 %\label{fig:gpu}
 %\end{figure}
 
-Physically GPUs used to be huge in comparison with CPUs as shown in
-Table \ref{tab:features}. Latest microprocessors from the two main
-vendors, AMD \cite{amd} and Intel \cite{intel}, are over 1 billion
-transistors. Latest GPUs from AMD and NVIDIA \cite{nvidia} are over 4
-billion transistors. CPUs draw 130W at most, a limit established by
-the cost of commodity heat sinks and fan. GPUs have an bigger power
-consumption and currently are in the neighborhood of 300W. This can be
-possible with the use of exotic cooling solutions. CPUs are built with
-the finest technology, read best lithography, while GPUs are made with
-budget in mind in more common and older processes. %esta frase está en
+Physically GPUs used to be huge in comparison with CPUs as shown in Table \ref{tab:features}. Latest microprocessors from the two main vendors, AMD and Intel, are over 1 billiontransistors. Latest GPUs from AMD and NVIDIA \cite{nvidia} are over 4 billion transistors. CPUs draw 130W at most, a limit established by the cost of commodity heat sinks and fan. GPUs have an bigger power consumption and currently are in the neighborhood of 300W. This can be possible with the use of exotic cooling solutions. CPUs are built with
+the finest technology, read best lithography, while GPUs are made with budget in mind in more common and older processes. %esta frase está en
                                 %el artículo de 2012 - JJ
 
 No standard terminology can be found in the world of graphics hardware.
@@ -254,7 +227,6 @@ Intel Xeon Phi 5100P   & 5             & 600          & 60            & 1.053   
 \caption{CPU, GPU and APU comparison of the best professional and
   commodity desktop hardware available nowadays. A slash is used in
   APUs to separate CPU/GPU parts. 
-% ¿Está actualizado? - JJ
 \label{tab:features}}
 \end{table*}
 
@@ -268,20 +240,9 @@ side, loads capped by pure ALU execution power use to be faster on AMD
 hardware. % También en el artículo de 2012. Si sigue siendo cierto,
           % refrasearlo - JJ
 
+Traditionally CPUs and GPUs have been separated. In 2014 the trend is to integrate both into a single chip for cost efficiency reasons. Only top models remain as discrete devices. Some of this are top models from Intel's Core i7 or AMD's Opteron 6300 families. Also best discrete GPUs from NVIDIA and AMD, like consumer GeForce GTX 690 and Radeon HD 7990 and professional line QUADRO K6000 and Radeon FirePro S10000. 
 
-Traditionally CPUs and GPUs have been separated. % Enésimo error
-                                % gramatical que corrijo. Por favor,
-                                % miradlo bien - JJ
-Now % ¿cuando? - JJ
- the trend is to integrate both into a single chip for cost efficiency
- reasons. Only top models remain as discrete devices. Some of this are
- top models from Intel's Core i7 or AMD's Opteron 6300 families. Also
- best discrete GPUs from NVIDIA and AMD, like consumer GeForce GTX 690
- and Radeon HD 7990 and professional line QUADRO K6000 and Radeon
- FirePro S10000. 
-
-Recently, % ¿cuando? - JJ
-CPU with an integrated GPU have appeared. AMD and Intel have just
+From 2006 CPUs with an integrated GPU have became popular. AMD and Intel have just
 started selling this kind of combined processor and graphics card. The
 term Accelerated Processing Unit has been coined for this kind of
 chips. The architectural names are Llano for AMD and Sandy Bridge for
