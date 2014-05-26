@@ -88,7 +88,7 @@ This paper presents an approach for conducting this task by means of Genetic Pro
 % Este paper, como todos, resuelve un problema. ¿Qué problema resuelve? No me cuentes lo que has hecho, cuéntame primero lo que quieres hacer. 
 % Antonio - hecho. Creo que ha quedado bien. ;)
 %FERGU2: No sé si poner acrónimos en el abstract se estila... De todas maneras, como dice JJ, podemos enfocarlo a "Para hacer GP hace falta una función fitness buena, antes se han usado estas, pero eran regulares. En este paper comparamos 3 funciones distintas que tienen en cuenta más o menos información para ver cuál es mejor" ¿Cambiamos el título a "Comparing different fitness functions for the creation of bots using GP"?
-Using this method it is possible to create and rule-based systems defining decisions and actions, in an automatic way, completely different from a human designer doing them from scratch. These rules will be optimised along the algorithm run, considering the bot's performance during evaluation matches. As GP can generate and evolve behavioural rules not taken into account by an expert, the obtained bots could perform better than human-defined ones.  
+Using this method it is possible to create rule-based systems defining decisions and actions, in an automatic way, completely different from a human designer doing them from scratch. These rules will be optimised along the algorithm run, considering the bot's performance during evaluation matches. As GP can generate and evolve behavioural rules not taken into account by an expert, the obtained bots could perform better than human-defined ones.  
 % No entiendo muy bien esta frase: "it is possible to create and rule-based systems"  ¿está bien escrita?   [pedro]
 %FERGU: pero también 'podría" ser peor... no?
 % Efectivamente. O tardar una eternidad. - JJ
@@ -100,14 +100,14 @@ Due to the difficulties present in the videogames scope, such as noise in the ev
 % Antonio - Such as noise in the fitness function. XD
 % Algunos resultados preliminares del fitness ya se han publicado en abierto. Haz pull del  ultimo geneura.bib y mira wilcoxon:ga - JJ
 % Antonio - JJ, estamos hablando del problema en los videojuegos, no quiere decir que sea el único sitio en el que hay ruido. Pongo la cita a tu Wilcoxon en el texto. ;)
-The best obtained agents have been compared with previous bots, some created by an expert player (from scratch) and then optimised by means of Genetic Algorithms. Three different fitness have been compared: a hierarchical fitness that does not takes into account the whole execution process and two that use information of the battle: slope and area. %FERGU2: explicarlos con una frase
-***
-Los resultados indican que los bots creados con GP son más competentes, y que el uso de la función de fitness XXX es la que mejores agentes genera.
-***
+The best obtained agents have been compared with a previous bot, created by an expert player (from scratch) and then optimised by means of Genetic Algorithms. Three different fitness have been compared: a hierarchical fitness that does not takes into account the whole execution process and two that use information of the battle: slope and area. %FERGU2: explicarlos con una frase
+%***
+%Los resultados indican que los bots creados con GP son más competentes, y que el uso de la función de fitness XXX es la que mejores agentes genera.
+%***
 % agh. No pongáis esto nunca así, que a veces se cuela en la versión final. Ponedlo en comentarios - JJ
 % Antonio - tranquilo que no se cuela, lo revisaré yo mismo buscando el texto '***' que yo siempre pongo. Me gusta más resaltarlo así porque además me hago una idea de lo que ocupa en el texto. ;)
 %FERGU2: Posible frase abajo
-The experiments show that the three used fitness functions generate bots that outperform the optimized human-defined one, being the TURN/SLOPE/AREA fitness function the one that produces better results.
+The experiments show that the three used fitness functions generate bots that outperform the optimized human-defined one, being the area-based fitness function the one that produces better results.
 \end{abstract}
 
 
@@ -267,7 +267,7 @@ We have considered this game in some previous studies \cite{Genebot-IWANN2011,Ge
 %  using a tree of 5 levels. These results outperformed the previous
 %  version of the bot with 87\% of victories. 
 
-In this paper we use GP to create the Decision Tree ***[REF]***, instead of expert human gaming experience to model it, and the resulting agent is compared with a competitive bot previously presented: Genebot \cite{Genebot_CEC11}, our initial bot improved by means of Genetic Algorithms.%, and Exp-Genebot \cite{ExpGenebot_CIG2012} an enhanced agent which considers different sets of parameters depending on the type of battle map, which is previously analysed by the bot.
+In this paper we use GP to create the Decision Tree, instead of expert human gaming experience to model it, and the resulting agent is compared with a competitive bot previously presented: Genebot \cite{Genebot_CEC11}, our initial bot improved by means of Genetic Algorithms.%, and Exp-Genebot \cite{ExpGenebot_CIG2012} an enhanced agent which considers different sets of parameters depending on the type of battle map, which is previously analysed by the bot.
 %*** Quitamos Exp-Genebot??? ***
 %FERGU2: sí, quitado
 %-------------------------------------------------------------
@@ -621,7 +621,9 @@ The used framework is OSGiLiath, a service-oriented evolutionary framework \cite
 %-------------------------------------------------------------
 \section{Results}
 
-Table \ref{tab:results3config} shows the obtained results after executing 20 times each configuration. Although these fitness are not comparable (as the obviously have different metrics) the turn-based fitness achieves values near to the optimum at the end of the execution (in best individual and average population). The slope and area achieve results NI IDEA PORQUE NO LOS ENTIENDO XDD (FERGU3).
+Table \ref{tab:results3config} shows the obtained results after executing 20 times each configuration. Although these fitness are not comparable (as the obviously have different metrics) the turn-based fitness achieves values near to the optimum at the end of the execution (in best individual and average population). The slope and area achieve results under their theoretical optimum, as they depend of more information.
+
+% NI IDEA PORQUE NO LOS ENTIENDO XDD (FERGU3). ARREGLADLO
 
 
 \begin{table*}
@@ -639,7 +641,14 @@ Area	& 2,838	$\pm$	1,198	&	2,347	$\pm$	0,949 \\ \hline
 }
 \end{table*}
 
-Although the turn-based fitness achieves better results (near optimal), to do a fair comparison of the three methods used to obtain the bots, each best individual obtained has been tested competing with the generated by the other methods. ANTARES, CUANTAS EJECUCIONES POR BOT Y EN QUE MAPAS?????  The boxplots of the average percentage of victories from the best bots obtained by each method is shown in Figure \ref{figura:boxplotvictories}. It is clear from the image that the slope fitness does not achieve good results with respect the other methods. This can be explained because... PUES ESOOOOOOO. Also, the turn-based fitness achieves better results in average, being also more robust. However, with the Area fitness, the results obtained .... NO SE COMO JUSTIFICAR QUE ESTO ES MEJOR (FERGU3). 
+Although the turn-based fitness achieves better results (near optimal), to do a fair comparison of the three methods used to obtain the bots, each best individual obtained has been tested competing with the generated by the other methods. 
+
+%FERGU3 ANTARES, CUANTAS EJECUCIONES POR BOT Y EN QUE MAPAS?????  
+
+The boxplots of the average percentage of victories from the best bots obtained by each method is shown in Figure \ref{figura:boxplotvictories}. It is clear from the image that the slope fitness does not achieve good results with respect the other methods. This can be explained because the slope loses information during the run.
+%FERGU3 PUES ESO. NPI! ARREGLADLO!
+Also, the turn-based fitness achieves better results in average, being also more robust. However, with the Area fitness, the results obtained can outperform them, obtaining more victories.
+%.... NO SE COMO JUSTIFICAR QUE ESTO ES MEJOR :/// (FERGU3). 
 
  \begin{figure}[ht]
  \begin{center}
@@ -716,14 +725,14 @@ Although the turn-based fitness achieves better results (near optimal), to do a 
 
 %This work presents a Genetic Programming algorithm that generates agents for playing the Planet Wars game. A number of possible actions to perform and decision variables have been presented. A competitive bot available in the literature (Genebot) has been used to calculate the fitness of the generated individuals. This bot was the best obtained from several runs and the behaviour to be optimized was extracted from human expertise. %FERGU: confirmarlo %FERGU2: quitado exp-genebot y reescrito a continuación
 
-Genetic programming is a method that can help to create competitive bots for RTS games. The fitness function used during the evolution affects directly to the creation of these bots. In this paper, three different fitness functions have been compared to generate bots for the Planet wars game. Different information of the run of the game is taken into account in these functions to...
+Genetic programming is a method that can help to create competitive bots for RTS games. The fitness function used during the evolution affects directly to the creation of these bots. In this paper, three different fitness functions have been compared to generate bots for the Planet wars game. A competitive bot available in the literature (Genebot) has been used to calculate the fitness of the generated individuals. This bot was the best obtained from several runs and the behaviour to be optimized was extracted from human expertise. Different information of the run of the game is taken into account in these functions to obtain a metric to guide the evolution. Although a turn-based fitness behaves more robust than other methods, the area-based fitness achieves better percentage of victories in more produced robots.
+%FERGU3: esto ultimo lo estoy escribiendo a las 3 de la mañana y no sé que pongo
 
 
 
 %Three different maximum depth for the trees have been used: 3, 7 and unlimited. Results show that the best individuals outperform these agents during the evolution in all configurations. These individuals have been tested against a larger set of maps not previously used during the evolution, obtaining equivalent or better results than Genebot and Exp-Genebot. FERGU: estos no son los resultados
 
-Results show that... el fitness es importante... blablabla.
-
+Results show that it is important to chose carefully the fitness to evolve, and also, to validate this used fitness using some kind of benchmark.
 
 In future work, other rules will be added to the proposed algorithm (for example, the ones that analyse the map) and different enemies will be used. Other games used in the area of computational intelligence in videogames, such as Unreal\texttrademark~ or Super Mario\texttrademark~ will be tested.
 
