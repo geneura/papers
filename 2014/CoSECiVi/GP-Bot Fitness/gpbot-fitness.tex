@@ -219,7 +219,7 @@ version of the game Galcon, aimed at performing bot's fights which was used as b
 
  \begin{figure}[ht]
  \begin{center}
-   \epsfig{file=./imags/naves.png,width=7cm}
+   \epsfig{file=./imags/naves.eps,width=7cm}
  \end{center}
  \caption{Simulated screenshot of an early stage of a run in Planet Wars. White planets belong to the player (blue colour in the game), dark grey belong to the opponent (red in the game), and light grey planets belong to no player. The triangles are fleets, and the numbers (in planets and triangles) represent the ships. The planet size means growth rate of the amount of ships in it (the bigger, the higher).}
  \label{figura:PlanetWars1}
@@ -406,7 +406,9 @@ Next section explains the main component of the evolutionary process, i.e. the f
 % "Turn based fitness"  [pedro] FERGU3: arreglado. Habría que llamarlo fitness basado en VICTORIAS, que es lo importante!!!!! (de hecho, el valor de las tablas muestra las VICTORIAS)
 \label{subsec:fitness_turns}
 
-In previous works \cite{Genebot_CEC11}, a bot was evaluated always versus the same enemy (a reference bot), several times (in different maps),using a \textit{hierarchical fitness function}. Thus, an individual is better than another if it wins in a higher number of maps. In case of equality of victories, then the individual with more turns to be defeated (i.e. the stronger one) is considered as better. The maximum fitness in this work is, therefore, 5 victories and 0 turns. %FERGU: mover la ultima frase a cuando se hable de los parametros
+%In previous works \cite{Genebot_CEC11}, a bot was evaluated always versus the same enemy (a reference bot), several times (in different maps), using a \textit{hierarchical fitness function}. FERGU4: comento esto que no sirve para nada.
+
+In this approach, an individual is better than another if it wins in a higher number of maps. In case of equality of victories, then the individual with more turns to be defeated (i.e. the stronger one) is considered as better. The maximum fitness in this work is, therefore, 5 victories and 0 turns. %FERGU: mover la ultima frase a cuando se hable de los parametros
 For two bots, A and B, the fitness comparison (and therefore, their order inside the population) is defined as Algorithm \ref{alg:fitness_turns_positions} shows.
 
 \begin{algorithm}[ht]
@@ -654,17 +656,48 @@ Although the turn-based fitness achieves better results (near optimal), to do a 
 The boxplots of the average percentage of victories from the best bots obtained by each method is shown in Figure \ref{figura:boxplotvictories}. It is clear from the image that the slope fitness does not achieve good results with respect the other methods. This can be explained because the slope loses information during the run.
 %FERGU3 PUES ESO. NPI! ARREGLADLO!
 Also, the turn-based fitness achieves better results in average, being also more robust. However, with the Area fitness, the results obtained can outperform them, obtaining more victories.
-%.... NO SE COMO JUSTIFICAR QUE ESTO ES MEJOR :/// (FERGU3). 
+%.... NO SE COMO JUSTIFICAR QUE ESTO ES MEJOR :/// (FERGU3). ç
+
 
  \begin{figure}[ht]
  \begin{center}
-   \includegraphics[width=7cm]{graficas_experimentos/boxplot_victoria_bot_por_metodo.pdf}
+   \includegraphics[width=7cm]{graficas_experimentos/boxplot_victoria_bot_por_metodo.eps}
  \end{center}
  \caption{Boxplot of average \% of victories of the bots obtained by each method vs. the rest.}
-% Los boxplot son para comparar. Los tenéis que meter a los tres en el mismo. Si no vais a comparar, no tenéis que hacer ningún boxplot. - JJ  
+% Los boxplot son para comparar. Los tenéis que meter a los tres en el mismo. Si no vais a comparar, no tenéis que hacer ningún boxplot. - JJ FERGU4: lo que te dije, Antares. 
  \label{figura:boxplotvictories}
  \end{figure}
 
+
+However, the results show different percentages of ties depending on the method used, as can be seen in Table \ref{tab:ties}. The turn-based fitness achieves more ties with bots of the same type than the others. This can be explained because they use less information to perform the evolution, obtaining similar behaviours.
+
+
+
+\begin{table*}
+\centering{
+\begin{tabular}{|c|c|c|c|} \hline            
+		& Turns		&	Area 		& Slope	\\ \hline \hline
+Turns 	& 62.06\%	& 23.15 \% 	&	12.47 \% \\ \hline
+Slope	& 	-		& 19.07 \%	&	12.50 \%		\\ \hline
+Area	& 	-		&	-		&	11.87 \% \\ \hline
+
+
+\end{tabular}
+\caption{Percentage of ties between bots.}
+\label{tab:ties}
+}
+\end{table*}
+
+To do a fair comparison, we have confronted the 21 bots obtained in each configuration again with Genebot, but in 9 representative maps provided by Google. This experiment has been used to validate if the obtained individuals of the proposed method can be competitive in terms of quality in maps not used for evaluation. Results are shown in Figure \ref{figura:boxplotvictoriesgenebot}. As can be seen, the turn based fitness achieves significantly better results than the other methods.
+
+
+  \begin{figure}[ht]
+ \begin{center}
+   \includegraphics[width=7cm]{graficas_experimentos/boxplot_victoria_bot_por_metodo_contra_genebot.eps}
+ \end{center}
+ \caption{Boxplot of average \% of victories of the bots obtained by each method vs. Genebot.} 
+ \label{figura:boxplotvictoriesgenebot}
+ \end{figure}
 
 %FERGU: he borrado las tablas, que aquí no se usan. Dejo el resto comentado, por si queréis "inspiraros". Vamos, que no se reutiliza nada del trabajo del Evostar
 
@@ -732,17 +765,19 @@ Also, the turn-based fitness achieves better results in average, being also more
 
 %This work presents a Genetic Programming algorithm that generates agents for playing the Planet Wars game. A number of possible actions to perform and decision variables have been presented. A competitive bot available in the literature (Genebot) has been used to calculate the fitness of the generated individuals. This bot was the best obtained from several runs and the behaviour to be optimized was extracted from human expertise. %FERGU: confirmarlo %FERGU2: quitado exp-genebot y reescrito a continuación
 
-Genetic programming is a method that can help to create competitive bots for RTS games. % ¿Eso es una conclusión? ¿Lo habéis concluido en el paper? Empezad las conclusiones por "en este trabajo nos proponíamos probar..." - JJ
-The fitness function used during the evolution affects directly the creation of these bots. In this paper, three different fitness functions have been compared to generate bots for the Planet wars game. A competitive bot available in the literature (Genebot) has been used to calculate the fitness of the generated individuals. This bot was the best obtained from several runs and the behaviour to be optimized was extracted from human expertise. Different information of the run of the game is taken into account in these functions to obtain a metric to guide the evolution. Although a turn-based fitness behaves more robustly than other methods, the area-based fitness achieves better percentage of victories in more produced robots. % robots o bots? - JJ
+%Genetic programming is a method that can help to create competitive bots for RTS games. % ¿Eso es una conclusión? ¿Lo habéis concluido en el paper? Empezad las conclusiones por "en este trabajo nos proponíamos probar..." - JJ
+The objective of this work is to validate if using Genetic Programming can create competitive bots for RTS games, and study the behaviour of different fitness functions, as they can affect directly the creation of these bots. Three different fitness functions have been compared to generate bots for the Planet wars game. A competitive bot available in the literature (Genebot) has been used to calculate the fitness of the generated individuals. This bot was the best obtained from several runs and the behaviour to be optimized was extracted from human expertise. Different information of the run of the game is taken into account in these functions to obtain a metric to guide the evolution. %Although a turn-based fitness behaves more robustly than other methods, the area-based fitness achieves better percentage of victories in more produced robots. % robots o bots? - JJ
 %FERGU3: esto ultimo lo estoy escribiendo a las 3 de la mañana y no sé que pongo
-% Por lo que más queráis, revisad el inglés - JJ 
+% Por lo que más queráis, revisad el inglés - JJ FERGU4: ya, vaya horror.
+The results show differences depending on the fitness used: a turn-based fitness that prioritizes the number of victories generate better bots in average than fitness that take into account the number of spaceships during all the run of the battle. This can be explained because this fitness exploits the individuals to generate more aggressive bots.
 
-% La conclusión tiene que estar relacionada con el título. ¿Qué habéis concluido con respecto a GP? ¿Qué tipo de GP? ¿Qué población? ¿No decís nada más que del fitness? - JJ
+
+% La conclusión tiene que estar relacionada con el título. ¿Qué habéis concluido con respecto a GP? ¿Qué tipo de GP? ¿Qué población? ¿No decís nada más que del fitness? - JJ FERGU
 
 %Three different maximum depth for the trees have been used: 3, 7 and unlimited. Results show that the best individuals outperform these agents during the evolution in all configurations. These individuals have been tested against a larger set of maps not previously used during the evolution, obtaining equivalent or better results than Genebot and Exp-Genebot. FERGU: estos no son los resultados
 
-Results show that it is important to choose carefully the fitness that is going to be used to evaluate the evolved bots and to validate it using some kind of benchmark. % Some kind? Which kind? - JJ
-% ¿Eso es lo único que muestran? - JJ
+%Results show that it is important to choose carefully the fitness that is going to be used to evaluate the evolved bots and to validate it using some kind of benchmark. % Some kind? Which kind? - JJ
+% ¿Eso es lo único que muestran? - JJ FERGU4: joer, menuda mierda de frase he escrito...
 
 In future work, other rules will be added to the proposed algorithm (for example, the ones that analyse the map) and different enemies will be used. Other games used in the area of computational intelligence in videogames, such as Unreal\texttrademark~ or Super Mario\texttrademark~ will be tested.
 
