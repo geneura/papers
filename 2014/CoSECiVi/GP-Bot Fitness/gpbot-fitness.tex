@@ -162,7 +162,7 @@ trying to do the same. The planets can produce new ships and the ships are destr
 
 This work uses some of the results obtained in a previous one \cite{GPBot_EVO2014} as a baseline for comparisons. 
 Three different fitness functions will be presented and tested in this paper: 
-the first one is the previously \textit{turn-based fitness} \cite{Genebot_CEC11}, 
+the first one is the previously \textit{victory-based fitness} \cite{Genebot_CEC11}, 
 %FERGU: quitado el "our traditional". Queda muy "our traditional polvorones"
 % Antonio - guay
 which evaluates all the individuals in the population by playing five different matches (in five different maps) against a sparring bot. The aim of the repetitions is to avoid the noisy factor present in these dynamic environments \cite{Mora_noisy_jcst,wilcoxon:ga}.   
@@ -402,7 +402,7 @@ Next section explains the main component of the evolutionary process, i.e. the f
 
 % ---------------------------------------------------------------------
 
-\subsection{Turn-based fitness}
+\subsection{Victory-based fitness}
 % "Turn based fitness"  [pedro] FERGU3: arreglado. Habría que llamarlo fitness basado en VICTORIAS, que es lo importante!!!!! (de hecho, el valor de las tablas muestra las VICTORIAS)
 \label{subsec:fitness_turns}
 
@@ -580,19 +580,13 @@ To test each individual during the evolution, a battle with a previously created
 Also, as proposed by \cite{Genebot_CEC11}, and due to the noisy fitness effect, all individuals are re-evaluated in every generation.
 
 
-Two publicly available bots have been chosen for our experiments\footnote{Both can be downloaded from \url{https://github.com/deantares/genebot}}. The first bot to confront is {\em GeneBot}, proposed in \cite{Genebot_CEC11}. This bot was trained using a GA to optimize the 8 parameters that conforms a set of hand-made rules, obtained from an expert human player experience. %***The second one is an advanced version of the previous, called {\em Exp-Genebot} (Expert Genebot) \cite{ExpGenebot_CIG2012}. This bot outperformed Genebot widely. Exp-Genebot bot analyses the distribution of the planets in the map to chose a previously optimized set of parameters by a GA.  Both bots are the best individual obtained of all runs of their algorithm (not an average one). ***
-%FERGU: confirmarlo con Antares, que es el que los lanza.
-% Antonio - pos eso...
-% FERGU2: al final no se usa el Experto
-
-%After running the proposed algorithm without tree limitation in depth, it has also been executed with the lower and average levels obtained for the best individuals: 3 and 7, respectively, to study if this number has any effect on the results.  FERGU: en este trabajo no se estudia la profundidad
- Table \ref{tab:parameters} summarizes all the parameters used.
+A publicly available bot has been chosen for our experiments\footnote{It can be downloaded from \url{https://github.com/deantares/genebot}}. The bot to confront is {\em GeneBot}, proposed in \cite{Genebot_CEC11}. This bot was trained using a GA to optimize the 8 parameters that conforms a set of hand-made rules, obtained from an expert human player experience.  Table \ref{tab:parameters} summarizes all the parameters used.
 
 \begin{table}
 \begin{center}
 \begin{tabular}{|c|c|}
 \hline
-{\em Parameter Name} & {\em Value} \\\hline
+{\em Parameter Name} & {\em Value} \\\hline \hline
 Population size & 32 \\\hline
 Crossover type & Sub-tree crossover \\ \hline
 Crossover rate & 0.5\\ \hline
@@ -629,7 +623,7 @@ The used framework is OSGiLiath, a service-oriented evolutionary framework \cite
 %-------------------------------------------------------------
 \section{Results}
 
-Table \ref{tab:results3config} shows the obtained results after executing 20 times each configuration. Although these fitness are not comparable (as the obviously have different metrics) the turn-based fitness achieves values near to the optimum at the end of the execution (in best individual and average population). The slope and area achieve results under their theoretical optimum, as they depend of more information ranges (variation in the number of ships).
+Table \ref{tab:results3config} shows the obtained results after executing 20 times each configuration. Although these fitness are not comparable (as the obviously have different metrics) the victory-based fitness achieves values near to the optimum at the end of the execution (in best individual and average population). The slope and area achieve results under their theoretical optimum, as they depend of more information ranges (variation in the number of ships).
 
 % NI IDEA PORQUE NO LOS ENTIENDO XDD (FERGU3). ARREGLADLO
 
@@ -649,7 +643,7 @@ Area	& 2,838	$\pm$	1,198	&	2,347	$\pm$	0,949 \\ \hline
 }
 \end{table*}
 
-Although the turn-based fitness achieves better results (near optimal), to do a fair comparison, we have confronted the 21 bots obtained in each configuration again with Genebot, but in 9 representative maps provided by Google. This experiment has been used to validate if the obtained individuals of the proposed method can be competitive in terms of quality in maps not used for evaluation. Results are shown in Figure \ref{figura:boxplotvictoriesgenebot}. As can be seen, the turn based fitness achieves significantly better results than the other methods.
+Although the victory-based fitness achieves better results (near optimal), to do a fair comparison, we have confronted the 21 bots obtained in each configuration again with Genebot, but in 9 representative maps provided by Google. This experiment has been used to validate if the obtained individuals of the proposed method can be competitive in terms of quality in maps not used for evaluation. Results are shown in Figure \ref{figura:boxplotvictoriesgenebot}. As can be seen, the victory-based fitness achieves significantly better results than the other methods.
 %FERGU3 ANTARES, CUANTAS EJECUCIONES POR BOT Y EN QUE MAPAS?????  
 %Los mapas son & 7 & 11 & 13 & 26 & 32 & 64 & 69 & 76 & 87 \ y os explico un poco las cuentas.
 %Se han hecho 35721 batallas en 9 mapas con 63 bots (21 por método).
@@ -667,7 +661,7 @@ Although the turn-based fitness achieves better results (near optimal), to do a 
 
 
 Also, to perform a comparison of the three methods used, each best individual obtained has been tested competing with the ones generated by the other methods. This allow a comparison with a wider number of bots, and also, allows the analysis of their behavior with bots not used during training.
- The boxplots of the average percentage of victories from the best bots obtained by each method are shown in Figure \ref{figura:boxplotvictories}. It is clear from the image that the slope fitness does not achieve good results with respect the other methods. This can be explained because the slope loses information during the run, with respect to the others, being also less aggressive. The turn-based fitness achieves better results in average, being also more robust. However, with the Area fitness, the results obtained can outperform them, obtaining more victories.
+ The boxplots of the average percentage of victories from the best bots obtained by each method are shown in Figure \ref{figura:boxplotvictories}. It is clear from the image that the slope fitness does not achieve good results with respect the other methods. This can be explained because the slope loses information during the run, with respect to the others, being also less aggressive. The victory-based fitness achieves better results in average, being also more robust. However, with the Area fitness, the results obtained can outperform them, obtaining more victories.
 %.... NO SE COMO JUSTIFICAR QUE ESTO ES MEJOR :/// (FERGU3). ç
 
 
@@ -681,15 +675,15 @@ Also, to perform a comparison of the three methods used, each best individual ob
  \end{figure}
 
 
-However, the results show different percentages of ties depending on the method used, as can be seen in Table \ref{tab:ties}. The turn-based fitness achieves more ties with bots of the same type than the others. This can be explained because they use less information to perform the evolution, obtaining similar behaviours.
+However, the results show different percentages of ties depending on the method used, as can be seen in Table \ref{tab:ties}. The victory-based fitness achieves more ties with bots of the same type than the others. This can be explained because they use less information to perform the evolution, obtaining similar behaviours.
 
 
 
 \begin{table*}
 \centering{
 \begin{tabular}{|c|c|c|c|} \hline            
-		& Turns		&	Area 		& Slope	\\ \hline \hline
-Turns 	& 62.06\%	& 23.15 \% 	&	12.47 \% \\ \hline
+		& Victory		&	Area 		& Slope	\\ \hline \hline
+Victory & 62.06\%	& 23.15 \% 	&	12.47 \% \\ \hline
 Slope	& 	-		& 19.07 \%	&	12.50 \%		\\ \hline
 Area	& 	-		&	-		&	11.87 \% \\ \hline
 
@@ -772,8 +766,7 @@ Area	& 	-		&	-		&	11.87 \% \\ \hline
 The objective of this work is to validate if using Genetic Programming can create competitive bots for RTS games, and study the behaviour of different fitness functions, as they can affect directly the creation of these bots. Three different fitness functions have been compared to generate bots for the Planet wars game. A competitive bot available in the literature (Genebot) has been used to calculate the fitness of the generated individuals. This bot was the best obtained from several runs and the behaviour to be optimized was extracted from human expertise. Different information of the run of the game is taken into account in these functions to obtain a metric to guide the evolution. %Although a turn-based fitness behaves more robustly than other methods, the area-based fitness achieves better percentage of victories in more produced robots. % robots o bots? - JJ
 %FERGU3: esto ultimo lo estoy escribiendo a las 3 de la mañana y no sé que pongo
 % Por lo que más queráis, revisad el inglés - JJ FERGU4: ya, vaya horror.
-The results show differences depending on the fitness used: a turn-based fitness that prioritizes the number of victories generate better bots in average than fitness that take into account the number of spaceships during all the run of the battle. This can be explained because this fitness exploits the individuals to generate more aggressive bots.
-
+The results show differences depending on the fitness used: a victory-based fitness that prioritizes the number of victories generate better bots in average than fitness that take into account the number of spaceships during all the run of the battle. This can be explained because this fitness exploits the individuals to generate more aggressive bots. However, their performance decreases confronting versus different types of bots.
 
 % La conclusión tiene que estar relacionada con el título. ¿Qué habéis concluido con respecto a GP? ¿Qué tipo de GP? ¿Qué población? ¿No decís nada más que del fitness? - JJ FERGU
 
