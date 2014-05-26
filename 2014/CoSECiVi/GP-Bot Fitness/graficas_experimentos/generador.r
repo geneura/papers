@@ -181,6 +181,7 @@ boxplot(as.matrix(table(batallas[batallas["Type"]=="SLOPE","Wins"],exclude=c("DR
 title(main="SLOPE FITNESS")
 dev.off()
 
-batallas[batallas["Wins"]=="DRAW",1:3]
+#MATRIZ DE PÉRDIDAS
+levelplot(as.matrix(table(batallas[batallas["Wins"]=="DRAW",1:2])),col.regions=grey(100:0/100))
 
 
