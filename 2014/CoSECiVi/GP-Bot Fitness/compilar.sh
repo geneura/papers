@@ -1,5 +1,6 @@
 #!/bin/sh
 
+#Esto no funciona porque no están las versiones .png de las figuras y en el texto están metidas explícitamente las EPS. 
 rm *.aux
 rm *.bbl
 rm *.blg
