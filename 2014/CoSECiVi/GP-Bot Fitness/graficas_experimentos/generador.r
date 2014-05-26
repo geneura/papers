@@ -184,4 +184,43 @@ dev.off()
 #MATRIZ DE PÉRDIDAS
 levelplot(as.matrix(table(batallas[batallas["Wins"]=="DRAW",1:2])),col.regions=grey(100:0/100))
 
+#Algunas tablas
+sink(file="tabla_victorias_por_metodo.latex")
+xtable(table(batallas[,"Type"])/nrow(batallas)*100)
+dev.off()
 
+sink(file="tabla_victorias_por_bot.latex")
+xtable(table(batallas[,"Wins"])/nrow(batallas)*100)
+dev.off()
+
+
+
+
+#BOXPLOT VICTORIAS CONTRA GENEBOT
+pdf('boxplot_victoria_bot_por_metodo_contra_genebot.pdf')
+par(mfrow=c(1,3))
+boxplot(as.matrix(table(vsGenebot[vsGenebot["Type"]=="t","Wins"],exclude=c("DRAW","s_0","s_1","s_2","s_2","s_3","s_4","s_5","s_6","s_7","s_8","s_9","s_10","s_11","s_12","s_13","s_14","s_15","s_16","s_17","s_18","s_19","s_20","a_0","a_1","a_2","a_2","a_3","a_4","a_5","a_6","a_7","a_8","a_9","a_10","a_11","a_12","a_13","a_14","a_15","a_16","a_17","a_18","a_19","a_20"))/900*100),ylim=c(0,100))
+title(main="TURNS FITNESS",ylab="% Victories")
+
+boxplot(as.matrix(table(vsGenebot[vsGenebot["Type"]=="a","Wins"],exclude=c("DRAW","s_0","s_1","s_2","s_2","s_3","s_4","s_5","s_6","s_7","s_8","s_9","s_10","s_11","s_12","s_13","s_14","s_15","s_16","s_17","s_18","s_19","s_20","t_0","t_1","t_2","t_2","t_3","t_4","t_5","t_6","t_7","t_8","t_9","t_10","t_11","t_12","t_13","t_14","t_15","t_16","t_17","t_18","t_19","t_20"))/900*100),ylim=c(0,100))
+title(main="AREA FITNESS")
+
+boxplot(as.matrix(table(vsGenebot[vsGenebot["Type"]=="s","Wins"],exclude=c("DRAW","a_0","a_1","a_2","a_2","a_3","a_4","a_5","a_6","a_7","a_8","a_9","a_10","a_11","a_12","a_13","a_14","a_15","a_16","a_17","a_18","a_19","a_20","t_0","t_1","t_2","t_2","t_3","t_4","t_5","t_6","t_7","t_8","t_9","t_10","t_11","t_12","t_13","t_14","t_15","t_16","t_17","t_18","t_19","t_20"))/900*100),ylim=c(0,100))
+title(main="SLOPE FITNESS")
+dev.off()
+
+#EMPATES
+levelplot(as.matrix(table(batallas[batallas["Wins"]=="DRAW",1:2])),col.regions=grey(100:0/100))
+
+
+pdf('boxplot_victoria_bot_por_metodo_contra_genebot.pdf')
+par(mfrow=c(1,3))
+table(vsGenebot[vsGenebot["Type"]=="t","Wins"],exclude=c("t_0","t_1","t_2","t_2","t_3","t_4","t_5","t_6","t_7","t_8","t_9","t_10","t_11","t_12","t_13","t_14","t_15","t_16","t_17","t_18","t_19","t_20","s_0","s_1","s_2","s_2","s_3","s_4","s_5","s_6","s_7","s_8","s_9","s_10","s_11","s_12","s_13","s_14","s_15","s_16","s_17","s_18","s_19","s_20","a_0","a_1","a_2","a_2","a_3","a_4","a_5","a_6","a_7","a_8","a_9","a_10","a_11","a_12","a_13","a_14","a_15","a_16","a_17","a_18","a_19","a_20"))/900*100
+title(main="TURNS FITNESS",ylab="% Victories")
+
+table(vsGenebot[vsGenebot["Type"]=="t","Wins"],exclude=c("t_0","t_1","t_2","t_2","t_3","t_4","t_5","t_6","t_7","t_8","t_9","t_10","t_11","t_12","t_13","t_14","t_15","t_16","t_17","t_18","t_19","t_20","s_0","s_1","s_2","s_2","s_3","s_4","s_5","s_6","s_7","s_8","s_9","s_10","s_11","s_12","s_13","s_14","s_15","s_16","s_17","s_18","s_19","s_20","a_0","a_1","a_2","a_2","a_3","a_4","a_5","a_6","a_7","a_8","a_9","a_10","a_11","a_12","a_13","a_14","a_15","a_16","a_17","a_18","a_19","a_20"))/900*100
+title(main="AREA FITNESS")
+
+table(vsGenebot[vsGenebot["Type"]=="t","Wins"],exclude=c("t_0","t_1","t_2","t_2","t_3","t_4","t_5","t_6","t_7","t_8","t_9","t_10","t_11","t_12","t_13","t_14","t_15","t_16","t_17","t_18","t_19","t_20","s_0","s_1","s_2","s_2","s_3","s_4","s_5","s_6","s_7","s_8","s_9","s_10","s_11","s_12","s_13","s_14","s_15","s_16","s_17","s_18","s_19","s_20","a_0","a_1","a_2","a_2","a_3","a_4","a_5","a_6","a_7","a_8","a_9","a_10","a_11","a_12","a_13","a_14","a_15","a_16","a_17","a_18","a_19","a_20"))/900*100
+title(main="SLOPE FITNESS")
+dev.off()
