@@ -81,15 +81,15 @@ Current technologies used in traffic monitoring include pneumatic tubes, loop de
 
 In this work, several individualized transit indicators are studied using a new low-cost system information, with a fast deployment and highly reliable. This system provides real-time information about the traffic status on different road types and in real time (available as web services), not only to the official organisms and agencies in charge of the traffic controlling, but also to any person who requests it.
 
-Our aim is having information about traffic using a new system based on the Bluetooth (BT) devices detection using several collecting nodes. Thus, we are able to monitor the traffic density and car journeys, identifying the vehicles when they move from one node to another inside the monitored zone. Therefore, various needs have been found:
+Our aim is having information about traffic using a new system based on the Bluetooth (BT) and Wifi detection devices using several collecting nodes. Thus, we are able to monitor the traffic density and car journeys, identifying the vehicles when they move from one node to another inside the monitored zone. Therefore, various needs have been found:
 
-As stated, the proposed system is based on BT device discovery. Specifically, it detects waves emitted by different technological components incorporated on vehicles (hands-free phone sets, GPS) or accessories that the users incorporate to their vehicles, as well as their mobile phones. Although not all vehicles carry a BT transmitter, nowadays increasingly more and more vehicles are equipped with them. In addition, in a very high percentage of vehicles the driver might carry a mobile with BT. In any case, as stated in \cite{Blobject} an a priori error estimation of 8.5\% of detections was obtained.
+As stated, the proposed system is based on BT and Wifi device discovery. Specifically, it detects waves emitted by different technological components incorporated on vehicles (hands-free phone sets, GPS) or accessories that the users incorporate to their vehicles, as well as their mobile phones. Although not all vehicles carry a BT transmitter, nowadays increasingly more and more vehicles are equipped with them. In addition, in a very high percentage of vehicles the driver might carry a mobile with BT or Wifi enabled. In any case, as stated in \cite{Blobject} an a priori error estimation of 8.5\% of detections was obtained.
 
-The system collects the MAC address of the device BT card as well as the exact time at which it has been detected. The MAC is an unique identifier for each device, allowing us to identify passing vehicles. Additionally, analyzing the MAC allows us to determine the manufacturer and even distinguish what type of device it is (i.e. handsfree, PC, mobile phone, etc), as detailed in \cite{IEEEBT} and \cite{wikiOUI}.
+The system collects the MAC address of the device as well as the exact time at which it has been detected. The MAC is a unique identifier for each device, allowing us to identify passing vehicles. Additionally, analyzing the MAC in the case of BT devices allows us to determine the manufacturer and even distinguish what type of device it is (i.e. handsfree, PC, mobile phone, etc), as detailed in \cite{IEEEBT} and \cite{wikiOUI}.
 
 From the point of view of data privacy, it is noteworthy that the data collected cannot be associated, at least without recurring to other methods, to any vehicle since there is no information collected that enables the association of the information we collect with a specific person. Unidirectional encryption technology is used, using nonstandard characters that preclude identifying the MAC of the wireless device.
 
-Proposed system is part of a future prediction system that helps to make decisions, and able to apply knowledge in applications related to mobility. It is expected that the development and deployment of these systems will offer a set of information services with added value that are not achieved with current technologies.
+The proposed system is part of a future prediction system that helps to make decisions, and able to apply knowledge in applications related to mobility. It is expected that the development and deployment of these systems will offer a set of information services with added value that are not achieved with current technologies.
 
 The rest of the chapter is organized as follows: section \ref{sec:tech} reviews current technologies to monitor the traffic that passes through a certain area, section \ref{sec:products} explores some other similar commercial products. Section \ref{sec:objectives} details the goals and expected results. In section \ref{subsec:devices}, the Intelify device is presented. In section \ref{sec:data} several analysis and statistics are reported from the data obtained. Finally, we present some conclusions and future work. 
 
@@ -109,12 +109,11 @@ Pneumatic tubes are placed on top of the lane to detect vehicles by the change i
 
 A loop detector is a wire embedded into the roadway in a square configuration. A device at the roadside records the number of detected vehicles as they induce an electrical current when passing over the wire. Both the implementation and maintenance costs can be expensive.
 
-The use of so-called floating vehicles consists on a vehicle provided with sensors to collect information while driving on a predefined route. This active device data collection is one of the most popular among operators of roads, used especially for the collection of travel time and for loop detector calibration. Depending on the level of automation in the data collection, the cost can vary.
+The use of so-called floating vehicles consists of a vehicle provided with sensors to collect information while driving on a predefined route. This active device data collection is one of the most popular among operators of roads, used especially for the collection of travel time and for loop detector calibration. Depending on the level of automation in the data collection, the cost can vary.
 
 The main disadvantage of these systems is that they are unable to identify detected vehicles, in order to obtain origin/destination matrixes. Just the number of vehicles and their type can be calculated, but does not allow to obtain traffic flow, nor to determine whether a certain vehicle passes repeatedly. In addition, their high cost makes it unprofitable covering secondary roads with them, so they are often located on major roads.
 
-
-Finally, the automatic recognition technology has experienced an increase in recent years due to its ability to detect individual vehicles without relying on in-vehicle systems. Video image detection is a good example; in this case trip line and/or tracking are used to record traffic data. Furthermore, they are used for automatic detection of incidents on the road. That is the main advantage over previous information systems. However, system reliability might not be the best, as weather may limit accuracy. Moreover, these systems are very costly compared to the previous \cite{skszek2001state}. Finally, from a privacy point of view, the Spanish Data Protection Agency (Agencia de Protección de Datos) considers the car license plate as a personal data, so that it would require the user consent.
+Finally, the automatic recognition technology has experienced an increase in recent years due to its ability to detect individual vehicles without relying on in-vehicle systems. Video image detection is a good example; in this case a trip line and/or tracking are used to record traffic data. Furthermore, they are used for automatic detection of incidents on the road. That is the main advantage over previous information systems. However, system reliability might not be the best, as weather may limit accuracy. Moreover, these systems are very costly compared to the previous \cite{skszek2001state}. Finally, from a privacy point of view, the Spanish Data Protection Agency (Agencia de Protección de Datos) considers the car license plate as a personal data, so that it would require the user consent.
 
 \section{Comercial products}
 \label{sec:products}
@@ -128,36 +127,46 @@ There are different companies working in the traffic information area using appr
 \end{itemize}
 The proposal presented in this work has some common features with the previous approaches, offering similar functionalities with reduced cost.
 
+
 \section{Objectives and expected results}
 \label{sec:objectives}
-The main objective was building a low-cost system to provide real-time information about the traffic status and flows that occur in a certain area, allowing to optimally manage motion decisions by citizens.
+The main objective was building a low-cost embedded system to provide real-time information about the traffic status and flows that occur in a certain area, allowing to optimally manage motion decisions by citizens.
 
 Thus, several features have been developed:
 \begin{itemize}
-\item Data collection component: it includes several sensors to continuously scanning and identifying BT devices. It uses a 3G connection to send data to the storage server. It is enclosed in hermetic boxes and uses a 220V power line.
+\item Data collection component: it includes several sensors to continuously scanning and identifying BT and Wifi devices. It uses a 3G connection to send data to the storage server. It is enclosed in hermetic boxes and uses a 220V power line.
 \item Data processing component: it stores the obtained data, and offers some tools to serve them (through web services).
 \item Information service: it provides the users the requested information related to the traffic status.
 \end{itemize}
 
-In this study, six devices were installed in Granada for data collection while fifteen more are currently being installed in the Sevilla area. They send obtained data to servers for further data processing. Node locations are shown in the map on Figure \ref{fig:f2}. Locations were set according to the suggestions of the National Department of Traffic (DGT), looking for an adequate place, with a continuous flow of vehicles, and also taking into account the assembly difficulty of the monitoring devices.
+In this study, 13 nodes were installed in Sevilla for data collection. The nodes continuously send data to servers for further processing. Their locations are shown in the map on Figure \ref{fig:f2}. Locations were set according to the suggestions of the National Department of Traffic (DGT), looking for an adequate place, with a continuous flow of vehicles, and also taking into account the assembly difficulty of the monitoring devices (Figure \ref{fig:cabinet} shows the chosen device installed on a cabinet).
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[scale=0.25]{images/Figure_2b}
-\caption{Geographical node locations in the metropolitan area of Granada. Source: \url{http://bit.ly/SQdQkH}}
+\includegraphics[scale=0.35]{images/map-sevilla}
+\caption{Geographical node locations in the metropolitan area of Sevilla.}
+\label{fig:f2}
+\end{center}
+\end{figure}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.35]{images/cabinet}
+\caption{Typical device installed on a cabinet.}
 \label{fig:f2}
 \end{center}
 \end{figure}
 
 
-A large amount of data corresponding to passing BT devices are collected, to populate a big database and to compute different statistics and indicators on the use of vehicles on the monitored area, driving habits and even the effect of important factors or events (key dates, nonworking days, etc).
+A large amount of data corresponding to passing Wifi and BT devices are collected, to populate a big database and to compute different statistics and indicators on the use of vehicles on the monitored area, driving habits and even the effect of important factors or events (key dates, nonworking days, etc).
+
 
 Specifically, following statistics will be reported:
 \begin{itemize}
-\item Total amount of detected vehicles by every node.
-\item Total amount of detected vehicles in working days.
-\item Total amount of detected vehicles in non-working days.
-\item Number of times each vehicle is detected.
+\item Total amount of detected devices for every node.
+\item Total amount of detected devices in working days.
+\item Total amount of detected devices in non-working days.
+\item Number of times each device is detected.
 \item Type of path the vehicles follow.
 \item Traffic density by time range and road type.
 \item Average speed in the road where two devices where set.
@@ -170,7 +179,6 @@ The first step of this study was to choose between several hardware devices to s
 Another possible solution studied was using Android cell phones. These are low power consumption devices, with high connectivity, highly available development tools and powerful processors.
 
 A prototype application was developed for Android. The application was limited to three tasks: BT device discovery, BT identification and data sending to a server through its 3G connection. The server finally stored that information in a database. The Android application binaries can be downloaded from our server \footnote{\scriptsize{\url{http://sipesca.ugr.es/download/descargas/sipesca_bt.apk}}} and its source code is publicly available from GitHub \footnote{\scriptsize{\url{http://github.com/sipesca/appmovilbt}}}.
-
 
 Despite the advantages of the cell phone, they include small and low power BT antennas. Because of that, their detection capability is very limited; thus, using cell phones was discarded.
 
@@ -185,7 +193,7 @@ Finally the Intelify \cite{Intelify} (see Figure \ref{fig:f3}) was chosen due to
 \end{figure}
 
 
-Intelify is a hardware detection device based on technology developed by Ciudad 2020 \cite{CityAnalytics,Ciudad2020}. It is an autonomous unit that scan the environment and sends the information to a central server for further processing and interpretation. Table \ref{table:features} shows main features of this device.
+Intelify is a hardware detection device based on technology developed by Ciudad 2020 \cite{CityAnalytics,Ciudad2020}. It is an autonomous unit that scan the environment and sends the information to a central server for further processing and interpretation. Table \ref{table:features} shows the main features of this device.
 
 
 \begin{table}
