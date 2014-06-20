@@ -174,7 +174,7 @@ Specifically, following statistics will be reported:
 
 \subsection{Data-collecting hardware device}
 \label{subsec:devices}
-The first step of this study was to choose between several hardware devices to scan for BT devices. First tests were conducted on a PC with Linux and a BT module. This solution was quickly discarded because of its high size and power consumption (see Table \ref{table:comparison}).
+The first step of this study was to choose between several hardware devices to scan for BT and Wifi devices. First tests were conducted on a PC with Linux and a BT module. This solution was quickly discarded because of its high size and power consumption (see Table \ref{table:comparison}).
 
 Another possible solution studied was using Android cell phones. These are low power consumption devices, with high connectivity, highly available development tools and powerful processors.
 
@@ -193,7 +193,7 @@ Finally the Intelify \cite{Intelify} (see Figure \ref{fig:f3}) was chosen due to
 \end{figure}
 
 
-Intelify is a hardware detection device based on technology developed by Ciudad 2020 \cite{CityAnalytics,Ciudad2020}. It is an autonomous unit that scan the environment and sends the information to a central server for further processing and interpretation. Table \ref{table:features} shows the main features of this device.
+Intelify is a hardware detection device developed by Ciudad 2020 \cite{CityAnalytics,Ciudad2020} . It is an autonomous unit that scan the environment and sends the information to a central server for further processing and interpretation. Table \ref{table:features} shows the main features of this device.
 
 
 \begin{table}
@@ -215,7 +215,7 @@ Intelify is a hardware detection device based on technology developed by Ciudad 
 \end{center}
 \end{table}
 
-For the sake of comparison, Table \ref{table:comparison} shows detailed information about the hardware devices analyzed for data collecting in terms of size and power consumption. The Raspberry-Pi platform \cite{wikiRBP} was chosen for the new fifteen monitoring devices being installed on Sevilla given its power and low-consumption features.
+For the sake of comparison, Table \ref{table:comparison} shows detailed information about the hardware devices analyzed for data collecting in terms of size and power consumption. The Raspberry-Pi-based platform \cite{wikiRBP} was chosen for the monitoring devices installed on Sevilla given its power and low-consumption features.
 
 
 \begin{table}
@@ -223,7 +223,7 @@ For the sake of comparison, Table \ref{table:comparison} shows detailed informat
 \label{table:comparison}
 \begin{center}
 {\small
-\begin{tabular}{|C{2.5cm}|C{1cm}|C{2.5cm}|}\hline 
+\begin{tabular}{|C{3cm}|C{1cm}|C{2.5cm}|}\hline 
 \bfseries Device & \bfseries Power (watts) & \bfseries Dimensions
 \\\hline
 \csvreader[head to column names, late after line=\\\hline]{DeviceComparison.csv}{}
@@ -254,7 +254,7 @@ These interfaces allow the \emph{service consumers} to interact \emph{service im
 
 Whatever the technology used to deploy web services, they provide several advantages, like language independence and distribution mechanisms; it also increases the interoperability between different software elements (for example, it is possible to add communication libraries without modifying existing code), and facilitates code distribution (it is not required the use of a concrete implementation or library) among geographically distributed work teams \cite{castillo2013using}.
 
-In this case, our platform uses Representational State Transfer (REST) web services \cite{fielding2000architectural}\cite{fielding2002principled}\cite{Vinoski200884}, as this paradigm adheres much more closely to a web-based design. REST is an alternative method for building web services. This technology was proposed and defined by Roy Fielding  \cite{fielding2000architectural}\cite{fielding2002principled}. In a REST-style architecture, a client sends requests to the server who process them and return responses to the client. Requests and responses represent resources that can be addressed by an Uniform resource identifier (URI). Usually, resources are documents or programs the client need to access to.
+In this case, our platform uses Representational State Transfer (REST) web services \cite{fielding2000architectural}\cite{fielding2002principled}\cite{Vinoski200884}, as this paradigm adheres much more closely to a web-based design. REST is an alternative method for building web services. This technology was proposed and defined by Roy Fielding  \cite{fielding2000architectural}\cite{fielding2002principled}. In a REST-style architecture, a client sends requests to the server who process them and return responses to the client. Requests and responses represent resources that can be addressed by an Uniform resource identifier (URI). Usually, resources are documents or programs the client need to access.
 
 REST web services are simple and lightweight (as no extra XML markup is needed), their message format is readable by humans, they are easy to build, and finally, developments achieve a high performance \cite{daigneau2011service}.
 
@@ -293,146 +293,42 @@ In this sense, a cross-platform mobile application to allow users access any kin
 \label{fig:f4}
 \end{figure}
 
-\section{Data analisys}
+\section{Data gathered}
 \label{sec:data}
-In this section the analysis of collected data during the monitoring period (November 8 to December 9, 2012) to obtain statistics and so study the use of vehicles is carried out.
+This section shows the data collected during the monitoring period (January 28 to July 13, 2014). The dependency analisys of the number of vehicles related to number and type of devices will be based on this data. 
 
-Specifically, the following subsections report information about the total number of detected vehicles by each node, on weekdays or holidays, information on traffic density by time range and the average speed on a section delimited by two consecutive nodes.
-\subsection{Total number of detected vehicles (in weekdays and holidays)}
-The first analysis consisted in calculating the number of detected devices per node.
+Table \ref{table:detections3} shows the total number of BT devices found whilst Table \ref{table:detections4} shows the corresponding amount for wifi devices.
+This numbers are plotted on Figure \ref{fig:btdata} and \ref{fig:wifidata} respectively. 
+
 
 \begin{table}
-\caption{Number of BT detected devices per node.}
-\label{table:detections1}
+\caption{Number of detected BT devices per node.}
+\label{table:detections3}
 \begin{center}
-\begin{tabular}{|R{2cm}|R{3cm}|}\hline 
-\bfseries  \makebox[2cm][c]{Node Id.} & \bfseries  \makebox[3cm][c]{N. of devices}
+\begin{tabular}{|R{2cm}|R{2cm}|}\hline 
+\bfseries  \makebox[2cm][c]{Node Id.} & \bfseries  \makebox[2cm][c]{N. of BT} 
 \\\hline
-\csvreader[head to column names, late after line=\\\hline]{NodeDetections1.csv}{}
-{ \nodeid & \detections }
+\csvreader[head to column names, late after line=\\\hline]{NodeDetections3.csv}{}
+{ \nodeid & \btdetections }
 \end{tabular}
 \end{center}
 \end{table}
 
-About 773845 BT devices have been detected in total. As shown in Table \ref{table:detections1}, nodes located in the Sierra Nevada Highway (A44, nodes 4 and 5) have collected a higher amount of data, while the node located in a side street (node 6) has detected the smallest amount of devices.
-
-\subsection{Total detected vehicles in non-working days}
-To compare the traffic intensity between working and non-working days, the number of passes in holidays and non-working days have been obtained.
 
 \begin{table}
-\caption{Total number of BT detected devices per node (only in non-working days).}
-\label{table:detections2}
+\caption{Number of detected Wifi devices per node.}
+\label{table:detections4}
 \begin{center}
-\begin{tabular}{|R{2cm}|R{3cm}|}\hline 
-\bfseries  \makebox[2cm][c]{Node Id.} & \bfseries  \makebox[3cm][c]{N. of devices}
+\begin{tabular}{|R{2cm}|R{2cm}|}\hline 
+\bfseries  \makebox[2cm][c]{Node Id.} & \bfseries  \makebox[2cm][c]{N. of Wifi} 
 \\\hline
-\csvreader[head to column names, late after line=\\\hline]{NodeDetections2.csv}{}
-{ \nodeid & \detections }
+\csvreader[head to column names, late after line=\\\hline]{NodeDetections4.csv}{}
+{ \nodeid & \wifidetections }
 \end{tabular}
 \end{center}
 \end{table}
 
-Table \ref{table:detections2} shows how the number of detected devices is reduced in all nodes in non-working days, compared to the number of detections in weekdays. Nodes located in the Sierra Nevada Highway still collected much more data than the remainder, due to the traffic this road supports on holidays.
 
-\subsection{Traffic density on the road by time range}
-Traffic density can be calculated taking into account the total number of detected devices by time range.
-
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[scale=0.2]{images/Figure_5}
-\end{center}
-\caption{For each node, the total number of different detected devices by time range is shown. Figure is shown in logarithmic scale.}
-\label{fig:f5}
-\end{figure}
-
-Figure \ref{fig:f5} shows the number of individual detected devices in each node along the day and taking into account six time-ranges. 
-
-As can be seen, a high density on all nodes is reached at peak times (7:00 to 10:00 and 16:00 to 20:00).
-This might be due to the people going/returning to/from work and school, and those who are in leisure time.
-
-This figure shows individual devices, eliminating repeated appearances of vehicles.
-
-\subsection{Total detections by time range}
-Additionally we can calculate for each node the number of detected devices by time range, without differentiating whether the device is the same or not (repeated passes). In this case, repeated appearances of vehicles have been taken into account.
-
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[scale=0.2]{images/Figure_6}
-\end{center}
-\caption{For each of the six nodes, the total number of detected devices by time range is shown. Figure is shown in logarithmic scale.}
-\label{fig:f6}
-\end{figure}
-
-
-Figure \ref{fig:f6} shows the total number of detected devices in each node along the day and taking into account six time-ranges. As in previous analysis (Figure \ref{fig:f5}), a high density on all nodes is reached at peak times (7:00 to 10:00 and 16:00 to 20:00).
-
-\subsection{Number of individual vehicle detections}
-We can take advantage of the proposed system's ability to identify BT devices. Thus, it can detect and report whether a vehicle pass by different nodes.
-
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[scale=0.2]{images/Figure_7}
-\end{center}
-\caption{For each of the six nodes, the total number of detected devices N times (repeated occurrences of the same device) are shown. Figure is shown in logarithmic scale.}
-\label{fig:f7}
-\end{figure}
-
-This figure displays how many times an individual device has been detected in each node, i.e., if device A has been detected three times in node 4, then A is shown into the range $ 0-5 $ for node 4.
-
-Figure \ref{fig:f7} shows a large number of vehicles that pass repeated times (up to 10 times) by some of the nodes (mainly those located in the A44). Even, it can be seen that nodes 4 and 5 detect about 1,000 vehicles passing more than 25 times repeatedly, what means that many vehicles repeat their pass over and over again. Paying attention to the remainder nodes, over 25 repetitions of the same device have been detected only around 120 times.
-
-Finally, as most of the devices have been detected only one time, then the first range $0-5$  includes the largest number of detected devices.
-
-\subsection{Complexity of displacements}
-
-To study the complexity of displacements, the number of vehicles that have sequentially visited several nodes were calculated. Table \ref{table:complex} also shows the average number of times that vehicles have visited 2, 3, 4, 5 or 6 nodes.
-
-\begin{table}
-\caption{Total number of vehicles that have visited two nodes, 3 nodes and up to 6 nodes, and average number of times that vehicles have passed through 2, 3, 4, 5 or 6 nodes. In some cases the deviations are high due to the fact that some devices have a very high number of occurrences for some nodes.}
-\label{table:complex}
-\begin{center}
-{\small
-\begin{tabular}{|r|r|r|c|}\hline 
-\bfseries Nodes & \bfseries  Devices & \bfseries Passes & \bfseries  Mean $ \pm $ std. dev.
-\\\hline
-\csvreader[head to column names, late after line=\\\hline]{Complexity.csv}{}
-{ \nodes & \devices & \total & \mean }
-\end{tabular}
-}
-\end{center}
-\end{table}
-
-Information in Table \ref{table:complex} is shown in Figure \ref{fig:f8}.
-
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[scale=0.25]{images/Figure_8}
-\end{center}
-\caption{Complexity of displacements as the number of vehicles that have visited several nodes. Figure is shown in logarithmic scale.}
-\label{fig:f8}
-\end{figure}
-
-As expected, most of the BT devices rarely visited all nodes sequentially, while most of devices pass only by one or two of nodes (their displacements are focused on a small part of the monitored area).
-
-\subsection{Average speed on a section delimited by two consecutive nodes}
-Finally, taking two consecutive nodes located on the A44 highway, average speeds in the section bounded by nodes 4 (located at km 119.550) and 5 (located at km 123.250) can be calculated. This highway section where the study takes place is 3700 meters long. Actually, we can calculate the average speed in the global section, but not the instant vehicle speed within that section (shown in Table \ref{table:speeds}).
-
-\begin{table}
-\caption{Average speeds (globally) in the section bounded by nodes 4 and 5.}
-\label{table:speeds}
-\begin{center}
-\begin{tabular}{|C{3cm}|R{3cm}|}\hline 
-\bfseries  Speed range (km/h) & \bfseries  \makebox[3cm][c]{N. of passes}
-\\\hline
-\csvreader[head to column names, late after line=\\\hline]{Speed.csv}{}
-{ \speed & \passes }
-\end{tabular}
-\end{center}
-\end{table}
-
-In that section, the speed is limited to 100 km/h. As can be seen, although most of the vehicles respect this limit, a lot of them exceed this limitation.
-
-In the other hand, this analysis has allowed us to detect slow traffic and even jams. In a near future, mobile application users could receive alerts in case of traffic events. Additionally, the information system is configured to store the exact time when a device is first detected and the exact time when it is no longer detectable. Thus, if a device is detected for a time longer than a specified number of seconds, that means slow traffic.
 
 \section{Future research directions}
 
