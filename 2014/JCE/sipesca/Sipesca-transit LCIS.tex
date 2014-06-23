@@ -179,18 +179,19 @@ A prototype application was developed for Android. The application was limited t
 
 Despite the advantages of the cell phone, they include small and low power BT antennas. Because of that, their detection capability is very limited; thus, using cell phones was discarded.
 
-Finally the Intelify \cite{Intelify} (see Figure \ref{fig:f3}) was chosen due to its low power consumption and high detection range.
+
+Finally the Intelify \cite{Intelify} device was chosen due to its low power consumption and high detection range. Several nodes were deployed in a first stage to cover the area of Granada. The hardware then was based on micro-PC (see Figure \ref{fig:f3}) as the new platform based on Raspberry-Pi was under development.  
 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[scale=0.2]{images/Figure_3}
-\caption{Intelify device with a connected USB 3G dongle.}
+\caption{Previous Intelify device based on micro-PC with a connected USB 3G dongle.}
 \label{fig:f3}
 \end{center}
 \end{figure}
 
 
-Intelify is a hardware detection device developed by \emph{Ciudad 2020} \cite{CityAnalytics,Ciudad2020} . It is an autonomous unit that scan the environment and sends the information to a central server for further processing and interpretation. Table \ref{table:features} shows the main features of this device.
+Intelify is a hardware detection device developed by \emph{Ciudad 2020} \cite{CityAnalytics,Ciudad2020}. It is an autonomous unit that scan the environment and sends the information to a central server for further processing and interpretation. Table \ref{table:features} shows the main features of this device.
 
 
 \begin{table}
@@ -212,7 +213,7 @@ Intelify is a hardware detection device developed by \emph{Ciudad 2020} \cite{Ci
 \end{center}
 \end{table}
 
-For the sake of comparison, Table \ref{table:comparison} shows detailed information about the hardware devices analyzed for data collecting in terms of size and power consumption. The Raspberry-Pi-based platform \cite{wikiRBP} was chosen for the monitoring devices installed on Sevilla given its power and low-consumption features.
+For the sake of comparison, Table \ref{table:comparison} shows detailed information about the hardware devices analyzed for data collecting in terms of size and power consumption. The Raspberry-Pi-based platform \cite{wikiRBP} was chosen for the monitoring devices installed on Sevilla given its power and low-consumption features. This new device is shown in Figure \ref{fig:rbp}. 
 
 
 \begin{table}
@@ -231,6 +232,15 @@ For the sake of comparison, Table \ref{table:comparison} shows detailed informat
 \end{table}
 
 
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.2]{images/rbp}
+\caption{The new Intelify device based on Raspberry-Pi and used in this work.}
+\label{fig:rbp}
+\end{center}
+\end{figure}
+
+
 Intelify is a small autonomous computer that can be installed in any area to be monitored. It has several sensors that let you discover what is happening in its surroundings like the flow of people and vehicles.
 
 Device operation is based on scanning devices that are in the area of the BT antenna range using the hcitool operating system tool. This tool is used to configure BT connections and send special commands to BT devices. For example, to discover the BT-enabled devices within range, we can use the scan command:
@@ -238,7 +248,6 @@ hcitool scan
 hcitool will display the list of MAC addresses of the discovered devices.
 
 Technology was developed by Ciudad 2020 and the services offered are based on a net of monitoring devices with the capacity to discover information about the physical environment and help with decision making to any kind of organization based on people flow and behavior. Valuable information about tourism, trade and mobility can be gathered through the deployment of these autonomous devices around a city. 
-
 
 The cost of this solution is under \$1000 per device, including remote maintenance, communications using a 3G service, storage and data management.
 Data accuracy is very representative, as stated previously, having obtained an a priori error estimation of 8.5\% of detections \cite{Blobject}.
@@ -342,7 +351,7 @@ Table \ref{table:detections3} shows the total number of BT devices found whilst 
 \label{fig:wifidata}
 \end{figure}
 
-Remarkably the amount of wifi devices detected is about 10 times those using BT (exactly 91.8\% of total detections were Wifi) though in most cases the distribution remains similar. In the Figure \ref{fig:btpie} and \ref{fig:wifipie} the observed distribution of detections among the nodes are shown.
+Remarkably the amount of wifi devices detected is about 10 times those using BT (exactly 91.8\% of total detections were Wifi) though in most cases the distribution remains similar. In the Figure \ref{fig:btpie} and \ref{fig:wifipie} the observed distribution of detections among the nodes are shown. Despite the low proportion of BT detections this type of devices have the advantage of encoding some other information not present in Wifi devices like the manufacturer which tell us whether the product is embedded on a mobile phone or a car hands-free.
 
 \begin{figure}[ht]
 \begin{center}
@@ -360,6 +369,18 @@ Remarkably the amount of wifi devices detected is about 10 times those using BT 
 \label{fig:wifipie}
 \end{figure}
 
+The system not only can count devices on each node but also on a ordered range of them for a fixed period of time. Figure \ref{fig:varios} shows the total number of devices (bars) detected from one node A to another node B for a period of two consecutive days. The line in front the bars indicates the average difference between timestamps.
+
+This kind of information is available because the unique id for the device is stored by the system (in addition to the node id and the time of detection).
+
+\begin{figure*}[ht]
+\begin{center}
+\includegraphics[scale=0.25]{images/tiempovarios}
+\end{center}
+\caption{Total number of devices from node A to node B for two consecutive days.}
+\label{fig:varios}
+\end{figure*}
+  
 Finally, a global plot of the average detections between nodes per day is depicted in Figure \ref{fig:average} (note the increase in traffic during Sevilla Fair).
 
 \begin{figure*}
