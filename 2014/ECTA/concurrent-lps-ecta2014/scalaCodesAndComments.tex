@@ -24,14 +24,15 @@ class Island extends Actor {
 // One of the worker classes
 class Reproducer extends Actor {
   def receive = {
-    case ('evolve, pool: HashMap, n: Int) =>
-      val pop = pool.filter((a: (List,
-               (Int, Int))) => a._2._2 == 2).
-               keys.toList.map(i =>
-                            (i, pool(i)._1))
+    case ('evolve, pool:HashMap, n:Int)
+             =>
+    val pop = pool.filter((a: (List,
+            (Int, Int))) => a._2._2==2).
+            keys.toList.map(i =>
+                         (i, pool(i)._1))
       val (res, resultData) =
         Reproducer.evolve(
-          Reproducer.extractSubpop(pop, n),
+        Reproducer.extractSubpop(pop,n),
           parentsCount = n / 2 })
         // Continue the iteration with
         // res and resultData
@@ -45,7 +46,7 @@ The listing \ref{reproducer} shows the class for the reproducers, in this case t
 \begin{lstlisting}[frame=none]
 // Creating 4 islands
 val islands = for(_ <- 1 to 4)
-              yield sys.actorOf(Props[Island])
+       yield sys.actorOf(Props[Island])
 		
 // Puting the migrants destination & start
 // each island
