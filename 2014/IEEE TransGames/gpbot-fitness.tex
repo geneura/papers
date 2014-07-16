@@ -140,6 +140,11 @@ factors. % Pero ¿por qué?
 
 %*****Moreover, the avoidance of the fitness computation reduces the running time in a half
 
+Summarizing, this paper tries to solve the next research questions:
+\begin{itemize}
+\item
+\item 
+\end{itemize}
 
 The paper is structured as follows. Next section describes the problem enclosed in the Planet Wars game.
 Section \ref{sec:stateofart} reviews related work regarding the scope (videogames) and the implementation (EAs with no fitness computation or different selection mechanisms).
@@ -157,16 +162,18 @@ The experiments and results are described and discussed in Section \ref{sec:expe
 \label{subsec:soa}
 %
 
-Evolutionary Computation (EC) has been applied in a wide variety of issues inside the videogames scope. One of the most profiting areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011}.
-This work is enclosed in the latter category, since it considers a set of rules, initially defined by an expert, which model a bot's AI in the RTS Planet Wars.
-These rules are optimised regarding the set of  parameters which determine how the bot behaves. This kind of improvement was previously performed by the authors in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms.
+Evolutionary Computation (EC) has been applied in a wide variety of issues inside the videogames scope. One of the most profiting areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011} or content generation \cite{LaraMaps14}.
+
+Different authors have addressed the generation of behavioural engines. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how the bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. Using Genetic Programming \cite{} dispenses the human expert to create the set of rules, as these rules are created and evolved during the run, with their numerical parameters.
+
+Genetic programming will be used in this paper to generate the engines, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using 
 
 In the present paper the optimisation have been performed using a survival-based evolutionary approach. This can be considered as a co-evolutionary method in which the individuals (bots) fight in game battles in order to decide who survives and moves to the next generation.
 
 ***TRABAJOS DE ESTO***
 
 Co-Evolutionary Algorithms (CEAs) have been previously used in this scope, initially regarding puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
-The first work proposed a very simple hillclimbing algorithm to evolve a population of neural networks, playing among them as rivals, in a competitive co-evolutionary approach. The latter paper presented a co-evolutionary learning approach which performed well once the EA was correctly tuned, moreover, this method yields better players to solve small Go boards since every individual is evaluated against a diverse population of rivals.
+The first work proposed a very simple hill-climbing algorithm to evolve a population of neural networks, playing among them as rivals, in a competitive co-evolutionary approach. The latter paper presented a co-evolutionary learning approach which performed well once the EA was correctly tuned, moreover, this method yields better players to solve small Go boards since every individual is evaluated against a diverse population of rivals.
 In the same line, there are some other works in the card games area, such as \cite{Thompson_Poker2008}, aimed to create Poker agents, considering a co-evolution process in which the players are part of the learning process. This meant a difficult process to get robust strategies, due to the variation in opponents, but the results shown to fit with some recommended strategies according experts.
 The aim of the present work is to conduct a study implementing a similar co-evolutionary approach, being competitive in the fitness calculation, but cooperative since all the opponents are also part of the same learning process (same population).
 
@@ -194,16 +201,20 @@ The latter is an approach based in a self-learning algorithm as the one we are p
 \subsection{Problem Description} % esto deberías integrarlo a la
                               % introducción, para que tras la
                               % introducción fuera el SoA, que es lo
-                              % clásico. FERGU: Movido
+                              % clásico. FERGU: Movido a subsección Background
 \label{sec:problemDescription}
 
 The game used here as testbed is a simplified version of the game
 Galcon, which models turn-based space battles between two to four
 contenders. It was chosen for the Google AI Challenge 2010
-(GAIC)\footnote{\url{http://planetwars.aichallenge.org/}}\cite{ziolko2012automatic}. % ¿No hay ningún
+(GAIC)\footnote{\url{http://planetwars.aichallenge.org/}}
+
+This game has been used previously in different fields of computational intelligence in games, such as competitive bot creation \cite{ziolko2012automatic,NogueiraCoevolutionary14} or map generation \cite{LaraMaps14}.
+
+. % ¿No hay ningún
                                 % artículo científico? Hay un montón
                                 % de Keldon y Carlos Cotta sobre
-                                % generación de mapas - JJ
+                                % generación de mapas - JJ FERGU: metidos.
 
 \begin{figure}[ht]
 \tiny
@@ -311,13 +322,13 @@ Thus, during the match the tree will be used (by the bot) in order to select the
 
 \begin{verbatim}
 
-if(myShipsLandedFlyingRatio < 0.796)
-   if(actualMyShipsRatio < 0.201)
+if(myShipsLandedFlyingRatio < 0.696)
+   if(actualMyShipsRatio < 0.421)
       attackWeakestNeutralPlanet(0.481);
    else
       attackNearestEnemyPlanet(0.913);
 else
-   attackNearestEnemyPlanet(0.819);
+   attackNearestEnemyPlanet(0.891);
 
 \end{verbatim}\\\\
 
@@ -396,7 +407,9 @@ When a new individual is needed (parent), it is selected from this pool, accordi
 \section{Experiments and Results}
 \label{sec:experiments}
 
-Several experiments have been conducted in order to study different issues of the proposed approaches, but having in mind that the main objective is the improvement of bots using a co-evolutionary algorithm. The set of parameters considered in the GAs is shown in Table \ref{tabla:GA}. 
+Several experiments have been conducted in order to study different issues of the proposed approaches, but having in mind that the main objective is the improvement of bots using a co-evolutionary algorithm. The set of parameters considered in the GAs is shown in Table \ref{tab:parameters}.
+This set of parameters have been used previously in the work \cite{GpbotGarcia14}, obtaining competitive bots.
+
 For each one of the presented approaches (combinations of fitness functions and knowledge-related methods), ten executions of the Co-GA have been performed.
 
 \begin{table}
@@ -413,8 +426,7 @@ Selection & 2-tournament \\ \hline
 Replacement & Steady-state\\ \hline
 Stop criterion & 50 generations \\ \hline
 Maximum Tree Depth & 7  \\ \hline 
-Runs per configuration & 30 \\ \hline
-Evaluation & Playing versus GeneBot \cite{Genebot_CEC11}  \\ \hline 
+Runs per configuration & 30 \\ \hline 
 Maps used in each evaluation & map76, map69, map7, map11, map26 
 \\ \hline
 \end{tabular}
