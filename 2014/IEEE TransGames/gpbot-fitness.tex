@@ -28,6 +28,8 @@
 
 \begin{document}
 
+%TODO LIST
+% Acronimos GP y GA
 
 % paper title: Must keep \ \\ \LARGE\bf in it to leave enough margin.
 \title{\ \\ \LARGE\bf Fighting to Survive: Evolving RTS Bots without Explicit Evaluation}
@@ -47,8 +49,8 @@ perform certain tasks or fight against baseline bots, they fight with
 each other and  on the winners  survive, passing  to the next
 generation. Explicit evaluation is thus omitted and substituted by
 explicit comparisons between bots. This algorithm has been designed as
-an optimization method for the parameters of the behavioural engine of
-bots for the RTS game Planet Wars, and has  two
+an optimization to generate the behavioural engine of
+bots for the RTS game Planet Wars using Genetic Programming. This algorithm has two
 objectives: first, to  deal better with the noisy nature of the fitness
 function (the evaluation for the same individual may vary from one
 time to another, due to the stochastic component of the combats); and
@@ -57,8 +59,8 @@ specific opponent, which are optimized to fight against it, and so,
 they are specialized bots. In addition, avoiding the evaluation step
 ideally will reduce the algorithm time consumption.
 % Todas estas cosas tienes que probarlas.
-Three different approaches are proposed and compared, namely steady-state and generational implementations, and a pool-based approach in which a combat arena with potential individuals is considered. Each of them applies 1 vs
-1 bots combats. 
+Different approaches are proposed and compared, namely %steady-state and generational implementations, and a pool-based approach in which a combat arena with potential individuals is considered. Each of them applies 1 vs
+%1 bots combats. 
 *** RESULTS show that...***
 
 %They implement different exploration versus
@@ -85,7 +87,7 @@ Evolutionary Algorithms (EAs) have been widely applied in a number of problems, 
                     % propios - JJ
 This problem is quite common in the videogames scope, due to the
 pseudo-stochasticity present in some factors, such as the game rules
-or status the opponents' behaviour or the random initial condition,
+or status, the opponents' behaviour or the random initial condition,
 which obviously have an influence on the score obtained by the bot,
 which is usually the base (sometimes the only one) for giving a bot a
 fitness in an evolutionary algorithm. 
@@ -105,7 +107,7 @@ individual (maybe in different maps or against different opponents)
 and then compute its fitness value as an average or sum of all of
 them. This way a more accurate measure of the individual's quality is
 obtained, but it is not a perfect  solution because % decid por qué no
-                                % es perfecta 
+                                % es perfecta TODO
 
 Even if we could obtain a statistically significant fitness
 evaluation, the way this fitness is obtained includes an additional
@@ -113,10 +115,11 @@ bias due to  opponent selection. This issue concerns the overfitting
 of the population with respect the selected rival/s, i.e. the
 individuals learn to play against it/them, and could behave poorly
 against another type of enemy. % cita. Que se vea que no te lo has
-                               % inventado. - JJ
+                               % inventado. - JJ TODO
 
-With these issues in mind, the present paper proposes a variation in the EA applied to improve the bot's AI in Planet Wars game. In it the selection process is transformed into a $tournament$ in which the winners will survive and become parents of the new offspring. This way, the fitness computation is omitted and thus, the influence of noise is reduced. It is not completely avoided due to the pseudo-stochasticity of the bots' behaviours.
-Since the algorithm runs over Planet Wars, the tournament is modelled as a set of battles in the game. In order to deal with the remaining noise every battle consists in a set of matches.
+With these issues in mind, the present paper proposes a conjuction of Genetic Programming with explicit fitness evaluation applied to improve the bot's AI in Planet Wars game. In it the selection process is transformed into a $tournament$ in which the winners will survive and become parents of the new offspring. This way, the fitness computation is omitted and thus, the influence of noise is reduced. It is not completely avoided due to the pseudo-stochasticity of the bots' behaviours. Also, it does not require ad-hoc parameters (such the number of battles or score values).
+Since the algorithm runs over Planet Wars, the tournament is modelled as a set of battles in the game. In order to deal with the remaining noise every battle consists in a set of matches. 
+%TODO Borrar esto si al final se hace contra uno o varios (fergu)
 So, the survivor of every battle (the one who wins more matches) will
 pass to the next generation and also become a parent for the next
 offspring.  % Una cosa es que no hables en general de la selección
@@ -127,12 +130,13 @@ individual in the population, makes the training (evolution) more
 general, and thus, the obtained individuals able to face a wider
 amount of possible rivals.  %Vale, a buenas horas...
 
-Two different Genetic Algorithms (GAs) have been implemented and
-studied in this work: the common steady-state \cite{Genitor_whitley},
-and generational models \cite{GAs_Goldberg89}. 1 vs 1 and 1 vs 3
-battles have been considered, getting four approaches with different
-levels of diversity, i.e. different exploitation/exploration
-factors. % Pero ¿por qué?
+%Two different Genetic Algorithms (GAs) have been implemented and
+%studied in this work: the common steady-state \cite{Genitor_whitley},
+%and generational models \cite{GAs_Goldberg89}. 1 vs 1 and 1 vs 3
+%battles have been considered, getting four approaches with different
+%levels of diversity, i.e. different exploitation/exploration
+%factors. % Pero ¿por qué?
+%TODO descomentar si se usan y justificar
 
 % *** ¿¿¿Decir que es un tipo de co-evolución??? ¿No lo son todos los algoritmos que hemos hecho y no lo hemos dicho? ***
 
@@ -146,8 +150,7 @@ Summarizing, this paper tries to solve the next research questions:
 \item 
 \end{itemize}
 
-The paper is structured as follows. Next section describes the problem enclosed in the Planet Wars game.
-Section \ref{sec:stateofart} reviews related work regarding the scope (videogames) and the implementation (EAs with no fitness computation or different selection mechanisms).
+The paper is structured as follows. The background section reviews related work regarding the scope (videogames) and the implementation (EAs with no fitness computation or different selection mechanisms). It also describes the problem enclosed in the Planet Wars game.
 Section \ref{sec:survival_bots} presents the proposed method, termed {Survival Bot}, and its different implementations. 
 The experiments and results are described and discussed in Section \ref{sec:experiments}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
 
@@ -158,21 +161,19 @@ The experiments and results are described and discussed in Section \ref{sec:expe
 %
 \section{Background}
 
-\section{Computational intelligence in RTS games}
+\subsection{Computational intelligence in RTS games}
 \label{subsec:soa}
 %
 
-Evolutionary Computation (EC) has been applied in a wide variety of issues inside the videogames scope. One of the most profiting areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011} or content generation \cite{LaraMaps14}.
+Evolutionary Computation (EC) has been applied in a wide variety of issues inside the videogames scope. One of the most profiting areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011} or content generation \cite{LaraMaps14}, among others.
 
-Different authors have addressed the generation of behavioural engines. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how the bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. Using Genetic Programming \cite{} dispenses the human expert to create the set of rules, as these rules are created and evolved during the run, with their numerical parameters.
+Different authors have addressed the generation of behavioural engines. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how the bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. Using Genetic Programming \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to create the set of rules, as these rules are created and evolved during the run, along their numerical parameters.
 
-Genetic programming will be used in this paper to generate the engines, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using 
+Genetic programming will be used in this paper to generate the engines, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using GAs.
 
-In the present paper the optimisation have been performed using a survival-based evolutionary approach. This can be considered as a co-evolutionary method in which the individuals (bots) fight in game battles in order to decide who survives and moves to the next generation.
+ENLAZAR
 
-***TRABAJOS DE ESTO***
-
-Co-Evolutionary Algorithms (CEAs) have been previously used in this scope, initially regarding puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
+To deal with EL QUE co-Evolutionary Algorithms (CEAs) have been previously used in this scope, initially regarding puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
 The first work proposed a very simple hill-climbing algorithm to evolve a population of neural networks, playing among them as rivals, in a competitive co-evolutionary approach. The latter paper presented a co-evolutionary learning approach which performed well once the EA was correctly tuned, moreover, this method yields better players to solve small Go boards since every individual is evaluated against a diverse population of rivals.
 In the same line, there are some other works in the card games area, such as \cite{Thompson_Poker2008}, aimed to create Poker agents, considering a co-evolution process in which the players are part of the learning process. This meant a difficult process to get robust strategies, due to the variation in opponents, but the results shown to fit with some recommended strategies according experts.
 The aim of the present work is to conduct a study implementing a similar co-evolutionary approach, being competitive in the fitness calculation, but cooperative since all the opponents are also part of the same learning process (same population).
@@ -185,14 +186,15 @@ Regarding the RTS scope, there are also several related works, such as the study
 Nogueira et al. \cite{Nogueira_HoF2013} considered in a recent
 publication the use of a Hall of Fame as a set of rivals (in the
 evaluation function) inside a co-evolutionary algorithm to create
-autonomous agents for the RTS RobotWars.
+autonomous agents for the RTS RobotWars. This approach is based in a self-learning algorithm as the one we are proposing, but focused in a subset of individuals (the elite) which can have a negative effect in the generalisation factor or the bots' knowledge. However, they use a ad-hoc fitness function with specific parameters, taking into account several battles and extra score measurement.
+
+To avoid this, the optimisation in this paper have been performed using a survival-based evolutionary approach. This can be considered as a co-evolutionary method in which the individuals (bots) fight in game battles in order to decide who survives and moves to the next generation.
 
 % Ya estamos con el este hizo este, este hizo el otro y el otor hizo
 % el otro. y regarding lo otro, pues lo demás. Tienes que contar la
 % historia del estado del arte (incluir también los papers de Carlos
-% Cotta) y llegar al punto de ahora en el que vas a avanzar. 
+% Cotta) y llegar al punto de ahora en el que vas a avanzar. FERGU: le he metido el problema que tiene el de Nogueira y cómo lo resolvemos nosotros arriba. TODO enlazar el resto de cosas del SOA
 
-The latter is an approach based in a self-learning algorithm as the one we are proposing, but focused in a subset of individuals (the elite) which can have a negative effect in the generalisation factor or the bots' knowledge. We have tested our method considering different rivals, in different studies. One of them is a previously optimized (and good-performing) bot, in order to deal with the so-called previous knowledge (Section \ref{sec:knowledge}).
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM DESCRIPTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -211,7 +213,7 @@ contenders. It was chosen for the Google AI Challenge 2010
 
 This game has been used previously in different fields of computational intelligence in games, such as competitive bot creation \cite{ziolko2012automatic,NogueiraCoevolutionary14} or map generation \cite{LaraMaps14}.
 
-. % ¿No hay ningún
+ % ¿No hay ningún
                                 % artículo científico? Hay un montón
                                 % de Keldon y Carlos Cotta sobre
                                 % generación de mapas - JJ FERGU: metidos.
@@ -229,23 +231,15 @@ A Planet Wars match takes place on a map (see Fig. \ref{figura:PlanetWars1}) tha
 
 The aim of the game is to defeat all the ships in the opponent's planets. Although Planet Wars is a RTS game, this implementation has transformed it into a turn-based game, in which each player has a maximum number of turns to accomplish the objective. At the end of the match, the winner is the player that remains alive, or that who owns more ships if more than one survives. 
 
-The problem in this paper is to create a bot's AI in order to win the game, i.e. able to defeat every possible opponent in a 1 vs 1 or 1 vs 3 match (four independent bots fighting in the same map).
+The problem in this paper is to create a bot's AI in order to win the game, i.e. able to defeat every possible opponent in a 1 vs 1 or 1 vs 3 match (four independent bots fighting in the same map). %TODO quitar esto dependiendo de lo que se use
 The bot must react according to the state of the map in each simulated turn (input), returning a set of actions to perform in order to fight the enemy, conquering its resources, and, ultimately, wining the game. 
 
 There are two strong constraints which determine the possible methods to apply to design a bot: a simulated turn takes \textit{just one second}, and the bot is \textit{not allowed to store any kind of information} about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map).
 
-We start from a designed bot's AI \cite{Genebot_CEC11}, named Genebot. It was defined from scratch (by an expert player), so it consists in a predefined set of behavioural rules. These rules depend on a set of parameters, which model thresholds, probabilities and weights, and which in turn, define how the bot will behave.
-The set of states and parameters that the bot will consider can be seen in Figure \ref{fig:diagram}. 
-%
-\begin{figure*}[ht]
-\begin{center}
-  \epsfig{file=imags/diagram.eps,width=12cm}
-\end{center}
-\caption{Diagram of states governing the behaviour of AnonymousBot, with the parameters to be evolved highlighted. There are weights ($w$), probabilities ($prob$), and percentages ($perc$).} 
-\label{fig:diagram}
-\end{figure*}
+%We start from a designed bot's AI \cite{Genebot_CEC11}, named Genebot. It was defined from scratch (by an expert player), so it consists in a predefined set of behavioural rules. These rules depend on a set of parameters, which model thresholds, probabilities and weights, and which in turn, define how the bot will behave.
+In this paper we use the GP algorithm previously described in \cite{GarciaGP14}
 
-Thus, the aim in this paper is to study the improvement of that set of behavioural parameters by means of some novel (in this scope) evolutionary approaches, based in the survival to evolve. These will be described in the following section.
+Thus, the aim in this paper is to study the generation and improvement of that set of behavioural parameters by means of some novel (in this scope) evolutionary approaches, based in the survival to evolve. These will be described in the following section.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   SURVIVAL BOT  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -278,7 +272,7 @@ Thus, the aim in this paper is to study the improvement of that set of behaviour
 \subsection{Bot generation using GP}
 \label{subsec:generationgp}
 
-The Genetic Programming-based bot or {\em GPBot}, presented in this work, evolves a set of rules which, in turn, models a Decision Tree. 
+The Genetic Programming-based bot or {\em GPBot}, presented in \cite{GarciaGP14}, evolves a set of rules which, in turn, models a Decision Tree. 
 During the evolution, every individual in the population (a tree) must be evaluated. To do so, the tree is set as the behavioural engine of an agent, which is then placed in a map against a rival in a Planet Wars match. Depending on the obtained results, the agent (i.e. the individual) gets a fitness value, that will be considered in the evolutionary process as a measure of its validity. 
  
 Thus, during the match the tree will be used (by the bot) in order to select the best strategy at every moment, i.e. for every planet a target will be selected along with the number of ships to send from one the other.
@@ -290,7 +284,7 @@ Thus, during the match the tree will be used (by the bot) in order to select the
 \item {\em Action}: a leave of the tree (therefore, a ``terminal''). Each decision is the name of the method to call from the planet that executes the tree. This method indicates to which planet send a percentage of available ships (from 0 to 1). 
 \end{itemize}
 
-\noindent The decisions are based in the values of different \textit{variables} which are computed considering some other variables in the game. They are defined by a human expert and defined in \cite{GpbotGarcia14}, and are:
+\noindent The decisions are based in the values of different \textit{variables} which are computed considering some other variables in the game. They are defined by a human expert and defined in \cite{GarciaGP14}, and are:
 
 \begin{itemize}
 \item {\em myShipsEnemyRatio}: Ratio between the player's ships and enemy's ships.
@@ -314,6 +308,7 @@ Thus, during the match the tree will be used (by the bot) in order to select the
 \item {\em Reinforce Nearest Planet}: Reinforce the nearest player's planet to the planet that executes the tree.
 \item {\em Reinforce Base}: Reinforce the player's planet with higher number of ships.
 \item {\em Reinforce Wealthiest Planet}: Reinforce the player's planet with higher grown rate.
+\item {\em Random}: This decission was not included in \cite{GarciaGP14} and it has been added to add stochasticity to the agent to perform the study presented in this work. It is a probability added to select one branch or the other.
 \item {\em Do nothing}.
 
 \end{itemize}
@@ -407,8 +402,8 @@ When a new individual is needed (parent), it is selected from this pool, accordi
 \section{Experiments and Results}
 \label{sec:experiments}
 
-Several experiments have been conducted in order to study different issues of the proposed approaches, but having in mind that the main objective is the improvement of bots using a co-evolutionary algorithm. The set of parameters considered in the GAs is shown in Table \ref{tab:parameters}.
-This set of parameters have been used previously in the work \cite{GpbotGarcia14}, obtaining competitive bots.
+Several experiments have been conducted in order to study different issues of the proposed approaches, but having in mind that the main objective is the generation and improvements of bots using a co-evolutionary algorithm. The set of parameters considered in the GAs is shown in Table \ref{tab:parameters}.
+This set of parameters have been used previously in the work \cite{GarciaGP14}, obtaining competitive bots.
 
 For each one of the presented approaches (combinations of fitness functions and knowledge-related methods), ten executions of the Co-GA have been performed.
 
