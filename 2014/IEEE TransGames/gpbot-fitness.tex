@@ -176,7 +176,7 @@ The experiments and results are described and discussed in Section \ref{sec:expe
 
 Evolutionary Computation (EC) has been applied in a wide variety of issues inside the videogames scope. One of the most profiting areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011} or content generation \cite{LaraMaps14}, among others.
 
-Different authors have addressed the generation of behavioural engines. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how the bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. Specifically, using Genetic Programming \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to create the set of rules, as these rules are created and evolved during the run, along their numerical parameters. This is the reason Genetic programming will be used in this paper to generate the engines, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using GAs.
+Generation of behavioural engines implies create the AI of the agent's that play the game. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how the bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. Specifically, using Genetic Programming \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to create the set of rules, as these rules are created and evolved during the run, along their numerical parameters. This is the reason Genetic programming will be used in this paper to generate the engines, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using GAs.
 
 One of the shortcomings of previous works is that they depend of a baseline bot, or a ad-hoc fitness function that involves some kind of parameterization (for example, number of matches or scoring the actions). To deal with this, co-Evolutionary Algorithms (CEAs) have been previously used in this scope, initially regarding puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
 The first work proposed a very simple hill-climbing algorithm to evolve a population of neural networks, playing among them as rivals, in a competitive co-evolutionary approach. The latter paper presented a co-evolutionary learning approach which performed well once the EA was correctly tuned, moreover, this method yields better players to solve small Go boards since every individual is evaluated against a diverse population of rivals.
@@ -207,7 +207,7 @@ To avoid this, the optimisation in this paper have been performed using a surviv
 \subsection{Problem Description} % esto deberías integrarlo a la
                               % introducción, para que tras la
                               % introducción fuera el SoA, que es lo
-                              % clásico. FERGU: Movido a subsección Background
+                              % clásico. FERGU: Movido a subsección Background, ya está después del SOA
 \label{sec:problemDescription}
 
 The game used here as testbed, Planet Wars, is a simplified version of the game
@@ -228,14 +228,14 @@ contenders. This game is interesting in research in the RTS scope because it mod
 \label{figura:PlanetWars1}
 \end{figure}
 
-A Planet Wars match takes place on a map (see Fig. \ref{figura:PlanetWars1}) that contains several planets (neutral, enemies or owned), each one of them with a number assigned to it that represents the quantity of ships that the planet is currently hosting. 
+A Planet Wars match takes place on a map (see Figure \ref{figura:PlanetWars1}) that contains several planets (neutral, enemies or owned), each one of them with a number assigned to it that represents the quantity of ships that the planet is currently hosting. 
 
-The aim of the game is to defeat all the ships in the opponent's planets. Although Planet Wars is a RTS game, this implementation has transformed it into a turn-based game, in which each player has a maximum number of turns to accomplish the objective. At the end of the match, the winner is the player that remains alive, or that who owns more ships if more than one survives. 
+The aim of the game is to defeat all the ships in the opponent's planets. Although Planet Wars is a RTS game, this implementation includes the concept of {\em turn} (1 second slot to decide the actions), and each player has a maximum number of turns to accomplish the objective. At the end of the match, the winner is the player that remains alive, or that who owns more ships if more than one survives. 
 
-The problem in this paper is to create a bot's AI in order to win the game, i.e. able to defeat every possible opponent in a 1 vs 1 or 1 vs 3 match (four independent bots fighting in the same map). %TODO quitar esto dependiendo de lo que se use
+The problem in this paper is to create a bot's AI in order to win the game, i.e. able to defeat every possible opponent in a 1 vs 1 or 4 vs 4 match (four independent bots fighting in the same map). %TODO quitar esto dependiendo de lo que se use
 The bot must react according to the state of the map in each simulated turn (input), returning a set of actions to perform in order to fight the enemy, conquering its resources, and, ultimately, wining the game. 
 
-There are two strong constraints which determine the possible methods to apply to design a bot: a simulated turn takes \textit{just one second}, and the bot is \textit{not allowed to store any kind of information} about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map).
+There are two strong constraints which determine the possible methods to apply to design a bot: a simulated turn takes just one second (that is, the maximum time to decide next action is one second), and the bot is not allowed to store any kind of information about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map).
 
 %We start from a designed bot's AI \cite{Genebot_CEC11}, named Genebot. It was defined from scratch (by an expert player), so it consists in a predefined set of behavioural rules. These rules depend on a set of parameters, which model thresholds, probabilities and weights, and which in turn, define how the bot will behave.
 
@@ -443,14 +443,14 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Progr
 \section{Experiments and Results}
 \label{sec:experiments}
 
-Several experiments have been conducted in order to study different issues of the proposed approaches, but having in mind that the main objective is the generation and improvements of bots using a co-evolutionary algorithm. The set of parameters considered in the GP is shown in Table \ref{tab:parameters}.
+Several experiments have been conducted in order to study different issues of the proposed approaches, but having in mind that the main objective is the generation and improvements of bots using a co-evolutionary algorithm. The set of parameters considered in the GP algorithm is shown in Table \ref{tab:parameters}.
 This set of parameters have been used previously in the work \cite{GarciaGP14}, obtaining competitive bots. The stop criterion has been set to 4000 evaluation. This is a good number of......
 
 For each one of the presented approaches (replacement and selection policies), 30 executions of the Co-GA have been performed.
 
 \begin{table}
 \begin{center}
-\begin{tabular}{|c|c|}
+\begin{tabular}{|c|p{4cm}|}
 \hline
 {\em Parameter Name} & {\em Value} \\\hline \hline
 Population size & 32 \\\hline
@@ -463,7 +463,7 @@ Replacement & Steady-state\\ \hline
 Stop criterion & 4000 simulations \\ \hline
 Maximum Tree Depth & 7  \\ \hline 
 Runs per configuration & 30 \\ \hline 
-Maps used in each evaluation & random\\ \hline
+Maps used in each evaluation & 1 random from maps \#76 \#69 \#7 \#11 \#26\\ \hline
 \end{tabular}
 \caption{Parameters used in the experiments.}
 \label{tab:parameters}
@@ -473,10 +473,13 @@ Maps used in each evaluation & random\\ \hline
 \subsection{Analysis of the executions}
 \label{subsec:analysisexecutions}
 
+It is difficult to show the convergence of the populations using a implicit fitness evaluation, as the evaluated individuals (and therefore, the fitness of the average population) do not count with a numeric value to be plotted in time. However, other values, such as the age, tree depth and number of nodes can help to understand how the evolution is being performed. Figure \ref{} shows the average age of the agents during the run. As can be seen, the maximum age is....
 
 \subsection{Analysis of the generated bots}
 \label{subsec:analysisbots}
-This subsection show the results of the obtained bots. 
+This subsection show the results of the obtained bots. Figure \ref{} shows the distribution of actions and decisions at the beginning of the evolution and at the end. It can be seen than the...
+
+
 
 
 
