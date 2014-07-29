@@ -39,7 +39,7 @@
 % paper title: Must keep \ \\ \LARGE\bf in it to leave enough margin.
 \title{\ \\ \LARGE\bf Fighting to Survive: Evolving RTS Bots without Explicit Evaluation}
 
-\author{A.J. Fernández-Ares, P. García-Sánchez, A.M. Mora, P. A. Castillo and J.J. Merelo \thanks{Department of Architecture and Computer Technology, University of Granada, Spain, {\tt \{antares,pablogarcia\}@ugr.es, \{amorag,pedro,jmerelo\}@geneura.ugr.es}}}
+\author{A.J. Fernández-Ares, P. García-Sánchez, A.M. Mora, P. A. Castillo and J.J. Merelo \thanks{Department of Computer Architecture and Computer Technology, University of Granada, Spain, {\tt \{antares,pablogarcia\}@ugr.es, \{amorag,pedro,jmerelo\}@geneura.ugr.es}}}
 % avoiding spaces at the end of the author lines is not a problem with
 % conference papers because we don't use \thanks or \IEEEmembership
 % use only for invited papers
@@ -111,7 +111,7 @@ solution consist in performing several evaluations for the same
 individual (maybe in different maps or against different opponents)
 and then compute its fitness value as an average or sum of all of
 them. This way a more accurate measure of the individual's quality is
-obtained, but it is not a perfect  solution because it depends of
+obtained, but it is not a perfect  solution because it depends on
 some parameters (number of victories, for example) or a previously created opponent.
 
 % decid por qué no
@@ -178,7 +178,7 @@ Evolutionary Computation (EC) has been applied in a wide variety of issues insid
 
 Generation of behavioural engines implies create the AI of the agent's that play the game. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how the bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. Specifically, using Genetic Programming \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to create the set of rules, as these rules are created and evolved during the run, along their numerical parameters. This is the reason Genetic programming will be used in this paper to generate the engines, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using GAs.
 
-One of the shortcomings of previous works is that they depend of a baseline bot, or a ad-hoc fitness function that involves some kind of parameterization (for example, number of matches or scoring the actions). To deal with this, co-Evolutionary Algorithms (CEAs) have been previously used in this scope, initially regarding puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
+One of the shortcomings of previous works is that they depend on a baseline bot, or a ad-hoc fitness function that involves some kind of parameterization (for example, number of matches or scoring the actions). To deal with this, co-Evolutionary Algorithms (CEAs) have been previously used in this scope, initially regarding puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
 The first work proposed a very simple hill-climbing algorithm to evolve a population of neural networks, playing among them as rivals, in a competitive co-evolutionary approach. The latter paper presented a co-evolutionary learning approach which performed well once the EA was correctly tuned, moreover, this method yields better players to solve small Go boards since every individual is evaluated against a diverse population of rivals.
 In the same line, there are some other works in the card games area, such as \cite{Thompson_Poker2008}, aimed to create Poker agents, considering a co-evolution process in which the players are part of the learning process. This meant a difficult process to get robust strategies, due to the variation in opponents, but the results shown to fit with some recommended strategies according experts.
 The aim of the present work is to conduct a study implementing a similar co-evolutionary approach, being competitive in the fitness calculation, but cooperative since all the opponents are also part of the same learning process (same population).
@@ -211,7 +211,9 @@ To avoid this, the optimisation in this paper have been performed using a surviv
 \label{sec:problemDescription}
 
 The game used here as testbed, Planet Wars, is a simplified version of the game
-{\em Galcon}, which models turn-based space battles between two to four
+{\em Galcon}\footnote{http://www.galcon.com/}, 
+% Antonio - poner un enlace mejor que este que he encontrado. ;)
+which models turn-based space battles between two to four
 contenders. This game is interesting in research in the RTS scope because it models a minimal RTS game: only one type of resources (planets), one type of unit (spaceships) and only one type of attack. Therefore, it has been used previously in different fields of computational intelligence in games, such as competitive bot creation \cite{ziolko2012automatic,NogueiraCoevolutionary14} or map generation \cite{LaraMaps14}. 
 
  % ¿No hay ningún
@@ -333,6 +335,8 @@ else
 
 \label{fig:javatree}
 \caption{Example of a generated decision tree.}
+% Antonio - más que un decision tree es un rule-based system, no?
+% Antonio - Si queremos hablar de decision trees, se podría dibujar uno modelando esas reglas. ;)
 \end{figure}
 
 
@@ -363,7 +367,9 @@ else
 \subsection{Selection policy}
 Previous generation algorithm is combined with the implicit fitness evaluation for selection and replacement. This evaluation of implicit fitness is performed confronting the individuals in a real-scenario. Selection of the mating parents is performed in a battle: the winner is selected to crossover and the loser will be removed from the population (as it will be explained later).
 
-Two different types of battles will be compared: {\em 1vs1} and {\em 4vs4}, as they are the only possible match types in Planet Wars. In both configurations the winner will be selected to mating and the loser (i.e. the first to be eliminated) will be removed from the population. Therefore, in the case of 4vs4, the individuals ending in 2nd and 3rd position neither are selected for mating nor removed.
+Two different types of battles will be compared: {\em 1vs1} and {\em 4vs4}, 
+% Antonio - esto lo ponía yo mal también, no son combates 4 contra 4, sino 1vs3. ;D
+as they are the only possible match types in Planet Wars. In both configurations the winner will be selected to mating and the loser (i.e. the first to be eliminated) will be removed from the population. Therefore, in the case of 4vs4, the individuals ending in 2nd and 3rd position neither are selected for mating nor removed.
 
 This implicit selection and replacement have been chosen because...
 
@@ -414,11 +420,14 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Progr
 
   \FOR{1 to N}
     \STATE //2 contenders in 1vs1 and 4 contenders in 4vs4
+% Antonio - lo del 4vs4
     \STATE contenders $\leftarrow$ selectContenders(population-selected)
     \STATE winner1,loser1 $\leftarrow$ battle(contenders)
     \STATE selected $\leftarrow$ selected + winner1 + loser1 
     \STATE contenders $\leftarrow$ selectContenders(population-selected)
     \STATE winner2,loser2 $\leftarrow$ battle(contenders)
+% Antonio - poner más comentarios. Yo de hecho los suelo poner antes de cada instrucción (y más si son tan improtantes como estas)
+% Antonio - Si no se quiere hacer dos pseudocódigos para 1vs1 y para 1vs3, se pueden poner cosas comentadas sobre quienes son winner1 y loser1 en cada caso, poner algunas líneas que sólo se ejecutarían en un caso o en otro, etc
     \STATE selected $\leftarrow$ selected + winner2 + loser2 
     \STATE losers $\leftarrow$ losers + loser1 + loser2
     \STATE son1,son2 $\leftarrow$ crossover(parent1,parent2);
@@ -499,7 +508,8 @@ The consideration of a more flexible approach for defining the behavioural engin
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
-This paper has been funded in part by European and National projects FP7-318508 (MUSES) and TIN2011-28627-C04-02 (ANYSELF) respectively, project P08-TIC-03903 (EV\-ORQ) awarded by the Andalusian Regional Government, and project 83 (CANUBE) awarded by the CEI-BioTIC UGR.
+% Antonio - actualizar esto. He quitado EVORQ y MUSES, pero ANYSELF terminó y CANUBE también, ¿no?
+This paper has been funded in part by Spanish National project TIN2011-28627-C04-02 (ANYSELF), and projects CEI2013-P-14 (CANUBE) and GENIL PYR-2014-17, both awarded by the CEI-BioTIC UGR.
 
 \bibliographystyle{IEEEtran}
 \bibliography{genebot}
