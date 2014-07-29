@@ -176,7 +176,7 @@ The experiments and results are described and discussed in Section \ref{sec:expe
 
 Evolutionary Computation (EC) has been applied in a wide variety of issues inside the videogames scope. One of the most profiting areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011} or content generation \cite{LaraMaps14}, among others.
 
-Generation of behavioural engines implies create the AI of the agent's that play the game. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how the bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. Specifically, using Genetic Programming \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to create the set of rules, as these rules are created and evolved during the run, along their numerical parameters. This is the reason Genetic programming will be used in this paper to generate the engines, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using GAs.
+Generation of behavioural engines implies create the AI of the agent's that play the game. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how the bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. Specifically, using Genetic Programming \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to create the set of rules, as these rules are created and evolved during the run, along their numerical parameters.  Therefore, it is a more flexible approach for defining the behavioural engine of the bots. This is the reason Genetic programming will be used in this paper to generate the engines, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using GAs.
 
 One of the shortcomings of previous works is that they depend on a baseline bot, or a ad-hoc fitness function that involves some kind of parameterization (for example, number of matches or scoring the actions). To deal with this, co-Evolutionary Algorithms (CEAs) have been previously used in this scope, initially regarding puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
 The first work proposed a very simple hill-climbing algorithm to evolve a population of neural networks, playing among them as rivals, in a competitive co-evolutionary approach. The latter paper presented a co-evolutionary learning approach which performed well once the EA was correctly tuned, moreover, this method yields better players to solve small Go boards since every individual is evaluated against a diverse population of rivals.
@@ -212,7 +212,7 @@ To avoid this, the optimisation in this paper have been performed using a surviv
 
 The game used here as testbed, Planet Wars, is a simplified version of the game
 {\em Galcon}\footnote{http://www.galcon.com/}, 
-% Antonio - poner un enlace mejor que este que he encontrado. ;)
+% Antonio - poner un enlace mejor que este que he encontrado. ;)FERGU: hombre, este es el oficial, no? xD
 which models turn-based space battles between two to four
 contenders. This game is interesting in research in the RTS scope because it models a minimal RTS game: only one type of resources (planets), one type of unit (spaceships) and only one type of attack. Therefore, it has been used previously in different fields of computational intelligence in games, such as competitive bot creation \cite{ziolko2012automatic,NogueiraCoevolutionary14} or map generation \cite{LaraMaps14}. 
 
@@ -234,7 +234,7 @@ A Planet Wars match takes place on a map (see Figure \ref{figura:PlanetWars1}) t
 
 The aim of the game is to defeat all the ships in the opponent's planets. Although Planet Wars is a RTS game, this implementation includes the concept of {\em turn} (1 second slot to decide the actions), and each player has a maximum number of turns to accomplish the objective. At the end of the match, the winner is the player that remains alive, or that who owns more ships if more than one survives. 
 
-The problem in this paper is to create a bot's AI in order to win the game, i.e. able to defeat every possible opponent in a 1 vs 1 or 4 vs 4 match (four independent bots fighting in the same map). %TODO quitar esto dependiendo de lo que se use
+The problem in this paper is to create a bot's AI in order to win the game, i.e. able to defeat every possible opponent in a 1 vs 1 or All vs All match (four independent bots fighting in the same map). %TODO quitar esto dependiendo de lo que se use
 The bot must react according to the state of the map in each simulated turn (input), returning a set of actions to perform in order to fight the enemy, conquering its resources, and, ultimately, wining the game. 
 
 There are two strong constraints which determine the possible methods to apply to design a bot: a simulated turn takes just one second (that is, the maximum time to decide next action is one second), and the bot is not allowed to store any kind of information about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map).
@@ -288,7 +288,7 @@ The used Decision Trees are binary trees of expressions composed by two differen
 \item {\em Action}: a leave of the tree (therefore, a ``terminal''). Each decision is the name of the method to call from the planet that executes the tree. This method indicates to which planet send a percentage of available ships (from 0 to 1). 
 \end{itemize}
 
-\noindent The decisions are based in the values of different \textit{variables} which are computed considering some other variables in the game. They are defined by a human expert and defined in \cite{GarciaGP14}, and are:
+ The decisions are based in the values of different \textit{variables} which are computed considering some other variables in the game. They are defined by a human expert and defined in \cite{GarciaGP14}, and are:
 
 \begin{itemize}
 \item {\em myShipsEnemyRatio}: Ratio between the player's ships and enemy's ships.
@@ -299,21 +299,21 @@ The used Decision Trees are binary trees of expressions composed by two differen
 \item {\em actualLandedFlyingRatio}: Ratio between the number of ships landed and flying from the specific planet that evaluates the tree and player's total ships.
 \end{itemize}
 
-\noindent Finally, the possible \textit{decisions} are:
+Finally, the possible \textit{decisions} (and their acronyms, that will be used in the rest of the paper) are:
 
 \begin{itemize}
-\item {\em Attack Nearest (Neutral|Enemy|NotMy) Planet}: The objective is the nearest planet.
-\item {\em Attack Weakest (Neutral|Enemy|NotMy) Planet}: The objective is the planet with less ships.
-\item {\em Attack Wealthiest (Neutral|Enemy|NotMy) Planet}: The objective is the planet with higher lower rate.
-\item {\em Attack Beneficial (Neutral|Enemy|NotMy) Planet}: The objective is the  more beneficial planet, that is, the one with highest growth rate divided by the number of ships.
-\item {\em Attack Quickest (Neutral|Enemy|NotMy) Planet}: The objective is the planet easier to be conquered: the lowest product between the distance from the planet that executes the tree and the number of  ships in the objective planet.
-\item {\em Attack (Neutral|Enemy|NotMy) Base}: The objective is the planet with more ships (that is, the base).
-\item {\em  Attack Random Planet}.
-\item {\em Reinforce Nearest Planet}: Reinforce the nearest player's planet to the planet that executes the tree.
-\item {\em Reinforce Base}: Reinforce the player's planet with higher number of ships.
-\item {\em Reinforce Wealthiest Planet}: Reinforce the player's planet with higher grown rate.
-\item {\em Random}: This decission was not included in \cite{GarciaGP14} and it has been added to add stochasticity to the agent to perform the study presented in this work. It is a probability added to select one branch or the other.
-\item {\em Do nothing}.
+\item {\em Attack Nearest (Neutral|Enemy|NotMy) Planet} [ANN, ANE, ANNM]: The objective is the nearest planet.
+\item {\em Attack Weakest (Neutral|Enemy|NotMy) Planet} [AWKN, AWKE, AWKNM]: The objective is the planet with less ships.
+\item {\em Attack Wealthiest (Neutral|Enemy|NotMy) Planet} [AWN, AWE, AWNM]: The objective is the planet with higher lower rate.
+\item {\em Attack Beneficial (Neutral|Enemy|NotMy) Planet} [ABN, ABE, ABNM]: The objective is the  more beneficial planet, that is, the one with highest growth rate divided by the number of ships.
+\item {\em Attack Quickest (Neutral|Enemy|NotMy) Planet} [AQN, AQE, AQNM]: The objective is the planet easier to be conquered: the lowest product between the distance from the planet that executes the tree and the number of  ships in the objective planet.
+\item {\em Attack (Neutral|Enemy|NotMy) Base} [ANB, AEB, ANMB]: The objective is the planet with more ships (that is, the base).
+\item {\em  Attack Random Planet} [AR].
+\item {\em Reinforce Nearest Planet} [RN]: Reinforce the nearest player's planet to the planet that executes the tree.
+\item {\em Reinforce Base} [RB]: Reinforce the player's planet with higher number of ships.
+\item {\em Reinforce Wealthiest Planet} [RW]: Reinforce the player's planet with higher grown rate.
+\item {\em Random} [R]: This decision was not included in \cite{GarciaGP14} and it has been added to add stochasticity to the agent to perform the study presented in this work. It is a probability added to select one branch or the other.
+\item {\em Do nothing} [DN].
 
 \end{itemize}
 
@@ -321,7 +321,7 @@ An example of a possible decision tree is presented in Figure \ref{fig:javatree}
 
 \begin{figure}
 
-\begin{Verbatim}[frame=single]
+\begin{Verbatim}[frame=single,fontsize=\small]
 
 if(myShipsLandedFlyingRatio < 0.696)
    if(actualMyShipsRatio < 0.421)
@@ -334,9 +334,9 @@ else
 \end{Verbatim}
 
 \label{fig:javatree}
-\caption{Example of a generated decision tree.}
+\caption{Example of the code generated from a decision tree of an individual.}
 % Antonio - más que un decision tree es un rule-based system, no?
-% Antonio - Si queremos hablar de decision trees, se podría dibujar uno modelando esas reglas. ;)
+% Antonio - Si queremos hablar de decision trees, se podría dibujar uno modelando esas reglas. ;) FERGU: arreglao
 \end{figure}
 
 
@@ -345,16 +345,16 @@ else
 \begin{algorithmic}
 
 
-\STATE // At the beginning of the execution the agent receives the tree
+\STATE {\em /*At the beginning of the execution the agent receives the tree*/}
 \STATE tree $\leftarrow$ readTree()
 \WHILE{game not finished}
-  \STATE // starts the turn
-  \STATE calculateGlobalPlanets() // e.g. Base or Enemy Base
-  \STATE calculateGlobalRatios() // e.g. myPlanetsEnemyRatio
+  \STATE {\em /* starts the turn */}
+  \STATE calculateGlobalPlanets() {\em /* e.g. Base or Enemy Base */}
+  \STATE calculateGlobalRatios()  {\em /* e.g. myPlanetsEnemyRatio */}
   \FOR{Each p in PlayerPlanets}
-    \STATE calculateLocalPlanets(p) // e.g. NearestNeutralPlanet to p
-    \STATE calculateLocalRatios(p) //e.g actualMyShipsRatio
-    \STATE executeTree(p,tree)  // Send a percentage of ships to destination
+    \STATE calculateLocalPlanets(p) {\em /*e.g. NearestNeutralPlanet to p*}
+    \STATE calculateLocalRatios(p)  {\em /* e.g actualMyShipsRatio */}
+    \STATE executeTree(p,tree)  {\em /*Send a percentage of ships to destination*/}
    \ENDFOR
 \ENDWHILE
 
@@ -367,9 +367,9 @@ else
 \subsection{Selection policy}
 Previous generation algorithm is combined with the implicit fitness evaluation for selection and replacement. This evaluation of implicit fitness is performed confronting the individuals in a real-scenario. Selection of the mating parents is performed in a battle: the winner is selected to crossover and the loser will be removed from the population (as it will be explained later).
 
-Two different types of battles will be compared: {\em 1vs1} and {\em 4vs4}, 
-% Antonio - esto lo ponía yo mal también, no son combates 4 contra 4, sino 1vs3. ;D
-as they are the only possible match types in Planet Wars. In both configurations the winner will be selected to mating and the loser (i.e. the first to be eliminated) will be removed from the population. Therefore, in the case of 4vs4, the individuals ending in 2nd and 3rd position neither are selected for mating nor removed.
+Two different types of battles will be compared: {\em 1vs1} and {\em All vs All of 4 bots}, 
+% Antonio - esto lo ponía yo mal también, no son combates 4 contra 4, sino 1vs3. ;D FERGU: arreglao.
+as they are the only possible match types in Planet Wars. In both configurations the winner will be selected to mating and the loser (i.e. the first to be eliminated) will be removed from the population. Therefore, in the case of All vs All, the individuals ending in 2nd and 3rd position neither are selected for mating nor removed.
 
 This implicit selection and replacement have been chosen because...
 
@@ -406,8 +406,6 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Progr
 \begin{algorithm}[htb]
 \begin{algorithmic}
 
-
-\STATE // At the beginning of the execution the agent receives the tree
 \STATE population $\leftarrow$ initializePopulation()
 \WHILE{stop criterion not found}
   %IF TYPE = STEADY STATE PARENTS = 2
@@ -419,15 +417,17 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Progr
   \ENDIF
 
   \FOR{1 to N}
-    \STATE //2 contenders in 1vs1 and 4 contenders in 4vs4
+    \STATE {\em /* 2 contenders in 1vs1 and 4 contenders in All vs All*/}
 % Antonio - lo del 4vs4
     \STATE contenders $\leftarrow$ selectContenders(population-selected)
+    \STATE {\em /*The contenders fight and the winner and loser are obtained (in case of All vs All, the first to be defeated is the loser)*/}
     \STATE winner1,loser1 $\leftarrow$ battle(contenders)
+    \STATE {\em /* Previously selected bots not participate again in the tournament*/}
     \STATE selected $\leftarrow$ selected + winner1 + loser1 
     \STATE contenders $\leftarrow$ selectContenders(population-selected)
     \STATE winner2,loser2 $\leftarrow$ battle(contenders)
 % Antonio - poner más comentarios. Yo de hecho los suelo poner antes de cada instrucción (y más si son tan improtantes como estas)
-% Antonio - Si no se quiere hacer dos pseudocódigos para 1vs1 y para 1vs3, se pueden poner cosas comentadas sobre quienes son winner1 y loser1 en cada caso, poner algunas líneas que sólo se ejecutarían en un caso o en otro, etc
+% Antonio - Si no se quiere hacer dos pseudocódigos para 1vs1 y para 1vs3, se pueden poner cosas comentadas sobre quienes son winner1 y loser1 en cada caso, poner algunas líneas que sólo se ejecutarían en un caso o en otro, etc FERGU: puestos comentarios
     \STATE selected $\leftarrow$ selected + winner2 + loser2 
     \STATE losers $\leftarrow$ losers + loser1 + loser2
     \STATE son1,son2 $\leftarrow$ crossover(parent1,parent2);
@@ -459,7 +459,7 @@ For each one of the presented approaches (replacement and selection policies), 3
 
 \begin{table}
 \begin{center}
-\begin{tabular}{|c|p{4cm}|}
+\begin{tabular}{|c|p{2.5cm}|}
 \hline
 {\em Parameter Name} & {\em Value} \\\hline \hline
 Population size & 32 \\\hline
@@ -497,14 +497,16 @@ This subsection show the results of the obtained bots. Figure \ref{} shows the d
 \section{Conclusions and Future Work}
 \label{sec:conclusions}
 
-This paper presents four different implementations of a quite simple approach: to omit the fitness-based selection mechanism in an EA. 
+This paper presents different implementations of a quite simple approach: to omit the fitness-based selection mechanism in an EA, simulating the evolution in a more natural way: performing real battles of the individuals. This has been applied over the improvement of the behavioural parameters of the bot's AI in the RTS game Planet Wars. This approach has two main benefits: it leaves out existent bots for the evaluation, and the parametrization of the fitness function.
 
-This has been applied over the improvement of the behavioural parameters of the bot's AI in the RTS game Planet Wars. Then, the tournament has been modelled as a battle in the game
+The tournament has been modelled as a battle in the game 
 
 
 
-The results obtained in this study are very promising, but they inherit a flaw from previous works, which is the low flexibility level due to the predefined set of rules/states that the bots follow. This means that almost every bot will eventually behave well, and the diversity in the search loses its relevance.
-The consideration of a more flexible approach for defining the behavioural engine of the bots, such as a Genetic Programming one [REF GP Genebot], could yield more interesting results and conclusions about the value of the methods proposed in this work.
+
+
+%The results obtained in this study are very promising, but they inherit a flaw from previous works, which is the low flexibility level due to the predefined set of rules/states that the bots follow. This means that almost every bot will eventually behave well, and the diversity in the search loses its relevance.
+%The consideration of a more flexible approach for defining the behavioural engine of the bots, such as a Genetic Programming one [REF GP Genebot], could yield more interesting results and conclusions about the value of the methods proposed in this work.
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
