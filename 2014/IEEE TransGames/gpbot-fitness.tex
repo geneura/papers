@@ -178,7 +178,7 @@ Evolutionary Computation (EC) has been applied in a wide variety of issues insid
 
 Generation of behavioural engines implies create the AI of the agent's that play the game. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how the bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. Specifically, using Genetic Programming \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to create the set of rules, as these rules are created and evolved during the run, along their numerical parameters.  Therefore, it is a more flexible approach for defining the behavioural engine of the bots. This is the reason Genetic programming will be used in this paper to generate the engines, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using GAs.
 
-One of the shortcomings of previous works is that they depend on a baseline bot, or a ad-hoc fitness function that involves some kind of parameterization (for example, number of matches or scoring the actions). To deal with this, co-Evolutionary Algorithms (CEAs) have been previously used in this scope, initially regarding puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
+One of the shortcomings of previous works is that they depend on a baseline bot, or a ad-hoc fitness function that involves some kind of parameterization (for example, number of matches or scoring the actions). To deal with this, co-Evolutionary Algorithms (CEAs) have been previously used in this scope, as it is a natural choice to use in problems where the behaviour of agents is related to the behaviour of others \cite{Coevolving13Samothrakis}. Co-evolution have been used initially in puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
 The first work proposed a very simple hill-climbing algorithm to evolve a population of neural networks, playing among them as rivals, in a competitive co-evolutionary approach. The latter paper presented a co-evolutionary learning approach which performed well once the EA was correctly tuned, moreover, this method yields better players to solve small Go boards since every individual is evaluated against a diverse population of rivals.
 In the same line, there are some other works in the card games area, such as \cite{Thompson_Poker2008}, aimed to create Poker agents, considering a co-evolution process in which the players are part of the learning process. This meant a difficult process to get robust strategies, due to the variation in opponents, but the results shown to fit with some recommended strategies according experts.
 The aim of the present work is to conduct a study implementing a similar co-evolutionary approach, being competitive in the fitness calculation, but cooperative since all the opponents are also part of the same learning process (same population).
@@ -191,9 +191,9 @@ Co-evolution has also been used in the RTS scope. Livingstone \cite{Livinstone_R
 Nogueira et al. \cite{Nogueira_HoF2013} considered in a recent
 publication the use of a Hall of Fame as a set of rivals (in the
 evaluation function) inside a co-evolutionary algorithm to create
-autonomous agents for the RTS game {\em RobotWars}. An updated version of this algorithm was also applied to Planet Wars game \cite{NogueiraCoevolutionary14}. This approach is based in a self-learning algorithm as the one we are proposing, but focused in a subset of individuals (the elite) which can have a negative effect in the generalisation factor or the bots' knowledge. Moreover, they use a ad-hoc fitness function with specific parameters, taking into account several battles and extra score measurement.
+autonomous agents for the RTS game {\em RobotWars}. An updated version of this algorithm was also applied to Planet Wars game \cite{NogueiraCoevolutionary14}. This approach is based in a self-learning algorithm as the one we are proposing, but focused in a subset of individuals (the elite) which can have a negative effect in the generalisation factor or the bots' knowledge. Moreover, they use a ad-hoc fitness function with specific parameters, taking into account several battles and extra score measurement. Also, using the evolution to a fixed set of players could not lead to strong players \cite{Coevolving13Samothrakis}.
 
-To avoid this, the optimisation in this paper have been performed using a survival-based evolutionary approach. This can be considered as a co-evolutionary method in which the individuals (bots) fight in game battles in order to decide who survives and moves to the next generation. Two advantages with respect of previous work are tested: not adding ad-hoc parameters (such as the number of victories) and not using a specific bot available for training.
+To avoid this, in this paper the optimisation  has been performed using a survival-based evolutionary approach. This can be considered as a co-evolutionary method in which the individuals (bots) fight in game battles in order to decide who survives and moves to the next generation, being a explicit player comparison. Two advantages with respect of previous work are tested: not adding ad-hoc parameters (such as the number of victories) and not using a specific bot available for training.
 
 % Ya estamos con el este hizo este, este hizo el otro y el otor hizo
 % el otro. y regarding lo otro, pues lo demás. Tienes que contar la
@@ -302,12 +302,12 @@ The used Decision Trees are binary trees of expressions composed by two differen
 Finally, the possible \textit{decisions} (and their acronyms, that will be used in the rest of the paper) are:
 
 \begin{itemize}
-\item {\em Attack Nearest (Neutral|Enemy|NotMy) Planet} [ANN, ANE, ANNM]: The objective is the nearest planet.
-\item {\em Attack Weakest (Neutral|Enemy|NotMy) Planet} [AWKN, AWKE, AWKNM]: The objective is the planet with less ships.
-\item {\em Attack Wealthiest (Neutral|Enemy|NotMy) Planet} [AWN, AWE, AWNM]: The objective is the planet with higher lower rate.
-\item {\em Attack Beneficial (Neutral|Enemy|NotMy) Planet} [ABN, ABE, ABNM]: The objective is the  more beneficial planet, that is, the one with highest growth rate divided by the number of ships.
-\item {\em Attack Quickest (Neutral|Enemy|NotMy) Planet} [AQN, AQE, AQNM]: The objective is the planet easier to be conquered: the lowest product between the distance from the planet that executes the tree and the number of  ships in the objective planet.
-\item {\em Attack (Neutral|Enemy|NotMy) Base} [ANB, AEB, ANMB]: The objective is the planet with more ships (that is, the base).
+\item {\em Attack Nearest (Neutral|Enemy|NotMy) Planet} [ANN, ANE, ANNm]: The objective is the nearest planet.
+\item {\em Attack Weakest (Neutral|Enemy|NotMy) Planet} [AWkN, AWkE, AWkNm]: The objective is the planet with less ships.
+\item {\em Attack Wealthiest (Neutral|Enemy|NotMy) Planet} [AWN, AWE, AWNm]: The objective is the planet with higher lower rate.
+\item {\em Attack Beneficial (Neutral|Enemy|NotMy) Planet} [ABN, ABE, ABNm]: The objective is the  more beneficial planet, that is, the one with highest growth rate divided by the number of ships.
+\item {\em Attack Quickest (Neutral|Enemy|NotMy) Planet} [AQN, AQE, AQNm]: The objective is the planet easier to be conquered: the lowest product between the distance from the planet that executes the tree and the number of  ships in the objective planet.
+\item {\em Attack (Neutral|Enemy|NotMy) Base} [ANB, AEB, ANmB]: The objective is the planet with more ships (that is, the base).
 \item {\em  Attack Random Planet} [AR].
 \item {\em Reinforce Nearest Planet} [RN]: Reinforce the nearest player's planet to the planet that executes the tree.
 \item {\em Reinforce Base} [RB]: Reinforce the player's planet with higher number of ships.
@@ -453,7 +453,7 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Progr
 \label{sec:experiments}
 
 Several experiments have been conducted in order to study different issues of the proposed approaches, but having in mind that the main objective is the generation and improvements of bots using a co-evolutionary algorithm. The set of parameters considered in the GP algorithm is shown in Table \ref{tab:parameters}.
-This set of parameters have been used previously in the work \cite{GarciaGP14}, obtaining competitive bots. The stop criterion has been set to 4000 evaluation. This is a good number of......
+This set of parameters have been used previously in the work \cite{GarciaGP14}, obtaining competitive bots. To do a fair comparison the stop criterion has been also set to 4000 evaluations.
 
 For each one of the presented approaches (replacement and selection policies), 30 executions of the Co-GA have been performed.
 
