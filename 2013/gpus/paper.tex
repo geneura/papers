@@ -9,7 +9,7 @@
 \usepackage{amsmath}
 \usepackage{epsfig}
 \usepackage{graphicx}
-%\usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{url}
 
 %\modulolinenumbers[5]
@@ -46,13 +46,6 @@
 \address{University of Granada}
 
 \begin{abstract}
-Queda por arreglar:
-\begin{itemize}
-\item referencias demasiado largas
-\item tabla de hardware
-\item algunos comentarios de JJ
-\end{itemize}
-
 Many real life problems, and large instances of some toy problems, require a high amount of computational power to be solved. In order to deal with them, parallelization of algorithms has been used with the aim of both reducing the computation time and improving the quality of the solutions. From the beginning of the computation age these algorithms have been executed in central processing units (CPUs), one or more.
 
 However the advances in the video game industry have led to the production of low cost and high-performance graphics processing units (GPUs) included in almost every PC or even in every mobile device. Thus, recently, these units have been considered as general purpose processors and profited as powerful substitutes or complements for CPUs regarding problem solving tasks.
@@ -152,21 +145,21 @@ operating system schedule threads over different cores of a CPU in a
 preemptive fashion. GPUs have dedicated hardware for the cooperative
 scheduling of threads. 
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centering
 \epsfig{file=cpu-gpu.eps,width=\columnwidth}
 \caption{CPU and GPU block diagram comparison.}
 \label{fig:cpu-gpu}
 \end{figure}
 
-%\begin{figure}[h!]
+%\begin{figure}[!ht]
 %\centering
 %\epsfig{file=cpu.eps,width=\columnwidth}
 %\caption{CPU block diagram.}
 %\label{fig:cpu}
 %\end{figure}
 
-%\begin{figure}[h!]
+%\begin{figure}[!ht]
 %\centering
 %\epsfig{file=gpu.eps,width=\columnwidth}
 %\caption{GPU block diagram.}
@@ -194,7 +187,7 @@ Accelerated Processing Units (APUs), taking into account these terms
 and their meaning. % Muchas de estas cosas son también del artículo de
                    % 2012 - JJ
 
-\begin{table*}[h!]
+\begin{table*}[!ht]
 \resizebox{\textwidth}{!}{
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -277,19 +270,19 @@ to take advantage of the GPU.
 
 Figure \ref{fig:gk110a} shows the internals of latest NVIDIA Kepler GK110 architecture. There can be a maximum of 15 SMX units and every one of this has 192 single precision CUDA cores. The six squares on the sides are memory interfaces for a total bus width of 384 bits. It is capable of a maximum bandwidth of 250GB/s connected to GDDR5 memory chips. Figure \ref{fig:gk110b} shows a disclosed SMX unit with its 192 CUDA cores. The maximum theoretical throughput in simple precision is 3950GFLOPS.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \begin{tabular}{c}
 %\epsfig{file=nvidia-gk110.eps,width=\columnwidth} \\
-\includegraphics[width=\textwidth]{nvidia-gk110.png} \\
+\includegraphics[width=0.99\textwidth]{nvidia-gk110.png} \\
 \end{tabular}
 \caption{NVIDIA Kepler GK110 architecture block diagram.}
 \label{fig:gk110a}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \begin{tabular}{c}
 %\epsfig{file=./nvidia-smx.eps,width=\columnwidth} \\
-\includegraphics[width=\textwidth]{nvidia-smx.png} \\
+\includegraphics[width=0.99\textwidth]{nvidia-smx.png} \\
 \end{tabular}
 \caption{NVIDIA Kepler GK110 architecture SMX unit.}
 \label{fig:gk110b}
@@ -297,7 +290,7 @@ Figure \ref{fig:gk110a} shows the internals of latest NVIDIA Kepler GK110 archit
 
 In Figure \ref{fig:tahitia} the newest AMD GPU can be seen. It has an architecture called Graphics Core Next (GCN). Every chip, there are 2, is composed by 28 Compute Units (CU) as AMD call it. Every CU is composed by 4 SIMD vector processors. Every SIMD processor can operate on 16 number simultaneously. This way 1792 instructions can be finalized every clock. Every Tahiti chip has six 64-bit dual channel memory controllers (gray rectangles at the bottom of Figure \ref{fig:tahitib}) connected to 2 GDDR5 memory channels for a total bandwidth of 240GB/s. The maximum theoretical throughput in simple precision for this design is 2956GFLOPS.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centering
 \begin{tabular}{c}
 \epsfig{file=./amd-tahiti.eps,width=\columnwidth} \\
@@ -306,10 +299,11 @@ In Figure \ref{fig:tahitia} the newest AMD GPU can be seen. It has an architectu
 \label{fig:tahitia}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centering
 \begin{tabular}{c}
-\epsfig{file=./amd-gcn-cu-2.eps,width=\columnwidth} \\
+%\epsfig{file=./amd-gcn-cu-2.eps,width=\columnwidth} \\
+\includegraphics[width=0.99\textwidth]{amd-gcn-cu.png} \\
 \end{tabular}
 \caption{AMD Graphics Core Next architecture SIMD processor.}
 \label{fig:tahitib}
@@ -350,7 +344,7 @@ OpenCL, DirectCompute and CUDA are APIs designed for heterogeneous computing wit
 
 A kernel applies a single stream of instructions to vast quantities of data that are organized as a 1-3 dimensional array (see Figures \ref{figure:captura1paperCEC} and \ref{figure:grid}). Each piece of data is known as a work-item in OpenCL terminology, and kernels may have hundreds or thousands of work-items. The kernel itself is organized into many work-groups that are relatively limited in size; for example a kernel could have 32K work-items, but 64 work-groups of 512 items each. 
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centerline{\epsfig{file=./hierarchy.eps,width=7cm}}
 \caption{Hierarchy of computing structure in a GPU.}
 \label{figure:captura1paperCEC}
@@ -358,7 +352,7 @@ A kernel applies a single stream of instructions to vast quantities of data that
 
 Unlike traditional computation, arbitrary communication within a kernel is strongly limited. However, communication and synchronization is generally allowed locally within a work-group. So work-groups serve two purposes: first, they break up a kernel into manageable chunks, and second, they define a limited scope for communication. 
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centerline{\epsfig{file=grid.eps,width=7cm}}
 \caption{Execution model: Each piece of data is a work-item (thread); a kernel has thousands of work-items and is organized into many work-groups (thread blocks); each work-group process many work-items.}
 \label{figure:grid}
