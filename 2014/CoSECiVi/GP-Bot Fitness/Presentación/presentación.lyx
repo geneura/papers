@@ -1,0 +1,1267 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass beamer
+\begin_preamble
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+\usetheme{Goettingen}
+\usecolortheme{beetle}
+%\usetheme{Hannover}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\headheight 1cm
+\headsep 1cm
+\footskip 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Designing Competitive Bots for a Real Time Strategy Game using Genetic Programmi
+ng
+\end_layout
+
+\begin_layout Author
+A.Fernández-Ares, P.García-Sánchez, A.M.Mora, P.A.Castillo, and J.J.Merelo
+\end_layout
+
+\begin_layout Institute
+Universidad de Granada
+\end_layout
+
+\begin_layout BeginFrame
+Index
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Subsection
+RTS
+\end_layout
+
+\begin_layout BeginFrame
+Introduction
+\end_layout
+
+\begin_layout FrameSubtitle
+RTS
+\end_layout
+
+\begin_layout Block
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{Real-Time Strategy games (RTS-games)}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+are a sub-genre of strategy-based video- games in which the contenders struggle
+ to control a set of 
+\series bold
+resources
+\series default
+, 
+\series bold
+units
+\series default
+ and structures that are distributed in a playing arena.
+ A proper control and a sound strategy and tactics for handling these units
+ is essential for winning the game, which happens after the game objective
+ has been fulfilled, normally 
+\series bold
+eliminating all enemy units
+\series default
+.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename imgs/rts.jpg
+	height 33pheight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Subsection
+Genetic Programing
+\end_layout
+
+\begin_layout BeginFrame
+Introduction
+\end_layout
+
+\begin_layout FrameSubtitle
+Genetic Programing
+\end_layout
+
+\begin_layout Block
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{Genetic Programming (GP)}
+\end_layout
+
+\end_inset
+
+is a kind of 
+\series bold
+Evolutionary Algorithm
+\series default
+ (EA) , that is, a probabilistic search and optimization algorithms gleaned
+ from the model of 
+\series bold
+darwinistic evolution
+\series default
+, based on the idea that in nature structures un- dergo adaptation.
+ EAs work on a population of possible solutions (individuals) for the target
+ problem and use a selection method that favours better solutions and a
+ set of operators that act upon the selected solutions.
+ 
+\end_layout
+
+\begin_layout Block
+\begin_inset Graphics
+	filename imgs/gp_fun.gif
+	height 25pheight%
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename imgs/gp_1.jpg
+	height 25pheight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Subsection
+Planet Wars
+\end_layout
+
+\begin_layout BeginFrame
+Planet Wars
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename imgs/fusion-doom-composite.jpg
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginFrame
+Planet Wars
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename /media/antares/Documentos/Repositorios/papers/2014/CoSECiVi/GP-Bot Fitness/imags/naves.eps
+	height 85pheight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Section
+GPBot
+\end_layout
+
+\begin_layout BeginFrame
+GPBot
+\end_layout
+
+\begin_layout Standard
+Evolves a set of rules which a 
+\series bold
+Decision Tree
+\series default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+During the evolution, every individual in the population (a tree) must be
+ 
+\series bold
+evaluated
+\series default
+.
+ To do so, the tree is set as the behavioural engine of an agent, which
+ is then placed in a map against a rival in a Planet Wars match.
+ Depending on the obtained results, the agent (i.e.
+ the individual) gets a 
+\series bold
+fitness value
+\series default
+, that will be considered in the evolutionary process as a measure of its
+ validity.
+ 
+\end_layout
+
+\begin_layout Standard
+Thus, during the match the tree will be used (by the bot) in order to select
+ the best strategy at every moment, i.e.
+ for every planet a target will be selected along with the number of ships
+ to send from one the other.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename imgs/arbol_binario_fun.png
+	height 20pheight%
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename imgs/FullBinary.jpg
+	height 20pheight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Subsection
+Decisions & Actions
+\end_layout
+
+\begin_layout BeginFrame
+GPBot
+\end_layout
+
+\begin_layout FrameSubtitle
+Decisions & Actions
+\end_layout
+
+\begin_layout Standard
+The used Decision Trees are binary trees of expressions composed by two
+ different 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+textit{types of nodes}
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Block
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{Decision}
+\end_layout
+
+\end_inset
+
+a 
+\series bold
+logical expression
+\series default
+ formed by a variable, a less than operator ($<$), and a number between
+ 0 and 1.
+ It is the equivalent to a ``primitive'' in the field of GP.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Block
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{Action}
+\end_layout
+
+\end_inset
+
+ a leave of the tree (therefore, a ``terminal'').
+ Each decision is the name of the method to call from the planet that executes
+ the tree.
+ This method indicates to which planet 
+\series bold
+send
+\series default
+ a percentage of available ships (from 0 to 1).
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Section
+Fitness Functions
+\end_layout
+
+\begin_layout Subsection
+Based in Victories
+\end_layout
+
+\begin_layout BeginFrame
+Fitness Functions
+\end_layout
+
+\begin_layout FrameSubtitle
+Based in Victories
+\end_layout
+
+\begin_layout Standard
+In this approach, an individual is better than another if it 
+\series bold
+wins
+\series default
+ in a higher number of maps.
+ In case of equality of victories, then the individual with more turns to
+ be defeated (i.e.
+ the stronger one) is considered as better.
+ The maximum fitness in this work is, therefore, 5 victories and 0 turns.
+ 
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename /media/antares/Documentos/Repositorios/papers/2014/CoSECiVi/GP-Bot Fitness/imags/FitnessTurns.png
+	height 45pheight%
+
+\end_inset
+
+ 
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename imgs/victoria.jpg
+	height 45pheight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Subsection
+Based in Slope
+\end_layout
+
+\begin_layout BeginFrame
+Fitness Functions
+\end_layout
+
+\begin_layout FrameSubtitle
+Based in Slope
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+In this case, a square regression analysis is computed in order to transform
+ the cloud of points into a simple line.
+ The line is represented as {$y = 
+\backslash
+alpha 
+\backslash
+times x + 
+\backslash
+beta $}, where {$
+\backslash
+alpha$} and {$
+\backslash
+beta$} are calculated as shown in Equations 
+\backslash
+ref{eq:alpha} and 
+\backslash
+ref{eq:beta}, computing a least squares regression.
+ For every bot in the simulation we calculate $
+\backslash
+alpha$ and ($slope$).
+ This $slope$ is the fitness of every bot for that simulation.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{equation}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+label{eq:alpha}
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+alpha = 
+\backslash
+frac{
+\backslash
+sum_{i=1}^{n}(X_{i} - 
+\backslash
+bar{X_{i}})(Y_{i} - 
+\backslash
+bar{Y_{i}})}{
+\backslash
+sum_{i=1}^{n}(X_{i} - 
+\backslash
+bar{X_{i}})^{2}}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{equation}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{equation}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+label{eq:beta}
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\backslash
+beta = 
+\backslash
+bar{Y}-
+\backslash
+alpha
+\backslash
+bar{X}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{equation}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename /media/antares/Documentos/Repositorios/papers/2014/CoSECiVi/GP-Bot Fitness/imags/nubecita_pendiente.eps
+	height 25pheight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Subsection
+Based in Area
+\end_layout
+
+\begin_layout BeginFrame
+Fitness Functions
+\end_layout
+
+\begin_layout FrameSubtitle
+Based in Area
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+In this function, the integral of the curve of the bot's live-line is used
+ for calculating the area that is `covered' by the fitness cloud of points
+ (see Equation 
+\backslash
+ref{eq:area}).
+ This {$area$} is normalized considering the number of turns, and thus it
+ represents the average percentage of ships during the battle for each player.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{equation}
+\end_layout
+
+\begin_layout Plain Layout
+
+        area=
+\backslash
+frac{
+\backslash
+int_{0}^{t}
+\backslash
+%ships(x)dx}{t}
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+label{eq:area}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{equation}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename /media/antares/Documentos/Repositorios/papers/2014/CoSECiVi/GP-Bot Fitness/imags/nubecita_integral.eps
+	height 20pheight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Section
+Experimental Setup
+\end_layout
+
+\begin_layout BeginFrame
+Experimental Setup
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{center}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{|c|c|}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\backslash
+em Parameter Name} & {
+\backslash
+em Value} 
+\backslash
+
+\backslash
+
+\backslash
+hline 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Population size & 32 
+\backslash
+
+\backslash
+
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Crossover type & Sub-tree crossover 
+\backslash
+
+\backslash
+ 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Crossover rate & 0.5
+\backslash
+
+\backslash
+ 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Mutation  & 1-node mutation
+\backslash
+
+\backslash
+ 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Mutation step-size & 0.25 
+\backslash
+
+\backslash
+ 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Selection & 2-tournament 
+\backslash
+
+\backslash
+ 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Replacement & Steady-state
+\backslash
+
+\backslash
+ 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Stop criterion & 50 generations 
+\backslash
+
+\backslash
+ 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Maximum Tree Depth & 7  
+\backslash
+
+\backslash
+ 
+\backslash
+hline %FERGU: quitados distintos tamaños
+\end_layout
+
+\begin_layout Plain Layout
+
+Runs per configuration & 30 
+\backslash
+
+\backslash
+ 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Evaluation & Playing versus GeneBot  
+\backslash
+
+\backslash
+ 
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+Maps & 76,69,7,11,26 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+ 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabular}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{center}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename imgs/experiments.jpg
+	height 18pheight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Section
+Results
+\end_layout
+
+\begin_layout BeginFrame
+Results
+\end_layout
+
+\begin_layout FrameSubtitle
+Average results for each approach at end of the runs (20 executions)
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{|c|c|c|} 
+\backslash
+hline            
+\end_layout
+
+\begin_layout Plain Layout
+
+		& Avg best fitness	&	Avg population fitness	
+\backslash
+
+\backslash
+ 
+\backslash
+hline 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Victory	& 4.761 $
+\backslash
+pm$	0.624	&	4.345	$
+\backslash
+pm$	0.78 
+\backslash
+
+\backslash
+ 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Slope	& 2.296	$
+\backslash
+pm$	0.486	&	2.103	$
+\backslash
+pm$	0.434 
+\backslash
+
+\backslash
+ 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+Area	& 2.838	$
+\backslash
+pm$	1.198	&	2.347	$
+\backslash
+pm$	0.949 
+\backslash
+
+\backslash
+ 
+\backslash
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabular}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginFrame
+Results
+\end_layout
+
+\begin_layout FrameSubtitle
+Average percentaje victories by each approach VS Genebot (9 executions)
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename /media/antares/Documentos/Repositorios/papers/2014/CoSECiVi/GP-Bot Fitness/graficas_experimentos/boxplot_victoria_bot_por_metodo_contra_genebot.eps
+	height 80pheight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginFrame
+Results
+\end_layout
+
+\begin_layout FrameSubtitle
+Average percentaje victories of best bot by method vs the Rest
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename /media/antares/Documentos/Repositorios/papers/2014/CoSECiVi/GP-Bot Fitness/graficas_experimentos/boxplot_victoria_bot_por_metodo.eps
+	height 80pheight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Section
+Conclusions
+\end_layout
+
+\begin_layout BeginFrame
+Conclusions
+\end_layout
+
+\begin_layout Block
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Genetic Programming
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ can create competitive bots for RTS games.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Block
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Fitness
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ Study the behaviour of different fitness functions, as they can affect
+ directly to the creation of these bots.
+ Three different fitness functions have been compared to generate bots for
+ the Planet Wars game.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Block
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Enemies
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ A competitive bot available in the literature (GeneBot) has been used to
+ evaluate the generated individuals (fighting against it) and have been
+ tested versus others generated individuals.
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Section
+Future Word
+\end_layout
+
+\begin_layout BeginFrame
+Future Word
+\end_layout
+
+\begin_layout Itemize
+Add other rules to the proposed algorithm (for example, rules to analyse
+ the map).
+\end_layout
+
+\begin_layout Itemize
+More competitive enemies.
+\end_layout
+
+\begin_layout Itemize
+Implemente and teste in more complex RTS games, such as Starcraft, or even
+ in different videogames like Unreal TM or Super Mario TM.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Coevolutionary Genetic Programming 
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginFrame
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename pensando.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\end_body
+\end_document
