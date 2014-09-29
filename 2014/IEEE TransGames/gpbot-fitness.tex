@@ -39,6 +39,8 @@
 % paper title: Must keep \ \\ \LARGE\bf in it to leave enough margin.
 \title{\ \\ \LARGE\bf Fighting to Survive: Evolving RTS Bots without Explicit Evaluation}
 
+% Antonio - Aclararnos bien con Explicit o Implicit. :D
+
 \author{A.J. Fernández-Ares, P. García-Sánchez, A.M. Mora, P. A. Castillo and J.J. Merelo \thanks{Department of Computer Architecture and Computer Technology, University of Granada, Spain, {\tt \{antares,pablogarcia\}@ugr.es, \{amorag,pedro,jmerelo\}@geneura.ugr.es}}}
 % avoiding spaces at the end of the author lines is not a problem with
 % conference papers because we don't use \thanks or \IEEEmembership
@@ -92,7 +94,7 @@ Evolutionary Algorithms (EAs) have been widely applied in a number of problems, 
                     % propios - JJ
 This problem is quite common in the videogames scope, due to the
 pseudo-stochasticity present in some factors, such as the game rules
-or status, the opponents' behaviour or the random initial condition,
+or status, the opponents' behaviour or the random initial conditions,
 which obviously have an influence on the score obtained by the bot,
 which is usually the base (sometimes the only one) for giving a bot a
 fitness in an evolutionary algorithm. 
@@ -107,36 +109,50 @@ Planet Wars, the RTS used in the Google AI Challenge
 when an EA is applied to improve bots for playing it
 \cite{Genebot-IWANN2011,Genebot_CEC11,Genebot_CIG2012},  presenting
 this problem in the fitness calculation \cite{Genebot_JCST}. The usual
-solution consist in performing several evaluations for the same
+solution consists in performing several matches for the same
 individual (maybe in different maps or against different opponents)
-and then compute its fitness value as an average or sum of all of
-them. This way a more accurate measure of the individual's quality is
-obtained, but it is not a perfect  solution because it depends on
-some parameters (number of victories, for example) or a previously created opponent.
+and then compute its fitness value as an average or sum of all of the obtained results. This way a more accurate (less noisy) measure of the individual's quality is obtained, but it is not still a completely reliable solution because it depends on some values (number of victories or number of created ships, for example) or on the rival's performance, which could be a previously created bot.
 
-% decid por qué no
-                                % es perfecta FERGU: depende de parámetros y del oponente
+% decid por qué no es perfecta FERGU: depende de parámetros y del oponente
+% Antonio - he cambiado lo de 'perfect' por 'reliable', ya que no habrá solución perfecta, sino más o menos fiable/representativa
 
 Even if we could obtain a statistically significant fitness
 evaluation, the way this fitness is obtained includes an additional
-bias due to  opponent selection. This issue concerns the overfitting
+bias due to opponent selection. This issue concerns the overfitting
 of the population with respect the selected rival/s, i.e. the
 individuals learn to play against it/them, and could behave poorly
-against another type of enemy. % cita. Que se vea que no te lo has
-                               % inventado. - JJ TODO
+against another type of enemy. 
 
-With these issues in mind, the present paper proposes a conjunction of Genetic Programming with explicit fitness evaluation applied to improve the bot's AI in Planet Wars game. In it the selection process is transformed into a $tournament$ in which the winners will survive and become parents of the new offspring. This way, the fitness computation is omitted and thus, the influence of noise is reduced. It is not completely avoided due to the pseudo-stochasticity of the bots' behaviours. Also, it does not require ad-hoc parameters (such the number of battles or score values).
-Since the algorithm runs over Planet Wars, the tournament is modelled as a set of battles in the game. In order to deal with the remaining noise every battle consists in a set of matches. 
+% cita. Que se vea que no te lo has inventado. - JJ TODO
+% Antonio - Sí, mejor con una cita
+
+The present paper proposes an Evolutionary Algorithm (EA)\cite{EAs_Back96} for improving bot's AI in Planet Wars by means of an implicit fitness evaluation, 
+% Antonio - sería 'implicit', ¿no?
+based in the \textit{survival of the individuals}. 
+To this end the selection process is transformed into a \textit{tournament} in which just the winners will survive and become parents of the new offspring. This way, the fitness computation is omitted and thus, the influence of noise is reduced.  Moreover, it does not require the usual ad-hoc parameters, such as the number of battles or the score values.
+This model is closer to the \textit{real natural selection process} which happens in nature \cite{XXX}, through which just the fittest individuals survive.
+% Antonio - no sé si explicar esto mejor. Buscar una cita???
+
+A Genetic Programming (GP)\cite{GP_Koza92} approach has been implemented, due to the additional flexibility factor that this method offers with respect to a Genetic Algorithm (GA), i.e. GP is able to create new sets of behavioural rules meanwhile GA is devoted to optimise the parameters of previously designed rules. Moreover, this technique has yielded excellent results in previous works \cite{XXX}.
+% Antonio - Poner cita a los trabajos anteriores de GP en Planet Wars (nuestros o de otros)
+
+% Antonio - Dejar esto para luego (para las conclusiones o para los comentarios de los resulatdos) 
+% It is not completely avoided due to the pseudo-stochasticity of the bots' behaviours.
+ 
+Since the algorithm runs over Planet Wars, the tournament is modelled as a set of battles in the game. However, in order to deal with the still present noise (pseudo-stochasticity of the bots' behaviours) every battle consists in a set of matches. 
 %TODO Borrar esto si al final se hace contra uno o varios (fergu)
 So, the survivor of every battle (the one who wins more matches) will
 pass to the next generation and also become a parent for the next
-offspring.  % Una cosa es que no hables en general de la selección
-            % natural y todo eso y otro que no la menciones. 
+offspring.  
 
-In addition, the non-presence of a specific opponent, but every
-individual in the population, makes the training (evolution) more
-general, and thus, the obtained individuals able to face a wider
-amount of possible rivals.  %Vale, a buenas horas...
+% Una cosa es que no hables en general de la selección
+% natural y todo eso y otro que no la menciones. 
+% Antonio - ya lo he puesto yo antes. ;)
+
+In addition, the consideration of all the individuals in the population as opponents, not a specific one, makes the training (evolution) more
+general, and thus, the obtained individuals would, potentially, be able to face a wider amount of possible rivals.  
+%Vale, a buenas horas...
+
 
 %Two different Genetic Algorithms (GAs) have been implemented and
 %studied in this work: the common steady-state \cite{Genitor_whitley},
@@ -155,15 +171,18 @@ amount of possible rivals.  %Vale, a buenas horas...
 Summarizing, this paper tries to solve the next research questions:
 \begin{itemize}
 \item Is the implicit fitness evaluation proposed a feasible way to evaluate individuals?
+\item Is this approach less sensible to noise than others?
 \item How affects not to use a previously defined opponent?
 \item How is the behaviour of the generated bots?
 \end{itemize}
+
+% Antonio -  Mejorar estos puntos y poner otros si hace falta
 
 The paper is structured as follows. The background section reviews related work regarding the scope (videogames) and the implementation (EAs with no fitness computation or different selection mechanisms). It also describes the problem enclosed in the Planet Wars game.
 Section \ref{sec:survival_bots} presents the proposed method, termed {Survival Bot}, and its different implementations. 
 The experiments and results are described and discussed in Section \ref{sec:experiments}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
 
-
+% Antonio - Arreglar esto con la distribución final. Candidato a ser borrado por falta de espacio. :D
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
