@@ -37,7 +37,14 @@
 % Qué mapas se usan en cada evaluación?
 
 % paper title: Must keep \ \\ \LARGE\bf in it to leave enough margin.
-\title{\ \\ \LARGE\bf Fighting to Survive: Evolving RTS Bots without Explicit Evaluation}
+\title{\ \\ \LARGE\bf Fighting to Survive: Evolving RTS Bots without
+  Explicit Evaluation}
+
+%Usar palabras negativas como "without" en títulos no me acaba de
+%gustar, porque no dice qué hace, sino qué no se hace. "using real
+%tournaments" podía ser una alternativa. Y mejor si los llamárais
+%"joust" o justas, "using joust tournaments" y llamar al sistema
+%"joust evaluation", por ejemplo. 
 
 % Antonio - Aclararnos bien con Explicit o Implicit. :D
 
@@ -51,7 +58,12 @@
 \maketitle
 
 \begin{abstract}
-This paper proposes an evolutionary algorithm for evolving game bots that eschews a explicit fitness function for a fight between individuals implemented as a selection mechanism. Instead of measuring fitness by making the bots
+This paper proposes an evolutionary algorithm for evolving game bots
+that eschews a explicit fitness function for an actual match between
+individuals, which we will call {\em joust}, % podía quedar hasta bien
+                                % - JJ
+implemented as a selection mechanism. Instead of measuring
+fitness by making the bots 
 perform certain tasks or fight against baseline bots, they fight with
 each other and  on the winners  survive, passing  to the next
 generation. Explicit evaluation is thus omitted and substituted by
@@ -193,6 +205,8 @@ The experiments and results are described and discussed in Section \ref{sec:expe
 \label{subsec:soa}
 %
 
+% No os olvidéis de citar lo del Wilcoxon, que está publicado en
+% figshare y está en geneura.bib - JJ
 Evolutionary Computation (EC) has been applied in a wide variety of issues inside the videogames scope. One of the most profiting areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011} or content generation \cite{LaraMaps14}, among others.
 
 Generation of behavioural engines implies create the AI of the agent's that play the game. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how the bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. Specifically, using Genetic Programming \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to create the set of rules, as these rules are created and evolved during the run, along their numerical parameters.  Therefore, it is a more flexible approach for defining the behavioural engine of the bots. This is the reason Genetic programming will be used in this paper to generate the engines, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using GAs.
@@ -300,7 +314,8 @@ During the evolution, every individual in the population (a tree) must be evalua
  
 Thus, during the match the tree will be used (by the bot) in order to select the best strategy at every moment, i.e. for every planet a target will be selected along with the number of ships to send from one the other.
 
-The used Decision Trees are binary trees of expressions composed by two different \textit{types of nodes}:
+The  Decision Trees used are binary trees of expressions composed by
+two different \textit{types of nodes}: 
 
 \begin{itemize}
 \item {\em Decision}: a logical expression formed by a variable, a less than operator ($<$), and a number between 0 and 1. It is the equivalent to a ``primitive'' in the field of GP.
@@ -341,7 +356,7 @@ An example of a possible decision tree is presented in Figure \ref{fig:javatree}
 \begin{figure}
 
 \begin{Verbatim}[frame=single,fontsize=\small]
-
+% usar el estilo Algorithmic, esto queda feísimo - JJ 
 if(myShipsLandedFlyingRatio < 0.696)
    if(actualMyShipsRatio < 0.421)
       attackWeakestNeutralPlanet(0.481);
@@ -407,7 +422,12 @@ ones. This is interesting for this problem because......
 Thus, the proposed approach follows this idea and just performs one battle per generation. The contenders are randomly selected from all the population. Each two battles, both winners are the parents for the two new individuals (offspring). These two new individuals are inserted in the population after being created, substituting the bots that lose the battle against its parents.
 
 
-This approach presents a higher stochastic component than the original, due to the lack of a fitness value which can value every individual with a simple number. The random selection of all the individuals increases the diversity in the algorithm run, which, in turn, could be a key factor in this problem resolution, \textcolor{red}{AS WILL BE DEMONSTRATED IN THE EXPERIMENTS}.
+This approach presents a higher stochastic component than the
+original, due to the lack of a fitness value which can value every
+individual with a simple number. The random selection of all the
+individuals increases the diversity in the algorithm run, which, in
+turn, could be a key factor in this problem resolution,
+\textcolor{red}{AS WILL BE proved IN THE EXPERIMENTS}. 
 
 
 
@@ -491,7 +511,7 @@ Replacement & Steady-state\\ \hline
 Stop criterion & 4000 simulations \\ \hline
 Maximum Tree Depth & 7  \\ \hline 
 Runs per configuration & 30 \\ \hline 
-Maps used in each evaluation & 1 random from maps \#76 \#69 \#7 \#11 \#26\\ \hline
+Maps used in each evaluation & 1 random chosen among maps \#76 \#69 \#7 \#11 \#26\\ \hline
 \end{tabular}
 \caption{Parameters used in the experiments.}
 \label{tab:parameters}
