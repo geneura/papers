@@ -98,9 +98,9 @@ Different approaches are proposed and compared, namely %steady-state and generat
 \section{Introduction}
 \label{sec:intro}
 %
-Evolutionary Algorithms (EAs) have been widely applied in a number of problems, including videogames \cite{Ponsen_EvLearn_RTS,co-evol-rts2006,Su-EAs_StrategySel09,cooperativebots_CIG2010,Cook_Platforming2012}. This metaheuristic performs very well in most of cases, but the presence
- of the so-called $noise$ in the evaluation process can make them do
- not work properly \cite{Genebot_JCST}. 
+Evolutionary Algorithms (EAs) have been widely applied in a number of problems, including videogames scope \cite{Ponsen_EvLearn_RTS,co-evol-rts2006,Su-EAs_StrategySel09,cooperativebots_CIG2010,Cook_Platforming2012}. This metaheuristic performs very well in most of cases, but the presence
+ of the so-called $noise$ in the evaluation process can make them not
+ working properly \cite{Genebot_JCST}. 
 
 % citas sobre el tema, incluyendo los tuyso
                     % propios - JJ
@@ -207,26 +207,41 @@ The experiments and results are described and discussed in Section \ref{sec:expe
 
 % No os olvidéis de citar lo del Wilcoxon, que está publicado en
 % figshare y está en geneura.bib - JJ
-Evolutionary Computation (EC) has been applied in a wide variety of issues inside the videogames scope. One of the most profiting areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011} or content generation \cite{LaraMaps14}, among others.
+Evolutionary Computation (EC) has been applied in a wide variety of issues inside the videogames scope. One of the most profiting areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011}.
+% Antonio - poner citas de otra gente que evolucione parámetros de bots
+%
+% or content generation \cite{LaraMaps14}, among others.
+% Antonio - quito esto que no viene a cuento aquí. ;)
+%
+This is normally a step in the generation of an AI engine to control the Non-Player Characters (NPCs) that play the game. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how this bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. 
+However the use of Genetic Programming (GP) \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to define the set of rules, as these rules, along with their numerical parameters, are created and evolved automatically during the run.  Thus, it is a more flexible approach for defining the behavioural engine of the bots, which can find rules that a human expert cannot imagine at all. For this reason GP has been used in this paper to generate the engines.
 
-Generation of behavioural engines implies create the AI of the agent's that play the game. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how the bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. Specifically, using Genetic Programming \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to create the set of rules, as these rules are created and evolved during the run, along their numerical parameters.  Therefore, it is a more flexible approach for defining the behavioural engine of the bots. This is the reason Genetic programming will be used in this paper to generate the engines, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using GAs.
+%, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using GAs.
+% Antonio - esto no sé si es verdad
 
-One of the shortcomings of previous works is that they depend on a baseline bot, or a ad-hoc fitness function that involves some kind of parameterization (for example, number of matches or scoring the actions). To deal with this, co-Evolutionary Algorithms (CEAs) have been previously used in this scope, as it is a natural choice to use in problems where the behaviour of agents is related to the behaviour of others \cite{Coevolving13Samothrakis}. Co-evolution have been used initially in puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
+One of the shortcomings of previous works is that they depend on a baseline bot, taken as rival during the evolution, or an ad-hoc fitness function that involves some kind of parameterization (for example, number of matches or scoring the actions). To avoid this, co-Evolutionary Algorithms (CEAs) 
+% Antonio - Cita???
+have been previously used in this scope, as it is a natural choice to use in problems where the behaviour of one agent is related to the behaviour of others \cite{Coevolving13Samothrakis}. 
+
+The co-evolutionary scheme was initially used in puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
 The first work proposed a very simple hill-climbing algorithm to evolve a population of neural networks, playing among them as rivals, in a competitive co-evolutionary approach. The latter paper presented a co-evolutionary learning approach which performed well once the EA was correctly tuned, moreover, this method yields better players to solve small Go boards since every individual is evaluated against a diverse population of rivals.
-In the same line, there are some other works in the card games area, such as \cite{Thompson_Poker2008}, aimed to create Poker agents, considering a co-evolution process in which the players are part of the learning process. This meant a difficult process to get robust strategies, due to the variation in opponents, but the results shown to fit with some recommended strategies according experts.
+In the same line, there are some other works in the card games area, such as \cite{Thompson_Poker2008}, aimed to create Poker agents, considering a co-evolution process in which the players are part of the learning process. This meant a difficult process to get robust strategies, due to the variation in opponents, but the results shown to fit with some recommended strategies according to experts.
 The aim of the present work is to conduct a study implementing a similar co-evolutionary approach, being competitive in the fitness calculation, but cooperative since all the opponents are also part of the same learning process (same population).
 
 In recent years, this type of EAs has been also applied to videogames, enclosed in the Computational Intelligence (CI) branch of AI.
 For instance Togelius et al. \cite{Togelius_Cars2007} studied the co-evolution effects of some populations in car racing controllers, comparing the performance of a single population against various, implementing both generational and a steady-state approaches. Avery and Michalewicz introduced in \cite{Avery_Human2008} a co-evolutionary algorithm (for the game TEMPO) which used humans as rivals for the individuals in the evolutionary process. 
 Cook et al. \cite{Cook_Platforming2012} presented a cooperative co-evolutionary approach for the automated design of levels in simple platform games. And recently Cardona et al. \cite{Cardona_MSPacman2013} studied the performance of a competitive algorithm for the simultaneous evolution of controllers to both Ms. PacMan and the Ghost Team which has to chase her.
 
-Co-evolution has also been used in the RTS scope. Livingstone \cite{Livinstone_RTS2005} compared several AI-modelling approaches for RTS games, and proposed a framework to create new models by means of co-evolutionary methods. He considered two levels of learning in a hierarchical AI model (inside an own-created RTS), evolving at the same time different partners in different strategic levels, so it was a cooperative approach. It is different to the one proposed here, since in the present work the co-evolution occurs at the same level for all the individuals. The work by Smith et al. \cite{Smith_RTS_SpatialTactics2010} presents an analysis on how a co-evolutionary algorithm can be used for improving students' playing tactics in RTS games. Other authors proposed using co-evolution for evolving team tactics \cite{Avery_RTS_Team2010}. However, the problem is how tactics are constrained and parametrised and how the overall score is computed. 
+Co-evolution has also been used in the RTS scope. Livingstone \cite{Livinstone_RTS2005} compared several AI-modelling approaches for RTS games, and proposed a framework to create new models by means of co-evolutionary methods. He considered two levels of learning in a hierarchical AI model (inside an own-created RTS), evolving at the same time different partners in different strategic levels, so it was a cooperative approach. It is different to the one proposed here, since in the present work the co-evolution occurs at the same level for all the individuals. 
+The work by Smith et al. \cite{Smith_RTS_SpatialTactics2010} presents an analysis on how a co-evolutionary algorithm can be used for improving students' playing tactics in RTS games. Other authors proposed using co-evolution for evolving team tactics \cite{Avery_RTS_Team2010}. However, the problem is how tactics are constrained and parametrised and how the overall score is computed. 
 Nogueira et al. \cite{Nogueira_HoF2013} considered in a recent
 publication the use of a Hall of Fame as a set of rivals (in the
 evaluation function) inside a co-evolutionary algorithm to create
 autonomous agents for the RTS game {\em RobotWars}. An updated version of this algorithm was also applied to Planet Wars game \cite{NogueiraCoevolutionary14}. This approach is based in a self-learning algorithm as the one we are proposing, but focused in a subset of individuals (the elite) which can have a negative effect in the generalisation factor or the bots' knowledge. Moreover, they use a ad-hoc fitness function with specific parameters, taking into account several battles and extra score measurement. Also, using the evolution to a fixed set of players could not lead to strong players \cite{Coevolving13Samothrakis}.
 
-To avoid this, in this paper the optimisation  has been performed using a survival-based evolutionary approach. This can be considered as a co-evolutionary method in which the individuals (bots) fight in game battles in order to decide who survives and moves to the next generation, being a explicit player comparison. Two advantages with respect of previous work are tested: not adding ad-hoc parameters (such as the number of victories) and not using a specific bot available for training.
+The approach presented in this work implements a survival-based co-evolutionary scheme, which omits an explicit fitness computation. Instead, the agents or bots (individuals) compete against the rest in the so-called \textit{joust tournaments}. Thus, just the survivors will remain in the population and will reproduce to generate the next offspring.
+This tries to minimize the influence of a \textit{noisy fitness function} \cite{NOISEGENEBOT,NOISEJJ} in the evolution of the individuals; i.e. a good fitness value could be assigned to a bad player by chance, and the other way round. Moreover the proposed scheme has two advantages with respect to previous works: not adding ad-hoc parameters (such as the number of victories), and not using a specific bot as rival during evolution, which would lead to a specialisation of the individuals to fight against it.
+
 
 % Ya estamos con el este hizo este, este hizo el otro y el otor hizo
 % el otro. y regarding lo otro, pues lo demás. Tienes que contar la
@@ -354,9 +369,10 @@ Finally, the possible \textit{decisions} (and their acronyms, that will be used 
 An example of a possible decision tree is presented in Figure \ref{fig:javatree}. This example tree has a total of 5 nodes, with 2 decisions and 3 actions, and a depth of 3 levels. The bot's behaviour is explained in Algorithm \ref{alg:turn}.
 
 \begin{figure}
+% usar el estilo Algorithmic, esto queda feísimo - JJ
 
 \begin{Verbatim}[frame=single,fontsize=\small]
-% usar el estilo Algorithmic, esto queda feísimo - JJ 
+ 
 if(myShipsLandedFlyingRatio < 0.696)
    if(actualMyShipsRatio < 0.421)
       attackWeakestNeutralPlanet(0.481);
@@ -427,6 +443,7 @@ original, due to the lack of a fitness value which can value every
 individual with a simple number. The random selection of all the
 individuals increases the diversity in the algorithm run, which, in
 turn, could be a key factor in this problem resolution,
+
 \textcolor{red}{AS WILL BE proved IN THE EXPERIMENTS}. 
 
 
