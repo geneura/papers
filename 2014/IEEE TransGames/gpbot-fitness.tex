@@ -426,9 +426,9 @@ This implicit selection and replacement have been chosen because...
 \subsection{Replacement policy}
 \label{subsec:replacement}
 
-The bots that have lost, and the offspring generated in the previously explained battles are removed/added to the population following one of the two next policies: steady-state or generational mechanism.
+%The bots that have lost, and the offspring generated in the previously explained battles are removed/added to the population following one of the two next policies: steady-state or generational mechanism.
 
-The first one is an implementation based in the classical Steady-State EA approach \cite{Genitor_whitley}. In it, the majority of the population remains the same in the following generation, and just a small subset of individuals are substituted (usually just the worst).
+The replacement policy chosen is the steady-state, an implementation based in the classical Steady-State EA approach \cite{Genitor_whitley}. In it, the majority of the population remains the same in the following generation, and just a small subset of individuals are substituted (usually just the worst).
 This method aimed to increase the exploitation factor in the EA, since
 just the worst individuals in the population are substituted by fitter
 ones. This is interesting for this problem because......
@@ -448,13 +448,13 @@ turn, could be a key factor in this problem resolution,
 
 
 
-In the second policy to be tested, the {\em generational} replacement\cite{GAs_Goldberg89}, half of the population is substituted every generation, having a big diversification and thus exploration factor.
-As in the previous configuration, the individuals are paired randomly,
-conducting battles. The winners (half of the population)
-will be the parents of the next offspring. % ¿Y por qué se elimina el
+%In the second policy to be tested, the {\em generational} replacement\cite{GAs_Goldberg89}, half of the population is substituted every generation, having a big diversification and thus exploration factor.
+%As in the previous configuration, the individuals are paired randomly,
+%conducting battles. The winners (half of the population)
+%will be the parents of the next offspring. % ¿Y por qué se elimina el
                                 % ruido? ¿No puede ser que gane uno
                                 % por casualidad? - JJ
-Then, after applying the crossover and mutation, the rest of the population is generated (two descendants per couple). The parents are grouped with all the offspring and the bots which have lost are deleted at the same time, increasing this way the diversity/exploration of the algorithm.
+%Then, after applying the crossover and mutation, the rest of the population is generated (two descendants per couple). The parents are grouped with all the offspring and the bots which have lost are deleted at the same time, increasing this way the diversity/exploration of the algorithm.
 
 Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Programming generation, in conjunction with the implicit evaluation, selection and replacement mechanisms.
 
@@ -473,10 +473,10 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Progr
   \ENDIF
 
   \FOR{1 to N}
-    \STATE {\em /* 2 contenders in 1vs1 and 4 contenders in All vs All*/}
-% Antonio - lo del 4vs4
+    \STATE {\em /* 2 contenders */}%in 1vs1 and 4 contenders in All vs All*/}
+% Antonio - lo del 4vs4 FERGU: comentado
     \STATE contenders $\leftarrow$ selectContenders(population-selected)
-    \STATE {\em /*The contenders fight and the winner and loser are obtained (in case of All vs All, the first to be defeated is the loser)*/}
+    \STATE {\em /*The contenders fight and the winner and loser are obtained */} %(in case of All vs All, the first to be defeated is the loser)*/}
     \STATE winner1,loser1 $\leftarrow$ battle(contenders)
     \STATE {\em /* Previously selected bots not participate again in the tournament*/}
     \STATE selected $\leftarrow$ selected + winner1 + loser1 
@@ -509,9 +509,9 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Progr
 \label{sec:experiments}
 
 Several experiments have been conducted in order to study different issues of the proposed approaches, but having in mind that the main objective is the generation and improvements of bots using a co-evolutionary algorithm. The set of parameters considered in the GP algorithm is shown in Table \ref{tab:parameters}.
-This set of parameters have been used previously in the work \cite{GarciaGP14}, obtaining competitive bots. To do a fair comparison the stop criterion has been also set to 4000 evaluations.
+This set of parameters have been used previously in the work \cite{GarciaGP14}, obtaining competitive bots. To do a fair comparison the stop criterion has been also set to 4000 iterations (or matches). 30 executions of the Co-GA have been performed.
 
-For each one of the presented approaches (replacement and selection policies), 30 executions of the Co-GA have been performed.
+%For each one of the presented approaches (replacement and selection policies), 
 
 \begin{table}
 \begin{center}
@@ -525,7 +525,7 @@ Mutation  & 1-node mutation\\ \hline
 Mutation step-size & 0.25 \\ \hline
 Selection & 2-tournament \\ \hline
 Replacement & Steady-state\\ \hline
-Stop criterion & 4000 simulations \\ \hline
+Stop criterion & 4000 iterations \\ \hline
 Maximum Tree Depth & 7  \\ \hline 
 Runs per configuration & 30 \\ \hline 
 Maps used in each evaluation & 1 random chosen among maps \#76 \#69 \#7 \#11 \#26\\ \hline
@@ -538,7 +538,13 @@ Maps used in each evaluation & 1 random chosen among maps \#76 \#69 \#7 \#11 \#2
 \subsection{Analysis of the executions}
 \label{subsec:analysisexecutions}
 
-It is difficult to show the convergence of the populations using a implicit fitness evaluation, as the evaluated individuals (and therefore, the fitness of the average population) do not count with a numeric value to be plotted in time. However, other values, such as the age, tree depth and number of nodes can help to understand how the evolution is being performed. Figure \ref{} shows the average age of the agents during the run. As can be seen, the maximum age is....
+It is difficult to show the convergence of the populations using a implicit fitness evaluation, as the evaluated individuals (and therefore, the fitness of the average population) do not count with a numeric value to be plotted in time. In this paper, we propose a scoring method that takes into account the number of victories, turns to win and turns to be defeated. After the execution of our algorithm all the generated individuals during all the runs have been confronted versus GPbot and scored using the next formula:
+\begin{equation}
+Score_{i} = v*2000+t_{win}+t_{defeated}
+\end{equation}
+where $v$ is the number of victories of the individual against GPbot, $t_{win}$ the total number of turns used to win and $t_{defeated}$ the total number of turns when the individuals has been defeated by GPbot. This score tries to favor the victories against the turns, and...
+
+Moreover, other values, such as the age, tree depth and number of nodes can help to understand how the evolution is being performed. Figure \ref{} shows the average age of the agents during the run. As can be seen, the maximum age is....
 
 
 \begin{figure}[htb]
