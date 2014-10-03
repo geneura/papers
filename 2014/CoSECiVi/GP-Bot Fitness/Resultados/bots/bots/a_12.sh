@@ -1,0 +1,3 @@
+#!/bin/bash
+tree="if(actualMyShipsRatio<0.657)if(myPlanetsEnemyRatio<0.741)attackWealthestEnemyPlanet(0.098);else reinforceBase(0.276);else if(myPlanetsEnemyRatio<0.481)if(myPlanetsEnemyRatio<0.323)attackWealthestEnemyPlanet(0.037);else if(myPlanetsTotalRatio<0.188)attackWeakestNeutralPlanet(0.098);else attackBeneficiousNeutralPlanet(0.098);else if(myPlanetsTotalRatio<0.323)if(myPlanetsEnemyRatio<0.352)attackNearestNeutralPlanet(0.276);else if(myPlanetsTotalRatio<0.323)attackWealthestNeutralPlanet(0.133);else attackQuickPlanet(0.276);else if(myPlanetsTotalRatio<0.420)if(myPlanetsEnemyRatio<0.625)attackWealthestEnemyPlanet(0.098);else reinforceWeakest(0.209);else attackWealthestNeutralPlanet(0.276);"
+java -jar gpagent.jar " $tree " ;

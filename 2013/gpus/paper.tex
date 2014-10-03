@@ -2,22 +2,27 @@
 % format
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[smallextended]{svjour3} % onecolumn (second format)
-
-\smartqed  % flush right qed marks, e.g. at end of proof
+\documentclass[review]{elsarticle}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage{amsmath}
 \usepackage{epsfig}
-%\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
 \usepackage{url}
 
-\journalname{Computing Journal}
+%\modulolinenumbers[5]
+
+\journal{Parallel Computing}
+
+\bibliographystyle{elsarticle-num}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+
+\begin{frontmatter}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % title
@@ -25,46 +30,49 @@
 
 \title{GPU Parallel Computation in Bioinspired Algorithms. A review}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% authors
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\author{G. Romero and M.G. Arenas and P.A. Castillo and A.M. Mora and P. García-Sanchez and J.J. Merelo}
-
-\authorrunning{G. Romero et al.}
-
-\institute{G. Romero at Computer Architecture and Technology. University of Granada \email{gustavo@ugr.es} and M.G. Arenas and P.A. Castillo and A.M. Mora and P. García-Sanchez and J.J. Merelo}
-
-\date{Received: \today / Accepted: \today}
-
-%\category{I.3.1}{Hardware Architecture}{Graphics processors, Parallel processing}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Group authors per affiliation:
+\author{G. Romero}
+\ead{gustavo@ugr.es}
+\author{M.G. Arenas}
+\ead{mgarenas@ugr.es}
+\author{P.A. Castillo}
+\ead{pacv@ugr.es}
+\author{A.M. Mora}
+\ead{amorag77@gmail.com}
+\author{P. García-Sanchez}
+\ead{fergunet@gmail.com}
+\author{J.J. Merelo}
+\ead{jjmerelo@gmail.com}
+\address{University of Granada}
 
 \begin{abstract}
-Queda por arreglar:
-\begin{itemize}
-\item referencias demasiado largas
-\item tabla de hardware
-\item algunos comentarios de JJ
-\end{itemize}
-
 Many real life problems, and large instances of some toy problems, require a high amount of computational power to be solved. In order to deal with them, parallelization of algorithms has been used with the aim of both reducing the computation time and improving the quality of the solutions. From the beginning of the computation age these algorithms have been executed in central processing units (CPUs), one or more.
 
 However the advances in the video game industry have led to the production of low cost and high-performance graphics processing units (GPUs) included in almost every PC or even in every mobile device. Thus, recently, these units have been considered as general purpose processors and profited as powerful substitutes or complements for CPUs regarding problem solving tasks.
 
 The GPUs, alone or in conjunction with CPUs, can offer better results than traditional CPUs alone, both in time and power consumption. Many researchers are migrating their algorithm to these systems. This work presents a review of hardware and software advances in this line, along with their application in the area of some the most frequently used heuristics for solving complex problems: the bioinspired algorithms. Thus, the work proposes a taxonomy of the actual parallelization methods in GPUs, along with a review of the literature in this area.
-\keywords{Survey, Review, GPUs, General Purpose GPUs, Parallel Computation, Bioinspired Algorithms}
 \end{abstract}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{keyword}
+Survey, Review, GPUs, General Purpose GPUs, Parallel Computation, Bioinspired Algorithms
+\end{keyword}
 
-\maketitle
+\end{frontmatter}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\linenumbers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% authors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\author{G. Romero and M.G. Arenas and P.A. Castillo and A.M. Mora and P. García-Sanchez and J.J. Merelo}
+
+%\institute{G. Romero at Computer Architecture and Technology. University of Granada \email{gustavo@ugr.es} and M.G. Arenas and P.A. Castillo and A.M. Mora and P. García-Sanchez and J.J. Merelo}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 \label{sec:intro}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 General-purpose computing on graphics processing units (GPGPU) is the technique of using a Graphics Processing Unit (GPU), which typically handles computer graphics related stuff,
 to perform any kind of computation traditionally carried out by a central processing unit (CPU). Recently there has been a growing interest in GPU computation due to the fact that this kind of processors has the ability to perform restricted parallel processing, which is very attractive to researchers with applications that require intensive parallel computation. 
@@ -137,21 +145,21 @@ operating system schedule threads over different cores of a CPU in a
 preemptive fashion. GPUs have dedicated hardware for the cooperative
 scheduling of threads. 
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centering
 \epsfig{file=cpu-gpu.eps,width=\columnwidth}
 \caption{CPU and GPU block diagram comparison.}
 \label{fig:cpu-gpu}
 \end{figure}
 
-%\begin{figure}[h]
+%\begin{figure}[!ht]
 %\centering
 %\epsfig{file=cpu.eps,width=\columnwidth}
 %\caption{CPU block diagram.}
 %\label{fig:cpu}
 %\end{figure}
 
-%\begin{figure}[h]
+%\begin{figure}[!ht]
 %\centering
 %\epsfig{file=gpu.eps,width=\columnwidth}
 %\caption{GPU block diagram.}
@@ -179,7 +187,7 @@ Accelerated Processing Units (APUs), taking into account these terms
 and their meaning. % Muchas de estas cosas son también del artículo de
                    % 2012 - JJ
 
-\begin{table*}[h]
+\begin{table*}[!ht]
 \resizebox{\textwidth}{!}{
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -262,17 +270,19 @@ to take advantage of the GPU.
 
 Figure \ref{fig:gk110a} shows the internals of latest NVIDIA Kepler GK110 architecture. There can be a maximum of 15 SMX units and every one of this has 192 single precision CUDA cores. The six squares on the sides are memory interfaces for a total bus width of 384 bits. It is capable of a maximum bandwidth of 250GB/s connected to GDDR5 memory chips. Figure \ref{fig:gk110b} shows a disclosed SMX unit with its 192 CUDA cores. The maximum theoretical throughput in simple precision is 3950GFLOPS.
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \begin{tabular}{c}
-\epsfig{file=nvidia-gk110.eps,width=\columnwidth} \\
+%\epsfig{file=nvidia-gk110.eps,width=\columnwidth} \\
+\includegraphics[width=0.99\textwidth]{nvidia-gk110.png} \\
 \end{tabular}
 \caption{NVIDIA Kepler GK110 architecture block diagram.}
 \label{fig:gk110a}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \begin{tabular}{c}
-\epsfig{file=./nvidia-smx.eps,width=\columnwidth} \\
+%\epsfig{file=./nvidia-smx.eps,width=\columnwidth} \\
+\includegraphics[width=0.99\textwidth]{nvidia-smx.png} \\
 \end{tabular}
 \caption{NVIDIA Kepler GK110 architecture SMX unit.}
 \label{fig:gk110b}
@@ -280,7 +290,7 @@ Figure \ref{fig:gk110a} shows the internals of latest NVIDIA Kepler GK110 archit
 
 In Figure \ref{fig:tahitia} the newest AMD GPU can be seen. It has an architecture called Graphics Core Next (GCN). Every chip, there are 2, is composed by 28 Compute Units (CU) as AMD call it. Every CU is composed by 4 SIMD vector processors. Every SIMD processor can operate on 16 number simultaneously. This way 1792 instructions can be finalized every clock. Every Tahiti chip has six 64-bit dual channel memory controllers (gray rectangles at the bottom of Figure \ref{fig:tahitib}) connected to 2 GDDR5 memory channels for a total bandwidth of 240GB/s. The maximum theoretical throughput in simple precision for this design is 2956GFLOPS.
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centering
 \begin{tabular}{c}
 \epsfig{file=./amd-tahiti.eps,width=\columnwidth} \\
@@ -289,10 +299,11 @@ In Figure \ref{fig:tahitia} the newest AMD GPU can be seen. It has an architectu
 \label{fig:tahitia}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centering
 \begin{tabular}{c}
-\epsfig{file=./amd-gcn-cu-2.eps,width=\columnwidth} \\
+%\epsfig{file=./amd-gcn-cu-2.eps,width=\columnwidth} \\
+\includegraphics[width=0.99\textwidth]{amd-gcn-cu.png} \\
 \end{tabular}
 \caption{AMD Graphics Core Next architecture SIMD processor.}
 \label{fig:tahitib}
@@ -333,7 +344,7 @@ OpenCL, DirectCompute and CUDA are APIs designed for heterogeneous computing wit
 
 A kernel applies a single stream of instructions to vast quantities of data that are organized as a 1-3 dimensional array (see Figures \ref{figure:captura1paperCEC} and \ref{figure:grid}). Each piece of data is known as a work-item in OpenCL terminology, and kernels may have hundreds or thousands of work-items. The kernel itself is organized into many work-groups that are relatively limited in size; for example a kernel could have 32K work-items, but 64 work-groups of 512 items each. 
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centerline{\epsfig{file=./hierarchy.eps,width=7cm}}
 \caption{Hierarchy of computing structure in a GPU.}
 \label{figure:captura1paperCEC}
@@ -341,7 +352,7 @@ A kernel applies a single stream of instructions to vast quantities of data that
 
 Unlike traditional computation, arbitrary communication within a kernel is strongly limited. However, communication and synchronization is generally allowed locally within a work-group. So work-groups serve two purposes: first, they break up a kernel into manageable chunks, and second, they define a limited scope for communication. 
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centerline{\epsfig{file=grid.eps,width=7cm}}
 \caption{Execution model: Each piece of data is a work-item (thread); a kernel has thousands of work-items and is organized into many work-groups (thread blocks); each work-group process many work-items.}
 \label{figure:grid}
@@ -430,7 +441,7 @@ Zhang et al. \cite{ZhangImplementationMasterSlave} adapt different EAs to a GPU 
 
 Van Luong et al. \cite{5586403} published in 2010 a methodology for mapping the search space onto the GPU memory hierarchy in three levels: the distribution of the search process among the CPU and GPU (1), the mapping of the neighborhood in the GPU threads (2), and the effective usage of the texture memory in the context of hybrid EAs (3). Experiments to solve the QAP problem with CUDA were presented, where the evolutionary process was performed in the CPU and the generation of the Local Search neighborhood are performed on parallel in the GPU, achieving an acceleration of $\times14.6$ times faster. Hardware used was Core 2 Duo 2,67 Ghz and Nvidia GTX 280. As it can be seen this work also showed the benefits of using a conjunction of CPU and GPU, being the GPU used only for intensive calculations.
 
-There are other papers related with the previous approach, like the one by Tsutsui et al. \cite{Tsutsui:2011:GECCO}. This chapter uses a master-slave approach with an Ant Colony Optimization (ACO) algorithm \cite{Dorigo:1999:ACO:329055_329062} and Tabu Search \cite{Glover:1997:TS:549765}. Tsutsui uses an Intel Core i7 965 (3.2 GHz) processor and a single NVIDIA GeForce GTX480 GPU. They compare CPU and GPU implementations with and the results showed that GPU computation with MATA, an efficient method for thread assignment cost which they call Move-Cost Adjusted Thread Assignment, showed a promising speedup compared to computation with CPU.
+There are other papers related with the previous approach, like the one by Tsutsui et al. \cite{Tsutsui:2011:GECCO}. This chapter uses a master-slave approach with an Ant Colony Optimization (ACO) algorithm \cite{Dorigo:1999:ACO:329055.329062} and Tabu Search \cite{Glover:1997:TS:549765}. Tsutsui uses an Intel Core i7 965 (3.2 GHz) processor and a single NVIDIA GeForce GTX480 GPU. They compare CPU and GPU implementations with and the results showed that GPU computation with MATA, an efficient method for thread assignment cost which they call Move-Cost Adjusted Thread Assignment, showed a promising speedup compared to computation with CPU.
 
 There are papers related with other subjects like \cite{Pedemonte:2011:BOG:2001858.2002031} which studies the impact of using different representations for binary problems in GPUs to evaluate GAs: boolean data type versus packing multiple bits in a non-boolean data type. The execution platform was a PC with Quad Core Intel Xeon E5530 processor at 2,4 Ghz and a Tesla C1060 with 240 CUDA cores. The CPU only calculates the initial population and a matrix of random number to be used in crossover and mutation by the GPU. The authors review the problem of the data types when GPGPU is used. Several data types of 8, 16, 32, and 64 bits are compared in CPU and GPU versions. Results shows that
 packing in 32 bits data types achieve speedup values of up to $\times100$ compared with boolean data types, specially when the size of the instances increases. This make sense because the Tesla C1060 are equipped with 32-bit integer ALUs. 
@@ -551,9 +562,9 @@ In the majority of cases, speedups are attained in the comparison with tradition
 % agradecimientos
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{acknowledgements}
-This work has been supported in part by project ANYSELF (TIN2011-28627-C04-02). The authors would like to thank the FEDER of European Union for financial support via project "Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos" (SIPEsCa) of the "Programa Operativo FEDER de Andalucía 2007-2013". We also thank all Agency of Public Works of Andalusia Regional Government staff and researchers for their dedication and professionalism.
-\end{acknowledgements}
+%\begin{acknowledgements}
+%This work has been supported in part by project ANYSELF (TIN2011-28627-C04-02). The authors would like to thank the FEDER of European Union for financial support via project "Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos" (SIPEsCa) of the "Programa Operativo FEDER de Andalucía 2007-2013". We also thank all Agency of Public Works of Andalusia Regional Government staff and researchers for their dedication and professionalism.
+%\end{acknowledgements}
 
 \begin{figure}[!ht]
 \centering
@@ -564,10 +575,7 @@ This work has been supported in part by project ANYSELF (TIN2011-28627-C04-02). 
 % bibliografía
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bibliographystyle{spbasic}      % basic style, author-year citations
-\bibliographystyle{spmpsci}      % mathematics and physical sciences
-\bibliographystyle{spphys}       % APS-like style for physics
-\bibliography{paper}             % name your BibTeX data base
+\bibliography{paper}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
