@@ -28,7 +28,7 @@
 % title
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{GPU Parallel Computation in Bioinspired Algorithms. A review}
+\title{Parallel Computation using GPUs in Bioinspired Algorithms. A review}
 
 %% Group authors per affiliation:
 \author{G. Romero}
@@ -46,15 +46,40 @@
 \address{University of Granada}
 
 \begin{abstract}
-Many real life problems, and large instances of some toy problems, require a high amount of computational power to be solved. In order to deal with them, parallelization of algorithms has been used with the aim of both reducing the computation time and improving the quality of the solutions. From the beginning of the computation age these algorithms have been executed in central processing units (CPUs), one or more.
+The solution of many real life problems, and large instances of some
+toy problems, require a high amount of computational power. In order
+to deal with them, parallelization of algorithms has been used with
+the aim of both reducing the computation time and improving the
+quality of the solutions. From the beginning of the computation age
+these algorithms have been executed in central processing units
+(CPUs), one or more. % esa frase es un poco superflua - JJ
 
-However the advances in the video game industry have led to the production of low cost and high-performance graphics processing units (GPUs) included in almost every PC or even in every mobile device. Thus, recently, these units have been considered as general purpose processors and profited as powerful substitutes or complements for CPUs regarding problem solving tasks.
+However the advances in the video game industry have led to the
+production of low cost and high-performance graphics processing units
+(GPUs) included in almost every PC, and, today, in every mobile
+device. Thus, recently, these units have been actually used as general
+purpose processors and leveraged as powerful substitutes or
+complements for CPUs in many problem solving frameworks.
 
-The GPUs, alone or in conjunction with CPUs, can offer better results than traditional CPUs alone, both in time and power consumption. Many researchers are migrating their algorithm to these systems. This work presents a review of hardware and software advances in this line, along with their application in the area of some the most frequently used heuristics for solving complex problems: the bioinspired algorithms. Thus, the work proposes a taxonomy of the actual parallelization methods in GPUs, along with a review of the literature in this area.
+The GPUs, alone or in conjunction with CPUs, will in many cases offer better results
+than traditional CPUs alone, both in time and power consumption; that
+is the main reason why many
+researchers are migrating their algorithm to these systems. This work
+presents a review of hardware and software advances in this line,
+% which line? migration of algorithms? 
+along with their application in the area of some the most frequently
+used heuristics for solving complex problems: the bioinspired
+algorithms. Thus, the work proposes a taxonomy of the actual
+% No habéis justificado por qué elegir esto. Simplemente habéis dicho
+% que las GPUs son muy interesantes. ¿hay alguna razón por la que sean
+% adecuados para GPUs? ¿O por la que lo hayáis elegido? - JJ
+parallelization methods in GPUs, along with a review of the literature
+in this area. 
 \end{abstract}
 
 \begin{keyword}
-Survey, Review, GPUs, General Purpose GPUs, Parallel Computation, Bioinspired Algorithms
+Survey, Review, GPUs, General Purpose GPUs, Parallel Computation,
+Bioinspired Algorithms, metaheuristics.
 \end{keyword}
 
 \end{frontmatter}
@@ -77,15 +102,27 @@ Survey, Review, GPUs, General Purpose GPUs, Parallel Computation, Bioinspired Al
 General-purpose computing on graphics processing units (GPGPU) is the technique of using a Graphics Processing Unit (GPU), which typically handles computer graphics related stuff,
 to perform any kind of computation traditionally carried out by a central processing unit (CPU). Recently there has been a growing interest in GPU computation due to the fact that this kind of processors has the ability to perform restricted parallel processing, which is very attractive to researchers with applications that require intensive parallel computation. 
 
-GPUs are specialized stream processors, initially useful for rendering graphics applications. Typically, a GPU is able to perform graphics manipulations at a much higher speed than a general purpose CPU, since the graphics processor is specifically designed to handle certain primitive operations which occur frequently in graphics applications. Internally, the GPU contains a number of small processors that are used to perform calculations. 
+GPUs are specialized stream processors, initially designed for
+rendering graphics in all kind of applications but specially games. Typically, a GPU is able to perform graphics manipulations at a much higher speed than a general purpose CPU, since the graphics processor is specifically designed to handle certain primitive operations which occur frequently in graphics applications. Internally, the GPU contains a number of small processors that are used to perform calculations. 
 
 Depending on the power of a GPU, the number of threads that can be executed in parallel on such devices is currently in the order of hundreds to thousands and it is expected to multiply in a few years. Nowadays, developers can write their own high-level programs on GPU. Due to the wide availability, programmability, and high-performance of these consumer-level GPUs, they are cost-effective for, not just game playing, but also scientific computing.
 
 Now, GPUs are exposed to the programmer as a set of general-purpose shared-memory Single Instruction Multiple Data (SIMD) multi-core processors. This makes these architectures well suited to run large or complex computational problems. 
 
+%igual que en el abstract, no justificáis por qué se aplica a
+%algoritmos bioinspirados. Es una revista generalista y tendréis que
+%hacerlo - JJ
 The goal of this article is to review the use of GPUs to solve such problems, by means of the most extended metaheuristics (high-level procedures which follow strategies for guiding the search, in order to solve an optimization problem), the \textit{bioinspired algorithms}. These algorithms imitate or model the behaviour of natural systems in order to design heuristic methods to address search, learning, and optimization problems.
 
-Bioinspired algorithms have been widely used by the scientific community because they are quite easy to understand and implement. They are stochastic, adaptive, and most of them inherently parallel models, since there are several agents working and cooperating to find the solution. This fact makes them completely suitable to be parallelized. The initial approaches considered clusters of computers or distributed processing, but the arise of GPGPUs have meant a new parallelization paradigm which is exposed here.
+Bioinspired algorithms have been widely used by the scientific
+community because they are quite easy to understand and
+implement. They are stochastic, adaptive, and most of them inherently
+parallel models, since there are several agents working and
+cooperating to find the solution. This fact makes them completely
+suitable to be parallelized. The initial approaches considered
+clusters of computers or distributed processing, but the arise of
+GPGPUs have meant a new parallelization paradigm which is exposed
+here. 
 
 Thus, the paper presents a survey of the most extended bioinspired algorithms and the different proposals of GPUs-parallelization approaches made in a number of research works. They are organized according to a parallelization taxonomy.
 
@@ -168,7 +205,8 @@ scheduling of threads.
 
 Physically GPUs used to be huge in comparison with CPUs as shown in Table \ref{tab:features}. Latest microprocessors from the two main vendors, AMD and Intel, are over 1 billiontransistors. Latest GPUs from AMD and NVIDIA \cite{nvidia} are over 4 billion transistors. CPUs draw 130W at most, a limit established by the cost of commodity heat sinks and fan. GPUs have an bigger power consumption and currently are in the neighborhood of 300W. This can be possible with the use of exotic cooling solutions. CPUs are built with
 the finest technology, read best lithography, while GPUs are made with budget in mind in more common and older processes. %esta frase está en
-                                %el artículo de 2012 - JJ
+                                %el artículo de 2012 y en otro
+                                %más. Por favor, reescribidla - JJ
 
 No standard terminology can be found in the world of graphics hardware.
 Every company have a  different set of terms to refer to the same
@@ -191,6 +229,7 @@ and their meaning. % Muchas de estas cosas son también del artículo de
 \resizebox{\textwidth}{!}{
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+% nada nuevo aquí? - JJ
 \hline
 manufacturer           & estimated     & die          & (shader)      & clock rate & memory       & GFLOPS          & TDP & approx. \\
 \&                     & transistors   & area         & cores         & (GHz)      & bandwidth    & (single         &     & price   \\
@@ -240,6 +279,8 @@ Intel Xeon Phi 5100P   & 5             & 600          & 60            & 1.053   
 \end{table*}
 
 Nowadays NVIDIA has the best single chip GPU discrete card with
+% yo evitaría ese juicio de valor y además habría que añadir una cita
+% - JJ
 superior performance in some workloads and AMD the best card with two
 GPU chips. Both makers take different compromises in the design of
 theirs GPUs. AMD has more execution units but its memory hierarchy is
@@ -249,7 +290,13 @@ side, loads capped by pure ALU execution power use to be faster on AMD
 hardware. % También en el artículo de 2012. Si sigue siendo cierto,
           % refrasearlo - JJ
 
-Traditionally CPUs and GPUs have been separated. In 2014 the trend is to integrate both into a single chip for cost efficiency reasons. Only top models remain as discrete devices. Some of this are top models from Intel's Core i7 or AMD's Opteron 6300 families. Also best discrete GPUs from NVIDIA and AMD, like consumer GeForce GTX 690 and Radeon HD 7990 and professional line QUADRO K6000 and Radeon FirePro S10000. 
+Traditionally CPUs and GPUs have been separated. In 2014 the trend is
+to integrate both into a single chip for cost efficiency reasons. Only
+top models remain as discrete devices. Some of this are top models
+from Intel's Core i7 or AMD's Opteron 6300 families. Also best
+discrete GPUs from NVIDIA and AMD, like consumer GeForce GTX 690 and
+Radeon HD 7990 and professional line QUADRO K6000 and Radeon FirePro
+S10000. % best discrete what? - JJ 
 
 From 2006 CPUs with an integrated GPU have became popular. AMD and Intel have just
 started selling this kind of combined processor and graphics card. The
@@ -268,7 +315,15 @@ rendering. However, the speedup that graphics hardware can bring to us
 is not free, as each application to be accelerated must be rewritten
 to take advantage of the GPU. 
 
-Figure \ref{fig:gk110a} shows the internals of latest NVIDIA Kepler GK110 architecture. There can be a maximum of 15 SMX units and every one of this has 192 single precision CUDA cores. The six squares on the sides are memory interfaces for a total bus width of 384 bits. It is capable of a maximum bandwidth of 250GB/s connected to GDDR5 memory chips. Figure \ref{fig:gk110b} shows a disclosed SMX unit with its 192 CUDA cores. The maximum theoretical throughput in simple precision is 3950GFLOPS.
+Figure \ref{fig:gk110a} shows the internals of latest NVIDIA Kepler
+GK110 architecture. % esto hace falta? en serio? - JJ
+There can be a maximum of 15 SMX units and every
+one of this has 192 single precision CUDA cores. The six squares on
+the sides are memory interfaces for a total bus width of 384 bits. It
+is capable of a maximum bandwidth of 250GB/s connected to GDDR5 memory
+chips. Figure \ref{fig:gk110b} shows a disclosed SMX unit with its 192
+CUDA cores. The maximum theoretical throughput in simple precision is
+3950GFLOPS. 
 
 \begin{figure}[!ht]
 \begin{tabular}{c}
@@ -381,6 +436,9 @@ Unfortunately many times we have to pass data from CPU to GPU before a serious c
 
 These problem have been with us because current CPUs and GPUs have been designed as separate processing elements and do not work together efficiently. At least until last APUs from AMD. New AMD A7 series uses what the call Heterogeneous System Architecture (HSA). HSA seamlessly shares data between CPU and GPU, without memory copies or cache flushes with minimal dispatch overhead. Both components can share a common memory architecture.
 
+% aqui deberíais añadir un párrafo sobre cómo estos modelos se adaptan
+% al modelo usado en los algoritmos de computación evolutiva - JJ
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Bioinspired Methods on GPUs}
 \label{sec:bioinfor_apps}
@@ -392,7 +450,11 @@ Alba et al. \cite{Alba2005book} reviewed and surveyed parallel metaheuristics on
 
 The parallel EAs community has a wide legacy with MIMD architectures and a very little contribution for SIMD systems. This comes in part due to the dominance of MIMD architectures as compared to SIMD ones.
 
-Alba classifies the main parallel metaheuristic models as follow:
+Alba classifies the main parallel metaheuristic models as follow: % si
+                                % usáis bioinspired y metaheuristics
+                                % de forma intercambiable,
+                                % justificadlo. Si no, poned
+                                % metaheuristics - JJ
 \begin{itemize}
 \item Parallel Genetic Algorithms (Cant\'u Paz \cite{Cantu-Paz98asurvey}) %(G. Luque, et al.).
 \item Parallel Genetic Programming (F. Fern\'andez, et al.\cite{springerlink:10.1023_A:1021873026259}).
@@ -431,7 +493,7 @@ Master-slave Evolutionary Algorithms traditionally solve problems involving comp
 
 %________________________________
 % maribel: he reescrito el pÃ¡rrafo siguiente entero, hay que revisarlo bien.
-As a GPGPU implementation, the GPU is responsible of fitness evaluation but it does not get involved with other phases of the algorithm such as crossover, selection or even population ordering for the next generation. In this approach, every generation the individuals are copied to the global memory of the GPU, so every single processor gets one or more individuals from global memory and puts them into the shared memory, in order to decrease global memory overhead. After that, each thread evaluates it or them, and stores the result into the global memory again. Usually each single core evaluates one individual. The programmer has to minimise the number of global memory accesses, as well as to minimise data transfers between CPU and GPU. Some additional problems might be faced, like for example, individuals that require additional data for being evaluated, such as a distance matrix or a dataset. This additional information might be copied from CPU to GPU once at the beginning of the process, so the threads might access to this data for evaluation minimising the data transfers CPU-GPU. 
+As a GPGPU implementation, the GPU is responsible for fitness evaluation but it does not get involved with other phases of the algorithm such as crossover, selection or even population ordering for the next generation. In this approach, every generation the individuals are copied to the global memory of the GPU, so every single processor gets one or more individuals from global memory and puts them into the shared memory, in order to decrease global memory overhead. After that, each thread evaluates it or them, and stores the result into the global memory again. Usually each single core evaluates one individual. The programmer has to minimise the number of global memory accesses, as well as to minimise data transfers between CPU and GPU. Some additional problems might be faced, like for example, individuals that require additional data for being evaluated, such as a distance matrix or a dataset. This additional information might be copied from CPU to GPU once at the beginning of the process, so the threads might access to this data for evaluation minimising the data transfers CPU-GPU. 
 
 One of the first proposals for parallel Evolutionary Computation using a GPU was done by Wong et al. \cite{man-leung-wong-parallel-2005}. They presented an Evolutionary Programming (EP) algorithm without crossover for solving five simple test functions, called Fast Evolutionary Programming (FEP). In this master-slave approach, some actions were executed in the CPU, as the main loop of the algorithm, while evaluation and mutation were run into the GPU device because both steps do not need of external information exchange. In this case, the reproduction process implies interaction among, at least, two individuals so the authors eliminated this step in the algorithm. A maximum speedup of $\times5.02$ was obtained when the population size increases. This is the most common organization in GPU implementations, since no interaction among individuals is required during the evaluation, so this process can be fully parallelized. In that paper the individuals was real-coded and the genomes were mapped into the texture memory. Each GPU thread evaluated one individual and returned its fitness at the end of the parallel process to the CPU, for the next evolution cycle.
 
@@ -443,8 +505,12 @@ Van Luong et al. \cite{5586403} published in 2010 a methodology for mapping the 
 
 There are other papers related with the previous approach, like the one by Tsutsui et al. \cite{Tsutsui:2011:GECCO}. This chapter uses a master-slave approach with an Ant Colony Optimization (ACO) algorithm \cite{Dorigo:1999:ACO:329055.329062} and Tabu Search \cite{Glover:1997:TS:549765}. Tsutsui uses an Intel Core i7 965 (3.2 GHz) processor and a single NVIDIA GeForce GTX480 GPU. They compare CPU and GPU implementations with and the results showed that GPU computation with MATA, an efficient method for thread assignment cost which they call Move-Cost Adjusted Thread Assignment, showed a promising speedup compared to computation with CPU.
 
-There are papers related with other subjects like \cite{Pedemonte:2011:BOG:2001858.2002031} which studies the impact of using different representations for binary problems in GPUs to evaluate GAs: boolean data type versus packing multiple bits in a non-boolean data type. The execution platform was a PC with Quad Core Intel Xeon E5530 processor at 2,4 Ghz and a Tesla C1060 with 240 CUDA cores. The CPU only calculates the initial population and a matrix of random number to be used in crossover and mutation by the GPU. The authors review the problem of the data types when GPGPU is used. Several data types of 8, 16, 32, and 64 bits are compared in CPU and GPU versions. Results shows that
-packing in 32 bits data types achieve speedup values of up to $\times100$ compared with boolean data types, specially when the size of the instances increases. This make sense because the Tesla C1060 are equipped with 32-bit integer ALUs. 
+There are papers related with other subjects % cuales subjects? - JJ
+like \cite{Pedemonte:2011:BOG:2001858.2002031} which studies the impact of using different representations for binary problems in GPUs to evaluate GAs: boolean data type versus packing multiple bits in a non-boolean data type. The execution platform was a PC with Quad Core Intel Xeon E5530 processor at 2,4 Ghz and a Tesla C1060 with 240 CUDA cores. The CPU only calculates the initial population and a matrix of random number to be used in crossover and mutation by the GPU. The authors review the problem of the data types when GPGPU is used. Several data types of 8, 16, 32, and 64 bits are compared in CPU and GPU versions. Results shows that
+packing in 32 bits data types achieve speedup values of up to
+$\times100$ compared with boolean data types, specially when the size
+of the instances increases. This make sense because the Tesla C1060
+are equipped with 32-bit integer ALUs.  
 
 Cano et al. \cite{SpeedingTheEvaluationofGPCano:2012} described a massively parallel evaluation model using a Genetic Programming algorithm for evolving rules for dataset classification. They copied the dataset to the GPU global memory, and evaluated the rules (individuals) for each instance of the dataset in parallel (match kernel). At the end, each successful match was reduced getting each individual fitness (reduction kernel). The implementation, based on CUDA, speedups the fitness calculation phase and greatly reduce the computation time. Results were compared using one, two and four CPU threads and the combination of one or two GPUs of different features (285 cores for GPUa -NVIDIA GeForce 285 GTX- or 480 cores for GPUb -NVIDIA GeForce 480 GTX-). They test three classification algorithms and the results were not very significant for small datasets, but they increased the speedup with large datasets until $\times820$ using two GPUs with 480 cores each one.
 
@@ -556,7 +622,13 @@ Focusing in the latter, this work is also a survey of the usage of General-Purpo
 
 Most of the studied algorithms use the GPU for parallel fitness evaluation, but some other cases present a parallel distribution scheme for the considered metaheuristic, such as Ant Colony Optimization.
 
-In the majority of cases, speedups are attained in the comparison with traditional CPU sequential and parallel versions. Most authors agree that bottlenecks appear copying data from main memory to GPU device, so new hardware and software solutions are emerging trying to minimize the communication cost between GPUs and CPUs.
+In the majority of cases, speedups are attained in the comparison with
+traditional CPU sequential and parallel versions. Most authors agree
+that bottlenecks appear copying data from main memory to GPU device,
+so new hardware and software solutions are emerging trying to minimize
+the communication cost between GPUs and CPUs.
+
+% nada de trabajo futuro? - JJ
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % agradecimientos
