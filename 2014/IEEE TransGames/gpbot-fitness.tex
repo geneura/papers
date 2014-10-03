@@ -11,6 +11,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{fancyvrb}
+\usepackage{subfigure}
 % correct bad hyphenation here
 \hyphenation{}
 
@@ -37,7 +38,7 @@
 % Qué mapas se usan en cada evaluación?
 
 % paper title: Must keep \ \\ \LARGE\bf in it to leave enough margin.
-\title{\ \\ \LARGE\bf Fighting to Survive: Evolving RTS Bots without
+\title{\ \\ \LARGE\bf Struggling to Survive: Evolving RTS Bots without
   Explicit Evaluation}
 
 %Usar palabras negativas como "without" en títulos no me acaba de
@@ -48,7 +49,7 @@
 
 % Antonio - Aclararnos bien con Explicit o Implicit. :D
 
-% Tampoco me gusta "Fighting to survive": "Fight for life" o "Struggling to survive" está mejor dicho - JJ
+% Tampoco me gusta "Fighting to survive": "Fight for life" o "Struggling to survive" está mejor dicho - JJ FERGU: Struggling, pues, que lo he visto en pelis
 
 \author{A.J. Fernández-Ares, P. García-Sánchez, A.M. Mora, P. A. Castillo and J.J. Merelo \thanks{Department of Computer Architecture and Computer Technology, University of Granada, Spain, {\tt \{antares,pablogarcia\}@ugr.es, \{amorag,pedro,jmerelo\}@geneura.ugr.es}}}
 % avoiding spaces at the end of the author lines is not a problem with
@@ -289,7 +290,7 @@ A Planet Wars match takes place on a map (see Figure \ref{figura:PlanetWars1}) t
 
 The aim of the game is to defeat all the ships in the opponent's planets. Although Planet Wars is a RTS game, this implementation includes the concept of {\em turn} (1 second slot to decide the actions), and each player has a maximum number of turns to accomplish the objective. At the end of the match, the winner is the player that remains alive, or that who owns more ships if more than one survives. 
 
-The problem in this paper is to create a bot's AI in order to win the game, i.e. able to defeat every possible opponent in a 1 vs 1 or All vs All match (four independent bots fighting in the same map). %TODO quitar esto dependiendo de lo que se use
+The problem in this paper is to create a bot's AI in order to win the game, i.e. able to defeat every possible opponent in a 1 vs 1 match.% (four independent bots fighting in the same map).  
 The bot must react according to the state of the map in each simulated turn (input), returning a set of actions to perform in order to fight the enemy, conquering its resources, and, ultimately, wining the game. 
 
 There are two strong constraints which determine the possible methods to apply to design a bot: a simulated turn takes just one second (that is, the maximum time to decide next action is one second), and the bot is not allowed to store any kind of information about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map).
@@ -377,7 +378,7 @@ Finally, the possible \textit{decisions} (and their acronyms, that will be used 
 An example of a possible decision tree is presented in Figure \ref{fig:javatree}. This example tree has a total of 5 nodes, with 2 decisions and 3 actions, and a depth of 3 levels. The bot's behaviour is explained in Algorithm \ref{alg:turn}.
 
 \begin{figure}
-% usar el estilo Algorithmic, esto queda feísimo - JJ
+% usar el estilo Algorithmic, esto queda feísimo - JJ FERGU: esto es código java, el algoritmic lo uso abajo
 
 \begin{Verbatim}[frame=single,fontsize=\small]
  
@@ -423,16 +424,17 @@ else
 
 
 \subsection{Selection policy}
-Previous generation algorithm % ¿El algoritmo de la anterior
-                              % generación? ¿Eso qué es? - JJ 
+The algorithm presented in \cite{} % ¿El algoritmo de la anterior
+                              % generación? ¿Eso qué es? - JJ FERGU: cierto, lo quito
 is combined with the implicit fitness evaluation for selection and
 replacement. This implicit evaluation of fitness is performed via a
 match of the individuals in a real-scenario, which explains the title
 we have given to this paper. Selection of the mating parents is performed in a battle: the winner is selected to crossover and the loser will be removed from the population (as it will be explained later).
 
-Two different types of battles will be compared: {\em 1vs1} and {\em All vs All of 4 bots}, 
+%Two different types of battles will be compared: {\em 1vs1} and {\em All vs All of 4 bots}, 
 % Antonio - esto lo ponía yo mal también, no son combates 4 contra 4, sino 1vs3. ;D FERGU: arreglao.
-as they are the only possible match types in Planet Wars. In both configurations the winner will be selected to mating and the loser (i.e. the first to be eliminated) will be removed from the population. Therefore, in the case of All vs All, the individuals ending in 2nd and 3rd position neither are selected for mating nor removed.
+%as they are the only possible match types in Planet Wars. 
+%In both configurations the winner will be selected to mating and the loser (i.e. the first to be eliminated) will be removed from the population. Therefore, in the case of All vs All, the individuals ending in 2nd and 3rd position neither are selected for mating nor removed.
 
 This implicit selection and replacement have been chosen because...
 
@@ -664,7 +666,13 @@ This subsection show the results of the obtained bots, analysing the distributio
 \begin{figure}[htb]
 \tiny
 \begin{center}
-  %\epsfig{file=./imags/distribution_actions,width=6cm}
+
+
+    \includegraphics[trim=1cm 7cm 1cm 7cm, clip=true,width=5cm,angle=-90]{./imags/distribution_initial_action.eps}
+    \includegraphics[trim=1cm 7cm 1cm 7cm, clip=true,width=5cm,angle=-90]{./imags/distribution_final_action.eps}
+    %\includegraphics{file=./imags/distribution_final_reinforce,width=3cm,angle=-90}
+
+
 \end{center}
 \caption{Distribution of different types of actions (attack, reinforce and do nothing) of the generated bots.}
 \label{figura:tarta_actions}
@@ -674,7 +682,11 @@ Figure \ref{tarta_attacking_action} shows the strategy when a planet is attackin
 \begin{figure}[htb]
 \tiny
 \begin{center}
-  %\epsfig{file=./imags/distribution_attack,width=6cm}
+
+    \includegraphics[trim=1cm 7cm 0cm 7cm, clip=true,width=5cm,angle=-90]{./imags/distribution_initial_attack.eps}
+    \includegraphics[trim=1cm 7cm 0cm 7cm, clip=true,width=5cm,angle=-90]{./imags/distribution_final_attack.eps}
+    %\includegraphics{file=./imags/distribution_final_reinforce,width=3cm,angle=-90}
+
 \end{center}
 \caption{Condition of target planet when attacking: Nearest, Quickiest, Weakest, Walthest, Base or Beneficious.}
 \label{figura:tarta_attacking}
@@ -685,7 +697,11 @@ Figure \ref{tarta_attacking_who}
 \begin{figure}[htb]
 \tiny
 \begin{center}
-  %\epsfig{file=./imags/distribution_attack,width=6cm}
+
+    \includegraphics[trim=1cm 7cm 1cm 7cm, clip=true,width=5cm,angle=-90]{./imags/distribution_initial_target.eps}
+    \includegraphics[trim=1cm 7cm 1cm 7cm, clip=true,width=5cm,angle=-90]{./imags/distribution_final_target.eps}
+    %\includegraphics{file=./imags/distribution_final_reinforce,width=3cm,angle=-90}
+
 \end{center}
 \caption{Owners of target planets when attacking: Enemy, Neutral, NotMy.}
 \label{figura:tarta_attacking_who}
@@ -696,7 +712,11 @@ Figure \ref{tarta_reinforcing} shows the target when a planet is reinforcing the
 \begin{figure}[htb]
 \tiny
 \begin{center}
-  %\epsfig{file=./imags/distribution_reinforce,width=6cm}
+
+    \includegraphics[trim=1cm 7cm 1cm 7cm, clip=true,width=5cm,angle=-90]{./imags/distribution_initial_reinforce.eps}
+    \includegraphics[trim=1cm 7cm 1cm 7cm, clip=true,width=5cm,angle=-90]{./imags/distribution_final_reinforce.eps}
+    %\includegraphics{file=./imags/distribution_final_reinforce,width=3cm,angle=-90}
+
 \end{center}
 \caption{Destination of planets when reinforcing: Weakest, Wealthest, Base.}
 \label{figura:tarta_reinforcing}
@@ -706,7 +726,13 @@ Figure \ref{tarta_decissions} shows the final proportion of decissions. It is cl
 \begin{figure}[htb]
 \tiny
 \begin{center}
-  %\epsfig{file=./imags/distribution_reinforce,width=6cm}
+
+
+    \includegraphics[trim=1cm 5.5cm 0cm 5.5cm, clip=true,width=4.5cm,angle=-90]{./imags/distribution_initial_condition.eps}
+    \includegraphics[trim=1cm 5.5cm 0cm 5.5cm, clip=true,width=4.5cm,angle=-90]{./imags/distribution_final_condition.eps}
+
+
+
 \end{center}
 \caption{Percentage of decissions .}
 \label{figura:tarta_decissions}
