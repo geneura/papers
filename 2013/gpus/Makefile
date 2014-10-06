@@ -10,25 +10,22 @@ PDF = $(TEX:.tex=.pdf)
 
 ###############################################################################
 
-all:	$(EPS) $(PDF)
+all: $(EPS) $(PDF)
 
-auto:
-	while true; do $(MAKE); sleep 1; done
+auto: $(EPS)
+	latexmk -pvc
 
 clean:
 	latexmk -C
-	$(RM) $(BBL) $(EPS) *~
+	$(RM) $(BBL) $(EPS) *-eps-converted-to.pdf *~
 
 ###############################################################################
-
-%.dvi: %.tex $(EPS)
-	latexmk -dvi -f $*
 
 %.eps: %.dia
 	dia -e $@ $<
 
-%.pdf:	%.dvi
-	dvipdf $<
+%.pdf: %.tex $(EPS)
+	latexmk -f -pdf $*
 
 ###############################################################################
 

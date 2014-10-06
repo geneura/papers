@@ -26,16 +26,16 @@
 
 \title{Going a Step Beyond the Black and White Lists for URL Accesses in the Enterprise by means of Categorical Classifiers}
 
-\author{\authorname{Author1\sup{1}, Author2\sup{1} and Author3\sup{2}}
-\affiliation{\sup{1}Maracena Institute of Technology (MIT), Anonymous university, Anonymous Street num. X, AnonymousLand}
-\affiliation{\sup{2}Department of Computing, Authors University (AU), Authors Street num. AAA, Metropolis, Moon}
-\email{\{auth1,auth2\}@mit.edu, auth3@au.edu}
+\author{\authorname{A.M. Mora, P. De las Cuevas, J.J. Merelo}
+\affiliation{Depto. Arquitectura y Tecnología de Computadores,\\ 
+ETSIIT-CITIC, University of Granada, Spain}
+\email{\{amorag,paloma,jmerelo\}@geneura.ugr.es}
 }
 
 \keywords{Data Mining, Corporate Security Policies, URL request, Machine Learning, Classification}
 
 \abstract{Corporate systems can be secured using an enormous quantity of methods, and the implementation of Black or White lists is among them.
-With these lists it is possible to restrict (or to allow) the users the execution of applications or the access to certain URLs, among others. This paper is focused in the latter option. It describes the whole processing of a set of data composed by URL sessions performed by the employees of a company; from the preprocessing stage, including labelling and data balancing processes, to the application of several classification algorithms. The aim is to define a method for automatically make a decision of allowing or denying future URL requests, considering a set of corporate security policies.
+With these lists it is possible to restrict (or to allow) the users the execution of applications or the access to certain URLs, among others. This paper is focused on the latter option. It describes the whole processing of a set of data composed by URL sessions performed by the employees of a company; from the preprocessing stage, including labelling and data balancing processes, to the application of several classification algorithms. The aim is to define a method for automatically make a decision of allowing or denying future URL requests, considering a set of corporate security policies.
 Thus, this work goes a step beyond the usual black and white lists, since they can only control those URLs that are specifically included in them, but not by making decisions based in similarity (through classification techniques), or even in other variables of the session, as it is proposed here.
 The results show a set of classification methods which get very good classification percentages (95-97\%), and which infer some useful rules based in additional features (rather that just the URL string) related to the user's access. This led us to consider that this kind of tool would be very useful tool for an enterprise.
 }
@@ -53,9 +53,9 @@ The results show a set of classification methods which get very good classificat
 This has meant the rising of new security issues, which are normally dealt by means of \textit{Corporate Security Policies} (CSPs), which are basically a set of security rules aimed to protect the company assets, by defining permissions to be considered for every different action to be performed inside the security system. 
 
 These CSPs usually include policies that allow or deny access to non-confident (or non-certified) web sites (referenced by their URLs in this work). Moreover, several web pages might be also controlled for productivity or suitability reasons.
-Thus, some of the CSPs usually define sets of allowed or denied pages/sites that could be accessed by the enterprise users/employees. These sets are usually included in a White (permitted) or Black (non-permitted) Lists. These lists act as a good control tool for those URLs included in them of for the complementary, i.e. the URLs not included in a Whitelist have automatically denial of access, for instance.
+Thus, some of the CSPs usually define sets of allowed or denied pages/sites that could be accessed by the enterprise users/employees. These sets are usually included in a White (permitted) or Black (non-permitted) Lists. These lists act as a good control tool for those URLs included in them as well as for the complementary, i.e. the URLs not included in a Whitelist have automatically denial of access, for instance.
 
-In this work we go a step beyond, trying to define a tool for automatically making an allowance or denial decision with respect to URLs that are not included in the aforementioned lists. This decision would be based in the one made for similar URL accesses (those with similar features), but considering other parameters of the request/connection instead of just the URL string, as those lists do.
+In this work we go a step beyond, trying to define a tool for automatically making an allowance or denial decision with respect to URLs that are not included in the aforementioned lists. This decision would be based in that one made for similar URL accesses (those with similar features), but considering other parameters of the request/connection instead of just the URL string, as those lists do.
 
 Thus, the problem has been transformed into a \textit{classification} one, in which we have started from a set of unlabelled patterns, that model the connection properties from a huge amount of \textit{real}\footnote{Taken from a log file given by a volunteer Spanish company.} URL accesses (known as sessions). Then we have assigned a label to many of them, considering a set of \textit{real}\footnote{The set of rules has been written by the same company, with respect to its employees.} security rules (CSPs) defined by the Chief Security Officer (CSO) in the company.
 The resulting dataset has been processed by means of different classification methods, in order to find the best algorithm for dealing with these data.
@@ -63,7 +63,7 @@ Previously, data balancing techniques were applied, namely \textit{undersampling
 
 Different data partitions have been done in the experiments, even considering consecutive URL sessions in the training and test files.
 The results are quite good, getting classification accuracies around 95-97\% in the test phase, even when using the unbalanced datasets.
-Then, after analysing the yielded sets of classification rules and trees, it can be identified several rules based in other features rather than the URL itself, which is the aim of this work.
+Then, after analysing the yielded sets of classification rules and trees, several rules can be identified, based in other features rather than the URL itself, which is the aim of this work.
 
 The paper is structured as follows. Next section describes related work in relation to the application of Data Mining and Machine Learning techniques to security issues inside a company. Section \ref{sec:problemDescription} presents the problem we solve and the dataset we have worked with. The followed methodology is described in Section \ref{sec:methodology}, concerning the data preprocessing and a first round of experiments comparing different classification methods. Once the best of them were selected, a set of experiments have been conducted, and the results are described and discussed in Section \ref{sec:results}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
 
@@ -107,7 +107,7 @@ On the other hand, and more focused on the user side like our approach, there ex
  
 Then, when a Information Security Policy (ISP) is going to be applied, P.G. Kelley et al. \cite{user-controllable_learning_08} found important to include the user in the machine learning process for refining the policy model. They called it \textit{user-controllable policy learning}. Another approach to the refinement of user's privacy policies has been described by Danezis in \cite{inferring_policies_socialnetworks_09}, for he uses ML techniques over the user's settings in a social network, being capable of restricting permissions to other people depending on their interaction with the user.
 
-In the same line, Lim et al. propose a system \cite{sec_policy_evolution_gp_08,pol_evol_gp_3_approaches_08} that evolves a set of computer security policies by means of GP, taking again into account the user's feedback. Furthermore, Suarez-Tangil et al. \cite{rule_generation_gp_09} take the same approach as Lim et al., but also bringing event correlation in. These two latter author's works are interesting for ours, though they are not focused in company ISPs - for instance, our case with the allowed or denied http requests -.
+In the same line, Lim et al. propose a system \cite{sec_policy_evolution_gp_08,pol_evol_gp_3_approaches_08} that evolves a set of computer security policies by means of GP, taking again into account the user's feedback. Furthermore, Suarez-Tangil et al. \cite{rule_generation_gp_09} take the same approach as Lim et al., but also bringing event correlation in. These two latter author's works are interesting for ours, though they are not focused on company ISPs - for instance, our case with the allowed or denied http requests -.
 
 Finally, a system named MUSES (from Multiplatform Usable Endpoint
 Security System) \cite{MUSES_SAC_14} is being developed under the
@@ -174,7 +174,7 @@ The dependent variable or class is a label which inherently assigns an decision 
 These data were gathered along a period of two hours, from 8.30 to
 10.30 am (30 minutes after the work started), monitoring the activity
 of all the employees in a medium-size Spanish company (80-100 people),
-being 100000 patterns. We consider this dataset as quite complete because it contains a very diverse amount of connection patterns, going from personal (traditionally addressed at the first hour of work) to professional issues (the rest of the day).
+obtaining 100000 patterns. We consider this dataset as quite complete because it contains a very diverse amount of connection patterns, going from personal (traditionally addressed at the first hour of work) to professional issues (the rest of the day).
 Moreover, the results derived from the experiments (described in Section \ref{sec:results}) show that this quantity of data might be big enough, but a more accurate outcome would be given with, for instance, a 24 hours long log.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   METHODOLOGY  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -193,7 +193,7 @@ At the end of these two steps, the two hashes are compared in order to obtain wh
 Given that the dataset contains a majority of categorical/nominal data, we have performed different approaches for data balancing:
 \begin{itemize}
 \item Undersampling: we will remove random samples of the majority class until the amount in both classes are similar.
-\item Oversampling: we will duplicate random samples of the minority class, in order to get a close number of patterns in both classes. This has be done due to the impossibility of creating synthetic data when dealing with categorical values (there is not a proper distance measure between two values in a category). Actually, since the number of samples in the majority class is almost twice the minority one, we have just duplicated all of those belonging to the minority class.
+\item Oversampling: we will duplicate random samples of the minority class, in order to get a close number of patterns in both classes. This has to be done due to the impossibility of creating synthetic data when dealing with categorical values (there is not a proper distance measure between two values in a category). Actually, since the number of samples in the majority class is almost twice the minority one, we have just duplicated all of those belonging to the minority class.
 \end{itemize}
 
 Finally, in Subsection \ref{subsec:methods} we explain the selection of the methods to apply in order to classify the data. We just have considered the patterns correctly labelled in the preprocessing phase. Thus, a supervised classification process \cite{classification_67} has been conducted on the balanced datasets.
@@ -207,7 +207,7 @@ Weka Data Mining Software\footnote{http://www.cs.waikato.ac.nz/ml/weka/} has bee
 \noindent In this work we have considered Drools \cite{drools:site}
 as % otra cosa que debería estar en el estado del arte.  - JJ
 % Antonio - pos yo lo lo veo bien allí...
-the tool to create and therefore manage rules in a business environment. This so called Business Rule Management System (BRMS) has been developed by the JBoss community under an Apache License and it is written in Java. Though this platform consist of many components, here we focus on Drools Expert and the Drools Rule Language (DRL, \cite{drools:doc}). Then, the defined rules for a certain company are inside of a file with a \texttt{.drl} extension, the file that needs to be parsed to obtain the final set of rules. In Figure \ref{fig:drools_hash}, (a), there is the typical rule syntax in DRL. Two main things should be obtained from the parsing method: both left and right sides of the rule, taking into account that the left side is where the company specifies the conditions required to apply the action indicated in the right side. Also, for describing the conditions, Squid syntax is used (see Section \ref{sec:problemDescription}), having thus the following structure: \texttt{squid:Squid(\textit{conditions})}. Finally, from the right side of the rule, the \textit{ALLOW} or \textit{DENY} label to apply on the data that matches with the conditions, will be extracted. The Perl parser that we have implemented applies two regular expressions, one for each side of the rule, and returns a hash with all the rules with the conditions and actions defined. The `before and after' performing the parsing over the \texttt{.drl} file is in Figure \ref{fig:drools_hash}.
+the tool to create, and therefore, manage rules in a business environment. This so called Business Rule Management System (BRMS) has been developed by the JBoss community under an Apache License and it is written in Java. Though this platform consist of many components, here we focus on Drools Expert and the Drools Rule Language (DRL, \cite{drools:doc}). Then, the defined rules for a certain company are inside of a file with a \texttt{.drl} extension, the file that needs to be parsed to obtain the final set of rules. In Figure \ref{fig:drools_hash}, (a), there is the typical rule syntax in DRL. Two main things should be obtained from the parsing method: both left and right sides of the rule, taking into account that the left side is where the company specifies the conditions required to apply the action indicated in the right side. Also, for describing the conditions, Squid syntax is used (see Section \ref{sec:problemDescription}), having thus the following structure: \texttt{squid:Squid(\textit{conditions})}. Finally, from the right side of the rule, the \textit{ALLOW} or \textit{DENY} label to apply on the data that matches with the conditions, will be extracted. The Perl parser that we have implemented applies two regular expressions, one for each side of the rule, and returns a hash with all the rules with the conditions and actions defined. The `before and after' performing the parsing over the \texttt{.drl} file is in Figure \ref{fig:drools_hash}.
 
 \begin{figure}[htb]
 \centering
@@ -258,7 +258,7 @@ and their hierarchy grows from the right towards the left. The highest
 level of the domain name space is the Top-Level Domain (TLD) at the
 right-most part of the domain name, divided itself in country code
 TLDs and generic TLDs. Then, a domain and a number of subdomains
-follow the TLD (again, from right to left). This way, the URLs in the
+follow the TLD (again, from right to left). In this way, the URLs in the
 used log are such as \textit{http://subdomain...subdomain.domain.TLD/}
 \textit{other\_subdirectories}. However, for the ARFF\footnote{Format
   of Weka files} file to be created, only the domain (without the
@@ -274,7 +274,6 @@ total. % primero: deberíais usar domain + TLD. Perl.com no es lo mismo
 
 \begin{figure}[htb]
 \centering
-\caption{Perl hash with an example entry. The actual hash used for this work has a total of 100000 entries, with more than a half labelled as \textit{ALLOW} or \textit{DENY} after the comparing process. \label{fig:data_hash}}
 \begin{tabular}{ p{0.1cm} p{0.1cm} p{6cm} }
   \texttt{\%logdata~=~(} & & \\
    & \texttt{entry~=>\{} & \\
@@ -291,6 +290,7 @@ total. % primero: deberíais usar domain + TLD. Perl.com no es lo mismo
    & \texttt{\},} & \\
   \texttt{);} & & \\
 \end{tabular}
+\caption{Perl hash with an example entry. The actual hash used for this work has a total of 100000 entries, with more than a half labelled as \textit{ALLOW} or \textit{DENY} after the comparing process. \label{fig:data_hash}}
 \end{figure}
 
 % ------------------------------------------------------------------
@@ -317,7 +317,7 @@ total. % primero: deberíais usar domain + TLD. Perl.com no es lo mismo
 %                            |
 
 
-\noindent As said in Section \ref{sec:problemDescription}, the data used for this work is not only numerical or nominal, thus, only classification algorithms that support both types of data have been considered. Weka has a great number of possible algorithms to work with, so we have conducted a preselection phase trying to choose those which would yield better results in the experiments. More specifically, we have focused in rule-based and decision-tree-based algorithms. 
+\noindent As said in Section \ref{sec:problemDescription}, the data used for this work is not only numerical or nominal, thus, only classification algorithms that support both types of data have been considered. Weka has a great number of possible algorithms to work with, so we have conducted a preselection phase trying to choose those which would yield better results in the experiments. More specifically, we have focused on rule-based and decision-tree-based algorithms. 
 
 %It is important to point out that rules can become trees, but rules cannot always be derived from trees (for instance, a tree modelling a mathematical operation).
 
@@ -373,7 +373,7 @@ REP Tree & \textbf{96.79} & \textbf{97.67} \\
 
 
 \begin{description}
-   \item[J48] This classifier generates a pruned or unpruned C4.5 decision tree. Described for the first time in 1993 by \cite{Quinlan1993}, this machine learning method builds a decision tree selecting, for each node, the best attribute for splitting and create the next nodes. An attribute is selected as `the best' by evaluating the difference in entropy (information gain) resulting from choosing that attribute for splitting the data. This way, the tree continues to grow till there are not attributes anymore for further splitting, meaning that the resulting nodes are instances of single classes. 
+   \item[J48] This classifier generates a pruned or unpruned C4.5 decision tree. Described for the first time in 1993 by \cite{Quinlan1993}, this machine learning method builds a decision tree selecting, for each node, the best attribute for splitting and create the next nodes. An attribute is selected as `the best' by evaluating the difference in entropy (information gain) resulting from choosing that attribute for splitting the data. In this way, the tree continues to grow till there are not attributes anymore for further splitting, meaning that the resulting nodes are instances of single classes. 
    \item[Random Forest] This manner of building a decision tree can be seen as a randomization of the previous C4.5 process. It was stated by \cite{Breiman2001} and consist of, instead of choosing `the best' attribute, the algorithm randomly chooses one between a group of attributes from the top ones. The size of this group is customizable in Weka.
    \item[REP Tree] Is another kind of decision tree, it means Reduced Error Pruning Tree. Originally stated by \cite{Quinlan1987}, this method builds a decision tree using information gain, like C4.5, and then prunes it using reduced-error pruning. That means that the training dataset is divided in two parts: one devoted to make the tree grow and another for pruning. For every subtree (not a class/leaf) in the tree, it is replaced by the best possible leaf in the pruning three and then it is tested with the test dataset if the made prune has improved the results. A deep analysis about this technique and its variants can be found in \cite{Elomaa2001}.
    \item[NNge] Nearest-Neighbor machine learning method of generating rules using non-nested generalised exemplars, i.e., the so called `hyperrectangles' for being multidimensional rectangular regions of attribute space \cite{Martin1995}. The NNge algorithm builds a ruleset from the creation of this hyperrectangles. They are non-nested (overlapping is not permitted), which means that the algorithm checks, when a proposed new hyperrectangle created from a new generalisation, if it has conflicts with any region of the attribute space. This is done in order to avoid that an example is covered by more than one rule (two or more).
@@ -496,9 +496,9 @@ PART & 96.19 $\pm$ 0.14 & 85.16 & 96.82 $\pm$ 0.09 & 84.50 & 96.09 $\pm$ 0.10 & 
   \item[Applying Oversampling] Here we have duplicated the DENY patterns so their number could be up to that of the ALLOW patterns. However, it does not work as well as in other approaches which uses numerical computations for creating the new patterns to include in the minority class. Consequently, the results have been decreased.
 \end{description}
 
-In both cases is noticeable that taking the data in a sequential way, instead of randomly, lower the results. It is clear that due to the fact that performing undersampling some patterns are lost while in the case of oversampling they all remain, \textit{undersampling results} are better. Then, in this case the algorithm with best performance is \textit{J48}, though \textit{Random Forest} follows its results very closely in random datasets processing, and \textit{REP Tree}, which is better than the rest when working with sequential data. Nevertheless, generally speaking and given the aforementioned reasons, performing data balancing methods yields worse results.
+In both cases it is noticeable that taking the data in a sequential way, instead of randomly, lower the results. It is clear that due to the fact that performing undersampling some patterns are lost while in the case of oversampling they all remain, \textit{undersampling results} are better. Then, in this case the algorithm with best performance is \textit{J48}, though \textit{Random Forest} follows its results very closely in random datasets processing, and \textit{REP Tree}, which is better than the rest when working with sequential data. Nevertheless, generally speaking and given the aforementioned reasons, performing data balancing methods yields worse results.
 
-Furthermore, we have found that for the data sets taken consecutively, the methods always classify worse the DENY labels, as they label them as ALLOW patterns. This is worth further study because it is the worst situation. It would be preferable a false positive in a DENY pattern, rather than a false negative and to permit a request that is forbidden in the ISP.
+Furthermore, we have found that for the data sets taken consecutively, the methods always classify worse the DENY labels, as they label them as ALLOW patterns. This is worth further study because it is the worst situation. It would be preferable to have a false positive in a DENY pattern, rather than a false negative and permit a request that is forbidden in the ISP.
             % podríais citar los trabajos de bancarrotas que hemos
             % hecho, donde se optimizan por separado los dos tipos de
             % errores - JJ 
@@ -629,7 +629,7 @@ To this aim, we have started from a big dataset (100000 patterns) about employee
 
 The results show that classification accuracies are between 95\% and 97\%, even when using the unbalanced datasets. However, they have been diminished because of the possible loss of data that comes from performing an undersampling (removing patterns) method; or taking the training and the data sets in a sequential way from the main log file, due to the fact that certain URL requests can be made only at a certain time.
 
-This way, we can conclude that the approach has been successful and it would be a useful tool in an enterprise.
+In this way, we can conclude that the approach has been successful and it would be a useful tool in an enterprise.
 
 % ***
 % RESUMEN en un párrafo de lo que se ha obtenido:
@@ -650,9 +650,7 @@ Finally, we also point to extract additional information from the URL string, th
 %ACKNOWLEDGMENTS are optional
 \section*{\uppercase{Acknowledgements}}
 
-Omitted for double-blind review process.
-
-\noindent %This paper has been funded in part by European and National projects FP7-318508 (MUSES) and TIN2011-28627-C04-02 (ANYSELF) respectively, project P08-TIC-03903 (EV\-ORQ) awarded by the Andalusian Regional Government, and project 83 (CANUBE) awarded by the CEI-BioTIC UGR.
+\noindent This paper has been funded in part by European project MUSES (FP7-318508), along with Spanish National project TIN2011-28627-C04-02 (ANYSELF), project P08-TIC-03903 (EVORQ) awarded by the Andalusian Regional Government, and projects 83 (CANUBE), and GENIL PYR-2014-17, both awarded by the CEI-BioTIC UGR.
 
 %If any, should be placed before the references section
 %without numbering. To do so please use the following command:
