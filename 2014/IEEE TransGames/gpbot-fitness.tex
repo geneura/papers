@@ -527,8 +527,8 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Progr
 \section{Experiments and Results}
 \label{sec:experiments}
 
-Several experiments have been conducted in order to study different issues of the proposed approaches, but having in mind that the main objective is the generation and improvements of bots using a co-evolutionary algorithm. The set of parameters considered in the GP algorithm is shown in Table \ref{tab:parameters}.
-These parameters have been  previously used in \cite{GarciaGP14}, obtaining competitive bots. To do a fair comparison the termination criteria has been also set to 4000 iterations (or matches). 30 executions of the Co-GA have been performed in order to obtain accurate statistics.    % completo la frase  [pedro]
+Several experiments have been conducted in order to study different issues of the proposed approaches, but having in mind that the main objective is the generation and improvements of bots using a co-evolutionary algorithm. The set of parameters considered in the Co-GP algorithm is shown in Table \ref{tab:parameters}.
+These parameters have been  previously used in \cite{GarciaGP14}, obtaining competitive bots. To do a fair comparison with the results obtained in that work the termination criteria has been also set to 8000 battles (therefore, 4000 generations). 30 executions of the Co-GA have been performed in order to obtain accurate statistics.    % completo la frase  [pedro]
 
 %For each one of the presented approaches (replacement and selection policies), 
 
@@ -559,8 +559,8 @@ Maps used in each evaluation & 1 random chosen among maps \#76 \#69 \#7 \#11 \#2
 \subsection{Analysis of the executions}   % ¿cambiar  executions  por  runs ?   % [pedro]
 \label{subsec:analysisexecutions}
 
-It is difficult to show the convergence of the populations using a implicit fitness evaluation, as the evaluated individuals (and therefore, the fitness of the average population) do not count with a numeric value to be plotted in time. In this paper, we propose a scoring method that takes into account the number of victories, turns to win and turns to be defeated % needed to be defeated? por qué? - Jj
- agains a previously known bot. After the execution of our algorithm all the generated individuals during all the runs have been confronted versus GPbot and scored using the next formula:
+It is difficult to show the convergence of the populations using a implicit fitness evaluation, as the evaluated individuals (and therefore, the fitness of the average population) do not count with a numeric value to be plotted in time. In this paper, we propose a scoring method that takes into account the number of victories, turns to win and turns to be defeated % needed to be defeated? por qué? - Jj FERGU: explicado debajo
+ against a previously known bot. After the execution of our algorithm all the generated individuals during all the runs have been confronted versus GPbot \cite{GarciaGP14} and scored using the next formula:
 \begin{equation}
 Score_{i}=\alpha+\beta+\gamma
 \end{equation}
@@ -588,60 +588,52 @@ t_{defeated} \in\left[0,N\times t_{MAX}\right]
 \end{equation}
 
 The terms used are: the number of battles ($N$) to test, the number of victories of the individual against GPbot ($v$), the total number of turns used to win GPbot ($t_{win}$), the total number of turns when the individual has been defeated by GPbot ($t_{defeated}$) and the maximum number of turns a battle lasts ($t_{MAX}$). This score tries to favor the victories against the turns to win and turns to be defeated, giving different ratios to each section. Therefore $\alpha$ has the highest ratio. The term $\beta$ add extra score taking into account the number of turns when the individual wins (lower numbers to win implies better bots), following a exponential curve.
-Finally, the $\gamma$ term adds score from the turns to be beated (higher number is better, as it is difficult to be beaten). The 1 in all denominators is used to avoid divide by 0.
+Finally, the $\gamma$ term adds score from the turns to be beaten (higher number is better, as it is difficult to be beaten). The 1 in all denominators is used to avoid divide by 0.
 
 Each individual has been tested 3 times in 10 different maps (the 5 used during evolution and other new 5 ones from the Google set), therefore $N=15$, and a the limit of turns is the default of the competition ($t_{MAX}=1000$). As previously said, this score has the same shortcomings that we are trying to avoid in this paper: it requires parametrization and an existent opponent. However, we will use this score as a way to measure the performance of our fitness-less approach.
 
-Figure \ref{figura:Score_VS_GPBot_AllMaps} shows the boxplots of the score of the current population (of all 30 original runs) in different stages of the evolution. As can be seen, this score is being increased during the evolution, therefore there exist some kind of improvement during the execution of the GP algorithm. Figure \ref{figura:Victories_VS_GPBot_AllMaps} shows the perecentage of individuals that wins certain number of times against GPBot in the initial and the final populations. As can be seen there exist differences from the initial
+Figure \ref{figura:Score_VS_GPBot_AllMaps} shows the boxplots of the score of the current population (of all 30 original runs) in different stages of the evolution. As can be seen, this score is being increased during the evolution, therefore there exist some kind of improvement during the execution of the Co-GP algorithm. 
 
-Moreover, other values, such as the age, tree depth and number of nodes can help to understand how the evolution is being performed. Figure \ref{} shows the average age of the agents during the run. As can be seen, the maximum age is....
 
+
+\begin{figure}[htb]
+\tiny
+\begin{center}
+\includegraphics[clip=true,width=9cm]{./imags/score_vs_gpbot.eps}
+\end{center}
+%Es muy pequeño. ¿No se puede poner a dos columnas? - JJ FERGU: agrandado
+\caption{Score confronting all SurvivalBots obtained during all the runs versus GPbot.}
+%¿Qué diablos es "not training" Será "not included in training" - ¿Qué
+%diablos es score vs. gpbot? ¿La puntuación se enfrenta con GPBOT?
+%Será score SurvivalBot vs. gpbot, ¿no? - JJ FERGU: sí, es que era un copypaste de mi mail. Arreglado caption, tamaño y quitado título
+\label{figura:Score_VS_GPBot}
+\end{figure}
+
+
+
+
+
+%\begin{figure}[htb]
+%\tiny
+%\begin{center}
+%  \epsfig{file=./imags/score_vs_gpbot_all_maps,width=6cm}
+%\end{center}
+%\caption{Score vs GPBot (all maps). Casi igual que las anteriores pero en boxplots SIN outliers (por eso la del best individual parece que el máximo está en 5, con lo cual no debería estar en 23 en la que son líneas). Estas dos figuras puedes quitarlas si quieres.}
+%\label{figura:Score_VS_GPBot_AllMaps}
+%\end{figure}
+
+Figure \ref{figura:Avg_Best_Score} shows the average score of all individuals, and the average score of all best individuals, obtained during the evolution of the fitness-less Co-GA.  This figure shows how there exist an increasing performance in the best individuals during the runs and...
 
 \begin{figure}[htb]
 \tiny
 \begin{center}
   \epsfig{file=./imags/average_best_individuals_score,width=6cm}
 \end{center}
-\caption{Average score of the best individuals. De todas las ejecuciones, la media de los mejores individuos de todas las ejecuciones durante el tiempo usando el score de antares}
+\caption{Average score of the best individuals and all the population from all executions of our fitness-less Co-GA, versus GPbot.}
 \label{figura:Avg_Best_Score}
 \end{figure}
 
-\begin{figure}[htb]
-\tiny
-\begin{center}
-  \epsfig{file=./imags/average_population_score,width=6cm}
-\end{center}
-\caption{Average score of the whole population. De todas las ejecuciones, la media de todas las poblaciones durante el tiempo usando el score de antares}
-\label{figura:Avg_Population_Score}
-\end{figure}
-
-
-\begin{figure}[htb]
-\tiny
-\begin{center}
-  \epsfig{file=./imags/score_vs_gpbot,width=6cm}
-\end{center}
-%Es muy pequeño. ¿No se puede poner a dos columnas? - JJ 
-\caption{Score vs GPBot. Casi igual que las anteriores pero en
-  boxplots SIN outliers (por eso la del best individual parece que el
-  máximo está en 5, con lo cual no debería estar en 23 en la que son
-  líneas). Estas dos figuras puedes quitarlas si quieres.}
-%¿Qué diablos es "not training" Será "not included in training" - ¿Qué
-%diablos es score vs. gpbot? ¿La puntuación se enfrenta con GPBOT?
-%Será score SurvivalBot vs. gpbot, ¿no? - JJ
-\label{figura:Score_VS_GPBot}
-\end{figure}
-
-
-\begin{figure}[htb]
-\tiny
-\begin{center}
-  \epsfig{file=./imags/score_vs_gpbot_all_maps,width=6cm}
-\end{center}
-\caption{Score vs GPBot (all maps). Casi igual que las anteriores pero en boxplots SIN outliers (por eso la del best individual parece que el máximo está en 5, con lo cual no debería estar en 23 en la que son líneas). Estas dos figuras puedes quitarlas si quieres.}
-\label{figura:Score_VS_GPBot_AllMaps}
-\end{figure}
-
+Figure \ref{figura:Victories_VS_GPBot_AllMaps} shows the percentage of individuals (normalized  from 0 to 1) that wins certain number of times against GPBot in the initial and the final populations. As can be seen there exist differences in the number of victories
 
 \begin{figure}[htb]
 \tiny
@@ -659,6 +651,17 @@ Moreover, other values, such as the age, tree depth and number of nodes can help
 % son muchas - JJ
 \label{figura:Victories_VS_GPBot_AllMaps}
 \end{figure}
+
+
+Moreover, other values, such as the age, tree depth and number of nodes can help to understand how the evolution is being performed. Figure \ref{} shows the average age of the agents during the run. As can be seen, the maximum age is....
+
+
+
+
+
+
+
+
 
 
 % --------------------------------------------------------------
