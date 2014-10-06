@@ -592,7 +592,7 @@ Finally, the $\gamma$ term adds score from the turns to be beaten (higher number
 
 Each individual has been tested 3 times in 10 different maps (the 5 used during evolution and other new 5 ones from the Google set), therefore $N=15$, and a the limit of turns is the default of the competition ($t_{MAX}=1000$). As previously said, this score has the same shortcomings that we are trying to avoid in this paper: it requires parametrization and an existent opponent. However, we will use this score as a way to measure the performance of our fitness-less approach.
 
-Figure \ref{figura:Score_VS_GPBot_AllMaps} shows the boxplots of the score of the current population (of all 30 original runs) in different stages of the evolution. As can be seen, this score is being increased during the evolution, therefore there exist some kind of improvement during the execution of the Co-GP algorithm. 
+Figure \ref{figura:Score_VS_GPBot} shows the boxplots of the score of the current population (of all 30 original runs) in different stages of the evolution in different maps (the used ones with the evaluation and the new set). As can be seen, this score is being increased during the evolution, therefore there exist some kind of improvement during the execution of the Co-GP algorithm. 
 
 
 
@@ -622,30 +622,25 @@ Figure \ref{figura:Score_VS_GPBot_AllMaps} shows the boxplots of the score of th
 %\label{figura:Score_VS_GPBot_AllMaps}
 %\end{figure}
 
-Figure \ref{figura:Avg_Best_Score} shows the average score of all individuals, and the average score of all best individuals, obtained during the evolution of the fitness-less Co-GA.  This figure shows how there exist an increasing performance in the best individuals during the runs and...
+Figure \ref{figura:convergence} shows the average score of all individuals, and the average score of all best and worst individuals, obtained during the evolution of the fitness-less Co-GA.  This figure shows how there exist an increasing performance in the best individuals during the runs and...
 
 \begin{figure}[htb]
 \tiny
 \begin{center}
-  \epsfig{file=./imags/average_best_individuals_score,width=6cm}
+  \epsfig{file=./imags/convergence,width=9cm}
 \end{center}
-\caption{Average score of the best individuals and all the population from all executions of our fitness-less Co-GA, versus GPbot.}
-\label{figura:Avg_Best_Score}
+\caption{Average score of the best and worst individuals and average of the population from all executions of our fitness-less Co-GA, versus GPbot.}
+\label{figura:convergence}
 \end{figure}
 
-Figure \ref{figura:Victories_VS_GPBot_AllMaps} shows the percentage of individuals (normalized  from 0 to 1) that wins certain number of times against GPBot in the initial and the final populations. As can be seen there exist differences in the number of victories
+Figure \ref{figura:Victories_VS_GPBot_AllMaps} shows the percentage of individuals (normalized  from 0 to 1) that wins certain number of times (from 0 to 30) against GPBot in the initial and the final populations. As can be seen there exist differences in the number of victories...
 
 \begin{figure}[htb]
 \tiny
 \begin{center}
-  \epsfig{file=./imags/victories_vs_GPBot_allmaps,width=6cm}
+  \epsfig{file=./imags/victories_vs_GPBot_allmaps,width=9cm}
 \end{center}
-\caption{Victories vs GPBot (all maps). Muestra el \% de individuos
-  que ganan 0,1,2,3,4...30 veces a GPBot al principio, y debajo otra
-  al final. Puede verse que al principio hay muchos individuos que no
-  ganan ni una sola vez a GPbot. Al final se puede ver que la cosa
-  está más repartida (recordemos que los individuos se han generado
-  peleándose entre sí)}
+\caption{Victories of all the populations (initial and final) vs GPBot (all maps).}
 % Este histograma deberíais redudirlo a 10 bins o así. Hay reglas para
 % el número de bins según lo que quieras representar en un histograma,
 % son muchas - JJ
@@ -653,7 +648,7 @@ Figure \ref{figura:Victories_VS_GPBot_AllMaps} shows the percentage of individua
 \end{figure}
 
 
-Moreover, other values, such as the age, tree depth and number of nodes can help to understand how the evolution is being performed. Figure \ref{} shows the average age of the agents during the run. As can be seen, the maximum age is....
+Moreover, other values, such as the age, tree depth and number of nodes can help to understand how the evolution is being performed. Figure \ref{} shows the average age of the agents during the run. As can be seen, the maximum age is TERMINAR
 
 
 
@@ -668,7 +663,7 @@ Moreover, other values, such as the age, tree depth and number of nodes can help
 
 \subsection{Analysis of the generated bots}
 \label{subsec:analysisbots}
-This subsection show the results of the obtained bots, analysing the distribution of actions and decisions at the beginning and at the end of the evolution. Figure \ref{tarta_actions} shows the final distribution of the different types of actions (attack, reinforce and do nothing). As it can be seen, the {\em do nothing} action has been increased at the end of the evolution, as it seems logical that not all planets should attack in every turn (they may be waiting to have a large fleet to send). Of course, and because a player wins conquering the enemy planets, it is logical that the attack action is more effective than reinforce.
+This subsection shows the results of the obtained SurvivalBots, analysing the distribution of actions and decisions at the beginning and at the end of the evolution. Figure \ref{figura:tarta_actions} shows the final distribution of the different types of actions (attack, reinforce and do nothing). As it can be seen, the {\em do nothing} action has been increased at the end of the evolution, as it seems logical that not all planets should attack in every turn (they may be waiting to have a large fleet to send). Of course, and because a player wins conquering the enemy planets, it is logical that the attack action is more effective than reinforce.
 
 \begin{figure}[htb]
 \tiny
@@ -729,7 +724,7 @@ Figure \ref{tarta_reinforcing} shows the target when a planet is reinforcing the
 \label{figura:tarta_reinforcing}
 \end{figure}
 
-Figure \ref{tarta_decissions} shows the final proportion of decissions. It is clear that... 
+Figure \ref{figura:tarta_decissions} shows the final proportion of decisions. Surprisingly the most important variable to take into account is the ratio between flying and landed ships. This can be explained because it makes sense to find an equilibrium between the two states of ships, as all ships flying or waiting may be counterproductive. The {\em random} decision also has importance, as it is the one who gives weights to the branches of the tree.
 \begin{figure}[htb]
 \tiny
 \begin{center}
@@ -741,9 +736,48 @@ Figure \ref{tarta_decissions} shows the final proportion of decissions. It is cl
 
 
 \end{center}
-\caption{Percentage of decissions .}
+\caption{Percentage of decisions.}
 \label{figura:tarta_decissions}
 \end{figure}
+
+\subsection{Analysis of the generated bots vs. others}
+\label{subsec:Analysisothers}
+
+All the SurvivalBots obtained at the end of the evaluations have been tested to other bots available in the literature. First, the {\em best} individual of each run has been obtained confronting all versus all members of the last generation. The individuals who has won the most is considered the best of the run. This method has been chosen to avoid the usage of the score function (and therefore, the shortcomings we are trying to avoid). Thus, we have confronted the 30 bots obtained in each configuration again with several bots available in the literature, in the 100 maps provided by Google. This experiment has been used to validate if the obtained SurvivalBots can be competitive in terms of quality in maps not used for evaluation, and against bots not used for evaluation (as other works). Table \ref{tab:literaturebots} shows the bots used. Note that only shows the victories, not the draws.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+{\em Bot Name} & {\& Reference} & {\em Number of simulations} & {\em Turns} \\\hline \hline
+SurvivaBot & (this) & 8000 & 1000 \\ \hline
+GeneBot & \cite{Genebot_JCST} & 32000 & 1000 \\ \hline
+ExpGeneBot & \cite{Genebot_CIG2012} & 32000 & 1000 \\ \hline
+NacoBot & \cite{NogueiraCoevolutionary14} & 180000 & 500 \\ \hline
+GPBot & \cite{GarciaGP14} & 8000 & 1000 \\ \hline
+
+
+\end{tabular}
+\caption{Bots available in the literature used for measuring the quality of the SurvivalBots.}     % [pedro]
+\label{tab:literaturebots}
+\end{center}
+\end{table}
+
+
+
+Figure \ref{figure:boxplot_mejores_contra_clasicos} shows the boxplots 
+
+\begin{figure}[htb]
+\tiny
+\begin{center}
+    \includegraphics[width=9cm]{./imags/boxplot_mejores_contra_clasicos.eps}
+   
+\end{center}
+\caption{Boxplots confronting best SurvivalBots against existent bots in the literature.}
+\label{figura:tarta_decissions}
+\end{figure}
+
+
 
 
 
@@ -758,7 +792,7 @@ Figure \ref{tarta_decissions} shows the final proportion of decissions. It is cl
 
 This paper presents an implementation of a quite simple approach: to omit the fitness-based selection mechanism in an EA, simulating the evolution in a more natural way: performing real battles of the individuals. This has been applied over the improvement of the behavioural parameters and rules of the bot's AI in the RTS game Planet Wars. This approach has two main benefits: it leaves out existent bots for the evaluation, and the parametrization of the fitness function.
 
-The tournament has been modelled as a battle in the game 
+The classic tournament selection mechanism has been modelled as a battle in the game (called joust) to ...
 
 % en las conclusiones hay que generalizar y el tema es el uso de
 % dinámicas de juego en metaheurísticas y cómo se podría
