@@ -35,29 +35,29 @@
 % Acronimos GP y GA
 
 %DUDAS PARA ANTARES
-% En cada evaluación, cuantas batallas hay?
-% Qué mapas se usan en cada evaluación?
+% En cada evaluaciï¿½n, cuantas batallas hay?
+% Quï¿½ mapas se usan en cada evaluaciï¿½n?
 
 % paper title: Must keep \ \\ \LARGE\bf in it to leave enough margin.
 \title{\ \\ \LARGE\bf Struggling to Survive: Evolving RTS Bots via
   joust selection}
 
-%Usar palabras negativas como "without" en títulos no me acaba de
-%gustar, porque no dice qué hace, sino qué no se hace. "using real
-%tournaments" podía ser una alternativa. Y mejor si los llamárais
+%Usar palabras negativas como "without" en tï¿½tulos no me acaba de
+%gustar, porque no dice quï¿½ hace, sino quï¿½ no se hace. "using real
+%tournaments" podï¿½a ser una alternativa. Y mejor si los llamï¿½rais
 %"joust" o justas, "using joust tournaments" y llamar al sistema
-%"joust evaluation", por ejemplo. 
+%"joust evaluation", por ejemplo.
 
 % Antonio - Aclararnos bien con Explicit o Implicit. :D
 
 % Tampoco me gusta "Fighting to survive": "Fight for life" o
-% "Struggling to survive" está mejor dicho - JJ FERGU: Struggling,
+% "Struggling to survive" estï¿½ mejor dicho - JJ FERGU: Struggling,
 % pues, que lo he visto en pelis
 
-% ¡que no me gusta el without, coñe! Que lo quitéis y pongáis una
+% ï¿½que no me gusta el without, coï¿½e! Que lo quitï¿½is y pongï¿½is una
 % frase positiva, no una negativa. He puesto joust selection, hala - JJ
 
-\author{A.J. Fernández-Ares, P. García-Sánchez, A.M. Mora, P. A. Castillo and J.J. Merelo \thanks{Department of Computer Architecture and Computer Technology, University of Granada, Spain, {\tt \{antares,pablogarcia\}@ugr.es, \{amorag,pedro,jmerelo\}@geneura.ugr.es}}}
+\author{A.J. Fernï¿½ndez-Ares, P. Garcï¿½a-Sï¿½nchez, A.M. Mora, P. A. Castillo and J.J. Merelo \thanks{Department of Computer Architecture and Computer Technology, University of Granada, Spain, {\tt \{antares,pablogarcia\}@ugr.es, \{amorag,pedro,jmerelo\}@geneura.ugr.es}}}
 % avoiding spaces at the end of the author lines is not a problem with
 % conference papers because we don't use \thanks or \IEEEmembership
 % use only for invited papers
@@ -69,10 +69,10 @@
 \begin{abstract}
 This paper proposes an evolutionary algorithm for evolving game bots
 that eschews an explicit fitness function for an actual match between
-individuals, which we will call {\em joust}, % podía quedar hasta bien
+individuals, which we will call {\em joust}, % podï¿½a quedar hasta bien
                                 % - JJ
 implemented as a selection mechanism. Instead of measuring
-fitness by making the bots 
+fitness by making the bots
 perform certain tasks or fight against baseline bots, they fight with
 each other and  the winner will  survive, passing  to the next
 generation. Explicit evaluation is thus omitted and substituted by
@@ -88,16 +88,16 @@ they are specialized bots. In addition, avoiding the evaluation step
 ideally will reduce the algorithm time consumption.
 % Todas estas cosas tienes que probarlas.
 %Different approaches are proposed and compared, namely %steady-state and generational implementations, and a pool-based approach in which a combat arena with potential individuals is considered. Each of them applies 1 vs
-%1 bots combats. 
+%1 bots combats.
 *** RESULTS show that...***
 
 %They implement different exploration versus
 %exploitation tradeoffs in order to decide the best balance between
-%these factors.  
-% ¿Por qué consideras todas estas cosas? ¿Por qué es
-% importante la exploración frente a la explotación en
+%these factors.
+% ï¿½Por quï¿½ consideras todas estas cosas? ï¿½Por quï¿½ es
+% importante la exploraciï¿½n frente a la explotaciï¿½n en
 % este tipo de trabajos?
-% Antonio - porque pienso que es importante en todos los algoritmos de optimización decidir el justo equilibrio entre exploración y explotación. Pero no queda muy adecuado aquí, asíq ue lo quito.
+% Antonio - porque pienso que es importante en todos los algoritmos de optimizaciï¿½n decidir el justo equilibrio entre exploraciï¿½n y explotaciï¿½n. Pero no queda muy adecuado aquï¿½, asï¿½q ue lo quito.
 \end{abstract}
 
 
@@ -109,7 +109,7 @@ ideally will reduce the algorithm time consumption.
 %
 Evolutionary Algorithms (EAs) have been widely applied in a number of problems, including videogames area \cite{Ponsen_EvLearn_RTS,co-evol-rts2006,Su-EAs_StrategySel09,cooperativebots_CIG2010,Cook_Platforming2012}. This metaheuristic performs very well in most of cases, but the presence
  of the so-called $noise$ in the evaluation process can make them not
- working properly \cite{Genebot_JCST}. 
+ working properly \cite{Genebot_JCST}.
 
 % citas sobre el tema, incluyendo los tuyso
                     % propios - JJ
@@ -118,12 +118,12 @@ pseudo-stochasticity present in some factors, such as the game rules
 or status, the opponents' behaviour or the random initial conditions,
 which obviously have an influence on the score obtained by the agents,
 which is usually the base (sometimes the only one) for giving an agent (or $bot$) a
-fitness in an EA. 
+fitness in an EA.
 This problem also arises when the opponents follow non-deterministic
 Artificial Intelligence (AI) behavioural models, i.e. when they are
 Non-Playing Characters (NPC) or $bots$, since their behaviour
 considers stochastic factors which can influence the result of the
-game, and can vary from time to time. % citas para todo. FERGU TODO 
+game, and can vary from time to time. % citas para todo. FERGU TODO
 
 Planet Wars, the game used in the Google AI Challenge
 2010\footnote{http://planetwars.aichallenge.org/} is not an exception
@@ -133,44 +133,44 @@ this problem in the fitness calculation phase \cite{Genebot_JCST}. Usually sever
 individual (maybe in different maps or against different opponents)
 and then its fitness value is computed as an average or sum of all of the obtained results. This way, a more accurate (less noisy) measure of the individual's quality is obtained, but it is not still a completely reliable solution because it depends on some values (number of victories or number of created ships, for example) or on the rival's performance, which could be a previously created bot.
 
-% decid por qué no es perfecta FERGU: depende de parámetros y del oponente
-% Antonio - he cambiado lo de 'perfect' por 'reliable', ya que no habrá solución perfecta, sino más o menos fiable/representativa
+% decid por quï¿½ no es perfecta FERGU: depende de parï¿½metros y del oponente
+% Antonio - he cambiado lo de 'perfect' por 'reliable', ya que no habrï¿½ soluciï¿½n perfecta, sino mï¿½s o menos fiable/representativa
 
 Even if we could obtain a statistically significant fitness
 evaluation, the way this fitness is obtained might include an additional
 bias due to opponent selection. This issue concerns the overfitting
 of the population with respect the selected rival/s, i.e. the
 individuals learn to play against it/them, and could behave poorly
-against another type of enemy \cite{Genebot_JCST,wilcoxon:ga}. 
+against another type of enemy \cite{Genebot_JCST,wilcoxon:ga}.
 
 % cita. Que se vea que no te lo has inventado. - JJ TODO
-% Antonio - Sí, mejor con una cita FERGU: añadido
+% Antonio - Sï¿½, mejor con una cita FERGU: aï¿½adido
 
-The present paper proposes a EA \cite{EAs_Back96} for improving bot's AI in Planet Wars by means of an implicit fitness evaluation, 
-% Antonio - sería 'implicit', ¿no?
-based in the \textit{survival of the individuals}. 
+The present paper proposes a EA \cite{EAs_Back96} for improving bot's AI in Planet Wars by means of an implicit fitness evaluation,
+% Antonio - serï¿½a 'implicit', ï¿½no?
+based in the \textit{survival of the individuals}.
 To this end the selection process is transformed into a \textit{tournament} (or \textit{joust}) in which just the winners will survive and become parents of the new offspring. This way, the fitness computation is omitted and thus, the influence of noise is reduced.  Moreover, it does not require the usual ad-hoc parameters, such as the number of battles or the score values.
 This model is closer to the \textit{real natural selection process} which happens in nature \cite{darwin1859}, where just the fittest individuals survive.
-% Antonio - no sé si explicar esto mejor. Buscar una cita???
+% Antonio - no sï¿½ si explicar esto mejor. Buscar una cita???
 
 A Genetic Programming (GP) \cite{GP_Koza92} approach has been implemented, due to the additional flexibility factor that this method offers with respect to a Genetic Algorithm (GA), i.e. GP is able to create new sets of behavioural rules meanwhile GA is devoted to optimise the parameters of previously designed rules. Moreover, this technique has yielded excellent results in previous works \cite{GarciaGP14,EsparciaGP2013}.
-% Antonio - Poner cita a los trabajos anteriores de GP en Planet Wars (nuestros o de otros) FERGU: están puestos más abajo
+% Antonio - Poner cita a los trabajos anteriores de GP en Planet Wars (nuestros o de otros) FERGU: estï¿½n puestos mï¿½s abajo
 
-% Antonio - Dejar esto para luego (para las conclusiones o para los comentarios de los resulatdos) 
+% Antonio - Dejar esto para luego (para las conclusiones o para los comentarios de los resulatdos)
 % It is not completely avoided due to the pseudo-stochasticity of the bots' behaviours.
- 
-Since the algorithm runs over Planet Wars, the tournament is modelled as a set of battles in the game. However, in order to deal with the still present noise (pseudo-stochasticity of the bots' behaviours) every battle consists in a set of matches. 
-%TODO Borrar esto si al final se hace contra uno o varios (fergu)
-Thus, the survivor of every battle (the one who wins more matches) 
-passes to the next generation and also become a parent for the next
-offspring.  
 
-% Una cosa es que no hables en general de la selección
-% natural y todo eso y otro que no la menciones. 
+Since the algorithm runs over Planet Wars, the tournament is modelled as a set of battles in the game. However, in order to deal with the still present noise (pseudo-stochasticity of the bots' behaviours) every battle consists in a set of matches.
+%TODO Borrar esto si al final se hace contra uno o varios (fergu)
+Thus, the survivor of every battle (the one who wins more matches)
+passes to the next generation and also become a parent for the next
+offspring.
+
+% Una cosa es que no hables en general de la selecciï¿½n
+% natural y todo eso y otro que no la menciones.
 % Antonio - ya lo he puesto yo antes. ;)
 
 In addition,  considering all the individuals in the population as opponents, not a specific one, makes the training (evolution) more
-general, and thus, the obtained individuals would, potentially, be able to face a wider amount of possible rivals.  
+general, and thus, the obtained individuals would, potentially, be able to face a wider amount of possible rivals.
 %Vale, a buenas horas...
 
 %Two different Genetic Algorithms (GAs) have been implemented and
@@ -178,12 +178,12 @@ general, and thus, the obtained individuals would, potentially, be able to face 
 %and generational models \cite{GAs_Goldberg89}. 1 vs 1 and 1 vs 3
 %battles have been considered, getting four approaches with different
 %levels of diversity, i.e. different exploitation/exploration
-%factors. % Pero ¿por qué?
+%factors. % Pero ï¿½por quï¿½?
 %TODO descomentar si se usan y justificar
 
-% *** ¿¿¿Decir que es un tipo de co-evolución??? ¿No lo son todos los algoritmos que hemos hecho y no lo hemos dicho? ***
+% *** ï¿½ï¿½ï¿½Decir que es un tipo de co-evoluciï¿½n??? ï¿½No lo son todos los algoritmos que hemos hecho y no lo hemos dicho? ***
 
-% *** Hablar de los experimentos y de las comparaciones que se harán ***
+% *** Hablar de los experimentos y de las comparaciones que se harï¿½n ***
 
 %*****Moreover, the avoidance of the fitness computation reduces the running time in a half
 
@@ -200,59 +200,59 @@ Summarizing, this paper tries to solve the next research questions:
 All these questions have been answered in the experiments, in which the evolution progress (during the run) is analysed, along with the associated noise to the best obtained bots. Then, the these bots are tested against some of the state-of-the-art to check their competitiveness.
 
 The paper is structured as follows. The background section reviews related work regarding the scope (videogames) and the implementation (EAs with no fitness computation or different selection mechanisms). It also describes the problem enclosed in the Planet Wars game.
-Section \ref{sec:survival_bots} presents the proposed method, termed {Survival Bot}, and its different implementations. 
+Section \ref{sec:survival_bots} presents the proposed method, termed {Survival Bot}, and its different implementations.
 The experiments analysing the evolution, noise and obtained bots are described and discussed in Section \ref{sec:experiments}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
 
-% Antonio - Arreglar esto con la distribución final. Candidato a ser borrado por falta de espacio. :D
+% Antonio - Arreglar esto con la distribuciï¿½n final. Candidato a ser borrado por falta de espacio. :D
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Background}
 
-% Tenéis que introducir esto de alguna forma. ¿Cuál es el contexto?
-% ¿No ponéis nada de evaluación implícita del fitness? ¿No sería el
-% contexto más bien temas de ruido en la evaluación? Se puede hacer
+% Tenï¿½is que introducir esto de alguna forma. ï¿½Cuï¿½l es el contexto?
+% ï¿½No ponï¿½is nada de evaluaciï¿½n implï¿½cita del fitness? ï¿½No serï¿½a el
+% contexto mï¿½s bien temas de ruido en la evaluaciï¿½n? Se puede hacer
 % una intro general a CI en RTS, pero es un contexto demasiado amplio
-% y ese no es el tema del trabajo - JJ  
+% y ese no es el tema del trabajo - JJ
 \subsection{Computational intelligence in RTS games}
 \label{subsec:soa}
-% ¿A santo de qué esto?
+% ï¿½A santo de quï¿½ esto?
 
-% No os olvidéis de citar lo del Wilcoxon, que está publicado en
-% figshare y está en geneura.bib - JJ
+% No os olvidï¿½is de citar lo del Wilcoxon, que estï¿½ publicado en
+% figshare y estï¿½ en geneura.bib - JJ
 Evolutionary Computation (EC) has been applied in a wide variety of issues inside the videogames scope. One of the most profiting areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011}.
-% Antonio - poner citas de otra gente que evolucione parámetros de bots
+% Antonio - poner citas de otra gente que evolucione parï¿½metros de bots
 %
 % or content generation \cite{LaraMaps14}, among others.
-% Antonio - quito esto que no viene a cuento aquí. ;)
+% Antonio - quito esto que no viene a cuento aquï¿½. ;)
 %
-This is normally a step in the generation of an AI engine to control the Non-Player Characters (NPCs) that play the game. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how this bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms. 
+This is normally a step in the generation of an AI engine to control the Non-Player Characters (NPCs) that play the game. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how this bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms.
 However the use of GP \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to define the set of rules, as these rules, along with their numerical parameters, are created and evolved automatically during the run.  Thus, it is a more flexible approach for defining the behavioural engine of the bots, which can find rules that a human expert cannot imagine at all. For this reason GP has been used in this paper to generate the engines.
 
 %, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using GAs.
-% Antonio - esto no sé si es verdad FERGU: sí es verdad, pero al final no sale tan bueno este bot contra ellos...
+% Antonio - esto no sï¿½ si es verdad FERGU: sï¿½ es verdad, pero al final no sale tan bueno este bot contra ellos...
 
-One of the shortcomings of previous works is that they depend on a baseline bot, taken as rival during the evolution, or an ad-hoc fitness function that involves some kind of parameterization (for example, number of matches or scoring the actions). To avoid this, co-Evolutionary Algorithms (CEAs) 
+One of the shortcomings of previous works is that they depend on a baseline bot, taken as rival during the evolution, or an ad-hoc fitness function that involves some kind of parameterization (for example, number of matches or scoring the actions). To avoid this, co-Evolutionary Algorithms (CEAs)
 % Antonio - Cita??? FERGU: puesta
-% Antonio - no, la cita que decía de los co-evolutivos. Ponla porfa XD
-% Antonio - [TODO] De hecho habría que darle mucho más bombo a los co-evolutivos en el artículo. Hablar un poco de ellos desde la intro, ya que esto es 'a shape of Co-evolutionary approach'. No lo pongo en la para no descuajaringar nada, pero estaría bien. Máxime cuando en los experimentos sí que te refieres al método como Co-GA. OJO también con eso. ;)
-have been previously used in this scope, as it is a natural choice to use in problems where the behaviour of one agent is related to the behaviour of others \cite{Coevolving13Samothrakis}. 
+% Antonio - no, la cita que decï¿½a de los co-evolutivos. Ponla porfa XD
+% Antonio - [TODO] De hecho habrï¿½a que darle mucho mï¿½s bombo a los co-evolutivos en el artï¿½culo. Hablar un poco de ellos desde la intro, ya que esto es 'a shape of Co-evolutionary approach'. No lo pongo en la para no descuajaringar nada, pero estarï¿½a bien. Mï¿½xime cuando en los experimentos sï¿½ que te refieres al mï¿½todo como Co-GA. OJO tambiï¿½n con eso. ;)
+have been previously used in this scope, as it is a natural choice to use in problems where the behaviour of one agent is related to the behaviour of others \cite{Coevolving13Samothrakis}.
 
 The co-evolutionary scheme was initially used in puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
 The first work proposed a very simple hill-climbing algorithm to evolve a population of neural networks, playing among them as rivals, in a competitive co-evolutionary approach. The latter paper presented a co-evolutionary learning approach which performed well once the EA was correctly tuned, moreover, this method yields better players to solve small Go boards since every individual is evaluated against a diverse population of rivals.
 In the same line, there are some other works in the card games area, such as \cite{Thompson_Poker2008}, aimed to create Poker agents, considering a co-evolution process in which the players are part of the learning process. This meant a difficult process to get robust strategies, due to the variation in opponents, but the results shown to fit with some recommended strategies according to experts.
-The aim of the present work is to conduct a study implementing a similar co-evolutionary approach, being competitive in the selection of individuals as parents for the next offspring, 
+The aim of the present work is to conduct a study implementing a similar co-evolutionary approach, being competitive in the selection of individuals as parents for the next offspring,
 % Antonio - no hay fitness calculation!!! Cuidao con esto. ;D
 but cooperative since all the opponents are also part of the same learning process (same population).
-% Antonio - pon cita. Mira el artículo de antares en el EVO* en el que metí un párrafo chulo de Co-evolución con citas y demás. Pon lo que veas en la intro o aquí, pero hay que poner más de este tema. ;)
+% Antonio - pon cita. Mira el artï¿½culo de antares en el EVO* en el que metï¿½ un pï¿½rrafo chulo de Co-evoluciï¿½n con citas y demï¿½s. Pon lo que veas en la intro o aquï¿½, pero hay que poner mï¿½s de este tema. ;)
 
 In recent years, this type of EAs has been also applied to videogames, enclosed in the Computational Intelligence (CI) branch of AI.
-For instance Togelius et al. \cite{Togelius_Cars2007} studied the co-evolution effects of some populations in car racing controllers, comparing the performance of a single population against various, implementing both generational and a steady-state approaches. Avery and Michalewicz introduced in \cite{Avery_Human2008} a co-evolutionary algorithm (for the game TEMPO) which used humans as rivals for the individuals in the evolutionary process. 
+For instance Togelius et al. \cite{Togelius_Cars2007} studied the co-evolution effects of some populations in car racing controllers, comparing the performance of a single population against various, implementing both generational and a steady-state approaches. Avery and Michalewicz introduced in \cite{Avery_Human2008} a co-evolutionary algorithm (for the game TEMPO) which used humans as rivals for the individuals in the evolutionary process.
 Cook et al. \cite{Cook_Platforming2012} presented a cooperative co-evolutionary approach for the automated design of levels in simple platform games. And recently Cardona et al. \cite{Cardona_MSPacman2013} studied the performance of a competitive algorithm for the simultaneous evolution of controllers to both Ms. PacMan and the Ghost Team which has to chase her.
 
-Co-evolution has also been used in the RTS scope. Livingstone \cite{Livinstone_RTS2005} compared several AI-modelling approaches for RTS games, and proposed a framework to create new models by means of co-evolutionary methods. He considered two levels of learning in a hierarchical AI model (inside an own-created RTS), evolving at the same time different partners in different strategic levels, so it was a cooperative approach. It is different to the one proposed here, since in the present work the co-evolution occurs at the same level for all the individuals. 
-The work by Smith et al. \cite{Smith_RTS_SpatialTactics2010} presents an analysis on how a co-evolutionary algorithm can be used for improving students' playing tactics in RTS games. Other authors proposed using co-evolution for evolving team tactics \cite{Avery_RTS_Team2010}. However, the problem is how tactics are constrained and parametrised and how the overall score is computed. 
+Co-evolution has also been used in the RTS scope. Livingstone \cite{Livinstone_RTS2005} compared several AI-modelling approaches for RTS games, and proposed a framework to create new models by means of co-evolutionary methods. He considered two levels of learning in a hierarchical AI model (inside an own-created RTS), evolving at the same time different partners in different strategic levels, so it was a cooperative approach. It is different to the one proposed here, since in the present work the co-evolution occurs at the same level for all the individuals.
+The work by Smith et al. \cite{Smith_RTS_SpatialTactics2010} presents an analysis on how a co-evolutionary algorithm can be used for improving students' playing tactics in RTS games. Other authors proposed using co-evolution for evolving team tactics \cite{Avery_RTS_Team2010}. However, the problem is how tactics are constrained and parametrised and how the overall score is computed.
 Nogueira et al. \cite{Nogueira_HoF2013} considered in a recent
 publication the use of a Hall of Fame as a set of rivals (in the
 evaluation function) inside a co-evolutionary algorithm to create
@@ -263,30 +263,30 @@ This tries to minimize the influence of a \textit{noisy fitness function} \cite{
 
 
 % Ya estamos con el este hizo este, este hizo el otro y el otor hizo
-% el otro. y regarding lo otro, pues lo demás. Tienes que contar la
-% historia del estado del arte (incluir también los papers de Carlos
-% Cotta) y llegar al punto de ahora en el que vas a avanzar. FERGU: le he metido el problema que tienen los trabajos anteriores, y cómo lo resolvemos nosotros arriba y al final. 
+% el otro. y regarding lo otro, pues lo demï¿½s. Tienes que contar la
+% historia del estado del arte (incluir tambiï¿½n los papers de Carlos
+% Cotta) y llegar al punto de ahora en el que vas a avanzar. FERGU: le he metido el problema que tienen los trabajos anteriores, y cï¿½mo lo resolvemos nosotros arriba y al final.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% PROBLEM DESCRIPTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 
-\subsection{Problem Description} % esto deberías integrarlo a la
-                              % introducción, para que tras la
-                              % introducción fuera el SoA, que es lo
-                              % clásico. FERGU: Movido a subsección Background, ya está después del SOA
+\subsection{Problem Description} % esto deberï¿½as integrarlo a la
+                              % introducciï¿½n, para que tras la
+                              % introducciï¿½n fuera el SoA, que es lo
+                              % clï¿½sico. FERGU: Movido a subsecciï¿½n Background, ya estï¿½ despuï¿½s del SOA
 \label{sec:problemDescription}
 
 The game used here as testbed, Planet Wars, is a simplified version of the game
-{\em Galcon}\footnote{http://www.galcon.com/}, 
+{\em Galcon}\footnote{http://www.galcon.com/},
 % Antonio - poner un enlace mejor que este que he encontrado. ;)FERGU: hombre, este es el oficial, no? xD
 which models turn-based space battles between two to four
-contenders. This game is interesting in research in the RTS scope because it models a minimal RTS game: only one type of resources (planets), one type of unit (spaceships) and only one type of attack. Therefore, it has been used previously in different fields of computational intelligence in games, such as competitive bot creation \cite{ziolko2012automatic,NogueiraCoevolutionary14} or map generation \cite{LaraMaps14,LaraCabrera2014aesthetic}. 
+contenders. This game is interesting in research in the RTS scope because it models a minimal RTS game: only one type of resources (planets), one type of unit (spaceships) and only one type of attack. Therefore, it has been used previously in different fields of computational intelligence in games, such as competitive bot creation \cite{ziolko2012automatic,NogueiraCoevolutionary14} or map generation \cite{LaraMaps14,LaraCabrera2014aesthetic}.
 
- % ¿No hay ningún
-                                % artículo científico? Hay un montón
+ % ï¿½No hay ningï¿½n
+                                % artï¿½culo cientï¿½fico? Hay un montï¿½n
                                 % de Keldon y Carlos Cotta sobre
-                                % generación de mapas - JJ FERGU: metidos.
+                                % generaciï¿½n de mapas - JJ FERGU: metidos.
 
 \begin{figure}[htb]
 \tiny
@@ -297,12 +297,12 @@ contenders. This game is interesting in research in the RTS scope because it mod
 \label{figura:PlanetWars1}
 \end{figure}
 
-A Planet Wars match takes place on a map (see Figure \ref{figura:PlanetWars1}) that contains several planets (neutral, enemies or owned), each one of them with a number assigned to it that represents the quantity of ships that the planet is currently hosting. 
+A Planet Wars match takes place on a map (see Figure \ref{figura:PlanetWars1}) that contains several planets (neutral, enemies or owned), each one of them with a number assigned to it that represents the quantity of ships that the planet is currently hosting.
 
-The aim of the game is to defeat all the ships in the opponent's planets. Although Planet Wars is a RTS game, this implementation includes the concept of {\em turn} (1 second slot to decide the actions), and each player has a maximum number of turns to accomplish the objective. At the end of the match, the winner is the player that remains alive, or that who owns more ships if more than one survives. 
+The aim of the game is to defeat all the ships in the opponent's planets. Although Planet Wars is a RTS game, this implementation includes the concept of {\em turn} (1 second slot to decide the actions), and each player has a maximum number of turns to accomplish the objective. At the end of the match, the winner is the player that remains alive, or that who owns more ships if more than one survives.
 
-The problem in this paper is to create a bot's AI in order to win the game, i.e. able to defeat every possible opponent in a 1 vs 1 match.% (four independent bots fighting in the same map).  
- The bot must react according to the state of the map in each simulated turn (input), returning a set of actions to perform in order to fight the enemy, conquering its resources, and, ultimately, wining the game. 
+The problem in this paper is to create a bot's AI in order to win the game, i.e. able to defeat every possible opponent in a 1 vs 1 match.% (four independent bots fighting in the same map).
+ The bot must react according to the state of the map in each simulated turn (input), returning a set of actions to perform in order to fight the enemy, conquering its resources, and, ultimately, wining the game.
 
 There are two strong constraints which determine the possible methods to apply to design a bot: a simulated turn takes just one second (that is, the maximum time to decide next action is one second), and the bot is not allowed to store any kind of information about its former actions, about the opponent's actions or about the state of the game (i.e., the game's map).
 
@@ -321,15 +321,15 @@ Thus, the aim in this paper is to study the generation and improvement of that s
 
 %***\\
 %Contar la idea general:
-%	- sustituir la evaluación y el fitness
-%	- selección en base a supervivencia (y quizá a antigüedad)
-%	- eliminación del ruido
-%	- pormenores: 
+%	- sustituir la evaluaciï¿½n y el fitness
+%	- selecciï¿½n en base a supervivencia (y quizï¿½ a antigï¿½edad)
+%	- eliminaciï¿½n del ruido
+%	- pormenores:
 %		   . 5 combates en 5 escenarios representativos
-%			. rival dentro de la misma población (auto-aprendizaje???)
+%			. rival dentro de la misma poblaciï¿½n (auto-aprendizaje???)
 %***\\
 
-%*** tipos de codificación, operadores ($BLX-\alpha$) ***
+%*** tipos de codificaciï¿½n, operadores ($BLX-\alpha$) ***
 
 %A shape of co-evolution. They compete but the whole population (offspring) is improved.
 
@@ -347,28 +347,28 @@ This section describes the algorithm proposed in this work to generate competent
 
 To generate the bot's behaviour the so-called {\em GPBot} algorithm (presented in \cite{GarciaGP14}) has been used as a reference. However, the proposed method follows a different philosophy, based in the survival of the individuals, highly inspired by the crude natural evolutionary process. To this end new selection and replacement mechanisms have been adopted in the SurvivalBot approach.
 
-In GPBot a Genetic Programming (GP) algorithm is used to evolve a set of rules which, in turn, models a Decision Tree. 
-% Antonio - Pedro pedía una cita de Decision Tree. Yo no la veo imprescindible, si la encontramos bien y si no, no hace falta.
-During the evolution, every individual in the population (a tree) must be evaluated. To do so, the tree is set as the behavioural engine of an agent, which is then placed in a map against a rival in a Planet Wars match. Depending on the obtained results, the agent (i.e. the individual) gets a fitness score, that will be considered in the evolutionary process as a measure of its value. 
- 
+In GPBot a Genetic Programming (GP) algorithm is used to evolve a set of rules which, in turn, models a Decision Tree.
+% Antonio - Pedro pedï¿½a una cita de Decision Tree. Yo no la veo imprescindible, si la encontramos bien y si no, no hace falta.
+During the evolution, every individual in the population (a tree) must be evaluated. To do so, the tree is set as the behavioural engine of an agent, which is then placed in a map against a rival in a Planet Wars match. Depending on the obtained results, the agent (i.e. the individual) gets a fitness score, that will be considered in the evolutionary process as a measure of its value.
+
 Thus, during the match the tree will be used (by the bot) in order to select the best strategy at every moment, i.e. for every planet a target will be selected along with the number of ships to send from one another.
 
 These Decision Trees are binary trees of expressions composed by
-two different \textit{types of nodes}: 
+two different \textit{types of nodes}:
 
 \begin{itemize}
 \item {\em Decision}: a logical expression composed by a variable, a less than operator ($<$), and a number between 0 and 1. It is the equivalent to a ``primitive'' in the field of GP.
 \item {\em Action}: a leave of the tree (therefore, a ``terminal''). Each decision is the name of a function, and a ratio between 0 and 1. The function indicates to which target planet the bot must send a percentage of the available amount of ships in the planet (from 0 to 1). As the bot applies the tree one time per planet it uses each time the information of the current planet.
 
-%when the bot is deciding what to do regarding a specific planet (when it is analysing the status of the planet and the possible actions). 
-% Antonio - El árbol lo ejecuta un bot para decidir qué hacer considerando un planeta, no lo ejecuta un planeta, ¿no?. Lo he intentado escribir así. FERGU: lo he reescrito yo también para que sea más entendible
-% Antonio - mira a ver si esto es verdad, Fergu. ¿se decide el porcentaje también aquí, ¿no? FERGU: reescrito todo
+%when the bot is deciding what to do regarding a specific planet (when it is analysing the status of the planet and the possible actions).
+% Antonio - El ï¿½rbol lo ejecuta un bot para decidir quï¿½ hacer considerando un planeta, no lo ejecuta un planeta, ï¿½no?. Lo he intentado escribir asï¿½. FERGU: lo he reescrito yo tambiï¿½n para que sea mï¿½s entendible
+% Antonio - mira a ver si esto es verdad, Fergu. ï¿½se decide el porcentaje tambiï¿½n aquï¿½, ï¿½no? FERGU: reescrito todo
 \end{itemize}
 
 The \textit{decisions} are based in the values of different \textit{variables} which are computed considering some parameters in the game. They were defined by a human expert in \cite{GarciaGP14}, and are shown next (with the acronyms that will be used in the rest of the paper):
 
 \begin{itemize}
-% Antonio - ¿estas interrogaciones se dejan?
+% Antonio - ï¿½estas interrogaciones se dejan?
 \item {\em myShipsEnemyRatio} [?mSE]: Ratio between the player's ships and enemy's ships.
 \item {\em myShipsLandedFlyingRatio} [?mSLF]: Ratio between the player's landed and flying ships.
 \item {\em myPlanetsEnemyRatio} [?mPE]: Ratio between the number of player's planets and the enemy's ones.
@@ -396,10 +396,10 @@ Finally, the possible \textit{actions} (and acronyms) are:
 
 \end{itemize}
 
-The bot's general behaviour is shown in Algorithm \ref{alg:turn}.   
-% esta frase queda como "descolgada"... no entiendo a qué viene nombrar el Alg. 1 aquí (al menos de esta forma).   [pedro]
+The bot's general behaviour is shown in Algorithm \ref{alg:turn}.
+% esta frase queda como "descolgada"... no entiendo a quï¿½ viene nombrar el Alg. 1 aquï¿½ (al menos de esta forma).   [pedro]
 % Antonio -  aclarado cambiando el orden
-In addition, an example of a possible decision tree is presented in Figure \ref{fig:javatree}. This example tree has five nodes, including two decisions and three actions, and a depth of three levels. 
+In addition, an example of a possible decision tree is presented in Figure \ref{fig:javatree}. This example tree has five nodes, including two decisions and three actions, and a depth of three levels.
 
 \begin{algorithm}[htb]
 \begin{algorithmic}
@@ -408,14 +408,14 @@ In addition, an example of a possible decision tree is presented in Figure \ref{
 \STATE tree $\leftarrow$ readTree()
 \WHILE{game not finished}
   \STATE {\em /* starts the turn */}
-% Antonio - e.g. significa 'por ejemplo'. ¿No querrás decir i.e. que significa 'es decir'?
+% Antonio - e.g. significa 'por ejemplo'. ï¿½No querrï¿½s decir i.e. que significa 'es decir'?
   \STATE calculateGlobalPlanets() {\em /* e.g. Base or Enemy Base */}
   \STATE calculateGlobalRatios()  {\em /* e.g. myPlanetsEnemyRatio */}
   \FOR{Each p in PlayerPlanets}
     \STATE calculateLocalPlanets(p) {\em /*e.g. NearestNeutralPlanet to p*}
     \STATE calculateLocalRatios(p)  {\em /* e.g actualMyShipsRatio */}
     \STATE executeTree(p,tree)  {\em /* Choose and Send a percentage of ships to destination*/}
-% Antonio - he añadido 'choose'
+% Antonio - he aï¿½adido 'choose'
    \ENDFOR
 \ENDWHILE
 
@@ -425,7 +425,7 @@ In addition, an example of a possible decision tree is presented in Figure \ref{
 \end{algorithm}
 
 \begin{figure}
-% usar el estilo Algorithmic, esto queda feísimo - JJ FERGU: esto es código java, el algoritmic lo uso abajo
+% usar el estilo Algorithmic, esto queda feï¿½simo - JJ FERGU: esto es cï¿½digo java, el algoritmic lo uso abajo
 
 \begin{lstlisting}[frame=single,language=Java,tabsize=4]
 if(myShipsLandedFlyingRatio < 0.696)
@@ -438,7 +438,7 @@ else
 \end{lstlisting}
 
 %\begin{Verbatim}[frame=single,fontsize=\small]
-% 
+%
 %if(myShipsLandedFlyingRatio < 0.696)
 %   if(actualMyShipsRatio < 0.421)
 %      attackWeakestNeutralPlanet(0.481);
@@ -451,8 +451,8 @@ else
 
 \label{fig:javatree}
 \caption{Example of the code generated for a decision tree of an individual.}
-% Antonio - más que un decision tree es un rule-based system, no?
-% Antonio - Si queremos hablar de decision trees, se podría dibujar uno modelando esas reglas. ;) FERGU: arreglao
+% Antonio - mï¿½s que un decision tree es un rule-based system, no?
+% Antonio - Si queremos hablar de decision trees, se podrï¿½a dibujar uno modelando esas reglas. ;) FERGU: arreglao
 \end{figure}
 
 
@@ -460,21 +460,21 @@ else
 
 
 \subsection{Joust-based Selection}
-The algorithm presented in \cite{GarciaGP14} % ¿El algoritmo de la anterior
-                              % generación? ¿Eso qué es? - JJ FERGU: cierto, arreglado
+The algorithm presented in \cite{GarciaGP14} % ï¿½El algoritmo de la anterior
+                              % generaciï¿½n? ï¿½Eso quï¿½ es? - JJ FERGU: cierto, arreglado
 is combined with an \textit{implicit fitness evaluation} for selection and
-replacement. This `evaluation' is, in essence, a match between individuals, called {\em joust} (to distinguish it from the classical tournament in EAs), in a battle map of the game. 
-%which explains the title we have given to this paper.  % Esta frase casi que la quitaría  [pedro] FERGU: ala, fuera
-Thus, the selection of the two mating parents is performed each in a battle. The winner of the match is selected to mate 
+replacement. This `evaluation' is, in essence, a match between individuals, called {\em joust} (to distinguish it from the classical tournament in EAs), in a battle map of the game.
+%which explains the title we have given to this paper.  % Esta frase casi que la quitarï¿½a  [pedro] FERGU: ala, fuera
+Thus, the selection of the two mating parents is performed each in a battle. The winner of the match is selected to mate
 % en lugar de crossover, pon "mate" [pedro] FERGU:  fale
 and the loser will be definitely removed from the population (as it will be explained later).
 
-%Two different types of battles will be compared: {\em 1vs1} and {\em All vs All of 4 bots}, 
-% Antonio - esto lo ponía yo mal también, no son combates 4 contra 4, sino 1vs3. ;D FERGU: arreglao.
-%as they are the only possible match types in Planet Wars. 
+%Two different types of battles will be compared: {\em 1vs1} and {\em All vs All of 4 bots},
+% Antonio - esto lo ponï¿½a yo mal tambiï¿½n, no son combates 4 contra 4, sino 1vs3. ;D FERGU: arreglao.
+%as they are the only possible match types in Planet Wars.
 %In both configurations the winner will be selected to mating and the loser (i.e. the first to be eliminated) will be removed from the population. Therefore, in the case of All vs All, the individuals ending in 2nd and 3rd position neither are selected for mating nor removed.
 
-%This implicit selection and replacement have been chosen because...  % ¡estoy en ascuas!  ¡¿por qué?!  ;)  [pedro]
+%This implicit selection and replacement have been chosen because...  % ï¿½estoy en ascuas!  ï¿½ï¿½por quï¿½?!  ;)  [pedro]
 
 This selection mechanism tries to emphasise the survival of the fittest individuals, since just the best bots will be chosen as parents, and thus, will remain one more generation. Actually, in this algorithm, the concept of generation is changed by `iteration', since it is not a classical evolutionary process, as will be deeply explained in the next section.
 
@@ -487,40 +487,40 @@ The use of such a selection/survival process tries to reduce the noise added by 
 
 %The bots that have lost, and the offspring generated in the previously explained battles are removed/added to the population following one of the two next policies: steady-state or generational mechanism.
 
-%The replacement policy chosen is the steady-state, an implementation based in the classical Steady-State EA approach \cite{Genitor_whitley}. 
-%A steady-state algorithm has been chosen as replacement policy. In this case, the classical Steady-State EA approach \cite{Genitor_whitley} has been implemented.   % reescribo la frase; la dejo comentada a continuación por si hay que restaurarla  ;)  [pedro]
-%The replacement policy chosen is the steady-state, an implementation based in the classical Steady-State EA approach \cite{Genitor_whitley}. 
+%The replacement policy chosen is the steady-state, an implementation based in the classical Steady-State EA approach \cite{Genitor_whitley}.
+%A steady-state algorithm has been chosen as replacement policy. In this case, the classical Steady-State EA approach \cite{Genitor_whitley} has been implemented.   % reescribo la frase; la dejo comentada a continuaciï¿½n por si hay que restaurarla  ;)  [pedro]
+%The replacement policy chosen is the steady-state, an implementation based in the classical Steady-State EA approach \cite{Genitor_whitley}.
 
 % Antonio - la reescribo de otra forma. :D
 The classical Steady-State EA approach \cite{Genitor_whitley} has been implemented as replacement policy. In it, the majority of the population remains the same in the following generation, and just a small subset of individuals are substituted (usually just the worst). This method aims to increase the exploitation factor in the EA, in order to increase the convergence, which is an interesting factor in a noisy search space as the scope of videogames is.
 
-%, since just the worst individuals in the population are substituted by fitter ones. 
-%This is interesting for this problem because......   % ¡otra vez en ascuas!   :D
+%, since just the worst individuals in the population are substituted by fitter ones.
+%This is interesting for this problem because......   % ï¿½otra vez en ascuas!   :D
 
 % And this is interesting for this problem because... - JJ
 
-Thus, the proposed approach follows this idea and just performs two battles (or jousts) per generation, the aforementioned selection policy. The contenders are randomly selected from all the individuals in the population (ensuring that the same individuals are not chosen for both battles). 
-% Antonio - revisad que esto es así (se asegura que no se eligen los mismos individuos como padres).
-The two winners of the battles will be the parents for the \textit{crossover operation}, which generates two new individuals (offspring). 
-% Antonio - Decir qué tipo de cruce se ha implementado
+Thus, the proposed approach follows this idea and just performs two battles (or jousts) per generation, the aforementioned selection policy. The contenders are randomly selected from all the individuals in the population (ensuring that the same individuals are not chosen for both battles).
+% Antonio - revisad que esto es asï¿½ (se asegura que no se eligen los mismos individuos como padres).
+The two winners of the battles will be the parents for the \textit{crossover operation}, which generates two new individuals (offspring).
+% Antonio - Decir quï¿½ tipo de cruce se ha implementado
 Then, the mutation operator is applied...
-% Antonio - decir qué operador de mutación se ha usado y justificarlo
+% Antonio - decir quï¿½ operador de mutaciï¿½n se ha usado y justificarlo
 These individuals are inserted in the population after being created, substituting the bots that lose the jousts.
 
 This approach presents a higher stochastic component than the
-original, % será random, no stochastic. Stochastic se es o no se es,
+original, % serï¿½ random, no stochastic. Stochastic se es o no se es,
           % es como estar embarazada - JJ
 due to the lack of a fitness value which can value every individual with a simple number. The random selection of all the individuals also increases the chance of reducing the presence of noisy bots, i.e. those which are not good enough to remain in the population.
-% Antonio - no se incrementa la diversidad por seleccionar padres aleatorios, ¿no? Se incrementaría si se eligiesen malos individuos como padres. ;D
+% Antonio - no se incrementa la diversidad por seleccionar padres aleatorios, ï¿½no? Se incrementarï¿½a si se eligiesen malos individuos como padres. ;D
 This will be a key factor in the resolution of this problem,
-\textcolor{red}{AS WILL BE proved IN THE EXPERIMENTS}. 
+\textcolor{red}{AS WILL BE proved IN THE EXPERIMENTS}.
 
 
 %In the second policy to be tested, the {\em generational} replacement\cite{GAs_Goldberg89}, half of the population is substituted every generation, having a big diversification and thus exploration factor.
 %As in the previous configuration, the individuals are paired randomly,
 %conducting battles. The winners (half of the population)
-%will be the parents of the next offspring. % ¿Y por qué se elimina el
-                                % ruido? ¿No puede ser que gane uno
+%will be the parents of the next offspring. % ï¿½Y por quï¿½ se elimina el
+                                % ruido? ï¿½No puede ser que gane uno
                                 % por casualidad? - JJ
 %Then, after applying the crossover and mutation, the rest of the population is generated (two descendants per couple). The parents are grouped with all the offspring and the bots which have lost are deleted at the same time, increasing this way the diversity/exploration of the algorithm.
 
@@ -532,7 +532,7 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Progr
 
 \STATE population $\leftarrow$ initializePopulation()
 \WHILE{stop criterion not found}
- 
+
   \STATE offspring,losers,selected $\leftarrow$ \{\}
 %  \IF{type=steadystate}
 %    \STATE N $\leftarrow$ 1
@@ -547,14 +547,14 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Progr
     \STATE {\em /* The contenders fight and the winner and loser are obtained */} %(in case of All vs All, the first to be defeated is the loser)*/}
     \STATE winner1,loser1 $\leftarrow$ battle(contenders)
     \STATE {\em /* Previously selected bots not participate again in the tournament */}
-    \STATE selected $\leftarrow$ selected + winner1 + loser1 
+    \STATE selected $\leftarrow$ selected + winner1 + loser1
     \STATE {\em /* Contenders of the second joust */}
     \STATE contenders $\leftarrow$ selectContenders(population-selected)
     \STATE {\em /* The contenders fight and the winner and loser are obtained */}
     \STATE winner2,loser2 $\leftarrow$ battle(contenders)
-% Antonio - poner más comentarios. Yo de hecho los suelo poner antes de cada instrucción (y más si son tan improtantes como estas)
-% Antonio - Si no se quiere hacer dos pseudocódigos para 1vs1 y para 1vs3, se pueden poner cosas comentadas sobre quienes son winner1 y loser1 en cada caso, poner algunas líneas que sólo se ejecutarían en un caso o en otro, etc FERGU: puestos comentarios
-    \STATE selected $\leftarrow$ selected + winner2 + loser2 
+% Antonio - poner mï¿½s comentarios. Yo de hecho los suelo poner antes de cada instrucciï¿½n (y mï¿½s si son tan improtantes como estas)
+% Antonio - Si no se quiere hacer dos pseudocï¿½digos para 1vs1 y para 1vs3, se pueden poner cosas comentadas sobre quienes son winner1 y loser1 en cada caso, poner algunas lï¿½neas que sï¿½lo se ejecutarï¿½an en un caso o en otro, etc FERGU: puestos comentarios
+    \STATE selected $\leftarrow$ selected + winner2 + loser2
     \STATE {\em /* The losers will be removed from the population */}
     \STATE losers $\leftarrow$ losers + loser1 + loser2
     \STATE {\em /* Evolutionary process */}
@@ -573,7 +573,7 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Progr
 \label{alg:completealgorithm}
 \end{algorithm}
 
-% Antonio - falta darle un poco más de bombo a esto, parece una chuminá, pero en realidad... ¡ES LA POLLA! :D
+% Antonio - falta darle un poco mï¿½s de bombo a esto, parece una chuminï¿½, pero en realidad... ï¿½ES LA POLLA! :D
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   EXPERIMENTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -585,7 +585,7 @@ Several experiments have been conducted in order to study different issues of th
 These parameters have been  previously used in \cite{GarciaGP14}, obtaining competitive bots. To do a fair comparison with the results obtained in that work the termination criteria has been also set to 8000 battles (therefore, 4000 generations). 30 executions of the Co-GP have been performed in order to obtain accurate statistics.    % completo la frase  [pedro]
 % Antonio - cuidao que unas veces pones Co-GP y otras Co-GA
 
-%For each one of the presented approaches (replacement and selection policies), 
+%For each one of the presented approaches (replacement and selection policies),
 
 \begin{table}
 \begin{center}
@@ -601,9 +601,9 @@ Mutation step-size & 0.25 \\ \hline
 Selection & 2-tournament \\ \hline
 Replacement & Steady-state\\ \hline
 Stop criterion & 4000 iterations \\ \hline
-Maximum Tree Depth & 7  \\ \hline 
+Maximum Tree Depth & 7  \\ \hline
 
-Runs per configuration & 30 \\ \hline 
+Runs per configuration & 30 \\ \hline
 Maps used in each evaluation & 1 random chosen among maps \#76 \#69 \#7 \#11 \#26\\ \hline
 \end{tabular}
 \caption{Parameter set used in the experiments.}     % [pedro]
@@ -611,10 +611,10 @@ Maps used in each evaluation & 1 random chosen among maps \#76 \#69 \#7 \#11 \#2
 \end{center}
 \end{table}
 
-\subsection{Analysis of the executions}   % ¿cambiar  executions  por  runs ?   % [pedro]
+\subsection{Analysis of the executions}   % ï¿½cambiar  executions  por  runs ?   % [pedro]
 \label{subsec:analysisexecutions}
 
-It is difficult to show the convergence of the populations using a implicit fitness evaluation, as the evaluated individuals (and therefore, the fitness of the average population) do not count with a numeric value to be plotted in time. In this paper, we propose a scoring method that takes into account the number of victories, turns to win and turns to be defeated % needed to be defeated? por qué? - Jj FERGU: explicado debajo
+It is difficult to show the convergence of the populations using a implicit fitness evaluation, as the evaluated individuals (and therefore, the fitness of the average population) do not count with a numeric value to be plotted in time. In this paper, we propose a scoring method that takes into account the number of victories, turns to win and turns to be defeated % needed to be defeated? por quï¿½? - Jj FERGU: explicado debajo
  against a previously known bot. After the execution of our algorithm all the generated individuals during all the runs have been confronted versus GPbot \cite{GarciaGP14} and scored using the next formula:
 \begin{equation}
 Score_{i}=\alpha+\beta+\gamma
@@ -625,11 +625,11 @@ where
 \begin{equation}
 \alpha  = v, \alpha \in\left[0,N\right]
 \end{equation}
-% Antonio - no pongas esto como ecuación. Es sólo una aclaración de un rango
+% Antonio - no pongas esto como ecuaciï¿½n. Es sï¿½lo una aclaraciï¿½n de un rango
 
 \begin{equation}
 \begin{split}
-\beta =N\times\frac{t_{win}+\frac{1}{N\times t_{MAX}+1}}{\frac{t_{win}}{v+1}+1},\\ 
+\beta =N\times\frac{t_{win}+\frac{1}{N\times t_{MAX}+1}}{\frac{t_{win}}{v+1}+1},\\
 \beta \in\left[0,N\right], \\
 t_{win} \in\left[0,N\times t_{MAX}\right]
 \end{split}
@@ -637,7 +637,7 @@ t_{win} \in\left[0,N\times t_{MAX}\right]
 
 \begin{equation}
 \begin{split}
-\gamma  =\frac{t_{defeated}}{N \times t_{MAX}+1}, \\ 
+\gamma  =\frac{t_{defeated}}{N \times t_{MAX}+1}, \\
 \gamma \in\left[0,1\right], \\
 t_{defeated} \in\left[0,N\times t_{MAX}\right]
 \end{split}
@@ -648,7 +648,7 @@ Finally, the $\gamma$ term adds score from the turns to be beaten (higher number
 
 Each individual has been tested 3 times in 10 different maps (the 5 used during evolution and other new 5 ones from the Google set), therefore $N=15$, and a the limit of turns is the default of the competition ($t_{MAX}=1000$). As previously said, this score has the same shortcomings that we are trying to avoid in this paper: it requires parametrization and an existing opponent. However, we will use this score as a way to measure the performance of our fitness-less approach.
 
-Figure \ref{figura:Score_VS_GPBot} shows the boxplots of the score of the current population (of all 30 original runs) in different stages of the evolution in different maps (the used ones with the evaluation and the new set). As can be seen, this score is being increased during the evolution, therefore there exist some kind of improvement during the execution of the Co-GP algorithm. 
+Figure \ref{figura:Score_VS_GPBot} shows the boxplots of the score of the current population (of all 30 original runs) in different stages of the evolution in different maps (the used ones with the evaluation and the new set). As can be seen, this score is being increased during the evolution, therefore there exist some kind of improvement during the execution of the Co-GP algorithm.
 
 
 
@@ -657,14 +657,14 @@ Figure \ref{figura:Score_VS_GPBot} shows the boxplots of the score of the curren
 \begin{center}
 \includegraphics[clip=true,width=9cm]{./imags/score_vs_gpbot.eps}
 \end{center}
-%Es muy pequeño. ¿No se puede poner a dos columnas? - JJ FERGU: agrandado
+%Es muy pequeï¿½o. ï¿½No se puede poner a dos columnas? - JJ FERGU: agrandado
 \caption{Score confronting all SurvivalBots obtained during all the runs versus GPbot.}
-%¿Qué diablos es "not training" Será "not included in training" - ¿Qué
-%diablos es score vs. gpbot? ¿La puntuación se enfrenta con GPBOT?
-%Será score SurvivalBot vs. gpbot, ¿no? - JJ FERGU: sí, es que era un
-%copypaste de mi mail. Arreglado caption, tamaño y quitado título
-% En mi versión sigue con el mismo título. El eje horizontal debería
-% llamarse Number of simulations or accumulated simulations o algo. 
+%ï¿½Quï¿½ diablos es "not training" Serï¿½ "not included in training" - ï¿½Quï¿½
+%diablos es score vs. gpbot? ï¿½La puntuaciï¿½n se enfrenta con GPBOT?
+%Serï¿½ score SurvivalBot vs. gpbot, ï¿½no? - JJ FERGU: sï¿½, es que era un
+%copypaste de mi mail. Arreglado caption, tamaï¿½o y quitado tï¿½tulo
+% En mi versiï¿½n sigue con el mismo tï¿½tulo. El eje horizontal deberï¿½a
+% llamarse Number of simulations or accumulated simulations o algo.
 \label{figura:Score_VS_GPBot}
 \end{figure}
 
@@ -677,11 +677,11 @@ Figure \ref{figura:Score_VS_GPBot} shows the boxplots of the score of the curren
 %\begin{center}
 %  \epsfig{file=./imags/score_vs_gpbot_all_maps,width=6cm}
 %\end{center}
-%\caption{Score vs GPBot (all maps). Casi igual que las anteriores pero en boxplots SIN outliers (por eso la del best individual parece que el máximo está en 5, con lo cual no debería estar en 23 en la que son líneas). Estas dos figuras puedes quitarlas si quieres.}
+%\caption{Score vs GPBot (all maps). Casi igual que las anteriores pero en boxplots SIN outliers (por eso la del best individual parece que el mï¿½ximo estï¿½ en 5, con lo cual no deberï¿½a estar en 23 en la que son lï¿½neas). Estas dos figuras puedes quitarlas si quieres.}
 %\label{figura:Score_VS_GPBot_AllMaps}
 %\end{figure}
 
-Figure \ref{figura:convergence} shows the average score of all individuals, and the average score of all best individuals, obtained during the evolution of the fitness-less Co-GA.  
+Figure \ref{figura:convergence} shows the average score of all individuals, and the average score of all best individuals, obtained during the evolution of the fitness-less Co-GA.
 % Antonio - cuidao, que no se ha dicho antes que sea un co-evolutivo y no se han usado esas siglas.
 This figure shows how there exist an increasing performance in the best individuals during the runs and...
 
@@ -692,7 +692,7 @@ This figure shows how there exist an increasing performance in the best individu
 \end{center}
 \caption{Average score of the best and worst individuals and the
   population average from all executions of our fitness-less Co-GA,
-  versus GPbot.} % Esto ¿por qué? - JJ
+  versus GPbot.} % Esto ï¿½por quï¿½? - JJ
 \label{figura:convergence}
 \end{figure}
 
@@ -715,11 +715,11 @@ Figure \ref{figura:Victories_VS_GPBot_AllMaps} shows the percentage of individua
   \epsfig{file=./imags/victories_vs_GPBot_allmaps,width=9cm}
 \end{center}
 \caption{Victories of all the populations (initial and final) vs GPBot (all maps).}
-% Este histograma deberíais redudirlo a 10 bins o así. Hay reglas para
-% el número de bins según lo que quieras representar en un histograma,
+% Este histograma deberï¿½ais redudirlo a 10 bins o asï¿½. Hay reglas para
+% el nï¿½mero de bins segï¿½n lo que quieras representar en un histograma,
 % son muchas - JJ
-% Y seguís sin hacerme caso a este comentario. Será Histogram of
-% number victories for the algorithm population o algo así - JJ
+% Y seguï¿½s sin hacerme caso a este comentario. Serï¿½ Histogram of
+% number victories for the algorithm population o algo asï¿½ - JJ
 \label{figura:Victories_VS_GPBot_AllMaps}
 \end{figure}
 
@@ -727,7 +727,7 @@ Figure \ref{figura:Victories_VS_GPBot_AllMaps} shows the percentage of individua
 Moreover, other values, such as the age, tree depth and number of
 nodes can help to understand how the evolution is being
 performed. Figure \ref{} shows the average age of the agents during
-the run. As can be seen, the maximum age is TERMINAR 
+the run. As can be seen, the maximum age is TERMINAR
 % Y enlazar con el siguiente, no me gusta nada el comienzo - JJ
 
 
@@ -746,22 +746,22 @@ This subsection shows the results of the obtained SurvivalBots,
 analysing the distribution of actions and decisions at the beginning
 and at the end of the evolution. Figure \ref{figura:tarta_actions}
 shows the final distribution of the different types of actions
-(attack, reinforce and do nothing). As it can be seen, %no digáis
+(attack, reinforce and do nothing). As it can be seen, %no digï¿½is
                                 %nunca As it can be seen. Se prueba o
                                 %no se prueba, pero nunca se
-                                %ve. Además, ni siquiera habéis puesto
+                                %ve. Ademï¿½s, ni siquiera habï¿½is puesto
                                 %una referencia - JJ
  the {\em do
-  nothing} action has been increased % la acción se ha incrementado?
-                                % Qué significa eso? Será que el
-                                % númeor de veces que aparece esa
-                                % acción nosé dónde lo ha hecho, ¿no?
+  nothing} action has been increased % la acciï¿½n se ha incrementado?
+                                % Quï¿½ significa eso? Serï¿½ que el
+                                % nï¿½meor de veces que aparece esa
+                                % acciï¿½n nosï¿½ dï¿½nde lo ha hecho, ï¿½no?
                                 % - JJ
 at the end of the evolution, as
 it seems logical that not all planets should attack in every turn
 (they may be waiting to have a large fleet to send). Of course, and
 because a player wins conquering the enemy planets, it is logical that
-the attack action is more effective than reinforce. 
+the attack action is more effective than reinforce.
 
 \begin{figure}[htb]
 \tiny
@@ -775,8 +775,8 @@ the attack action is more effective than reinforce.
 
 \end{center}
 \caption{Distribution of different types of actions (attack, reinforce and do nothing) of the generated bots.}
-% Estos gráficos están fatal. Las etiquetas están cortadas. Y no están
-% etiquetadas cada tarta qué significa. - JJ
+% Estos grï¿½ficos estï¿½n fatal. Las etiquetas estï¿½n cortadas. Y no estï¿½n
+% etiquetadas cada tarta quï¿½ significa. - JJ
 \label{figura:tarta_actions}
 \end{figure}
 
@@ -806,7 +806,7 @@ Figure \ref{tarta_attacking_who}
 
 \end{center}
 \caption{Owners of target planets when attacking: Enemy, Neutral,
-  NotMy.} % Será notmine, ¿no? No notmy. 
+  NotMy.} % Serï¿½ notmine, ï¿½no? No notmy.
 \label{figura:tarta_attacking_who}
 \end{figure}
 
@@ -866,28 +866,17 @@ GPBot & \cite{GarciaGP14} & 8000 & 1000 \\ \hline
 
 
 
-Figure \ref{figure:boxplot_mejores_contra_clasicos} shows the boxplots 
+Figure \ref{figure:boxplot_mejores_contra_clasicos} shows the boxplots
 
 \begin{figure}[htb]
 \tiny
 \begin{center}
     \includegraphics[width=9cm]{./imags/boxplot_mejores_contra_clasicos.eps}
-   
+
 \end{center}
 \caption{Boxplots confronting best SurvivalBots against existing bots in the literature.}
 \label{figura:tarta_decissions}
-\end{figure}
-
-\begin{figure}[htb]
-\tiny
-\begin{center}
-    \includegraphics[width=9cm]{./imags/noise_study.eps}
-   
-\end{center}
-\caption{Noise of the best A and B in multiple simulations equal (same map and opponent).}
-\label{figura:noise_study.eps}
-\end{figure}
-
+\end{figure}s
 
 
 
@@ -905,9 +894,9 @@ This paper presents an implementation of a quite simple approach: to omit the fi
 The classic tournament selection mechanism has been modelled as a battle in the game (called joust) to ...
 
 % en las conclusiones hay que generalizar y el tema es el uso de
-% dinámicas de juego en metaheurísticas y cómo se podría
+% dinï¿½micas de juego en metaheurï¿½sticas y cï¿½mo se podrï¿½a
 % generalizar. Lo que tenemos al final es un orden parcial y ruidoso
-% que se podría usar, en general, en todo tipo de algoritmos
+% que se podrï¿½a usar, en general, en todo tipo de algoritmos
 % evolutivos donde haya ese problema - JJ
 
 
@@ -917,7 +906,7 @@ The classic tournament selection mechanism has been modelled as a battle in the 
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
-% Antonio - actualizar esto. He quitado EVORQ y MUSES, pero ANYSELF terminó y CANUBE también, ¿no?
+% Antonio - actualizar esto. He quitado EVORQ y MUSES, pero ANYSELF terminï¿½ y CANUBE tambiï¿½n, ï¿½no?
 This paper has been funded in part by Spanish National project TIN2011-28627-C04-02 (ANYSELF), and projects CEI2013-P-14 (CANUBE) and GENIL PYR-2014-17, both awarded by the CEI-BioTIC UGR.
 
 \bibliographystyle{IEEEtran}
