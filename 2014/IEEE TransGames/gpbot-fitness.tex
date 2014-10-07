@@ -140,10 +140,10 @@ evaluation, the way this fitness is obtained might include an additional
 bias due to opponent selection. This issue concerns the overfitting
 of the population with respect the selected rival/s, i.e. the
 individuals learn to play against it/them, and could behave poorly
-against another type of enemy. 
+against another type of enemy \cite{wilcoxon:ga,Genebot_JCST}. 
 
 % cita. Que se vea que no te lo has inventado. - JJ TODO
-% Antonio - Sí, mejor con una cita
+% Antonio - Sí, mejor con una cita FERGU: añadido
 
 The present paper proposes a EA \cite{EAs_Back96} for improving bot's AI in Planet Wars by means of an implicit fitness evaluation, 
 % Antonio - sería 'implicit', ¿no?
@@ -153,7 +153,7 @@ This model is closer to the \textit{real natural selection process} which happen
 % Antonio - no sé si explicar esto mejor. Buscar una cita???
 
 A Genetic Programming (GP) \cite{GP_Koza92} approach has been implemented, due to the additional flexibility factor that this method offers with respect to a Genetic Algorithm (GA), i.e. GP is able to create new sets of behavioural rules meanwhile GA is devoted to optimise the parameters of previously designed rules. Moreover, this technique has yielded excellent results in previous works \cite{GarciaGP14,EsparciaGP2013}.
-% Antonio - Poner cita a los trabajos anteriores de GP en Planet Wars (nuestros o de otros)
+% Antonio - Poner cita a los trabajos anteriores de GP en Planet Wars (nuestros o de otros) FERGU: están puestos más abajo
 
 % Antonio - Dejar esto para luego (para las conclusiones o para los comentarios de los resulatdos) 
 % It is not completely avoided due to the pseudo-stochasticity of the bots' behaviours.
@@ -199,7 +199,7 @@ Summarizing, this paper tries to solve the next research questions:
 
 The paper is structured as follows. The background section reviews related work regarding the scope (videogames) and the implementation (EAs with no fitness computation or different selection mechanisms). It also describes the problem enclosed in the Planet Wars game.
 Section \ref{sec:survival_bots} presents the proposed method, termed {Survival Bot}, and its different implementations. 
-The experiments and results are described and discussed in Section \ref{sec:experiments}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
+The experiments and results are described and discussed in Section \ref{sec:experiments}, where the obtained bots are analyzed and compared with other bots available in the literature. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
 
 % Antonio - Arreglar esto con la distribución final. Candidato a ser borrado por falta de espacio. :D
 
@@ -229,10 +229,10 @@ This is normally a step in the generation of an AI engine to control the Non-Pla
 However the use of GP \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to define the set of rules, as these rules, along with their numerical parameters, are created and evolved automatically during the run.  Thus, it is a more flexible approach for defining the behavioural engine of the bots, which can find rules that a human expert cannot imagine at all. For this reason GP has been used in this paper to generate the engines.
 
 %, and comparing if this approach can compete with bots whose set of rules have been defined by an human expert, and optimized using GAs.
-% Antonio - esto no sé si es verdad
+% Antonio - esto no sé si es verdad FERGU: sí es verdad, pero al final no sale tan bueno este bot contra ellos...
 
-One of the shortcomings of previous works is that they depend on a baseline bot, taken as rival during the evolution, or an ad-hoc fitness function that involves some kind of parameterization (for example, number of matches or scoring the actions). To avoid this, co-Evolutionary Algorithms (CEAs) 
-% Antonio - Cita???
+One of the shortcomings of previous works is that they depend on a baseline bot, taken as rival during the evolution, or an ad-hoc fitness function that involves some kind of parameterization (for example, number of matches or scoring the actions) \cite{Genebot_JCST}. To avoid this, co-Evolutionary Algorithms (CEAs) 
+% Antonio - Cita??? FERGU: puesta
 have been previously used in this scope, as it is a natural choice to use in problems where the behaviour of one agent is related to the behaviour of others \cite{Coevolving13Samothrakis}. 
 
 The co-evolutionary scheme was initially used in puzzle and board games such as Backgammon \cite{Pollack_Backgammon98}, or Go \cite{Runarsson_Go2005}.
@@ -351,10 +351,11 @@ two different \textit{types of nodes}:
 
 \begin{itemize}
 \item {\em Decision}: a logical expression composed by a variable, a less than operator ($<$), and a number between 0 and 1. It is the equivalent to a ``primitive'' in the field of GP.
-\item {\em Action}: a leave of the tree (therefore, a ``terminal''). Each decision is the name of the function to execute when the bot is deciding what to do regarding a specific planet (when it is analysing the status of the planet and the possible actions). 
-% Antonio - El árbol lo ejecuta un bot para decidir qué hacer considerando un planeta, no lo ejecuta un planeta, ¿no?. Lo he intentado escribir así.
-The function indicates to which planet send a percentage of available ships (from 0 to 1), also decided in this step. 
-% Antonio - mira a ver si esto es verdad, Fergu. ¿se decide el porcentaje también aquí, ¿no?
+\item {\em Action}: a leave of the tree (therefore, a ``terminal''). Each decision is the name of a function, and a ratio between 0 and 1. The function indicates to which planet send a percentage of available ships in the planet (from 0 to 1). As the bot executes the tree one time per planet each execution uses the information of the current planet.
+
+%when the bot is deciding what to do regarding a specific planet (when it is analysing the status of the planet and the possible actions). 
+% Antonio - El árbol lo ejecuta un bot para decidir qué hacer considerando un planeta, no lo ejecuta un planeta, ¿no?. Lo he intentado escribir así. FERGU: lo he reescrito yo también para que sea más entendible
+% Antonio - mira a ver si esto es verdad, Fergu. ¿se decide el porcentaje también aquí, ¿no? FERGU: reescrito todo
 \end{itemize}
 
 The \textit{decisions} are based in the values of different \textit{variables} which are computed considering some parameters in the game. They were defined by a human expert in \cite{GarciaGP14}, and are shown next (with the acronyms that will be used in the rest of the paper):
@@ -789,7 +790,7 @@ Figure \ref{tarta_reinforcing} shows the target when a planet is reinforcing the
     %\includegraphics{file=./imags/distribution_final_reinforce,width=3cm,angle=-90}
 
 \end{center}
-\caption{Destination of planets when reinforcing: Weakest, Wealthest, Base.}
+\caption{Destination of planets when reinforcing: Weakest, Wealthiest, Base.}
 \label{figura:tarta_reinforcing}
 \end{figure}
 
