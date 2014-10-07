@@ -38,8 +38,8 @@
 % Qué mapas se usan en cada evaluación?
 
 % paper title: Must keep \ \\ \LARGE\bf in it to leave enough margin.
-\title{\ \\ \LARGE\bf Struggling to Survive: Evolving RTS Bots without
-  Explicit Evaluation}
+\title{\ \\ \LARGE\bf Struggling to Survive: Evolving RTS Bots via
+  joust selection}
 
 %Usar palabras negativas como "without" en títulos no me acaba de
 %gustar, porque no dice qué hace, sino qué no se hace. "using real
@@ -49,7 +49,12 @@
 
 % Antonio - Aclararnos bien con Explicit o Implicit. :D
 
-% Tampoco me gusta "Fighting to survive": "Fight for life" o "Struggling to survive" está mejor dicho - JJ FERGU: Struggling, pues, que lo he visto en pelis
+% Tampoco me gusta "Fighting to survive": "Fight for life" o
+% "Struggling to survive" está mejor dicho - JJ FERGU: Struggling,
+% pues, que lo he visto en pelis
+
+% ¡que no me gusta el without, coñe! Que lo quitéis y pongáis una
+% frase positiva, no una negativa. He puesto joust selection, hala - JJ
 
 \author{A.J. Fernández-Ares, P. García-Sánchez, A.M. Mora, P. A. Castillo and J.J. Merelo \thanks{Department of Computer Architecture and Computer Technology, University of Granada, Spain, {\tt \{antares,pablogarcia\}@ugr.es, \{amorag,pedro,jmerelo\}@geneura.ugr.es}}}
 % avoiding spaces at the end of the author lines is not a problem with
@@ -484,9 +489,12 @@ Then, the mutation operator is applied...
 % Antonio - decir qué operador de mutación se ha usado y justificarlo
 These individuals are inserted in the population after being created, substituting the bots that lose the jousts.
 
-This approach presents a higher stochastic component than the original, due to the lack of a fitness value which can value every individual with a simple number. The random selection of all the individuals also increases the chance of reducing the presence of noisy bots, i.e. those which are not good enough to remain in the population.
+This approach presents a higher stochastic component than the
+original, % será random, no stochastic. Stochastic se es o no se es,
+          % es como estar embarazada - JJ
+due to the lack of a fitness value which can value every individual with a simple number. The random selection of all the individuals also increases the chance of reducing the presence of noisy bots, i.e. those which are not good enough to remain in the population.
 % Antonio - no se incrementa la diversidad por seleccionar padres aleatorios, ¿no? Se incrementaría si se eligiesen malos individuos como padres. ;D
-This will be a key factor in this problem resolution,
+This will be a key factor in the resolution of this problem,
 \textcolor{red}{AS WILL BE proved IN THE EXPERIMENTS}. 
 
 
@@ -633,7 +641,10 @@ Figure \ref{figura:Score_VS_GPBot} shows the boxplots of the score of the curren
 \caption{Score confronting all SurvivalBots obtained during all the runs versus GPbot.}
 %¿Qué diablos es "not training" Será "not included in training" - ¿Qué
 %diablos es score vs. gpbot? ¿La puntuación se enfrenta con GPBOT?
-%Será score SurvivalBot vs. gpbot, ¿no? - JJ FERGU: sí, es que era un copypaste de mi mail. Arreglado caption, tamaño y quitado título
+%Será score SurvivalBot vs. gpbot, ¿no? - JJ FERGU: sí, es que era un
+%copypaste de mi mail. Arreglado caption, tamaño y quitado título
+% En mi versión sigue con el mismo título. El eje horizontal debería
+% llamarse Number of simulations or accumulated simulations o algo. 
 \label{figura:Score_VS_GPBot}
 \end{figure}
 
@@ -657,7 +668,9 @@ Figure \ref{figura:convergence} shows the average score of all individuals, and 
 \begin{center}
   \epsfig{file=./imags/convergence,width=9cm}
 \end{center}
-\caption{Average score of the best and worst individuals and average of the population from all executions of our fitness-less Co-GA, versus GPbot.}
+\caption{Average score of the best and worst individuals and the
+  population average from all executions of our fitness-less Co-GA,
+  versus GPbot.} % Esto ¿por qué? - JJ
 \label{figura:convergence}
 \end{figure}
 
@@ -672,12 +685,17 @@ Figure \ref{figura:Victories_VS_GPBot_AllMaps} shows the percentage of individua
 % Este histograma deberíais redudirlo a 10 bins o así. Hay reglas para
 % el número de bins según lo que quieras representar en un histograma,
 % son muchas - JJ
+% Y seguís sin hacerme caso a este comentario. Será Histogram of
+% number victories for the algorithm population o algo así - JJ
 \label{figura:Victories_VS_GPBot_AllMaps}
 \end{figure}
 
 
-Moreover, other values, such as the age, tree depth and number of nodes can help to understand how the evolution is being performed. Figure \ref{} shows the average age of the agents during the run. As can be seen, the maximum age is TERMINAR
-
+Moreover, other values, such as the age, tree depth and number of
+nodes can help to understand how the evolution is being
+performed. Figure \ref{} shows the average age of the agents during
+the run. As can be seen, the maximum age is TERMINAR 
+% Y enlazar con el siguiente, no me gusta nada el comienzo - JJ
 
 
 
@@ -691,7 +709,26 @@ Moreover, other values, such as the age, tree depth and number of nodes can help
 
 \subsection{Analysis of the generated bots}
 \label{subsec:analysisbots}
-This subsection shows the results of the obtained SurvivalBots, analysing the distribution of actions and decisions at the beginning and at the end of the evolution. Figure \ref{figura:tarta_actions} shows the final distribution of the different types of actions (attack, reinforce and do nothing). As it can be seen, the {\em do nothing} action has been increased at the end of the evolution, as it seems logical that not all planets should attack in every turn (they may be waiting to have a large fleet to send). Of course, and because a player wins conquering the enemy planets, it is logical that the attack action is more effective than reinforce.
+This subsection shows the results of the obtained SurvivalBots,
+analysing the distribution of actions and decisions at the beginning
+and at the end of the evolution. Figure \ref{figura:tarta_actions}
+shows the final distribution of the different types of actions
+(attack, reinforce and do nothing). As it can be seen, %no digáis
+                                %nunca As it can be seen. Se prueba o
+                                %no se prueba, pero nunca se
+                                %ve. Además, ni siquiera habéis puesto
+                                %una referencia - JJ
+ the {\em do
+  nothing} action has been increased % la acción se ha incrementado?
+                                % Qué significa eso? Será que el
+                                % númeor de veces que aparece esa
+                                % acción nosé dónde lo ha hecho, ¿no?
+                                % - JJ
+at the end of the evolution, as
+it seems logical that not all planets should attack in every turn
+(they may be waiting to have a large fleet to send). Of course, and
+because a player wins conquering the enemy planets, it is logical that
+the attack action is more effective than reinforce. 
 
 \begin{figure}[htb]
 \tiny
@@ -704,7 +741,10 @@ This subsection shows the results of the obtained SurvivalBots, analysing the di
 
 
 \end{center}
-\caption{Distribution of different types of actions (attack, reinforce and do nothing) of the generated bots.}
+\caption{Distribution of different types of actions (attack, reinforce
+  and do nothing) of the generated bots.}
+% Estos gráficos están fatal. Las etiquetas están cortadas. Y no están
+% etiquetadas cada tarta qué significa. - JJ
 \label{figura:tarta_actions}
 \end{figure}
 
@@ -733,7 +773,8 @@ Figure \ref{tarta_attacking_who}
     %\includegraphics{file=./imags/distribution_final_reinforce,width=3cm,angle=-90}
 
 \end{center}
-\caption{Owners of target planets when attacking: Enemy, Neutral, NotMy.}
+\caption{Owners of target planets when attacking: Enemy, Neutral,
+  NotMy.} % Será notmine, ¿no? No notmy. 
 \label{figura:tarta_attacking_who}
 \end{figure}
 
