@@ -12,6 +12,7 @@
 \usepackage{algorithmic}
 \usepackage{fancyvrb}
 \usepackage{subfigure}
+\usepackage{listings}
 % correct bad hyphenation here
 \hyphenation{}
 
@@ -426,17 +427,27 @@ In addition, an example of a possible decision tree is presented in Figure \ref{
 \begin{figure}
 % usar el estilo Algorithmic, esto queda feísimo - JJ FERGU: esto es código java, el algoritmic lo uso abajo
 
-\begin{Verbatim}[frame=single,fontsize=\small]
- 
+\begin{lstlisting}[frame=single,language=Java,tabsize=4]
 if(myShipsLandedFlyingRatio < 0.696)
-   if(actualMyShipsRatio < 0.421)
-      attackWeakestNeutralPlanet(0.481);
-   else
-      attackNearestEnemyPlanet(0.913);
+	if(actualMyShipsRatio < 0.421)
+		attackWeakestNeutralPlanet(0.481);
+	else
+		attackNearestEnemyPlanet(0.913);
 else
-   attackNearestEnemyPlanet(0.891);
+	attackNearestEnemyPlanet(0.891);
+\end{lstlisting}
 
-\end{Verbatim}
+%\begin{Verbatim}[frame=single,fontsize=\small]
+% 
+%if(myShipsLandedFlyingRatio < 0.696)
+%   if(actualMyShipsRatio < 0.421)
+%      attackWeakestNeutralPlanet(0.481);
+%   else
+%      attackNearestEnemyPlanet(0.913);
+%else
+%   attackNearestEnemyPlanet(0.891);
+%
+%\end{Verbatim}
 
 \label{fig:javatree}
 \caption{Example of the code generated for a decision tree of an individual.}
@@ -763,8 +774,7 @@ the attack action is more effective than reinforce.
 
 
 \end{center}
-\caption{Distribution of different types of actions (attack, reinforce
-  and do nothing) of the generated bots.}
+\caption{Distribution of different types of actions (attack, reinforce and do nothing) of the generated bots.}
 % Estos gráficos están fatal. Las etiquetas están cortadas. Y no están
 % etiquetadas cada tarta qué significa. - JJ
 \label{figura:tarta_actions}
@@ -780,7 +790,7 @@ Figure \ref{tarta_attacking_action} shows the strategy when a planet is attackin
     %\includegraphics{file=./imags/distribution_final_reinforce,width=3cm,angle=-90}
 
 \end{center}
-\caption{Condition of target planet when attacking: Nearest, Quickiest, Weakest, Walthest, Base or Beneficious.}
+\caption{Condition of target planet when attacking: Nearest, Weakest, Walthest, Beneficious, Quickiest, Base or Random.}
 \label{figura:tarta_attacking}
 \end{figure}
 
@@ -811,7 +821,7 @@ Figure \ref{tarta_reinforcing} shows the target when a planet is reinforcing the
     %\includegraphics{file=./imags/distribution_final_reinforce,width=3cm,angle=-90}
 
 \end{center}
-\caption{Destination of planets when reinforcing: Weakest, Wealthiest, Base.}
+\caption{Destination of planets when reinforcing: Near, Base, Wealthiest or Weakest,.}
 \label{figura:tarta_reinforcing}
 \end{figure}
 
@@ -840,7 +850,7 @@ All the SurvivalBots obtained at the end of the evaluations have been tested to 
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
 \hline
-{\em Bot Name} & {\& Reference} & {\em Number of simulations} & {\em Max. Turns} \\\hline \hline
+{\em Bot Name} & {\& Reference} & {\em Simulations in training} & {\em Max. Turns} \\\hline \hline
 SurvivaBot & (this) & 8000 & 1000 \\ \hline
 GeneBot & \cite{Genebot_JCST} & 32000 & 1000 \\ \hline
 ExpGeneBot & \cite{Genebot_CIG2012} & 32000 & 1000 \\ \hline
@@ -868,6 +878,15 @@ Figure \ref{figure:boxplot_mejores_contra_clasicos} shows the boxplots
 \label{figura:tarta_decissions}
 \end{figure}
 
+\begin{figure}[htb]
+\tiny
+\begin{center}
+    \includegraphics[width=9cm]{./imags/noise_study.eps}
+   
+\end{center}
+\caption{Noise of the best A and B in multiple simulations equal (same map and opponent).}
+\label{figura:noise_study.eps}
+\end{figure}
 
 
 
