@@ -163,7 +163,7 @@ offspring.
 % natural y todo eso y otro que no la menciones. 
 % Antonio - ya lo he puesto yo antes. ;)
 
-In addition,  considerating all the individuals in the population as opponents, not a specific one, makes the training (evolution) more
+In addition,  considering all the individuals in the population as opponents, not a specific one, makes the training (evolution) more
 general, and thus, the obtained individuals would, potentially, be able to face a wider amount of possible rivals.  
 %Vale, a buenas horas...
 
@@ -187,7 +187,7 @@ Summarizing, this paper tries to solve the next research questions:
 \item Is the implicit fitness evaluation proposed a feasible way to evaluate individuals?
 \item Is this approach less sensible to noise than others?
 \item How does affects not using a previously defined opponent?
-\item How is the behaviour of the generated bots?
+\item How good is the behaviour of the generated bots?
 \end{itemize}
 
 % Antonio -  Mejorar estos puntos y poner otros si hace falta
@@ -296,7 +296,7 @@ There are two strong constraints which determine the possible methods to apply t
 
 %We start from a designed bot's AI \cite{Genebot_CEC11}, named Genebot. It was defined from scratch (by an expert player), so it consists in a predefined set of behavioural rules. These rules depend on a set of parameters, which model thresholds, probabilities and weights, and which in turn, define how the bot will behave.
 
-Thus, the aim in this paper is to study the generation and improvement of that set of behavioural parameters and rules by means of some novel (in this scope) evolutionary approaches, based in the survival to evolve. These will be described in the following section.
+Thus, the aim in this paper is to study the generation and improvement of that set of behavioural rules and parameters by means of some novel (in this scope) evolutionary approaches, based in the survival to evolve. They are described in the following section.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   SURVIVAL BOT  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -326,56 +326,90 @@ Thus, the aim in this paper is to study the generation and improvement of that s
 % ------------------------------------------------------------------
 %
 
-This section describes the algorithm used in this work to generate the bots (called {\em SurvivalBots}), and the different configurations tested. A Genetic Programming algorithm to generate the agent's behaviour is combined with different policies of selection and replacement using implicit fitness.
+This section describes the algorithm proposed in this work to generate competent bots (called {\em SurvivalBots}), and the different configurations tested. A Genetic Programming \cite{GP_Koza92} algorithm to generate the agent's behaviour is combined with different selection and replacement policies, using an implicit fitness computation.
+
+% ----------------------------------------------------------------------------
 
 \subsection{Bot generation using GP}
 \label{subsec:generationgp}
 
-To generate the bot behaviour the {\em GPBot} algorithm, presented in \cite{GarciaGP14}, will be used in conjunction with our new proposed selection and replacement mechanisms. GPBot, the Genetic Programming algorithm used evolves a set of rules which, in turn, models a Decision Tree. 
-During the evolution, every individual in the population (a tree) must be evaluated. To do so, the tree is set as the behavioural engine of an agent, which is then placed in a map against a rival in a Planet Wars match. Depending on the obtained results, the agent (i.e. the individual) gets a fitness value, that will be considered in the evolutionary process as a measure of its validity. 
- 
-Thus, during the match the tree will be used (by the bot) in order to select the best strategy at every moment, i.e. for every planet a target will be selected along with the number of ships to send from one the other.
+To generate the bot's behaviour the so-called {\em GPBot} algorithm (presented in \cite{GarciaGP14}) has been used as a reference. However, the proposed method follows a different philosophy, based in the survival of the individuals, highly inspired by the crude natural evolutionary process. To this end new selection and replacement mechanisms have been adopted in the SurvivalBot approach.
 
-The  Decision Trees used are binary trees of expressions composed by
+In GPBot a Genetic Programming (GP) algorithm is used to evolve a set of rules which, in turn, models a Decision Tree. 
+% Antonio - Pedro pedía una cita de Decision Tree. Yo no la veo imprescindible, si la encontramos bien y si no, no hace falta.
+During the evolution, every individual in the population (a tree) must be evaluated. To do so, the tree is set as the behavioural engine of an agent, which is then placed in a map against a rival in a Planet Wars match. Depending on the obtained results, the agent (i.e. the individual) gets a fitness score, that will be considered in the evolutionary process as a measure of its value. 
+ 
+Thus, during the match the tree will be used (by the bot) in order to select the best strategy at every moment, i.e. for every planet a target will be selected along with the number of ships to send from one another.
+
+These Decision Trees are binary trees of expressions composed by
 two different \textit{types of nodes}: 
 
 \begin{itemize}
-\item {\em Decision}: a logical expression formed by a variable, a less than operator ($<$), and a number between 0 and 1. It is the equivalent to a ``primitive'' in the field of GP.
-\item {\em Action}: a leave of the tree (therefore, a ``terminal''). Each decision is the name of the method to call from the planet that executes the tree. This method indicates to which planet send a percentage of available ships (from 0 to 1). 
+\item {\em Decision}: a logical expression composed by a variable, a less than operator ($<$), and a number between 0 and 1. It is the equivalent to a ``primitive'' in the field of GP.
+\item {\em Action}: a leave of the tree (therefore, a ``terminal''). Each decision is the name of the function to execute when the bot is deciding what to do regarding a specific planet (when it is analysing the status of the planet and the possible actions). 
+% Antonio - El árbol lo ejecuta un bot para decidir qué hacer considerando un planeta, no lo ejecuta un planeta, ¿no?. Lo he intentado escribir así.
+The function indicates to which planet send a percentage of available ships (from 0 to 1), also decided in this step. 
+% Antonio - mira a ver si esto es verdad, Fergu. ¿se decide el porcentaje también aquí, ¿no?
 \end{itemize}
 
- The decisions are based in the values of different \textit{variables} which are computed considering some other variables in the game. They are defined by a human expert and defined in \cite{GarciaGP14}, and are shown next (with their acronyms, that will be used in the rest of the paper):
+The \textit{decisions} are based in the values of different \textit{variables} which are computed considering some parameters in the game. They were defined by a human expert in \cite{GarciaGP14}, and are shown next (with the acronyms that will be used in the rest of the paper):
 
 \begin{itemize}
+% Antonio - ¿estas interrogaciones se dejan?
 \item {\em myShipsEnemyRatio} [?mSE]: Ratio between the player's ships and enemy's ships.
 \item {\em myShipsLandedFlyingRatio} [?mSLF]: Ratio between the player's landed and flying ships.
 \item {\em myPlanetsEnemyRatio} [?mPE]: Ratio between the number of player's planets and the enemy's ones.
 \item {\em myPlanetsTotalRatio} [?mPT]: Ratio between the number of player's planet and total planets (neutrals and enemy included).
 \item {\em actualMyShipsRatio} [?aMS]: Ratio between the number of ships in the specific planet that evaluates the tree and player's total ships.
 \item {\em actualLandedFlyingRatio} [?maLF]: Ratio between the number of ships landed and flying from the specific planet that evaluates the tree and player's total ships.
-\item {\em Random} [?R]: This decision was not included in \cite{GarciaGP14} and it has been added to add stochasticity to the agent to perform the study presented in this work. It is a probability added to select one branch or the other.
+\item {\em Random} [?R]: This decision was not included in the original GPBot. It has been included in the list to add a stochastic component to the agent, with the aim of performing the noise study presented in this work (in Section \ref{sec:experiments}). It is, essentially, a probability added to select one branch or the other.
 \end{itemize}
 
-Finally, the possible \textit{actions} (with acronyms) are:
+Finally, the possible \textit{actions} (and acronyms) are:
 
 \begin{itemize}
 \item {\em Attack Nearest (Neutral|Enemy|NotMy) Planet} [ANN, ANE, ANNm]: The objective is the nearest planet.
 \item {\em Attack Weakest (Neutral|Enemy|NotMy) Planet} [AWkN, AWkE, AWkNm]: The objective is the planet with less ships.
-\item {\em Attack Wealthiest (Neutral|Enemy|NotMy) Planet} [AWN, AWE, AWNm]: The objective is the planet with higher lower rate.
-\item {\em Attack Beneficial (Neutral|Enemy|NotMy) Planet} [ABN, ABE, ABNm]: The objective is the  more beneficial planet, that is, the one with highest growth rate divided by the number of ships.
-\item {\em Attack Quickest (Neutral|Enemy|NotMy) Planet} [AQN, AQE, AQNm]: The objective is the planet easier to be conquered: the lowest product between the distance from the planet that executes the tree and the number of  ships in the objective planet.
+\item {\em Attack Wealthiest (Neutral|Enemy|NotMy) Planet} [AWN, AWE, AWNm]: The objective is the planet with the highest lower rate.
+\item {\em Attack Beneficial (Neutral|Enemy|NotMy) Planet} [ABN, ABE, ABNm]: The objective is the  more profitable planet, that is, the one with the highest value for growth rate divided by the amount of ships.
+\item {\em Attack Quickest (Neutral|Enemy|NotMy) Planet} [AQN, AQE, AQNm]: The objective is the easiest planet to be conquered: the lowest product between the distance from the planet being evaluated by the tree and the number of ships in the objective planet.
 \item {\em Attack (Neutral|Enemy|NotMy) Base} [ANB, AEB, ANmB]: The objective is the planet with more ships (that is, the base).
-\item {\em  Attack Random Planet} [AR].
-\item {\em Reinforce Nearest Planet} [RN]: Reinforce the nearest player's planet to the planet that executes the tree.
-\item {\em Reinforce Base} [RB]: Reinforce the player's planet with higher number of ships.
-\item {\em Reinforce Wealthiest Planet} [RW]: Reinforce the player's planet with higher grown rate.
+\item {\em Attack Random Planet} [AR].
+\item {\em Reinforce Nearest Planet} [RN]: Reinforce the nearest player's planet to the planet that is being evaluated by the tree.
+\item {\em Reinforce Base} [RB]: Reinforce the player's planet with the highest amount of ships.
+\item {\em Reinforce Wealthiest Planet} [RW]: Reinforce the player's planet with highest growth rate.
 \item {\em Reinforce Weakest Planet} [RWk]: Reinforce the player's planet with less ships.
 \item {\em Do nothing} [DN].
 
 \end{itemize}
 
-An example of a possible decision tree is presented in Figure \ref{fig:javatree}. This example tree has a total of 5 nodes, with 2 decisions and 3 actions, and a depth of 3 levels. 
-The bot's behaviour is explained in Algorithm \ref{alg:turn}.   % esta frase queda como "descolgada"... no entiendo a qué viene nombrar el Alg. 1 aquí (al menos de esta forma).   [pedro]
+The bot's general behaviour is shown in Algorithm \ref{alg:turn}.   
+% esta frase queda como "descolgada"... no entiendo a qué viene nombrar el Alg. 1 aquí (al menos de esta forma).   [pedro]
+% Antonio -  aclarado cambiando el orden
+In addition, an example of a possible decision tree is presented in Figure \ref{fig:javatree}. This example tree has five nodes, including two decisions and three actions, and a depth of three levels. 
+
+\begin{algorithm}[htb]
+\begin{algorithmic}
+
+\STATE {\em /* At the beginning of the execution the agent receives the tree */}
+\STATE tree $\leftarrow$ readTree()
+\WHILE{game not finished}
+  \STATE {\em /* starts the turn */}
+% Antonio - e.g. significa 'por ejemplo'. ¿No querrás decir i.e. que significa 'es decir'?
+  \STATE calculateGlobalPlanets() {\em /* e.g. Base or Enemy Base */}
+  \STATE calculateGlobalRatios()  {\em /* e.g. myPlanetsEnemyRatio */}
+  \FOR{Each p in PlayerPlanets}
+    \STATE calculateLocalPlanets(p) {\em /*e.g. NearestNeutralPlanet to p*}
+    \STATE calculateLocalRatios(p)  {\em /* e.g actualMyShipsRatio */}
+    \STATE executeTree(p,tree)  {\em /* Choose and Send a percentage of ships to destination*/}
+% Antonio - he añadido 'choose'
+   \ENDFOR
+\ENDWHILE
+
+\end{algorithmic}
+\caption{Pseudocode of a GPBot. The same tree is used during all the agent's execution}
+\label{alg:turn}
+\end{algorithm}
 
 \begin{figure}
 % usar el estilo Algorithmic, esto queda feísimo - JJ FERGU: esto es código java, el algoritmic lo uso abajo
@@ -393,78 +427,67 @@ else
 \end{Verbatim}
 
 \label{fig:javatree}
-\caption{Example of the code generated from a decision tree of an individual.}
+\caption{Example of the code generated for a decision tree of an individual.}
 % Antonio - más que un decision tree es un rule-based system, no?
 % Antonio - Si queremos hablar de decision trees, se podría dibujar uno modelando esas reglas. ;) FERGU: arreglao
 \end{figure}
 
 
-
-\begin{algorithm}[htb]
-\begin{algorithmic}
+% ----------------------------------------------------------------------------
 
 
-\STATE {\em /*At the beginning of the execution the agent receives the tree*/}
-\STATE tree $\leftarrow$ readTree()
-\WHILE{game not finished}
-  \STATE {\em /* starts the turn */}
-  \STATE calculateGlobalPlanets() {\em /* e.g. Base or Enemy Base */}
-  \STATE calculateGlobalRatios()  {\em /* e.g. myPlanetsEnemyRatio */}
-  \FOR{Each p in PlayerPlanets}
-    \STATE calculateLocalPlanets(p) {\em /*e.g. NearestNeutralPlanet to p*}
-    \STATE calculateLocalRatios(p)  {\em /* e.g actualMyShipsRatio */}
-    \STATE executeTree(p,tree)  {\em /*Send a percentage of ships to destination*/}
-   \ENDFOR
-\ENDWHILE
-
-\end{algorithmic}
-\caption{Pseudocode of the proposed agent. The same tree is used during all the agent's execution}
-\label{alg:turn}
-\end{algorithm}
-
-
-\subsection{Selection policy}
+\subsection{Joust-based Selection}
 The algorithm presented in \cite{GarciaGP14} % ¿El algoritmo de la anterior
                               % generación? ¿Eso qué es? - JJ FERGU: cierto, arreglado
-is combined with the implicit fitness evaluation for selection and
-replacement. This implicit evaluation of fitness is performed via a
-match of the individuals in a real-scenario (called {\em joust} to distinguish from the classical tournament in EAs). 
+is combined with an \textit{implicit fitness evaluation} for selection and
+replacement. This `evaluation' is, in essence, a match between individuals, called {\em joust} (to distinguish it from the classical tournament in EAs), in a battle map of the game. 
 %which explains the title we have given to this paper.  % Esta frase casi que la quitaría  [pedro] FERGU: ala, fuera
-Selection of the mating parents is performed in a battle: the winner is selected to mate % en lugar de crossover, pon "mate" [pedro] FERGU:  fale
-and the loser will be removed from the population (as it will be explained later).
+Thus, the selection of the two mating parents is performed each in a battle. The winner of the match is selected to mate 
+% en lugar de crossover, pon "mate" [pedro] FERGU:  fale
+and the loser will be definitely removed from the population (as it will be explained later).
 
 %Two different types of battles will be compared: {\em 1vs1} and {\em All vs All of 4 bots}, 
 % Antonio - esto lo ponía yo mal también, no son combates 4 contra 4, sino 1vs3. ;D FERGU: arreglao.
 %as they are the only possible match types in Planet Wars. 
 %In both configurations the winner will be selected to mating and the loser (i.e. the first to be eliminated) will be removed from the population. Therefore, in the case of All vs All, the individuals ending in 2nd and 3rd position neither are selected for mating nor removed.
 
-This implicit selection and replacement have been chosen because...  % ¡estoy en ascuas!  ¡¿por qué?!  ;)  [pedro]
+%This implicit selection and replacement have been chosen because...  % ¡estoy en ascuas!  ¡¿por qué?!  ;)  [pedro]
 
-\subsection{Replacement policy}
+This selection mechanism tries to emphasise the survival of the fittest individuals, since just the best bots will be chosen as parents, and thus, will remain one more generation. Actually, in this algorithm, the concept of generation is changed by `iteration', since it is not a classical evolutionary process, as will be deeply explained in the next section.
+
+The use of such a selection/survival process tries to reduce the noise added by the fitness evaluation in the evolutionary process \cite{Genebot_JCST}. So, the individuals which are not able to win in a match are strongly penalised, and thus, removed from the population of the next iteration.
+
+% --------------------------------------------------------------------------
+
+\subsection{Replacement of losers}
 \label{subsec:replacement}
 
 %The bots that have lost, and the offspring generated in the previously explained battles are removed/added to the population following one of the two next policies: steady-state or generational mechanism.
 
 %The replacement policy chosen is the steady-state, an implementation based in the classical Steady-State EA approach \cite{Genitor_whitley}. 
-A steady-state algorithm has been chosen as replacement policy. In this case, the classical Steady-State EA approach \cite{Genitor_whitley} has been implemented.   % reescribo la frase; la dejo comentada a continuación por si hay que restaurarla  ;)  [pedro]
+%A steady-state algorithm has been chosen as replacement policy. In this case, the classical Steady-State EA approach \cite{Genitor_whitley} has been implemented.   % reescribo la frase; la dejo comentada a continuación por si hay que restaurarla  ;)  [pedro]
 %The replacement policy chosen is the steady-state, an implementation based in the classical Steady-State EA approach \cite{Genitor_whitley}. 
-In this algorithm, the majority of the population remains the same in the following generation, and just a small subset of individuals are substituted (usually just the worst).
-This method aimed to increase the exploitation factor in the EA, since just the worst individuals in the population are substituted by fitter ones. 
-This is interesting for this problem because......   % ¡otra vez en ascuas!   :D
+
+% Antonio - la reescribo de otra forma. :D
+The classical Steady-State EA approach \cite{Genitor_whitley} has been implemented as replacement policy. In it, the majority of the population remains the same in the following generation, and just a small subset of individuals are substituted (usually just the worst). This method aims to increase the exploitation factor in the EA, in order to increase the convergence, which is an interesting factor in a noisy search space as the scope of videogames is.
+
+%, since just the worst individuals in the population are substituted by fitter ones. 
+%This is interesting for this problem because......   % ¡otra vez en ascuas!   :D
 
 % And this is interesting for this problem because... - JJ
 
-Thus, the proposed approach follows this idea and just performs two battles (or jousts) per generation. The contenders are randomly selected from all the population. Each two battles, both winners are the parents for the two new individuals (offspring). These two new individuals are inserted in the population after being created, substituting the bots that lose the battle against its parents.
+Thus, the proposed approach follows this idea and just performs two battles (or jousts) per generation, the aforementioned selection policy. The contenders are randomly selected from all the individuals in the population (ensuring that the same individuals are not chosen for both battles). 
+% Antonio - revisad que esto es así (se asegura que no se eligen los mismos individuos como padres).
+The two winners of the battles will be the parents for the \textit{crossover operation}, which generates two new individuals (offspring). 
+% Antonio - Decir qué tipo de cruce se ha implementado
+Then, the mutation operator is applied...
+% Antonio - decir qué operador de mutación se ha usado y justificarlo
+These individuals are inserted in the population after being created, substituting the bots that lose the jousts.
 
-
-This approach presents a higher stochastic component than the
-original, due to the lack of a fitness value which can value every
-individual with a simple number. The random selection of all the
-individuals increases the diversity in the algorithm run, which, in
-turn, could be a key factor in this problem resolution,
-
+This approach presents a higher stochastic component than the original, due to the lack of a fitness value which can value every individual with a simple number. The random selection of all the individuals also increases the chance of reducing the presence of noisy bots, i.e. those which are not good enough to remain in the population.
+% Antonio - no se incrementa la diversidad por seleccionar padres aleatorios, ¿no? Se incrementaría si se eligiesen malos individuos como padres. ;D
+This will be a key factor in this problem resolution,
 \textcolor{red}{AS WILL BE proved IN THE EXPERIMENTS}. 
-
 
 
 %In the second policy to be tested, the {\em generational} replacement\cite{GAs_Goldberg89}, half of the population is substituted every generation, having a big diversification and thus exploration factor.
@@ -475,7 +498,7 @@ turn, could be a key factor in this problem resolution,
                                 % por casualidad? - JJ
 %Then, after applying the crossover and mutation, the rest of the population is generated (two descendants per couple). The parents are grouped with all the offspring and the bots which have lost are deleted at the same time, increasing this way the diversity/exploration of the algorithm.
 
-Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Programming generation, in conjunction with the implicit evaluation, selection and replacement mechanisms.
+Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Programming approach, together with the implicit fitness evaluation, and the selection and replacement mechanisms.
 
 
 \begin{algorithm}[htb]
@@ -492,34 +515,39 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the Genetic Progr
 %  \ENDIF
 
 %  \FOR{1 to N}
-    \STATE {\em /* 2 contenders */}%in 1vs1 and 4 contenders in All vs All*/}
+    \STATE {\em /* Two random contenders for the joust */}%in 1vs1 and 4 contenders in All vs All*/}
 % Antonio - lo del 4vs4 FERGU: comentado
     \STATE contenders $\leftarrow$ selectContenders(population-selected)
-    \STATE {\em /*The contenders fight and the winner and loser are obtained */} %(in case of All vs All, the first to be defeated is the loser)*/}
+    \STATE {\em /* The contenders fight and the winner and loser are obtained */} %(in case of All vs All, the first to be defeated is the loser)*/}
     \STATE winner1,loser1 $\leftarrow$ battle(contenders)
-    \STATE {\em /* Previously selected bots not participate again in the tournament*/}
+    \STATE {\em /* Previously selected bots not participate again in the tournament */}
     \STATE selected $\leftarrow$ selected + winner1 + loser1 
+    \STATE {\em /* Contenders of the second joust */}
     \STATE contenders $\leftarrow$ selectContenders(population-selected)
+    \STATE {\em /* The contenders fight and the winner and loser are obtained */}
     \STATE winner2,loser2 $\leftarrow$ battle(contenders)
 % Antonio - poner más comentarios. Yo de hecho los suelo poner antes de cada instrucción (y más si son tan improtantes como estas)
 % Antonio - Si no se quiere hacer dos pseudocódigos para 1vs1 y para 1vs3, se pueden poner cosas comentadas sobre quienes son winner1 y loser1 en cada caso, poner algunas líneas que sólo se ejecutarían en un caso o en otro, etc FERGU: puestos comentarios
     \STATE selected $\leftarrow$ selected + winner2 + loser2 
+    \STATE {\em /* The losers will be removed from the population */}
     \STATE losers $\leftarrow$ losers + loser1 + loser2
+    \STATE {\em /* Evolutionary process */}
     \STATE son1,son2 $\leftarrow$ crossover(parent1,parent2);
     \STATE son1,son2 $\leftarrow$ mutation(son1,son2)
     \STATE offspring $\leftarrow$ offspring + son1 + son2
 %   \ENDFOR
-   \STATE population $\leftarrow$ population - losers
-   \STATE population $\leftarrow$ population + offspring
+    \STATE {\em /* Replacement of the losers */}
+    \STATE population $\leftarrow$ population - losers
+    \STATE population $\leftarrow$ population + offspring
 
 \ENDWHILE
 
 \end{algorithmic}
-\caption{Pseudocode of the proposed algorithm.}
+\caption{Pseudocode of the proposed SurvivalBot.}
 \label{alg:completealgorithm}
 \end{algorithm}
 
-
+% Antonio - falta darle un poco más de bombo a esto, parece una chuminá, pero en realidad... ¡ES LA POLLA! :D
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   EXPERIMENTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -590,7 +618,7 @@ t_{defeated} \in\left[0,N\times t_{MAX}\right]
 The terms used are: the number of battles ($N$) to test, the number of victories of the individual against GPbot ($v$), the total number of turns used to win GPbot ($t_{win}$), the total number of turns when the individual has been defeated by GPbot ($t_{defeated}$) and the maximum number of turns a battle lasts ($t_{MAX}$). This score tries to favor the victories against the turns to win and turns to be defeated, giving different ratios to each section. Therefore $\alpha$ has the highest ratio. The term $\beta$ add extra score taking into account the number of turns when the individual wins (lower numbers to win implies better bots), following a exponential curve.
 Finally, the $\gamma$ term adds score from the turns to be beaten (higher number is better, as it is difficult to be beaten). The 1 in all denominators is used to avoid divide by 0.
 
-Each individual has been tested 3 times in 10 different maps (the 5 used during evolution and other new 5 ones from the Google set), therefore $N=15$, and a the limit of turns is the default of the competition ($t_{MAX}=1000$). As previously said, this score has the same shortcomings that we are trying to avoid in this paper: it requires parametrization and an existent opponent. However, we will use this score as a way to measure the performance of our fitness-less approach.
+Each individual has been tested 3 times in 10 different maps (the 5 used during evolution and other new 5 ones from the Google set), therefore $N=15$, and a the limit of turns is the default of the competition ($t_{MAX}=1000$). As previously said, this score has the same shortcomings that we are trying to avoid in this paper: it requires parametrization and an existing opponent. However, we will use this score as a way to measure the performance of our fitness-less approach.
 
 Figure \ref{figura:Score_VS_GPBot} shows the boxplots of the score of the current population (of all 30 original runs) in different stages of the evolution in different maps (the used ones with the evaluation and the new set). As can be seen, this score is being increased during the evolution, therefore there exist some kind of improvement during the execution of the Co-GP algorithm. 
 
@@ -773,7 +801,7 @@ Figure \ref{figure:boxplot_mejores_contra_clasicos} shows the boxplots
     \includegraphics[width=9cm]{./imags/boxplot_mejores_contra_clasicos.eps}
    
 \end{center}
-\caption{Boxplots confronting best SurvivalBots against existent bots in the literature.}
+\caption{Boxplots confronting best SurvivalBots against existing bots in the literature.}
 \label{figura:tarta_decissions}
 \end{figure}
 
@@ -790,7 +818,7 @@ Figure \ref{figure:boxplot_mejores_contra_clasicos} shows the boxplots
 \section{Conclusions and Future Work}
 \label{sec:conclusions}
 
-This paper presents an implementation of a quite simple approach: to omit the fitness-based selection mechanism in an EA, simulating the evolution in a more natural way: performing real battles of the individuals. This has been applied over the improvement of the behavioural parameters and rules of the bot's AI in the RTS game Planet Wars. This approach has two main benefits: it leaves out existent bots for the evaluation, and the parametrization of the fitness function.
+This paper presents an implementation of a quite simple approach: to omit the fitness-based selection mechanism in an EA, simulating the evolution in a more natural way: performing real battles of the individuals. This has been applied over the improvement of the behavioural parameters and rules of the bot's AI in the RTS game Planet Wars. This approach has two main benefits: it leaves out existing bots for the evaluation, and the parametrization of the fitness function.
 
 The classic tournament selection mechanism has been modelled as a battle in the game (called joust) to ...
 
