@@ -70,7 +70,16 @@
 This paper proposes an evolutionary algorithm for evolving game bots
 that eschews an explicit fitness function, and substitutes it by a match between individuals, which we will call {\em joust}, % podï¿½a quedar hasta bien
                                 % - JJ
-implemented as a selection mechanism. Instead of measuring fitness by making the bots perform certain tasks or fight against baseline rivals, they fight in a co-evolutionary shape with other individuals in the population. The winner will  survive, being moved  to the next generation. Thus, explicit evaluation is replaced by implicit comparisons between bots. This algorithm has been designed as an optimization approach to generate the behavioural engine of
+implemented as a selection mechanism. Instead of measuring fitness by
+making the bots perform certain tasks or fight against baseline
+rivals, they fight in a co-evolutionary shape % shape es una forma
+                                % geométrica. "In the shape of a
+                                % rectangle". Queréis decir "way",
+                                % pero tampoco está bien
+                                % dicho. Además, usáis unas veces
+                                % co-evolutionary y otras
+                                % coevolutionary. 
+with other individuals in the population. The winner will  survive, being moved  to the next generation. Thus, explicit evaluation is replaced by implicit comparisons between bots. This algorithm has been designed as an optimization approach to generate the behavioural engine of
 bots for the RTS game Planet Wars using Genetic Programming. This algorithm has two objectives: first, to  better deal with the noisy nature of the fitness
 function (the evaluation for the same individual may vary from one
 time to another, due to the stochastic component of the combats); and
@@ -190,7 +199,13 @@ In this paper, an algorithm that creates bots using GP, without explicit (that i
 All these questions have been answered in the experiments, in which the evolution progress (during the run) is analysed, along with the associated noise to the best obtained bots. Then, the these bots are tested against some of the state-of-the-art to check their competitiveness.
 
 The paper is structured as follows. The background section reviews related work regarding the scope (videogames) and the implementation (EAs with no fitness computation or different selection mechanisms). It also describes the problem enclosed in the Planet Wars game.
-Section \ref{sec:survival_bots} presents the proposed method, termed {Survival Bot}.
+Section \ref{sec:survival_bots} presents the proposed method, termed
+{Survival Bot}. %Survival bot suena fatal. Superviviente es que
+                %sobrevive de una catástrofe, no de una lucha, que se
+                %llama simplemente vencedo. En todo caso "survivor",
+                %no survival, y mucho mejor "gladiator" o algo
+                %así. Pero tampoco está bien porque no es un bot
+                %único, sino muchos generados por un método. - JJ
 The experiments analyzing the evolution, noise and obtained bots are described and discussed in Section \ref{sec:experiments}. Finally, the conclusions and future lines of research are presented in Section \ref{sec:conclusions}.
 %ANTONIO RECUERDA QUE ES INGLES AMERICANO, NO PONER ANALYSE NI COSAS BRITISH!!!!!
 % Antonio - Arreglar esto con la distribuciï¿½n final. Candidato a ser borrado por falta de espacio. :D
@@ -211,11 +226,16 @@ The experiments analyzing the evolution, noise and obtained bots are described a
 
 % No os olvidï¿½is de citar lo del Wilcoxon, que estï¿½ publicado en
 % figshare y estï¿½ en geneura.bib - JJ
-Evolutionary Computation (EC) has been applied in a wide variety of issues inside the videogames scope. One of the most profiting areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011}.
+Evolutionary Computation (EC) has been applied in a wide variety of
+issues inside the videogames scope. One of the most profiting % ¿qué
+                                % es most profiting? ¿No será
+                                % promising? - JJ
+areas inside them is the parameter optimisation of behavioural engines \cite{Mora-Evo2010,cooperativebots_CIG2010,Genebot-IWANN2011}.
 % Antonio - poner citas de otra gente que evolucione parï¿½metros de bots
 %
 % or content generation \cite{LaraMaps14}, among others.
 % Antonio - quito esto que no viene a cuento aquï¿½. ;)
+% Lo que no viene a cuento es que cites sólo tres trabajos tuyos. 
 %
 This is normally a step in the generation of an AI engine to control the NPCs that play the game. The first approach is to create a set of rules by a human expert, and then optimize the set of parameters which determine how this bot behaves. This kind of improvement has been previously performed in \cite{Genebot_CEC11,genebot-evo12,Genebot_CIG2012,CarSetup} by means of off-line (before the game) Evolutionary Algorithms.
 Furthermore, the use of GP \cite{GarciaGP14,EsparciaGP2013} dispenses the human expert to define the set of rules, as these rules, along with their numerical parameters, are created and evolved automatically during the run.  Thus, it is a more flexible approach for defining the behavioural engine of the bots, which can find rules that a human expert cannot imagine at all. For this reason GP has been used in this paper to generate the engines.
@@ -456,8 +476,11 @@ The algorithm presented in \cite{GarciaGP14} % ï¿½El algoritmo de la anterior
                               % generaciï¿½n? ï¿½Eso quï¿½ es? - JJ FERGU: cierto, arreglado
 is combined with an \textit{implicit fitness evaluation} for selection and
 replacement. This `evaluation' is, in essence, a match between individuals, called {\em joust} (to distinguish it from the classical tournament in EAs), in a battle map of the game.
-%which explains the title we have given to this paper.  % Esta frase casi que la quitarï¿½a  [pedro] FERGU: ala, fuera
-Thus, the selection of the two mating parents is performed each one in a battle. The winner of the match is selected to mate
+%which explains the title we have given to this paper.  % Esta frase
+%casi que la quitarï¿½a  [pedro] FERGU: ala, fuera
+% single match? Which map? Esta sección es FUNDAMENTAL y tiene pocos
+% detalles - JJ
+Thus, the selection of each one in the two mating parents is performed  in a battle. The winner of the matches is selected to mate
 % en lugar de crossover, pon "mate" [pedro] FERGU:  fale
 and the loser will be definitely removed from the population (as it will be explained below).
 
@@ -470,7 +493,19 @@ and the loser will be definitely removed from the population (as it will be expl
 
 This selection mechanism tries to emphasize the survival of the fittest individuals, since just the best bots will be chosen as parents, and thus, will remain one more generation. Actually, in this algorithm, the concept of `iteration' is used as a synonym of generation, since it is not a classical evolutionary process, as will be deeply explained in the next section.
 
-The use of such a selection/survival process tries to reduce the noise added by the fitness evaluation in the evolutionary process \cite{Genebot_JCST}. So, the individuals which are not able to win in a match are strongly penalised, and thus, removed from the population of the next iteration.
+The use of such a selection/survival process tries to reduce the noise
+added by the fitness evaluation in the evolutionary process
+\cite{Genebot_JCST}. So, the individuals which are not able to win in
+a match are strongly penalised, and thus, removed from the population
+of the next iteration. 
+
+% Ahora tendréis que explicar cuál es la diferencia con un torneo
+% normal y corriente, en el que cada uno de los individuos obtiene un
+% fitness al enfrentarse con un tercero. Además, la función de fitness
+% no _añade_ ruido. El proceso de obtención del fitness en sí es lo
+% ruidoso. Además,  una sola evaluación (y, además, en cinco
+% mapas) es igual de ruidoso, o menos, que una sola lucha. ¿Y si
+% luchan dos veces y gana uno cada vez? - JJ 
 
 % --------------------------------------------------------------------------
 
@@ -491,6 +526,13 @@ The classical Steady-State EA approach \cite{Genitor_whitley} has been implement
 
 % And this is interesting for this problem because... - JJ
 
+% Because no lo habéis contestado. Además, tenéis que especificar más
+% cuantos sustituís y por qué. El proceso steady state tendería a
+% reducir el ruido, porque los que se quedan en la población se
+% enfrentan varias veces, aunque con que pierdan una la palman. Así
+% que habría que ver qué efecto tiene el hecho de que se sustituyan
+% un porcentaje u otro - JJ 
+
 Thus, the proposed approach follows this idea and just performs two battles (or jousts) per generation, the aforementioned selection policy. The contenders are randomly selected from all the individuals in the population (ensuring that the same individuals are not chosen for both battles).
 % Antonio - revisad que esto es asï¿½ (se asegura que no se eligen los mismos individuos como padres).
 The two winners of the battles will be the parents for the \textit{crossover operation}, which generates two new individuals (offspring), which will be also mutated.
@@ -502,7 +544,14 @@ These individuals are inserted in the population after being created, substituti
 This approach presents a bigger random component than the
 original, % sera random, no stochastic. Stochastic se es o no se es,
           % es como estar embarazada - JJ FERGU: cambiado
-due to the lack of a fitness value which can value every individual with a simple number. The random selection of all the individuals also increases the chance of reducing the presence of noisy bots, i.e. those which are not good enough to remain in the population.
+due to the lack of a fitness value which can value every individual
+with a simple number. The random selection of all the individuals also
+increases the chance of reducing the presence of noisy bots,
+i.e. those which are not good enough to remain in the population. % si
+                                % es bigger random, ¡es más ruidoso!
+                                % ¡Y se supone que lo que estáis
+                                % queriendo hacer es disminuir el
+                                % ruido! - JJ 
 % Antonio - no se incrementa la diversidad por seleccionar padres aleatorios, ï¿½no? Se incrementarï¿½a si se eligiesen malos individuos como padres. ;D FERGU: esto lo has escrito tÃº! XD
 This will be a key factor in the resolution of this problem, as will be proved in the experiments.
 
@@ -537,7 +586,9 @@ Algorithm \ref{alg:completealgorithm} shows the combination of the GP approach, 
     \STATE contenders $\leftarrow$ selectContenders(population-selected)
     \STATE {\em /* The contenders fight and the winner and loser are obtained */} %(in case of All vs All, the first to be defeated is the loser)*/}
     \STATE winner1,loser1 $\leftarrow$ battle(contenders)
-    \STATE {\em /* Previously selected bots not participate again in the tournament */}
+    \STATE {\em /* Previously selected bots do not participate again
+      in the tournament */}
+% Esto no se dice con un comentario, se incluye en la población - JJ 
     \STATE selected $\leftarrow$ selected + winner1 + loser1
     \STATE {\em /* Contenders of the second joust */}
     \STATE contenders $\leftarrow$ selectContenders(population-selected)
@@ -577,7 +628,7 @@ Thus, the experiments are separated in three subsections, one per objective.
 
 The set of parameters considered in our co-evolutionary GP (Co-GP) algorithm, SurvivalBot, is shown in Table \ref{tab:parameters}.
 These parameters were previously used in \cite{GarciaGP14}, to obtain competitive bots. Since GPBot is the basis of the present proposal, we have considered it as a base for comparisons in the experiments.
-Thus, to do a fair comparison with that method and the results it yields, the termination criteria in SurvivalBot has been set to 8000 battles (therefore, 4000 generations/iterations), since GPBot considered 32 individuals * 5 combats per evaluation * 50 generations = 8000 evaluations/combats. 
+Thus, in order to do a fair comparison with that method, the termination criteria in SurvivalBot has been set to 8000 battles (therefore, 4000 generations/iterations), since GPBot considered 32 individuals * 5 combats per evaluation * 50 generations = 8000 evaluations/combats. 
 
 30 runs of the Co-GP have been performed in order to obtain statistically significant results. % completo la frase  [pedro]
 % Antonio - cuidao que unas veces pones Co-GP y otras Co-GA FERGU: cambiado todo a Co-GP
@@ -647,7 +698,16 @@ t_{defeated} \in\left[0,N\times t_{MAX}\right]
 \end{split}
 \end{equation}
 
-The terms used are: the number of battles ($N$) to test, the number of victories of the individual against GPBot ($v$), the total number of turns used to win GPBot ($t_{win}$), the total number of turns when the individual has been defeated by GPBot ($t_{defeated}$) and the maximum number of turns a battle lasts ($t_{MAX}$). This score aims to favour the victories against the turns to win and turns to be defeated, giving different ratios to each section. Therefore $\alpha$ has the highest ratio. The term $\beta$ add extra score taking into account the number of turns when the individual wins (lower numbers to win implies better bots), following a exponential curve.
+The terms used are: the number of battles ($N$) to test, the number of
+victories of the individual against GPBot ($v$), the total number of
+turns used to win GPBot ($t_{win}$), the total number of turns when
+the individual has been defeated by GPBot ($t_{defeated}$) and the
+maximum number of turns a battle lasts ($t_{MAX}$). This score aims to
+favour the victories against the turns to win and turns to be
+defeated, giving different ratios to each section. Therefore $\alpha$
+has the highest ratio. The term $\beta$ adds extra score taking into
+account the number of turns when the individual wins (lower numbers to
+win implies better bots), following a exponential curve. 
 Finally, the $\gamma$ term adds score from the turns to be beaten (higher number is better, as it is difficult to be beaten). The 1 in all denominators is used to avoid dividing by 0.
 
 Each individual has been tested 3 times in 10 different maps (the 5 used during evolution and other new 5 ones from the Google set), therefore $N=30$ (for all maps and 15 for each of the subsets of them), and a the limit of turns is the default of the competition ($t_{MAX}=1000$). As previously said, this score has two shortcomings that we are trying to avoid in this paper: it requires parametrization and an existing opponent. However, we will use this score as a way to measure and show the performance of our fitness-less approach.
@@ -684,7 +744,7 @@ against the best GPBot.}
 %\label{figura:Score_VS_GPBot_AllMaps}
 %\end{figure}
 
-Figure \ref{figura:Score_VS_GPBot} lightly shows% ¿Qué diablos es
+Figure \ref{figura:Score_VS_GPBot} lightly shows % ¿Qué diablos es
                                 % lightly shows? - JJ
  a convergence trend, but the effect is clearly shown in Figure \ref{figura:convergence}, which plots the average score of all individuals, and the average score of all the best (one per run), obtained during the evolution of the SurvivalBots.
 This figure shows how there exist an increasing performance in the best (and also in average) individuals during the runs. Moreover, a lightly noisy factor is present, but the oscillations are not as striking as in previous approaches \cite{Genebot_JCST}.
@@ -722,7 +782,24 @@ So we can conclude that an effective improvement has been done in the population
 \label{figura:Victories_VS_GPBot_AllMaps}
 \end{figure}
 
-The last study in this set of experiments concerns the age of the individuals. This can help to understand how the evolution is has been performed. Figure \ref{figura:age} shows the ages of the individuals during one run. It is interesting how the age has a limit and it is not increased during all the run, meaning that a truly good bot is not generated at the very beginning and remains  during all the evolution. This tends us to think that, again, the whole population is effectively improved so, the good bots are beaten by the offspring a few generations after. The extreme values which get up to 50 generations happen due to the random selection of contenders, which could omit a bot to fight for several generations.
+The last study in this set of experiments concerns the age of the
+individuals. This can help us understand how the evolution is has been 
+% is has. Vaya tela. - JJ 
+performed. Figure \ref{figura:age} shows the ages of the individuals
+during one run. It is interesting how the age has a limit and does
+not increase during all the run, meaning that a truly good bot is not
+generated at the very beginning and remains during all the
+evolution. % interesting por qué?
+This tends us to think that, again, the whole population is
+% ¿Nos tiende a pensar? Por favor... - JJ 
+effectively improved so, the good bots are beaten by the offspring a
+few generations after. The extreme values which get up to 50
+% Vamos, que evoluciona. Si no evolucionara, estaríamos apañaos. 
+generations happen due to the random selection of contenders, which
+could omit a bot to fight for several generations. % Con esto vienes a
+                                % decir que uno de los que esté en la
+                                % última generación puede estar ahí
+                                % por casualidad - JJ 
 
 \begin{figure}[htb]
 \tiny
@@ -775,18 +852,43 @@ Once, we have proved that SurvivalBots have a good algorithmic behaviour, and re
 \subsection{Analysis of the generated bots}
 \label{subsec:analysisbots}
 
-Firstly, all the SurvivalBots obtained at the end of the runs have been tested against other bots available in the literature. 
+%Decir qué queréis sacar de aquí. 
+All the SurvivalBots obtained at the end of the runs have been
+initially tested against other bots available in the literature.  
 
-To this end, jut one SurvivalBot per run must be chosen, so first the {\em best} individual of every run has been selected by confronting all the individuals of the last generation in an \textit{all vs. all tournament}. The bot who has won more times is considered as the best. This method has been considered in order to avoid the usage of the score function (and therefore, the shortcomings we are trying to avoid). 
+To this end, jut one SurvivalBot per run must be chosen, so first the
+{\em best} individual of every run has been selected by confronting
+all the individuals of the last generation in an \textit{all vs. all
+  tournament}. The bot who has won more times is considered as the
+best. This method has been considered in order to avoid the usage of
+the score function (and therefore, the shortcomings we are trying to
+avoid). % ¿En qué quedamos? ¿All o one of them? ¿Cuántas veces los
+        % enfrentáis 1 vs 1.? ¿En qué mapa o mapas? ¿Por qué evitas la
+        % función de scoring? La última fase sobra. 
 
-Then, we have confronted the 30 best bots obtained in each configuration again with several bots available in the literature, in the 100 example maps provided by Google with the competition framework. These have been used to validate if the obtained SurvivalBots can be competitive in terms of quality in maps not used during evolution, and against unknown bots (as a difference to the other approaches). Table \ref{tab:literaturebots} presents the bots used as opponents. 
+Then, we have confronted the 30 best bots obtained in each
+configuration % ¿Configuration? ¿De qué estás hablando? ¿El mejor de
+              % cada ejecución? A ver, no será más fácil decir algo
+              % así:
+% Since there is no explicit fitness, the population obtained in the
+% last generation is not ranked; if we want to choose the best among
+% them we will have, again, to perform a joust all versus all to
+% obtain the best among them. 
+again with several bots available in the literature, in the 100
+example maps provided by Google with the competition framework. These
+have been used to validate if the obtained SurvivalBots can be
+competitive in terms of quality in maps not used during evolution, and
+against unknown bots (as a difference to the other approaches). % ¿Qué
+                                % other approaches? No has comparado
+                                % con ninguno, ¿no? - JJ
+Table \ref{tab:literaturebots} presents the bots used as opponents. 
 
 \begin{table}
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
 \hline
 % Number of iterations o lo que sea needed for training. ¿Qué es
-% simulations in training? - JJ
+% simulations in training? ¿Max Turns?- JJ
 {\em Bot Name} & {\& Reference} & {\em Simulations in training} & {\em Max. Turns} \\\hline \hline
 BullyBot & Google AI Web & None & None \\ \hline
 SurvivalBot & proposed here & 8000 & 1000 \\ \hline
@@ -800,7 +902,23 @@ HoFBot & \cite{NogueiraCoevolutionary14} & 180000 & 500 \\ \hline
 \end{center}
 \end{table}
 
-Figure \ref{figure:boxplot_mejores_contra_clasicos} shows the boxplots of the percentage of victories of the SurvivalBots against every rival. Note that it only shows the victories, not the draws. The most interesting result is that GPBot is clearly outperformed, even if the number of battles has been the same to train SurvivalBot than for GPBot, as we set. Therefore, our method can generate competitive bots without using existing ones in the training. The HoFBot, which was also obtained using co-evolution, has also been defeated more than 50\% times by most of the best SurvivalBots. However, highly trained bots (GeneBot and ExpGenebot), which applied 4 times more evaluations to be generated have been difficult to beat. It is interesting to mention that in \cite{GarciaGP14} GPBot was able to beat these two bots in a higher value, but this happened because they were used to train GPBot, so it was focused only in beating them.
+Figure \ref{figure:boxplot_mejores_contra_clasicos} shows the boxplots
+of the percentage of victories of the SurvivalBots against every
+rival. Note that it only shows the victories, not the draws. The most
+interesting result is that GPBot is clearly outperformed, even if the
+number of battles has been the same to train SurvivalBot than for
+GPBot, as we set. Therefore, our method can generate competitive bots
+without using existing ones during the training phase. % y esto es
+                                % bueno porque... - JJ
+ The HoFBot, which was also obtained using co-evolution, has also been
+ defeated more than 50\% times by most of the best
+ SurvivalBots. However, highly trained bots (GeneBot and ExpGenebot),
+ which applied 4 times more evaluations to be generated have been
+ difficult to beat. It is interesting to mention that in
+ \cite{GarciaGP14} GPBot obtained better score when confronting them, but this happened because they were used to train it, so it
+ was focused only in beating them. % ¿Y si estos dos necesitan más
+                                % ciclos, ¿por qué no usas más ciclos?
+                                % - JJ 
 
 \begin{figure}[htb]
 \tiny
@@ -811,12 +929,31 @@ Figure \ref{figure:boxplot_mejores_contra_clasicos} shows the boxplots of the pe
 \caption{Percentage of victories % De quién?????? - JJ 
 confronting the 30 best SurvivalBots  % 30 best de qué? De 30
                                 % ejecuciones? De una ejecución? - JJ
-against existing bots in the literature.}
+against existing bots in the literature. Averages are taken over the
+30 SurviBots, which are the beast in the 30 runs.}
 \label{figure:boxplot_mejores_contra_clasicos}
 \end{figure}
 
+% A ver, este es el resultado principal del paper, y no es tan
+% bueno. Con dos bots publicados, y además publicados por ti, obtiene
+% peores resultados. Además, te escapas diciendo que es porque usa más
+% ciclos. Si es así, ¿por qué no usas más ciclos? ¿No es el objetivo
+% de la optimización obtener el mejor de lo mejor? En vez de la sesión
+% posterior, teníais que haberos concentrado en analizar el resultado
+% anterior, proponer hipótesis sobre los mismos, y si es posible
+% mejorarlo. - JJ 
 
-Although this is not the main contribution of this paper, we also show the resulting behavioural engines of the obtained SurvivalBots, analysing the distribution of actions and decisions at the beginning and at the end of the evolution to understand their behaviour. Figure \ref{figura:tarta_actions} shows the final distribution of the different types of actions ($attack$, $reinforce$ and $do nothing$). This figure shows that %As it can be seen, %no digï¿½is
+Although this is not the main contribution of this paper, % si no
+                                % lo es, ¿por qué lo pones? Estás
+                                % introduciendo nuevas posibilidades
+                                % para que te ataquen el paper. 
+we also show
+the resulting behavioural engines of the obtained SurvivalBots,
+analysing the distribution of actions and decisions at the beginning
+and at the end of the evolution to understand their behaviour. Figure
+\ref{figura:tarta_actions} shows the final distribution of the
+different types of actions ($attack$, $reinforce$ and $do
+nothing$). This figure shows that %As it can be seen, %no digï¿½is 
                                 %nunca As it can be seen. Se prueba o
                                 %no se prueba, pero nunca se
                                 %ve. Ademï¿½s, ni siquiera habï¿½is puesto
@@ -851,7 +988,12 @@ $reinforce$.
 \label{figura:tarta_actions}
 \end{figure}
 
-Figure \ref{figura:tarta_attacking} shows the strategy when a planet is $attacking$ to other. It is clear that the generated bots have a predilection for nearest planets and the ones easiest to be conquered. This make sense because ships flying to long destinations are not being used, so, using a $ rush$ strategy makes a good option to conquer and advance.
+Figure \ref{figura:tarta_attacking} shows the strategy when a planet
+is $attacking$ to other. It is clear that the generated bots have a
+predilection for nearest planets and the ones easiest to be
+conquered. This makes sense because ships flying to destinations far
+away are not being used, so, using a $ rush$ strategy makes a good
+option to conquer and advance. 
 \begin{figure}[htb]
 \tiny
 \begin{center}
@@ -945,7 +1087,14 @@ According to the results in the experiments, the analysis performed, and the rea
                                 %o lo hace? - JJ
 \end{itemize}
 
-Moreover, the generated bots, named SurvivalBots, have been tested against some state-of-the-art rivals, getting excellent results even in the comparison with highly evolved and specialized bots.
+Moreover, the generated bots, named SurvivalBots, have been tested
+against some state-of-the-art rivals, getting excellent results even
+in the comparison with highly evolved and specialized bots. % y les
+                                % zurran la badana otros que ya están
+                                % publicados también.
+
+% Y no decís nada del análisis del "behavioral engine". Si no concluís
+% nada de él, ¿por qué lo ponéis? - JJ
 
 As future work, we will firstly focus in obtaining more competitive bots. Thus, more possible actions and decisions will be added to the proposed Genetic Programming algorithm (for example, to analyze the planet distances). In the same line, some tests will be done using an unlimited tree depth, which could lead to get much more complex (and effective) behavioural engines.
 Also, a $4vs4$ joust will be implemented and tested, in which the 2nd and 3rd contenders will not be removed, neither mated. 
@@ -968,6 +1117,10 @@ Finally, we aim to apply this approach to other videogames considered in the are
 % Antonio - actualizar esto. He quitado EVORQ y MUSES, pero ANYSELF terminï¿½ y CANUBE tambiï¿½n, ï¿½no?
 This paper has been funded in part by Spanish National project TIN2011-28627-C04-02 (ANYSELF) and project GENIL PYR-2014-17, awarded by the CEI-BioTIC UGR.
 
+% Ni siquiera nuestros propios trabajos están bien citados. Por favor,
+% usad la bibliografía canónica en geneura.bib Cooperativebots, por
+% ejemplo, está mal (mirad que pone JM Guervós). En la 30 y 32 pone RTS en
+% minúsculas. Y así. - JJ 
 \bibliographystyle{IEEEtran}
 \bibliography{genebot}
 
