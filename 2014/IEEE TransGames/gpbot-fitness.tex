@@ -348,7 +348,7 @@ two different \textit{types of nodes}:
 
 \begin{itemize}
 \item {\em Decision}: a logical expression composed by a variable, a less than operator ($<$), and a number between 0 and 1. It is the equivalent to a ``primitive'' in the field of GP.
-\item {\em Action}: a leave of the tree (therefore, a ``terminal''). Each decision is the name of a function, and a ratio between 0 and 1. The function indicates to which target planet the bot must send a percentage of the available amount of ships in the planet (from 0 to 1). As the bot applies the tree one time per planet it uses each time the information of the current planet.
+\item {\em Action}: a leaf of the tree (therefore, a ``terminal''). Each decision is the name of a function, and a ratio between 0 and 1. The function indicates to which target planet the bot must send a percentage of the available amount of ships in the planet (from 0 to 1). As the bot applies the tree one time per planet it uses each time the information of the current planet.
 
 %when the bot is deciding what to do regarding a specific planet (when it is analysing the status of the planet and the possible actions).
 % Antonio - El ï¿½rbol lo ejecuta un bot para decidir quï¿½ hacer considerando un planeta, no lo ejecuta un planeta, ï¿½no?. Lo he intentado escribir asï¿½. FERGU: lo he reescrito yo tambiï¿½n para que sea mï¿½s entendible
@@ -499,7 +499,7 @@ The two winners of the battles will be the parents for the \textit{crossover ope
 In this paper, sub-tree crossover and 1-node mutation operators have been used, as they obtain good results in generation of bots using GP \cite{EsparciaGP2013}.
 These individuals are inserted in the population after being created, substituting the bots that lose the jousts.
 
-This approach presents a higher random component than the
+This approach presents a bigger random component than the
 original, % sera random, no stochastic. Stochastic se es o no se es,
           % es como estar embarazada - JJ FERGU: cambiado
 due to the lack of a fitness value which can value every individual with a simple number. The random selection of all the individuals also increases the chance of reducing the presence of noisy bots, i.e. those which are not good enough to remain in the population.
@@ -660,7 +660,11 @@ Figure \ref{figura:Score_VS_GPBot} presents the boxplots of the score of the who
 \includegraphics[clip=true,width=9cm]{./imags/score_vs_gpbot.eps}
 \end{center}
 %Es muy pequeï¿½o. ï¿½No se puede poner a dos columnas? - JJ FERGU: agrandado
-\caption{Score confronting all SurvivalBots obtained during all the runs against the best GPBot.}
+\caption{Score obtained when confronting all SurvivalBots obtained
+  during all the runs % ¿y qué significa el eje iterations? ¿All
+                      % obtained in a partidular iteration? Tenéis que
+                      % explicar todos los elementos de un gráfico - JJ
+against the best GPBot.}
 %ï¿½Quï¿½ diablos es "not training" Serï¿½ "not included in training" - ï¿½Quï¿½
 %diablos es score vs. gpbot? ï¿½La puntuaciï¿½n se enfrenta con GPBOT?
 %Serï¿½ score SurvivalBot vs. gpbot, ï¿½no? - JJ FERGU: sï¿½, es que era un
@@ -689,7 +693,10 @@ This effect will be better studied in the experiment in Section \ref{subsec:anal
 \begin{center}
   \epsfig{file=./imags/convergence_graph,width=7cm}
 \end{center}
-\caption{Score trend during evolution. Average score of the best and of the whole population from all the runs  of SurvivalBots against the best GPBot.}
+\caption{Score trend % no es un trend porque no medís tendencias. Será
+                     % simplemente el valor. ¡Y la clave se sale del
+                     % cuadrado! - JJ
+during evolution. Average score of the best and of the whole population from all the runs  of SurvivalBots against the best GPBot.}
 \label{figura:convergence}
 \end{figure}
 
@@ -706,7 +713,10 @@ So we can conclude that an effective improvement has been done in the population
 % el numero de bins segun lo que quieras representar en un histograma,
 % son muchas - JJ
 % Y seguis sin hacerme caso a este comentario. Serï¿½ Histogram of
-% number victories for the algorithm population o algo asi - JJ FERGU: lo de unirlo por batallas lo hicimos pero quedaba fatal. Cambiado de todas formas el caption.
+% number victories for the algorithm population o algo asi - JJ FERGU:
+% lo de unirlo por batallas lo hicimos pero quedaba fatal. Cambiado de
+% todas formas el caption.
+% Nada. Histograma de 30 bins. ¡Se debe reducir a 10! - JJ
 \label{figura:Victories_VS_GPBot_AllMaps}
 \end{figure}
 
@@ -743,7 +753,15 @@ Figure \ref{figura:noise} shows the boxplots of the 30 bots of GPBot and Surviva
 \begin{center}
   \epsfig{file=./imags/noise_study,width=7cm}
 \end{center}
-\caption{Noise factor of the best 30 bots obtained using GPBot and SurvivalBot approaches, evaluated in 10 different maps (5 previously trained and 5 not previously trained), 30 times/battles per map. The value for each bot is the difference between the maximum and the minimum scores obtained in every map after the 30 battles.}
+\caption{Noise factor of the best 30 bots obtained using GPBot and
+  SurvivalBot approaches, evaluated in 10 different maps (5 previously
+  trained and 5 not previously trained), 30 times/battles per map. The
+  value for each bot is the difference between the maximum and the
+  minimum scores obtained in every map after the 30 battles.}
+% El ruido tiene una forma estándar de medirse y es en decibelios. Se
+% tiene que tomar una "señal" y compararla con el resultado. Esta no
+% es forma de hacerlo. Habla de "fitness range" o lo que sea. Además,
+% no etiquetas el eje y. Noise measure, ¿en qué? - JJ
 \label{figura:noise}
 \end{figure}
 
@@ -765,6 +783,8 @@ Then, we have confronted the 30 best bots obtained in each configuration again w
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
 \hline
+% Number of iterations o lo que sea needed for training. ¿Qué es
+% simulations in training? - JJ
 {\em Bot Name} & {\& Reference} & {\em Simulations in training} & {\em Max. Turns} \\\hline \hline
 BullyBot & Google AI Web & None & None \\ \hline
 SurvivalBot & proposed here & 8000 & 1000 \\ \hline
@@ -786,7 +806,10 @@ Figure \ref{figure:boxplot_mejores_contra_clasicos} shows the boxplots of the pe
     \includegraphics[width=9cm]{./imags/boxplot_mejores_contra_clasicos.eps}
 
 \end{center}
-\caption{Percentage of victories confronting the 30 best SurvivalBots against existing bots in the literature.}
+\caption{Percentage of victories % De quién?????? - JJ 
+confronting the 30 best SurvivalBots  % 30 best de qué? De 30
+                                % ejecuciones? De una ejecución? - JJ
+against existing bots in the literature.}
 \label{figure:boxplot_mejores_contra_clasicos}
 \end{figure}
 
@@ -801,7 +824,13 @@ Although this is not the main contribution of this paper, we also show the resul
                                 % nï¿½meor de veces que aparece esa
                                 % acciï¿½n nosï¿½ dï¿½nde lo ha hecho, ï¿½no?
                                 % - JJ
-by the end of the evolution, as it seems logical that not all planets should attack in every turn (they may be waiting to have a large fleet to send). Of course, and because a player wins conquering the enemy planets, it is logical that the $attack$ action is more effective than $reinforce$.
+by the end of the evolution, as it seems logical that not all planets
+should attack in every turn (they may be waiting to have a large fleet
+to send). Of course, and because a player wins conquering the enemy
+planets, it is logical that the $attack$ action is more effective than
+$reinforce$.
+% agh, $ es notación matemática. Queda fatal para nombrar a este tipo
+% de palabras. Usa \sc o \em. No es la forma de poner cursiiva - JJ
 
 \begin{figure}[htb]
 \tiny
@@ -846,6 +875,8 @@ Also, the actions are more focused in attacking planets owned by the Enemy (as i
 \end{center}
 \caption{Owners of target planets when $attacking$: Enemy, Neutral, NotMy. See section \ref{subsec:generationgp} for more information about planet's owner.} % Serï¿½ notmine, ï¿½no? No notmy. FERGU: viene de NotMyPlanet
 \label{figura:tarta_attacking_who}
+%Estos gráficos de tarta no se ven un carajo. Tenéis que usar un tipo
+%de letra normal - JJ
 \end{figure}
 
 
@@ -887,17 +918,32 @@ Finally, Figure \ref{figura:tarta_decissions} shows the final proportion of $dec
 \section{Conclusions and Future Work}
 \label{sec:conclusions}
 
-This paper presents an implementation of a quite simple co-evolutionary approach for the generation of RTS bots: to omit the fitness-based selection mechanism in the evolutionary process. Thus, it simulates the evolution in a more natural way: conducting real battles between individuals to select a survivor for the next generation. This method has been applied on the improvement of the behavioral parameters and rules of the bot's AI in the RTS game Planet Wars. 
+This paper presents an implementation of a quite simple
+co-evolutionary approach for the generation of RTS bots that omits the fitness-based selection mechanism in the evolutionary process. Thus, it simulates the evolution in a more natural way: conducting real battles between individuals to select a survivor for the next generation. This method has been applied on the improvement of the behavioral parameters and rules of the bot's AI in the RTS game Planet Wars. 
 Thus, the classic tournament selection mechanism has been modeled as a battle in the game (called \textit{joust}), in which just the winner will remain (as a parent for the next offspring) in the population. The loser will be deleted.
 
 According to the results in the experiments, the analysis performed, and the reached conclusions, this approach offers three main benefits: 
 \begin{itemize}
-\item It yields more general-fighting bots, i.e. non-specialized in fighting against specific opponents, since it is a competitive co-evolutionary approach which does not need the use of a rival for the evaluation of an individual. It actually uses the same individuals in the population as opponents.
-\item It is less affected by the effect of the noise, since it is usually inserted in the loop by the fitness evaluation function. The high pressure included here by the loss of just a match (the individual will be removed from the population in that case), makes it very difficult that non-really-good individuals/bots survive.
-\item It reduces the number of battles to be conducted in the evolution, in order to yield competitive bots, so it could reduce the computational time of the runs.
+\item It yields  bots with a more general ability to fight,
+  i.e. non-specialized in fighting against specific opponents, since
+  it is a competitive co-evolutionary approach which does not need the
+  use of a rival for the evaluation of an individual. It actually uses
+  the same individuals in the population as opponents. % same? Será
+                                % simplemente individuals in the
+                                % population - JJ
+\item It is less affected by the effect of the noise, since it is
+  usually inserted in the loop by the fitness evaluation function. The
+  high selective pressure included here by the loss of  a single match
+  (the individual will be removed from the population in that case),
+  makes it very difficult that non-really-good individuals/bots
+  survive. % no es cierto. Un robot peor, en una sola lucha, puede
+           % ganarle a cualquiera. Si no, mira la copa del Rey - JJ
+\item It reduces the number of battles needed to obtain competitive
+  bots, so it could reduce the computational time of the runs. %Could
+                                %o lo hace? - JJ
 \end{itemize}
 
-Moreover, the generated bots, named SurvivalBots,have been tested against some state-of-the-art rivals, getting excellent results even in the comparison with highly evolved and specialized bots.
+Moreover, the generated bots, named SurvivalBots, have been tested against some state-of-the-art rivals, getting excellent results even in the comparison with highly evolved and specialized bots.
 
 As future work, we will firstly focus in obtaining more competitive bots. Thus, more possible actions and decisions will be added to the proposed Genetic Programming algorithm (for example, to analyze the planet distances). In the same line, some tests will be done using an unlimited tree depth, which could lead to get much more complex (and effective) behavioural engines.
 Also, a $4vs4$ joust will be implemented and tested, in which the 2nd and 3rd contenders will not be removed, neither mated. 
@@ -908,6 +954,7 @@ Finally, we aim to apply this approach to other videogames considered in the are
 % generalizar. Lo que tenemos al final es un orden parcial y ruidoso
 % que se podrï¿½a usar, en general, en todo tipo de algoritmos
 % evolutivos donde haya ese problema - JJ
+%Nada, ni caso - JJ 
 
 
 
