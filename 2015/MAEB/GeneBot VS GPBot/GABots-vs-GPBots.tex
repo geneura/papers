@@ -1,6 +1,10 @@
 \documentclass[twocolumn]{maeb2015}
 \usepackage[spanish]{babel}
 \usepackage[latin1]{inputenc}
+\usepackage{graphics}
+\usepackage[dvips]{epsfig}
+\usepackage[dvips]{graphicx} 
+\usepackage{url}
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -10,8 +14,9 @@
 
 \title{Algoritmos Genéticos contra Programación Genética para la creación de Bots de Planet Wars} %!PN
 
-\author{Nombre del Autor\thanks{Dirección del autor.
-E-mail: autor@xx.xx.xx .}}
+\author{A. Fernández-Ares, P. García-Sánchez, A.M. Mora, P.A. Castillo \thanks{Departamento de Arquitectura y Tecnología de Computadores.
+Universidad de Granada
+E-mail: \{antares,amorag,pgarcia,jmerelo,cfernandes\}@geneura.ugr.es}}
 
 \maketitle
 
@@ -48,28 +53,6 @@ AG, Algoritmo Genético, PG, Programación Genética, Bot, NPC, RTS, Inteligencia C
 
 \section{Estado del Arte}
 
-\begin{figure}[hbt]
-\begin{center}
-\setlength{\unitlength}{0.0105in}%
-\begin{picture}(242,156)(73,660)
-\put( 75,660){\framebox(240,150){}}
-\put(105,741){\vector( 0, 1){ 66}}
-\put(105,675){\vector( 0, 1){ 57}}
-\put( 96,759){\vector( 1, 0){204}}
-\put(105,789){\line( 1, 0){ 90}}
-\put(195,789){\line( 2,-1){ 90}}
-\put(105,711){\line( 1, 0){ 60}}
-\put(165,711){\line( 5,-3){ 60}}
-\put(225,675){\line( 1, 0){ 72}}
-\put( 96,714){\vector( 1, 0){204}}
-\put( 99,720){\makebox(0,0)[rb]{\raisebox{0pt}[0pt][0pt]{\tenrm $\varphi$}}}
-\put(291,747){\makebox(0,0)[lb]{\raisebox{0pt}[0pt][0pt]{\tenrm $\omega$}}}
-\put(291,702){\makebox(0,0)[lb]{\raisebox{0pt}[0pt][0pt]{\tenrm $\omega$}}}
-\put( 99,795){\makebox(0,0)[rb]{\raisebox{0pt}[0pt][0pt]{\tenrm $M$}}}
-\end{picture}
-\end{center}
-\caption{El texto de las figuras va tras la figura.}
-\end{figure}
 
 \begin{table}[htb]
 \caption{El texto de las tablas va antes de la tabla.}
@@ -86,8 +69,29 @@ twosided&leftTEXT&rightTEXT&leftTEXT\\\hline
 
 %******************************************************************************
 
-\section{Planet wars}
+\section{Planet Wars}
+\label{sec:PLANET_WARS}
 
+El \textit{Google AI Challenge (GAIC)} \cite{webGAIC} es una competición de IA en la que los participantes diseñan bots para competir los unos contra los otros. El juego elegido para la competición de 2010, \emph{Planet Wars}, es el entorno de estudio elegido en este artículo. Para este juego, hemos propuesto diseñar el conjunto de reglas que definen comportamiento del bot y mediante el uso de AGs optimizar su eficacia y eficiencia. \emph{Planet Wars}, es una versión simplificada del juego Galcon \cite{wiki:galcon}, donde los enfrentamientos involucran únicamente a dos jugadores.
+
+\begin{figure}[ht]
+\begin{center}
+  \epsfig{file=./imagenes/naves.eps,width=7cm}
+\end{center}
+\caption{}\footnotesize Captura de la simulación de un estado temprano del juego Planet Wars.
+Los planetas blancos pertenecen al jugador, los planetas grises oscuros
+pertenecen al oponente y los planetas grises claros no pertenecen
+aún a ningún jugador. Los triángulos representas flotas de naves.
+Los números (tanto en planetas como en flotas) representan el número
+de naves que lo componen.
+\label{figura:PlanetWars1}
+\end{figure}
+
+La contienda entre los jugadores tiene lugar en un mapa o escenario de juego que alberga varios planetas, cada uno con un número asignado que representa la cantidad de naves que están alojadas en él (ver Figura \ref{figura:PlanetWars1}). En cada instante de tiempo, cada planeta alberga una cantidad específica de naves, que pueden pertenecer al jugador, al oponente o ser neutrales. La propiedad está representada por un color asignado a cada jugador. Además, cada planeta tiene una tasa de crecimiento que indica cuantas naves se generan durante cada asalto y son agregadas a la flota que el jugador posee en el planeta. Los planetas neutrales, no agregan nuevas a la flota que alojan hasta que el planeta es conquistado por algún jugador.
+
+El objetivo del juego es apoderarse de todos los planetas del rival. Aunque Planet Wars es un RTS, la implementación en el campeonato lo ha transformado en un juego basado en \textit{pseudo-turnos}, en donde los jugadores disponen de un tiempo (número de turnos) determinado para conseguir la victoria. Cada pseudo-turno dura un segundo, de modo que ese es el tiempo de que dispone un bot para realizar sus acciones. Otra particularidad del problema es que no está permitido almacenar ningún tipo de información sobre las acciones propias anteriores, las del oponente, ni sobre el estado de juego (el mapa). En otras palabras, en cada pseudo-turno de un segundo el bot debe hacer frente a un mapa desconocido tal y como si fuese un juego nuevo. Esta restricción, hace que el desarrollo del bot sea un reto realmente interesante.
+
+De hecho, cada bot se implementa como una función que, partiendo de una lista de planetas y sus flotas (el estado actual del mapa), devuelve una lista de acciones a realizar. En cada pseudo-turno, el bot debe elegir el movimiento que realizarán una o más flotas desde un planeta propio a cualquier otro planeta. Esta acción es la única que puede llevar a cabo el bot. Las flotas, pueden necesitar más de un pseudo-turno en llegar a su planeta de destino (el tiempo es directamente proporcional a la distancia entre el planeta de origen y el destino). Cuando la flota llega un planeta enemigo o neutral, tiene lugar un enfrentamiento, en el cual cada nave es sacrificada para destruir una nave enemiga, en otras palabras, resulta victoriosa aquella flota que albergue más naves. En caso de que el planeta de destino sea del propio jugador, ambas flotas se unen, sumando sus naves. En cada pseudo-turno, el número de naves alojadas en los planetas de los jugadores (no los neutros), se incrementa de acuerdo a la tasa de crecimiento de cada planeta.
 
 %******************************************************************************
 
@@ -98,6 +102,83 @@ twosided&leftTEXT&rightTEXT&leftTEXT\\\hline
 
 \subsection{GeneBot. Algoritmo Genético sobre MEF}
 
+% ---------------------- ARESBOT ---------------------------
+
+\subsubsection{AresBot}
+\label{sssec:AresBot}
+
+El primer paso en el diseño de nuestro propio bot fue la implementación manual de un conjunto de reglas que resolviesen los enfrentamientos de forma satisfactoria. Este bot se denominó AresBot y tiene el siguiente funcionamiento: para un estado específico de la partida, el bot localiza su \textit{planeta base} siendo aquel con un mayor número de naves alojadas. El resto de planetas propios se denominan \textit{colonias}. A continuación se determina el \textit{planeta objetivo}, elegido entre los planetas que no pertenecen al jugador (y que el jugador no está intentando conquistar o expandir), y que le aportará un mayor beneficio y/o le implica un menor riesgo. Si el planeta es neutral, se realiza una acción denominada \textit{expansión} y si el planeta es enemigo, la acción se denomina \textit{conquista}. Para toda \textit{colonia} más cercana al \textit{planeta objetivo} que al \textit{planeta base} se produce un envío de flotas al \textit{planeta objetivo}. El bot estima en función de la tasa de crecimiento del \textit{planeta objetivo} y la distancia a la que se encuentra del \textit{planeta base}, el número de tropas que necesitará enviar para garantizar la victoria. Si el número de tropas enviadas desde las \textit{colonias} no es superior a este número (y por tanto, no se tienen garantías de poder conquistar o expandir el \textit{planeta objetivo}) se realiza un envío desde el \textit{planeta base} hasta el \textit{planeta objetivo} con un flota que garantice la victoria. Para el resto de colonias, existe una posibilidad de que se realice un \textit{diezmo}, un `impuesto' que supone el envío de tropas desde la colonia al planeta marcado como \textit{planeta base}. De esta forma, se obtiene por una parte un \textit{planeta base} que es difícil de capturar por el enemigo dada la gran flota que alberga en él, así como un buen punto de partida desde el que capturar los planetas enemigos.
+
+Se puede estudiar el modelo de conducta de AresBot con mayor detenimiento si se observa el diagrama presente en la Figura \ref{figura:diagram}. 
+%
+\begin{figure*}[ht]
+\begin{center}
+  \epsfig{file=./imagenes/diagrama1.eps,width=14cm}
+\end{center}
+\caption{Diagrama de estados que rigen el comportamiento de AresBot.}
+%(y por extensión de GeneBot) con especial indicación de los parámetros que serán optimizados. Estos parámetros fueron establecidos manualmente en AresBot y han evolucionado en GeneBot.
+\label{figura:diagram}
+\end{figure*}
+%
+
+Existe un conjunto de parámetros (consistentes en pesos, probabilidades, cantidades,...) incluidos en las reglas que modelan el comportamiento del bot (como se ve en el diagrama de la Figura \ref{figura:diagram}). Estos valores fueron originalmente establecidos a mano y posteriormente convertidos en parámetros, una vez se comprobó que determinaban el comportamiento del bot. Sus valores y significados se recogen a continuación:
+
+\begin{itemize}
+
+	\item $tithe_{perc}$:  porcentaje de naves que son enviados en un diezmo en función del número de naves albergadas en el planeta.
+
+	\item $tithe_{prob}$: probabilidad de que una colonia determinada envíe un diezmo al planeta base.
+
+	\item $\omega_{NS-DIS}$: peso del número de naves alojadas en un determinado planeta y la distancia entre dicho planeta y el planeta base, usado en la función de elección del planeta objetivo. Se dispone de un único peso para ambos parámetros ya que estos se encuentran multiplicados en la función de selección.
+
+	\item $\omega_{GR}$: peso de la tasa de crecimiento en la función de selección del planeta objetivo.
+
+	\item $pool_{perc}$: proporción de naves extra que se añaden a cada flota enviada desde el planeta base.
+	
+	\item $support_{perc}$: porcentaje de naves extra que se añaden a cada flota enviada desde una colonia a un planeta objetivo.
+
+	\item $support_{prob}$: probabilidad de enviar una flota extra desde una colonia al planeta objetivo.
+
+\end{itemize}
+
+Cada parámetro toma valores pertenecientes a rangos diferentes dependiendo de su significado, magnitud e importancia en la IA. Estos valores son empleados en las expresiones que el bot utiliza para tomar las decisiones. Por ejemplo, la función de elección del planeta objetivo se basa en la siguiente puntuación para elegir dicho planeta:
+
+
+\begin{footnotesize}
+\begin{equation} \label{eq:select_target_score}
+Score(p)= \frac {p.NumStarships \cdot \omega_{NS-DIS}\cdot Dist(base,p) } {1 + p.GrowthRate \cdot 
+\omega_{GR} }
+\end{equation}
+\end{footnotesize}
+
+Este bot ya ofrece un comportamiento mucho más complejo que GoogleBot, y es capaz de vencerle en la gran mayoría de mapas. Sin embargo, en general, AresBot requiere una gran cantidad de turnos para vencer, reflejando que un bot que hubiese tenido una mejor estrategia o más rápida, hubiese ganado casi con total seguridad a AresBot. Es por ello, que se decidió optimizar este conjunto de parámetros, al considerarse inviable (debido a la limitación de tiempo) añadir más reglas al conjunto que define el comportamiento del bot.
+
+% ---------------------- GENEBOT ---------------------------
+
+\subsubsection{GeneBot}
+\label{sssec:GeneBot}
+
+La principal idea de este artículo es la de realizar una optimización de parámetros off-line mediante la aplicación de un Algoritmo Genético (AG) para el conjunto de parámetros que determinan el comportamiento de AresBot (tal y como se explica en la Subsección \ref{sssec:AresBot}). A dicho bot optimizado, lo hemos denominado \textit{GeneBot}.
+
+El algoritmo de optimización, no forma parte del bot presentado en la competición, sino que una vez encontrados un conjunto de parámetros óptimos estos fueron implementados en el bot subido al sitio del Google AI Challenge.
+
+El AG propuesto, considera codificación real para representar los parámetros en un array y sigue un esquema generacional \cite{GAs_Michalewicz96} con elitismo (los mejores bots sobreviven siempre).
+
+Los operadores genéticos utilizados son un operador de cruce \textit{BLX-$\alpha$} \cite{Herrera03ataxonomy} (con $\alpha$ igual a 0.5) muy común en este tipo de codificación de cromosomas para mantener la diversidad, y un operador de mutación que cambia el valor de un gen al azar sumando o restando una cantidad aleatoria en el intervalo $[0,1]$. Las tasas/probabilidades de aplicación han sido establecidas siguiendo lo habitual en la literatura y después ajustados mediante experimentación sistemática.
+
+El mecanismo de selección implementa un \textit{torneo a 2} en donde dos individuos de la población son elegidos aleatoriamente como padres de un individuo de la próxima generación. También se consideró la selección mediante ruleta de probabilidades, pero nos decantamos por el torneo ya que supone una menor presión selectiva.
+
+El elitismo se ha implementado mediante la sustitución de individuos al azar en la población por los mejores de la actual generación. 
+
+La evaluación de un individuo se realiza mediante el establecimiento de los valores correspondientes en los cromosomas como los parámetros de comportamiento de GeneBot y haciendo que este último se enfrente contra GoogleBot en un conjunto de cinco mapas. Dichos mapas han sido elegidos intentando abordar un espectro de posibilidades de distribución lo más amplio posible. Se consideró, que si un bot era capaz de Ganar a GoogleBot en los cinco mapas o lo que es lo mismo en cinco situaciones representativas distintas, y además, el número de pseudo-turnos empleados para ello era mínimo, existía una alta probabilidad de tener también éxito en la mayoría de batallas reales.
+
+El rendimiento de los bots en cada generación, viene determinado por dos valores: el primero es el número de pseudo-turnos empleados para ganar y el segundo es el número de batallas que el bot ha perdido. Siendo más relevante un bot que haya ganado todos sus enfrentamientos que uno que haya tardado menos turnos, pero haya perdido alguno de los suyos.
+
+Un enfoque multi-objetivo podría ser, en principio, una buena aproximación, sin embargo se considera que el punto más importante es ganar el mayor número de partidas (todas en realidad), y una vez hecho esto, minimizar el número de pseudo-turnos requeridos para ello. Esta forma de puntuación se puede ver como una estrategia de implementación de un problema con restricciones: minimizar el número de pseudo-turnos necesarios para ganar \textit{dado que} el individuo es capaz de ganar cada enfrentamiento.
+
+De forma que el \textit{fitness} asociado a un individuo (bot en este caso) sería el mínimo número de pseudo-turnos agregados que se han necesitado para ganar en los cinco mapas representativos.
+
+El código fuente de estos bots se encuentra en: \\https://forja.rediris.es/svn/geneura/Google-Ai2010.
 
 %---------------------------------------------------------
 
@@ -129,22 +210,27 @@ twosided&leftTEXT&rightTEXT&leftTEXT\\\hline
 \bibliographystyle{maeb2015}
 
 \begin{thebibliography}{1}
-\bibitem{LaTeX}
-Leslie Lamport,
-\newblock {\em A Document Preparation System: \LaTeX, User's Guide and
-  Reference Manual},
-\newblock Addison Wesley Publishing Company, 1986.
-\bibitem{LaTeXD}
-Helmut Kopka,
-\newblock {\em \LaTeX, eine Einf\"uhrung},
-\newblock Addison-Wesley, 1989.
-\bibitem{TeX}
-D.K. Knuth,
-\newblock {\em The {\rm T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}book},
-\newblock Addison-Wesley, 1989.
-\bibitem{METAFONT}
-D.E. Knuth,
-\newblock {\em The {\rm METAFONT}book},
-\newblock Addison Wesley Publishing Company, 1986.
+
+\bibitem{webGAIC}
+Google, ``{Google AI Challenge 2010},'' \emph{http://ai-contest.com}, 2010.
+
+\bibitem{Herrera03ataxonomy}
+F.~Herrera, M.~Lozano, and A.~M. Sánchez, ``A taxonomy for the crossover
+  operator for real-coded genetic algorithms: An experimental study,''
+  \emph{International Journal of Intelligent Systems}, vol.~18, pp. 309--338,
+  2003.
+
+\bibitem{GAs_Michalewicz96}
+Z.~Michalewicz, \emph{Genetic Algorithms + Data Structures = Evolution
+  Programs}, 3rd~ed.\hskip 1em plus 0.5em minus 0.4em\relax Springer, 1996.
+
+\bibitem{wiki:bot}
+Wikipedia, ``Computer Game Bot --- {Wikipedia{,} The Free Encyclopedia}'',
+  \url{http://en.wikipedia.org/wiki/Computer_game_bot}
+
+\bibitem{wiki:galcon}
+Wikipedia, ``Galcon --- {Wikipedia{,} The Free Encyclopedia}'',
+  \url{http://en.wikipedia.org/w/index.php?title=Galcon&oldid=399245028}
+
 \end{thebibliography}
 \end{document}
