@@ -54,83 +54,25 @@ AG, Algoritmo Genético, PG, Programación Genética, Bot, NPC, RTS, Inteligencia C
 
 Real-Time Strategy (RTS) games are a sub-genre of strategy-based videogames in which the contenders struggle to control a set of resources, units and structures that are distributed in a playing arena. A proper control and a sound strategy and tactics for handling these units is essential for winning the game, which happens after the game objective has been fulfilled, normally eliminating all enemy units, but sometimes also when certain points or game objectives have been reached.
 
-Their main feature is their real-time nature (which is explicit in its denomination, real time strategy games), i.e. the player is not required to wait for the results of other players' moves as in turn-based games. Command and Conquer\texttrademark, Starcraft\texttrademark, Warcraft\texttrademark~ and Age of Empires\texttrademark~ are examples of RTS games.
+Los juetos de estrategia en tiempo real (Real-Time Strategy, RTS) son un subgénero de los videojuegos de estrategia en los que los participantes se enfrentan por controlar un conjunto de recursos, unidades y estructuras distribuidas en un escenario de juego. Es esencial contar con un buen control y distintas técnicas y estrategias para ganar el juego, que normalmente consiste en eliminar todas las unidades enemigas, o ganar cierto número de puntos.
 
-Two levels of AI are usually considered in RTS games \cite{ahlquist_game_ai08}: the first one, interpreted by a Non-Playing Character (NPC), which is also a bot, makes decisions over the whole set of units (workers, soldiers, machines, vehicles or even buildings); the second level is devoted implement the behaviour of every one of these small units.
-These two level of actions, which can be considered {\em strategic} and {\em tactical}, make them inherently difficult to be designed by a human; but this difficulty is increased by their real-time nature (usually addressed by constraining the time that each bot can use to make a decision) and also for the huge search space that is implicit in its action.
+Como su nombre indica, su principal característica es su naturaleza en tiempo real, es decir, el jugador no tiene por qué esperar el resultado de los movimientos del otro jugador, al contrario que en los juegos basados en turnos. Algunos ejemplos bien conocidos de este tipo de juegos son Command and Conquer\texttrademark, Starcraft\texttrademark, Warcraft\texttrademark~ y Age of Empires\texttrademark~.
 
-For these reasons, in this work a Genetic Programming (GP) approach is proposed % si ya lo ha hecho alguien, ese no puede ser el selling point del paper - JJ
-as an automatic method to create the Artificial Intelligence (AI) engine %no es un "AI" engine. Es un engine creado con métodos de soft computing - JJ
-% AntonioDEF - da igual cómo se haya creado, el conjunto de reglas que definen el comportamiento de un bot son su motor de IA. Se llama así, vaya.
- of autonomous agents in a RTS. The objective of GP is to create functions or programs to solve determined problems, moreover the individual representation is usually in form of a tree, formed by operators (or {\em primitives}) and variables ({\em terminals}). 
-%Thus GP can be applied to the generation of rule-based systems, such as Decision Trees [***REF***], which can, in turn, define the behavioural engine of a bot in this case. 
-The aim of using GP in this scope is the creation of behavioural rule-based engines following an heuristic, algorithmic and automatic process. Thus, instead of implementing them from scratch by a human (expert or not), this method will define a set of rules that could be more complex (or simpler) than those defined by the humans. 
-In addition, this algorithm is able to evaluate every possible set of rules, assigning to that set a value according to the corresponding bot's performance (during battles). Thus, these sets will be improved (evolved) along the algorithm run in order to increase that bot's performance. 
-% ¿qué? No me entero de nada - JJ
-% AntonioDEF - lo he reescrito a ver si se entiende mejor. ;)
+En estos juegos normalmente se consideran dos niveles de Inteligencia Artificial (IA) \cite{ahlquist_game_ai08}: el primero, realizado por un Personaje No Jugador (PNJ), también llamado \textit{bot}, toma decisiones relativas al conjunto completo de unidades (trabajadores, soldados, máquinas, vehículos o incluso edificios); mientras que el segundo nivel implementa el comportamiento de cada una de esas pequeñas unidades. Estos dos niveles de acción, que pueden considerarse ({\em estratégicos} y {\em tácticos}), hacen que sea inherentemente dificil de diseñar por un humano, pero además, esta dificultad se aumenta por su naturaleza en tiempo real (normalmente debida por restringir el tiempo para tomar una decisión) y también por el enorme espacio de búsqueda.
 
-% Pero ¿no creéis que ya es hora de que presentéis el trabajo como algo más general, y no cómo una solución particular de un problema particular, el Challenge e AI, que es de hace 4 años? Hablad de estrategia, de los problemas que presentan, todo eso. Esto ya no es relevante a estas alturas y deberías de empezar a hablar de él en metodología. Vamos a desarrollar una estrategia para hacer tal, y para ver si funciona lo vamos a probar en Planet War. - JJ
-% Antonio - hecho, creo que ahora está mejor. ;)
-In order to implement and test this proposal, we have considered the game {\em Planet Wars}, a RTS which was presented under the Google AI Challenge 2010\footnote{\url{http://planetwars.aichallenge.org/}}. It has been used by several authors for the study of computational intelligence techniques in RTS games
-\cite{Genebot_CEC11,ExpGenebot_CIG2012,Lara_PCG_PlanetWars14}, due to it is a simplification (just one type of resource and one type of unit) of the elements that those commercial RTSs present. 
-% FERGU quitar el "as those previously cited", que queda raro
-% Antonio - hecho
-% y una vez más decid qué problema queréis solucionar. Si es como decís en el título, GP para RTS, es interesante. Si es planet wars, no lo es a menos que haya competiciones actuales, etc, etc. - jj
-% Antonio - creo que ahora está mejor explicado. ;)
-Thus, the players in this game just can manage planets and starships (or just ships). The aim is conquering the whole galaxy in the current map, against an enemy
-%\footnote{can be more than one opponents,but we are focusing in 1 vs 1 battles in this work} 
-trying to do the same. The planets can produce new ships and the ships are destroyed one by one for both players when they crash. 
-%FERGU: si no se va a hacer nada 4vs4 quitar de todo el paper que también existe la posibilidad, que puede liar.
-% Antonio - Ok
+Por estas razones, en este trabajo se presenta un método de Programación Genética (PG) como método automático para crear el motor de IA de agentes autónomos en un RTS. El objetivo de la PG es crear funciones o programas para resolver determinados problemas, siendo la representación de los individuos en forma de árbol, formado por operadores (o {\em primitivas}) y variables ({\em terminales}).
 
-%The objective of the player is to conquer enemy and neutral planets in a space-like simulator. Each player has planets (resources) that produce ships (units) depending on a growth-rate. The player must send these ships to other planets (literally, crashing towards the planet) to conquer them. A player win if he is the owner of all the planets. As requirements, the limit to calculate next actions (this time window is called {\em turn}\footnote{Although in this work we are using this term, note that the game is always performed in real time.}) is only a second, and no memory about the previous turns must be used.  Figure \ref{fig:naves} shows a screen capture of the game. The reader is referred to \cite{Mora2012Genebot,FernandezAres2012adaptive} for more details about the game.
-%
-%\begin{figure}
-%\begin{center}
-%\includegraphics[scale=0.8]{imags/naves.eps}
-%\end{center} 
-%\caption{Example of execution of the Player Wars game. White planets and ships are owned by the player and dark gray ones are controlled by the enemy. Clear gray are neutral planets (not yet invaded).}
-%\label{fig:naves}
-%\end{figure}
+La meta de usar PG en este ámbito es la creación de motores de comportamiento basados en reglas siguiendo un proceso heurístico, algorítmico y automático. Así, en lugar de implementarlos desde cero por un humano (experto o no), este método definirá un conjunto de reglas que podrían ser más complejas (o incluso, más simples) que aquellas definidas por un humano. Durante la ejecución de este algoritmo se evaluará cada posible conjunto de reglas, asignando a cada conjunto un valor de acuerdo al rendimiento del bot (durante las batallas). 
 
-%This work uses some of the results obtained in a previous one \cite{GPBot_EVO2014} as a baseline for comparisons. 
-% AntonioDEF - creo que mejor si tu trabajo no existe. XD
+Para implementar y testear esta proposición hemos considerado el juego {\em Planet Wars}, un RTS presenado en la competición Google AI Challenge 2010\footnote{\url{http://planetwars.aichallenge.org/}}. Este juego ha sido utilizado por varios autores para el estudio de técnicas de inteligencia computacional en juegos RTS \cite{Genebot_CEC11,ExpGenebot_CIG2012,Lara_PCG_PlanetWars14}, ya que es una simplicación (sólo un tipo de recurso y de unidad) de los elementos que forman un juego RTS comercial. Los jugadores controlan naves espaciales (o simplemente naves), y el objetivo es conquistar todo el conjunto de planetas de un mapa, contra un enemigo que intenta lo mismo. Los planetas pueden producir nuevas naves y las naves pueden destruirse estrellando las del otro jugador en el planeta.
 
-Three different fitness functions will be presented and tested in this paper: 
-the first one is a variation of the previously used \textit{victory-based fitness} \cite{Genebot_CEC11}, 
-%FERGU: quitado el "our traditional". Queda muy "our traditional polvorones"
-% Antonio - guay
-which evaluates all the individuals in the population by playing five different matches (in five different maps) against a sparring bot. The aim of the repetitions is to avoid the noisy factor present in these dynamic environments \cite{Mora_noisy_jcst,wilcoxon:ga}.   
-%FERGU: quitado el "problems (videogames)"
-% Antonio - ok
-Due to this, the fitness value for an individual could dramatically vary between different matches, since it depends on the pseudo-stochastic opponent's actions, and also on its own non-deterministic decisions.
-The other two presented fitness functions also point to reduce the influence of noise in the evolution, but using additional data obtained during the execution of the bot.
-%FERGU: si buscan lo mismo poner al principio "las 3 funciones". No tiene sentido decir "Vamos a usar una función para tratar el ruido y otras dos que también" xD
-% Antonio - Lo he aclarado mejor. Se trata de que esas funciones incluyen nuevas técnicas para tratar el ruido. ;)
-% FERGU2: cambiado el final de la frase diciendo que se tiene en cuenta toda la run del juego
-Thus, they consider the number of ships generated by each bot rather than the number of turns and compute, respectively, a \textit{linear regression} (Slope) based on the percentage of ships with respect to the total, and \textit{the integral} (Area) of the function which represents these numbers.
-All of them consider the final results of every individual (bot) after the aforementioned five matches (on average).
+En este paper, se presentan 3 diferentes funciones fitness: la primera es una variación del fitness basado en victorias presentado en \cite{Genebot_CEC11}, la cual evalua todos los individuos en la población jugando 5 diferentes batallas contra un bot que hace de \textit{sparring}. El objetivo de estas repeticiones es evitar el factor ruidoso presente estos entornos dinámicos \cite{Mora_noisy_jcst,wilcoxon:ga}. Debido a esto, el valor fitness de un individuo podría variar dramáticamente entre distintas batallas, ya que depende de las actiones pseudo-estocásticas del oponente y de sus propias decisiones no deterministas.
 
-The work is then focused on proving the value of these evolved rule-based control systems for the agents. To this end, several experiments have been conducted, considering the aforementioned fitness functions, and an evolutionary bot as rival. This bot, called GeneBot, was presented in a previous work \cite{Genebot_CEC11}. 
-%FERGU: our previous evolutionary bots -> bots previously used in the literature (que parece que el paper dice "somos los únicos que hacemos esto"
-% Antonio - Yo no veo que digamos que somos los únicos, que (casi) lo somos, (XD), pero si dices en la literatura parece más general de lo que es... una evolución de un trabajo anterior.
-% AntonioDEF - ale, he dejado que sólo se usa un bot (Genebot)
+Las otras dos funciones fitness presentadas intentan reducir la influencia del ruido en la evolución, pero usando datos adicionales durante la ejecución del bot: el número de naves generadas por cada bot en lugar del número de turnos. La primera realiza una regresión linear (función \textit{slope}), basada en el porcentaje de naves con respecto al total, y la segunda la integral (\textit{función area}) de la función que representa esos números. Todas las funciones usadas consideran los resultados finales de cada individuo (bot) después de las cinco batallas (en media).
 
-%The rest of the work is structured as follows: after the state of the art, the description of our agent is presented in Section \ref{sec:agent}. Then, the experimental setup conduced with the GP is shown (Section \ref{sec:experiments}). Finally, results, conclusions and future works are discussed.
-%
+El trabajo se centra a continuación en probar el valor de los sistemas basados reglas evolucionados, realizando varios experimentos usando las funciones fitness presentadas para enfrentarse a un bot competitivo disponible en la literatura \cite{Genebot_CEC11}.
 
-% Genial, saltáis del problema a decir qué habéis hecho en el paper sin nada enmedio. El clásico "he hecho esto sobre esto y me ha salido esto" que es como NO tiene que escribirse un paper. Algún día aprenderéis, pero mientras tanto os vuelvo a repetir el esquema, la "narrativa", que tiene que seguir un paper
-% Queremos resolver un problema: generación de estrategias en RTS
-% Hasta ahora, otros lo han hecho así: y nosotros asao: usando parametrización de una estrategia heurística, pero tenía problemas como este y este
-% En este trabajo queremos hacer una búsqueda más eficiente del espacio de estrategias usando GP. Y para ello vamos a usar un juego RTS en particular, tal y tal. - JJ
-% Antonio - Creo que ahora está mejor explicado.
-
-%Genome? Quien ha hablado de genome? Y de size? Y qué importa a estas alturas? - JJ
-% Antonio - Lo he quitado.
-
-%GP has been used to evolve LISP (LISt Processing) programs \cite{Koza1990Tools}, or XSLT (eXtensible Stylesheet Language Transformations) scripts \cite{Garcia2008XSLT}, among others.
-% Hombre, podíais haberlo dejado... - JJ
-% Antonio - No pintaba nada y nos falta espacio (nos sobran páginas, vaya)... XD
+%The work is then focused on proving the value of these evolved rule-based control systems for the agents. To this end, several experiments have been conducted, considering the aforementioned fitness functions, and an evolutionary bot as rival. This bot, called GeneBot, was presented in a previous work \cite{Genebot_CEC11}. 
 
 
 
