@@ -158,13 +158,13 @@ Como se ha comentado anteriormente, en el proyecto SIPESCA se utilizan antenas B
 En la literatura se pueden encontrar muchas medidas de error diferentes (también llamadas funciones de error o funciones de coste) al mostrar los resultados obtenidos con los métodos de predicción.
 
 Una de las más conocidas y utilizadas es la del error cuadrático, y derivada de ésta, la del error cuadrático medio (ver la ecuación \ref{eq:MSE}), que presenta la ventaja de ser independiente del tamaño del conjunto de datos.
-Sin embargo, en muchos trabajos de investigación se utilizan otras muchas, y en ocasiones con pequeñas diferencias introducidas en las fórmulas.
+Sin embargo, en muchos trabajos de investigación se utilizan otras muchas, y en ocasiones con pequeñas diferencias introducidas en las ecuaciones utilizadas.
 
-En cualquier caso, se recomienda utilizar estándar ampliamente aceptadas y utilizadas por la comunidad\footnote{\url{http://www.gepsoft.com/gxpt4kb/Chapter10/Section3/Introduction.htm}} para poder comparar los resultados obtenidos con los presentados en otros trabajos de investigación utilizando otros métodos predictivos.
-Es por esto que junto con el benchmark, se aportan diferentes medidas de error (ecuaciones \ref{eq:MAE} a \ref{eq:DA}) estándar que se pueden encontrar implementadas en herramientas como Weka\footnote{\url{http://wiki.pentaho.com/display/DATAMINING}}
+En cualquier caso, se recomienda utilizar ecuaciones estándar ampliamente aceptadas y utilizadas por la comunidad\footnote{\url{http://www.gepsoft.com/gxpt4kb/Chapter10/Section3/Introduction.htm}} para poder comparar los resultados obtenidos con los presentados en otros trabajos de investigación utilizando otros métodos predictivos.
+Es por esto que junto con el benchmark, se aportan diferentes medidas de error estándar (ecuaciones \ref{eq:MAE} a \ref{eq:DA})  que se pueden encontrar implementadas en herramientas como Weka\footnote{\url{http://wiki.pentaho.com/display/DATAMINING}}
  \cite{LibroWeka} o R\footnote{\url{https://www.otexts.org/fpp/2/5}} \cite{LibroR}.
 
-Concretamente se proponen los siguientes medidas:
+Concretamente se proponen las siguientes medidas:
 % To compare the methods, the forecasting of the four methods is used for error measurement calculation. The error measurements are\footnote{\url{https://www.otexts.org/fpp/2/5}}: 
 % Mean absolute error (MAE), Root mean squared error (RMSE), Mean absolute percentage error (MAPE), Root relative squared error (RRSE), Relative absolute error (RAE), Direction accuracy (DA) and Mean squared error (MSE).
 
@@ -245,10 +245,7 @@ Existen algunos métodos más complejos, basados en varias metaheurísticas \cite{H
 Cabe destacar entre estos el algoritmo L-Co-R \cite{Eli2012,LCoRSoft,LCoRNeuro} como método no lineal que utiliza redes de base radial (RBFs) para determinar de forma cooperativa el lag (los datos de entrada de la serie temporal) y la predicción de la serie temporal a la que se aplique el algoritmo, si necesidad de ningún pre o post-procesamiento.
 
 %------ para el final
-En este trabajo se ofrece una serie de resultados obtenidos usando varias series temporales con algunos de estos métodos citados disponibles en herramientas de código abierto.
-Concretamente, se muestran los resultados obtenidos con ARIMA, L-Co-R y dos modelos incluidos en la herramienta Weka \cite{weka} (Support Vector Machine (SVM) \cite{SVM} con perceptrones multicapa (MLP) \cite{perceptron}, y SVM con Linear-Regression \cite{regresion}). 
-En todos los casos, se han generado modelos para predecir las últimas 24h del flujo de tráfico en varios puntos.
-
+Más adelante (subsección \ref{sec:resultadosobtenidos}) se ofrece una serie de resultados obtenidos usando varias series temporales con algunos de estos métodos citados disponibles en herramientas de código abierto.
 
 \begin{figure*} 
 \centering
@@ -272,21 +269,25 @@ En todos los casos, se han generado modelos para predecir las últimas 24h del fl
 En esta sección se presenta una serie de resultados utilizando varios métodos de predicción con las series temporales descritas en la subsección \ref{sec:seriesdeej} como ejemplo. 
 Estos resultados se portan como base para realizar comparaciones en el futuro con otros métodos (subsección \ref{sec:resultadosobtenidos}).
 
-En concreto se han seleccionado cuatro métodos de predicción, entre los que se incluyen métodos lineales y no lineales: ARIMA, L-Co-R, SVM-MLP y SVM-LR.
-Todos ellos excepto L-Co-R se pueden utilizar a través de las herramientas Weka\footnote{\url{http://www.cs.waikato.ac.nz/ml/weka/}} o R\footnote{\url{http://www.r-project.org/}} y son ampliamente conocidos, de forma que cualquier investigador puede reproducir los experimentos y comprobar los resultados, y en el futuro, usar los mismos métodos para comparar con sus modelos.
+Se han seleccionado cuatro métodos de predicción, entre los que se incluyen métodos lineales y no lineales.
+Concretamente, se muestran los resultados obtenidos con ARIMA, L-Co-R y dos modelos incluidos en la herramienta Weka \cite{weka} (Support Vector Machine (SVM) \cite{SVM} con perceptrones multicapa (MLP) \cite{perceptron}, y SVM con Linear-Regression \cite{regresion}). 
+
+Todos ellos, excepto L-Co-R, se pueden utilizar a través de las herramientas Weka\footnote{\url{http://www.cs.waikato.ac.nz/ml/weka/}} o R\footnote{\url{http://www.r-project.org/}} y son ampliamente conocidos, de forma que cualquier investigador puede reproducir los experimentos y comprobar los resultados, y en el futuro, usar los mismos métodos para comparar con sus modelos.
+
+En todos los casos, se han generado modelos para predecir las últimas 24h del flujo de tráfico en varios puntos.
 
 
 \subsection{Descripción de las series temporales utilizadas}
 \label{sec:seriesdeej}
 
-Para la parte experimental, se han seleccionado tres series temporales, correspondientes a los dispositivos marcados en la Figura \ref{fig:nodos}. 
+Para la parte experimental, se han seleccionado tres series temporales, correspondientes a los dispositivos marcados en el mapa mostrado en la Figura \ref{fig:nodos}. 
 Estas series incluyen los datos entre el 31 de diciembre de 2013 y el 20 de enero de 2014.
 Cada entrada de la serie representa el número de vehículos detectado cada hora en cada nodo de monitorización, de forma que cada serie está compuesta por 505 entradas.
 
 Se eligió una hora como intervalo para mostrar algunas características del tráfico en este área de la ciudad de Granada a lo largo del día (se alcanzan picos hacia mediodía entre las 13h y las 15h).
 Este efecto se muestra en la Figura \ref{fig:series}, que representa las tres series contempladas.
 
-Hay que hacer notar que el periodo de tiempo que abarcan las series elegidas comprende los primeros días del año, vacaciones, y corresponde con una de las ''operaciones salida'' de la DGT, que el año pasado supuso más de $3,3$ millones de despazamientos.
+Hay que hacer notar que el periodo de tiempo que abarcan las series elegidas comprende los primeros días del año, vacaciones, y corresponde con una de las ''operaciones salida'' de la DGT, que el año pasado supuso más de 3.3 millones de despazamientos.
 Así pues, se trata de series en las que muchos vehículos modificaron el patrón habitual del tráfico en esa zona.
 
 
@@ -371,7 +372,7 @@ Para cada método y cada serie, se han calculado las medidas de error propuestas 
 
 Los resultados mostrados del algoritmo L-Co-R son medias de error de 30 ejecuciones con cada una de las series temporales estudiadas.
 
-La Tabla \ref{tabla:errores} muestra los diferentes valores de error para cada uno de los métodos para cada serie. 
+La Tabla \ref{tabla:errores} muestra los diferentes valores de error para cada uno de los métodos y cada serie. 
 Se muestra destacado en negrita el mejor (menor) valor obtenido para cada nodo y cada medida de error. 
 
 Aunque no es el propósito de este trabajo, se puede apreciar que los mejores resultados se han obtenido con el método SVM-LR.
