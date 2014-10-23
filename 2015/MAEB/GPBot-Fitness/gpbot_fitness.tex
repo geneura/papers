@@ -34,7 +34,7 @@ E-mail: \{antares,amorag,pgarcia,pedro\}@geneura.ugr.es}}
 Diseñar el motor de Inteligencia Artificial (IA) de un agente autónomo (bot) en un juego es una tarea compleja, hecha normalmente por un jugador experto, el cual plasma en un modelo su propio conocimiento y comportamiento en el juego en base a su experiencia.
 Este artículo presenta un algoritmo para automatizar (o facilitar en gran medida) esa tarea, mediante el uso de Programación Genética (PG).
 Este método se aplica aquí para diseñar árboles de decisión que modelan la IA de un bot para jugar combates 1 contra 1 dentro del juego de estrategia Planet Wars.
-De forma que con este algoritmo es posible crear un sistema basado en reglas (que modela de dicho árbol) en el que se definen decisiones o condiciones y acciones a realizar. Esta tarea se hará automáticamente y de forma muy distinta a cómo lo haría un diseñador humano, que tendría que implementarlo 'a mano' normalmente.
+De forma que con este algoritmo es posible crear un sistema basado en reglas (que modela de dicho árbol) en el que se definen decisiones o condiciones y acciones a realizar. Esta tarea se hará automáticamente y de forma muy distinta a cómo lo haría un diseñador humano, que tendría que implementarlo ``a mano'' normalmente.
 Dichas reglas se optimizarán mediante el algoritmo, en base al comportamiento y rendimiento obtenido por el bot en combates de evaluación. De modo que el conjunto de reglas obtenidas finalmente diferirá sensiblemente de las que pudiese crear el humano, pudiendo obtenerse bot mucho más competitivos.
 Debemos considerar la naturaleza ruidosa del entorno en el que se ejecutará el algoritmo, es decir, los videojuegos, en los que un mismo individuo puede obtener muy buenos o muy malos resultados dependiendo de las acciones del rival y del propio juego, si éstos cuentan con algún componente estocástico.
 Por este motivo se han implementado y probado tres funciones de evaluación (fitness) diferentes. Dos de ellas tienden a minimizar dicho factor considerando información adicional (y dinámica) sobre los combates de evaluación, en lugar de únicamente fijarse en el resultado final del ganador, como sí hace la tercera función.
@@ -128,41 +128,16 @@ Therefore, the aim in this paper is to study the improvement of a bot according 
 \section{State of the art}
 \label{sec:soa}
 
-RTS games have been used extensively in the computational intelligence area (see \cite{Lara2013review} for a survey). 
+Los juegos RTS se han utilizado ampliamente en el área de la inteligencia computacional (ver \cite{Lara2013review} para una revisión).
 
-Among other techniques, Evolutionary Algorithms have been widely used as a  Computational Intelligence method in RTS games \cite{Lara2013review}. For example, for parameter optimization \cite{Esparcia10FPS}, learning \cite{Kenneth2005neuroevolution} or content generation \cite{Mahlmann2012MapGeneration}. 
+Entre otras técnicas, los AEs han sido muy utilizados, como por ejemplo para la optimización de parámetros \cite{Esparcia10FPS}, aprendizaje \cite{Kenneth2005neuroevolution} o generación de contenidos \cite{Mahlmann2012MapGeneration}. 
 
-One of these types, Genetic Programming, has been proved as a good tool for developing strategies in games, achieving results comparable to human, or human-based competitors \cite{Sipper2007gameplaying}. They also have obtained higher ranking than solvers produced by other techniques or even beating high-ranking humans \cite{Elyasaf2012FreeCell}. GP has also been used in different kind of games, such as board-games \cite{Benbassat2012Reversi}, or (in principle) simpler games such as Ms. Pac-Man \cite{Brandstetter2012PacMan} and Spoof \cite{Wittkamp2007spoof} and even in modern video-games such as First Person Shothers (FPS) (for example, Unreal\texttrademark~ \cite{Esparcia2013GPunreal}). With respect to RTS games, there are just a few applications on pathfinding \cite{pathfinding_GP_RTS} and definition of tactics in an abstract tactical game \cite{KeaveneyO09_GP_RTS}.
-In this paper, the aim is to apply GP inside a modern RTS, in order to define the whole behavioural engine for an autonomous player (non-player character), trying to improve a rule-based system previously defined by a human expert.
-% AntonioDEF - he puesto esto nuevo, que creo que queda bien. No decimos que no se haya hecho, pero sí que lo nuestro es más mejor (o al menos diferente)
-% ... y eso nos hace pensar que puede dar buenos resultados en este caso, porque nunca se ha aplicado a este tipo de problema.
-% ¿Cuál es el selling poing? ¿GP aplicado a RTS? ¿GP aplicado a Planet Wars? - JJ 
-% Antonio - escrito, aunque no es una frase lapidaria porque no estoy seguro de que no se haya usado antes en RTSs. PEro el objetivo/selling point se explica en la intro ahora.
- 
-Planet Wars, the game used in this work, has also been used in other researches as an experimental framework for agent testing. 
-%We have deeply worked in this environment \cite{Genebot-IWANN2011,Genebot_CEC11,genebot-evo12,ExpGenebot_CIG2012,Co-Genebot_EVO2014},
-%FERGU: no usar el "hemos trabajado", sino "se ha trabajado", que parece que somos los únicos que lo hacen (aunque sea verdad)
-% Antonio - pues yo lo veo peor así porque das a entender que se ha usado en varios trabajos (de gente diversa) y sólo citas los nuestros... XD
-We have considered this game in some previous studies \cite{Genebot-IWANN2011,Genebot_CEC11,genebot-evo12,ExpGenebot_CIG2012,Co-Genebot_EVO2014}, mainly applying Genetic Algorithms for evolving (the parameters of) a behavioural engine previously defined by a human expert from scratch. Those works have respectively defined a first approach, compared different implementations, analysed the noise influence, defined expert bots, and implemented co-evolutionary approaches.
+Uno de los subtimos de AEs, la Programación Genética, se ha demostrado como una buena herramienta para desarrollar estrategias en juegos, logrando resultados comparable a competidores humanos, o con comportamiento basado en humanos \cite{Sipper2007gameplaying}, e incluso suporeriores a otras técnicas \cite{Elyasaf2012FreeCell}. La PG también se ha usado en otros tipos de juegos, como los juegos de mesa \cite{Benbassat2012Reversi}, o juegos (en principio) simples, como Ms. Pac-Man \cite{Brandstetter2012PacMan} y Spoof \cite{Wittkamp2007spoof}, e incluso en videojuegos modernos, como los First Person Shothers (FPS) (for example, Unreal\texttrademark~ \cite{Esparcia2013GPunreal}). Con respecto a los RTS, existen trabajos para búsqueda de caminos \cite{pathfinding_GP_RTS} o definición de tácticas en juegos tácticos abstractos \cite{KeaveneyO09_GP_RTS}.
 
-%For example, in
-%\cite{Mora2012Genebot} the authors programmed the behaviour of a {\em bot} (a computer-controlled player) with a decision tree of 3 levels. Then, the values of these rules were optimized using a genetic algorithm to tune the strategy rates and percentages.  
-%  Results showed a good performance confronting with other bots
-%  provided by the Google AI Challenge. %In our next work
-%  In \cite{FernandezAres2012adaptive} the authors improved this agent optimizing it in different types of maps and selecting the set of optimized
-%  parameters depending on the map where the game was taking place,
-%  using a tree of 5 levels. These results outperformed the previous
-%  version of the bot with 87\% of victories. 
+Planet Wars. el juego usado en este trabajo, también ha sido utilizado por otros investigadores como un framework experimental para testeo de agentes. En los trabajos \cite{Genebot-IWANN2011,Genebot_CEC11,genebot-evo12,ExpGenebot_CIG2012,Co-Genebot_EVO2014}, se ha utilizado principalmente usando AGs para evolucionar los parámetros de un motor de comportamiento definido por un humano. Estos trabajo han definido respectivamente una primera aproximación, una comparativa de distintas implementaciones, análisis de la influencia del ruido, definición de bots expertos adaptativos al entorno, y aproximaciones co-evolutivas.
 
-The present work means a new step in this research line, which tries to avoid the strict limitations that the initial bot had, i.e. since it was defined by a human expert, it had a fixed structure (a Finite State Machine) which just offers a few degrees of improvement, namely a set of eight parameters.
-The use of GP here will provide us with a new tool for completely redefine the bot's AI engine, which could also get better results than previous bots.
-Thus GP has been applied to create the Decision Tree that the bot will use to make decisions during the game.
-In order to prove the method value, the resulting agents will be compared with a competitive bot previously presented: GeneBot \cite{Genebot_CEC11}, our initial bot improved by means of Genetic Algorithms. This bot also proved (in that work) to be better than a human-defined bot (AresBot).
-% AntonioDEF - He completado esto un poco para justificar mejor el trabajo. Comento además que Genebot era mejor que uno definido por un humano, Aresbot.
+El trabajo actual inicia un nuevo paso en esta línea de investigación, que intenta evitar las limitaciones estrictas que el bot inicial tenía, ya que fue definido por un humano, tenía una estructura fija (una máquina de estados finita) que sólo ofrecía unos pocos grados de mejora, simplemente un conjunto de 8 parámetros numéricos. El uso de PG nos proporcionará una nueva herramienta para redefinir completamente el motor de AI del bot, que podría obtener mejores resultados que los bots anteriores. Así, PG genera un árbol de decisión que el bot usará para tomar decisiones durante el juego. Para probar el valor de nuestro método, los agentes generados serán comparados con el bot anteriormente presentado: GeneBot \cite{Genebot_CEC11}, un bot mejorado con un AG que vence a bots definidos por usuarios.
 
-%, and Exp-Genebot \cite{ExpGenebot_CIG2012} an enhanced agent which considers different sets of parameters depending on the type of battle map, which is previously analysed by the bot.
-%*** Quitamos Exp-Genebot??? ***
-%FERGU2: sí, quitado
 
 %-------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%% GP BOT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
