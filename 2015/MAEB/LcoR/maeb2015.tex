@@ -1,3 +1,10 @@
+% --------------------------------------------------------------------------
+% @brief Artículo sobre L-Co-R aplicado a datos de SIPESCA
+% @author Víctor M. Rivas Santos (vrivas@ujaen.es)
+% @date 28-Oct-2014
+%
+% Atención: Utilizar codificación ISO-8859-1 para que compile correctamente
+% --------------------------------------------------------------------------
 \documentclass[twocolumn]{maeb2015}
 \usepackage[spanish]{babel}
 \usepackage[latin1]{inputenc}
@@ -10,47 +17,56 @@
 
 \begin{document}
 
-\title{Ejemplo de trabajo para el congreso \\MAEB 2015} %!PN
+\title{Predicción a muy corto plazo de series temporales de volumen de tráfico rodado mediante co-evolución de RBFNs } %!PN
 
-\author{Nombre del Autor\thanks{DirecciÃ³n del autor.
-E-mail: autor@xx.xx.xx .}}
+\author{
+Víctor M. Rivas$^{1}$\thanks{$^{1}$Departamento de Informática. Escuela Politécnica Superior de Jaén. Univ. de Jaén
+E-mail: vrivas@ujaen.es}, 
+Elisabet Parras-Gutiérrez$^{1}$, 
+Antonio Fernández-Ares$^{2}$\thanks{$^{2}$Departamento de Arquitectura y Tecnología de Computadores. Univ. de Granada},
+Pedro A. Castillo$^{2}$, 
+María Isabel García-Arenas$^{2}$,
+Juan J. Merelo$^{2}$,
+Gustavo Romero$^{2}$,
+Antonio Mora$^{2}$
+}
 
 \maketitle
 
 \begin{abstract}
-Este es el resumen del trabajo.###Escribir
+Este es el resumen del trabajo.!!!Escribir
 \end{abstract}
 
 \begin{keywords}
-primera palabra clave, segunda palabra clave, tercera palabra clave###Escribir
+primera palabra clave, segunda palabra clave, tercera palabra clave!!!Escribir
 \end{keywords}
 
-\section{IntroducciÃ³n}
-El fichero de estilo {\tt maeb2015.cls} puede usarse en combinaciÃ³n con el fichero de estilo para bibliografÃ­a {\tt maeb2015.bst}. Recuerde incrustar las fuentes en el PDF. ###Eliminar
+\section{Introducción}
+El fichero de estilo {\tt maeb2015.cls} puede usarse en combinación con el fichero de estilo para bibliografía {\tt maeb2015.bst}. Recuerde incrustar las fuentes en el PDF. !!!Eliminar
 
 
-La predicciÃ³n en tiempo real del trÃ¡fico de vehÃ­culos por carretera o ciudad se ha convertido en una necesidad cada vez mÃ¡s demandada tanto por las administraciones como por los propios usuarios~\cite{Min2011606}. Por este motivo, cada vez existen mÃ¡s mecanismos que permiten medir el volumen del trÃ¡fico, generando una vasta cantidad de informaciÃ³n pendiente de ser debidamente tratada y analizada para obtener predicciones cada vez mÃ¡s fiables. Actualmente, la posibilidad de obtener datos en tiempo real sobre volumen de trÃ¡fico o velocidades medias en numerosos puntos de las redes viales es ya un hecho; sin embargo, la toma de decisiones acerca de las medidas a tomar y la predicciÃ³n de en quÃ© modo aumentarÃ¡n o disminuirÃ¡n ambas variables sigue siendo una tarea que llevan a cabo tanto los gestores de las salas de control de trÃ¡fico como los propios conductores.
+La predicción en tiempo real del tráfico de vehículos por carretera o ciudad se ha convertido en una necesidad cada vez más demandada tanto por las administraciones como por los propios usuarios~\cite{Min2011606}. Por este motivo, cada vez existen más mecanismos que permiten medir el volumen del tráfico, generando una vasta cantidad de información pendiente de ser debidamente tratada y analizada para obtener predicciones cada vez más fiables. Actualmente, la posibilidad de obtener datos en tiempo real sobre volumen de tráfico o velocidades medias en numerosos puntos de las redes viales es ya un hecho; sin embargo, la toma de decisiones acerca de las medidas a tomar y la predicción de en qué modo aumentarán o disminuirán ambas variables sigue siendo una tarea que llevan a cabo tanto los gestores de las salas de control de tráfico como los propios conductores.
 
-Durante los tres Ãºltimos aÃ±os, gracias al proyecto SIPESCA, se ha desarrollado y puesto en marcha una nueva tÃ©cnica para estimar el nÃºmero de vehÃ­culos que circulan por una vÃ­a, asÃ­ como su velocidad. En concreto, se han ubicado en distintos puntos de AndalucÃ­a (tanto en ciudad como en autovÃ­a) unos sensores capaces de detectar, almacenar y transmitir el identificador Ãºnico de los dispositivos Bluetooth de los vehÃ­culos que circulan prÃ³ximos a cada sensor. La base de datos que se ha generado (y que sigue mejorÃ¡ndose y ampliÃ¡ndose) es ahora un recurso de enorme valor desde el cual estamos realizando distintos tipos de estudio, tanto por su capacidad de proporcionar informaciÃ³n en tiempo real como por las posibilidades que ofrece para realizar predicciones.
+Durante los tres últimos años, gracias al proyecto SIPESCA, se ha desarrollado y puesto en marcha una nueva técnica para estimar el número de vehículos que circulan por una vía, así como su velocidad. En concreto, se han ubicado en distintos puntos de Andalucía (tanto en ciudad como en autovía) unos sensores capaces de detectar, almacenar y transmitir el identificador único de los dispositivos Bluetooth de los vehículos que circulan próximos a cada sensor. La base de datos que se ha generado (y que sigue mejorándose y ampliándose) es ahora un recurso de enorme valor desde el cual estamos realizando distintos tipos de estudio, tanto por su capacidad de proporcionar información en tiempo real como por las posibilidades que ofrece para realizar predicciones.
 
-Partiendo de los datos recopilados por el proyecto SIPESCA, este trabajo presenta los resultados obtenidos al aplicar distintos mÃ©todos de predicciÃ³n de series temporales (entre ellos {L-Co-R} del cual somos autores \cite{LCOR}) para la predicciÃ³n a muy corto plazo de volumen de trÃ¡fico. Concretamente, el trabajo se centra en la predicciÃ³n a 15 minutos, 30 minutos, 45 minutos y 1 hora. La motivaciÃ³n para usar concretamente estos tiempos es la misma que la indicada en \cite{Min2011606}: por un lado, las oficinas de gestiÃ³n de trÃ¡fico necesitan actualizar de forma dinÃ¡mica la seÃ±alizaciÃ³n y mensajes dirigidos a ordenar correctamente el trÃ¡fico, y para ello deben basarse en las condiciones previstas para el trÃ¡fico en un futuro cercano, no en predicciones hechas con mucha anterioridad y que pueden estar totalmente obsoletas. Por otro lado, los propios conductores solicitan cada vez mÃ¡s informaciÃ³n y predicciones actualizadas en el mismo instante en que estÃ¡n desarrollando la actividad de conducir, mostrando poca confianza en las condiciones que existÃ­an cuando planificaron el trayecto. Este segundo aspecto se ha demostrado especialmente importante en trayectos de duraciÃ³n igual o superior a 10 minutos.
+Partiendo de los datos recopilados por el proyecto SIPESCA, este trabajo presenta los resultados obtenidos al aplicar distintos métodos de predicción de series temporales (entre ellos {L-Co-R} del cual somos autores \cite{LCOR}) para la predicción a muy corto plazo de volumen de tráfico. Concretamente, el trabajo se centra en la predicción a 15 minutos, 30 minutos, 45 minutos y 1 hora. La motivación para usar concretamente estos tiempos es la misma que la indicada en \cite{Min2011606}: por un lado, las oficinas de gestión de tráfico necesitan actualizar de forma dinámica la señalización y mensajes dirigidos a ordenar correctamente el tráfico, y para ello deben basarse en las condiciones previstas para el tráfico en un futuro cercano, no en predicciones hechas con mucha anterioridad y que pueden estar totalmente obsoletas. Por otro lado, los propios conductores solicitan cada vez más información y predicciones actualizadas en el mismo instante en que están desarrollando la actividad de conducir, mostrando poca confianza en las condiciones que existían cuando planificaron el trayecto. Este segundo aspecto se ha demostrado especialmente importante en trayectos de duración igual o superior a 10 minutos.
 
-Uno de los aspectos mÃ¡s innovadores que introducimos en este trabajo es la selecciÃ³n del conjunto de valores pasados que utilizaremos para construir el modelo con el que realizar la predicciÃ³n. En este sentido, hemos considerado solamente los datos recopilados en las Ãºltimas 24 horas. Los motivos son dos: en primer lugar, permite tratar el problema bajo el paradigma correcto de la predicciÃ³n de series temporales, esto es, utilizar un conjunto de datos consecutivos para realizar una predicciÃ³n mÃ¡s o menos diferida en el tiempo\footnote{Este importante aspecto fue puesto de manifiesto por los ganadores de la competiciÃ³n de predicciÃ³n de series temporales realizada en el simposio SICO, integrado dentro del congreso CEDI 2010 realizado en Zaragoza)}. En segundo lugar, nos permite situar un punto de referencia para futuros trabajos ya planificados en los cuales la construcciÃ³n del modelo predictor se realizarÃ¡ en dispositivos de poca capacidad de cÃ¡lculo y almacenamiento, los cuales cooperarÃ¡n en un entorno distribuido logrando mejorar las soluciones usando un enfoque colaborativo. Estos trabajos se enmarcan dentro de una lÃ­nea de investigaciÃ³n ya iniciada \cite{ jsEO, nodeEO, etc.} y permitirÃ¡n la descentralizaciÃ³n del proceso de creaciÃ³n de los modelos predictores al mismo tiempo que la difusiÃ³n de los mismos.
+Uno de los aspectos más innovadores que introducimos en este trabajo es la selección del conjunto de valores pasados que utilizaremos para construir el modelo con el que realizar la predicción. En este sentido, hemos considerado solamente los datos recopilados en las últimas 24 horas. Los motivos son dos: en primer lugar, permite tratar el problema bajo el paradigma correcto de la predicción de series temporales, esto es, utilizar un conjunto de datos consecutivos para realizar una predicción más o menos diferida en el tiempo\footnote{Este importante aspecto fue puesto de manifiesto por los ganadores de la competición de predicción de series temporales realizada en el simposio SICO, integrado dentro del congreso CEDI 2010 realizado en Zaragoza)}. En segundo lugar, nos permite situar un punto de referencia para futuros trabajos ya planificados en los cuales la construcción del modelo predictor se realizará en dispositivos de poca capacidad de cálculo y almacenamiento, los cuales cooperarán en un entorno distribuido logrando mejorar las soluciones usando un enfoque colaborativo. Estos trabajos se enmarcan dentro de una línea de investigación ya iniciada \cite{ jsEO, nodeEO, etc.} y permitirán la descentralización del proceso de creación de los modelos predictores al mismo tiempo que la difusión de los mismos.
 
-El resto del trabajo...###
+El resto del trabajo...!!!
 
 
 
 \section{Estado del arte}
-Existen numerosos ejemplos en la literatura en los que el problema de predicciÃ³n de trÃ¡fico a 15 minutos ha sido tratado. En la mayor parte de ellos, el mÃ©todo utilizado ha sido ARIMA \cite{ARIMA}, como por ejemplo en Smith et al. (2002) donde se compara la tÃ©cnica del vecino mÃ¡s cercano con los modelos autorregresivos. Un trabajo mÃ¡s reciente es el correspondiente a Chandra and Al-Deek (2009) que comparte con el anterior el estar centrado en los modelos ARIMA, y a su vez ambos son similares al ya citado \cite{Min2011606} en cuanto a la metodologÃ­a utilizada, consistente en ###
+Existen numerosos ejemplos en la literatura en los que el problema de predicción de tráfico a 15 minutos ha sido tratado. En la mayor parte de ellos, el método utilizado ha sido ARIMA \cite{ARIMA}, como por ejemplo en Smith et al. (2002) donde se compara la técnica del vecino más cercano con los modelos autorregresivos. Un trabajo más reciente es el correspondiente a Chandra and Al-Deek (2009) que comparte con el anterior el estar centrado en los modelos ARIMA, y a su vez ambos son similares al ya citado \cite{Min2011606} en cuanto a la metodología utilizada, consistente en !!!
 
-Desde hace una dÃ©cada, es posible encontrar trabajos en los que distintos tipos de redes neuronales han sido empleados para predecir problemas similares. AsÃ­, los trabajos de van Lint et al., 2005, Vlahogianni et al., 2005 and Zheng et al., 2006). Este Ãºltimo,  Zheng et al. (2006) realiza un enfoque muy similar al nuestro, capturando los datos en zonas puntuales y tratando de predecir el volumen de trÃ¡fico de los 15 minutos que siguen al Ãºltimo dato registrado. No obstante, los autores aunque exclyen de la captura de datos las horas correspondientes a la noche, asÃ­ como los fines de semana.
+Desde hace una década, es posible encontrar trabajos en los que distintos tipos de redes neuronales han sido empleados para predecir problemas similares. Así, los trabajos de van Lint et al., 2005, Vlahogianni et al., 2005 and Zheng et al., 2006). Este último,  Zheng et al. (2006) realiza un enfoque muy similar al nuestro, capturando los datos en zonas puntuales y tratando de predecir el volumen de tráfico de los 15 minutos que siguen al último dato registrado. No obstante, los autores aunque exclyen de la captura de datos las horas correspondientes a la noche, así como los fines de semana.
 
-###Hablar de que no tratan los datos como ST y describir bien el de Min
+!!!Hablar de que no tratan los datos como ST y describir bien el de Min
 
 %Kamarianakis and Prastacos (2003) estimate parameters in a model that takes into account both spatial and temporal correlations across the road network. While the basic form of their model has some similarity to ours, significant differences exist. Their model requires estimating a very large number of parameters, and yet does not take into account several important characteristics of a transportation network. In particular, they assume that the spatial correlations are represented by a fixed set of matrices, which depend upon the distances between links. However, on a transportation network, depending upon whether a link is congested or not, the other network links influencing its traffic flow will vary considerably. This is not captured by the approach of Kamarianakis and Prastacos (2003). Furthermore, the method proposed by the authors in Kamarianakis and Prastacos (2003) assumes stationarity of the system. While the authors note that the traffic flow parameters are clearly not stationary over the time period being modeled, they propose to perform differencing of the data points, with a differencing period of 1 day. This does not, however, deal with inter-day fluctuations, which should violate the stationarity assumption and introduce non-negligible bias into the estimated parameters. A more recent work by the authors makes use of GARCH models to handle the fact that variance in the data is different at peak and off-peak times; however, the accuracy achieved was quite poor. A line of references by Wang et al. makes use of macroscopic traffic flow modeling for real-time traffic prediction. That approach can handle only segments of expressways and while no numerical accuracy is provided by the authors, the graphics do not suggest a level of accuracy near that which is provided by our method (see Wang et al., 2007 and references therein).
 
-\subsection{Esta es una subsecciÃ³n}
+\subsection{Esta es una subsección}
 \begin{figure}[hbt]
 \begin{center}
 \setlength{\unitlength}{0.0105in}%
@@ -105,10 +121,24 @@ Esta prueba es trivial
 \end{proof}
 
 
-\section{MetodologÃ­a experimental}
+\section{Metodología experimental}
+Los experimentos que hemos realizado se han centrado en la predicción del número de vehículos que iban a pasar por 4 sensores o nodos distintos, a las 07:00, 07:15, 07:30 y 07:45 del jueves, !!! de enero de 2013. El día de la semana y horas escogidas coinciden por los utilizados en \cite{Min2011606}. Para realizar esta predicción, se han aportado a los distintos algoritmos empleados los datos recogidos durante las 24 horas anteriores, agrupados por intervalos de 15 minutos. De esta forma, el conjunto de entrenamiento estaba formado por 96 datos, y el de test por 4 datos; dado que los datos han sido agregados de 15 en 15 minutos, este conjunto de test es equivalente a la predicción de un dato para los horizontes 1, 2, 3 y 4, respectivamente.
 
+De los seis algoritmos que hemos utilizado, cinco de ellos pertenecen al paquete Forecast \cite{forecastR} de la aplicación R. Por un lado hemos utilizado cuatro métodos especialmente indicados para modelar series temporales: ETS (\em{Exponential smoothing state space model}, ARIMA, Croston y Theta; por otro lado, hemos usado la estimación de valores futuros utilizando la media aritmética (función \em{meanf} también incorporada en el paquete \em{forecast}) dado que la experiencia en este tipo de trabajos nos demuestra que en muchas ocasiones es precisamente el algoritmo que obtiene mejores resultados. Cada uno de estos algoritmos ha sido ejecutado una vez, proporcionando las estimaciones de cada uno de los 4 valores a predecir.
+
+El sexto algoritmo es de nuestra creación, L-Co-R \cite{LCoR}. Se trata de un algoritmo co-evolutivo en el que dos poblaciones evolucionan simultáneamente. La primera de ellas es una población de redes neuronales de funciones base radiales, mientras la segunda es una población de retardos (o \em{lags}). La coevolución permite encontrar la mejor combinación entre red neuronal y conjunto de retardos a utilizar para predecir los futuros valores de una serie temporal para cualquier horizonte que se le indique como parámetro. Dado que es un algoritmo estocástico, cada experimento se ha ejecutado 30 veces y los valores que mostramos para cada uno de los errores corresponden a la media aritmética de los 30 errores obtenidos, uno por ejecución. Los parámetros con los que se han ejecutado son los establecidos por defecto para este algoritmo, esto es, !!!
+
+Todas las ejecuciones se han realizado en un ordenador controlado por el sistema operativo Linux, kernel 3.13.0-32; incorpora un procesador Intel i7 a 2,8GHz, con 6GB de memoria RAM. Todas las ejecuciones se han realizado mientras el ordenador se utilizaba como estación de trabajo al mismo tiempo que gestiona un servidor de páginas web que soporta un bajo número de accesos. El algoritmo más costoso en tiempo de ejecución, L-Co-R, ha sido capaz de realizar las 30 ejecuciones en menos de 15 minutos para cada nodo; es decir, en un entorno de producción podría considerarse como un método válido para obtener predicciones en tiempo real. Por supuesto, si el número de nodos aumentase podría darse el caso de no poder obtener la predicción para todos los nodos, aunque este inconveniente es aplicable también al resto de métodos.
+
+Finalmente, en relación a la medida de error a utilizar, incluimos los resultados obtenidos por cada algoritmo para cada nodo y en relación a cada uno de los 4 horizontes de predicción. Las medidas utilizadas son propuestas por \cite{giojer}, donde se indica claramente que toda medida de error posee ventajas e inconvenientes por lo que es necesario evaluar cada método con varias de ellas para tener una idea certera de la idoneidad del mismo. Las medidas que hemos utilizado son las 11 siguientes: media del error en valor absoluto (AME), error cuadrático medio (MSE), raíz del error cuadrático medio (RMSE), !!! MAE mean, !!! MPE, !!! MAPE, !!! MdAE, !!! MdAPE, !!! sMAPE(%), !!! sMdAPE(%).
 
 \section{Resultados}
+Las tablas \ref{tablas} recogen los resultados de cada algoritmo para cada nodo, horizonte de predicción y medida de error; el menor de los valores para cada uno de las medidas de error se ha destacado sobre los demás. A modo de resumen, las tablas \ref{tablaresumen1} y \ref{tablasresumen2} muestran el número de medidas para las que cada algoritmo consigue el menor error. 
+La primera de las tablas (tabla \ref{tablaresumen1}) se ha realizado teniendo en cuenta solo los algoritmos especialmente indicados para el trabajo con series temporales, esto es, todos menos el que calcula el valor promedio (\em{meanf}); mientras que la segunda (tabla \ref{tablaresumen2}) muestra el resumen de resultados incluyendo también dicho método.
+
+Comenzando por la primera tabla resumen (tabla \ref{tablaresumen1}) podemos observar que en general los algoritmos que en mayor número de ocasiones consiguen el menor error son L-Co-R y Croston. De hecho, salvo para el horizonte 2 en el que Croston obtiene los mejores resultados, L-Co-R resulta ser el algoritmo más adecuado, produciendo las predicciones más cercanas a los valores esperados. De los demás algoritmos, ETS y en ocasiones ARIMA obtienen también los errores más pequeños, siendo Theta el algoritmo que sale peor parado en cualquiera de los horizontes considerados.
+
+No obstante, si consideramos todos los métodos incluyendo el del valor promedio, obtenemos que este último es el que consigue los mejores resultados en todos los casos (ver \ref{tablaresumen2}). En comparación con este algoritmo, todos los demás obtienen resultados que difícilmente son comparables si exceptuamos el horizonte 2, para el cual L-Co-R obtiene en el menor valor en 17 de las medidas que se han calculado.
 
 \section{Conclusiones}
 
