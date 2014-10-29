@@ -8,7 +8,9 @@
 \documentclass[twocolumn]{maeb2015}
 \usepackage[spanish]{babel}
 \usepackage[latin1]{inputenc}
-
+\usepackage{graphicx}
+\usepackage{caption}
+     
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
@@ -24,11 +26,7 @@ Víctor M. Rivas$^{1}$\thanks{$^{1}$Departamento de Informática. Escuela Politécn
 E-mail: vrivas@ujaen.es}, 
 Elisabet Parras-Gutiérrez$^{1}$, 
 Antonio Fernández-Ares$^{2}$\thanks{$^{2}$Departamento de Arquitectura y Tecnología de Computadores. Univ. de Granada},
-Pedro A. Castillo$^{2}$, 
-María Isabel García-Arenas$^{2}$,
-Juan J. Merelo$^{2}$,
-Gustavo Romero$^{2}$,
-Antonio Mora$^{2}$
+Pedro A. Castillo$^{2}$
 }
 
 \maketitle
@@ -122,20 +120,69 @@ Esta prueba es trivial
 
 
 \section{Metodología experimental}
-Los experimentos que hemos realizado se han centrado en la predicción del número de vehículos que iban a pasar por 4 sensores o nodos distintos, a las 07:00, 07:15, 07:30 y 07:45 del jueves, !!! de enero de 2013. El día de la semana y horas escogidas coinciden por los utilizados en \cite{Min2011606}. Para realizar esta predicción, se han aportado a los distintos algoritmos empleados los datos recogidos durante las 24 horas anteriores, agrupados por intervalos de 15 minutos. De esta forma, el conjunto de entrenamiento estaba formado por 96 datos, y el de test por 4 datos; dado que los datos han sido agregados de 15 en 15 minutos, este conjunto de test es equivalente a la predicción de un dato para los horizontes 1, 2, 3 y 4, respectivamente.
+Los experimentos que hemos realizado se han centrado en la predicción del número de vehículos que iban a pasar  a las 07:00, 07:15, 07:30 y 07:45 del jueves, !!! de enero de 2013, por 5 sensores o nodos distintos. Los sensores están etiquetados como "347", "721", "419", "420" y "440". El día de la semana y horas escogidas coinciden por los utilizados en \cite{Min2011606}. Para realizar esta predicción, se han aportado a los distintos algoritmos empleados los datos recogidos durante las 23 horas anteriores, agrupados por intervalos de 15 minutos. De esta forma, el conjunto de entrenamiento estaba formado por 92 datos, y el de test por 4 datos (ver \ref{fig:datos}); dado que los datos han sido agregados de 15 en 15 minutos, este conjunto de test es equivalente a la predicción de un solo dato para cada uno de los horizontes 1, 2, 3 y 4, respectivamente.
 
-De los seis algoritmos que hemos utilizado, cinco de ellos pertenecen al paquete Forecast \cite{forecastR} de la aplicación R. Por un lado hemos utilizado cuatro métodos especialmente indicados para modelar series temporales: ETS (\em{Exponential smoothing state space model}, ARIMA, Croston y Theta; por otro lado, hemos usado la estimación de valores futuros utilizando la media aritmética (función \em{meanf} también incorporada en el paquete \em{forecast}) dado que la experiencia en este tipo de trabajos nos demuestra que en muchas ocasiones es precisamente el algoritmo que obtiene mejores resultados. Cada uno de estos algoritmos ha sido ejecutado una vez, proporcionando las estimaciones de cada uno de los 4 valores a predecir.
+\begin{figure*}[hbt]
+  \centering
+  \includegraphics[width=3in]{347.png}
+ \includegraphics[width=3in]{721.png} \\
+  \includegraphics[width=3in]{419.png}
+ \includegraphics[width=3in]{420.png} \\
+ \includegraphics[width=3in]{440.png}
 
-El sexto algoritmo es de nuestra creación, L-Co-R \cite{LCoR}. Se trata de un algoritmo co-evolutivo en el que dos poblaciones evolucionan simultáneamente. La primera de ellas es una población de redes neuronales de funciones base radiales, mientras la segunda es una población de retardos (o \em{lags}). La coevolución permite encontrar la mejor combinación entre red neuronal y conjunto de retardos a utilizar para predecir los futuros valores de una serie temporal para cualquier horizonte que se le indique como parámetro. Dado que es un algoritmo estocástico, cada experimento se ha ejecutado 30 veces y los valores que mostramos para cada uno de los errores corresponden a la media aritmética de los 30 errores obtenidos, uno por ejecución. Los parámetros con los que se han ejecutado son los establecidos por defecto para este algoritmo, esto es, !!!
+  \caption[Número de dispositivos Bluetooth detectados por dispositivos "347", "721", "419", "420" y "440"]
+   {Datos de entrenamiento y test consistentes en el número de dispositivos Bluetooth detectados por los nodos etiquetados como "347", "721", "419", "420" y "440". Los datos están agrupados por períodos de 15 minutos.}
+\label{fig:datos}
+\end{figure*}
+
+
+De los seis algoritmos que hemos utilizado, cinco de ellos pertenecen al paquete Forecast \cite{forecastR} de la aplicación R. Por un lado hemos utilizado cuatro métodos especialmente indicados para modelar series temporales: ETS ({\em Exponential smoothing state space model}, ARIMA, Croston y Theta; por otro lado, hemos usado la estimación de valores futuros utilizando la media aritmética (función {\em meanf} también incorporada en el paquete {\em forecast}) dado que la experiencia en este tipo de trabajos nos demuestra que en muchas ocasiones es precisamente el algoritmo que obtiene mejores resultados. Cada uno de estos algoritmos ha sido ejecutado una vez, proporcionando las estimaciones de cada uno de los 4 valores a predecir.
+
+El sexto algoritmo es de nuestra creación, L-Co-R \cite{LCoR}. Se trata de un algoritmo co-evolutivo en el que dos poblaciones evolucionan simultáneamente. La primera de ellas es una población de redes neuronales de funciones base radiales, mientras la segunda es una población de retardos (o {\em lags}). La coevolución permite encontrar la mejor combinación entre red neuronal y conjunto de retardos a utilizar para predecir los futuros valores de una serie temporal para cualquier horizonte que se le indique como parámetro. Dado que es un algoritmo estocástico, cada experimento se ha ejecutado 30 veces y los valores que mostramos para cada uno de los errores corresponden a la media aritmética de los 30 errores obtenidos, uno por ejecución. Los parámetros con los que se han ejecutado son los establecidos por defecto para este algoritmo, esto es, !!!
 
 Todas las ejecuciones se han realizado en un ordenador controlado por el sistema operativo Linux, kernel 3.13.0-32; incorpora un procesador Intel i7 a 2,8GHz, con 6GB de memoria RAM. Todas las ejecuciones se han realizado mientras el ordenador se utilizaba como estación de trabajo al mismo tiempo que gestiona un servidor de páginas web que soporta un bajo número de accesos. El algoritmo más costoso en tiempo de ejecución, L-Co-R, ha sido capaz de realizar las 30 ejecuciones en menos de 15 minutos para cada nodo; es decir, en un entorno de producción podría considerarse como un método válido para obtener predicciones en tiempo real. Por supuesto, si el número de nodos aumentase podría darse el caso de no poder obtener la predicción para todos los nodos, aunque este inconveniente es aplicable también al resto de métodos.
 
-Finalmente, en relación a la medida de error a utilizar, incluimos los resultados obtenidos por cada algoritmo para cada nodo y en relación a cada uno de los 4 horizontes de predicción. Las medidas utilizadas son propuestas por \cite{giojer}, donde se indica claramente que toda medida de error posee ventajas e inconvenientes por lo que es necesario evaluar cada método con varias de ellas para tener una idea certera de la idoneidad del mismo. Las medidas que hemos utilizado son las 11 siguientes: media del error en valor absoluto (AME), error cuadrático medio (MSE), raíz del error cuadrático medio (RMSE), !!! MAE mean, !!! MPE, !!! MAPE, !!! MdAE, !!! MdAPE, !!! sMAPE(%), !!! sMdAPE(%).
+Finalmente, en relación a la medida de error a utilizar, incluimos los resultados obtenidos por cada algoritmo para cada nodo y en relación a cada uno de los 4 horizontes de predicción. Las medidas utilizadas son propuestas por \cite{giojer}, donde se indica claramente que toda medida de error posee ventajas e inconvenientes por lo que es necesario evaluar cada método con varias de ellas para tener una idea certera de la idoneidad del mismo. Las medidas que hemos utilizado son las 10 siguientes: error cuadrático medio (MSE), raíz del error cuadrático medio (RMSE), promedio del error en valor absoluto (MAE), promedio del error expersado como porcentaje (MPE),  promedio del valor absoluto del error expresado como porcentaje (MAPE), mediana del error en valor absoluto (MdAE), mediana del error en vslor absoluto expresado como porcentaje (MdAPE), promedio simétrico del valor absoluto del error expresado como porcentaje (sMAPE), mediana simétrica del valor absoluto del error expesado omo porcentaje (sMdAPE).
 
 \section{Resultados}
 Las tablas \ref{tablas} recogen los resultados de cada algoritmo para cada nodo, horizonte de predicción y medida de error; el menor de los valores para cada uno de las medidas de error se ha destacado sobre los demás. A modo de resumen, las tablas \ref{tablaresumen1} y \ref{tablasresumen2} muestran el número de medidas para las que cada algoritmo consigue el menor error. 
-La primera de las tablas (tabla \ref{tablaresumen1}) se ha realizado teniendo en cuenta solo los algoritmos especialmente indicados para el trabajo con series temporales, esto es, todos menos el que calcula el valor promedio (\em{meanf}); mientras que la segunda (tabla \ref{tablaresumen2}) muestra el resumen de resultados incluyendo también dicho método.
+La primera de las tablas (tabla \ref{tablaresumen1}) se ha realizado teniendo en cuenta solo los algoritmos especialmente indicados para el trabajo con series temporales, esto es, todos menos el que calcula el valor promedio ({\em meanf}); mientras que la segunda (tabla \ref{tablaresumen2}) muestra el resumen de resultados incluyendo también dicho método.
 
+\begin{table*}[htb]
+\caption{Número de ocasiones en los que cada algoritmo de los especialmente diseñados para resolver series temporales (esto es sin incluir {\em meanf} de la biblioteca {\em Forecast} del paquete R) obtiene el menor error. Se contabiliza el total sobre 5 series temporales y 10 medidas de error para cada una de ellas.}
+\begin{center}
+{\tt
+\begin{tabular}{|l||c|c|c|c|}\hline
+Algoritmo & Horizonte 1 & Horizonte 2 & Horizonte 3 & Horizonte 4 \\\hline
+ETS     & 7 & 3 & 12 & 8 \\\hline
+ARIMA   & 9 & 11 & 3 & 9  \\\hline
+CROSTON & {\bf13} & {\bf22} & 12 & {\bf16}   \\\hline
+THETA   & 4 & 0 & 0 &  0  \\\hline
+L-Co-R  & 12 & 9 & {\bf18} & 12  \\\hline
+\end{tabular}
+}
+\end{center}
+\label{tablaresumen1}
+\end{table*}
+
+
+\begin{table*}[htb]
+\caption{Número de ocasiones en los que cada algoritmo obtiene el menor error, sobre 5 series temporales y 10 medidas de error para cada una de ellas. Esta tabla es similar a la tabla \ref{tablaresumen1}, variando los datos al incorporar esta vez el algoritmo {\em meanf}, el cual calcula el valor promedio como predicción de futuro. }
+\begin{center}
+{\tt
+\begin{tabular}{|l||c|c|c|c|}\hline
+Algoritmo & Horizonte 1 & Horizonte 2 & Horizonte 3 & Horizonte 4 \\\hline
+ETS      & 7  & 0 & 7 & 7 \\\hline
+ARIMA    & 9  & 3 & 3 & 3  \\\hline
+CROSTON  & 8  & 6 & 7 & 7   \\\hline
+THETA    & 4  & 0 & 0 & 0  \\\hline
+MEANF    & {\bf14} & {\bf21} & {\bf28} & {\bf28} \\\hline
+L-Co-R   & 3  & 15 & 0 & 0  \\\hline
+\end{tabular}
+}
+\end{center}
+\label{tablaresumen1}
+\end{table*}
 Comenzando por la primera tabla resumen (tabla \ref{tablaresumen1}) podemos observar que en general los algoritmos que en mayor número de ocasiones consiguen el menor error son L-Co-R y Croston. De hecho, salvo para el horizonte 2 en el que Croston obtiene los mejores resultados, L-Co-R resulta ser el algoritmo más adecuado, produciendo las predicciones más cercanas a los valores esperados. De los demás algoritmos, ETS y en ocasiones ARIMA obtienen también los errores más pequeños, siendo Theta el algoritmo que sale peor parado en cualquiera de los horizontes considerados.
 
 No obstante, si consideramos todos los métodos incluyendo el del valor promedio, obtenemos que este último es el que consigue los mejores resultados en todos los casos (ver \ref{tablaresumen2}). En comparación con este algoritmo, todos los demás obtienen resultados que difícilmente son comparables si exceptuamos el horizonte 2, para el cual L-Co-R obtiene en el menor valor en 17 de las medidas que se han calculado.
