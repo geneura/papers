@@ -28,7 +28,7 @@
 \author{P. A. Castillo$^1$, A. J. Fernández-Ares$^1$, M. G. Arenas$^1$, \\ A. M. Mora$^1$, P. García-Sánchez$^1$, V.M. Rivas$^2$ \\
 \scriptsize{$^1$ Dept. Arquitectura y Tecnología de los Computadores, \\CITIC, Universidad de Granada } \\ 
 \scriptsize{$^2$ Dept. de Informática, Universidad de Jaén } \\ 
-\scriptsize{ e-mail: {\tt pacv@ugr.es} } \\
+\scriptsize{ e-mail de contacto: {\tt pacv@ugr.es} } \\
 }
 
 %\author{
@@ -69,33 +69,75 @@ Benchmarks, Predicción del flujo de tráfico, Bluetooth, Series temporales
 
 En diversos campos existen benchmarks estándar que son utilizados ampliamente por los investigadores, tal como el Proben1 \cite{Prechelt1994} en el área de las redes neuronales artificiales o el benchmark de la competición de optimización funcional del congreso IEEE Congress on Evolutionary Computation \cite{CEC2014}.
 
-Sin embargo, en otros campos hay una necesidad de este tipo de
-problemas reales, como es en el área de la gestión del tráfico, donde
-se presentan muchos trabajos en los que se usan simuladores de tráfico
-o benchmarks artificiales para obtener datos con los que trabajar
-(aplicarles algoritmos de extracción de información o
-predicción). Además, en pocas ocasiones se comparan resultados con
-otros. En muchas ocasiones eso se debe a la dificultad de obtener
-datos reales e incluso, por la dificultad de disponer de los datos en
-un formato adecuado. %Aquí tendría que ir una cita - JJ
+Sin embargo, en otros campos hay una necesidad de este tipo de problemas reales, como por ejemplo en el área de la gestión del tráfico.
+En este área, por la tipología de los problemas, existe una dificultad de obtener datos reales. 
+En algunos casos por la dificultad de disponer de los datos en un formato adecuado \cite{Flyvbjerg2008}, y en otros casos por tratarse de datos comerciales confidenciales \cite{Bain2009} obtenidos, p.ej. en peajes de autopistas \cite{Kriger2006}. 
+Esto hace que sólo en ciertos trabajos de investigación se puedan usar, con lo que es imposible comparar resultados con otros. 
 
-Así pues, hay una necesidad clara de benchmarks estándar,%no, no la
-                                %hay, no se ha justificado lo
-                                %suficiente - JJ
- así como reglas o convenciones para usarlos en la evaluación de métodos de predicción en la gestión del tráfico. Una forma de arreglar este problema es fomentar que los investigadores o bien usen benchmarks estándar o bien publiquen no sólo los resultados obtenidos sino también los datos del problema utilizado y su descripción detallada.
+% Department of Infraestructure and Transport. Australian Government. Review the Traffic Forecasting Performance Toll Roads. http://www.infrastructure.gov.au/infrastructure/public_consultations/files/attach_a_bitre_literature_review.pdf
+%
+% Kriger2006
+% toll data  /  data required for traffic modelling may include, among other things, traffic counts, network characteristics and generalised travel costs. These data are sometime lacking or subject to sampling/processing errors
+%
+%Flyvbjerg2008
+% Inappropriate models, poor quality and/or lack of data, and inadequate modelling assumptions are often cited in the literature as the main sources of forecasting errors.
+%
+% Bain2009
+%http://ibtta.org/sites/default/files/Error%20and%20optimism%20in%20traffic%20predictions.pdf
+% absence of comparative data
+% available toll road data 
+% The author had access to commercial-in-confidence documentation [...] compiled a database of predicted and actual traffic usage for over 100 international, privately financed toll road projects
+% 
+% \cite{Morzy2007}
+% Synthetic datasets were generated using Network-based Generator of Moving Objects by T.Brinkhoff \cite{Brinkhoff2002}. 
+%
+% \cite{PLAISANT2008}
+% “facilitate the comparison of different techniques and encourage researchers to work on challenging problems”
 
-Como se ha indicado, no basta con un conjunto de problemas y reglas, sino que hay que asegurarse de que los resultados obtenidos al utilizar dichos problemas sean comparables y reproducibles. Para ello hay que disponer de unos resultados de referencia que sirvan de base para las comparaciones.
+Es por esto que muchos investigadores presentan sus trabajos usando simuladores de tráfico \cite{Morzy2007}
+o benchmarks artificiales para obtener datos con los que trabajar (aplicarles algoritmos de extracción de información o predicción). 
+%
+% Linear Road Benchmark simulates a variable tolling system [6]
+% The system uses the MIT Trac Simulator to generate moving vehicles
+%
+% The DynaMark Benchmark simulates the movement of mobile users  who update their location with an average periodicity. [14]
+%
+% COST Benchmark  simulated objects with periodically updated 2-D locations.   [12]
+%
+% The BerlinMOD benchmark, like LRB, simulates spatio-temporal data of moving vehicles on a road network [9]. 
+%
+% HE GSMARK BENCHMARK: The resulting data consists of a real road network with simulated moving vehicles \cite{Shen2011}
+%
+% \cite{Gidofalvi2010}
+% data set contains the GPS readings of 1500 taxis and 400 trucks travelling on the streets of Stockholm
+%
+Entre estos benchmarks sintéticos cabe destacar:
+\begin{itemize}
+  \item El \emph{Linear Road Benchmark}, que utiliza el \emph{MIT Trac Simulator} para simular el movimiento de vehículos en un peaje \cite{Arasu2004}.
+  \item El \emph{DynaMark Benchmark}, que simula el movimiento de usuarios, actualizando su posición con cierta periodicidad  \cite{Myllymaki2003}.
+  \item El \emph{COST Benchmark}, que simula objetos móviles y actualiza su posición 2D periódicamente \cite{Jensen2006}.
+  \item El \emph{BerlinMOD Benchmark}, que simula datos espacio-temporales del movimiento de vehículos sobre una red de carreteras real \cite{Duntgen2009}.
+  \item El \emph{GSMARK Benchmark}, que genera datos a partir de una carretera real sobre la que se simula el movimiento de vehículos \cite{Shen2011}.
+  \item El benchmark público del \emph{Transport and Logistic Division of the Department of Urban Planning and Environment}, compuesto por datos reales de la posición GPS de 1500 taxis y 400 camiones circulando por las calles de Estocolmo \cite{Gidofalvi2010}.
+\end{itemize}
 
-Disponiendo del benchmark a partir de datos reales, las reglas de aplicación/documentación, y los resultados base para la comparación, se facilita el trabajo de los investigadores, asegurando la reproducibilidad y comparabilidad de resultados.
 
-En este sentido, SIPESCA-B pretende ser un primer paso hacia un benchmark estándar para el área de la gestión del tráfico, compuesto de diversas series temporales obtenidas de datos reales del paso de vehículos por diversos puntos de las carreteras andaluzas. 
+Así pues, hay una necesidad clara de benchmarks estándar basados en datos reales del tráfico, así como reglas o convenciones para usarlos en la evaluación de métodos de predicción en la gestión del tráfico. 
+Una forma de arreglar este problema es fomentar que los investigadores o bien usen benchmarks estándar o bien publiquen no sólo los resultados obtenidos sino también los datos del problema utilizado y su descripción detallada.
+
+Como se ha indicado, no basta con un conjunto de problemas y reglas, sino que hay que asegurarse de que los resultados obtenidos al utilizar dichos problemas sean comparables y reproducibles. 
+Para ello hay que disponer de unos resultados de referencia que sirvan de base para las comparaciones.
+
+Disponiendo del benchmark a partir de datos reales, las reglas de aplicación/documentación, y los resultados base para la comparación, se facilita el trabajo de los investigadores, asegurando la reproducibilidad y comparabilidad de resultados \cite{PLAISANT2008}.
+
+En este sentido, SIPESCA-B pretende ser un primer paso hacia un benchmark estándar para el área de la gestión del tráfico, compuesto de diversas series temporales obtenidas a partir de datos reales del paso de vehículos por diversos puntos de las carreteras andaluzas. 
 Su disponibilidad facilita el acceso a los investigadores a datos reales de movilidad en formatos sencillos y ampliamente extendidos.
 
 Además, siguiendo las recomendaciones de Prechelt \cite{Prechelt1994}, se proponen una serie de reglas para llevar a cabo la aplicación de métodos de predicción a estos problemas.
 
 %Junto con los conjuntos de datos y las reglas básicas, se ofrecen una serie de predicciones realizadas con varias de las series temporales y usando varios métodos de predicción. Estas medidas se pueden usar como base para las comparaciones.
 
-El hecho de preferir problemas basados en datos reales frente a datos artificiales o sintéticos hace que la investigación y sus resultados sean relevantes en al menos un ámbito.
+El hecho de preferir problemas basados en datos reales frente a datos artificiales o sintéticos hace que la investigación y sus resultados sean relevantes en al menos un ámbito \cite{Prechelt1994,PLAISANT2008}.
 
 El resto del trabajo está organizado como se indica a continuación: 
 En la Sección \ref{sec:timeseries} se presenta el proyecto de investigación dentro del cual se enmarca este trabajo y se detalla cómo se han obtenido los datos para construir las series temporales.
@@ -133,11 +175,20 @@ Así, con los datos de nodo, dispositivo, hora de inicio y hora de fin se puede c
 El objetivo del proyecto es obtener información acerca de los flujos de tráfico que se producen en una zona, permitiendo poder gestionar de manera óptima las decisiones de desplazamiento por parte de los ciudadanos o desarrollar planes de actuación concretos en cada caso.
 
 
+\begin{figure*} 
+\centering
+\epsfig{file=serieej.eps,width=14cm} 
+\caption{Representación de la serie temporal de ejemplo days\_1351591695721\_2012-11-19\_2013-03-01\_103\_55-3071\_.csv}
+\label{fig:seriesEJ}
+\end{figure*}
+
+
 \subsection{El benchmark SIPESCA-B}
 
 Con la publicación del benchmark SIPESCA-B buscamos ofrecer un conjunto de series temporales obtenidas a partir de datos reales a los investigadores que trabajan en el ámbito de la gestión y predicción del tráfico.
 
 Las series de datos se facilitan en texto plano, en formatos sencillos y ampliamente extendidos (CSV, JSON, ARFF y XML) y se han dejado disponibles en el repositorio público de código {\tt https://github.com/Sipesca/Datasets}
+bajo la licencia libre ODC Open Database License (ODbL)\footnote{\url{http://opendatacommons.org/licenses/odbl}} que permite copiar y distribuir los datos, crear trabajos a partir de ellos, y transformar esos datos, siempre que se distribuyan los datos obtenidos usando la misma licencia.
 
 Junto con los conjuntos de datos y las reglas básicas, se ofrecen una serie de predicciones realizadas con varias de las series temporales y usando varios métodos de predicción. Estas medidas se pueden usar como base para las comparaciones.
 
@@ -146,6 +197,7 @@ Al usar este benchmark, esperamos mejorar la reproducibilidad de los experimento
 Por otro lado, en muchos trabajos se hace referencia a problemas conocidos de una forma algo difusa, como ''se ha usado el problema Glass del Proben1'' \cite{Prechelt1994}. 
 Estas referencias resultan confusas, ya que puede haber varias versiones (incluso diferentes entre trabajos del mismo autor). 
 En este sentido, SIPESCA-B busca facilitar tanto el uso de problemas bien documentados, como la comparabilidad de los resultados obtenidos por distintos investigadores con diferentes métodos. Al disponer de los mismos datos, tan solo hay que indicar las series utilizadas y detallar el método y parámetros elegidos.
+
 
 
 \subsection{La publicación de las series en el repositorio}
@@ -166,8 +218,10 @@ Se presentan tanto las series sin marcas de tiempo como las series con marcas te
 Estas últimas se han incluyen en la carpeta TS correspondiente al tipo de intervalo y en cada entrada de la serie la fecha sigue un formato YYYY-MM-DD HH:mm:ss.
 
 
-Por ejemplo, el archivo {\tt 347-20130101-20130121\_15m.csv} corresponde con la serie en formato CSV que abarca 21 días, desde el 2013-01-01 y 2013-01-21, con intervalo de 15 minutos y cuyos datos se han obtenido con el nodo número 347, 
-mientras que el archivo {\tt days\_1351591695721\_2012-11-19\_2013-03-01\_|103|\_[55-3071]\_TS.csv} corresponde con la serie en formato CSV que abarca desde el 2012-11-19 al 2013-03-01, con intervalo de días, con marcas de tiempo y cuyos datos se han obtenido con el nodo con id 1351591695721.
+Por ejemplo, el archivo: \\
+{\scriptsize {\tt days\_1351591695721\_2012-11-19\_2013-03-01\_103\_55-3071\_.csv}}  \\
+corresponde con la serie en formato CSV que abarca desde el 2012-11-19 al 2013-03-01, con intervalo de días, con marcas de tiempo y cuyos datos se han obtenido con el nodo con id 1351591695721. Además, esta serie incluye 103 valores, con el mínimo en 55 y el máximo a 3071, y no lleva marca de tiempo (TS).
+La serie temporal contenida en este archivo de ejemplo se muestra gráficamente en la Figura \ref{fig:seriesEJ}.
 
 
 Por otro lado, debido al problema en cuestión y sobre todo al tipo de hardware utilizado, hay momentos en que los nodos no detectan ningún dispositivo (bien porque haya un periodo sin paso de vehículos, o bien porque el nodo de monitorización haya dejado de funcionar). 
@@ -175,10 +229,8 @@ En esos casos, el número de vehículos detectado es cero.
 Es por esto que se presentan series con valores ausentes, que se notan con el valor AN en el nombre. 
 Los valores ausentes se marcan con el valor NA en los instantes correspondientes en la serie.
 
-\textbf{TODOTODO: AQUI DEBERIAMOS MOSTRAR ALGUNAS GRAFICAS O COMENTAR UNAS ESTADISTICAS SOBRE LAS GRAFICAS...}
-
 Por último, cabe destacar que no solo se ofrecen las series descritas, sino que se han dejado disponibles los datos en bruto (carpeta \emph{raw}), sin procesar ni partir en intervalos.
-Estos datos, junto con las funciones en lenguaje R de extracción y completado de series temporales desarrolladas e incluidas en la carpeta "scripts" del repositorio permitirán a cualquier investigador que tome los datos en bruto (\emph{raw}) para generar nuevas series según sus necesidades (no se restringe a las que hemos generado).
+Estos datos, junto con las funciones en lenguaje R de extracción y completado de series temporales desarrolladas e incluidas en la carpeta \emph{scripts} del repositorio permitirán a cualquier investigador que tome los datos en bruto (\emph{raw}) para generar nuevas series según sus necesidades (no se restringe a las que hemos generado).
 
 
 
@@ -323,7 +375,7 @@ Así pues, se trata de series en las que muchos vehículos modificaron el patrón h
 %%% posición natural de las dos figuras
 
 
-En los experimentos llevados a cabo con las tres series descritas se han usado los primeros TODOTODO días de la serie para entrenar los diferentes métodos y poder construir el modelo predictivo, mientras que los TODOTODO días restantes se han utilizado para comprobar la bondad de la predicción obtenida. 
+En los experimentos llevados a cabo con las tres series descritas se han usado los primeros 481 valores de la serie para entrenar los diferentes métodos y poder construir el modelo predictivo, mientras que los 21 valores restantes se han utilizado para comprobar la bondad de la predicción obtenida. 
 La predicción se genera con un horizonte de 1, es decir, conocidos los datos de la serie con $n$ elementos, el algoritmo predice el elemento $n+1$. 
 
 
@@ -433,7 +485,8 @@ En este trabajo se ha presentado el benchmark SIPESCA-B, un conjunto de series t
 Los datos (reales) se han obtenido monitorizando el paso de dispositivos con el BT o el wifi encendido por ciertos puntos en autovías, carreteras y calles a lo largo de varios meses.
 
 Las series temporales creadas se han dejado accesibles a toda la comunidad científica en el repositorio público 
-{\tt https://github.com/Sipesca/Datasets}
+{\tt https://github.com/Sipesca/Datasets} \\
+bajo la licencia libre ODC Open Database License.
 
 Esperamos que este benchmark sirva como un estándar y ayude a los investigadores que trabajan en el área de la gestión y predicción del tráfico para presentar sus resultados, haciéndolos comparables y reproducibles. 
 
@@ -592,6 +645,23 @@ M.~Perez-Godoy, P.~P\'erez-Recuerda, M.~Fr\'{i}as, A.~Rivera, C.~Carmona,
 \bibitem{LibroR} R.J. Hyndman and G. Athanasopoulos, Forecasting: principles and practice. ISBN 978-0987507105. OTexts. October 17, 2013
 
 \bibitem{Khashei12011} M. Khashei1 and M. Bijari. Which Methodology is Better for Combining Linear and Nonlinear Models for Time Series Forecasting? Journal of Industrial and Systems Engineering, Vol. 4, No. 4, pp 265-285. 2011
+
+\bibitem{Morzy2007} M. Morzy. Mining Frequent Trajectories of Moving Objects for Location Prediction. Machine Learning and Data Mining in Pattern Recognition. Lecture Notes in Computer Science Volume 4571, pp 667-680. 2007
+\bibitem{Brinkhoff2002} T. Brinkhoff. A framework for generating network-based moving objects. GeoInformatica 6(2), 153-180. 2002
+\bibitem{Gidofalvi2010} G. Gidofalvi and E. Saqib. Developing a Benchmark for Using Trajectories of Moving Objects in Traffic Prediction and Management. In Proc. of the Workshop on Movement Pattern Analysis. GIScience2010, 2p, 2010
+
+\bibitem{PLAISANT2008} PLAISANT, C., FEKETE, J. D., AND GRINSTEIN, G. Promoting insight-based evaluation of visualizations: From contest to benchmark repository. IEEE Transactions on Visualization and Computer Graphics 14, 1, 120-134. 2008
+
+\bibitem{Flyvbjerg2008} B. Flyvbjerg. Curbing Optimism Bias and Strategic Misrepresentation in Planning: Reference Class Forecasting in Practice, European Planning Studies, Vol. 16, No. 1. 2008
+\bibitem{Kriger2006} Kriger, D., Shiu, S. and Naylor, S. Estimating Toll Road Demand and Revenue - A Synthesis of Highway Practice, NCHRP Synthesis 364, Transport Research Board. 2006
+
+\bibitem{Bain2009} R. Bain. Error and optimism bias in toll road traffic forecasts. J. Transportation, N.5, pp. 469-482. DOI 10.1007/s11116-009-9199-7. 2009
+
+\bibitem{Shen2011} Chao Shen and Yan Huang and Jason W. Powell. The Design of a Benchmark for Geo-stream Management Systems. In GIS, pp409-412. 2011
+\bibitem{Arasu2004} A. Arasu, M. Cherniack, E. Galvez, D. Maier, A. S. Maskey, E. Ryvkina, M. Stonebraker, and R. Tibbetts. Linear road: a stream data management benchmark. In Proceedings of the Thirtieth international conference on Very large data bases - Volume 30, VLDB2004, pages 480-491. VLDB Endowment, 2004
+\bibitem{Duntgen2009} C. Duntgen, T. Behr, and R. H. Guting. Berlinmod: a benchmark for moving object databases. The VLDB Journal, 18:1335-1368. 2009
+\bibitem{Jensen2006} C. S. Jensen, D. Tiesyte, and N. Tradisauskas. The cost benchmark-comparison and evaluation of spatio-temporal indexes. In DASFAA, pages 125-140, 2006.
+\bibitem{Myllymaki2003} J. Myllymaki and J. Kaufman. Dynamark: A benchmark for dynamic spatial indexing. In Proceedings of the 4th International Conference on Mobile Data Management, MDM2003, pages 92-105, London, UK. Springer-Verlag. 2003
 
 
 \end{thebibliography}
