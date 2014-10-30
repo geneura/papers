@@ -10,7 +10,6 @@
 \usepackage[latin1]{inputenc}
 \usepackage{graphicx}
 \usepackage{caption}
-     
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
@@ -22,19 +21,18 @@
 \title{Predicción a muy corto plazo de series temporales de volumen de tráfico rodado mediante co-evolución de RBFNs } %!PN
 
 \author{
-Víctor M. Rivas$^{1}$\thanks{$^{1}$Departamento de Informática. Escuela Politécnica Superior de Jaén. Univ. de Jaén
+Víctor M. Rivas$^{a}$\thanks{$^{a}$Departamento de Informática. Escuela Politécnica Superior de Jaén. Univ. de Jaén
 E-mail: vrivas@ujaen.es}, 
-Elisabet Parras-Gutiérrez$^{1}$, 
-Antonio Fernández-Ares$^{2}$\thanks{$^{2}$Departamento de Arquitectura y Tecnología de Computadores. Univ. de Granada},
-Pedro A. Castillo$^{2}$,
-Pedro García-Fernández$^{3}$\thanks{$^{3}$Departamento de Electrónica y Tecnología de Computadores. Univ. de Granada},
-
+Elisabet Parras-Gutiérrez$^{a}$, 
+Antonio Fernández-Ares$^{b}$\thanks{$^{b}$Departamento de Arquitectura y Tecnología de Computadores. Univ. de Granada},
+Pedro A. Castillo$^{b}$,
+Pedro García-Fernández$^{c}$\thanks{$^{c}$Departamento de Electrónica y Tecnología de Computadores. Univ. de Granada}
 }
 
 \maketitle
 
 \begin{abstract}
-Este es el resumen del trabajo.!!!Escribir
+La predicción del estado del tráfico en tiempo real y a corto plazo es una necesidad cada vez más demandada, tanto por conductores como por los centros de gestión del tráfico. Este trabajo presenta una comparativa de la predicción realizada sobre cuatro series temporales distintas por distintos algoritmos, entre los que se ha incluido un sistema de co-evolución de redes neuronales y conjuntos de retardos. Cada serie temporal recoge el número de dispositivos Bluetooth detectados en puntos de la red vial, agrupados por intervalos de 15 minutos, y la predicción se realiza a 15, 30, 45 y 60 minutos con respecto al último dato conocido. Los resultados muestran las posibilidades que ofrece cada método en función del horizonte a obtener partiendo de los datos medidos en las últimas 24 horas.
 \end{abstract}
 
 \begin{keywords}
@@ -42,9 +40,6 @@ Algoritmos coevolutivos, Predicción de tráfico, Series temporales, Redes Neurona
 \end{keywords}
 
 \section{Introducción}
- Recuerde incrustar las fuentes en el PDF. !!!Eliminar
-
-
 La predicción en tiempo real del tráfico de vehículos por carretera o ciudad se ha convertido en una necesidad cada vez más demandada tanto por las administraciones como por los propios usuarios~\cite{Min2011606}. Por este motivo, cada vez existen más mecanismos que permiten medir el volumen del tráfico, generando una vasta cantidad de información pendiente de ser debidamente tratada y analizada para obtener predicciones cada vez más fiables. Actualmente, la posibilidad de obtener datos en tiempo real sobre volumen de tráfico o velocidades medias en numerosos puntos de las redes viales es ya un hecho; sin embargo, la toma de decisiones acerca de las medidas a tomar y la predicción de en qué modo aumentarán o disminuirán ambas variables sigue siendo una tarea que llevan a cabo tanto los gestores de las salas de control de tráfico como los propios conductores.
 
 Durante los tres últimos años, gracias al proyecto SIPESCA\footnote{http://sipesca.ugr.es/}, se ha desarrollado y puesto en marcha una nueva técnica para estimar el número de vehículos que circulan por una vía, así como su velocidad. En concreto, se han ubicado en distintos puntos de Andalucía (tanto en ciudad como en autovía) unos sensores capaces de detectar, almacenar y transmitir el identificador único de los dispositivos Bluetooth de los vehículos que circulan próximos a cada sensor. La base de datos que se ha generado (y que sigue mejorándose y ampliándose) es ahora un recurso de enorme valor desde el cual estamos realizando distintos tipos de estudio, tanto por su capacidad de proporcionar información en tiempo real como por las posibilidades que ofrece para realizar predicciones.
@@ -59,33 +54,57 @@ El resto del trabajo se compone de los siguientes apartados: la sección \ref{sec
 
 \section{Estado del arte}
 \label{sec:soa}
-Existen numerosos ejemplos en la literatura en los que el problema de predicción de tráfico a 15 minutos ha sido tratado. En la mayor parte de ellos, el método utilizado ha sido ARIMA \cite{BoxJenk}, como por ejemplo en Smith et al. \cite{Smith2002303} donde se compara la técnica del vecino más cercano con los modelos autorregresivos. Un trabajo más reciente es el correspondiente a Chandra y Al-Deek \cite{Chandra200953} que, como el anterior está centrado en los modelos ARIMA; a su vez ambos trabajos son similares al realizado por Min y Wynter \cite{Min2011606} en cuanto a la metodología utilizada, consistente en !!!
+Existen numerosos ejemplos en la literatura en los que el problema de predicción de tráfico a 15 minutos ha sido tratado. En la mayor parte de ellos, el método utilizado ha sido ARIMA \cite{BoxJenk}, como por ejemplo en Smith et al. \cite{Smith2002303} donde se compara la técnica del vecino más cercano con los modelos autorregresivos. Un trabajo más reciente es el correspondiente a Chandra y Al-Deek \cite{Chandra200953} que, como el anterior está centrado en los modelos ARIMA; a su vez ambos trabajos son similares al realizado por Min y Wynter \cite{Min2011606} en cuanto a la metodología utilizada, basada en modelo de autorregresión espacio-temporal multivariable (MSTAR). En este tipo de algoritmos, cada vía se modela como un grafo en el que cada una de las aristas proporciona información acerca de la cantidad de vehículos que circulan, así como la dirección de los mismos y la velocidad a la que se mueven.  Para mejorar la predicción del modelo, los autores en \cite{Min2011606} incorporan información adicional relacionada, fundamentalmente, con las condiciones meteorológicas de modo que integran un modelo autorregresivo con la medición de una o más variables exógenas. En este sentido, los anteriores trabajos describen estudios similares a los llevados a cabo por Kmarianakis y Prastacos \cite{Kamarianakis}, en el que se lleva a cabo una predcción basada en correlaciones espacio-temporales. En todo caso, los anteriores métodos suelen ser muy dependendientes de las características concretas de la vía sobre la que se aplican (como por ejemplo la pendiente de la misma), por lo que suelen necesitar de un reajuste del numeroso conjunto  de parámetros que incorporan.
 
-Desde hace una década, es posible encontrar trabajos en los que distintos tipos de redes neuronales han sido empleados para predecir problemas similares, tales como los trabajos de Van Lint et al. \cite{vanLint2005347}, Vlahogianni et al. \cite{Vlahogianni2005211} y Zheng et al. \cite{Zheng2006114}. Este último, realiza un enfoque muy similar al nuestro, capturando los datos en zonas puntuales y tratando de predecir el volumen de tráfico de los 15 minutos que siguen al último dato registrado. No obstante, los autores exclyen de la captura de datos las horas correspondientes a la noche, así como los fines de semana.
+En lo relativo a las redes neuronales, desde hace una década, es posible encontrar trabajos en los que distintos tipos ellas han sido empleados para predecir problemas similares, tales como los trabajos de Van Lint et al. \cite{vanLint2005347}, Vlahogianni et al. \cite{Vlahogianni2005211} y Zheng et al. \cite{Zheng2006114}. Este último, realiza un enfoque muy similar al nuestro, capturando los datos en zonas puntuales y tratando de predecir el volumen de tráfico de los 15 minutos que siguen al último dato registrado. No obstante, los autores excluyen de la captura de datos las horas correspondientes a la noche, así como los fines de semana.
 
-!!!Hablar de que no tratan los datos como ST y describir bien el de Min
 
 !!! Describir L-Co-R, trabajos ya realizados
 
-%Kamarianakis and Prastacos (2003) estimate parameters in a model that takes into account both spatial and temporal correlations across the road network. While the basic form of their model has some similarity to ours, significant differences exist. Their model requires estimating a very large number of parameters, and yet does not take into account several important characteristics of a transportation network. In particular, they assume that the spatial correlations are represented by a fixed set of matrices, which depend upon the distances between links. However, on a transportation network, depending upon whether a link is congested or not, the other network links influencing its traffic flow will vary considerably. This is not captured by the approach of Kamarianakis and Prastacos (2003). Furthermore, the method proposed by the authors in Kamarianakis and Prastacos (2003) assumes stationarity of the system. While the authors note that the traffic flow parameters are clearly not stationary over the time period being modeled, they propose to perform differencing of the data points, with a differencing period of 1 day. This does not, however, deal with inter-day fluctuations, which should violate the stationarity assumption and introduce non-negligible bias into the estimated parameters. A more recent work by the authors makes use of GARCH models to handle the fact that variance in the data is different at peak and off-peak times; however, the accuracy achieved was quite poor. A line of references by Wang et al. makes use of macroscopic traffic flow modeling for real-time traffic prediction. That approach can handle only segments of expressways and while no numerical accuracy is provided by the authors, the graphics do not suggest a level of accuracy near that which is provided by our method (see Wang et al., 2007 and references therein).
 
 \section{Metodología experimental}
 \label{sec:metodologia}
-Los experimentos que hemos realizado se han centrado en la predicción del número de vehículos que iban a pasar  a las 07:00, 07:15, 07:30 y 07:45 del jueves, 24 de enero de 2013, por 5 sensores o nodos distintos. Los sensores están etiquetados como "347", "721", "419", "420" y "440". El día de la semana y horas escogidas están basados en los utilizados en \cite{Min2011606}. Para realizar esta predicción, se han aportado a los distintos algoritmos empleados los datos recogidos durante las 23 horas anteriores, agrupados por intervalos de 15 minutos. De esta forma, el conjunto de entrenamiento estaba formado por 92 datos, y el de test por 4 datos (ver fig. \ref{fig:datos}); dado que los datos han sido agregados de 15 en 15 minutos, este conjunto de test es equivalente a la predicción de un solo dato para cada uno de los horizontes 1, 2, 3 y 4, respectivamente.
+Los experimentos que hemos realizado se han centrado en la predicción del número de vehículos que iban a pasar  a las 07:00, 07:15, 07:30 y 07:45 del jueves, 24 de enero de 2013, por 5 sensores o nodos distintos. Los sensores están etiquetados como "347", "721", "419", "420" y "440". El día de la semana y horas escogidas están basados en los utilizados en \cite{Min2011606}. Para realizar esta predicción, se han aportado a los distintos algoritmos empleados los datos recogidos durante las 23 horas anteriores, agrupados por intervalos de 15 minutos. De esta forma, el conjunto de entrenamiento estaba formado por 92 datos, y el de test por 4 datos (ver figs. \ref{fig:datos347} a \ref{fig:datos440}); dado que los datos han sido agregados de 15 en 15 minutos, este conjunto de test es equivalente a la predicción de un solo dato para cada uno de los horizontes 1, 2, 3 y 4, respectivamente.
 
 \begin{figure*}[hbt]
   \centering
-  \includegraphics[width=3in]{347.png}
- \includegraphics[width=3in]{721.png} \\
-  \includegraphics[width=3in]{419.png}
- \includegraphics[width=3in]{420.png} \\
- \includegraphics[width=3in]{440.png}
-
-  \caption[Número de dispositivos Bluetooth detectados por dispositivos "347", "721", "419", "420" y "440"]
-   {Datos de entrenamiento y test consistentes en el número de dispositivos Bluetooth detectados por los nodos etiquetados como "347", "721", "419", "420" y "440". Los datos están agrupados por períodos de 15 minutos.}
-\label{fig:datos}
+  \includegraphics[width=5in]{347.png}
+  \label{fig:datos347}
+  \caption[Número de dispositivos Bluetooth detectados por el sensor "347"]
+   {Datos de entrenamiento y test consistentes en el número de dispositivos Bluetooth detectados por el nodo etiquetado como "347". Los datos están agrupados por períodos de 15 minutos.}
 \end{figure*}
 
+\begin{figure*}[hbt]
+  \centering
+  \includegraphics[width=5in]{721.png}
+  \label{fig:datos721}
+\caption[Número de dispositivos Bluetooth detectados por el sensor "721"]
+   {Datos de entrenamiento y test consistentes en el número de dispositivos Bluetooth detectados por el nodo etiquetado como "721". Los datos están agrupados por períodos de 15 minutos.}
+\end{figure*}
+
+\begin{figure*}[hbt]
+  \centering
+  \includegraphics[width=5in]{419.png}
+  \label{fig:datos419}
+\caption[Número de dispositivos Bluetooth detectados por el sensor "419"]
+   {Datos de entrenamiento y test consistentes en el número de dispositivos Bluetooth detectados por el nodo etiquetado como "419". Los datos están agrupados por períodos de 15 minutos.}
+\end{figure*}
+
+\begin{figure*}[hbt]
+  \centering
+  \includegraphics[width=5in]{420.png}
+  \label{fig:datos420}
+\caption[Número de dispositivos Bluetooth detectados por el sensor "420"]
+   {Datos de entrenamiento y test consistentes en el número de dispositivos Bluetooth detectados por el nodo etiquetado como "420". Los datos están agrupados por períodos de 15 minutos.}
+\end{figure*}
+
+\begin{figure*}[hbt]
+  \centering
+  \includegraphics[width=5in]{440.png}
+  \label{fig:datos440}
+\caption[Número de dispositivos Bluetooth detectados por el sensor "440"]
+   {Datos de entrenamiento y test consistentes en el número de dispositivos Bluetooth detectados por el nodo etiquetado como "440". Los datos están agrupados por períodos de 15 minutos.}
+\end{figure*}
 
 De los cinco algoritmos que hemos utilizado, cuatro de ellos pertenecen al paquete {\em Forecast}~\cite{hyndman2007automatic} de la aplicación R: ETS ({\em Exponential smoothing state space model}, ARIMA, Croston y Theta. Cada uno de estos algoritmos ha sido ejecutado una vez, proporcionando las estimaciones de cada uno de los 4 valores a predecir.
 
@@ -105,7 +124,7 @@ Dado que es un algoritmo estocástico, cada experimento se ha ejecutado 30 veces 
 
 Todas las ejecuciones se han realizado en un ordenador con sistema operativo Linux (kernel 3.13.0-32), un procesador Intel i7 a 2,8GHz y  6GB de memoria RAM. Todas las ejecuciones se han realizado mientras el ordenador se utilizaba como estación de trabajo al mismo tiempo que gestiona un servidor de páginas web que soporta un bajo número de accesos. Aunque no describimos los tiempos de ejecución, hemos de indicar que el algoritmo más costoso en este aspecto, L-Co-R, ha sido capaz de realizar las 30 ejecuciones en menos de 15 minutos para cada nodo. Por tanto, sería viable la explotación de un servicio que actualizase las previsiones en tiempo real a medida que nuevos datos fuesen siendo capturados por los sensores.
 
-Finalmente, en relación a la medida de error a utilizar, incluimos los resultados obtenidos por cada algoritmo para cada nodo y en relación a cada uno de los 4 horizontes de predicción. Las medidas utilizadas son propuestas por \cite{giojer}, donde se indica claramente que toda medida de error posee ventajas e inconvenientes por lo que es necesario evaluar cada método con varias de ellas para tener una idea certera de la idoneidad del mismo. Las medidas que hemos utilizado son las 9 siguientes (ecuaciones \ref{eq:MAE} a \ref{eq:sMdAPE}: error cuadrático medio (MSE), raíz del error cuadrático medio (RMSE), error absoluto medio (MAE), error promedio porcentual (MPE),  error absoluto porcentual medio (MAPE), mediana del error absoluto (MdAE), mediana del error absoluto porcentual (MdAPE), media simétrica del error asoluto expresado como porcentaje (sMAPE (\%)), mediana simétrica del error absoluto expresado como porcentaje (sMdAPE (\%)).
+Finalmente, en relación a la medida de error a utilizar, incluimos los resultados obtenidos por cada algoritmo para cada nodo y en relación a cada uno de los 4 horizontes de predicción. Las medidas utilizadas son propuestas por \cite{Gooijer_25years}, donde se indica claramente que toda medida de error posee ventajas e inconvenientes por lo que es necesario evaluar cada método con varias de ellas para tener una idea certera de la idoneidad del mismo. Las medidas que hemos utilizado son las 9 siguientes (ecuaciones \ref{eq:MAE} a \ref{eq:SMDAPE}: error cuadrático medio (MSE), raíz del error cuadrático medio (RMSE), error absoluto medio (MAE), error promedio porcentual (MPE),  error absoluto porcentual medio (MAPE), mediana del error absoluto (MdAE), mediana del error absoluto porcentual (MdAPE), media simétrica del error asoluto expresado como porcentaje (sMAPE (\%)), mediana simétrica del error absoluto expresado como porcentaje (sMdAPE (\%)).
 
 \begin{itemize}
   \item \it{Error cuadrático medio} (MSE):
@@ -125,7 +144,7 @@ Finalmente, en relación a la medida de error a utilizar, incluimos los resultado
 
  \item \it{Error promedio porcentual} (MPE):
         \begin{equation}\label{eq:MPE}
-            MPE = 100*\frac{e_t}{Y_t))
+            MPE = 100*\frac{e_t}{Y_t}
         \end{equation}
 
   \item \it{Error absoluto porcentual medio} (MAPE):
@@ -134,7 +153,7 @@ Finalmente, en relación a la medida de error a utilizar, incluimos los resultado
         \end{equation}
 
   \item \it{Mediana del error absoluto} (MdAE):
-        \begin{equation}\label{eq:MDAPE}
+        \begin{equation}\label{eq:MDAE}
             MdAPE = median(\mid e_t\mid)
         \end{equation}
 
@@ -145,32 +164,30 @@ Finalmente, en relación a la medida de error a utilizar, incluimos los resultado
         \end{equation}
 
   \item \it{Media simétrica del error asoluto expresado como porcentaje} (sMAPE (\%)):
-        \begin{equation}\label{eq:MDAPE}
+        \begin{equation}\label{eq:SMAPE}
             sMAPE = 100mean(2*\mid Y_t-F_t] )/ (Y_t+F_t)\mid)
         \end{equation}
 
-  \item \it{Mediana simétrica del error absoluto expresado como porcentaje} (MdAPE):
-        \begin{equation}\label{eq:MDAPE}
+  \item \it{Mediana simétrica del error absoluto expresado como porcentaje} (sMdAPE):
+        \begin{equation}\label{eq:SMDAPE}
             sMdAPE = 100median(2*\mid Y_t-F_t] )/ (Y_t+F_t)\mid)
         \end{equation}
-
-,  (sMdAPE (\%))
-
+\end{itemize}
 
 donde  $Y_t$ es el dato observado en tiempo $t = {1,...,n}$; $F_t$ es la predicción de  $Y_t$; $e_t$
 es el error de predicción (i.e. $e_t= Y_t - F_t$); $p_t = 100e_t/Y_t$ es el porcentaje de error y 
          $q_t = \displaystyle\frac{e_t}{\displaystyle\frac{1}{n-1} \sum_{i=2}^n \mid Y_i - Y_{i-1} \mid }$
-\end{itemize}
+
 
 
 
 \section{Resultados}
 \label{sec:resultados}
-Las tablas \ref{tablas} recogen los resultados de cada algoritmo para cada nodo, horizonte de predicción y medida de error; el menor de los valores para cada uno de las medidas de error se ha destacado sobre los demás. A modo de resumen, las tablas \ref{tablaresumen1} y \ref{tablasresumen2} muestran el número de medidas para las que cada algoritmo consigue el menor error. 
-La primera de las tablas (tabla \ref{tablaresumen1}) se ha realizado teniendo en cuenta solo los algoritmos especialmente indicados para el trabajo con series temporales, esto es, todos menos el que calcula el valor promedio ({\em meanf}); mientras que la segunda (tabla \ref{tablaresumen2}) muestra el resumen de resultados incluyendo también dicho método.
+Las tablas \ref{tablas} recogen los resultados de cada algoritmo para cada nodo, horizonte de predicción y medida de error; el menor de los valores para cada uno de las medidas de error se ha destacado sobre los demás. A modo de resumen, las Tablas \ref{tabla:resumen1} y \ref{tabla:resumen2} muestran el número de medidas para las que cada algoritmo consigue el menor error. 
+La primera de ellas (Tabla \ref{tabla:resumen1}) se ha realizado teniendo en cuenta solo los algoritmos especialmente indicados para el trabajo con series temporales, esto es, todos menos el que calcula el valor promedio ({\em meanf}); mientras que la segunda (Tabla \ref{tabla:resumen2}) muestra el resumen de resultados incluyendo también dicho método.
 
 \begin{table*}[htb]
-\caption{Número de ocasiones en los que cada algoritmo de los especialmente diseñados para resolver series temporales (esto es sin incluir {\em meanf} de la biblioteca {\em Forecast} del paquete R) obtiene el menor error. Se contabiliza el total sobre 5 series temporales y 10 medidas de error para cada una de ellas.}
+\caption{Número de ocasiones en los que cada algoritmo de los especialmente diseñados para resolver series temporales (esto es sin incluir {\em meanf} de la biblioteca {\em Forecast} del paquete R) obtiene el menor error. Se contabiliza el total sobre 5 series temporales y 9 medidas de error para cada una de ellas.}
 \begin{center}
 {\tt
 \begin{tabular}{|l||c|c|c|c|}\hline
@@ -183,12 +200,12 @@ L-Co-R  & 12 & 9 & {\bf18} & 12  \\\hline
 \end{tabular}
 }
 \end{center}
-\label{tablaresumen1}
+\label{tabla:resumen1}
 \end{table*}
 
 
 \begin{table*}[htb]
-\caption{Número de ocasiones en los que cada algoritmo obtiene el menor error, sobre 5 series temporales y 10 medidas de error para cada una de ellas. Esta tabla es similar a la tabla \ref{tablaresumen1}, variando los datos al incorporar esta vez el algoritmo {\em meanf}, el cual calcula el valor promedio como predicción de futuro. }
+\caption{Número de ocasiones en los que cada algoritmo (incluyendo el algoritmo {\em meanf} de la biblioteca {\em Forecast}) obtiene el menor error. El datos mostrados están calculados sobre 5 series temporales y 9 medidas de error para cada una de ellas.}
 \begin{center}
 {\tt
 \begin{tabular}{|l||c|c|c|c|}\hline
@@ -202,38 +219,25 @@ L-Co-R   & 3  & 15 & 0 & 0  \\\hline
 \end{tabular}
 }
 \end{center}
-\label{tablaresumen1}
+\label{tabla:resumen2}
 \end{table*}
-Comenzando por la primera tabla resumen (tabla \ref{tablaresumen1}) podemos observar que en general los algoritmos que en mayor número de ocasiones consiguen el menor error son L-Co-R y Croston. De hecho, salvo para el horizonte 2 en el que Croston obtiene los mejores resultados, L-Co-R resulta ser el algoritmo más adecuado, produciendo las predicciones más cercanas a los valores esperados. De los demás algoritmos, ETS y en ocasiones ARIMA obtienen también los errores más pequeños, siendo Theta el algoritmo que sale peor parado en cualquiera de los horizontes considerados.
 
-No obstante, si consideramos todos los métodos incluyendo el del valor promedio, obtenemos que este último es el que consigue los mejores resultados en todos los casos (ver \ref{tablaresumen2}). En comparación con este algoritmo, todos los demás obtienen resultados que difícilmente son comparables si exceptuamos el horizonte 2, para el cual L-Co-R obtiene en el menor valor en 17 de las medidas que se han calculado.
+Comenzando por la primera tabla resumen (Tabla \ref{tabla:resumen1}) podemos observar que en general los algoritmos que en mayor número de ocasiones consiguen el menor error son L-Co-R y Croston. De hecho, salvo para el horizonte 2 en el que Croston obtiene los mejores resultados, L-Co-R resulta ser el algoritmo más adecuado, produciendo las predicciones más cercanas a los valores esperados. De los demás algoritmos, ETS y en ocasiones ARIMA obtienen también los errores más pequeños, siendo Theta el algoritmo que sale peor parado en cualquiera de los horizontes considerados.
+
+No obstante, si consideramos todos los métodos incluyendo el del valor promedio, obtenemos que este último es el que consigue los mejores resultados en todos los casos (ver Tabla \ref{tabla:resumen2}). En comparación con este algoritmo, todos los demás obtienen resultados que difícilmente son comparables si exceptuamos el horizonte 2, para el cual L-Co-R obtiene  el menor valor en 15 de las medidas que se han calculado.
 
 
 
 \section{Conclusiones}
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
-Estas son las conclusiones.
+\label{sec:conclusiones}
 
 \section*{Agradecimientos}
-Este trabajo se está desarrollando gracias a la financiación del proyecto {\em ANYSELF :: UGR: Self-* Properties in P2P and Cloud Systems}, código TIN2011-28627-C04, financiado por el Ministerio de Ciencia e Innovación.
+Este trabajo se está desarrollando gracias a la financiación de los proyectos {\em ANYSELF :: UGR: Self-* Properties in P2P and Cloud Systems} (código TIN2011-28627-C04, Ministerio de Ciencia e Innovación)), GENIL (código PYR-2014-17, Universidad de Granada) y del proyecto FEDER de la Unión Europea con título \emph{''Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos'' (SIPEsCa)} del Programa Operativo FEDER de Andalucía 2007-2013. Asimismo, queremos mostrar nuestro agradecimiento al personal e investigadores de la Agencia de Obra Pública de la Junta de Andalucía, Consejería de Fomento y Vivienda, por su dedicación y profesionalidad. 
+
+\begin{figure}[!h]
+\centering
+  \includegraphics[width=3in]{sipesca_2.eps}
+\end{figure}
 
 
 \bibliographystyle{maeb2015}
