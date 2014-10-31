@@ -11,7 +11,7 @@
 
 \begin{document}
 
-\title{Aplicación de Técnicas de Inteligencia Computacional a Sistemas de Seguridad Corporativa. \\El caso del proyecto MUSES} %!PN
+\title{Aplicación de Técnicas de Inteligencia Computacional a un Sistema de Seguridad Corporativa} %!PN
 
 \author{P. De las Cuevas, A.M. Mora, J.J. Merelo, P.A. Castillo \thanks{Departamento de Arquitectura y Tecnología de Computadores. CITIC, ETSIIT,Universidad de Granada
 E-mail: \{paloma,amorag,jmerelo, pedro\}@geneura.ugr.es}}
@@ -68,13 +68,13 @@ Normalmente la arquitectura de la red de seguridad de la empresa se adapta para 
 Además, estos dispositivos, como los extendidos \textit{smartphones} suelen combinar información personal y profesional, así como aplicaciones de ambos tipos, lo que añade un factor de riesgo al estar dichas aplicaciones no corporativas poco controladas.
 
 Por tanto, a la hora de diseñar la arquitectura de la red de una compañía, hay que tener en cuenta todos estos factores.
-La Figura \ref{fig:proposed_diagram} muestra una propuesta que puede emplearse como punto de partida para el diseño de soluciones que hagan seguro este entorno dinámico. Ésta incluye el caso de tener dispositivos móviles (\textit{smartphones y tablets}) u ordenadores portátiles propios de algunos empleados, además muestra la oportunidad de que dichos dispositivos se conecten desde dentro o desde fuera de la compañía.
+La Figura \ref{fig:proposed_diagram_esp} muestra una propuesta que puede emplearse como punto de partida para el diseño de soluciones que hagan seguro este entorno dinámico. Ésta incluye el caso de tener dispositivos móviles (\textit{smartphones y tablets}) u ordenadores portátiles propios de algunos empleados, además muestra la oportunidad de que dichos dispositivos se conecten desde dentro o desde fuera de la compañía.
 Los recursos de información son accedidos continuamente en estas condiciones, considerando como recurso cualquier trozo de información que tenga un valor asociado (coste, dependiendo del riesgo, de que esa información se pierda o se filtre).
 Ejemplos de este tipo de recursos podrían ser documentos con información restringida, determinados e-mails críticos, e incluso aplicaciones internas de la compañía.
 
 \begin{figure}[ht]
 	\begin{center}
-		\includegraphics[scale=0.36]{proposed_diagram.eps}
+		\includegraphics[scale=0.36]{proposed_diagram_esp.eps}
 		\caption{Muestra de arquitectura de red de una empresa, considerando que ésta ha adoptado la filosofía BYOD.}
 	\label{fig:proposed_diagram}
 	\end{center}
@@ -126,56 +126,73 @@ La sección siguiente presenta el sistema MUSES de forma breve, así como las técn
 \section{El Sistema MUSES}
 \label{sec:muses}
 
-As previously stated, MUSES will be a whole corporate security system aimed to deal with the new BYOD philosophy, i.e. it will manage user's accesses to the company servers from diverse own devices, which could be dangerous for several reasons, including the user's behaviour.
+Como se ha indicado anteriormente MUSES es un sistema de seguridad corporativa enfocado a trabajar dentro de la filosofía BYOD, es decir, éste gestionará los accesos de usuarios a los servidores de la empresa desde diversos dispositivos, incluyendo propios, hecho que implica diversos riesgos, incluido el propio comportamiento de los usuarios.
 
-The defined MUSES architecture is shown in Figure \ref{fig:architecture_overview}.
+\subsection{Arquitectura del sistema}
+
+Como se puede ver en la Figura \ref{fig:architecture_overview} la arquitectura de MUSES se basa en un enfoque cliente/servidor.
 %
 \begin{figure*}[htp]
 \centering
-\epsfig{file=architecture_overview.eps, scale=0.61}
-\caption{MUSES Architecture Overview (high-level components)\label{fig:architecture_overview}}
+\epsfig{file=architecture_overview.eps, scale=0.57}
+\caption{Arquitectura general de MUSES (componentes de alto nivel). Sigue un esquema con varios clientes (parte derecha), dispositivos de los usuarios, y servidor (parte izquierda), en la que se realizan la mayor parte de las decisiones y el procesamiento. \label{fig:architecture_overview}}
 \end{figure*}
 %
-It is a \textit{client/server} approach in which the \textit{client} program will be installed in every user's mobile or portable device, independently of the platform (operating system and type of device). The \textit{server} side would be installed in the corporate security operations centre. Both sides are connected through a secure channel (using HTTPS) over Internet.
 
-One of the main features of this system will be the self-adaptation (to the user and context) of the set of Corporate Security Rules (specification of the ISPs). 
-To this end, there is a component in the designed architecture (Figure \ref{fig:architecture_overview}, left side) named \textit{MusKRS}, from MUSES \textit{Knowledge Refinement System}. This will be run asynchronously in the server and will be in charge of analysing all the gathered information (events, context, user-related data), and adapting/refining the security rules to better deal with these events, also trying to predict future threats due to the user's behaviour.
+En ésta, la aplicación \textit{cliente} se instalará en todos los dispositivos de los usuarios, y será independiente de la plataforma de que se trate, así como de su sistema operativo (una de las ventajas de MUSES). El \textit{servidor} por su parte se instalará en el centro de seguridad corporativa de la empresa. Ambas partes se conectarán mediante un canal seguro (usando HTTPS) sobre Internet.
+Para una descripción más completa, los lectores pueden dirigirse a la página web del proyecto (\texttt{https://www.musesproject.eu)} o al artículo \cite{MUSES_SAC_14}.
 
-This process will be composed by two steps: first, a Data Mining/Machine Learning procedure will be performed (in the \textit{Data Miner} sub-component);  second, a refinement and inference process will be done (in the \textit{Knowledge Compiler} sub-component), considering the data `extracted' in the first step, by means of Computational Intelligence techniques.
-It should be noticed that part of the refinement (or adaptation) of the security rules will be made using simpler methods, such as generalisation or specialisation of rules, for instance. Then, other parts of the process would be conducted using CI.
 
-Another important fact is that MUSES will count with a human controller, normally the company Chief Security Officer (CSO), who will supervise the system activity by means of logs. Thus, adapted and inferred security rules will not be directly added to the current set of rules. Instead, they are proposed to this controller in order that he/she accepts them if they are interesting and correct. It is planned that the system will be able to `learn' from this decisions so, after a so-called training or `warm up' period, the rules would be directly accepted or rejected autonomously.
 
-The following sections describe these processes: first focusing on DM techniques to be used both automatically by the KRS, and as a kind of decision-aid/monitoring tool for the CSO; second, the CI techniques are explained, mainly focusing in Evolutionary Computation approaches, since these methods perform very well, and have been widely used in security-based environments, as has been presented in Section \ref{sec:stateofart}.
+Una de las ventajas más importantes del sistema es la auto-adaptación (tanto al usuario, como al contexto) que será capaz de realizar, modificando y mejorando el sistema de Reglas de Seguridad corporativas.
+
+En este trabajo nos centraremos en la parte del servidor (ver Figura \ref{fig:server_architecture}), ya que es en ésta en la que se aplicarán las técnicas de DM, ML e IC sobre los datos recopilados por el sistema (almacenados en la Base de Datos). En concreto en el componente llamado \textit{MusKRS}, por MUSES \textit{Knowledge Refinement System}. Este módulo se ejecutará de forma asíncrona (varias veces o una vez al día, dependiendo del volumen de datos que se genere en la empresa a este respecto), y será el encargado de analizar toda información generada por en los accesos de los usuarios (eventos, contexto, datos de usuario) a los recursos de información que haya en el servidor, tarea de la que se encargará el \textit{Data Miner}. Una vez analizados estos datos, se procederá a realizar una tarea de adaptación o refinado de reglas de seguridad (por el componente \textit{Knowledge Compiler}) para lidiar mejor con esos eventos, intentando predecir futuras amenazas de seguridad debidas al comportamiento de los usuarios.
+
+De modo que el \textit{Data Miner} aplicará, como su nombre indica, técnicas de DM y ML para identificar y extraer patrones relevantes de los datos. Después el \textit{Knowledge Compiler} realizará una labor de inferencia y refinado/ajuste de reglas, mediante técnicas de IC, considerando los datos extraídos en este primer paso. Si bien, este último modulo también se encargará de realizar refinados más sencillos como especialización o generalización de reglas, aplicando métodos más simples.
+
+%
+\begin{figure*}[htp]
+\centering
+\epsfig{file=server_architecture.eps, scale=0.4}
+\caption{Arquitectura del servidor de MUSES (submódulos), en la que destaca el componente llamado \textit{Knowledge Refinement System, MusKRS}, responsable de realizar las tareas de \textit{Data Mining}, \textit{Machine Learning} y la adaptación de las reglas se seguridad que rigen el sistema. \label{fig:server_architecture}}
+\end{figure*}
+%
+
+Un factor a tener en cuenta es que MUSES tendrá un controlador humano, normalmente el jefe de seguridad de la compañía (\textit{Chief Security Officer ,CSO}), que se encargará de supervisar la actividad del sistema en base a logs e informes generados durante estas tareas.
+De forma que todas las reglas refinadas o generadas serán etiquetadas como `potenciales' y deberán ser aprobadas por él/ella antes de ser finalmente añadidas al conjunto que rige al sistema.
+Aún así, una de las posibles mejoras a implementar será un mecanismo de aprendizaje que sea capaz de predecir si una nueva regla sería aceptada o no por el CSO (en base a decisiones anteriores), a fin de automatizar este proceso en un futuro(tras un periodo de `entrenamiento').
+
+Las siguientes secciones describen estos procesos: primero los métodos de DM que usará automáticamente el MusKRS, así como para una posible herramienta de análisis y ayuda a la decisión para el CSO; en segundo lugar se comentan las técnicas de IC a aplicar, principalmente centradas en el uso de Algoritmos Evolutivos, dado que estas metaheurísticas se comportan muy bien y han sido ampliamente utilizadas en problemas relacionados con la seguridad en la empresa, como se ha comentado en la Sección \ref{sec:soa}.
 
 % ------------------------------------------------------------------
 %
 \subsection{Data Mining/Machine Learning}
 \label{subsec:dm_ml}
 
-This task will be performed by the Data Miner module. It will take the `raw' data from the database and will process the information, in order to yield a set of relevant data for the Knowledge Compiler sub-component or for the human controller. In the first case, this sub-component will take them as a reference in order to refine or adapt the current set of security rules (for instance, to deal with anomalous situations).
+Para esta tarea se considerará el conjunto de datos global en la base de datos y se preprocesará para componer subconjuntos más simples o más adecuados para ser tratados con estas técnicas. Después, se aplicarán métodos de clasificación, clustering, o visualización, entre otros, para extraer patrones que el \textit{Knowledge Compiler} procesará con otros métodos, o que se ofrecerán al controlador humano (CSO) para su información.
 
-The process will be mainly non-supervised, and eventually the datasets can be huge (depending on the company's data flows), so Big Data processing methods \cite{BigData_11} will be applied.
+El proceso será principalmente no supervisado y procesará, eventualmente, grandes cantidades de datos (dependiendo de los flujos de trabajo de la compañía), por lo que será necesario aplicar técnicas de procesado de \textit{Big Data} \cite{BigData_11}.
 
-The DM/ML techniques will process the so-called patterns, which in this context correspond to events (and their related information) produced by the users' interactions with the system. The methods to be applied are:
+Los métodos de DM/ML procesarán patrones que, en este contexto, se corresponderán con eventos (y su información correspondiente) producidos por las interacciones de los usuarios con el sistema.
+En concreto se aplicarán:
 
 \begin{itemize}
 
-\item \textit{Pattern Mining} \cite{PatternMining_Han07}: 
-This process will try to identify frequent or, on the contrary, anomalous patterns, in order to process them lately. The idea is that non-frequent patterns are potentially suspicious, and thus, could be of interest to be checked by the CSO or to serve as a reference for the rule-refinement process.
+\item \textit{Pattern Mining} (extracción de patrones) \cite{PatternMining_Han07}: 
+Este proceso tratará de identificar patrones de comportamiento en los datos, tanto frecuentes, como anómalos, a fin de procesarlos posteriormente, La idea subyacente es que los patrones poco frecuentes son potencialmente sospechosos, por lo que será interesante que el CSO esté al corriente, así como que puedan servir de base para el proceso de refinado de reglas.
 
-\item \textit{Classification} \cite{classification_67}: 
-This technique tries to train a model (classifier) able to associate every pattern in the dataset to a class, so that the model could be used for assign a class for further incoming patterns with an unknown category.
-For instance, it could look for events (patterns) that had been marked as `allowed' or `denied' (according to the ISPs). When a new event arises, if it has not an assigned decision, the classifier should provide one based on the similarity with previous (and already labelled) patterns.
+\item \textit{Clasificación} \cite{classification_67}: 
+Esta técnica trata de entrenar un modelo (clasificador) capaz de asociar cada patrón en el conjunto de datos con una etiqueta o clase, de forma que dicho modelo podría utilizarse para asignar una clase a nuevos patrones con categorías desconocidas, en base a su similitud con patrones previos.
+Por ejemplo, se podrían considerar como modelo patrones de acciones que los usuarios quieren realizar, etiquetadas como `permitidas' o `denegadas' según las reglas de seguridad existentes. De forma que ante una nueva solicitud (un nuevo evento de acción) el clasificador pudiese asignar una clase a dicho patrón y, por tanto, una decisión, que estaría basada en patrones/decisiones anteriores.
 
-\item \textit{Clustering} \cite{Clustering_Jain99}: 
-The aim of this method is grouping the patterns considering some similarity criteria, in order to manage them as a set. This could be used for providing data visualisation mechanisms, in order to make it easier to interpret the data interaction and the distribution in clusters with respect to the different properties/features of the patterns.
+\item \textit{Clustering} (agrupamiento) \cite{Clustering_Jain99}: 
+El objetivo de esta técnica es agrupar los patrones considerando criterios de similaridad (distancias), a fin de gestionarlos como un conjunto. Esto puede ser útil para ofrecer herramientas de visualización de datos (al CSO), que permitan interpretar los datos de forma más sencilla e identificar visualmente los grupos que se forman en relación a distintas características y los patrones conflictivos o extraños, por estar desubicados o fuera de lugar.
 
-\item \textit{Feature Selection} \cite{FeatureSelection_Guyon03}: 
-It consists on extract the most important features/variables from the data. This could be useful if we want to discard non-key features, which could be interesting in order to reduce the database weight, for improving the performance of other techniques (such as classification or clustering), and even to improve the performance of whole the system, since less information would be gathered and transmitted.
+\item \textit{Selección de Características} \cite{FeatureSelection_Guyon03}: 
+Consiste en extraer las características más relevantes de los datos. Esto suele ser muy útil para descartar variables superflúas (para labores de clasificación, por ejemplo) que puedan agilizar otros procesos o reducir el espacio ocupado en la base de datos, mejorando el rendimiento de todo el sistema.
 
-\item \textit{Data Analysis}: 
-This will provide the CSO with mechanisms to visualise interesting facts about the data, such as more frequent events, dangerous or suspicious users (according to their behaviour), more triggered rules, etc.
+\item \textit{Análisis de Datos}: 
+Se trata de proveer al CSO de herramientas o mecanismos para identificar o visualizar cuestiones interesantes o relevantes respecto a los datos, comportamientos sospechosos, reglas más utilizadas, etc.
 
 \end{itemize}
 
@@ -183,53 +200,49 @@ This will provide the CSO with mechanisms to visualise interesting facts about t
 
 % ------------------------------------------------------------------
 %
-\subsection{Computational Intelligence: Evolutionary Computation Methods}
+\subsection{Inteligencia computacional: métodos de Computación Evolutiva}
 \label{subsec:ci}
 
 %+ Clasificación con GP
 %- Inferencia de nuevas reglas con GP
 %+ Ajuste de valores de recursos con AGs???
 
-MUSES will use different EC approaches, initially, one in the DM/ML part of the process, and three in the rule-refinement/adaptation phase. They are based in GPs \cite{GP_Koza92}, and GAs \cite{GAs_Goldberg89}.
+MUSES usará la computación evolutica a través de diferentes aproximaciones, a saber inicialmente, de una manera en la parte de minería de datos (DM) y ML, y mediante otras tres técnicas en la fase de adaptación o refinamiento de reglas. Todas ellas se basan en Programación Genética (PG) \cite{GP_Koza92} y Algoritmos Genéticos (AGs) \cite{GAs_Goldberg89}.
 
-The first evolutionary-based approach will be a \textit{GP classification} method. This will be useful for two main reasons: first, in order to deal with the data class imbalance \cite{imbalance_techniques_02}, very common in classification problems inside real systems (with real data); and second, to better manage categorical (non-numeric) data, since most of the features/variables and information gathered from the events take these kind of values.
+El primer método basado en técnicas evolutivas será la \textit{clasificación por PG}. Esto resulta de gran utilidad por dos razones: primero, para obtener balanceo sobre los datos \cite{imbalance_techniques_02}, ya que el tener un conjunto de datos no balanceado es bastante común en este tipo de aplicaciones con datos reales: y después, para un mejor manejo de datos categóricos (no numéricos), ya que la mayoría de variables o características extraídas de la información que ofrece el sistema son de este tipo.
 
-Thus, this approach will be able to manage unbalanced datasets considering a fitness function in which a cost can be associated to the classifier accuracy at every epoch, having a penalty cost when the classifier makes a false negative (an element from the minority class which is classified as belonging to the majority class) \cite{cost_adjustment_07}.
-Regarding the type of data, since GP algorithms can manage rule- or tree-based models, it will work perfectly with any categorical variable, yielding a good classifier as it has been made in other works (such as the aforementioned \cite{cost_adjustment_07}).
+Por tanto, este método sería capaz de trabajar con conjuntos de datos no balanceados, considerando una función fitness en la cual el coste va asociado al porcentaje de aciertos del clasificador, y aplicando una penalización por cada falso negativo obtenido (puesto que, esto significaría que se ha permitido un evento que es potencialmente peligroso) \cite{cost_adjustment_07}.
+En cuanto al tipo de datos, debido a que los algoritmos de PG suelen aplicar modelos basados en reglas o en árboles de decisión, estos se pueden aplicar a variables categóricas, obteniendo un buen clasificador como se obtiene en trabajos como \cite{cost_adjustment_07}.
 
-The second set of EC approaches are, as stated, part of the rule-refinement (or adaptation) process. These techniques will be used for inference and optimisation, and will consider this data as a part of the process:
+Centrándonos en el proceso de adaptación o refinamiento de reglas, las técnicas empleadas se aplicarían para inferencia u optimización de un conjunto inicial de reglas, y usarían los siguientes datos:
 
 \begin{itemize}
 
-\item The information extracted from the Data Miner sub-component, mainly concerning the anomalous, unclassified or misclassified patterns. These are those patterns which did not match with any of the existing classes (they are quite different from the patterns belonging to those classes), so they cannot be included in any of the classes and thus they should be taken into account for a potential inference or update in the set of security rules, in order to `cover' them.
+\item La información extraída por el subcomponente que realiza la minería de datos, en concreto los eventos que resulten anómalos, ya sean patrones no clasificados o mal clasificados. Estos son, aquellos patrones que no se incluyen en ninguna de las clases ya existentes, ya que difieren en gran medida de los patrones que sí se encuentran en ellas, y deberían tenerse en cuenta para ser cubiertos por las reglas de seguridad una vez mejoradas.
 
-\item User-related information corresponding to those anomalous or unlabelled patterns (events). Thus, the user's ID, location and role, for instance, will be considered in order to select the applicable set of rules for that conditions.
+\item Información relativa al usuario, correspondiente a esos patrones, o eventos, que son anómalos o que no han podido ser clasificados. Así, su número de identificación, localización (fuera o dentro de las instalaciones de la empresa), o puesto en la empresa, serían ejemplos de lo que el sistema consideraría a la hora de seleccionar un conjunto de reglas a aplicar en esa situación.
 
-\item Context information for the same patterns, in order to also restrict the applicable set of rules considering this information. 
+\item Información de contexto para patrones que sean parecidos, para restringir, de la misma manera que en el punto anterior, el conjunto de reglas a aplicar.
 
 \end{itemize}
 
-Another useful information to consider in the refinement/ adaptation process will be:
+Otros tipos de información que podrían ser útiles durante el proceso de refinamiento o adaptación son los siguientes:
 
 \begin{itemize}
 
-\item Risk information extracted from the user profile (reputation), e.g. "Did the user received a lot of `denies'/`allows' before?", i.e. "Is he/she trustworthy?". In case the user is not, more restrictive rules would be created for him, otherwise the corresponding rules could be `eased' for that user.
+\item Información del riesgo que supone un determinado usuario (en términos de su reputación), como por ejemplo. ``¿Ha recibido el usuario con anterioridad muchas notificaciones de `permiso'/`denegación'?''. Si el usuario tiende a recibir denegaciones a las acciones que suele realizar, se le aplicarán reglas más restrictivas que para un usuario que realice más acciones permitidas.
 
-\item The information stored in logs along the system, which can, for instance, tell about how the user responds to system messages (either an action or if he gives feedback). This could result in the inference of new rules or in adaptation, in order to deal with, for instance, users that repeatedly ignore warning messages.
-Moreover, important log information regarding the parameters used or the decisions made in the different modules will be used for further tests of new inferred rules, as it is explained below.
+\item Información que ha sido almacenada en registros del sistema. A partir de ellos se puede saber, por ejemplo, cómo actúa el usuario frente a mensajes del sistema (realizando la acción finalmente o no, o si realiza una crítica positiva o negativa cuando se le pregunta), y podría servir para adaptar las reglas existentes si, en otro ejemplo, hay usuarios que ignoran constantemente mensajes que le indican que no debería realizar una acción peligrosa. Además, podría usarse la información interna del funcionamiento del sistema a lo largo del tiempo para la realización de tests para comprobar si las reglas creadas en el proceso son, o no, útiles.
 
 \end{itemize}
 
-So, the approaches that will be implemented are:
+De esta manera, los métodos que se implementarían serían los siguientes:
 
 \begin{itemize}
 
-\item \textit{GP rule inference} method, which will generate/create new rules in order to `cover' those situations non contemplated in the current set of rules. Thus, for instance, a new rule could be created in order to deal with the patterns to which the classifier could not assign a class.
-The generation will be done considering the so-called \textit{dictionary}, i.e. a set of terms corresponding to all the possible inputs and actions in the system, which will be antecedents (conditions) and consequents in the security rules to be inferred.
-The evaluation of these rules will be done considering the stored log information concerning the parameters along with the actions/decisions made in every component in the system. Thus, it will be possible to `simulate' the whole  system behaviour when the new rule is included and get a value of its performance.
+\item Método de \textit{inferencia de reglas por PG}, por el cual se generarán o crearán nuevas reglas para `cubrir' aquellas situaciones que no están contempladas en el conjunto de reglas inicial. Así, se crearían reglas para poder clasificar aquellos eventos que no pudieron ser clasificados inicialmente. Esta generación de reglas se haría teniendo en cuenta un \textit{diccionario}, es decir, un conjunto de términos correspondiente a todas las posibles entradas y acciones del sistema, las cuales serían respectivamente los antecedentes (condiciones), y las consecuencias a esos antecedentes según las reglas de seguridad. La evaluación de las reglas creadas se realizaría en base a la información registrada en el sistema, de manera que se podría `simular' el comportamiento del sistema incluyendo las nuevas reglas, y se obtendría una medida de si las reglas creadas mejoran o no el rendimiento del sistema.
 
-\item \textit{GP rule refinement} approach, which will optimise the current set of rules, adjusting the values in the conditions (antecedents), for instance. Thus, some superfluous parts on the rules and even complete rules could be removed or improved, obtaining for instance specialisations or generalisations of existing rules which could mean a better performance.
-The evaluation (of the whole set of security rules) will be done considering the number of unlabelled patterns that will be `covered' after the adjustments.
+\item \textit{Refinamiento de reglas por PG}, por el cual se optimizará el conjunto de reglas actual, ajustando los valores de las condiciones (antecedentes). Así, se podría saber qué partes de las reglas serían superfluas o si hay reglas redundantes o que se contradigan entre sí. Se podrían por tanto obtener especializaciones o generalizaciones de las reglas para mejorar el rendimiento del sistema. La evaluación del conjunto total de reglas se haría considerando el número de comportamientos o patrones que se `cubrirían' una vez realizados los ajustes.
 
 \item \textit{GA optimisation} algorithm for setting up and adapting the assets' values. These are numerical representations of the importance of the corporate assets, and are considered in the Real-Time Risk and Trust Analysis process, in order to assign a risk value to every potential decision that can be made by the system.
 If it is possible to evaluate the partial solutions proposed by the GA, this approach could be very useful for the CSO (who is in charge of assigning and adjusting these values over time).
@@ -239,29 +252,29 @@ The adaptation or adjustment concerns the change in value that an asset could ha
 
 
 %-----------------------------------------------------------------
-%%%%%%%%%%%%%%%%%%%%%%%% CONCLUSIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% CONCLUSIONES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %----------------------------------------------------------------- 
 \section{Comparativa con Otros Sistemas y Conclusiones}
 \label{sec:conclusion}
 
-As it can be seen MUSES system will go quite far in the application of DM/ML techniques, with respect to other security-aimed systems. This was explained in the previous paper \cite{MUSES_SAC_14}, where the system was compared with other existing (commercial) systems.
+Como se ha podido comprobar, MUSES supondrá un avance significativo en la aplicación de técnicas de \textit{Data Mining} y \textit{Machine Learning} para la mejora de sistemas de seguridad. Esto se dejó patente en el artículo \cite{MUSES_SAC_14}, en el que puede verse una comparativa entre MUSES y otros sistemas similares ya comercializados, ninguno de los cuales tiene la capacidad de adaptación que ofrece el sistema que hemos presentado.
 
-Regarding the scientific contribution, one of the main differences with respect to previous works is the consideration of security threats `brought' by the user's behaviour inside the system, i.e. through interaction/events, rather than more general and external threats. Moreover, the techniques to be used here will work with real data (in a real system), as a difference to some research works.
+MUSES se diferencia de los demás, principalmente, porque considera el riesgo que el propio usuario constituye para la seguridad de la empresa, sin considerarlo como una amenaza, por supuesto, mientras que otros sistemas se centran en la protección frente a ataques externos. Además, las técnicas que aplica, trabajan sobre datos reales (en un sistema real), por lo que sus resultados contribuyen realmente a evitar incidentes de seguridad reales.
 
-Data Mining techniques have been used by the authors in some works, but usually aiming for a specific general objective, for instance the detection of threats (botnet) \cite{botnet_detection_clustering_09}, or the recognition of anomalies \cite{feature_selection_anomalies_08}, but they are not linked with a following process to improve the system (the refinement phase in MUSES).
+Existen otros autores que también usan técnicas de \textit{Data Mining}, pero sus trabajos se centran en aplicaciones específicas, como la detección de amenazas (\textit{botnet}) \cite{botnet_detection_clustering_09}, o de anomalías \cite{feature_selection_anomalies_08}. Sin embargo, ninguno las combina en el mismo procedimiento para conseguir mejorar el propio sistema, como sí hace MUSES en su etapa de refinado de reglas.
 
-There are some proposals in which security policies are inferred or refined \cite{inferring_policies_socialnetworks_09,policy_generation_clustering_10}, but they do not affect the ISPs as in MUSES, and they are not based in the user's behaviour in order to do this.
+Del mismo modo existen trabajos que proponen procesos de inferencia o refinado de reglas \cite{inferring_policies_socialnetworks_09,policy_generation_clustering_10}, pero que no alteran el conjunto de políticas o reglas de seguridad de la empresa. Además en ningún caso dicho refinado está basado en el comportamiento de los usuarios del propio sistema, siguiendo el modelo que aplica MUSES.
 
-Genetic Programming has been previously used by several authors \cite{rule_generation_gp_09,sec_policy_evolution_gp_08}, even for creating new policies or rules in a security-aimed sense, but they do not affect the ISPs and moreover, our proposed evaluation functions (completely integrated in the system) for the refinement and inference approaches are novel.
+Respecto a la Programación Genética, ésta ha sido ampliamente utilizada por varios autores \cite{rule_generation_gp_09,sec_policy_evolution_gp_08}, incluso para la creación de nuevas políticas o reglas enfocadas a la seguridad, pero de nuevo éstas no afectan al conjunto de políticas de una empresa. Además, las funciones de evaluación que aquí se han propuesto, para el refinado y la inferencia de reglas, las consideramos novedosas por estar completamente integradas en el sistema.
 
-With respect to Genetic Algorithms, they have been extensively used in the literature, mainly for the detection of anomalies and intrusions rather than for optimisation, as in our case. However, there are some examples that could be used as model for our approach, such as \cite{optimizing_IT_costs_ea_10,risk_reduction_ga_12}.
+Los Algoritmos Genéticos, por su parte, son otras metaheurísticas que pueden verse aplicadas en muchos trabajos, en su mayoría para la detección de anomalías e intrusos, pero no para la optimización de reglas de seguridad, como en nuestro caso. Sin embargo, hay algunos trabajos de optimización de costes y riesgos que sí podemos tomar como referencia para ampliar nuestro trabajo, como \cite{optimizing_IT_costs_ea_10,risk_reduction_ga_12}.
 
-Anyway, there is room for considering some of the proposed approaches that could be added as future features for MUSES such as the analysis of users via social networks \cite{inferring_policies_socialnetworks_09,user_classification_ml_13}, the optimisation of security protocols \cite{GAs_security_protocols_10}, the implementation of intrusion detection mechanisms \cite{GA_intrusion_detection_survey_14}, or the application of novel privacy-related techniques \cite{AAI_book_2009}, which is another feature also considered in MUSES.
+En cualquier caso, los trabajos revisados nos sirven como base para posibles características a añadir a MUSES, tales como el análisis de usuarios a través de redes sociales \cite{inferring_policies_socialnetworks_09,user_classification_ml_13}, la optimización de protocolos de seguridad \cite{GAs_security_protocols_10}, la implementación de mecanismos de detección de intrusos \cite{GA_intrusion_detection_survey_14} o, aunque MUSES ya lo incorpore, la aplicación de técnicas mejoradas de protección de la privacidad \cite{AAI_book_2009}.
 
 %******************************************************************************
 
 \section*{Agradecimientos}
-This work has been mainly supported by the MUSES European project (FP7-318508). In addition to PYR-2014-17 included in GENIL - CEI BIOTIC (Granada).
+La realización de este trabajo ha sido financiada por el proyecto europeo MUSES (FP7-318508), además de por el proyecto PYR-2014-17 incluido en GENIL - CEI BIOTIC (Granada).
 
 \nocite{*}
 \bibliographystyle{maeb2015}
