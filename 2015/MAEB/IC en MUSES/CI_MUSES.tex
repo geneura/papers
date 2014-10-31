@@ -50,8 +50,8 @@ Con este fin MUSES analizará el comportamiento de los usuarios por medio de técn
 Esto supone un paso adelante en el estado del arte en dos sentidos: primero, respecto a los sistema de seguridad corporativa existentes para el manejo de situaciones de BYOD, como se describe en nuestro trabajo \cite{MUSES_SAC_14}; segundo, en relación con la aplicación de técnicas de IC a este tipo de problemas de seguridad, para su adaptación al comportamiento de los usuarios, como se describirá en este trabajo.
 
 El artículo se estructura de la siguiente forma: la siguiente sección comenta algunos conceptos interesantes en relación a la seguridad corporativa. La Sección \ref{sec:soa} revisa la bibliografía existente respecto a la aplicación de DM, ML e IC a problemas de seguridad en la empresa, principalmente enfocados en el comportamiento del usuario y la adaptación de los sistemas o las reglas de seguridad, principal característica de MUSES.
-Dicho sistema se presenta en la Sección \ref{sec:muses_ci}, haciendo hincapié en las técnicas citadas. 
-Finalmente, las ventajas de MUSES respecto a otras utilidades son analizadas en la Sección \ref{sec:conclusions}.
+Dicho sistema se presenta en la Sección \ref{sec:muses}, haciendo hincapié en las técnicas citadas. 
+Finalmente, las ventajas de MUSES respecto a otras utilidades son analizadas en la Sección \ref{sec:conclusion}.
 
 
 %-----------------------------------------------------------------
@@ -59,26 +59,31 @@ Finalmente, las ventajas de MUSES respecto a otras utilidades son analizadas en 
 %-----------------------------------------------------------------
 \section{Seguridad en la Empresa}
 
-Until these days, enterprises used to follow a static Security Policy devoted to control a certain structure \cite{BYOD13}, where the Information Assets and the devices were purchased and maintained by the company. Now that corporate networks are becoming dynamic for being adapted to the BYOD philosophy, there is an additional risk because the devices that the employees use are not always company-owned. A needed security policy, or in this case, an \textit{Information Security Policy} (ISP from now on) should deal with the way of protecting a specific organisation information against a security breach. Though there are standards, such as the ISO27002 or the Security Forum's Standard of Good Practise\footnote{https://www.securityforum.org}, an ISP is defined depending on the characteristics of the community/organisation that they are built for.
+Hasta hace poco tiempo las empresas solían aplicar \textit{Políticas de Seguridad} (PSs) estáticas, enfocadas a controlar estructuras determinadas \cite{BYOD13} en las que los recursos de información (\textit{Information Assets}) y los dispositivos que los acceden son gestionados por la empresa.
+Actualmente las redes corporativas se están transformando en redes dinámicas a fin de adaptarse a la filosofía BYOD, lo que está trayendo nuevos focos de riesgo, como que el dispositivo en cuestión no pertenezca a la empresa y, por tanto, escape a un control estricto por parte de la misma. Esto hace que se requieran políticas de seguridad específicas, más concretamente \textit{Políticas de Seguridad sobre Información} (ISPs en inglés), que puedan gestionar y proteger información determinada de la empresa de posibles brechas de seguridad.
 
-Normally, the enterprise network architecture was being adapted to cope with external attackers \cite{MIT05}. However, with the consideration of BYOD, the threat is about corporate assets being compromised due to employees' devices with vulnerabilities \cite{android11}, or leaked because they are being accessed from a device connected through an unsecured (public) network.
+Aunque existen estándares, tales como el ISO27002 o el Estándar de Buenas Prácticas del Foro de Seguridad Internacional\footnote{https://www.securityforum.org}, una ISP se define en función de las características de la organización que se quiere controlar con ella.
 
-%On the other hand, employee-owned devices, like smartphones, have the possibility of maintaining a good balance between work and private life. For this reason, the risk of uncontrolled devices (with potentially dangerous applications) accessing to corporate assets in unsafe conditions is bigger.
+Normalmente la arquitectura de la red de seguridad de la empresa se adapta para lidiar con ataques externos \cite{MIT05}, sin embargo, con la aparición del BYOD, la clave está en proteger los recursos que se vean comprometidos debido a vulnerabilidades de los dispositivos de los empleados \cite{android11}, o filtraciones que surjan al ser accedidos desde dispositivos conectados a redes inseguras, por ejemplo.
+Además, estos dispositivos, como los extendidos \textit{smartphones} suelen combinar información personal y profesional, así como aplicaciones de ambos tipos, lo que añade un factor de riesgo al estar dichas aplicaciones no corporativas poco controladas.
 
-%Thus now, more things should be considered than the usual ones when designing a company network architecture. 
-In Figure \ref{fig:proposed_diagram} there is a proposal which can be used for the beginning of the study of solutions that may make secure such a dynamic environment. It includes the possibility of having employee-owned mobile (smartphones and tablets) and portable (laptops) devices, and also the opportunity that the employees have of connecting these devices either from inside or outside the company premises. Moreover, company information assets are constantly accessed under these conditions, considering that an information asset means every \textit{piece of information} that has a \textit{value} (cost depending on the risk of being lost or leaked) for the company. It can be referred to files with sensitive information, to certain mails, or even to company applications.
+Por tanto, a la hora de diseñar la arquitectura de la red de una compañía, hay que tener en cuenta todos estos factores.
+La Figura \ref{fig:proposed_diagram} muestra una propuesta que puede emplearse como punto de partida para el diseño de soluciones que hagan seguro este entorno dinámico. Ésta incluye el caso de tener dispositivos móviles (\textit{smartphones y tablets}) u ordenadores portátiles propios de algunos empleados, además muestra la oportunidad de que dichos dispositivos se conecten desde dentro o desde fuera de la compañía.
+Los recursos de información son accedidos continuamente en estas condiciones, considerando como recurso cualquier trozo de información que tenga un valor asociado (coste, dependiendo del riesgo, de que esa información se pierda o se filtre).
+Ejemplos de este tipo de recursos podrían ser documentos con información restringida, determinados e-mails críticos, e incluso aplicaciones internas de la compañía.
 
 \begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.36]{proposed_diagram.eps}
-		\caption{Architecture approach of an Enterprise Network assuming that the Company has adopted the BYOD philosophy.}
+		\caption{Muestra de arquitectura de red de una empresa, considerando que ésta ha adoptado la filosofía BYOD.}
 	\label{fig:proposed_diagram}
 	\end{center}
 \end{figure}
 
-The other issue to cope with is the elaboration of a good ISP, understandable for all the users of the company, and more importantly, non-intrusive for them. A lot of researchers have studied the natural tendency of employees whether to comply or not with the ISP \cite{SecPolComp07,SecPolComp10,SecPolComp12}, reaching conclusions such as the employees compliance with the security policies increases educating/training them in information security awareness  \cite{SecPolComp09}, and decreases applying too much sanctions when a misuse or abuse occurs \cite{SecPolPenalty09}. 
+Otro aspecto importante a considerar es la elaboración de un buen conjunto de ISPs, que sean comprensibles por los usuarios y, lo más importante, no intrusivas para ellos.
+Muchos investigadores han estudiado la tendencia natural de los usuarios a cumplir unas políticas y no otras \cite{SecPolComp07,SecPolComp10,SecPolComp12}, concluyendo que si los empleados respetan las políticas de seguridad habrá un aumento del aprendizaje de técnicas para acceder a la información de forma segura \cite{SecPolComp09}, y que dicho aprendizaje se reducirá si lo que se aplica son castigos o penalizaciones al no respetar las políticas de la empresa \cite{SecPolPenalty09}. 
 
-This situation leads to a need of protecting the organisation side, but also the users side, making non-interfering easy-to-follow ISPs, and leaving them to use their devices for personal purposes while working, without putting corporate information assets under risk. The compliance of these requirements would compose an End-to-End Security Solution (protecting both enterprise and employee), which is the aim of the MUSES project \cite{MUSES_SAC_14} (see Section \ref{sec:muses_ci}).
+Esta situación conduce a la necesidad de proteger tanto lado de la organización como el de los usuarios, por medio de ISPs sencillas que no interfieran la actividad de los éstos, incluso dejando que los empleados usen dispositivos propios con propósitos personales mientras trabajan, pero asegurando al mismo tiempo la integridad de los recursos de información en riesgo. La combinación de estos aspectos llevará a la consecución de un sistema de seguridad con las características que pretende ofrecer MUSES (ver Sección \ref{sec:muses}).
 
 %-----------------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%% STATE OF THE ART %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
