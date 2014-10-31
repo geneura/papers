@@ -201,44 +201,43 @@ This will provide the CSO with mechanisms to visualise interesting facts about t
 
 % ------------------------------------------------------------------
 %
-\subsection{Computational Intelligence: Evolutionary Computation Methods}
+\subsection{Inteligencia computacional: métodos de Computación Evolutiva}
 \label{subsec:ci}
 
 %+ Clasificación con GP
 %- Inferencia de nuevas reglas con GP
 %+ Ajuste de valores de recursos con AGs???
 
-MUSES will use different EC approaches, initially, one in the DM/ML part of the process, and three in the rule-refinement/adaptation phase. They are based in GPs \cite{GP_Koza92}, and GAs \cite{GAs_Goldberg89}.
+MUSES usará la computación evolutica a través de diferentes aproximaciones, a saber inicialmente, de una manera en la parte de minería de datos (DM) y ML, y mediante otras tres técnicas en la fase de adaptación o refinamiento de reglas. Todas ellas se basan en Programación Genética (PG) \cite{GP_Koza92} y Algoritmos Genéticos (AGs) \cite{GAs_Goldberg89}.
 
-The first evolutionary-based approach will be a \textit{GP classification} method. This will be useful for two main reasons: first, in order to deal with the data class imbalance \cite{imbalance_techniques_02}, very common in classification problems inside real systems (with real data); and second, to better manage categorical (non-numeric) data, since most of the features/variables and information gathered from the events take these kind of values.
+El primer método basado en técnicas evolutivas será la \textit{clasificación por PG}. Esto resulta de gran utilidad por dos razones: primero, para obtener balanceo sobre los datos \cite{imbalance_techniques_02}, ya que el tener un conjunto de datos no balanceado es bastante común en este tipo de aplicaciones con datos reales: y después, para un mejor manejo de datos categóricos (no numéricos), ya que la mayoría de variables o características extraídas de la información que ofrece el sistema son de este tipo.
 
-Thus, this approach will be able to manage unbalanced datasets considering a fitness function in which a cost can be associated to the classifier accuracy at every epoch, having a penalty cost when the classifier makes a false negative (an element from the minority class which is classified as belonging to the majority class) \cite{cost_adjustment_07}.
-Regarding the type of data, since GP algorithms can manage rule- or tree-based models, it will work perfectly with any categorical variable, yielding a good classifier as it has been made in other works (such as the aforementioned \cite{cost_adjustment_07}).
+Por tanto, este método sería capaz de trabajar con conjuntos de datos no balanceados, considerando una función fitness en la cual el coste va asociado al porcentaje de aciertos del clasificador, y aplicando una penalización por cada falso negativo obtenido (puesto que, esto significaría que se ha permitido un evento que es potencialmente peligroso) \cite{cost_adjustment_07}.
+En cuanto al tipo de datos, debido a que los algoritmos de PG suelen aplicar modelos basados en reglas o en árboles de decisión, estos se pueden aplicar a variables categóricas, obteniendo un buen clasificador como se obtiene en trabajos como \cite{cost_adjustment_07}.
 
-The second set of EC approaches are, as stated, part of the rule-refinement (or adaptation) process. These techniques will be used for inference and optimisation, and will consider this data as a part of the process:
-
-\begin{itemize}
-
-\item The information extracted from the Data Miner sub-component, mainly concerning the anomalous, unclassified or misclassified patterns. These are those patterns which did not match with any of the existing classes (they are quite different from the patterns belonging to those classes), so they cannot be included in any of the classes and thus they should be taken into account for a potential inference or update in the set of security rules, in order to `cover' them.
-
-\item User-related information corresponding to those anomalous or unlabelled patterns (events). Thus, the user's ID, location and role, for instance, will be considered in order to select the applicable set of rules for that conditions.
-
-\item Context information for the same patterns, in order to also restrict the applicable set of rules considering this information. 
-
-\end{itemize}
-
-Another useful information to consider in the refinement/ adaptation process will be:
+Centrándonos en el proceso de adaptación o refinamiento de reglas, las técnicas empleadas se aplicarían para inferencia u optimización de un conjunto inicial de reglas, y usarían los siguientes datos:
 
 \begin{itemize}
 
-\item Risk information extracted from the user profile (reputation), e.g. "Did the user received a lot of `denies'/`allows' before?", i.e. "Is he/she trustworthy?". In case the user is not, more restrictive rules would be created for him, otherwise the corresponding rules could be `eased' for that user.
+\item La información extraída por el subcomponente que realiza la minería de datos, en concreto los eventos que resulten anómalos, ya sean patrones no clasificados o mal clasificados. Estos son, aquellos patrones que no se incluyen en ninguna de las clases ya existentes, ya que difieren en gran medida de los patrones que sí se encuentran en ellas, y deberían tenerse en cuenta para ser cubiertos por las reglas de seguridad una vez mejoradas.
 
-\item The information stored in logs along the system, which can, for instance, tell about how the user responds to system messages (either an action or if he gives feedback). This could result in the inference of new rules or in adaptation, in order to deal with, for instance, users that repeatedly ignore warning messages.
-Moreover, important log information regarding the parameters used or the decisions made in the different modules will be used for further tests of new inferred rules, as it is explained below.
+\item Información relativa al usuario, correspondiente a esos patrones, o eventos, que son anómalos o que no han podido ser clasificados. Así, su número de identificación, localización (fuera o dentro de las instalaciones de la empresa), o puesto en la empresa, serían ejemplos de lo que el sistema consideraría a la hora de seleccionar un conjunto de reglas a aplicar en esa situación.
+
+\item Información de contexto para patrones que sean parecidos, para restringir, de la misma manera que en el punto anterior, el conjunto de reglas a aplicar.
 
 \end{itemize}
 
-So, the approaches that will be implemented are:
+Otros tipos de información que podrían ser útiles durante el proceso de refinamiento o adaptación son los siguientes:
+
+\begin{itemize}
+
+\item Información del riesgo que supone un determinado usuario (en términos de su reputación), como por ejemplo. ``¿Ha recibido el usuario con anterioridad muchas notificaciones de `permiso'/`denegación'?''. Si el usuario tiende a recibir denegaciones a las acciones que suele realizar, se le aplicarán reglas más restrictivas que para un usuario que realice más acciones permitidas.
+
+\item Información que ha sido almacenada en registros del sistema. A partir de ellos se puede saber, por ejemplo, cómo actúa el usuario frente a mensajes del sistema (realizando la acción finalmente o no, o si realiza una crítica positiva o negativa cuando se le pregunta), y podría servir para adaptar las reglas existentes si, en otro ejemplo, hay usuarios que ignoran constantemente mensajes que le indican que no debería realizar una acción peligrosa. Además, podría usarse la información interna del funcionamiento del sistema a lo largo del tiempo para la realización de tests para comprobar si las reglas creadas en el proceso son, o no, útiles.
+
+\end{itemize}
+
+De esta manera, los métodos que se implementarían serían los siguientes:
 
 \begin{itemize}
 
