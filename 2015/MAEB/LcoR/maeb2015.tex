@@ -60,7 +60,7 @@ Existen numerosos ejemplos en la literatura en los que el problema de predicción
 
 En lo relativo a las redes neuronales, desde hace una década, es posible encontrar trabajos en los que distintos tipos de ellas han sido empleados para predecir problemas similares, tales como los trabajos de Van Lint et al. \cite{vanLint2005347}, Vlahogianni et al. \cite{Vlahogianni2005211} y Zheng et al. \cite{Zheng2006114}. Este último, realiza un enfoque muy similar al nuestro, capturando los datos en zonas puntuales y tratando de predecir el volumen de tráfico de los 15 minutos que siguen al último dato registrado. No obstante, los autores excluyen de la captura de datos las horas correspondientes a la noche, así como los fines de semana, por lo que, de algún modo, la información analizada está sesgada.
 
-Finalmente, trabajos anteriores como el de Parras et al. \cite{elisabeth:maeb:2013}, introdujeron el modelado de series temporales mediante algoritmos co-evolutivos dentro del campo de del tráfico de vehículos. En el citado trabajo, se estudiaba la predicción del volumen diario de vehículos, utilizando para ello series temporales que agregaban datos por intervalos de 24 horas y utilizando un historial de datos recopilados durante 7 semanas.  
+Finalmente, trabajos anteriores como el de Parras et al. \cite{elisabeth:maeb:2013}, introdujeron el modelado de series temporales mediante algoritmos co-evolutivos dentro del campo de del tráfico de vehículos. En el citado trabajo, se estudiaba la predicción del volumen diario de vehículos, utilizando para ello series temporales que agregaban datos por intervalos de 24 horas y utilizando un historial de datos recopilados durante 7 semanas. En el nuevo estudio que proponemos, se realiza una predicción más realista, con un horizonte más cercano con miras a la futura implantación de un sistema descentralizado de distribución de datos registrados y cómputo y comunicación de predicciones reaizadas por dispositivos móviles.
 
 \section{Metodología experimental}
 \label{sec:metodologia}
@@ -230,6 +230,15 @@ No obstante, si consideramos todos los métodos incluyendo el del valor promedio,
 
 \section{Conclusiones}
 \label{sec:conclusiones}
+A partir de los datos recogidos por sensores de dispositivos Bluetooh, se han desarrollado un conjunto de experimentos que permiten discriminar entre distintos algoritmos de predicción de series temporales cuáles pueden ser los más adecuados para estimar los valores futuros. 
+
+Los distintos algoritmos utilizados incluyen tanto de autorregresión (ARIMA), métodos de descomposición (Theta), modelos de demanda intermitente (Croston), un algoritmo basado en el calculo de promedios ({\em MeanF}, del paquete {\em Forecast} de la aplicación R) y un algoritmo co-evolutivo basado en redes neuronales de funciones de base radial (L-Co-R). 
+
+Los resultados muestran que, para la predicción del número de vehículos que pasarán a las 07:00, 07:15, 07:30 y 07:45 de un día laborable (concretamente el jueves), partiendo de los datos agregados cada 15 minutos de las 23 horas anteriores, las mejores predicciones son las aportadas por el algoritmo {\em MeanF}, seguido de los algoritmos Croston y L-Co-R. Dado que se han utilizado 9 medidas de error distintas y 5 series temporales distintas los resultados obtenidos pueden considerarse bastante concluyentes.
+
+Las líneas de futuro que plantea este trabajo pasan, en primer lugar, por encontrar una configuración para el algoritmo co-evolutivo (L-Co-R) que le permita mejorar sus predicciones, pues para esta publicación ha sido utilizado con sus parámetros por defecto. Dado que el algoritmo es altamente configurable, a priori estimamos que es factible encontrar una combinación que mantega tiempos de ejecución por debajo del horizonte a predecir a la vez que minimiza el error cometido.
+
+En segundo lugar, este trabajo da inicio a un segundo modelo de procesamiento descentralizado en el que dispositivos móviles podrán recibir los últimos datos y predicciones conocidos, elaborar sus propias predicciones mejoradas y difundir a otros dispositivos tanto las predicciones como los modelos que las calculan.
 
 \section*{Agradecimientos}
 Este trabajo se está desarrollando gracias a la financiación de los proyectos {\em ANYSELF :: UGR: Self-* Properties in P2P and Cloud Systems} (código TIN2011-28627-C04, Ministerio de Ciencia e Innovación)), GENIL (código PYR-2014-17, Universidad de Granada) y del proyecto FEDER de la Unión Europea con título \emph{''Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos'' (SIPEsCa)} del Programa Operativo FEDER de Andalucía 2007-2013. Asimismo, queremos mostrar nuestro agradecimiento al personal e investigadores de la Agencia de Obra Pública de la Junta de Andalucía, Consejería de Fomento y Vivienda, por su dedicación y profesionalidad. 
