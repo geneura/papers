@@ -11,7 +11,7 @@
 
 \begin{document}
 
-\title{Aplicación de Técnicas de Inteligencia Computacional a Sistemas de Seguridad Corporativa. \\El caso del proyecto MUSES} %!PN
+\title{Aplicación de Técnicas de Inteligencia Computacional a un Sistema de Seguridad Corporativa} %!PN
 
 \author{P. De las Cuevas, A.M. Mora, J.J. Merelo, P.A. Castillo \thanks{Departamento de Arquitectura y Tecnología de Computadores. CITIC, ETSIIT,Universidad de Granada
 E-mail: \{paloma,amorag,jmerelo, pedro\}@geneura.ugr.es}}
@@ -126,32 +126,50 @@ La sección siguiente presenta el sistema MUSES de forma breve, así como las técn
 \section{El Sistema MUSES}
 \label{sec:muses}
 
-As previously stated, MUSES will be a whole corporate security system aimed to deal with the new BYOD philosophy, i.e. it will manage user's accesses to the company servers from diverse own devices, which could be dangerous for several reasons, including the user's behaviour.
+Como se ha indicado anteriormente MUSES es un sistema de seguridad corporativa enfocado a trabajar dentro de la filosofía BYOD, es decir, éste gestionará los accesos de usuarios a los servidores de la empresa desde diversos dispositivos, incluyendo propios, hecho que implica diversos riesgos, incluido el propio comportamiento de los usuarios.
 
-The defined MUSES architecture is shown in Figure \ref{fig:architecture_overview}.
+\subsection{Arquitectura del sistema}
+
+Como se puede ver en la Figura \ref{fig:architecture_overview} la arquitectura de MUSES se basa en un enfoque cliente/servidor.
 %
 \begin{figure*}[htp]
 \centering
 \epsfig{file=architecture_overview.eps, scale=0.61}
-\caption{MUSES Architecture Overview (high-level components)\label{fig:architecture_overview}}
+\caption{Arquitectura general de MUSES (componentes de alto nivel). Sigue un esquema con varios clientes (parte derecha), dispositivos de los usuarios, y servidor (parte izquierda), en la que se realizan la mayor parte de las decisiones y el procesamiento. \label{fig:architecture_overview}}
 \end{figure*}
 %
-It is a \textit{client/server} approach in which the \textit{client} program will be installed in every user's mobile or portable device, independently of the platform (operating system and type of device). The \textit{server} side would be installed in the corporate security operations centre. Both sides are connected through a secure channel (using HTTPS) over Internet.
 
-One of the main features of this system will be the self-adaptation (to the user and context) of the set of Corporate Security Rules (specification of the ISPs). 
-To this end, there is a component in the designed architecture (Figure \ref{fig:architecture_overview}, left side) named \textit{MusKRS}, from MUSES \textit{Knowledge Refinement System}. This will be run asynchronously in the server and will be in charge of analysing all the gathered information (events, context, user-related data), and adapting/refining the security rules to better deal with these events, also trying to predict future threats due to the user's behaviour.
+En ésta, la aplicación \textit{cliente} se instalará en todos los dispositivos de los usuarios, y será independiente de la plataforma de que se trate, así como de su sistema operativo (una de las ventajas de MUSES). El \textit{servidor} por su parte se instalará en el centro de seguridad corporativa de la empresa. Ambas partes se conectarán mediante un canal seguro (usando HTTPS) sobre Internet.
+Para una descripción más completa, los lectores pueden dirigirse a la página web del proyecto (\texttt{https://www.musesproject.eu)} o al artículo \cite{MUSES_SAC_14}.
 
-This process will be composed by two steps: first, a Data Mining/Machine Learning procedure will be performed (in the \textit{Data Miner} sub-component);  second, a refinement and inference process will be done (in the \textit{Knowledge Compiler} sub-component), considering the data `extracted' in the first step, by means of Computational Intelligence techniques.
-It should be noticed that part of the refinement (or adaptation) of the security rules will be made using simpler methods, such as generalisation or specialisation of rules, for instance. Then, other parts of the process would be conducted using CI.
 
-Another important fact is that MUSES will count with a human controller, normally the company Chief Security Officer (CSO), who will supervise the system activity by means of logs. Thus, adapted and inferred security rules will not be directly added to the current set of rules. Instead, they are proposed to this controller in order that he/she accepts them if they are interesting and correct. It is planned that the system will be able to `learn' from this decisions so, after a so-called training or `warm up' period, the rules would be directly accepted or rejected autonomously.
 
-The following sections describe these processes: first focusing on DM techniques to be used both automatically by the KRS, and as a kind of decision-aid/monitoring tool for the CSO; second, the CI techniques are explained, mainly focusing in Evolutionary Computation approaches, since these methods perform very well, and have been widely used in security-based environments, as has been presented in Section \ref{sec:stateofart}.
+Una de las ventajas más importantes del sistema es la auto-adaptación (tanto al usuario, como al contexto) que será capaz de realizar, modificando y mejorando el sistema de Reglas de Seguridad corporativas.
+
+En este trabajo nos centraremos en la parte del servidor (ver Figura \ref{fig:server_architecture}), ya que es en ésta en la que se aplicarán las técnicas de DM, ML e IC sobre los datos recopilados por el sistema (almacenados en la Base de Datos). En concreto en el componente llamado \textit{MusKRS}, por MUSES \textit{Knowledge Refinement System}. Este módulo se ejecutará de forma asíncrona (varias veces o una vez al día, dependiendo del volumen de datos que se genere en la empresa a este respecto), y será el encargado de analizar toda información generada por en los accesos de los usuarios (eventos, contexto, datos de usuario) a los recursos de información que haya en el servidor, tarea de la que se encargará el \textit{Data Miner}. Una vez analizados estos datos, se procederá a realizar una tarea de adaptación o refinado de reglas de seguridad (por el componente \textit{Knowledge Compiler}) para lidiar mejor con esos eventos, intentando predecir futuras amenazas de seguridad debidas al comportamiento de los usuarios.
+
+De modo que el \textit{Data Miner} aplicará, como su nombre indica, técnicas de DM y ML para identificar y extraer patrones relevantes de los datos. Después el \textit{Knowledge Compiler} realizará una labor de inferencia y refinado/ajuste de reglas, mediante técnicas de IC, considerando los datos extraídos en este primer paso. Si bien, este último modulo también se encargará de realizar refinados más sencillos como especialización o generalización de reglas, aplicando métodos más simples.
+
+%
+\begin{figure*}[htp]
+\centering
+\epsfig{file=server_architecture.eps, scale=0.4}
+\caption{Arquitectura del servidor de MUSES (submódulos), en la que destaca el componente llamado \textit{Knowledge Refinement System, MusKRS}, responsable de realizar las tareas de \textit{Data Mining}, \textit{Machine Learning} y la adaptación de las reglas se seguridad que rigen el sistema. \label{fig:server_architecture}}
+\end{figure*}
+%
+
+Un factor a tener en cuenta es que MUSES tendrá un controlador humano, normalmente el jefe de seguridad de la compañía (\textit{Chief Security Officer ,CSO}), que se encargará de supervisar la actividad del sistema en base a logs e informes generados durante estas tareas.
+De forma que todas las reglas refinadas o generadas serán etiquetadas como `potenciales' y deberán ser aprobadas por él/ella antes de ser finalmente añadidas al conjunto que rige al sistema.
+Aún así, una de las posibles mejoras a implementar será un mecanismo de aprendizaje que sea capaz de predecir si una nueva regla sería aceptada o no por el CSO (en base a decisiones anteriores), a fin de automatizar este proceso en un futuro(tras un periodo de `entrenamiento').
+
+Las siguientes secciones describen estos procesos: primero los métodos de DM que usará automáticamente el MusKRS, así como para una posible herramienta de análisis y ayuda a la decisión para el CSO; en segundo lugar se comentan las técnicas de IC a aplicar, principalmente centradas en el uso de Algoritmos Evolutivos, dado que estas metaheurísticas se comportan muy bien y han sido ampliamente utilizadas en problemas relacionados con la seguridad en la empresa, como se ha comentado en la Sección \ref{sec:soa}.
 
 % ------------------------------------------------------------------
 %
 \subsection{Data Mining/Machine Learning}
 \label{subsec:dm_ml}
+
+Para esta tarea se considerará el conjunto de datos global en la base de datos y se preprocesará para componer subconjuntos más simples o más adecuados para ser tratados con estas técnicas. Después, se aplicarán métodos de clasificación, clustering, o visualización, entre otros, para extraer patrones que el \textit{Knowledge Compiler} procesará con otros métodos.
 
 This task will be performed by the Data Miner module. It will take the `raw' data from the database and will process the information, in order to yield a set of relevant data for the Knowledge Compiler sub-component or for the human controller. In the first case, this sub-component will take them as a reference in order to refine or adapt the current set of security rules (for instance, to deal with anomalous situations).
 
