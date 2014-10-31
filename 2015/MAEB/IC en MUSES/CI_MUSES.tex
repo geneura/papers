@@ -134,7 +134,7 @@ Como se puede ver en la Figura \ref{fig:architecture_overview} la arquitectura d
 %
 \begin{figure*}[htp]
 \centering
-\epsfig{file=architecture_overview.eps, scale=0.61}
+\epsfig{file=architecture_overview.eps, scale=0.57}
 \caption{Arquitectura general de MUSES (componentes de alto nivel). Sigue un esquema con varios clientes (parte derecha), dispositivos de los usuarios, y servidor (parte izquierda), en la que se realizan la mayor parte de las decisiones y el procesamiento. \label{fig:architecture_overview}}
 \end{figure*}
 %
@@ -169,31 +169,30 @@ Las siguientes secciones describen estos procesos: primero los métodos de DM que
 \subsection{Data Mining/Machine Learning}
 \label{subsec:dm_ml}
 
-Para esta tarea se considerará el conjunto de datos global en la base de datos y se preprocesará para componer subconjuntos más simples o más adecuados para ser tratados con estas técnicas. Después, se aplicarán métodos de clasificación, clustering, o visualización, entre otros, para extraer patrones que el \textit{Knowledge Compiler} procesará con otros métodos.
+Para esta tarea se considerará el conjunto de datos global en la base de datos y se preprocesará para componer subconjuntos más simples o más adecuados para ser tratados con estas técnicas. Después, se aplicarán métodos de clasificación, clustering, o visualización, entre otros, para extraer patrones que el \textit{Knowledge Compiler} procesará con otros métodos, o que se ofrecerán al controlador humano (CSO) para su información.
 
-This task will be performed by the Data Miner module. It will take the `raw' data from the database and will process the information, in order to yield a set of relevant data for the Knowledge Compiler sub-component or for the human controller. In the first case, this sub-component will take them as a reference in order to refine or adapt the current set of security rules (for instance, to deal with anomalous situations).
+El proceso será principalmente no supervisado y procesará, eventualmente, grandes cantidades de datos (dependiendo de los flujos de trabajo de la compañía), por lo que será necesario aplicar técnicas de procesado de \textit{Big Data} \cite{BigData_11}.
 
-The process will be mainly non-supervised, and eventually the datasets can be huge (depending on the company's data flows), so Big Data processing methods \cite{BigData_11} will be applied.
-
-The DM/ML techniques will process the so-called patterns, which in this context correspond to events (and their related information) produced by the users' interactions with the system. The methods to be applied are:
+Los métodos de DM/ML procesarán patrones que, en este contexto, se corresponderán con eventos (y su información correspondiente) producidos por las interacciones de los usuarios con el sistema.
+En concreto se aplicarán:
 
 \begin{itemize}
 
-\item \textit{Pattern Mining} \cite{PatternMining_Han07}: 
-This process will try to identify frequent or, on the contrary, anomalous patterns, in order to process them lately. The idea is that non-frequent patterns are potentially suspicious, and thus, could be of interest to be checked by the CSO or to serve as a reference for the rule-refinement process.
+\item \textit{Pattern Mining} (extracción de patrones) \cite{PatternMining_Han07}: 
+Este proceso tratará de identificar patrones de comportamiento en los datos, tanto frecuentes, como anómalos, a fin de procesarlos posteriormente, La idea subyacente es que los patrones poco frecuentes son potencialmente sospechosos, por lo que será interesante que el CSO esté al corriente, así como que puedan servir de base para el proceso de refinado de reglas.
 
-\item \textit{Classification} \cite{classification_67}: 
-This technique tries to train a model (classifier) able to associate every pattern in the dataset to a class, so that the model could be used for assign a class for further incoming patterns with an unknown category.
-For instance, it could look for events (patterns) that had been marked as `allowed' or `denied' (according to the ISPs). When a new event arises, if it has not an assigned decision, the classifier should provide one based on the similarity with previous (and already labelled) patterns.
+\item \textit{Clasificación} \cite{classification_67}: 
+Esta técnica trata de entrenar un modelo (clasificador) capaz de asociar cada patrón en el conjunto de datos con una etiqueta o clase, de forma que dicho modelo podría utilizarse para asignar una clase a nuevos patrones con categorías desconocidas, en base a su similitud con patrones previos.
+Por ejemplo, se podrían considerar como modelo patrones de acciones que los usuarios quieren realizar, etiquetadas como `permitidas' o `denegadas' según las reglas de seguridad existentes. De forma que ante una nueva solicitud (un nuevo evento de acción) el clasificador pudiese asignar una clase a dicho patrón y, por tanto, una decisión, que estaría basada en patrones/decisiones anteriores.
 
-\item \textit{Clustering} \cite{Clustering_Jain99}: 
-The aim of this method is grouping the patterns considering some similarity criteria, in order to manage them as a set. This could be used for providing data visualisation mechanisms, in order to make it easier to interpret the data interaction and the distribution in clusters with respect to the different properties/features of the patterns.
+\item \textit{Clustering} (agrupamiento) \cite{Clustering_Jain99}: 
+El objetivo de esta técnica es agrupar los patrones considerando criterios de similaridad (distancias), a fin de gestionarlos como un conjunto. Esto puede ser útil para ofrecer herramientas de visualización de datos (al CSO), que permitan interpretar los datos de forma más sencilla e identificar visualmente los grupos que se forman en relación a distintas características y los patrones conflictivos o extraños, por estar desubicados o fuera de lugar.
 
-\item \textit{Feature Selection} \cite{FeatureSelection_Guyon03}: 
-It consists on extract the most important features/variables from the data. This could be useful if we want to discard non-key features, which could be interesting in order to reduce the database weight, for improving the performance of other techniques (such as classification or clustering), and even to improve the performance of whole the system, since less information would be gathered and transmitted.
+\item \textit{Selección de Características} \cite{FeatureSelection_Guyon03}: 
+Consiste en extraer las características más relevantes de los datos. Esto suele ser muy útil para descartar variables superflúas (para labores de clasificación, por ejemplo) que puedan agilizar otros procesos o reducir el espacio ocupado en la base de datos, mejorando el rendimiento de todo el sistema.
 
-\item \textit{Data Analysis}: 
-This will provide the CSO with mechanisms to visualise interesting facts about the data, such as more frequent events, dangerous or suspicious users (according to their behaviour), more triggered rules, etc.
+\item \textit{Análisis de Datos}: 
+Se trata de proveer al CSO de herramientas o mecanismos para identificar o visualizar cuestiones interesantes o relevantes respecto a los datos, comportamientos sospechosos, reglas más utilizadas, etc.
 
 \end{itemize}
 
@@ -253,29 +252,29 @@ The adaptation or adjustment concerns the change in value that an asset could ha
 
 
 %-----------------------------------------------------------------
-%%%%%%%%%%%%%%%%%%%%%%%% CONCLUSIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% CONCLUSIONES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %----------------------------------------------------------------- 
 \section{Comparativa con Otros Sistemas y Conclusiones}
 \label{sec:conclusion}
 
-Como se ha podido comprobar, MUSES avanzará bastante en la aplicación de técnicas de minería de datos y Machine Learning para mejorar sistemas de seguridad. Esto quedaba claro en el artículo \cite{MUSES_SAC_14}, en el que puede consultarse una comparativa entre MUSES con otros sistemas similares ya comercializándose, pero de los cuales ninguno tiene la cualidad de adaptación que tiene el sistema que aquí hemos presentado.
+Como se ha podido comprobar, MUSES supondrá un avance significativo en la aplicación de técnicas de \textit{Data Mining} y \textit{Machine Learning} para la mejora de sistemas de seguridad. Esto se dejó patente en el artículo \cite{MUSES_SAC_14}, en el que puede verse una comparativa entre MUSES y otros sistemas similares ya comercializados, ninguno de los cuales tiene la capacidad de adaptación que ofrece el sistema que hemos presentado.
 
-Así, este sistema se differencia de los demás en que considera el riesgo que el propio usuario constituye para la seguridad de la empresa, sin ser este el enemigo, mientras que otros sistemas tratan de proteger frente a ataques externos. Además, las técnicas que usa, trabajan sobre datos reales, en un sistema real, por lo que sus resultados contribuyen realmente a evitar incidentes de seguridad reales.
+MUSES se diferencia de los demás, principalmente, porque considera el riesgo que el propio usuario constituye para la seguridad de la empresa, sin considerarlo como una amenaza, por supuesto, mientras que otros sistemas se centran en la protección frente a ataques externos. Además, las técnicas que aplica, trabajan sobre datos reales (en un sistema real), por lo que sus resultados contribuyen realmente a evitar incidentes de seguridad reales.
 
-Hemos encontrado que algunos autores sí usan técnicas de minería de datos, pero sus trabajos están enfocados a aplicaciones específicas como la detección de amenazas (botnet) \cite{botnet_detection_clustering_09}, o la detección de anomalías \cite{feature_selection_anomalies_08}. Sin embargo, ninguno las combina en el mismo procedimiento para conseguir mejorar los sistemas, como hace MUSES en su etapa de refinamiento de reglas.
+Existen otros autores que también usan técnicas de \textit{Data Mining}, pero sus trabajos se centran en aplicaciones específicas, como la detección de amenazas (\textit{botnet}) \cite{botnet_detection_clustering_09}, o de anomalías \cite{feature_selection_anomalies_08}. Sin embargo, ninguno las combina en el mismo procedimiento para conseguir mejorar el propio sistema, como sí hace MUSES en su etapa de refinado de reglas.
 
-Por otra parte, existen algunos trabajos que proponen la inferencia o refinamiento de reglas \cite{inferring_policies_socialnetworks_09,policy_generation_clustering_10}, pero no afectan al conjunto de políticas de la empresa ni el refinamiento está basado en el comportamiento del usuario, como propone el sistema que presentamos.
+Del mismo modo existen trabajos que proponen procesos de inferencia o refinado de reglas \cite{inferring_policies_socialnetworks_09,policy_generation_clustering_10}, pero que no alteran el conjunto de políticas o reglas de seguridad de la empresa. Además en ningún caso dicho refinado está basado en el comportamiento de los usuarios del propio sistema, siguiendo el modelo que aplica MUSES.
 
-Además, la programación genética se usa ampliamente por varios autores \cite{rule_generation_gp_09,sec_policy_evolution_gp_08}, incluso para la creación de nuevas políticas o reglas enfocadas a la seguridad, pero de nuevo éstas no afectan al conjunto de políticas de una empresa. Es más, las funciones de evaluación que aquí se han propuesto, para el refinamiento y la inferencia de reglas, es novedoso y estará completamente integrado en el sistema.
+Respecto a la Programación Genética, ésta ha sido ampliamente utilizada por varios autores \cite{rule_generation_gp_09,sec_policy_evolution_gp_08}, incluso para la creación de nuevas políticas o reglas enfocadas a la seguridad, pero de nuevo éstas no afectan al conjunto de políticas de una empresa. Además, las funciones de evaluación que aquí se han propuesto, para el refinado y la inferencia de reglas, las consideramos novedosas por estar completamente integradas en el sistema.
 
-Respecto a los Algoritmos Genéticos, son otro elemento cuyo uso puede encontrarse en muchos trabajos, en su mayoría para la detección de anomalías e intrusos, pero no para la optimización de las reglas como en nuestro caso. Sin embargo, hay algunos trabajos que sí podemos tomar como referencia para nuestro trabajo, como \cite{optimizing_IT_costs_ea_10,risk_reduction_ga_12}.
+Los Algoritmos Genéticos, por su parte, son otras metaheurísticas que pueden verse aplicadas en muchos trabajos, en su mayoría para la detección de anomalías e intrusos, pero no para la optimización de reglas de seguridad, como en nuestro caso. Sin embargo, hay algunos trabajos de optimización de costes y riesgos que sí podemos tomar como referencia para ampliar nuestro trabajo, como \cite{optimizing_IT_costs_ea_10,risk_reduction_ga_12}.
 
-En cualquier caso, algunos de los trabajos revisados nos sirven como consideración para posibles características a añadir a MUSES, tales como el análisis de usuarios a través de redes sociales \cite{inferring_policies_socialnetworks_09,user_classification_ml_13}, la optimización de protocolos de seguridad \cite{GAs_security_protocols_10}, la implementación de mecanismos de detección de intrusos \cite{GA_intrusion_detection_survey_14} o, aunque MUSES ya lo incorpore, la aplicación de técnicas mejoradas de protección de la privacidad \cite{AAI_book_2009}.
+En cualquier caso, los trabajos revisados nos sirven como base para posibles características a añadir a MUSES, tales como el análisis de usuarios a través de redes sociales \cite{inferring_policies_socialnetworks_09,user_classification_ml_13}, la optimización de protocolos de seguridad \cite{GAs_security_protocols_10}, la implementación de mecanismos de detección de intrusos \cite{GA_intrusion_detection_survey_14} o, aunque MUSES ya lo incorpore, la aplicación de técnicas mejoradas de protección de la privacidad \cite{AAI_book_2009}.
 
 %******************************************************************************
 
 \section*{Agradecimientos}
-La realización de este trabajo ha sido respaldado por el proyecto europeo MUSES (FP7-318508), además de por el PYR-2014-17 incluído en GENIL - CEI BIOTIC (Granada).
+La realización de este trabajo ha sido financiada por el proyecto europeo MUSES (FP7-318508), además de por el proyecto PYR-2014-17 incluido en GENIL - CEI BIOTIC (Granada).
 
 \nocite{*}
 \bibliographystyle{maeb2015}
