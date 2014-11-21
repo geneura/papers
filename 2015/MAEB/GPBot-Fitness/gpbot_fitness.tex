@@ -1,0 +1,596 @@
+\documentclass[twocolumn]{maeb2015}
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{graphics}
+\usepackage[dvips]{epsfig}
+\usepackage{url}
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{alltt}
+\usepackage{verbatim}
+\usepackage{moreverb} 
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+
+\begin{document}
+
+\title{Diseño de bots competitivos para un juego de estrategia en tiempo real usando programación genética: análisis de funciones de fitness} %!PN
+
+\author{A. Fernández-Ares, P. García-Sánchez, A.M. Mora, P.A. Castillo \thanks{Departamento de Arquitectura y Tecnología de Computadores. CITIC, ETSIIT,Universidad de Granada
+E-mail: \{antares,amorag,pgarcia,pedro\}@geneura.ugr.es}}
+
+\maketitle
+
+
+\begin{abstract}
+Diseñar el motor de Inteligencia Artificial (IA) de un agente autónomo (bot) en un juego es una tarea compleja realizada normalmente por un jugador experto, el cual plasma en un modelo su propio conocimiento y comportamiento en el juego en base a su experiencia.
+Este artículo presenta un algoritmo para automatizar  esa tarea, mediante el uso de Programación Genética (PG).
+Esta metodología se emplea para diseñar árboles de decisión que modelan la IA de un bot para jugar combates 1 contra 1 dentro del juego de estrategia Planet Wars.
+Dichas reglas se optimizarán mediante el algoritmo, en base al comportamiento y rendimiento obtenido por el bot en combates de evaluación. De modo que el conjunto de reglas obtenidas finalmente diferirá sensiblemente de las que pudiese crear el humano, pudiendo obtenerse bot mucho más competitivos.
+Se han implementado y probado tres funciones de evaluación (fitness) diferentes con el fin de obtener una métrica tolerable a la naturaleza ruidosa de los enfrentamientos. Dos de ellas tienden a minimizar dicho factor considerando información adicional (y dinámica) sobre los combates de evaluación, en lugar de únicamente fijarse en el resultado final del ganador.
+Para comprobar su valía los mejores bots obtenidos con cada función se han probado contra un bot creado anteriormente en base a conocimiento experto y mejorado mediante un algoritmo genético.
+\end{abstract}
+
+\begin{keywords}
+AG, Algoritmo Genético, PG, Programación Genética, Bot, NPC, RTS, Inteligencia Computacional, Inteligencia Artificial, Reglas, Máquina de Estados Finitos
+\end{keywords}
+
+%-------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%% INTRODUCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------------------------------------------
+\section{Introducción}
+\noindent 
+
+
+Los juegos de estrategia en tiempo real (Real-Time Strategy, RTS) son un subgénero de los videojuegos de estrategia en los que los participantes se enfrentan por controlar un conjunto de recursos, unidades y estructuras distribuidas en un escenario de juego. Es esencial contar con un buen control y distintas técnicas y estrategias para ganar el juego, que normalmente consiste en eliminar todas las unidades enemigas, o ganar cierto número de puntos.
+
+Como su nombre indica, su principal característica es su naturaleza en tiempo real, es decir, el jugador no tiene por qué esperar el resultado de los movimientos del otro jugador, al contrario que en los juegos basados en turnos. Algunos ejemplos bien conocidos de este tipo de juegos son Command and Conquer\texttrademark, Starcraft\texttrademark, Warcraft\texttrademark~ y Age of Empires\texttrademark~.
+
+En estos juegos normalmente se consideran dos niveles de Inteligencia Artificial (IA) \cite{ahlquist_game_ai08}: el primero, realizado por un Personaje No Jugador (PNJ), también llamado \textit{bot}, toma decisiones relativas al conjunto completo de unidades (trabajadores, soldados, máquinas, vehículos o incluso edificios); mientras que el segundo nivel implementa el comportamiento de cada una de esas pequeñas unidades. Estos dos niveles de acción, que pueden considerarse ({\em estratégicos} y {\em tácticos}), hacen que sea inherentemente difícil de diseñar por un humano, pero además, esta dificultad se aumenta por su naturaleza en tiempo real (normalmente debida por restringir el tiempo para tomar una decisión) y también por el enorme espacio de búsqueda.
+
+Por estas razones, en este trabajo se presenta un método de Programación Genética (PG) como método automático para crear el motor de IA de agentes autónomos en un RTS. El objetivo de la PG es crear funciones o programas para resolver determinados problemas, siendo la representación de los individuos en forma de árbol, formado por operadores (o {\em primitivas}) y variables ({\em terminales}).
+
+La meta de usar PG en este ámbito es la creación de motores de comportamiento basados en reglas siguiendo un proceso heurístico, algorítmico y automático. Así, en lugar de implementarlos desde cero por un humano (experto o no), este método definirá un conjunto de reglas que podrían ser más complejas (o incluso, más simples) que aquellas definidas por un humano. Durante la ejecución de este algoritmo se evaluará cada posible conjunto de reglas, asignando a cada conjunto un valor de acuerdo al rendimiento del bot (durante las partidas). 
+
+Para implementar y testear esta proposición hemos considerado el juego {\em Planet Wars}, un RTS presentado en la competición Google AI Challenge 2010\footnote{\url{http://planetwars.aichallenge.org/}}. Este juego ha sido utilizado por varios autores para el estudio de técnicas de inteligencia computacional en juegos RTS \cite{Genebot_CEC11,ExpGenebot_CIG2012,Lara_PCG_PlanetWars14}, ya que es una simplificación (sólo un tipo de recurso y de unidad) de los elementos que forman un juego RTS comercial. Los jugadores controlan naves espaciales (o simplemente naves), y el objetivo es conquistar todo el conjunto de planetas de un mapa, contra un enemigo que intenta lo mismo. Los planetas pueden producir nuevas naves y las naves pueden destruirse estrellando las del otro jugador en el planeta.
+
+En este paper, se presentan 3 diferentes funciones fitness: la primera es una variación del fitness basado en victorias presentado en \cite{Genebot_CEC11}, la cual evalua todos los individuos en la población jugando 5 diferentes partidas contra un bot que hace de \textit{sparring}. El objetivo de estas repeticiones es evitar el factor ruidoso presente estos entornos dinámicos \cite{Mora_noisy_jcst,wilcoxon:ga}. Debido a esto, el valor fitness de un individuo podría variar dramáticamente entre distintas partidas, ya que depende de las acciones pseudo-estocásticas del oponente y de sus propias decisiones no deterministas.
+
+Las otras dos funciones fitness presentadas intentan reducir la influencia del ruido en la evolución, pero usando datos adicionales durante la ejecución del bot: el número de naves generadas por cada bot en lugar del número de turnos. La primera realiza una regresión linear (función \textit{pendiente}), basada en el porcentaje de naves con respecto al total, y la segunda la integral (\textit{función área}) de la función que representa esos números. Todas las funciones usadas consideran los resultados finales de cada individuo (bot) después de las cinco partidas (en media).
+
+El trabajo se centra a continuación en probar el valor de los sistemas basados reglas evolucionados, realizando varios experimentos usando las funciones fitness presentadas para enfrentarse a un bot competitivo disponible en la literatura \cite{Genebot_CEC11}.
+
+%The work is then focused on proving the value of these evolved rule-based control systems for the agents. To this end, several experiments have been conducted, considering the aforementioned fitness functions, and an evolutionary bot as rival. This bot, called GeneBot, was presented in a previous work \cite{Genebot_CEC11}. 
+
+
+
+
+%-----------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%% BACKGROUND %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-----------------------------------------------------------------
+\section{Trasfondo y descripción del problema}
+
+\subsection{Programación Genética}
+
+La Programación Genética (PG) \cite{GP_Koza92} es un tipo de Algoritmo Evolutivo (AE), es decir, un algoritmo de optimización y búsqueda basada en el modelo de la evolución darwinista, que se basa en la idea de la adaptación natural. Los EAs trabajan sobre una población de posibles soluciones (individuos) para un problema objetivo y usan un método de selección que favorece las mejores soluciones junto con un conjunto de operadores que actúan sobre las soluciones seleccionadas.
+
+Por otro lado, la PG es una técnica de optimización estructural donde los individuos se representan como estructuras jerárquicas (normalmente árboles) y el tamaño y forma de las soluciones no están definidas a priori, como en otros métodos de la computación evolutiva, si no que pueden cambiar durante la evolución. La principal diferencia con otros métodos, como los Algoritmos Genéticos (AGs), es la representación de los individuos y los operadores genéticos a aplicar, que están principalmente enfocados a la administración (y mejora) de este tipo de estructura. El flujo de un algoritmo de PG es el mismo que el de cualquier otro EA: inicialmente se crea una población inicial y cada individuo de la población se evalúa usando una función de fitness. Los individuos que tienen mejor rendimiento tienen una probabilidad más alta de ser seleccionados como padres para la nueva población que el resto, y una nueva población se crea a partir de ellos tras aplicar operadores de cruce (\textit{crossover}) y mutación con una cierta probabilidad. El bucle se repite hasta que se alcanza una condición de parada establecida.
+
+
+% ----------------------------------------------------------------------
+
+\subsection{Planet Wars}
+
+El \textit{Google AI Challenge (GAIC)} \footnote{\url{http://planetwars.aichallenge.org/}} es una competición de IA en la que los participantes diseñan bots para competir los unos contra los otros. El juego elegido para la competición de 2010, \emph{Planet Wars}, es el entorno de estudio elegido en este artículo. \emph{Planet Wars}, es una versión simplificada del juego Galcon \footnote{\url{http://www.galcon.com}}, donde los enfrentamientos involucran únicamente a dos jugadores.
+
+ \begin{figure}[ht]
+ \begin{center}
+   \epsfig{file=./imags/naves.eps,width=7cm}
+ \end{center}
+ \caption{}\footnotesize Captura de la simulación de un estado temprano del juego Planet Wars.
+Los planetas blancos pertenecen al jugador, los planetas grises oscuros
+pertenecen al oponente y los planetas grises claros no pertenecen
+aún a ningún jugador. Los triángulos representas flotas de naves.
+Los números (tanto en planetas como en flotas) representan el número
+de naves que lo componen.
+ \label{figura:PlanetWars1}
+ \end{figure}
+
+ La contienda entre los jugadores tiene lugar en un mapa o escenario de juego que alberga varios planetas, cada uno con un número asignado que representa la cantidad de naves que están alojadas en él (ver Figura \ref{figura:PlanetWars1}). En cada instante de tiempo cada planeta alberga una cantidad específica de naves, que pueden pertenecer al jugador, al oponente o ser neutrales. La propiedad está representada por un color asignado a cada jugador. Además, cada planeta tiene una tasa de crecimiento que indica cuantas naves se generan durante cada asalto y son agregadas a la flota que el jugador posee en el planeta. Los planetas neutrales no agregan nuevas a la flota que alojan hasta que el planeta es conquistado por algún jugador.
+
+El objetivo del juego es apoderarse de todos los planetas del rival. Aunque Planet Wars es un RTS, la implementación en el campeonato lo ha transformado en un juego basado en \textit{pseudo-turnos}, en donde los jugadores disponen de un tiempo (número de turnos) determinado para conseguir la victoria. Cada pseudo-turno dura un segundo como máximo, de modo que ese es el tiempo de que dispone un bot para realizar sus acciones. Otra particularidad del problema es que no está permitido almacenar ningún tipo de información sobre las acciones propias anteriores, las del oponente, ni sobre el estado de juego (el mapa). En otras palabras, en cada pseudo-turno de un segundo el bot debe hacer frente a un mapa desconocido tal y como si fuese un juego nuevo. Esta restricción, hace que el desarrollo del bot sea un reto realmente interesante.
+
+De hecho, cada bot se implementa como una función que partiendo de una lista de planetas y sus flotas (el estado actual del mapa), devuelve una lista de acciones a realizar. En cada pseudo-turno, el bot debe elegir el movimiento que realizarán una o más flotas desde un planeta propio a cualquier otro planeta. Esta acción es la única que puede llevar a cabo el bot. Las flotas pueden necesitar más de un pseudo-turno en llegar a su planeta de destino (el tiempo es directamente proporcional a la distancia entre el planeta de origen y el destino). Cuando la flota llega un planeta enemigo o neutral, tiene lugar un enfrentamiento, en el cual cada nave es sacrificada para destruir una nave enemiga, en otras palabras, resulta victoriosa aquella flota que albergue más naves. En caso de que el planeta de destino sea del propio jugador, ambas flotas se unen, sumando sus naves. En cada pseudo-turno el número de naves alojadas en los planetas de los jugadores (no los neutros) se incrementa de acuerdo a la tasa de crecimiento de cada planeta.
+
+
+%-----------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%% STATE OF THE ART %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-----------------------------------------------------------------------
+\section{State of the art}
+\label{sec:soa}
+
+Los juegos RTS se han utilizado ampliamente en el área de la inteligencia computacional (ver \cite{Lara2013review} para una revisión) en videojuegos. Entre otras técnicas los AEs han sido muy utilizados para la optimización de parámetros \cite{Esparcia10FPS}, aprendizaje \cite{Kenneth2005neuroevolution} o generación de contenidos \cite{Mahlmann2012MapGeneration}. 
+
+Uno de los subtipos de AEs, la Programación Genética, se ha demostrado como una buena herramienta para desarrollar estrategias en juegos, logrando resultados comparable a competidores humanos o con comportamiento basado en humanos \cite{Sipper2007gameplaying}, e incluso superiores a otras técnicas \cite{Elyasaf2012FreeCell}. La PG también se ha usado en otros tipos de juegos, como los juegos de mesa \cite{Benbassat2012Reversi}, o juegos (en principio) simples, como Ms. Pac-Man \cite{Brandstetter2012PacMan} y Spoof \cite{Wittkamp2007spoof}, e incluso en videojuegos modernos, como los First Person Shothers (FPS) (por ejemplo, Unreal\texttrademark~ \cite{Esparcia2013GPunreal}). Con respecto a los RTS, existen trabajos para búsqueda de caminos \cite{pathfinding_GP_RTS} o definición de tácticas en juegos tácticos abstractos \cite{KeaveneyO09_GP_RTS}.
+
+Planet Wars. el juego usado en este trabajo, también ha sido utilizado por otros investigadores como un framework experimental para testeo de agentes. En los trabajos \cite{Genebot-IWANN2011,Genebot_CEC11,genebot-evo12,ExpGenebot_CIG2012,Co-Genebot_EVO2014} se ha utilizado principalmente usando AGs para evolucionar los parámetros de un motor de comportamiento definido por un humano. Estos trabajo han definido respectivamente una primera aproximación, una comparativa de distintas implementaciones, análisis de la influencia del ruido, definición de bots expertos adaptativos al entorno, y aproximaciones co-evolutivas.
+
+El trabajo actual inicia un nuevo paso en esta línea de investigación intentando evitar las limitaciones estrictas que el bot inicial tenía, ya que fue definido por un humano, tenía una estructura fija (una máquina de estados finita) que sólo ofrecía unos pocos grados de mejora: simplemente un conjunto de 8 parámetros numéricos. El uso de PG nos proporcionará una nueva herramienta para redefinir completamente el motor de AI del bot, que podría obtener mejores resultados que los bots anteriores. Así, PG genera un árbol de decisión que el bot usará para tomar decisiones durante el juego. Para probar el valor de nuestro método, los agentes generados serán comparados con el bot anteriormente presentado: GeneBot \cite{Genebot_CEC11}, un bot mejorado con un AG que vence a bots definidos por usuarios.
+
+
+%-------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%% GP BOT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------------------------------------
+\section{GPBot}
+\label{sec:agent}
+
+
+El algoritmo basado en Programación Genética (llamado {\em GPBot}) evoluciona un conjunto de parámetros que modela un árbol de decisión. Durante la evolución cada individuo de la población (un árbol) se evalúa. Para esto, el árbol que modela el motor de comportamiento de un agente, es colocado en un mapa en una partida de Planet Wars. Dependiendo de los resultados obtenidos, el agente (individuo) obtiene un valor fitness que se usa durante el proceso evolutivo.
+
+Durante cada turno de la partida el árbol decidirá la mejor estrategia a seguir, seleccionando por cada planeta un objetivo y un porcentaje de naves a enviar. Estos árboles de decisión son árboles binarios de expresiones compuestas por dos diferentes tipos de nodos:
+
+\begin{itemize}
+\item {\em Decisión}: una expresión lógica formada por una variable, el operador $<$, y un número entre 0 y 1. Es el equivalente al concepto  ``primitiva'' en el campo de la PG.
+\item {\em Acción}: una hoja del árbol (o sea, un ``terminal''). Cada decisión es el nombre del método a llamar del planeta que ejecuta el árbol. Este método indica a qué planeta enviar un porcentaje de las naves disponibles (de 0 a 1).
+\end{itemize}
+
+Las decisiones, definidas por un experto humano, se basan en los valores de las distintas \textit{variables} que son computadas considerando algunas otras variables del juego.
+
+
+\begin{itemize}
+\item {\em myShipsEnemyRatio}: Relación entre las naves del jugador y las naves del enemigo.
+\item {\em myShipsLandedFlyingRatio}: Relación entre las naves del jugador que vuelan y están aterrizadas.
+\item {\em myPlanetsEnemyRatio}: Relación entre el número de planetas del jugador y del enemigo.
+\item {\em myPlanetsTotalRatio}:Relación entre el número de planetas del jugador y del total (incluyendo los del enemigo y los neutrales).
+\item {\em actualMyShipsRatio}: Relación entre el número de naves en el planeta específico que evalúa el árbol y el total de naves del jugador.
+\item {\em actualLandedFlyingRatio}: Relación entre el número de naves aterrizadas y volando desde el planeta específico que evalúa el árbol, y el total de naves del jugador.
+\end{itemize}
+
+Finalmente, las posibles  \textit{decisiones} son:
+
+\begin{itemize}
+\item {\em Attack Nearest (Neutral|Enemy|NotMy) Planet}: El objetivo es el planeta más cercano. 
+\item {\em Attack Weakest (Neutral|Enemy|NotMy) Planet}: El objetivo es el planeta con menos naves.
+\item {\em Attack Wealthiest (Neutral|Enemy|NotMy) Planet}: El objetivo es el planeta con más tasa de crecimiento.
+\item {\em Attack Beneficial (Neutral|Enemy|NotMy) Planet}: El objetivo es el planeta más beneficioso, es decir, el que tiene mayor tasa de crecimiento dividido por el número de naves que alberga.
+\item {\em Attack Quickest (Neutral|Enemy|NotMy) Planet}: El objetivo es el planeta más fácil de conquistar: el menor producto entre la distancia del planeta que ejecuta el árbol y el número de naves en el planeta objetivo.
+\item {\em Attack (Neutral|Enemy|NotMy) Base}: El objetivo es el planeta con más naves (es decir, la base).
+\item {\em  Attack Random Planet}. Atacar un planeta aleatorio.
+\item {\em Reinforce Nearest Planet}: Reforzar el planeta más cercano al que ejecuta el árbol.
+\item {\em Reinforce Base}: Reforzar al planeta con más naves del jugador.
+\item {\em Reinforce Wealthiest Planet}: Reforzar al planeta del jugador con mayor tasa de crecimiento.
+\item {\em Do nothing}. No hacer nada.
+
+\end{itemize}
+
+Un ejemplo de un árbol de decisión posible se muestra a continuación. Este ejemplo tiene un total de 5 nodos, con dos decisiones y tres acciones, con una profundidad de tres niveles.
+
+\begin{verbatim}
+
+if(myShipsLandedFlyingRatio < 0.796)
+   if(actualMyShipsRatio < 0.201)
+      attackWeakestNeutralPlanet(0.481);
+   else
+      attackNearestEnemyPlanet(0.913);
+else
+   attackNearestEnemyPlanet(0.819);
+
+\end{verbatim}\\\\
+
+El comportamiento del bot se explica en el Algoritmo  \ref{alg:turn}.
+
+\begin{algorithm}[ht]
+\begin{algorithmic}
+
+
+\STATE \textit{//Al principio de la ejecución el agente recibe el árbol}
+\STATE árbol $\leftarrow$ leerÁrbol()
+\WHILE{el juego no termine}
+	\STATE // iniciar el turno
+	\STATE calcularPlanetasGlobales() \textit{// p.e. Base o Base Enemiga}
+	\STATE calcularRatiosGlobales() \textit{// p.e. myPlanetsEnemyRatio }
+	\FOR{cada p en planetas del jugador}
+		\STATE calcularPlanetasLocales(p) \textit{// p.e. NearestNeutralPlanet a p}
+		\STATE calcularRatiosDePlanetas(p) \textit{//p.e. actualMyShipsRatio}
+		\STATE ejecutarÁrbol(p, árbol)  \textit{// Enviar un porcentaje de naves al destino}
+   \ENDFOR
+\ENDWHILE
+
+\end{algorithmic}
+\caption{Pseudocódigo del agente propuesto. El mismo árbol se ejecuta durante toda la ejecución del agente.}
+\label{alg:turn}
+\end{algorithm}
+
+
+
+La siguiente sección explica las funciones fitness usadas para medir el rendimiento de los agentes durante las partidas.
+
+
+
+
+%-----------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%% FITNESS FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-----------------------------------------------------------------------
+
+\section{Funciones fitness}
+\label{sec:fitness_functions}
+
+La siguiente sección explica las funciones fitness usadas en este estudio para medir el rendimiento de los agentes durante las partidas.
+
+% ---------------------------------------------------------------------
+
+\subsection{Fitness basado en Victorias}
+
+\label{subsec:fitness_turns}
+
+Esta es una variación del fitness jerárquico considerado en \cite{Genebot_CEC11}.
+En esta aproximación, un individuo se considera mejor que otro si gana en un número mayor de mapas. En caso de igualdad de victorias, el individuo con más turnos para ser vencido (es decir, el más fuerte) se considera mejor. Por lo tanto, el máximo fitness en este trabajo es 5 victorias y 0 turnos.
+
+Para dos bots, A y B, la comparación del fitness (y por lo tanto, su orden dentro de la población) se define como muestra el Algoritmo \ref{alg:fitness_turns_positions}.
+
+\begin{algorithm}[ht]
+\begin{algorithmic}
+        
+\STATE $A,B \in Population$
+\IF{A.victorias $=$ B.victorias}
+	\IF{A.turnos $>=$ B.turnos}
+		\STATE A es mejor que B
+	\ELSE
+		\STATE B es mejor que A
+	\ENDIF
+\ELSE
+	\IF{A.victorias $>$ B.victorias}
+		\STATE A es mejor que B
+	\ELSE
+		\STATE B es mejor que A
+	\ENDIF
+\ENDIF
+
+\end{algorithmic}
+\caption{Comparación entre dos individuos usando fitness jerárquico.}
+
+\label{alg:fitness_turns_positions}
+\end{algorithm}
+
+En este fitness, sólo se tiene en cuenta el resultado final (posición y número de turnos), pero no existe información de cómo se ha llegado a este resultado. El problema de esta función es que la consideración de dos términos distintos hace difícil la comparación entre distintas evaluaciones.
+
+Por lo tanto, en este trabajo se han propuesto dos funciones adicionales para permitir una comparativa más fácil y justa entre bots, intentando añadir otro factor para reducir el ruido \cite{Mora_noisy_jcst}.
+
+Estas dos funciones se basan en el porcentaje de naves que pertenecen a cada jugador en cada turno. Se normalizan considerando la cantidad de naves totales en el juego por cada turno (incluyendo naves neutrales en planetas neutrales), por lo tanto cada jugador contará con una \textit{nube} de naves a lo largo de los turnos. A continuación se describen las dos alternativas para tratar con esta nube de puntos para las funciones fitness: el uso de la pendiente y el uso del área.
+% ---------------------------------------------------------------------
+
+\subsection{Fitness basado en pendiente}
+
+\label{subsec:fitness_slope}
+
+En este caso se realiza un análisis de regresión cuadrática para transformar la nube de puntos en una línea. Esta línea se representa como  {$y = \alpha \times x + \beta $}, donde {$\alpha$} y {$\beta$} se calculan como se muestra en las Ecuaciones  \ref{eq:alpha} y \ref{eq:beta}, realizando una regresión de mínimos cuadrados. Por cada bot en la simulación calculamos  $\alpha$ y $\beta$, siendo la pendiente de la recta y el desplazamiento respectivamente. Esta pendiente es el fitness de cada bot para cada simulación.
+
+
+\begin{equation}
+\label{eq:alpha}
+        \alpha = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X_{i}})(Y_{i} - \bar{Y_{i}})}{\sum_{i=1}^{n}(X_{i} - \bar{X_{i}})^{2}}
+\end{equation}
+
+\begin{equation}
+\label{eq:beta}
+        \beta = \bar{Y}-\alpha\bar{X}
+\end{equation}
+
+
+Un bot óptimo teóricamente ganaría en el primer turno, teniendo una pendiente de 1, siendo este el máximo valor del fitness. Por otro lado, un bot que pierde en el primer turno tendría una pendiente de -1. Además, en función del signo de la pendiente podemos saber si gana {$pendiente>0$} o pierde si {$pendiente<0$}.
+
+Los valores de las distintas partidas se suman para calcular una pendiente global para el fitness. 
+
+% ---------------------------------------------------------------------
+
+\subsection{Fitness basado en área}
+\label{sec:fitness}
+
+Esta función utiliza la integral para calcular el área de la curva obtenida por la distribución de puntos formados por el porcentaje de naves totales pertenecientes al jugador a lo largo de la partida. (ver Equación \ref{eq:area}). Esta \textit{área} se normaliza considerando el número de turnos, y por lo tanto representa el porcentaje de naves medio para cada individuos.
+%An example is shown in Fig. \ref{figura:nubecita:area}.
+
+\begin{equation}
+        area=\frac{\int_{0}^{t}\%ships(x)dx}{t}
+    \label{eq:area}
+\end{equation}
+
+
+Al igual que en la anterior función, si un bot optimo gana en el primer turno, el área (y valor máximo del fitness) será $1$. Por otro lado, si pierde en el primer turno, su área será $0$. A diferencia de las anteriores funciones el área no da información de si un bot es ganador de una partida.
+
+
+
+
+%-----------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%% EXPERIMENTAL SETUP %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-----------------------------------------------------------------------
+
+\section{Experimentos}
+\label{sec:experiments}
+
+Los operadores evolutivos utilizados en este estudio han sido el crossover de sub-árboles y mutación de 1 nodo, ya que su uso ha sido propuesto anteriormente por otros investigadores, obteniendo buenos resultados han propuesto otros investigadores \cite{Esparcia2013GPunreal}. En este caso, la mutación cambia aleatoriamente la etiqueta de un nodo, o muta el valor con un step-size de 0.25. Cada configuración ha sido ejecutada 20 veces, con una población de 32 individuos y selección de 2-torneo binario para crear un pool de 16 padres. 
+
+Para testear cada individuo durante la evolución, una partida con un bot anteriormente creado se realiza en 5 mapas diferentes pero representativos. También, como se propuso en \cite{Genebot_CEC11}, y debido al efecto del fitness ruidoso, todos los individuos son reevaluados en cada generación.
+
+
+Un bot disponible públicamente ha sido elegido para nuestros experimentos \footnote{Puede descargarse de \url{https://github.com/deantares/genebot}}. Este bot, llamado {\em Genebot} y propuesto en \cite{Genebot_CEC11} fue entrenado usando un AG para optimizar los 8 parámetros que conforman un conjunto de reglas escritas a mano, a partir de la experiencia de un jugador humano experto. La Tabla \ref{tab:parameters} resume todos los parámetros usados.
+
+
+\begin{table*}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+{\em Nombre del parámetros} & {\em Valor} \\\hline \hline
+Tamaño de la población & 32 \\\hline
+Tipo de crossover &  Crossover de sub-árbol \\ \hline
+Tasa de crossover & 0.5\\ \hline
+Mutación  & 1-node \\ \hline
+Step-size de la mutación & 0.25 \\ \hline
+Selección & 2-torneo \\ \hline
+Reemplazo & Steady-state\\ \hline
+Condición de parada & 50 generaciones \\ \hline
+Profundidad máxima del árbol & 7  \\ \hline 
+Ejecuciones por configuración & 20 \\ \hline
+Evaluación & partida contra  GeneBot \cite{Genebot_CEC11}  \\ \hline 
+
+Mapas usados en cada evaluación & map76, map69, map7, map11, map26 
+
+\\ \hline
+\end{tabular}
+\caption{Parameters used in the experiments.}
+\label{tab:parameters}
+\end{center}
+\end{table*}
+
+Una vez que todas las ejecuciones han terminado hemos evaluado los mejores individuos obtenidos en todas las ejecuciones enfrentando a otros bots disponibles en un conjunto más grande de mapas para estudiar el comportamiento del algoritmo y cómo buenos son los bots obtenidos contra enemigos y mapas no usados para entrenamiento.
+
+Se ha utilizado el framework OSGiLiath. El árbol generado se compila en tiempo real y se inyecta en el código del agente usando la biblioteca Javassist \footnote{\url{www.javassist.org}}. Todo el código fuente utilizado en este trabajo está disponible bajo una licencia LGPL V3 en \url{http://www.osgiliath.org}.
+
+
+
+%-------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%% RESULTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------------------------------------
+\section{Resultados}
+
+La Tabla \ref{tab:results3config} muestras los resultados obtenidos tras ejecutar 20 veces cada configuración (con cada una de las funciones fitness implementadas). 
+
+Aunque estos fitness no son comparables entre sí al aplicar distintas métricas, el fitnes basado en \textit{victorias} alcanza valores cercanos a su óptimo (5) al final de las ejecuciones (ver los valores del mejor individuo y de la población media). Los fitness basados en  \textit{pendiente} y en \textit{área} obtienen valores inferiores a su óptimo teórico (no existe un bot que pueda ganar en el primer turno por las propias condiciones del juego), y además dependen de rangos de información más grandes (la variación del número de naves).
+
+
+\begin{table*}
+\centering{
+\begin{tabular}{|c|c|c|} \hline            
+		& Mejor fitness (media)	&	Fitness de la población (media)	\\ \hline \hline
+Victorias	& 4,761 $\pm$	0,624	&	4,345	$\pm$	0,78 \\ \hline
+Pendiente	& 2,296	$\pm$	0,486	&	2,103	$\pm$	0,486 \\ \hline
+Área	& 2,838	$\pm$	1,198	&	2,347	$\pm$	0,949 \\ \hline
+
+
+\end{tabular}
+\caption{Resultados obtenidos por cada configuración al final de las 20 ejecuciones.}
+\label{tab:results3config}
+}
+\end{table*}
+
+Para evaluar los distintos métodos entre sí y así realizar una comparativa justa, los 20 mejores bots de cada configuración (uno por ejecución) se han enfrentado a un bot existente en la literatura (Genebot). Además, estas partidas se han realizado en 9 mapas distintos a los usados en la función fitness del entrenamiento. Estos mapas, proporcionados por Google, se consideran representativos ya que tienen distintas características para promover un conjunto de estrategias amplio, ya que cuentan con distintas distribuciones de planetas, tamaños y números de naves iniciales.
+
+Este experimento se ha realizado para validar si los bots obtenidos por las configuraciones propuestas pueden ser competitivos en términos de calidad en mapas no usados para evaluación/evolución. Los resultados de la Figura \ref{figura:boxplotvictoriesgenebot} muestran que el fitness basado en victorias consigue resultados significativamente mejores que los otros métodos.
+
+
+
+\begin{figure}[ht]
+ \begin{center}
+   \includegraphics[width=7cm]{imags/boxplot_victoria_bot_por_metodo_contra_genebot.eps}
+ \end{center}
+ \caption{}\footnotesize Boxplots del porcentaje de victorias de cada uno de los bots obtenidos en cada configuración vs. Genebot. 
+ \label{figura:boxplotvictoriesgenebot}
+ \end{figure}
+
+También se ha realizado un experimento adicional para realizar una comparación directa entre los tres métodos. Cada uno de los mejores individuos ha sido evaluado contra el resto (en partidas 1 vs 1) en los mismos 9 mapas por pareja. Al contrario que en el experimento anterior, se usan bots no usados anteriormente durante la evolución. Los boxplots del porcentaje de victorias de los mejores bots de cada método se muestra en la Figura \ref{figura:boxplotvictories}. Puede verse que el fitness basado en \textit{pendiente} no obtiene buenos resultados respecto al resto. Es el fitness basado en \textit{victorias} el que mejores resultados obtiene, siendo además más robusto que el resto.
+
+
+%The \textit{Victory-based} fitness achieves better results in average, being also more robust (small standard deviation). However, looking at the \textit{Area} fitness results, they outperform several times the \textit{Victory} results, obtaining more victories.
+
+
+
+
+ \begin{figure}[ht]
+ \begin{center}
+   \includegraphics[width=7cm]{imags/boxplot_victoria_bot_por_metodo.eps}
+ \end{center}
+ \caption{} \footnotesize Boxplots de porcentajes de victorias de los mejores bots de cada método contra el resto.
+
+ \label{figura:boxplotvictories}
+ \end{figure}
+
+Finalmente, y con respecto a los empates es interesante mostrar los resultados de la Tabla \ref{tab:ties}. Como puede verse, el fitness basado en \textit{victorias} obtiene más empates contra bots del mismo tipo que el resto de fitness, ya que usa menos información para realizar la evolución y genera comportamientos mucho más similares. Esto refuerza los resultados previos en los que los bots generados por este fitness se comportan de manera similar y obtienen menor desviación típica.
+
+\begin{table}
+\centering{
+\begin{tabular}{|c|c|c|c|} \hline            
+		& Victory		&	Área 		& Pendiente	\\ \hline \hline
+Victorias & 62.06\%	& 23.15 \% 	&	12.47 \% \\ \hline
+Pendiente	& 	-		& 19.07 \%	&	12.50 \%		\\ \hline
+Área	& 	-		&	-		&	11.87 \% \\ \hline
+
+
+\end{tabular}
+\caption{Porcentaje de empates entre bots de cada tipo de fitness.}
+\label{tab:ties}
+}
+\end{table}
+
+
+
+
+
+%-----------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%% CONCLUSIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------- 
+\section{Conclusiones}
+\label{sec:conclusion}
+
+El objetivo de este trabajo es validar si usar la Programación Genética puede crear bots competitivos para juegos RTS y estudiar el comportamiento de distintas funciones fitness, ya que estas pueden afectar directamente la creación de esos bots. Se han comparado tres funciones fitness para generar bots para el juego Planet Wars. Estos bots utilizan árboles de decisión binarios para escoger estrategias dentro del juego. Se ha usado un bot competitivo disponible en la literatura (Genebot) para evaluar los individuos durante la evolución. Este bot fue el mejor obtenido en un proceso evolutivo que optimizaba diferentes parámetros de un motor diseñado por un humano.
+
+Las funciones fitness utilizan distintos tipos de información durante el juego para obtener una métrica que pueda guiar la evolución. Los resultados muestran diferencias dependiendo del fitness usado: un fitness basado en victorias que prioritiza el número de victorias obtiene mejores bots de media que fitness que utilizan el número de naves durante toda la ejecución de la partida. Esto puede explicarse debido a que este fitness explota los individuos para generar bots más agresivos. Sin embargo, este rendimiento decrece al enfrentarlo contra distintos tipos de bots no usados en la evolución.
+
+Como trabajo futuro, se añadirán otras reglas al algoritmo propuesto (por ejemplo, analizar el mapa) y se estudiarán otros bots disponibles en la literatura para el entrenamiento. Además, esta aproximación puede implementarse y probarse en otros juegos RTS más complejos, como Starcraft, o en otros tipos de juego, como  Unreal\texttrademark~ y Super Mario\texttrademark~.
+
+
+
+%******************************************************************************
+
+\section*{Agradecimientos}
+Este trabajo ha sido financiado en parte por la beca FPU AP2009-2942 y los proyectos SIPESCA (G-GI3000/IDIF, bajo el Programa Operativo FEDER de Andalucía 2007-2013), CANUBE (CEI2013-P-14), ANYSELF (TIN2011-28627-C04-02) y PYR-2014-17 incluido in GENIL - CEI BIOTIC (Granada).
+
+\nocite{*}
+\bibliographystyle{maeb2015}
+
+\begin{thebibliography}{1}
+
+\bibitem{ahlquist_game_ai08}
+Ahlquist, J.B., Novak, J.:
+\newblock Game Artificial Intelligence.
+\newblock Game Development Essentials. Thompson Learning, Canada (2008)
+
+\bibitem{Genebot_CEC11}
+Fernández-Ares, A., Mora, A.M., Merelo, J.J., García-Sánchez, P., Fernandes,
+  C.:
+\newblock Optimizing player behavior in a real-time strategy game using
+  evolutionary algorithms.
+\newblock In: IEEE Congress on Evolutionary Computation (CEC 2011). (2011)
+  2017--2024
+
+\bibitem{ExpGenebot_CIG2012}
+Fern{\'a}ndez-Ares, A., Garc\'{\i}a-S{\'a}nchez, P., Mora, A.M., Merelo, J.J.:
+\newblock Adaptive bots for real-time strategy games via map characterization.
+\newblock In: 2012 IEEE Conference on Computational Intelligence and Games, CIG
+  2012, IEEE (2012)  417--721
+
+\bibitem{Lara_PCG_PlanetWars14}
+Lara-Cabrera, R., Cotta, C., Leiva, A.J.F.:
+\newblock On balance and dynamism in procedural content generation with
+  self-adaptive evolutionary algorithms.
+\newblock Natural Computing \textbf{13}(2) (2014)  157--168
+
+\bibitem{Mora_noisy_jcst}
+Mora, A.M., Fern{\'a}ndez-Ares, A., Merelo, J.J., Garc\'{\i}a-S{\'a}nchez, P.,
+  Fernandes, C.M.:
+\newblock Effect of noisy fitness in real-time strategy games player behaviour
+  optimisation using evolutionary algorithms.
+\newblock J. Comput. Sci. Technol. \textbf{27}(5) (2012)  1007--1023
+
+\bibitem{wilcoxon:ga}
+Guervós;, J.J.M.:
+\newblock Using a wilcoxon-test based partial order for selection in
+  evolutionary algorithms with noisy fitness.
+\newblock Technical report, GeNeura group, university of Granada (2014)
+
+\bibitem{GP_Koza92}
+Koza, J.R.:
+\newblock Genetic Programming: On the programming of computers by means of
+  natural selection.
+\newblock MIT Press, Cambridge, MA (1992)
+
+\bibitem{Lara2013review}
+Lara-Cabrera, R., Cotta, C., Fern{\'a}ndez-Leiva, A.J.:
+\newblock A review of computational intelligence in rts games.
+\newblock In: FOCI, IEEE (2013)  114--121
+
+\bibitem{Esparcia10FPS}
+Esparcia-Alc{\'a}zar, A.I., Mart\'{\i}nez-Garc\'{\i}a, A.I., Mora, A.M.,
+  Merelo, J.J., Garc\'{\i}a-S{\'a}nchez, P.:
+\newblock Controlling bots in a first person shooter game using genetic
+  algorithms.
+\newblock In: IEEE Congress on Evolutionary Computation, IEEE (2010)  1--8
+
+\bibitem{Kenneth2005neuroevolution}
+Stanley, K.O., Bryant, B.D., Miikkulainen, R.:
+\newblock Real-time neuroevolution in the nero video game.
+\newblock IEEE Transactions on Evolutionary Computation (2005)  653--668
+
+\bibitem{Mahlmann2012MapGeneration}
+Mahlmann, T., Togelius, J., Yannakakis, G.N.:
+\newblock Spicing up map generation.
+\newblock In: Proceedings of the 2012t European conference on Applications of
+  Evolutionary Computation. EvoApplications'12, Berlin, Heidelberg,
+  Springer-Verlag (2012)  224--233
+
+\bibitem{Sipper2007gameplaying}
+Sipper, M., Azaria, Y., Hauptman, A., Shichel, Y.:
+\newblock Designing an evolutionary strategizing machine for game playing and
+  beyond.
+\newblock IEEE Transactions on Systems, Man and Cybernetics Part C:
+  Applications and Reviews \textbf{37}(4) (2007)  583--593
+
+\bibitem{Elyasaf2012FreeCell}
+Elyasaf, A., Hauptman, A., Sipper, M.:
+\newblock Evolutionary design of freecell solvers.
+\newblock IEEE Transactions on Computational Intelligence and AI in Games
+  \textbf{4}(4) (2012)  270--281
+
+\bibitem{Benbassat2012Reversi}
+Benbassat, A., Sipper, M.:
+\newblock Evolving both search and strategy for reversi players using genetic
+  programming.
+\newblock (2012)  47--54
+
+\bibitem{Brandstetter2012PacMan}
+Brandstetter, M., Ahmadi, S.:
+\newblock Reactive control of ms. pac man using information retrieval based on
+  genetic programming.
+\newblock (2012)  250--256
+
+\bibitem{Wittkamp2007spoof}
+Wittkamp, M., Barone, L., While, L.:
+\newblock A comparison of genetic programming and look-up table learning for
+  the game of spoof.
+\newblock (2007)  63--71
+
+\bibitem{Esparcia2013GPunreal}
+Esparcia-Alc{\'a}zar, A.I., Moravec, J.:
+\newblock Fitness approximation for bot evolution in genetic programming.
+\newblock Soft Computing \textbf{17}(8) (2013)  1479--1487
+
+\bibitem{pathfinding_GP_RTS}
+Strom, R.:
+\newblock Evolving pathfinding algorithms using genetic programming.
+\newblock Gamasutra Webpage (Accessed on 25/05/2014)
+  URL=http://www.gamasutra.com/view/feature/131147/ evolving\_pathfinding\_algorithms\_.php?print=1.
+
+\bibitem{KeaveneyO09_GP_RTS}
+Keaveney, D., O'Riordan, C.:
+\newblock Evolving robust strategies for an abstract real-time strategy game.
+\newblock In Lanzi, P.L., ed.: CIG, IEEE (2009)  371--378
+
+\bibitem{Genebot-IWANN2011}
+Fernández-Ares, A., Mora, A.M., Merelo, J.J., García-Sánchez, P., Fernandes,
+  C.M.:
+\newblock Optimizing strategy parameters in a game bot.
+\newblock In: Proc. 11th International Work-Conference on Artificial Neural
+  Networks, IWANN 2011, Springer, LNCS, vol. 6692 (2011)  325--332
+
+\bibitem{genebot-evo12}
+Mora, A.M., Fernández-Ares, A., Merelo, J.J., García-Sánchez, P.:
+\newblock Dealing with noisy fitness in the design of a {RTS} game bot.
+\newblock In: Proc. Applications of Evolutionary Computing: EvoApplications
+  2012, Springer, LNCS, vol. 7248 (2012)  234--244
+
+\bibitem{Co-Genebot_EVO2014}
+Fernández-Ares, A.J., Mora, A.M., Arenas, M.G., García-Sánchez, P., Merelo,
+  J.J., Castillo, P.A.:
+\newblock Co-evolutionary optimization of autonomous agents in a real-time
+  strategy game.
+\newblock In: Proc. Applications of Evolutionary Computing: EvoApplications
+  2014, Springer (2014)  In Press
+
+\end{thebibliography}
+\end{document}

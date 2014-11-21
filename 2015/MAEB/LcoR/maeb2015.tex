@@ -1,0 +1,259 @@
+% --------------------------------------------------------------------------
+% @brief Artículo sobre L-Co-R aplicado a datos de SIPESCA
+% @author Víctor M. Rivas Santos (vrivas@ujaen.es)
+% @date 28-Oct-2014
+%
+% Atención: Utilizar codificación ISO-8859-1 para que compile correctamente
+% --------------------------------------------------------------------------
+\documentclass[twocolumn]{maeb2015}
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{caption}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+
+\newtheorem{theorem}{Teorema}
+
+\begin{document}
+
+\title{Predicción a muy corto plazo de series temporales de volumen de tráfico rodado mediante co-evolución de RBFNs } %!PN
+
+\author{
+Víctor M. Rivas$^{a}$\thanks{$^{a}$Departamento de Informática. Escuela Politécnica Superior de Jaén. Univ. de Jaén
+E-mail: vrivas@ujaen.es}, 
+Elisabet Parras-Gutiérrez$^{a}$, 
+Antonio Fernández-Ares$^{b}$\thanks{$^{b}$Departamento de Arquitectura y Tecnología de Computadores. Univ. de Granada},
+Pedro A. Castillo$^{b}$,
+Pedro García-Fernández$^{c}$\thanks{$^{c}$Departamento de Electrónica y Tecnología de Computadores. Univ. de Granada},
+Maribel G. Arenas$^{b}$
+}
+
+\maketitle
+
+\begin{abstract}
+La predicción del estado del tráfico en tiempo real y a corto plazo es una necesidad cada vez más demandada, tanto por conductores como por los centros de gestión del tráfico. Este trabajo presenta una comparativa de la predicción realizada sobre cuatro series temporales distintas por distintos algoritmos, entre los que se ha incluido un sistema de co-evolución de redes neuronales y conjuntos de retardos. Cada serie temporal recoge el número de dispositivos Bluetooth detectados en puntos de la red vial, agrupados por intervalos de 15 minutos, y la predicción se realiza a 15, 30, 45 y 60 minutos con respecto al último dato conocido. Los resultados muestran las posibilidades que ofrece cada método en función del horizonte a obtener partiendo de los datos medidos en las últimas 24 horas.
+\end{abstract}
+
+\begin{keywords}
+Algoritmos coevolutivos, Predicción de tráfico, Series temporales, Redes Neuronales de Funciones Base Radiales
+\end{keywords}
+
+\section{Introducción}
+La predicción en tiempo real del tráfico de vehículos por carretera o ciudad se ha convertido en una necesidad cada vez más demandada tanto por las administraciones como por los propios usuarios~\cite{Min2011606}. Por este motivo, cada vez existen más mecanismos que permiten medir el volumen del tráfico, generando una vasta cantidad de información pendiente de ser debidamente tratada y analizada para obtener predicciones cada vez más fiables. Actualmente, la posibilidad de obtener datos en tiempo real sobre volumen de tráfico o velocidades medias en numerosos puntos de las redes viales es ya un hecho; sin embargo, la toma de decisiones acerca de las medidas a tomar y la predicción de en qué modo aumentarán o disminuirán ambas variables sigue siendo una tarea que llevan a cabo tanto los gestores de las salas de control de tráfico como los propios conductores.
+
+Durante los tres últimos años, gracias al proyecto SIPESCA\footnote{http://sipesca.ugr.es/}~\cite{SipescaChapter2014}, se ha desarrollado y puesto en marcha una nueva técnica para estimar el número de vehículos que circulan por una vía, así como su velocidad. En concreto, se han ubicado en distintos puntos de Andalucía (tanto en vias urbanas como en autovía) unos sensores capaces de detectar, almacenar y transmitir el identificador único de los dispositivos Bluetooth de los vehículos que circulan próximos a cada sensor. La base de datos que se ha generado (y que sigue mejorándose y ampliándose) es ahora un recurso de enorme valor desde el cual estamos realizando distintos tipos de estudio, tanto por su capacidad de proporcionar información en tiempo real como por las posibilidades que ofrece para realizar predicciones.
+
+Partiendo de los datos recopilados por el proyecto SIPESCA, este trabajo presenta los resultados obtenidos al aplicar distintas métricas y métodos de predicción de series temporales, entre ellos el algoritmo co-evolutivo {L-Co-R} \cite{parras2012}) para la predicción a muy corto plazo de volumen de tráfico. Concretamente, el trabajo se centra en la predicción a 15 minutos, 30 minutos, 45 minutos y 1 hora. La motivación para usar concretamente estos tiempos coincide con la indicada por Min y Wynter en \cite{Min2011606}: por un lado, las oficinas de gestión de tráfico necesitan actualizar de forma dinámica la señalización y mensajes dirigidos a ordenar correctamente el tráfico, y para ello deben basarse en las condiciones previstas para el tráfico en un futuro cercano, no en predicciones hechas con mucha anterioridad y que pueden estar totalmente obsoletas. Por otro lado, los propios conductores solicitan cada vez más información y predicciones actualizadas en el mismo instante en que están desarrollando sus movimientos por la red de carreteras, mostrando poca confianza en las condiciones que existían cuando planificaron el trayecto.
+
+Uno de los aspectos más innovadores que introducimos en este trabajo es la selección del conjunto de valores pasados que utilizaremos para construir el modelo con el que realizar la predicción. En este sentido, hemos considerado solamente los datos recopilados en las últimas 24 horas. Los motivos son dos: en primer lugar, permite tratar el problema bajo el paradigma correcto de la predicción de series temporales, esto es, utilizar un conjunto de datos consecutivos para realizar una predicción más o menos diferida en el tiempo\footnote{Este importante aspecto fue puesto de manifiesto por los ganadores de la competición de predicción de series temporales realizada en el simposio SICO, integrado dentro del congreso CEDI 2010 realizado en Zaragoza)}. En segundo lugar, nos permite situar un punto de referencia para futuros trabajos ya planificados en los cuales la construcción del modelo predictor se realizará en dispositivos de poca capacidad de cálculo y almacenamiento,  %Maribel hay muchos los cuales en esta frase, así que quito uno de ellos
+que cooperarán en un entorno distribuido logrando mejorar las soluciones usando un enfoque colaborativo. Estos trabajos se enmarcan dentro de una línea de investigación ya iniciada en Rivas et al. \cite{EvoStar2014:jsEO}, y permitirán la descentralización del proceso de creación de los modelos predictores al mismo tiempo que la difusión de los mismos a los dispositivos interesados en explotarlos.
+
+El resto del trabajo se compone de los siguientes apartados: la sección \ref{sec:soa} describe el estado del arte del problema tratado; la sección \ref{sec:metodologia} presenta tanto los datos que se han utilizado, como los algoritmos empleados y las medidas de error que se permiten comparar la bondad de los mismos; a continuación, la sección \ref{sec:resultados} se presentan los resultados que se han obtenido, utilizando para ello un resumen del número de veces que cada algoritmo ha hallado el modelo que devolvía el menor error. Finalmente, en la sección \ref{sec:conclusiones} se destacan las principales conclusiones obtenidas.
+
+
+
+\section{Estado del arte}
+\label{sec:soa}
+Existen numerosos ejemplos en la literatura en los que el problema de predicción de tráfico a 15 minutos ha sido tratado. En la mayor parte de ellos, el método utilizado ha sido ARIMA \cite{BoxJenk}, como por ejemplo en Smith et al. \cite{Smith2002303} donde se compara la técnica del vecino más cercano con los modelos autorregresivos. Un trabajo más reciente es el correspondiente a Chandra y Al-Deek \cite{Chandra200953} que, como el anterior está centrado en los modelos ARIMA; a su vez ambos trabajos son similares al realizado por Min y Wynter \cite{Min2011606} en cuanto a la metodología utilizada, basada en modelo de autorregresión espacio-temporal multivariable (MSTAR). En este tipo de algoritmos, cada vía se modela como un grafo en el que cada una de las aristas proporciona información acerca de la cantidad de vehículos que circulan, así como la dirección de los mismos y la velocidad a la que se mueven.  Para mejorar la predicción del modelo, los autores en \cite{Min2011606} incorporan información adicional relacionada, fundamentalmente, con las condiciones meteorológicas de modo que integran un modelo autorregresivo con la medición de una o más variables exógenas. En este sentido, los anteriores trabajos describen estudios similares a los llevados a cabo por Kmarianakis y Prastacos \cite{Kamarianakis}, en el que se lleva a cabo una predcción basada en correlaciones espacio-temporales. En todo caso, los anteriores métodos suelen ser muy dependendientes de las características concretas de la vía sobre la que se aplican (como por ejemplo la pendiente de la misma), por lo que suelen necesitar de un reajuste del numeroso conjunto  de parámetros que incorporan.
+
+En lo relativo a las redes neuronales, desde hace una década, es posible encontrar trabajos en los que distintos tipos de ellas han sido empleados para predecir problemas similares, tales como los trabajos de Van Lint et al. \cite{vanLint2005347}, Vlahogianni et al. \cite{Vlahogianni2005211} y Zheng et al. \cite{Zheng2006114}. Este último, realiza un enfoque muy similar al nuestro, capturando los datos en zonas puntuales y tratando de predecir el volumen de tráfico de los 15 minutos que siguen al último dato registrado. No obstante, los autores excluyen de la captura de datos las horas correspondientes a la noche, así como los fines de semana, por lo que, de algún modo, la información analizada está sesgada.
+
+Finalmente, trabajos anteriores como el de Parras et al. \cite{elisabeth:maeb:2013}, introdujeron el modelado de series temporales mediante algoritmos co-evolutivos dentro del campo de del tráfico de vehículos. En el citado trabajo, se estudiaba la predicción del volumen diario de vehículos, utilizando para ello series temporales que agregaban datos por intervalos de 24 horas y utilizando un historial de datos recopilados durante 7 semanas. En el nuevo estudio que proponemos, se realiza una predicción más realista, con un horizonte más cercano con miras a la futura implantación de un sistema descentralizado de distribución de datos registrados y cómputo y comunicación de predicciones reaizadas por dispositivos móviles.
+
+\section{Metodología experimental}
+\label{sec:metodologia}
+Los experimentos que hemos realizado se han centrado en la predicción del número de vehículos que iban a pasar  a las 07:00, 07:15, 07:30 y 07:45 del jueves, 24 de enero de 2013, por 5 sensores o nodos distintos. Los sensores están etiquetados como "347", "721", "419", "420" y "440". El día de la semana y horas escogidas están basados en los utilizados en \cite{Min2011606}. Para realizar esta predicción, se han aportado a los distintos algoritmos empleados los datos recogidos durante las 23 horas anteriores, agrupados por intervalos de 15 minutos. De esta forma, el conjunto de entrenamiento estaba formado por 92 datos, y el de test por 4 datos (ver figs. \ref{fig:datos347} a \ref{fig:datos440}); dado que los datos han sido agregados de 15 en 15 minutos, este conjunto de test es equivalente a la predicción de un solo dato para cada uno de los horizontes 1, 2, 3 y 4, respectivamente.
+
+\begin{figure*}[hbt]
+  \centering
+  \includegraphics[width=5in]{347.png}
+  \label{fig:datos347}
+  \caption[Número de dispositivos Bluetooth detectados por el sensor "347"]
+   {Datos de entrenamiento y test consistentes en el número de dispositivos Bluetooth detectados por el nodo etiquetado como "347". Los datos están agrupados por períodos de 15 minutos.}
+\end{figure*}
+
+\begin{figure*}[hbt]
+  \centering
+  \includegraphics[width=5in]{721.png}
+  \label{fig:datos721}
+\caption[Número de dispositivos Bluetooth detectados por el sensor "721"]
+   {Datos de entrenamiento y test consistentes en el número de dispositivos Bluetooth detectados por el nodo etiquetado como "721". Los datos están agrupados por períodos de 15 minutos.}
+\end{figure*}
+
+\begin{figure*}[hbt]
+  \centering
+  \includegraphics[width=5in]{419.png}
+  \label{fig:datos419}
+\caption[Número de dispositivos Bluetooth detectados por el sensor "419"]
+   {Datos de entrenamiento y test consistentes en el número de dispositivos Bluetooth detectados por el nodo etiquetado como "419". Los datos están agrupados por períodos de 15 minutos.}
+\end{figure*}
+
+\begin{figure*}[hbt]
+  \centering
+  \includegraphics[width=5in]{420.png}
+  \label{fig:datos420}
+\caption[Número de dispositivos Bluetooth detectados por el sensor "420"]
+   {Datos de entrenamiento y test consistentes en el número de dispositivos Bluetooth detectados por el nodo etiquetado como "420". Los datos están agrupados por períodos de 15 minutos.}
+\end{figure*}
+
+\begin{figure*}[hbt]
+  \centering
+  \includegraphics[width=5in]{440.png}
+  \label{fig:datos440}
+\caption[Número de dispositivos Bluetooth detectados por el sensor "440"]
+   {Datos de entrenamiento y test consistentes en el número de dispositivos Bluetooth detectados por el nodo etiquetado como "440". Los datos están agrupados por períodos de 15 minutos.}
+\end{figure*}
+
+De los cinco algoritmos que hemos utilizado, cuatro de ellos pertenecen al paquete {\em Forecast}~\cite{hyndman2007automatic} de la aplicación R: ETS ({\em Exponential smoothing state space model}, ARIMA, Croston y Theta. Cada uno de estos algoritmos ha sido ejecutado una vez, proporcionando las estimaciones de cada uno de los 4 valores a predecir.
+
+Como quinto algoritmo, proponemos utilizar L-Co-R \cite{parras2012}. Se trata de un algoritmo co-evolutivo en el que dos poblaciones evolucionan simultáneamente de forma cooperativa. La primera de ellas es una población de redes neuronales de funciones base radiales, mientras la segunda es una población de retardos (o {\em lags}). La coevolución permite encontrar la mejor combinación entre red neuronal y conjunto de retardos a utilizar para predecir los futuros valores de una serie temporal para cualquier horizonte que se le indique como parámetro. 
+
+En la actualidad, el algoritmo no está paralelizado, por lo que ambas poblaciones evolucionan de forma secuencial: un primer bucle realiza un proceso de evolución de las redes que son evaluadas usando el mejor conjunto de retardos hallados hasta ese momento; a continuación, es el conjunto de retardos el que es evolucionado durante algunas generaciones siendo evaluado con la mejor red encontrada hasta el momento. Ambos ciclos de evolución (o bucles interiores) se encuentran a su vez dentro de un bucle más general que itera el procedimiento anterior durante un determinado número de generaciones totales (bucle exterior).
+
+Dado que es un algoritmo estocástico, cada experimento se ha ejecutado 30 veces y los valores que mostramos para cada uno de los errores corresponden a la media aritmética de los 30 errores obtenidos, uno por ejecución. Los parámetros con los que se han ejecutado son los establecidos por defecto para este algoritmo, esto es:
+
+\begin{itemize}
+\item Número de generaciones totales (bucle exterior): 20
+\item Número de generaciones por cada evolución de retardos (bucle interior): 5
+\item Número de generaciones por cada evolución de redes (bucle interior): 10
+\item Número de individuos de la población de retardos: 50
+\item Número de individuos de la población de redes: 50
+\end{itemize}
+
+Todas las ejecuciones se han realizado en un ordenador con sistema operativo Linux (kernel 3.13.0-32), un procesador Intel i7 a 2,8GHz y  6GB de memoria RAM. Todas las ejecuciones se han realizado mientras el ordenador se utilizaba como estación de trabajo al mismo tiempo que gestiona un servidor de páginas web que soporta un bajo número de accesos. Aunque no describimos los tiempos de ejecución, hemos de indicar que el algoritmo más costoso en este aspecto, L-Co-R, ha sido capaz de realizar las 30 ejecuciones en menos de 15 minutos para cada nodo. Por tanto, sería viable la explotación de un servicio que actualizase las previsiones en tiempo real a medida que nuevos datos fuesen siendo capturados por los sensores.
+
+Finalmente, en relación a la medida de error a utilizar, incluimos los resultados obtenidos por cada algoritmo para cada nodo y en relación a cada uno de los 4 horizontes de predicción. Las medidas utilizadas son propuestas por \cite{Gooijer_25years}, donde se indica claramente que toda medida de error posee ventajas e inconvenientes por lo que es necesario evaluar cada método con varias de ellas para tener una idea certera de la idoneidad del mismo. Las medidas que hemos utilizado son las 9 siguientes (ecuaciones \ref{eq:MAE} a \ref{eq:SMDAPE}: error cuadrático medio (MSE), raíz del error cuadrático medio (RMSE), error absoluto medio (MAE), error promedio porcentual (MPE),  error absoluto porcentual medio (MAPE), mediana del error absoluto (MdAE), mediana del error absoluto porcentual (MdAPE), media simétrica del error asoluto expresado como porcentaje (sMAPE (\%)), mediana simétrica del error absoluto expresado como porcentaje (sMdAPE (\%)).
+
+\begin{itemize}
+  \item \it{Error cuadrático medio} (MSE):
+        \begin{equation}\label{eq:MSE}
+            MSE = \frac{1}{n}\sum_{i=1}^n {e_t}^2
+        \end{equation}
+
+  \item \it{Raíz del error cuadrático medio} (RMSE):
+        \begin{equation}\label{eq:RMSE}
+            RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^n {e_t}^2}
+        \end{equation}
+
+  \item \it{Error absoluto medio} (MAE):
+        \begin{equation}\label{eq:MAE}
+            MAE = mean(\mid e_t\mid)
+        \end{equation}
+
+ \item \it{Error promedio porcentual} (MPE):
+        \begin{equation}\label{eq:MPE}
+            MPE = 100*\frac{e_t}{Y_t}
+        \end{equation}
+
+  \item \it{Error absoluto porcentual medio} (MAPE):
+        \begin{equation}\label{eq:MAPE}
+            MAPE = mean(\mid p_t\mid)
+        \end{equation}
+
+  \item \it{Mediana del error absoluto} (MdAE):
+        \begin{equation}\label{eq:MDAE}
+            MdAPE = median(\mid e_t\mid)
+        \end{equation}
+
+
+  \item \it{Mediana del error abosluto porcentual} (MdAPE):
+        \begin{equation}\label{eq:MDAPE}
+            MdAPE = median(\mid p_t\mid)
+        \end{equation}
+
+  \item \it{Media simétrica del error asoluto expresado como porcentaje} (sMAPE (\%)):
+        \begin{equation}\label{eq:SMAPE}
+            sMAPE = 100mean(2*\mid Y_t-F_t] )/ (Y_t+F_t)\mid)
+        \end{equation}
+
+  \item \it{Mediana simétrica del error absoluto expresado como porcentaje} (sMdAPE):
+        \begin{equation}\label{eq:SMDAPE}
+            sMdAPE = 100median(2*\mid Y_t-F_t] )/ (Y_t+F_t)\mid)
+        \end{equation}
+\end{itemize}
+
+donde  $Y_t$ es el dato observado en tiempo $t = {1,...,n}$; $F_t$ es la predicción de  $Y_t$; $e_t$
+es el error de predicción (i.e. $e_t= Y_t - F_t$); $p_t = 100e_t/Y_t$ es el porcentaje de error y 
+         $q_t = \displaystyle\frac{e_t}{\displaystyle\frac{1}{n-1} \sum_{i=2}^n \mid Y_i - Y_{i-1} \mid }$
+
+
+
+
+\section{Resultados}
+\label{sec:resultados}
+Las tablas \ref{tablas} recogen los resultados de cada algoritmo para cada nodo, horizonte de predicción y medida de error; el menor de los valores para cada uno de las medidas de error se ha destacado sobre los demás. A modo de resumen, las Tablas \ref{tabla:resumen1} y \ref{tabla:resumen2} muestran el número de medidas para las que cada algoritmo consigue el menor error. 
+La primera de ellas (Tabla \ref{tabla:resumen1}) se ha realizado teniendo en cuenta solo los algoritmos especialmente indicados para el trabajo con series temporales, esto es, todos menos el que calcula el valor promedio ({\em meanf}); mientras que la segunda (Tabla \ref{tabla:resumen2}) muestra el resumen de resultados incluyendo también dicho método.
+
+\begin{table*}[htb]
+\caption{Número de ocasiones en los que cada algoritmo de los especialmente diseñados para resolver series temporales (esto es sin incluir {\em meanf} de la biblioteca {\em Forecast} del paquete R) obtiene el menor error. Se contabiliza el total sobre 5 series temporales y 9 medidas de error para cada una de ellas.}
+\begin{center}
+{\tt
+\begin{tabular}{|l||c|c|c|c|}\hline
+Algoritmo & Horizonte 1 & Horizonte 2 & Horizonte 3 & Horizonte 4 \\\hline
+ETS     & 7 & 3 & 12 & 8 \\\hline
+ARIMA   & 9 & 11 & 3 & 9  \\\hline
+CROSTON & {\bf13} & {\bf22} & 12 & {\bf16}   \\\hline
+THETA   & 4 & 0 & 0 &  0  \\\hline
+L-Co-R  & 12 & 9 & {\bf18} & 12  \\\hline
+\end{tabular}
+}
+\end{center}
+\label{tabla:resumen1}
+\end{table*}
+
+
+\begin{table*}[htb]
+\caption{Número de ocasiones en los que cada algoritmo (incluyendo el algoritmo {\em meanf} de la biblioteca {\em Forecast}) obtiene el menor error. El datos mostrados están calculados sobre 5 series temporales y 9 medidas de error para cada una de ellas.}
+\begin{center}
+{\tt
+\begin{tabular}{|l||c|c|c|c|}\hline
+Algoritmo & Horizonte 1 & Horizonte 2 & Horizonte 3 & Horizonte 4 \\\hline
+ETS      & 7  & 0 & 7 & 7 \\\hline
+ARIMA    & 9  & 3 & 3 & 3  \\\hline
+CROSTON  & 8  & 6 & 7 & 7   \\\hline
+THETA    & 4  & 0 & 0 & 0  \\\hline
+MEANF    & {\bf14} & {\bf21} & {\bf28} & {\bf28} \\\hline
+L-Co-R   & 3  & 15 & 0 & 0  \\\hline
+\end{tabular}
+}
+\end{center}
+\label{tabla:resumen2}
+\end{table*}
+
+Comenzando por la primera tabla resumen (Tabla \ref{tabla:resumen1}) podemos observar que en general los algoritmos que en mayor número de ocasiones consiguen el menor error son L-Co-R y Croston. De hecho, salvo para el horizonte 2 en el que Croston obtiene los mejores resultados, L-Co-R resulta ser el algoritmo más adecuado, produciendo las predicciones más cercanas a los valores esperados. De los demás algoritmos, ETS y en ocasiones ARIMA obtienen también los errores más pequeños, siendo Theta el algoritmo que sale peor parado en cualquiera de los horizontes considerados.
+
+No obstante, si consideramos todos los métodos incluyendo el del valor promedio, obtenemos que este último es el que consigue los mejores resultados en todos los casos (ver Tabla \ref{tabla:resumen2}). En comparación con este algoritmo, todos los demás obtienen resultados que difícilmente son comparables si exceptuamos el horizonte 2, para el cual L-Co-R obtiene  el menor valor en 15 de las medidas que se han calculado.
+
+
+
+\section{Conclusiones}
+\label{sec:conclusiones}
+A partir de los datos recogidos por sensores de dispositivos Bluetooh, se han desarrollado un conjunto de experimentos que permiten discriminar entre distintos algoritmos de predicción de series temporales cuáles pueden ser los más adecuados para estimar los valores futuros. 
+
+Los distintos algoritmos utilizados incluyen tanto de autorregresión (ARIMA), métodos de descomposición (Theta), modelos de demanda intermitente (Croston), un algoritmo basado en el calculo de promedios ({\em MeanF}, del paquete {\em Forecast} de la aplicación R) y un algoritmo co-evolutivo basado en redes neuronales de funciones de base radial (L-Co-R). 
+
+Los resultados muestran que, para la predicción del número de vehículos que pasarán a las 07:00, 07:15, 07:30 y 07:45 de un día laborable (concretamente el jueves), partiendo de los datos agregados cada 15 minutos de las 23 horas anteriores, las mejores predicciones son las aportadas por el algoritmo {\em MeanF}, seguido de los algoritmos Croston y L-Co-R. Dado que se han utilizado 9 medidas de error distintas y 5 series temporales distintas los resultados obtenidos pueden considerarse bastante concluyentes.
+
+Las líneas de futuro que plantea este trabajo pasan, en primer lugar, por encontrar una configuración para el algoritmo co-evolutivo (L-Co-R) que le permita mejorar sus predicciones, pues para esta publicación ha sido utilizado con sus parámetros por defecto. Dado que el algoritmo es altamente configurable, a priori estimamos que es factible encontrar una combinación que mantega tiempos de ejecución por debajo del horizonte a predecir a la vez que minimiza el error cometido.
+
+En segundo lugar, este trabajo da inicio a un segundo modelo de procesamiento descentralizado en el que dispositivos móviles podrán recibir los últimos datos y predicciones conocidos, elaborar sus propias predicciones mejoradas y difundir a otros dispositivos tanto las predicciones como los modelos que las calculan.
+
+\section*{Agradecimientos}
+Este trabajo se está desarrollando gracias a la financiación de los proyectos {\em ANYSELF :: UGR: Self-* Properties in P2P and Cloud Systems} (código TIN2011-28627-C04, Ministerio de Ciencia e Innovación)), GENIL (código PYR-2014-17, Universidad de Granada) y del proyecto FEDER de la Unión Europea con título \emph{''Sistema de Información y Predicción de bajo coste y autónomo para conocer el Estado de las Carreteras en tiempo real mediante dispositivos distribuidos'' (SIPEsCa)} del Programa Operativo FEDER de Andalucía 2007-2013. Asimismo, queremos mostrar nuestro agradecimiento al personal e investigadores de la Agencia de Obra Pública de la Junta de Andalucía, Consejería de Fomento y Vivienda, por su dedicación y profesionalidad. 
+
+\begin{figure}[!h]
+\centering
+  \includegraphics[width=3in]{sipesca_2.eps}
+\end{figure}
+
+
+\bibliographystyle{maeb2015}
+\bibliography{lcor-maeb-2015,geneura}
+
+\end{document}
+
+
+
+
