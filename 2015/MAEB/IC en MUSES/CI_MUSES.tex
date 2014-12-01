@@ -13,13 +13,22 @@
 
 \title{Aplicación de Técnicas de Inteligencia Computacional a un Sistema de Seguridad Corporativa} %!PN
 
-\author{P. De las Cuevas, A.M. Mora, J.J. Merelo, P.A. Castillo \thanks{Departamento de Arquitectura y Tecnología de Computadores. CITIC, ETSIIT,Universidad de Granada
-E-mail: \{paloma,amorag,jmerelo, pedro\}@geneura.ugr.es}}
+
+% Primero: ¿Anna no participa? ¿Ni Sergio? Segundo ¿no hay nada mejor que sistemas de seguridad? ¿No sería, al menos, ciberseguridad? Sistemas de seguridad es para que no se metan los cacos - JJ
+
+\author{P. De las Cuevas, A.M. Mora, J.J. Merelo \thanks{Departamento de Arquitectura y Tecnología de Computadores. CITIC, ETSIIT,Universidad de Granada
+E-mail: \{paloma,amorag,jmerelo\}@geneura.ugr.es}}
 
 \maketitle
 
-
+% ¿Qué quieres hacer? ¿Cuál es el objetivo? ¿Con qué motivación? ¿Qué
+% resultados nuevos o enfoque nuevo presentas en este trabajo? ¿Por
+% qué tendría que interesarle al lector? - JJ
 \begin{abstract}
+% ``en development'' suena a excusa y no aporta ninguna
+% información. Igual que ha dicho Anna del capítulo de libro, lo que
+% hay que presentar es el problema y la solución, no el proyecto. El
+% proyecto lo mencionas al final o en el estado del arte. - JJ
 Este artículo presenta una aplicación, basada en un proyecto europeo en desarrollo, que combina métodos de \textit{Data Mining}, \textit{Machine Learning} e Inteligencia Computacional para crear un sistema de seguridad corporativa centrado en el usuario y auto-adaptativo.
 De forma que este sistema, llamado MUSES, será capaz de analizar el comportamiento de los usuarios del mismo (modelado como un conjunto de eventos) al interactuar con el servidor de la empresa para acceder a recursos distribuidos (y protegidos), por ejemplo. Como resultado de dicho análisis y tras la aplicación de las técnicas mencionadas, las \textit{Políticas de Seguridad} de la empresa, o más específicamente las \textit{Reglas de Seguridad} derivadas de las mismas, serán adaptadas para manejar nuevas situaciones anómalas o peligrosas (para la seguridad empresarial), así como para gestionar mejor las acciones de los usuarios.
 El trabajo revisa, inicialmente, el estado del arte en esta línea, es decir, la aplicación de este tipo de técnicas a cuestiones de seguridad en la empresa.
@@ -68,7 +77,7 @@ Normalmente la arquitectura de la red de seguridad de la empresa se adapta para 
 Además, estos dispositivos, como los extendidos \textit{smartphones} suelen combinar información personal y profesional, así como aplicaciones de ambos tipos, lo que añade un factor de riesgo al estar dichas aplicaciones no corporativas poco controladas.
 
 Por tanto, a la hora de diseñar la arquitectura de la red de una compañía, hay que tener en cuenta todos estos factores.
-La Figura \ref{fig:proposed_diagram_esp} muestra una propuesta que puede emplearse como punto de partida para el diseño de soluciones que hagan seguro este entorno dinámico. Ésta incluye el caso de tener dispositivos móviles (\textit{smartphones y tablets}) u ordenadores portátiles propios de algunos empleados, además muestra la oportunidad de que dichos dispositivos se conecten desde dentro o desde fuera de la compañía.
+La Figura \ref{fig:proposed_diagram} muestra una propuesta que puede emplearse como punto de partida para el diseño de soluciones que hagan seguro este entorno dinámico. Ésta incluye el caso de tener dispositivos móviles (\textit{smartphones y tablets}) u ordenadores portátiles propios de algunos empleados, además muestra la oportunidad de que dichos dispositivos se conecten desde dentro o desde fuera de la compañía.
 Los recursos de información son accedidos continuamente en estas condiciones, considerando como recurso cualquier trozo de información que tenga un valor asociado (coste, dependiendo del riesgo, de que esa información se pierda o se filtre).
 Ejemplos de este tipo de recursos podrían ser documentos con información restringida, determinados e-mails críticos, e incluso aplicaciones internas de la compañía.
 
@@ -207,46 +216,45 @@ Se trata de proveer al CSO de herramientas o mecanismos para identificar o visua
 %- Inferencia de nuevas reglas con GP
 %+ Ajuste de valores de recursos con AGs???
 
-MUSES usará la computación evolutica a través de diferentes aproximaciones, a saber inicialmente, de una manera en la parte de minería de datos (DM) y ML, y mediante otras tres técnicas en la fase de adaptación o refinamiento de reglas. Todas ellas se basan en Programación Genética (PG) \cite{GP_Koza92} y Algoritmos Genéticos (AGs) \cite{GAs_Goldberg89}.
+MUSES usará métodos de computación evolutiva mediante diversas implementaciones, inicialmente, una en el proceso de DM y ML, y otras tres técnicas en la fase de adaptación o refinado de reglas. Todas ellas se basarán en la Programación Genética (PG) \cite{GP_Koza92} y los Algoritmos Genéticos (AGs) \cite{GAs_Goldberg89}.
 
-El primer método basado en técnicas evolutivas será la \textit{clasificación por PG}. Esto resulta de gran utilidad por dos razones: primero, para obtener balanceo sobre los datos \cite{imbalance_techniques_02}, ya que el tener un conjunto de datos no balanceado es bastante común en este tipo de aplicaciones con datos reales: y después, para un mejor manejo de datos categóricos (no numéricos), ya que la mayoría de variables o características extraídas de la información que ofrece el sistema son de este tipo.
+El primer método basado en técnicas evolutivas será la \textit{Clasificación mediante PG}. Ésta resulta de gran utilidad por dos razones principales: primero, para aplicar un método de balanceo de datos adecuado \cite{imbalance_techniques_02}, dado que en sistemas reales los datos suelen estar desbalanceados; en segundo lugar, para hacer una gestión efectiva de los datos categóricos (no numéricos), ya que la mayoría de variables o características extraídas de la información que ofrece el sistema serán de este tipo.
 
-Por tanto, este método sería capaz de trabajar con conjuntos de datos no balanceados, considerando una función fitness en la cual el coste va asociado al porcentaje de aciertos del clasificador, y aplicando una penalización por cada falso negativo obtenido (puesto que, esto significaría que se ha permitido un evento que es potencialmente peligroso) \cite{cost_adjustment_07}.
-En cuanto al tipo de datos, debido a que los algoritmos de PG suelen aplicar modelos basados en reglas o en árboles de decisión, estos se pueden aplicar a variables categóricas, obteniendo un buen clasificador como se obtiene en trabajos como \cite{cost_adjustment_07}.
+Por tanto, este método sería capaz de trabajar con conjuntos de datos no balanceados, considerando una función de fitness en la cual se pueda asociar un coste al porcentaje de aciertos del clasificador en cada generación, aplicando una penalización por cada falso negativo obtenido (un elemento de la clase minoritaria clasificado como miembro de la clase mayoritaria)  \cite{cost_adjustment_07}.
+En cuanto al tipo de datos, dado que los algoritmos de PG suelen aplicar modelos basados en reglas o en árboles de decisión, estos se pueden aplicar a variables categóricas, obteniendo un buen clasificador como se muestra en el trabajo \cite{cost_adjustment_07}.
 
-Centrándonos en el proceso de adaptación o refinamiento de reglas, las técnicas empleadas se aplicarían para inferencia u optimización de un conjunto inicial de reglas, y usarían los siguientes datos:
+Centrándonos en el proceso de adaptación/refinado de reglas, las técnicas empleadas se aplicarán para inferencia y optimización, considerando los siguientes datos:
 
 \begin{itemize}
 
-\item La información extraída por el subcomponente que realiza la minería de datos, en concreto los eventos que resulten anómalos, ya sean patrones no clasificados o mal clasificados. Estos son, aquellos patrones que no se incluyen en ninguna de las clases ya existentes, ya que difieren en gran medida de los patrones que sí se encuentran en ellas, y deberían tenerse en cuenta para ser cubiertos por las reglas de seguridad una vez mejoradas.
+\item La información extraída por el \textit{Data Miner}, en concreto los patrones anómalos, no clasificados o mal clasificados. Estos patrones serán aquellos que no se incluyen en ninguna de las clases ya existentes, ya que difieren en gran medida de los patrones de dichas clases. De modo que deberían tenerse en cuenta con el objetivo de mejorar el sistema de reglas de seguridad  para que sean `cubiertos' por ellas.
 
-\item Información relativa al usuario, correspondiente a esos patrones, o eventos, que son anómalos o que no han podido ser clasificados. Así, su número de identificación, localización (fuera o dentro de las instalaciones de la empresa), o puesto en la empresa, serían ejemplos de lo que el sistema consideraría a la hora de seleccionar un conjunto de reglas a aplicar en esa situación.
+\item Información relativa al usuario, correspondiente a esos patrones o eventos, que son anómalos o que no han podido ser clasificados. Así, su número de identificación, localización (fuera o dentro de las instalaciones de la empresa), o puesto en la empresa, serían ejemplos de lo que el sistema consideraría a la hora de seleccionar un conjunto de reglas a aplicar en esa situación.
 
-\item Información de contexto para patrones que sean parecidos, para restringir, de la misma manera que en el punto anterior, el conjunto de reglas a aplicar.
+\item Información de contexto de dichos patrones, para restringir, de la misma forma que en el punto anterior, el conjunto de reglas a aplicar.
 
 \end{itemize}
 
-Otros tipos de información que podrían ser útiles durante el proceso de refinamiento o adaptación son los siguientes:
+Otros tipos de información que podrían ser útiles durante el proceso de refinado o adaptación son los siguientes:
 
 \begin{itemize}
 
-\item Información del riesgo que supone un determinado usuario (en términos de su reputación), como por ejemplo. ``¿Ha recibido el usuario con anterioridad muchas notificaciones de `permiso'/`denegación'?''. Si el usuario tiende a recibir denegaciones a las acciones que suele realizar, se le aplicarán reglas más restrictivas que para un usuario que realice más acciones permitidas.
+\item Información del riesgo asociado a un determinado usuario (en términos de su reputación), como por ejemplo ``¿Ha recibido el usuario con anterioridad muchas notificaciones de `permitido'/`denegado'?''. Si el usuario tiende a recibir denegaciones a las acciones que suele realizar, se le aplicarán reglas más restrictivas que para un usuario que realice más acciones permitidas.
 
-\item Información que ha sido almacenada en registros del sistema. A partir de ellos se puede saber, por ejemplo, cómo actúa el usuario frente a mensajes del sistema (realizando la acción finalmente o no, o si realiza una crítica positiva o negativa cuando se le pregunta), y podría servir para adaptar las reglas existentes si, en otro ejemplo, hay usuarios que ignoran constantemente mensajes que le indican que no debería realizar una acción peligrosa. Además, podría usarse la información interna del funcionamiento del sistema a lo largo del tiempo para la realización de tests para comprobar si las reglas creadas en el proceso son, o no, útiles.
+\item Información almacenada en \textit{ficheros de log} del sistema, que puede indicar, por ejemplo, cómo actúa un usuario frente a mensajes de advertencia del sistema (realizando la acción finalmente o no, o respondiendo de cierta manera a las preguntas que se le hagan o requisitos que se le exijan para continuar). Esto podría desembocar en la inferencia de nuevas reglas o en su adaptación para, por ejemplo, tratar con usuarios que repetidamente ignoran mensajes de advertencia.
+Además, podría usarse la información interna del funcionamiento del sistema (parámetros y valores utilizados por los módulos para calcular riesgos, confianza y para tomar decisiones, por ejemplo) para aplicar tests sobre las nuevas reglas inferidas, como se explica debajo.
 
 \end{itemize}
 
-De esta manera, los métodos que se implementarían serían los siguientes:
+De esta manera, los métodos que se implementarán serán los siguientes:
 
 \begin{itemize}
 
-\item Método de \textit{inferencia de reglas por PG}, por el cual se generarán o crearán nuevas reglas para `cubrir' aquellas situaciones que no están contempladas en el conjunto de reglas inicial. Así, se crearían reglas para poder clasificar aquellos eventos que no pudieron ser clasificados inicialmente. Esta generación de reglas se haría teniendo en cuenta un \textit{diccionario}, es decir, un conjunto de términos correspondiente a todas las posibles entradas y acciones del sistema, las cuales serían respectivamente los antecedentes (condiciones), y las consecuencias a esos antecedentes según las reglas de seguridad. La evaluación de las reglas creadas se realizaría en base a la información registrada en el sistema, de manera que se podría `simular' el comportamiento del sistema incluyendo las nuevas reglas, y se obtendría una medida de si las reglas creadas mejoran o no el rendimiento del sistema.
+\item \textit{Inferencia de reglas mediante PG}, con el que se generarán o crearán nuevas reglas de seguridad para `cubrir' aquellas situaciones que no están contempladas en el conjunto inicial. Así, por ejemplo, se crearían reglas para poder clasificar aquellos eventos que no pudieron ser clasificados inicialmente. Esta generación de reglas se haría teniendo en cuenta un \textit{diccionario}, es decir, un conjunto de términos correspondiente a todas las posibles entradas y acciones del sistema, las cuales serían respectivamente los antecedentes (condiciones), y los respectivos consecuentes en las reglas a inferir. La evaluación de las reglas creadas se realizaría en base a la información de log almacenada, de manera que se podría `simular' el comportamiento del sistema al incluir las nuevas reglas, y se obtendría una medida de si las reglas creadas mejoran o no su rendimiento.
 
-\item \textit{Refinamiento de reglas por PG}, por el cual se optimizará el conjunto de reglas actual, ajustando los valores de las condiciones (antecedentes). Así, se podría saber qué partes de las reglas serían superfluas o si hay reglas redundantes o que se contradigan entre sí. Se podrían por tanto obtener especializaciones o generalizaciones de las reglas para mejorar el rendimiento del sistema. La evaluación del conjunto total de reglas se haría considerando el número de comportamientos o patrones que se `cubrirían' una vez realizados los ajustes.
+\item \textit{Refinado de reglas mediante PG}, por el cual se optimizará el conjunto de reglas actual, ajustando los valores de las condiciones (antecedentes). Así, se podrían eliminar partes superfluas de las reglas o incluso reglas completas, obteniendo de esta forma especializaciones o generalizaciones de reglas existentes que mejoren el rendimiento del sistema. La evaluación del conjunto total de reglas se haría considerando el número de patrones no clasificados que se `cubrirían' una vez realizados los ajustes.
 
-\item \textit{GA optimisation} algorithm for setting up and adapting the assets' values. These are numerical representations of the importance of the corporate assets, and are considered in the Real-Time Risk and Trust Analysis process, in order to assign a risk value to every potential decision that can be made by the system.
-If it is possible to evaluate the partial solutions proposed by the GA, this approach could be very useful for the CSO (who is in charge of assigning and adjusting these values over time).
-The adaptation or adjustment concerns the change in value that an asset could have due to a loss of importance, once an event has passed (a project presentation, for instance).
+\item \textit{Optimización basada en Algoritmos Genéticos} que adapten o ajusten los valores asociados a los recursos de información. Dichos valores son ponderaciones numéricas de la importancia que tiene ese recurso para la empresa. Se consideran en el proceso de análisis de riesgo y confianza/fiabilidad (\textit{Risk and Trust Analysis}), para calcular un valor de riesgo a cada decisión potencial que pudiese tomar el sistema (de forma autónoma en base a las reglas de seguridad). Si es posible evaluar las soluciones parciales propuestas por el AG, esta implementación podría ser muy útil para el CSO (persona a cargo de asignar y ajustar estos valores para cada recurso). Este ajuste se refiere a la pérdida de importancia que tendrá el recurso una vez que un evento en el que se usó ha pasado (o al contrario, el incremento de relevancia que adquiere si el evento se acerca).
 
 \end{itemize}
 

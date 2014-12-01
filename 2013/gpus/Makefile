@@ -13,7 +13,7 @@ PDF = $(TEX:.tex=.pdf)
 all: $(EPS) $(PDF)
 
 auto: $(EPS)
-	latexmk -pvc
+	latexmk -pdf -pvc
 
 clean:
 	latexmk -C
