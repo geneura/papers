@@ -34,8 +34,8 @@
 
 \author{Federico Liberatore*, Antonio M. Mora, Pedro A. Castillo, Juan J. Merelo
 \thanks{Manuscript submitted for review on \today.}%
-\thanks{This work has been supported in part by CANUBE (CEI2013-P-14) and ANYSELF (TIN2011-28627-C04-02), awarded by the Spanish Ministry of Science and Innovation. Liberatore's research was financed by the Government of Spain (TIN2012-32482). All the supports are gratefully acknowledged.}%
-\thanks{Departamento de Arquitectura y Tecnología de Computadores,
+\thanks{This work has been supported in part by CANUBE (CEI2013-P-14) and ANYSELF (TIN2011-28627-C04-02), awarded by the Spanish Ministry of Science and Innovation, and PYR-2014-17 included in GENIL - CEI BIOTIC (Granada). Liberatore's research was financed by the Government of Spain (TIN2012-32482). All the supports are gratefully acknowledged.}%
+\thanks{Departamento de Arquitectura y Tecnolog\'ia de Computadores,
 CITIC-UGR, ETSIIT,
 University of Granada, Spain.}%
 \thanks{E-mail addresses: \mailsa, \mailsb}%
@@ -71,7 +71,7 @@ Flocking Strategies, Genetic Algorithms, Multi-criteria Decision Making, Team Le
 
 \IEEEPARstart{I}{n} the last decade the game of Ms.\  Pac-Man has been recognized by the scientific community as an ideal testbed for computational intelligence methods, receiving an increasing interest from academics. This success is largely due to the Ms.\  Pac-Man vs Ghosts competition \cite{Lucas2009,MsPacManVSGhost2011}, running since 2009, where participants can submit controllers for either Ms.\  Pac-Man or the Ghost Team. A good number of the controllers proposed made use of Computational Intelligence techniques, such as Neural Networks (NNs) \cite{Rojas1996}, Genetic Algorithms (GAs) \cite{Goldberg1988}, \textbf{Monte Carlo} Tree Search (MCTS) \cite{Browne2012}, and Minimax algorithms \cite{Osborne1994}.
 
-Recently, a GA for the design of controllers for the Ghost Team based on Flocking Strategies (FSs)\footnote{\textbf{FS should not be confused with Evolutionary Strategies.}} has been proposed \cite{Liberatore2014}. FSs are sets of behavior rules that determine the next move of an agent as a force resulting from the interaction of the agents in the game. Controllers based on FSs have very little computational and memory requirements and, therefore, are extremely suited for commercial applications and mobile devices, differently from MCTS, Minimax, and other search-based algorithms that rely on high computing power. The fitness function of the GA proposed by \cite{Liberatore2014} tested the candidate solutions against two basic Ms.\  Pac-Man controllers. The authors showed that the methodology was capable of modeling complex behaviors and generating effective and challenging agents. Nevertheless, considering only two basic Ms.\  Pac-Man controllers results in Ghosts controllers capable of reacting only to simple strategies. For this reason, in this work we increase the number of Ms.\  Pac-Man controllers included in the fitness function and we now evaluate the candidate solutions in the GA against eight Ms.\  Pac-Man controllers with different levels of complexity. This requires a complete redesign of the fitness function, to equate between global optimization and performance balance. To do so, we draw from Multi-Criteria Decision Making (MCDM) theory, that includes techniques to explicitly consider multiple criteria in decision-making environments. In this context, the criteria correspond to the performance of several Ms.\  Pac-Man controllers.  Also, in this work we explore the paradigms of homogeneous and heterogeneous team learning. The performances of the controllers resulting from these two approaches are compared and empirical conclusions are drawn based on extensive experiments. 
+Recently, a GA for the design of controllers for the Ghost Team based on Flocking Strategies (FSs) has been proposed \cite{Liberatore2014}. FSs are sets of behavior rules (not related with Evolutionary Strategies) that determine the next move of an agent as a force resulting from the interaction of the agents in the game. Controllers based on FSs have very little computational and memory requirements and, therefore, are extremely suited for commercial applications and mobile devices, differently from MCTS, Minimax, and other search-based algorithms that rely on high computing power. The fitness function of the GA proposed by \cite{Liberatore2014} tested the candidate solutions against two basic Ms.\  Pac-Man controllers. The authors showed that the methodology was capable of modeling complex behaviors and generating effective and challenging agents. Nevertheless, considering only two basic Ms.\  Pac-Man controllers results in Ghosts controllers capable of reacting only to simple strategies. For this reason, in this work we increase the number of Ms.\  Pac-Man controllers included in the fitness function and we now evaluate the candidate solutions in the GA against eight Ms.\  Pac-Man controllers with different levels of complexity. This requires a complete redesign of the fitness function, to equate between global optimization and performance balance. To do so, we draw from Multi-Criteria Decision Making (MCDM) theory, that includes techniques to explicitly consider multiple criteria in decision-making environments. In this context, the criteria correspond to the performance of several Ms.\  Pac-Man controllers.  Also, in this work we explore the paradigms of homogeneous and heterogeneous team learning. The performances of the controllers resulting from these two approaches are compared and empirical conclusions are drawn based on extensive experiments. 
 
 The rest of the paper is organized as follows. In the next section we describe the game of Ms.\  Pac-Man and present the most relevant contributions in the literature. Next, we illustrate the structure of the FSs applied to the game of Ms.\  Pac-Man and how to optimize their definition using a GA. The results of the computational experiments are reported and commented in Section \ref{sec:Experiments}. Finally, in Section \ref{sec:Conclusions} \textbf{we draw} some conclusions and highlight future opportunities to be pursuit in this line of research.
 
@@ -87,7 +87,7 @@ the original with several features, the most interesting being
 different ghosts' behavioral patterns and the inclusion of a random
 movement to prevent the use of patterns to clear each round.
 
-The game has been chosen for the Ms.\  Pac-Man vs Ghosts competition, an AI competition where participants can submit controllers for both Ms.\  Pac-Man and the Ghost Team. The controllers have directly opposing objectives.\textbf{In fact, the objective of Ms.\  Pac-Man is to maximize the final score, while the objective of the Ghost Team is to minimize it.} The version of the game implemented for the competitions differs slightly from the original one. A thorough description of the game rules can be found in \cite{MsPacManVSGhost2011}. For the purposes of this work, the restrictions for the Ghost Team relevant to this work are briefly \textbf{listed} in the following:
+The game has been chosen for the Ms.\  Pac-Man vs Ghosts competition, an AI competition where participants can submit controllers for both Ms.\  Pac-Man and the Ghost Team. The controllers have directly opposing objectives. \textbf{In fact, the objective of Ms.\  Pac-Man is to maximize the final score, while the objective of the Ghost Team is to minimize it.} The version of the game implemented for the competitions differs slightly from the original one. A thorough description of the game rules can be found in \cite{MsPacManVSGhost2011}. \textbf{For the purposes of this work, relevant restrictions for the Ghost Team are briefly listed in the following:}
 \begin{itemize}
   \item A ghost can never stop and, when it is in a corridor, it can only move forward.
   \item A ghost can choose its direction only at a junction. Specifically, a ghost can only move into a corridor different from the one it is coming from. As a result, a ghost cannot turn back on itself.
@@ -97,7 +97,7 @@ The game has been chosen for the Ms.\  Pac-Man vs Ghosts competition, an AI comp
 \end{itemize}
 
 \subsection{State of the Art}
-Most of the contributions in the literature focused on implementing and analyzing controllers for Ms.\  Pac-Man. In the last decade a number of Evolutionary Algorithms (EAs) have been proposed to address different aspects of the game of Ms.\  Pac-Man. One of the first works in the subject is the paper by Gallagher \cite{Gallagher03} that optimized rule-based fine state machines through population-based incremental learning to devise an adaptive Pac-Man agent. More recently, Galvan-Lopez \cite{Galvan-Lopez10} explored and compared the performance of two types of Grammatical Evolution (GE) mappings to generate controllers for Ms.\  Pac-Man. Alhejali and Lucas \cite{Alhejali10} applied Genetic Programming (GP) to evolve a diverse set of behaviors using different versions of the game. The resulting controller proved to be competitive with the best reactive controllers reported at the time. In a subsequent article \cite{AlhejaliLucas11}, the same authors extended their work by applying a ``training camp framework'' to the GP, where a set of specialized behaviors is evolved according to specific training scenarios. A different approach is presented by Brandstetter and Ahmadi \cite{Brandstetter12} \textbf{who proposed a GP-based controllers that rely exclusively on information retrieval terminals rather than action-issuing terminals. Also, their methodology evaluates each direction individually rather than simply taking a single collection of state features as input for each time step.} Thawonmas \cite{Thawonmas10} applied a GA to optimize the parameters of the Ms.\  Pac-Man controller ICE Pambush 3, winner of the IEEE CEC 2009 Ms.\  Pac-Man competition. A number of authors made use of EAs to design NN-based controllers \cite{Lucas05,Burrow09,Keunhyun10}. Beside EA and GA, a wide range of other techniques have been applied, such as  Ant Colonies \cite{Emilio2010}, Monte Carlo methodologies \cite{Tong2010,Tong2011}, Monte Carlo Tree Search (MCTS) \cite{Samothrakis2011, Ikehata2011}, and Reinforcement Learning \cite{Bom2013}. Alhejali and Lucas \cite{Alhejali2013} applied genetic algorithm to enhance the performances of a Ms.\  Pac-Man agent created using MCTS, showing an impressive 18\% increase on the average score. \textbf{Another hybrid approach is proposed by Schrum and Miikkulainen \cite{Schrum2014} that combines modular NNs with GAs. Each module of the NN specializes in a particular policy and the GA discovers these policies and defines when to use them. According to the authors, this methodology outperforms traditional NNs.}
+Most of the contributions in the literature focused on implementing and analyzing controllers for Ms.\  Pac-Man. In the last decade a number of Evolutionary Algorithms (EAs) have been proposed to address different aspects of the game of Ms.\  Pac-Man. One of the first works in the subject is the paper by Gallagher \cite{Gallagher03} that optimized rule-based fine state machines through population-based incremental learning to devise an adaptive Pac-Man agent. More recently, Galvan-Lopez \cite{Galvan-Lopez10} explored and compared the performance of two types of Grammatical Evolution (GE) mappings to generate controllers for Ms.\  Pac-Man. Alhejali and Lucas \cite{Alhejali10} applied Genetic Programming (GP) to evolve a diverse set of behaviors using different versions of the game. The resulting controller proved to be competitive with the best reactive controllers reported at the time. In a subsequent article \cite{AlhejaliLucas11}, the same authors extended their work by applying a ``training camp framework'' to the GP, where a set of specialized behaviors is evolved according to specific training scenarios. A different approach is presented by Brandstetter and Ahmadi \cite{Brandstetter12} \textbf{who proposed a set of GP-based controllers that rely exclusively on information retrieval terminals rather than action-issuing terminals. Also, their methodology evaluates each direction individually rather than simply taking a single collection of state features as input for each time step.} Thawonmas \cite{Thawonmas10} applied a GA to optimize the parameters of the Ms.\  Pac-Man controller ICE Pambush 3, winner of the IEEE CEC 2009 Ms.\  Pac-Man competition. A number of authors made use of EAs to design NN-based controllers \cite{Lucas05,Burrow09,Keunhyun10}. Beside EA and GA, a wide range of other techniques have been applied, such as  Ant Colonies \cite{Emilio2010}, Monte Carlo methodologies \cite{Tong2010,Tong2011}, Monte Carlo Tree Search (MCTS) \cite{Samothrakis2011, Ikehata2011}, and Reinforcement Learning \cite{Bom2013}. Alhejali and Lucas \cite{Alhejali2013} applied genetic algorithm to enhance the performances of a Ms.\  Pac-Man agent created using MCTS, showing an impressive 18\% increase on the average score. \textbf{Another hybrid approach is proposed by Schrum and Miikkulainen \cite{Schrum2014} that combines modular NNs with GAs. Each module of the NN specializes in a particular policy and the GA discovers these policies and defines when to use them. According to the authors, this methodology outperforms traditional NNs.}
 
 In the last years, a number of works specializing on the Ghost Team have been proposed. Nguyen and Thawonmas \cite{Nguyen2011,Nguyen2013} presented a controller based on MCTS where the behavior of Ms.\  Pac-Man is simulated. Their controller won the Ms.\  Pac-Man Versus Ghost Team Competition held in 2011. Svensson and Johansson \cite{Svensson2012} exploited the behavior emerging capabilities of Influence Maps. A significant number of works made use of EAs methodologies. Jia-Yue \emph{et al.} \cite{Jia-Yue11} applied NN-based controllers evolved through GAs. Gagné and Congdon \cite{Gagne2012} evolved rule-based intelligent agent for the ghost team. Tamura and Torii \cite{Tamura2013} designed artificial ghost agents using GE. Cardona \textit{et al.} \cite{Cardona13} explored competitive co-evolution techniques to generate at the same time optimal Ms.\  Pac-Man and Ghost Team controllers. A different line of research is pursued by Sombat \textit{et al.} \cite{Sombat2012} that analyzed Ms.\  Pac-Man matches to classify Ghost Team controllers according to their enjoyability and, therefore, understand the attribute that a NPC should posses for players to be engaged. Similarly, Hasan and Khondker \cite{Hasan2013} explored the user friendliness of ghost controllers. In their research, they implemented a NN controller to assess the level of challenge that better suits the player.
 
@@ -133,7 +133,7 @@ the easiness of implementation, and the reduced computational cost,
   \includegraphics[scale=0.5]{"neigh_inter"}
 \end{figure}
 
-\textbf{Figure \ref{fig:Neigh_interaction} illustrates a simplified representation of the functioning of the FSs for the Ghost Team presented in the following. Each ghost is surrounded by concentric areas called neighborhoods. The neighborhoods are associated to a certain magnitude. If an actor (i.e., element of the game such as Ms.\ Pac-Man or other ghosts) is located inside a neighborhood, a certain force is applied to the ghost. The magnitude of the force depends on the neighborhood the actor falls in. The final behavior of the ghost results from the sum of all the forces it is subjected to. In the following, the elements comprising a FS for the Ghost Team are formally illustrated.}
+\textbf{Figure \ref{fig:Neigh_interaction} illustrates a simplified representation of the functioning of the FSs for the Ghost Team presented in the following. Each ghost is surrounded by concentric areas called neighborhoods. The neighborhoods are associated to a certain magnitude. If an actor (i.e., element of the game such as Ms.\ Pac-Man or other ghosts) is located inside a neighborhood, a certain force is applied to the ghost. The magnitude of the force depends on the neighborhood the actor falls in. The final behavior of the ghost results from the sum of all the forces it is subjected to. Its important to notice that the reaction of a ghost depends on its distance to the actors, and not on the actors movement. For example, if Ms.\ Pac-Man stays still, the ghosts will react according to the rules specified in the FS. A logical response would be moving toward her, unless a powepill is nearby. In the following, the elements comprising a FS for the Ghost Team are formally illustrated.}
 
 \subsubsection{Sets and Attributes}
 \begin{itemize}
@@ -192,7 +192,7 @@ is characterized by a larger state space that can complicate the learning \textb
 In this work, we explore the capabilities of homogeneous and heterogeneous FS for the Ghost Team. Specifically, we optimize the design of the FSs by means of a simple Multi-Criteria Genetic Algorithm (MCGA). In the following section, the algorithm is presented.
 
 \subsection{A Multi-Criteria Genetic Algorithm for Flocking Strategies}
-Following the work by Liberatore \emph{et al.} \cite{Liberatore2014} we apply a basic MCGA for the design of effective and resilient ghost controllers based on FSs. The main characteristics of the optimization algorithm are illustrated in the following.
+Following out previous work \cite{Liberatore2014} we apply a basic MCGA for the design of effective and resilient ghost controllers based on FSs. The main characteristics of the optimization algorithm are illustrated in the following.
 
 \subsubsection{Individuals' Representation}
 In this algorithm, an individual in the population (or a candidate solution) is represented by the FSs that compose it. In the case of homogeneous team learning, only one FS, $(\boldsymbol\delta, \boldsymbol\alpha)$, is necessary as all the ghosts will follow the same behavior. On the other hand, in heterogeneous team learning each ghost $g$ has an associated FS, $(\boldsymbol\delta^g,  \boldsymbol\alpha^g)$. \textbf{Overall, in the heterogeneous team learning case, an individual is represented by four different FSs.} Although the data structures for the heterogeneous case are four times bigger than the homogeneous ones, their total memory occupation is still very limited. In summary, an individual in the GA is represented as follows:
@@ -218,7 +218,7 @@ The initial population is generated randomly as in Liberatore \emph{et al.} \cit
 \end{equation}
 \end{small}
 
-The parameters of the normal distribution have been set so as to generate most of the magnitudes close to zero and assign similar probabilities to the appearance of cohesion, separation, and no interaction behaviors.
+The parameters of the normal distribution have been set so as to generate most of the magnitudes close to zero and assign similar probabilities to the appearance of cohesion, separation, and no interaction behaviors. This has been done so as to have an initial population as heterogeneous as possible. \textbf{For this reason, the normal distribution chosen has mean equal to zero (i.e., it is centered on the “no interaction” behavior) and standard deviation equal to 1/3, so as to assign approximately 1/3 of the probability to the occurrence of each behavior.}
 
 \subsubsection{Fitness Function}
 To generate agents that perform well against a wide range of Ms.\  Pac-Man strategies, we calculate the fitness value of each individual by testing it against eight Ms.\  Pac-Man agents. Let $P=\{$NearestPillPM, StarterPM, InfluenceMapPM, MCTSPM, MixMaxPM, StarterExPM, ICEPFeatSpooks, ICEP-IDDFS$\}$, indexed by $p$, be the set of Ms.\  Pac-Man agents:
@@ -248,7 +248,7 @@ where $\text{score}_p$ represents the final score of the Ms.\  Pac-Man controlle
 	\min \: F_1 \: where \: F_1 = \max_{p \in P} \text{score}_p
 \end{equation}
 
-Equation \eqref{eq:minMaxScore} is concerned with finding a balance between the final scores of all the Ms.\  Pac-Man \textbf{controllers}. Another benefit of this formulation is that it minimizes the effect of noise present in this problem (and in videogames in general) \cite{Mora12}. In fact, due to the stochastic elements of the game, the same FS could perform very well sometimes and quite bad some others. By choosing the worst (highest) score we reduce the effect of the noise introduced by \textbf{these} stochastic effects.
+\textbf{$F_1$ represents the highest score obtained by one of the Ms. Pac-Man controllers. Therefore, this value measures the worst performance of the Ghost Team controller.} Equation \eqref{eq:minMaxScore} is concerned with finding a balance between the final scores of all the Ms.\  Pac-Man \textbf{controllers}. \textbf{By minimizing the worst performance we can ensure both good performance and balance across all the Ms. Pac-Man controllers.} Another benefit of this formulation is that it minimizes the effect of noise present in this problem (and in videogames in general) \cite{Mora12}. In fact, due to the stochastic elements of the game, the same FS could perform very well sometimes and quite bad some others. By choosing the worst (highest) score we reduce the effect of the noise introduced by \textbf{these} stochastic effects.
 
 Although implementable, objective functions in the $\min \max$ form usually present a wide number of multiple optima\footnote{Multiple optima are different solutions having the same objective function value.} and produce solutions that are not efficient\footnote{A solution is efficient, or non-dominated, if none of the objective functions can be improved in value without degrading some of the other objective values.}. Therefore, to get an efficient one we consider a secondary objective function that optimizes for global performance.
 
@@ -257,14 +257,14 @@ Although implementable, objective functions in the $\min \max$ form usually pres
 	\min \: F_2 \: where \: F_2 = \sum_{p \in P} \text{score}_p^2
 \end{equation}
 
-The squared term has been introduced to penalize high scores. Given the characteristics of the problem we propose a lexicographic objective function:
+\textbf{$F_2$ is the sum of the squared scores obtained by the Ms. Pac-Man controllers.} The squared term has been introduced to penalize high scores. Given the characteristics of the problem we propose a lexicographic objective function:
 
 \begin{equation}
 \label{eq:lexicographic}
 	\text{Lex} \: \min [F_1,F_2]
 \end{equation}
 
-In Lexicographic Optimization \cite{Dylan2010} the objectives can be ranked in the order of importance and they are not comparable directly, as in this case. In fact we can assume, without loss of generality, that $F_1$ is more important than $F_2$, i.e., we favor balance over global optimality. As a result, each individual in the population has an associated fitness vector, $\mathbf{F}=(F_1,F_2)$, which allows for a total order relation:
+\textbf{The lexicographic objective function proposed ensures that the performance of the Ghost controller is as optimized as possible, while keeping the worst performance to a minimum.} In Lexicographic Optimization \cite{Dylan2010} the objectives can be ranked in the order of importance and they are not comparable directly, as in this case. In fact we can assume, without loss of generality, that $F_1$ is more important than $F_2$, i.e., we favor balance over global optimality. As a result, each individual in the population has an associated fitness vector, $\mathbf{F}=(F_1,F_2)$, which allows for a total order relation:
 
 \begin{equation}
 \label{eq:ordering}
@@ -310,7 +310,7 @@ The algorithms presented in this paper have been implemented in Java within the 
   \item Crossover mixing probability = 0.6.
 \end{itemize}
 
-\textbf{The GA is stopped when there the best solution is not updated for 10 consecutive generations, to ensure that a certain degree of convergence has been reached \cite{Karma2003, Safe2004}. Preliminary systematic experiments were made and good results were achieved when using these parameters.} In any event, the MCGA can be run for any feasible configuration of the parameters.  We also changed the default configuration of the competition framework in the following way:
+\textbf{The GA is stopped when there the best solution is not improved for 10 consecutive generations, to ensure that a certain degree of convergence has been reached \cite{Karma2003, Safe2004}. Preliminary systematic experiments were made and results that improved on the solutions obtained in our previous work \cite{Liberatore2014} were achieved when using these parameters.} In any event, the MCGA can be run for any feasible configuration of the parameters.  We also changed the default configuration of the competition framework in the following way:
 
 \begin{itemize}
   \item \textbf{The event that forces the ghosts to obligatorily reverse their direction has been removed so as to ensure consistency in the evaluation of the candidate solutions' fitness\footnote{The FSs are completely deterministic and the seed used to initialize the pseudo-random number generator of the MCTSPM controller has been fixed to a determined value.}.}
@@ -329,17 +329,17 @@ Overall, the following experiments have been done:
 The first experiment performed regards the comparison of the performance of the Ghost Team controllers obtained with different team learning strategies and different values of the parameter $N$. In principle, the best controllers should be obtained when heterogeneous team learning is applied and when high values of $N$ are used, as the solution space is bigger. Nevertheless, as the solution space increases, the actual performance of the MCGA could get worse. We considered all the values of $N$ ranging from one to five. For each value we executed the MCGA 10 times. Detailed information regarding each run is give in Tables \ref{tab:results_homogeneous} and \ref{tab:results_heterogeneous} in the Appendix.
 
 \begin{table*} [!t]
-\caption{Performance of the controllers for the Ghost Team obtained by the GA using different numbers of neighborhoods.}
+\caption{Performance of the controllers for the Ghost Team obtained by the GA using different numbers of neighborhoods. \textbf{Each row is associated to a different number of neighborhoods, displayed in the first column. The second column presents the average computational time along with the obtained standard deviation. The third column shows the average number of generations across the 10 runs and the corresponding standard deviation. The fourth column illustrates the fitness value $F_1$ of the best controller found in 10 runs. Finally, the last column reports the average fitness value over 10 runs and the corresponding standard deviation.}}
 \label{tab:summary}
 \centering
 \subfloat[Homogeneous team learning.]{
 \begin{tabular}{|c|c|c|c|c|}
 \hline 
-$N$ & Mean CPU Time (s) & Mean \# Gen. & Best $F_1$ & Mean $F_1$  \\
+$N$ & Mean CPU Time (s) & Avg. Num. Generations & Best $F_1$ & Avg. $F_1$  \\
 \hline
 1 & 102472.3 $\pm$ 53033.13 & 29.5 $\pm$ 15.96 & 6080 & 7991 $\pm$ 1081.16  \\
 \hline
-2 & 102187.3 $\pm$ 55850.54 & 29.7 $\pm$ 16.646988383 & 6450 & 7797 $\pm$ 1069.34 \\
+2 & 102187.3 $\pm$ 55850.54 & 29.7 $\pm$ 16.65 & 6450 & 7797 $\pm$ 1069.34 \\
 \hline
 3 & 103967.7 $\pm$ 90992.18 & 29.7 $\pm$ 25.46 & 5450 & 8147 $\pm$ 1406.84 \\
 \hline
@@ -354,7 +354,7 @@ $N$ & Mean CPU Time (s) & Mean \# Gen. & Best $F_1$ & Mean $F_1$  \\
 \subfloat[Heterogeneous team learning.]{
 \begin{tabular}{|c|c|c|c|c|}
 \hline 
-$N$ & Mean CPU Time (s) & Mean \# Gen. & Best $F_1$ & Average $F_1$  \\
+$N$ & Mean CPU Time (s) & Avg. Num. Generations & Best $F_1$ & Avg. $F_1$  \\
 \hline
 1 & 97498.1 $\pm$ 62154.75 & 28.8 $\pm$ 18.47 & 7730 & 8901 $\pm$ 642.00 \\
 \hline
@@ -371,13 +371,13 @@ $N$ & Mean CPU Time (s) & Mean \# Gen. & Best $F_1$ & Average $F_1$  \\
 }
 \end{table*}
 
-Table \ref{tab:summary} shows the performance of the evolved controllers over 10 runs of the MCGA with $N=1,\ldots,5$ when applying homogeneous and heterogeneous team learning (Tables \ref{tab:summary_HOM} and \ref{tab:summary_HET}, respectively). Each row is associated to a different number of neighborhoods, displayed in the first column. The second column presents the average computational time; the standard deviation is also reported after the plus-minus sign.\textbf{The third column shows the average number of generations across the 10 runs and the corresponding standard deviation.} The following column illustrates the fitness value $F_1$ of the best controller found \textbf{in the 10 runs}. A higher $F_1$ value corresponds to a lower ghosts' performance, and the other way round. Finally, the last column reports the average fitness value over the 10 runs and the corresponding standard deviation. By observing the tables some conclusions can be drawn.
+Table \ref{tab:summary} shows the performance of the evolved controllers over 10 runs of the MCGA with $N=1,\ldots,5$ when applying homogeneous and heterogeneous team learning (Tables \ref{tab:summary_HOM} and \ref{tab:summary_HET}, respectively). Each row is associated to a different number of neighborhoods, displayed in the first column. The second column presents the average computational time along with the obtained standard deviation. \textbf{The third column shows the average number of generations across the 10 runs and the corresponding standard deviation.} The following column illustrates the fitness value $F_1$ of the best controller found \textbf{in the 10 runs}. A higher $F_1$ value corresponds to a lower ghosts' performance, and the other way round. Finally, the last column reports the average fitness value over the 10 runs and the corresponding standard deviation. By observing the tables some conclusions can be drawn.
 
 Concerning the computational time, we can see that a single run takes
 quite a significant amount of time to complete\textbf{(more than 30 hours
 on average)}. The reason for that is that the most advanced
 Ms.\  Pac-Man controllers make use of all the allowed maximum
-computational time for each game tick (40 ms). \textbf{According to Table \ref{tab:summary} there does not seem to be a difference between the homogeneous and heterogeneous team learning strategies in term of computational time. In fact, an ANOVA test confirms this result by show that the p-value is equal to 0.7311\footnote{P-values are adjusted to account for the increased risk of a Type I error resulting from doing multiple hypothesis tests. A $p-value\geq0.05$ is considered to indicate that the sample does not support the hypothesis of difference in the means.}.}
+computational time for each game tick (40 ms). \textbf{According to Table \ref{tab:summary} there does not seem to be a significant difference between the homogeneous and heterogeneous team learning strategies in terms of computational time. In fact, an ANOVA test statistically confirms this fact by showing that the p-value\footnote{P-values are adjusted to account for the increased risk of a Type I error resulting from doing multiple hypothesis tests. A $p-value\geq0.05$ is considered to indicate that the sample does not support the hypothesis of difference in the means.} is equal to 0.7311.}
 
 \textbf{For the homogeneous team learning case the best controller was obtained
 when $N=4$, while the case $N=5$ has the best average fitness. On the other hand, for the heterogeneous team learning case the best controller was obtained when $N=3$, while the best average fitness was found with $N=1$. In both cases, no clear trend can be identified in the best and average fitness. This observation has been verified by running statistical tests. After verifying the normality of the samples with the Kolmogorov-Smirnov test, we run an ANOVA that shows low significance for both the homogeneous and the heterogeneous team learning cases: $p-value=0.8924$ and $p-value=0.7394$, respectively Therefore, we cannot claim that, according to the results obtained in the experiments, a higher number of neighborhoods implies better Ghost Team controllers.}
@@ -395,10 +395,10 @@ Finally, we compared the performances of the homogeneous and heterogeneous teams
 \textbf{Our sample shows that there is provable statistical difference only for the case with $N=2$. Therefore, we can assume that, for $N=2$ and the proposed MCGA, the heterogeneous team learning strategies lead to worst controllers than the homogeneous team ones.}
 
 \subsection{Comparison with Other Controllers}
-To understand the goodness of the ghost controllers generated by the MCGA we compare their performance to that of other controllers taken from the competition framework and the literature. \textbf{All the controllers not included in the competition framework were obtained by contacting their respective authors.} Table \ref{tab:summary_others} shows the $F_1$ scores obtained (the detailed results of this experiment are illustrated in Table \ref{tab:results_ghosts} in the Appendix).\textbf{In this set of experiments, the fitness values for the Ghost controllers have been calculated by applying the same conditions adopted for the GA, so as to ensure comparability of the results.}
+To understand the goodness of the ghost controllers generated by the MCGA we compare their performance to that of other controllers taken from the competition framework and the literature. \textbf{All the controllers not included in the competition framework were obtained by contacting their respective authors.} Table \ref{tab:summary_others} shows the $F_1$ scores obtained (the detailed results of this experiment are illustrated in Table \ref{tab:results_ghosts} in the Appendix). \textbf{In this set of experiments, the fitness values for the Ghost controllers have been calculated by applying the same conditions adopted for the GA, so as to ensure comparability of the results.}
 
 \begin{table} [!t]
-\caption{Performance of the other Ghost Team controllers from the competition framework and the literature.}
+\caption{Performance of the other Ghost Team controllers from the competition framework and the literature. \textbf{Each row is associated with a Ghost Team controller, displayed in the first column. The second column presents the fitness value $F_1$ obtained by each controller. For the sake of comparison, the last row reports the performance of the best controller found by the MCGA in this experiments.}}
 \label{tab:summary_others}
 \centering
 \begin{tabular}{|c|c|}
@@ -419,35 +419,38 @@ Legacy & 24260 \\
 \hline
 AggressiveGhosts & 32070 \\
 \hline
+\hline
+Our best controller & 5140 \\
+\hline
 \end{tabular}
 \end{table}
 
-\textbf{Eiisolver and Memetix won, respectively, the first and the second place in the CIG 2012 competition \cite{CompetitionURL}. As expected, these two controllers produced the best results. More specifically, Memetix obtained a fitness similar to that of the best controller generated by the MCGA in the experiments, 5140. However, the fitness of Eiisolver is almost twice this value. However, by comparing the scores obtained by each Ms.\ Pac-Man controller (Tables \ref{tab:results_ghosts} and \ref{tab:results_homogeneous}), we can see that Memetix performed better than the best controller generated by the MCGA against 6 out of 8 controllers, while Eiisolver performed better against 3 out of 8 controllers. Since these Ghost controllers do not dominate each other, we can state that they have similar global performances.} These results support the claim that FSs are a viable option for the definition of intelligent controllers.
+\textbf{Eiisolver and Memetix won, respectively, the first and the second place in the CIG 2012 competition \cite{CompetitionURL}. As expected, these two controllers produced the best results. More specifically, Memetix obtained a fitness similar to that of the best controller generated by the MCGA in the experiments, 5140. However, the fitness of Eiisolver is almost twice this value. By comparing the scores obtained by each Ms.\ Pac-Man controller (Tables \ref{tab:results_ghosts} and \ref{tab:results_homogeneous}), we can see that Memetix performed better than the best controller generated by the MCGA against 6 out of 8 controllers, while Eiisolver performed better against 3 out of 8 controllers. Since these Ghost controllers do not dominate each other, we can state that they have similar global performances.} These results support the claim that FSs are a viable option for the definition of intelligent controllers.
 
 \subsection{\textbf{Analysis of Performance with Random Direction Reverse Event}}
 
 The proposed MCGA evaluates the candidate solutions without considering the event that forces the ghosts to obligatorily reverse their direction. We now analyze the \textbf{performances} of the FS based controllers generated by the MCGA in the face of this random event. We expect them to be quite resilient, as the FSs choose the next move only according to the relative distance to the other agents and without considering any internal state.
 
-In this experiment, \textbf{we consider the best controller found by the MCGA} and we run 100 games with the probability of the ghost direction reverse event set to the default value. We can use the results of this experiment to analyze the variability in the performance of the controller.
+In this experiment, \textbf{we consider the best controller found by the MCGA and we run 100 games} with the probability of the ghost direction reverse event set to the default value. We can use the results of this experiment to analyze the variability in the performance of the controller.
 
 \begin{table}[!t]
-\caption{\textbf{Analysis of the performance for the best ghost controller generated by the GA with random direction reverse event.}}
+\caption{\textbf{Analysis of the performance for the best ghost controller generated by the GA with random direction reverse event. The second and the third columns correspond to fitness functions $F_1$ (Equation \ref{eq:minMaxScore}) and $F_2$ (Equation \ref{eq:minSquareScore}), respectively. The rows show the average value, the standard deviation, and the coefficient of variation for each fitness function.}}
 \label{tab:summary_robust}
 \centering
 \begin{tabular}{|c|c|c|}
 \hline
  & $F_1$ & $F_2$ \\
 \hline
-Avg.	&	14262	&	612,410,738	\\
+Avg.	&	14262	&	612410738	\\
 \hline
-St. Dev	&	2658.93	&	156,797,817.09	\\
+St. Dev	&	2658.93	&	156797817.09	\\
 \hline
 CV	&	0.18643	&	0.25603	\\
 \hline
 \end{tabular}
 \end{table}
 
-Table \ref{tab:summary_robust} presents the average, the standard deviation, and the coefficient of variation (CV)\footnote{The CV is defined as the ratio of the standard deviation to the mean.} for objectives $F_1$ and $F_2$, calculated over the \textbf{100} runs. For both objectives the CV takes low values, inferior to 0.30, suggesting that the variation in the performance of the controller is low. Thus, we can claim that the ghost controller generated by the proposed GA is resilient to the random direction reverse event.
+Table \ref{tab:summary_robust} presents the average, the standard deviation, and the coefficient of variation (CV)\footnote{The CV is defined as the ratio of the standard deviation to the mean.} for objectives $F_1$ and $F_2$, calculated over the \textbf{100} runs. For both objectives the CV takes low values, inferior to 0.30, suggesting that the variation in the performance of the controller is low and that the averages are representative. Thus, we can claim that the ghost controller generated by the proposed GA is resilient to the random direction reverse event.
 
 \section{Conclusions}
 \label{sec:Conclusions}
@@ -457,9 +460,9 @@ We took a step forward from the work in Liberatore \emph{et al.} \cite{Liberator
 
 There is still a lot to be investigated to ascertain the real capabilities of the FSs. Some possible future lines of research are highlighted in the following.
 
-As showed in the experiments, a single run of the MCGA takes a significant amount of computational time. Strategies for its reduction should be explored. An initial step could be doing a profiling of the program. \textbf{Also, the sensitivity of the performance of the MCGA to the parameters used should be explored.}
+As showed in the experiments, a single run of the MCGA takes a significant amount of computational time. Strategies for its reduction should be explored. An initial step could be doing a profiling of the program. \textbf{Also, the sensitivity of the performance of the MCGA to the parameters used should be analyzed.}
 
-The proposed MCGA provided satisfactory results for the homogeneous team learning case. Nevertheless, in the heterogeneous team learning case, the extended solution space did not allow it to converge to a satisfactory solution.\textbf{ Possible solutions that need to be investigated are (1) to warm-start the heterogeneous team GA by using good homogeneous teams and (2) to implement mutation operators that make large changes to the canditate solution, such as replacing the behavior of one ghst with a copy of the behavior of other ghost}.  Optimization methodologies other than GAs could be investigated. Covariance Matrix Adaptation Evolution Strategies (CMA-ES) and Particle Swarm Optimization (PSO) might be sensible choices, as no assumption on the objective function or on the problem are made.
+The proposed MCGA provided satisfactory results for the homogeneous team learning case. Nevertheless, in the heterogeneous team learning case, no satisfactory solutions were obtained. \textbf{A deeper convergence analysis could be the topic of a future research. Aslo, possible approaches that need to be investigated are: first, to warm-start the heterogeneous team GA by using good homogeneous teams and, second, to implement mutation operators that make large changes to the canditate solution, such as replacing the behavior of one ghost with a copy of the behavior of other ghost}.  Optimization methodologies other than GAs could be investigated. Covariance Matrix Adaptation Evolution Strategies (CMA-ES) and Particle Swarm Optimization (PSO) might be sensible choices, as no assumption on the objective function or on the problem are made.
 
 One of the main drawbacks of the fitness function adopted in this work is the amount of time required to evaluate the performance of one individual against eight different Ms.\  Pac-Man controllers. This is mostly due to the time consumption of the controllers based on minimax algorithm and other exploratory methods. Therefore, it could be interesting to co-evolve two distinct populations of ghosts and Ms.\  Pac-Man controllers based on FSs. This would speed up the time taken to compute the fitness of the individuals, allowing for more iterations in the optimization process. Potentially, this could lead to finding better controllers for the Ghost Team.
 
@@ -637,7 +640,6 @@ St. Dev.	&	19.55	&	65685.62	&	1039.84	&	1872.68	&	1932.69	&	1344.20	&	1297.90	&	
 \hline																				
 \end{tabular}
 \end{sidewaystable*}
-
 
 \section*{Acknowledgment}
 Liberatore would like to thanks the GeNeura research group at
