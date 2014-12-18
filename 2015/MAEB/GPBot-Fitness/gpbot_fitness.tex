@@ -62,7 +62,7 @@ La meta de usar PG en este ámbito es la creación de motores de comportamiento ba
 
 Para implementar y testear esta proposición hemos considerado el juego {\em Planet Wars}, un RTS presentado en la competición Google AI Challenge 2010\footnote{\url{http://planetwars.aichallenge.org/}}. Este juego ha sido utilizado por varios autores para el estudio de técnicas de inteligencia computacional en juegos RTS \cite{Genebot_CEC11,ExpGenebot_CIG2012,Lara_PCG_PlanetWars14}, ya que es una simplificación (sólo un tipo de recurso y de unidad) de los elementos que forman un juego RTS comercial. Los jugadores controlan naves espaciales (o simplemente naves), y el objetivo es conquistar todo el conjunto de planetas de un mapa, contra un enemigo que intenta lo mismo. Los planetas pueden producir nuevas naves y las naves pueden destruirse estrellando las del otro jugador en el planeta.
 
-En este artículo, se presentan 3 diferentes funciones fitness: la primera es una variación del fitness basado en victorias presentado en \cite{Genebot_CEC11}, la cual evalua todos los individuos en la población jugando 5 diferentes partidas contra un bot que hace de \textit{sparring}. El objetivo de estas repeticiones es evitar el factor ruidoso presente estos entornos dinámicos \cite{Mora_noisy_jcst,wilcoxon:ga}. Debido a esto, el valor fitness de un individuo podría variar dramáticamente entre distintas partidas, ya que depende de las acciones pseudo-estocásticas del oponente y de sus propias decisiones no deterministas.
+En este artículo, se presentan 3 diferentes funciones fitness: la primera es una variación del fitness basado en victorias presentado en \cite{Genebot_CEC11}, la cual evalúa todos los individuos en la población jugando 5 diferentes partidas contra un bot que hace de \textit{sparring}. El objetivo de estas repeticiones es evitar el factor ruidoso presente estos entornos dinámicos \cite{Mora_noisy_jcst,wilcoxon:ga}. Debido a esto, el valor fitness de un individuo podría variar dramáticamente entre distintas partidas, ya que depende de las acciones pseudo-estocásticas del oponente y de sus propias decisiones no deterministas.
 
 Las otras dos funciones fitness presentadas intentan reducir la influencia del ruido en la evolución, pero usando datos adicionales durante la ejecución del bot: el número de naves generadas por cada bot en lugar del número de turnos. La primera realiza una regresión linear (función \textit{pendiente}), basada en el porcentaje de naves con respecto al total, y la segunda la integral (\textit{función área}) de la función que representa esos números. Todas las funciones usadas consideran los resultados finales de cada individuo (bot) después de las cinco partidas (en media).
 
@@ -294,7 +294,7 @@ Los valores de las distintas partidas se suman para calcular una pendiente globa
 \subsection{Fitness basado en área}
 \label{sec:fitness}
 
-Esta función utiliza la integral para calcular el área de la curva obtenida por la distribución de puntos formados por el porcentaje de naves totales pertenecientes al jugador a lo largo de la partida. (ver Equación \ref{eq:area}). Esta \textit{área} se normaliza considerando el número de turnos, y por lo tanto representa el porcentaje de naves medio para cada individuos.
+Esta función utiliza la integral para calcular el área de la curva obtenida por la distribución de puntos formados por el porcentaje de naves totales pertenecientes al jugador a lo largo de la partida. (ver Ecuación \ref{eq:area}). Esta \textit{área} se normaliza considerando el número de turnos, y por lo tanto representa el porcentaje de naves medio para cada individuos.
 %An example is shown in Fig. \ref{figura:nubecita:area}.
 
 \begin{equation}
@@ -344,7 +344,7 @@ Mapas usados en cada evaluación & map76, map69, map7, map11, map26
 
 \\ \hline
 \end{tabular}
-\caption{Parameters used in the experiments.}
+\caption{Parámetros usados en los experimentos.}
 \label{tab:parameters}
 \end{center}
 \end{table*}
@@ -440,7 +440,7 @@ Pendiente	& 	-		& 19.07 \%	&	12.50 \%		\\ \hline
 
 El objetivo de este trabajo es validar si usar la Programación Genética puede crear bots competitivos para juegos RTS y estudiar el comportamiento de distintas funciones fitness, ya que estas pueden afectar directamente la creación de esos bots. Se han comparado tres funciones fitness para generar bots para el juego Planet Wars. Estos bots utilizan árboles de decisión binarios para escoger estrategias dentro del juego. Se ha usado un bot competitivo disponible en la literatura (Genebot) para evaluar los individuos durante la evolución. Este bot fue el mejor obtenido en un proceso evolutivo que optimizaba diferentes parámetros de un motor diseñado por un humano.
 
-Las funciones fitness utilizan distintos tipos de información durante el juego para obtener una métrica que pueda guiar la evolución. Los resultados muestran diferencias dependiendo del fitness usado: un fitness basado en victorias que prioritiza el número de victorias obtiene mejores bots de media que fitness que utilizan el número de naves durante toda la ejecución de la partida. Esto puede explicarse debido a que este fitness explota los individuos para generar bots más agresivos. Sin embargo, este rendimiento decrece al enfrentarlo contra distintos tipos de bots no usados en la evolución.
+Las funciones fitness utilizan distintos tipos de información durante el juego para obtener una métrica que pueda guiar la evolución. Los resultados muestran diferencias dependiendo del fitness usado: un fitness basado en victorias que prioriza el número de victorias obtiene mejores bots de media que fitness que utilizan el número de naves durante toda la ejecución de la partida. Esto puede explicarse debido a que este fitness explota los individuos para generar bots más agresivos. Sin embargo, este rendimiento decrece al enfrentarlo contra distintos tipos de bots no usados en la evolución.
 
 Como trabajo futuro, se añadirán otras reglas al algoritmo propuesto (por ejemplo, analizar el mapa) y se estudiarán otros bots disponibles en la literatura para el entrenamiento y así evitar el sobreaprendizaje. Además, esta aproximación puede implementarse y probarse en otros juegos RTS más complejos, como Starcraft, o en otros tipos de juego, como  Unreal\texttrademark~ y Super Mario\texttrademark~.
 
@@ -454,7 +454,7 @@ SIPESCA (Programa Operativo FEDER de Andalucía 2007-2013),
 TIN2011-28627-C04-02 (Ministerio de Economía y Competitividad),
 SPIP2014-01437 (Dirección General de Tráfico),
 PRY142/14 (financiado por la Fundación Pública Andaluza Centro de Estudios Andaluces en la IX Convocatoria de Proyectos de Investigación) y
-PYR-2014-17 GENIL project (CEI-BIOTIC Granada).
+GENIL PYR-2014-17  (CEI-BIOTIC Granada).
 
 
 
