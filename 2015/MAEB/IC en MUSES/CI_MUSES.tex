@@ -8,27 +8,19 @@
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
+\hyphenation{res-pe-tar pro-pu-es-ta de-pen-dien-do di-fe-ren-tes ha-cer-se u-su-a-rios me-dian-te vi-sua-li-zar co-rres-pon-dien-te}
 
 \begin{document}
 
-\title{Aplicación de Técnicas de Inteligencia Computacional a un Sistema de Seguridad Corporativa} %!PN
+\title{Aplicación de Técnicas de Inteligencia Computacional a un Sistema de Ciberseguridad Corporativa} %!PN
 
-
-% Primero: ¿Anna no participa? ¿Ni Sergio? Segundo ¿no hay nada mejor que sistemas de seguridad? ¿No sería, al menos, ciberseguridad? Sistemas de seguridad es para que no se metan los cacos - JJ
-
-\author{P. De las Cuevas, A.M. Mora, J.J. Merelo \thanks{Departamento de Arquitectura y Tecnología de Computadores. CITIC, ETSIIT,Universidad de Granada
-E-mail: \{paloma,amorag,jmerelo\}@geneura.ugr.es}}
+\author{P. De las Cuevas, A.M. Mora, J.J. Merelo, P.A. Castillo \thanks{Departamento de Arquitectura y Tecnología de Computadores. CITIC, ETSIIT,Universidad de Granada
+E-mail: \{paloma,amorag,jmerelo, pedro\}@geneura.ugr.es}}
 
 \maketitle
 
-% ¿Qué quieres hacer? ¿Cuál es el objetivo? ¿Con qué motivación? ¿Qué
-% resultados nuevos o enfoque nuevo presentas en este trabajo? ¿Por
-% qué tendría que interesarle al lector? - JJ
+
 \begin{abstract}
-% ``en development'' suena a excusa y no aporta ninguna
-% información. Igual que ha dicho Anna del capítulo de libro, lo que
-% hay que presentar es el problema y la solución, no el proyecto. El
-% proyecto lo mencionas al final o en el estado del arte. - JJ
 Este artículo presenta una aplicación, basada en un proyecto europeo en desarrollo, que combina métodos de \textit{Data Mining}, \textit{Machine Learning} e Inteligencia Computacional para crear un sistema de seguridad corporativa centrado en el usuario y auto-adaptativo.
 De forma que este sistema, llamado MUSES, será capaz de analizar el comportamiento de los usuarios del mismo (modelado como un conjunto de eventos) al interactuar con el servidor de la empresa para acceder a recursos distribuidos (y protegidos), por ejemplo. Como resultado de dicho análisis y tras la aplicación de las técnicas mencionadas, las \textit{Políticas de Seguridad} de la empresa, o más específicamente las \textit{Reglas de Seguridad} derivadas de las mismas, serán adaptadas para manejar nuevas situaciones anómalas o peligrosas (para la seguridad empresarial), así como para gestionar mejor las acciones de los usuarios.
 El trabajo revisa, inicialmente, el estado del arte en esta línea, es decir, la aplicación de este tipo de técnicas a cuestiones de seguridad en la empresa.
@@ -45,7 +37,7 @@ Inteligencia Computacional, Inteligencia Artificial, Computación Evolutiva, Algo
 \section{Introducción}
 \noindent 
 
-La seguridad en sistemas distribuidos ha sido un área de investigación muy explotada desde la aparición de las primeras arquitecturas cliente/servidor \cite{computer_security_80}, siendo la seguridad corporativa una de los temas principales
+La seguridad en sistemas distribuidos ha sido un área de investigación muy explotada desde la aparición de las primeras arquitecturas cliente/ servidor \cite{computer_security_80}, siendo la seguridad corporativa uno de los temas principales
 
 Sin embargo, el entorno ha cambiado drásticamente en los últimos años, empezando por la distribución de la información, la cual ha pasado de estar centralizada en un servidor de la empresa a encontrarse dispersa en múltiples máquinas, tales como dispositivos portátiles, servidores externos o sistemas de almacenamiento en la nube. A esto se une la llamada filosofía de \textit{BYOD: Bring Your Own Device} (usar tu propio dispositivo), en la que los dispositivos que acceden a los sistemas de la empresa pertenecen a usuarios (empleados de la misma), por lo que contendrán al mismo tiempo información personal y profesional.
 
@@ -56,7 +48,7 @@ Este sistema considera un conjunto de reglas de seguridad, definidas como especi
 
 Con este fin MUSES analizará el comportamiento de los usuarios por medio de técnicas de \textit{Data Mining} (DM)\cite{DataMining_Lee01} y \textit{Machine Learning} (ML)\cite{MachineLearning_Bishop06}, extrayendo un conjunto de patrones que serán procesados posteriormente por medio de métodos de Inteligencia Computacional (IC), principalmente Algoritmos Evolutivos \cite{EAs_Back96,GAs_Goldberg89,GP_Koza92}.
 
-Esto supone un paso adelante en el estado del arte en dos sentidos: primero, respecto a los sistema de seguridad corporativa existentes para el manejo de situaciones de BYOD, como se describe en nuestro trabajo \cite{MUSES_SAC_14}; segundo, en relación con la aplicación de técnicas de IC a este tipo de problemas de seguridad, para su adaptación al comportamiento de los usuarios, como se describirá en este trabajo.
+Esto supone un paso adelante en el estado del arte en dos sentidos: primero, respecto a los sistemas de seguridad corporativa existentes para el manejo de situaciones de BYOD, como se describe en nuestro trabajo \cite{MUSES_SAC_14}; segundo, en relación con la aplicación de técnicas de IC a este tipo de problemas de seguridad, para su adaptación al comportamiento de los usuarios, como se describirá en este trabajo.
 
 El artículo se estructura de la siguiente forma: la siguiente sección comenta algunos conceptos interesantes en relación a la seguridad corporativa. La Sección \ref{sec:soa} revisa la bibliografía existente respecto a la aplicación de DM, ML e IC a problemas de seguridad en la empresa, principalmente enfocados en el comportamiento del usuario y la adaptación de los sistemas o las reglas de seguridad, principal característica de MUSES.
 Dicho sistema se presenta en la Sección \ref{sec:muses}, haciendo hincapié en las técnicas citadas. 
@@ -107,7 +99,7 @@ Los temas tratados por los investigadores son muy variados, incluyendo enfoques 
 
 La Inteligencia Computacional (IC) también ha sido ampliamente usada en este área, siendo los métodos más prolíficos aquellos basados en Computación Evolutiva (CE), principalmente Algoritmos Genéticos (AGs) y Programación Genética (PG).
 
-Existen diversos trabajos aplicando AGs a la resolución de problemas de seguridad, tales como la detección de intrusos (vea \cite{GA_intrusion_detection_survey_14} para un estado del arte), el diseño y evaluación de protocolos de seguridad  \cite{detecting_intrusion_gp_03,eval_security_gas_07,GAs_security_protocols_10} o la optimización de otros aspectos como los costes de seguridad informática en una empresa \cite{optimizing_IT_costs_ea_10} o el diseño de protocolos criptográficos efectivos \cite{cryptographic_gas_06}, por citar algunos.
+Existen diversos trabajos aplicando AGs a la re\-solución de problemas de seguridad, tales como la detección de intrusos (vea \cite{GA_intrusion_detection_survey_14} para un estado del arte), el diseño y evaluación de protocolos de seguridad  \cite{detecting_intrusion_gp_03,eval_security_gas_07,GAs_security_protocols_10} o la optimización de otros aspectos como los costes de seguridad informática en una empresa \cite{optimizing_IT_costs_ea_10} o el diseño de protocolos criptográficos efectivos \cite{cryptographic_gas_06}, por citar algunos.
 
 Este trabajo se centra en la aplicación de diferentes métodos de DM, ML y AI/CI a un nuevo conjunto de problemas de seguridad, que han emergido como consecuencia de las nuevas interacciones entre sistemas y comportamientos de usuarios que ha traído consigo la filosofía BYOD, como se ha comentado en la sección anterior.
 Por tanto, los estudios que nos interesan son aquellos que procesen información relativa al comportamiento de los usuarios en el sistema (en este entorno), y la adaptación de las políticas o reglas de seguridad que puedan hacerse.
@@ -155,7 +147,7 @@ Para una descripción más completa, los lectores pueden dirigirse a la página web
 
 Una de las ventajas más importantes del sistema es la auto-adaptación (tanto al usuario, como al contexto) que será capaz de realizar, modificando y mejorando el sistema de Reglas de Seguridad corporativas.
 
-En este trabajo nos centraremos en la parte del servidor (ver Figura \ref{fig:server_architecture}), ya que es en ésta en la que se aplicarán las técnicas de DM, ML e IC sobre los datos recopilados por el sistema (almacenados en la Base de Datos). En concreto en el componente llamado \textit{MusKRS}, por MUSES \textit{Knowledge Refinement System}. Este módulo se ejecutará de forma asíncrona (varias veces o una vez al día, dependiendo del volumen de datos que se genere en la empresa a este respecto), y será el encargado de analizar toda información generada por en los accesos de los usuarios (eventos, contexto, datos de usuario) a los recursos de información que haya en el servidor, tarea de la que se encargará el \textit{Data Miner}. Una vez analizados estos datos, se procederá a realizar una tarea de adaptación o refinado de reglas de seguridad (por el componente \textit{Knowledge Compiler}) para lidiar mejor con esos eventos, intentando predecir futuras amenazas de seguridad debidas al comportamiento de los usuarios.
+En este trabajo nos centraremos en la parte del servidor (ver Figura \ref{fig:server_architecture}), ya que es en ésta en la que se aplicarán las técnicas de DM, ML e IC sobre los datos recopilados por el sistema (almacenados en la Base de Datos). En concreto en el componente llamado \textit{MusKRS}, por MUSES \textit{Knowledge Refinement System}. Este módulo se ejecutará de forma asíncrona (varias veces o una vez al día, dependiendo del volumen de datos que se genere en la empresa a este respecto), y será el encargado de analizar toda información generada por los accesos de los usuarios (eventos, contexto, datos de usuario) a los recursos de información que haya en el servidor, tarea de la que se encargará el \textit{Data Miner}. Una vez analizados estos datos, se procederá a realizar una tarea de adaptación o refinado de reglas de seguridad (por el componente \textit{Knowledge Compiler}) para lidiar mejor con esos eventos, intentando predecir futuras amenazas de seguridad debidas al comportamiento de los usuarios.
 
 De modo que el \textit{Data Miner} aplicará, como su nombre indica, técnicas de DM y ML para identificar y extraer patrones relevantes de los datos. Después el \textit{Knowledge Compiler} realizará una labor de inferencia y refinado/ajuste de reglas, mediante técnicas de IC, considerando los datos extraídos en este primer paso. Si bien, este último modulo también se encargará de realizar refinados más sencillos como especialización o generalización de reglas, aplicando métodos más simples.
 
@@ -188,7 +180,7 @@ En concreto se aplicarán:
 \begin{itemize}
 
 \item \textit{Pattern Mining} (extracción de patrones) \cite{PatternMining_Han07}: 
-Este proceso tratará de identificar patrones de comportamiento en los datos, tanto frecuentes, como anómalos, a fin de procesarlos posteriormente, La idea subyacente es que los patrones poco frecuentes son potencialmente sospechosos, por lo que será interesante que el CSO esté al corriente, así como que puedan servir de base para el proceso de refinado de reglas.
+Este proceso tratará de identificar patrones de comportamiento en los datos, tanto frecuentes, como anómalos, a fin de procesarlos posteriormente. La idea subyacente es que los patrones poco frecuentes son potencialmente sospechosos, por lo que será interesante que el CSO esté al corriente, así como que puedan servir de base para el proceso de refinado de reglas.
 
 \item \textit{Clasificación} \cite{classification_67}: 
 Esta técnica trata de entrenar un modelo (clasificador) capaz de asociar cada patrón en el conjunto de datos con una etiqueta o clase, de forma que dicho modelo podría utilizarse para asignar una clase a nuevos patrones con categorías desconocidas, en base a su similitud con patrones previos.
@@ -218,7 +210,7 @@ Se trata de proveer al CSO de herramientas o mecanismos para identificar o visua
 
 MUSES usará métodos de computación evolutiva mediante diversas implementaciones, inicialmente, una en el proceso de DM y ML, y otras tres técnicas en la fase de adaptación o refinado de reglas. Todas ellas se basarán en la Programación Genética (PG) \cite{GP_Koza92} y los Algoritmos Genéticos (AGs) \cite{GAs_Goldberg89}.
 
-El primer método basado en técnicas evolutivas será la \textit{Clasificación mediante PG}. Ésta resulta de gran utilidad por dos razones principales: primero, para aplicar un método de balanceo de datos adecuado \cite{imbalance_techniques_02}, dado que en sistemas reales los datos suelen estar desbalanceados; en segundo lugar, para hacer una gestión efectiva de los datos categóricos (no numéricos), ya que la mayoría de variables o características extraídas de la información que ofrece el sistema serán de este tipo.
+El primer método basado en técnicas evolutivas será la \textit{Clasificación mediante PG}. Ésta resulta de gran utilidad por dos razones principales: primero, para aplicar un método de balanceo de datos adecuado \cite{imbalance_techniques_02}, dado que en sistemas reales los datos suelen estar desbalanceados; en segundo lugar, para hacer una gestión efectiva de los datos categóricos (no numéricos), ya que la mayoría de variables o ca\-racterísticas extraídas de la información que ofrece el sistema serán de este tipo.
 
 Por tanto, este método sería capaz de trabajar con conjuntos de datos no balanceados, considerando una función de fitness en la cual se pueda asociar un coste al porcentaje de aciertos del clasificador en cada generación, aplicando una penalización por cada falso negativo obtenido (un elemento de la clase minoritaria clasificado como miembro de la clase mayoritaria)  \cite{cost_adjustment_07}.
 En cuanto al tipo de datos, dado que los algoritmos de PG suelen aplicar modelos basados en reglas o en árboles de decisión, estos se pueden aplicar a variables categóricas, obteniendo un buen clasificador como se muestra en el trabajo \cite{cost_adjustment_07}.
@@ -250,7 +242,7 @@ De esta manera, los métodos que se implementarán serán los siguientes:
 
 \begin{itemize}
 
-\item \textit{Inferencia de reglas mediante PG}, con el que se generarán o crearán nuevas reglas de seguridad para `cubrir' aquellas situaciones que no están contempladas en el conjunto inicial. Así, por ejemplo, se crearían reglas para poder clasificar aquellos eventos que no pudieron ser clasificados inicialmente. Esta generación de reglas se haría teniendo en cuenta un \textit{diccionario}, es decir, un conjunto de términos correspondiente a todas las posibles entradas y acciones del sistema, las cuales serían respectivamente los antecedentes (condiciones), y los respectivos consecuentes en las reglas a inferir. La evaluación de las reglas creadas se realizaría en base a la información de log almacenada, de manera que se podría `simular' el comportamiento del sistema al incluir las nuevas reglas, y se obtendría una medida de si las reglas creadas mejoran o no su rendimiento.
+\item \textit{Inferencia de reglas mediante PG}, con el que se generarán o crearán nuevas reglas de seguridad para `cubrir' aquellas situaciones que no están contempladas en el conjunto inicial. Así, por ejemplo, se crearían reglas para poder clasificar aquellos eventos que no pudieron ser clasificados inicialmente. Esta generación de reglas se haría teniendo en cuenta un \textit{diccionario}, es decir, un conjunto de términos correspondiente a todas las posibles entradas y acciones del sistema, las cuales serían respectivamente los antecedentes (condiciones), y los respectivos consecuentes en las reglas a inferir. La evaluación de las reglas creadas se realizaría en base a la información de log almacenada, de manera que se podría `simu\-lar' el comportamiento del sistema al incluir las nuevas reglas, y se obtendría una medida de si las reglas creadas mejoran o no su rendimiento.
 
 \item \textit{Refinado de reglas mediante PG}, por el cual se optimizará el conjunto de reglas actual, ajustando los valores de las condiciones (antecedentes). Así, se podrían eliminar partes superfluas de las reglas o incluso reglas completas, obteniendo de esta forma especializaciones o generalizaciones de reglas existentes que mejoren el rendimiento del sistema. La evaluación del conjunto total de reglas se haría considerando el número de patrones no clasificados que se `cubrirían' una vez realizados los ajustes.
 
@@ -283,6 +275,8 @@ En cualquier caso, los trabajos revisados nos sirven como base para posibles car
 
 \section*{Agradecimientos}
 La realización de este trabajo ha sido financiada por el proyecto europeo MUSES (FP7-318508), además de por el proyecto PYR-2014-17 incluido en GENIL - CEI BIOTIC (Granada).
+También ha sido financiado en parte por los proyectos SIPESCA (Programa Operativo FEDER de Andalucía 2007-2013), TIN2011-28627-C04-02 (Ministerio de Economía y Competitividad), SPIP2014-01437 (Dirección General de Tráfico) y
+PRY142/14 (financiado por la Fundación Pública Andaluza Centro de Estudios Andaluces en la IX Convocatoria de Proyectos de Investigación).
 
 \nocite{*}
 \bibliographystyle{maeb2015}
