@@ -302,7 +302,7 @@ Mutation occurs with fixed probability. When a mutation happens, the current par
 
 \section{Experiments}
 \label{sec:Experiments}
-The algorithms presented in this paper have been implemented in Java within the framework provided for the Ms.\  Pac-Man vs Ghosts competition. The final program ran on an Intel(R) Core(TM) i5-2500K @ 3.3GHz with four cores and 4GB of RAM. Each experiment ran on a single core. In order to ensure comparability, the same standard configuration of parameters for the LGA has been used for all the experiments:
+The algorithms presented in this paper have been implemented in Java within the framework provided for the Ms.\  Pac-Man vs Ghosts competition. \textbf{The final program ran on an Intel(R) Xeon E5520 @ 2,27GHz dual-core, 16GB of RAM, gigabit ethernet, and Centos 5.4 Linux operating system.} Each experiment ran on a single core. In order to ensure comparability, the same standard configuration of parameters for the LGA has been used for all the experiments:
 
 \begin{itemize}
   \item Population = 50.
@@ -383,14 +383,14 @@ computational time for each game tick (40 ms). According to Table \ref{tab:summa
 
 \textbf{In order to support the conclusions reached in the analysis of previous experiments, statistical tests have been conducted for all the instances and approaches.  Firstly, ANOVA tests \cite{Fisher25,Fisher36} have been applied for evaluating every one of the metrics and indicators, considering each one of the approaches (model) as factors. The R tool has been used to obtain the ANOVA tables, which show, for each factor, the degrees of freedom(df), the value of the statistical F (F value) and its associated P value. If the output P is smaller than 0.05, then the factor effect is statistically significant at a 95\% confidence level. In the present study this would indicate that using different approaches give significative differences on the metric results. Post-hoc tests might be used to determine which approaches are significantly different from which other.  In that sense, one of the most widely used post-hoc test is Tukey’s Honestly Significant Difference test \cite{Dickinson1971}. Tukey HSD is a versatile, easily calculated technique that might be used after ANOVA and allows determining exactly where the significant differences are. However, it can only be used when ANOVA has found a significant effect. Otherwise, if the F value for a factor turns out non-significant, the further analysis is not needed.}
 
-\textbf{In this statistical analysis we consider a group for each combination of team strategy (i.e., homogeneous or heterogeneous) and value of the parameter $N$. Each group is comprised of 30 observations. The results of our statistical tests are reported in the following. An analysis of variance showed that the computational time is not affected by the group, $F(9,290) = 1.85$, $p = 0.06$. On the other hand, an analysis of variance showed that the solution value is affected by the group, $F(9,290) = 27.94$, $p < 2e-16$.  Post hoc analyses using the Tukey HSD method indicated that the fitness value is significantly better for the homogeneous strategies than for the heterogeneous strategies, when $N = 2, \ldots, 5$ (for the average and the standard deviation of the fitness values please refer to Tables \ref{tab:summary_HOM} and \ref{tab:summary_HET}). The p-values are provided in the following:}
+\textbf{In this statistical analysis we consider a group for each combination of team strategy (i.e., homogeneous or heterogeneous) and value of the parameter $N$. Each group is comprised of 30 observations. The results of our statistical tests are reported in the following. An analysis of variance showed that the computational time is not affected by the group, $F(9,290) = 1.85$, $p = 0.06$. On the other hand, an analysis of variance showed that the solution value is affected by the group, $F(9,290) = 27.94$, $p < 2e-16$.  A set of t-tests indicated that the fitness value is significantly better for the homogeneous strategies than for the heterogeneous strategies, for all the values of $N$ (for the average and the standard deviation of the fitness values please refer to Tables \ref{tab:summary_HOM} and \ref{tab:summary_HET}). The p-values are provided in the following:}
 
 \begin{itemize}
-\item $N=1$, $p = 0.6811462$.
-\item $N=2$, $p = 0.0000183$.
-\item $N=3$, $p = 0.0002246$.
-\item $N=4$, $p = 0.0000000$.
-\item $N=5$, $p = 0.0000001$.
+\item $N=1$, $p = 0.02272$.
+\item $N=2$, $p = 2.243e-08$.
+\item $N=3$, $p = 1.247e-05$.
+\item $N=4$, $p = 1.418e-08$.
+\item $N=5$, $p = 0.0001289$.
 \end{itemize}
 
 \textbf{Regarding the effect of increasing the number of neighborhoods, no clear conclusion can be drawn. In fact, post hoc analyses using the Tukey HSD method indicated significant differences in the fitness value only in the homogeneous case for the following values of $N$ (for the average and the standard deviation of the fitness values please refer to Table \ref{tab:summary_HOM}):}
@@ -414,7 +414,7 @@ To understand the goodness of the ghost controllers generated by the LGA we comp
 \textbf{Given the presence of the global random reverse event, every controller has been run 100 times. Table \ref{tab:summary_others} shows the average and the standard deviations of the $F_1$ fitness scores obtained by the controllers.}
 
 \begin{table} [!t]
-\caption{Comparison of the performance of the best Ghost Team controllers found by the LGA and other controllers from the competition framework and the literature. Each row is associated with a Ghost Team controller, displayed in the first column. The second column presents the average fitness value $F_1$ obtained by each controller. The third column shows the fitness value $F_1$ standard deviation. For the sake of comparison, the controllers are sorted in decreasing order of performance.}
+\caption{Comparison of the performance of the best Ghost Team controllers found by the LGA (homogeneous team, $N=4$) and other controllers from the competition framework and the literature. Each row is associated with a Ghost Team controller, displayed in the first column. The second column presents the average fitness value $F_1$ obtained by each controller. The third column shows the fitness value $F_1$ standard deviation. For the sake of comparison, the controllers are sorted in decreasing order of performance.}
 \label{tab:summary_others}
 \centering
 \begin{tabular}{|c|c|c|}
