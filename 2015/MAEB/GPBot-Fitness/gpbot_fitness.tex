@@ -62,7 +62,7 @@ La meta de usar PG en este ámbito es la creación de motores de comportamiento ba
 
 Para implementar y testear esta proposición hemos considerado el juego {\em Planet Wars}, un RTS presentado en la competición Google AI Challenge 2010\footnote{\url{http://planetwars.aichallenge.org/}}. Este juego ha sido utilizado por varios autores para el estudio de técnicas de inteligencia computacional en juegos RTS \cite{Genebot_CEC11,ExpGenebot_CIG2012,Lara_PCG_PlanetWars14}, ya que es una simplificación (sólo un tipo de recurso y de unidad) de los elementos que forman un juego RTS comercial. Los jugadores controlan naves espaciales (o simplemente naves), y el objetivo es conquistar todo el conjunto de planetas de un mapa, contra un enemigo que intenta lo mismo. Los planetas pueden producir nuevas naves y las naves pueden destruirse estrellando las del otro jugador en el planeta.
 
-En este paper, se presentan 3 diferentes funciones fitness: la primera es una variación del fitness basado en victorias presentado en \cite{Genebot_CEC11}, la cual evalua todos los individuos en la población jugando 5 diferentes partidas contra un bot que hace de \textit{sparring}. El objetivo de estas repeticiones es evitar el factor ruidoso presente estos entornos dinámicos \cite{Mora_noisy_jcst,wilcoxon:ga}. Debido a esto, el valor fitness de un individuo podría variar dramáticamente entre distintas partidas, ya que depende de las acciones pseudo-estocásticas del oponente y de sus propias decisiones no deterministas.
+En este artículo, se presentan 3 diferentes funciones fitness: la primera es una variación del fitness basado en victorias presentado en \cite{Genebot_CEC11}, la cual evalúa todos los individuos en la población jugando 5 diferentes partidas contra un bot que hace de \textit{sparring}. El objetivo de estas repeticiones es evitar el factor ruidoso presente estos entornos dinámicos \cite{Mora_noisy_jcst,wilcoxon:ga}. Debido a esto, el valor fitness de un individuo podría variar dramáticamente entre distintas partidas, ya que depende de las acciones pseudo-estocásticas del oponente y de sus propias decisiones no deterministas.
 
 Las otras dos funciones fitness presentadas intentan reducir la influencia del ruido en la evolución, pero usando datos adicionales durante la ejecución del bot: el número de naves generadas por cada bot en lugar del número de turnos. La primera realiza una regresión linear (función \textit{pendiente}), basada en el porcentaje de naves con respecto al total, y la segunda la integral (\textit{función área}) de la función que representa esos números. Todas las funciones usadas consideran los resultados finales de cada individuo (bot) después de las cinco partidas (en media).
 
@@ -80,9 +80,9 @@ El trabajo se centra a continuación en probar el valor de los sistemas basados r
 
 \subsection{Programación Genética}
 
-La Programación Genética (PG) \cite{GP_Koza92} es un tipo de Algoritmo Evolutivo (AE), es decir, un algoritmo de optimización y búsqueda basada en el modelo de la evolución darwinista, que se basa en la idea de la adaptación natural. Los EAs trabajan sobre una población de posibles soluciones (individuos) para un problema objetivo y usan un método de selección que favorece las mejores soluciones junto con un conjunto de operadores que actúan sobre las soluciones seleccionadas.
+La Programación Genética (PG) \cite{GP_Koza92} es un tipo de Algoritmo Evolutivo (AE), es decir, un algoritmo de optimización y búsqueda basada en el modelo de la evolución darwinista, que se basa en la idea de la adaptación natural. Los AEs trabajan sobre una población de posibles soluciones (individuos) para un problema objetivo y usan un método de selección que favorece las mejores soluciones junto con un conjunto de operadores que actúan sobre las soluciones seleccionadas.
 
-Por otro lado, la PG es una técnica de optimización estructural donde los individuos se representan como estructuras jerárquicas (normalmente árboles) y el tamaño y forma de las soluciones no están definidas a priori, como en otros métodos de la computación evolutiva, si no que pueden cambiar durante la evolución. La principal diferencia con otros métodos, como los Algoritmos Genéticos (AGs), es la representación de los individuos y los operadores genéticos a aplicar, que están principalmente enfocados a la administración (y mejora) de este tipo de estructura. El flujo de un algoritmo de PG es el mismo que el de cualquier otro EA: inicialmente se crea una población inicial y cada individuo de la población se evalúa usando una función de fitness. Los individuos que tienen mejor rendimiento tienen una probabilidad más alta de ser seleccionados como padres para la nueva población que el resto, y una nueva población se crea a partir de ellos tras aplicar operadores de cruce (\textit{crossover}) y mutación con una cierta probabilidad. El bucle se repite hasta que se alcanza una condición de parada establecida.
+Por otro lado, la PG es una técnica de optimización estructural donde los individuos se representan como estructuras jerárquicas (normalmente árboles) y el tamaño y forma de las soluciones no están definidas a priori, como en otros métodos de la computación evolutiva, si no que pueden cambiar durante la evolución. La principal diferencia con otros métodos, como los Algoritmos Genéticos (AGs), es la representación de los individuos y los operadores genéticos a aplicar, que están principalmente enfocados a la administración (y mejora) de este tipo de estructura. El flujo de un algoritmo de PG es el mismo que el de cualquier otro AE: inicialmente se crea una población inicial y cada individuo de la población se evalúa usando una función de fitness. Los individuos que tienen mejor rendimiento tienen una probabilidad más alta de ser seleccionados como padres para la nueva población que el resto, y una nueva población se crea a partir de ellos tras aplicar operadores de cruce (\textit{crossover}) y mutación con una cierta probabilidad. El bucle se repite hasta que se alcanza una condición de parada establecida.
 
 
 % ----------------------------------------------------------------------
@@ -114,10 +114,10 @@ De hecho, cada bot se implementa como una función que partiendo de una lista de 
 %-----------------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%% STATE OF THE ART %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %-----------------------------------------------------------------------
-\section{State of the art}
+\section{Antecedentes}
 \label{sec:soa}
 
-Los juegos RTS se han utilizado ampliamente en el área de la inteligencia computacional (ver \cite{Lara2013review} para una revisión) en videojuegos. Entre otras técnicas los AEs han sido muy utilizados para la optimización de parámetros \cite{Esparcia10FPS}, aprendizaje \cite{Kenneth2005neuroevolution} o generación de contenidos \cite{Mahlmann2012MapGeneration}. 
+Los juegos RTS se han utilizado ampliamente en el área de la inteligencia computacional (ver \cite{Lara2013review} para una revisión) en videojuegos. Entre otras técnicas los AEs han sido muy utilizados para la optimización de parámetros \cite{Esparcia10FPS}, aprendizaje \cite{Kenneth2005neuroevolution} o generación de contenidos \cite{Mahlmann2012MapGeneration}, así como su hibridación con aprendizaje por refuerzo \cite{Pena2012CIG}. 
 
 Uno de los subtipos de AEs, la Programación Genética, se ha demostrado como una buena herramienta para desarrollar estrategias en juegos, logrando resultados comparable a competidores humanos o con comportamiento basado en humanos \cite{Sipper2007gameplaying}, e incluso superiores a otras técnicas \cite{Elyasaf2012FreeCell}. La PG también se ha usado en otros tipos de juegos, como los juegos de mesa \cite{Benbassat2012Reversi}, o juegos (en principio) simples, como Ms. Pac-Man \cite{Brandstetter2012PacMan} y Spoof \cite{Wittkamp2007spoof}, e incluso en videojuegos modernos, como los First Person Shothers (FPS) (por ejemplo, Unreal\texttrademark~ \cite{Esparcia2013GPunreal}). Con respecto a los RTS, existen trabajos para búsqueda de caminos \cite{pathfinding_GP_RTS} o definición de tácticas en juegos tácticos abstractos \cite{KeaveneyO09_GP_RTS}.
 
@@ -154,7 +154,7 @@ Las decisiones, definidas por un experto humano, se basan en los valores de las 
 \item {\em actualLandedFlyingRatio}: Relación entre el número de naves aterrizadas y volando desde el planeta específico que evalúa el árbol, y el total de naves del jugador.
 \end{itemize}
 
-Finalmente, las posibles  \textit{decisiones} son:
+Finalmente, las posibles  \textit{acciones} son:
 
 \begin{itemize}
 \item {\em Attack Nearest (Neutral|Enemy|NotMy) Planet}: El objetivo es el planeta más cercano. 
@@ -294,7 +294,7 @@ Los valores de las distintas partidas se suman para calcular una pendiente globa
 \subsection{Fitness basado en área}
 \label{sec:fitness}
 
-Esta función utiliza la integral para calcular el área de la curva obtenida por la distribución de puntos formados por el porcentaje de naves totales pertenecientes al jugador a lo largo de la partida. (ver Equación \ref{eq:area}). Esta \textit{área} se normaliza considerando el número de turnos, y por lo tanto representa el porcentaje de naves medio para cada individuos.
+Esta función utiliza la integral para calcular el área de la curva obtenida por la distribución de puntos formados por el porcentaje de naves totales pertenecientes al jugador a lo largo de la partida. (ver Ecuación \ref{eq:area}). Esta \textit{área} se normaliza considerando el número de turnos, y por lo tanto representa el porcentaje de naves medio para cada individuos.
 %An example is shown in Fig. \ref{figura:nubecita:area}.
 
 \begin{equation}
@@ -315,7 +315,7 @@ Al igual que en la anterior función, si un bot optimo gana en el primer turno, e
 \section{Experimentos}
 \label{sec:experiments}
 
-Los operadores evolutivos utilizados en este estudio han sido el crossover de sub-árboles y mutación de 1 nodo, ya que su uso ha sido propuesto anteriormente por otros investigadores, obteniendo buenos resultados han propuesto otros investigadores \cite{Esparcia2013GPunreal}. En este caso, la mutación cambia aleatoriamente la etiqueta de un nodo, o muta el valor con un step-size de 0.25. Cada configuración ha sido ejecutada 20 veces, con una población de 32 individuos y selección de 2-torneo binario para crear un pool de 16 padres. 
+Los operadores evolutivos utilizados en este estudio han sido el crossover de sub-árboles y mutación de 1 nodo, ya que su uso ha sido propuesto anteriormente por otros investigadores, obteniendo buenos resultados \cite{Esparcia2013GPunreal}. En este caso, la mutación cambia aleatoriamente la etiqueta de un nodo, o muta el valor con un step-size de 0.25. Cada configuración ha sido ejecutada 20 veces, con una población de 32 individuos y selección de 2-torneo binario para crear un pool de 16 padres. 
 
 Para testear cada individuo durante la evolución, una partida con un bot anteriormente creado se realiza en 5 mapas diferentes pero representativos. También, como se propuso en \cite{Genebot_CEC11}, y debido al efecto del fitness ruidoso, todos los individuos son reevaluados en cada generación.
 
@@ -344,7 +344,7 @@ Mapas usados en cada evaluación & map76, map69, map7, map11, map26
 
 \\ \hline
 \end{tabular}
-\caption{Parameters used in the experiments.}
+\caption{Parámetros usados en los experimentos.}
 \label{tab:parameters}
 \end{center}
 \end{table*}
@@ -362,7 +362,7 @@ Se ha utilizado el framework OSGiLiath. El árbol generado se compila en tiempo r
 
 La Tabla \ref{tab:results3config} muestras los resultados obtenidos tras ejecutar 20 veces cada configuración (con cada una de las funciones fitness implementadas). 
 
-Aunque estos fitness no son comparables entre sí al aplicar distintas métricas, el fitnes basado en \textit{victorias} alcanza valores cercanos a su óptimo (5) al final de las ejecuciones (ver los valores del mejor individuo y de la población media). Los fitness basados en  \textit{pendiente} y en \textit{área} obtienen valores inferiores a su óptimo teórico (no existe un bot que pueda ganar en el primer turno por las propias condiciones del juego), y además dependen de rangos de información más grandes (la variación del número de naves).
+Aunque estos fitness no son comparables entre sí al aplicar distintas métricas, el fitness basado en \textit{victorias} alcanza valores cercanos a su óptimo (5) al final de las ejecuciones (ver los valores del mejor individuo y de la población media). Los fitness basados en  \textit{pendiente} y en \textit{área} obtienen valores inferiores a su óptimo teórico (no existe un bot que pueda ganar en el primer turno por las propias condiciones del juego), y además dependen de rangos de información más grandes (la variación del número de naves).
 
 
 \begin{table*}
@@ -416,7 +416,7 @@ Finalmente, y con respecto a los empates es interesante mostrar los resultados d
 \begin{table}
 \centering{
 \begin{tabular}{|c|c|c|c|} \hline            
-		& Victory		&	Área 		& Pendiente	\\ \hline \hline
+		& Victorias		&	Área 		& Pendiente	\\ \hline \hline
 Victorias & 62.06\%	& 23.15 \% 	&	12.47 \% \\ \hline
 Pendiente	& 	-		& 19.07 \%	&	12.50 \%		\\ \hline
 Área	& 	-		&	-		&	11.87 \% \\ \hline
@@ -440,16 +440,23 @@ Pendiente	& 	-		& 19.07 \%	&	12.50 \%		\\ \hline
 
 El objetivo de este trabajo es validar si usar la Programación Genética puede crear bots competitivos para juegos RTS y estudiar el comportamiento de distintas funciones fitness, ya que estas pueden afectar directamente la creación de esos bots. Se han comparado tres funciones fitness para generar bots para el juego Planet Wars. Estos bots utilizan árboles de decisión binarios para escoger estrategias dentro del juego. Se ha usado un bot competitivo disponible en la literatura (Genebot) para evaluar los individuos durante la evolución. Este bot fue el mejor obtenido en un proceso evolutivo que optimizaba diferentes parámetros de un motor diseñado por un humano.
 
-Las funciones fitness utilizan distintos tipos de información durante el juego para obtener una métrica que pueda guiar la evolución. Los resultados muestran diferencias dependiendo del fitness usado: un fitness basado en victorias que prioritiza el número de victorias obtiene mejores bots de media que fitness que utilizan el número de naves durante toda la ejecución de la partida. Esto puede explicarse debido a que este fitness explota los individuos para generar bots más agresivos. Sin embargo, este rendimiento decrece al enfrentarlo contra distintos tipos de bots no usados en la evolución.
+Las funciones fitness utilizan distintos tipos de información durante el juego para obtener una métrica que pueda guiar la evolución. Los resultados muestran diferencias dependiendo del fitness usado: un fitness basado en victorias que prioriza el número de victorias obtiene mejores bots de media que fitness que utilizan el número de naves durante toda la ejecución de la partida. Esto puede explicarse debido a que este fitness explota los individuos para generar bots más agresivos. Sin embargo, este rendimiento decrece al enfrentarlo contra distintos tipos de bots no usados en la evolución.
 
-Como trabajo futuro, se añadirán otras reglas al algoritmo propuesto (por ejemplo, analizar el mapa) y se estudiarán otros bots disponibles en la literatura para el entrenamiento. Además, esta aproximación puede implementarse y probarse en otros juegos RTS más complejos, como Starcraft, o en otros tipos de juego, como  Unreal\texttrademark~ y Super Mario\texttrademark~.
+Como trabajo futuro, se añadirán otras reglas al algoritmo propuesto (por ejemplo, analizar el mapa) y se estudiarán otros bots disponibles en la literatura para el entrenamiento y así evitar el sobreaprendizaje. Además, esta aproximación puede implementarse y probarse en otros juegos RTS más complejos, como Starcraft, o en otros tipos de juego, como  Unreal\texttrademark~ y Super Mario\texttrademark~.
 
 
 
 %******************************************************************************
 
 \section*{Agradecimientos}
-Este trabajo ha sido financiado en parte por la beca FPU AP2009-2942 y los proyectos SIPESCA (G-GI3000/IDIF, bajo el Programa Operativo FEDER de Andalucía 2007-2013), CANUBE (CEI2013-P-14), ANYSELF (TIN2011-28627-C04-02) y PYR-2014-17 incluido in GENIL - CEI BIOTIC (Granada).
+Este trabajo ha sido financiado en parte por los proyectos 
+SIPESCA (Programa Operativo FEDER de Andalucía 2007-2013),
+TIN2011-28627-C04-02 (Ministerio de Economía y Competitividad),
+SPIP2014-01437 (Dirección General de Tráfico),
+PRY142/14 (financiado por la Fundación Pública Andaluza Centro de Estudios Andaluces en la IX Convocatoria de Proyectos de Investigación) y
+GENIL PYR-2014-17  (CEI-BIOTIC Granada).
+
+
 
 \nocite{*}
 \bibliographystyle{maeb2015}
@@ -523,6 +530,12 @@ Mahlmann, T., Togelius, J., Yannakakis, G.N.:
 \newblock In: Proceedings of the 2012t European conference on Applications of
   Evolutionary Computation. EvoApplications'12, Berlin, Heidelberg,
   Springer-Verlag (2012)  224--233
+
+\bibitem{Pena2012CIG}
+Pe{\~{n}}a, L., Ossowski, S., Mar{\'{\i}}a Pe{\~{n}}a,. Lucas, S.M.:
+\newblock Learning and evolving combat game controllers
+\newblock In: 2012 IEEE Conference on Computational Intelligence and Games, CIG
+  2012, IEEE (2012)  195--202
 
 \bibitem{Sipper2007gameplaying}
 Sipper, M., Azaria, Y., Hauptman, A., Shichel, Y.:

@@ -1,4 +1,4 @@
-papers
+Trabajos de geneura
 ======
 
-Trabajos de geneura para desarrollar en privado
+Repositorio para trabajos de [Geneura](http://geneura.wordpress.com) hasta 2014.

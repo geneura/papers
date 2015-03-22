@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <title>Ejercicio 2.1</title>
+        <script type="text/javascript">
+
+            var elegidos = [];
+            function crearConexion() {
+                var httpRequest;
+                if (window.XMLHttpRequest) {
+                    // El explorador implementa la intefaz de forma nativa
+                    httpRequest = new XMLHttpRequest;
+                }
+                else if (window.ActiveXObject) {
+                    // El explorador permite crear objetos ActiveXObject
+                    try {
+                        httpRequest = new ActiveXObject("MSXML2.XMLHTTP");
+                    }
+                    catch (e) {
+                        try {
+                            httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+                        }
+                        catch (e) {
+                        }
+                    }
+                }
+                if (!httpRequest) {
+                    alert("No ha sido posible crear una instancia de XMLHttpRequest");
+                    return 0;
+                }
+                else {
+                    // Incluimos el manejador de eventos en la creacion del objetos
+                    httpRequest.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            document.getElementById('listado').innerHTML = document.getElementById('listado').innerHTML + "</br>" + this.responseText;
+
+
+                        }
+                    }
+                    return httpRequest;
+                }
+            }
+
+                function mostrarProducto() {
+                    var i;
+                    var elegido_anterior = false;
+                    var httpRequest;
+                    if (isNaN(parseInt(document.getElementById('prod').value))) {
+                        alert("El código del producto es incorrecto");
+                        document.getElementById('prod').value = "";
+                        document.getElementById('prod').focus();
+                    }
+                    else {
+                        var prod = parseInt(document.getElementById('prod').value);
+                        for (i = 0; i < elegidos.length; i++) {
+                            if (prod == elegidos[i]) {
+                                alert("Ya has elegido el producto anteriormente");
+                                document.getElementById('prod').value = "";
+                                document.getElementById('prod').focus();
+                                elegido_anterior = true;
+                                break;
+                            }
+                        }
+                        if (!elegido_anterior) {
+                            elegidos[elegidos.length] = prod;
+                            httpRequest = crearConexion();
+                            httpRequest.open("POST", "productos.php", true);
+                            httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            httpRequest.send("producto=" + prod);
+                        }
+                    }
+                }
+
+
+        </script>
+    </head>
+    <body>
+        <form id="formulario">
+            <h2>Introduzca el codigo de un producto:</h2>
+            <input type="text" id="prod"/>
+            <input type ="button" id="mostrar" value = "Enviar" onclick="mostrarProducto()"></input>
+            <p id="listado">
+            </p>
+        </form>
+    </body>
+</html> 
