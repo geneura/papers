@@ -27,6 +27,7 @@ for my $f ( @files ) {
   say "gof.$var_name <- gofstat( list("
     .join(", ", @gof_variables)."),fitnames=c("
       .join(", ", map("\"$_\"",@dists))."))";
+  say "print( '$var_name' )";
   say "cat( 'Fit  AIC ', gof.$var_name\$aic, '\\n')";
   say "cat( 'Fit  Chi^2 p value', gof.$var_name\$chisqpvalue, '\\n')";
   say "cat( 'Fit  Chi^2', gof.$var_name\$chisq, '\\n')";
